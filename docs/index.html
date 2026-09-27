@@ -12,8 +12,8 @@
     --bg: #f6f7f8; --surface: #ffffff; --ink: #14171a; --ink-soft: #565c63; --ink-faint: #90959b;
     --hairline: #e3e5e8; --hairline-strong: #d2d5d9;
     --accent: #3654c9;
-    --ok: #1f8a5f; --ok-soft: #e7f4ee;
-    --warn: #b8730a; --warn-soft: #fbf1e1;
+    --ok: #1f8a5f; --ok-soft: #e7f4ee; --ok-devel: #135c3e;
+    --warn: #b8730a; --warn-soft: #fbf1e1; --warn-devel: #7d4e05;
     --stale: #8b8f94; --stale-soft: #eeeeef;
     --danger: #c4433a; --danger-soft: #fbe9e7;
     --radius: 8px;
@@ -23,6 +23,7 @@
       --bg: #16181c; --surface: #1d2025; --ink: #edeff2; --ink-soft: #a3a8b0; --ink-faint: #6c7178;
       --hairline: #2b2f35; --hairline-strong: #383d44; --accent: #7b8cef;
       --ok: #4fc793; --ok-soft: #1b2e27; --warn: #e0a344; --warn-soft: #332714;
+      --ok-devel: #2e9466; --warn-devel: #a8762b;
       --stale: #82868c; --stale-soft: #24262a; --danger: #e0776e; --danger-soft: #33201e;
     }
   }
@@ -78,11 +79,12 @@
   .ver .ref { color: var(--ink-faint); }
   .badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 20px; font-weight: 500; margin-left: 5px; }
   .badge.warn { background: var(--warn-soft); color: var(--warn); }
+  .badge.devel.ok { background: var(--ok-soft); color: var(--ok-devel); }
+  .badge.devel.warn { background: var(--warn-soft); color: var(--warn-devel); }
   .badge.missing { background: var(--danger-soft); color: var(--danger); }
   .badge.vuln { background: var(--danger-soft); color: var(--danger); }
   .badge.neutral { background: var(--stale-soft); color: var(--ink-soft); }
 
-  .repos-count { font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
   .failure-btn { font: inherit; font-size: 12.5px; color: var(--ink-soft); background: none; border: 1px solid transparent; border-radius: var(--radius); padding: 4px 9px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
   .failure-btn:hover { background: var(--bg); border-color: var(--hairline); color: var(--ink); }
   .failure-btn.failing { color: var(--danger); }
@@ -108,7 +110,7 @@
   footer.legend { display: flex; gap: 16px; padding-top: 20px; margin-top: 8px; border-top: 1px solid var(--hairline); font-size: 12.5px; color: var(--ink-faint); flex-wrap: wrap; }
   footer.legend span { display: inline-flex; align-items: center; gap: 6px; }
 
-  @media (max-width: 640px) { .repos-count, thead th.repos { display: none; } input[type="search"] { width: 120px; } }
+  @media (max-width: 640px) { input[type="search"] { width: 120px; } }
 </style>
 </head>
 <body>
@@ -134,7 +136,7 @@
     <span><span class="status-dot ok"></span> up to date</span>
     <span><span class="status-dot warn"></span> nixpkgs is behind</span>
     <span><span class="status-dot missing"></span> not in nixpkgs unstable</span>
-    <span><span class="status-dot neutral"></span> devel / rolling / other scheme</span>
+    <span><span class="status-dot neutral"></span> rolling / other scheme</span>
   </footer>
 
 </div>
@@ -203,10 +205,14 @@ async function loadIndex() {
   }
 }
 
+// Follows Repology's statuses. "legacy" means outdated while the same repo
+// carries a newer version in another package (e.g. a beta overtaken by the
+// stable release), so it counts as behind. Whether a row is a devel variant
+// comes separately from pkg.devel and only shades its "devel" badge.
 function computeStatus(pkg) {
   if (pkg.nixStatus === 'missing') return 'missing';
-  if (pkg.nixStatus === 'outdated') return 'warn';
-  if (pkg.nixStatus === 'newest' || pkg.nixStatus === 'unique') return 'ok';
+  if (pkg.nixStatus === 'outdated' || pkg.nixStatus === 'legacy') return 'warn';
+  if (pkg.nixStatus === 'newest' || pkg.nixStatus === 'unique' || pkg.nixStatus === 'devel') return 'ok';
   return 'neutral';
 }
 
@@ -246,7 +252,7 @@ function render(list) {
   }
   content.innerHTML = `<div class="wrap"><table>
     <thead><tr>
-      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th class="repos">vs. other repos</th><th>build failures</th><th>update failures</th><th aria-hidden="true"></th>
+      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>build failures</th><th>update failures</th><th aria-hidden="true"></th>
     </tr></thead>
     <tbody id="rows"></tbody>
   </table></div>`;
@@ -255,14 +261,13 @@ function render(list) {
   list.forEach(pkg => {
     const st = computeStatus(pkg);
     const verCell = st === 'missing' ? `<span class="badge missing">not packaged</span>`
-      : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}`;
+      : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}`;
 
     const tr = document.createElement('tr');
     tr.className = 'row'; tr.tabIndex = 0;
     tr.innerHTML = `
       <td><div class="pkg-name"><span class="status-dot ${st}"></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
       <td class="ver mono">${verCell}</td>
-      <td class="repos-count">${pkg.repoCount} repos checked</td>
       <td>${failureCell('build', pkg.buildFailure)}</td>
       <td>${failureCell('update', pkg.updateFailure)}</td>
       <td><span class="chev">▸</span></td>
@@ -270,7 +275,7 @@ function render(list) {
 
     const detail = document.createElement('tr');
     detail.className = 'detail';
-    detail.innerHTML = `<td colspan="6"><div class="detail-inner">
+    detail.innerHTML = `<td colspan="5"><div class="detail-inner">
       <div class="nix-line">Loading detail…</div>
     </div></td>`;
 
@@ -332,7 +337,9 @@ async function fillDetail(pkg, el) {
   const st = computeStatus(pkg);
   const nixLine = st === 'missing'
     ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
-    : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>` : ' — matches the newest version seen anywhere.'}`;
+    : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>`
+      : st === 'neutral' ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
+      : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`}`;
 
   el.innerHTML = `
     <div class="nix-line">${nixLine}</div>

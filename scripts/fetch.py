@@ -111,6 +111,63 @@ def project_by_name(name):
     return (name, entries) if entries else (None, None)
 
 
+def project_rows(proj, nixpkgs):
+    """Index rows for one Repology project: normally one, but one per version
+    when the tracked nixpkgs variants differ (wesnoth / wesnoth-devel).
+    Variants sharing a version (heroic / heroic-unwrapped) stay one row."""
+    entries = proj["entries"]
+    nix_all = [e for e in entries if e.get("repo") == NIX_REPO]
+    others = [e for e in entries if e.get("repo") != NIX_REPO]
+
+    groups = {}  # version -> nix entries of tracked attrs
+    for e in nix_all:
+        if e.get("srcname") in proj["attrs"]:
+            groups.setdefault(e.get("version"), []).append(e)
+    if len(groups) < 2:
+        nix = next(iter(groups.values()), nix_all)[:1]
+        return [make_row(proj, proj["name"], proj["attrs"], nix[0] if nix else None, others, nixpkgs, devel=False)]
+
+    # Stable first: the variant Repology calls newest, else the shortest attr
+    # (wesnoth before wesnoth-devel). The rest compare against devel versions.
+    ordered = sorted(groups.values(), key=lambda g: (
+        not any(e.get("status") == "newest" for e in g),
+        min(len(e["srcname"]) for e in g),
+        min(e["srcname"] for e in g),
+    ))
+    rows, used = [], set()
+    for i, group in enumerate(ordered):
+        attrs = sorted(e["srcname"] for e in group)
+        pname = nixpkgs[attrs[0]].get("pname") if attrs[0] in nixpkgs else None
+        # Variants can share a pname (_1password-gui / -beta): fall back to the attr.
+        name = pname if pname and pname not in used else attrs[0]
+        used.add(name)
+        rows.append(make_row(proj, name, attrs, group[0], others, nixpkgs, devel=i > 0))
+    return rows
+
+
+def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
+    newest = lambda status: next((e.get("version") for e in others if e.get("status") == status), None)
+    row = {
+        "name": name,
+        "project": proj["project"],
+        "attrs": attrs,
+        "nixVersion": nix.get("version") if nix else None,
+        "nixStatus": nix.get("status") if nix else "missing",
+        "nixVulnerable": bool(nix.get("vulnerable")) if nix else False,
+        "refVersion": (devel and newest("devel")) or newest("newest"),
+        "repoCount": len(others),
+        # A devel variant of a split project, or a version Repology itself
+        # classifies as devel (lincity).
+        "devel": devel or (nix or {}).get("status") == "devel",
+    }
+    pkgs = [nixpkgs[a] for a in attrs if a in nixpkgs]
+    if pkgs:  # not in nixpkgs: nothing to say about platforms or homepage
+        row["platforms"] = platforms(pkgs)
+        homepage = next((p["meta"].get("homepage") for p in pkgs if p["meta"].get("homepage")), None)
+        row["homepage"] = homepage[0] if isinstance(homepage, list) else homepage
+    return row
+
+
 def main():
     shutil.rmtree(TMP_DIR, ignore_errors=True)  # leftover from a failed run
     os.makedirs(TMP_DIR)
@@ -132,8 +189,9 @@ def main():
         wanted.setdefault(pname, sorted(by_pname.get(pname, [])))
 
     # Several attrs (wesnoth / wesnoth-devel, heroic / heroic-unwrapped) can
-    # map to one Repology project; those become a single row.
-    projects = {}  # project -> index entry
+    # map to one Repology project; they're fetched once and split into rows
+    # below.
+    projects = {}  # project -> {"name", "project", "attrs", "entries"}
     for pname, attrs in sorted(wanted.items()):
         print(f"Resolving {pname}...", file=sys.stderr)
         project, entries = None, None
@@ -154,35 +212,13 @@ def main():
             continue
         with open(os.path.join(TMP_DIR, f"{key}.json"), "w") as f:
             json.dump(entries or [], f, indent=2, sort_keys=True)
+        projects[key] = {"name": pname, "project": project, "attrs": attrs, "entries": entries or []}
 
-        entries = entries or []
-        nix = next((e for e in entries if e.get("repo") == NIX_REPO), None)
-        others = [e for e in entries if e.get("repo") != NIX_REPO]
-        ref = next((e.get("version") for e in others if e.get("status") == "newest"), None)
-
-        projects[key] = {
-            "name": pname,
-            "project": project,
-            "attrs": attrs,
-            "nixVersion": nix.get("version") if nix else None,
-            "nixStatus": nix.get("status") if nix else "missing",
-            "nixVulnerable": bool(nix.get("vulnerable")) if nix else False,
-            "refVersion": ref,
-            "repoCount": len(others),
-        }
-
-    for entry in projects.values():
-        pkgs = [nixpkgs[a] for a in entry["attrs"]]
-        if not pkgs:
-            continue  # not in nixpkgs: nothing to say about platforms
-        entry["platforms"] = platforms(pkgs)
-        homepage = next((p["meta"].get("homepage") for p in pkgs if p["meta"].get("homepage")), None)
-        entry["homepage"] = homepage[0] if isinstance(homepage, list) else homepage
-
+    rows = [row for proj in projects.values() for row in project_rows(proj, nixpkgs)]
     with open(os.path.join(TMP_DIR, "index.json"), "w") as f:
         json.dump({
             "checkedAt": datetime.now(timezone.utc).isoformat(),
-            "packages": sorted(projects.values(), key=lambda p: p["name"].lower()),
+            "packages": sorted(rows, key=lambda p: p["name"].lower()),
         }, f, indent=2, sort_keys=True)
 
     shutil.rmtree(OUT_DIR, ignore_errors=True)
