@@ -1,5 +1,5 @@
 {
-  description = "pkgwatch — fetches Repology status for tracked packages";
+  description = "nixkeeper — fetches Repology status for tracked packages";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
@@ -12,10 +12,10 @@
         apps.fetch = {
           type = "app";
           program = "${pkgs.writeShellApplication {
-            name = "pkgwatch-fetch";
+            name = "nixkeeper-fetch";
             runtimeInputs = [ pkgs.python3 ];
             text = ''python3 ${./scripts/fetch.py}'';
-          }}/bin/pkgwatch-fetch";
+          }}/bin/nixkeeper-fetch";
         meta.description = "Fetch Repology status for tracked packages";
         };
 

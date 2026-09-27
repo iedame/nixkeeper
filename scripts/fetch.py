@@ -16,9 +16,11 @@ from datetime import datetime, timezone
 OUT_DIR = "data"
 NIX_REPO = "nix_unstable"
 USER_AGENT = "nixkeeper/1.0 (personal package tracker)"
-# Override with e.g. REPOLOGY_BASE_URL=https://repology.amdmi3.ru if the
-# main domain is unreachable.
-BASE_URL = os.environ.get("REPOLOGY_BASE_URL", "https://repology.amdmi3.ru")
+# repology.org has occasionally been unreachable; repology.amdmi3.ru (the
+# author's own domain) has served as a working fallback. Tried in order;
+# set REPOLOGY_BASE_URL to force a single one instead.
+override = os.environ.get("REPOLOGY_BASE_URL")
+BASE_URLS = [override] if override else ["https://repology.org", "https://repology.amdmi3.ru"]
 
 
 def read_packages():
@@ -34,15 +36,21 @@ def read_packages():
 
 
 def fetch_project(name):
-    url = f"{BASE_URL}/api/v1/project/{name}"
-    req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
-    try:
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            return json.loads(resp.read().decode())
-    except urllib.error.HTTPError as e:
-        if e.code == 404:
-            return []
-        raise
+    last_err = None
+    for base in BASE_URLS:
+        url = f"{base}/api/v1/project/{name}"
+        req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+        try:
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                return json.loads(resp.read().decode())
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                return []
+            last_err = e
+        except (urllib.error.URLError, OSError) as e:
+            print(f"  {base} unreachable ({e}), trying next domain...", file=sys.stderr)
+            last_err = e
+    raise last_err
 
 
 def main():
