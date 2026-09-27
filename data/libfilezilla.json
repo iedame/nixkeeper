@@ -1,0 +1,2600 @@
+[
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla46"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "gusnan@debian.org"
+    ],
+    "origversion": "0.49.0-2",
+    "repo": "raspbian_stable",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla59"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "michael@micl.dev"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "raspbian_testing",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla0"
+    ],
+    "categories": [
+      "libdevel"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.15.1-1",
+    "repo": "pureos_amber",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "amber/main",
+    "version": "0.15.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.39.2-r0",
+    "repo": "alpine_3_17",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla",
+    "version": "0.39.2",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.39.2-r0",
+    "repo": "alpine_3_17",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package libfilezilla",
+    "version": "0.39.2",
+    "visiblename": "libfilezilla-lang"
+  },
+  {
+    "binname": "libfilezilla-dev",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.39.2-r0",
+    "repo": "alpine_3_17",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla (development files)",
+    "version": "0.39.2",
+    "visiblename": "libfilezilla-dev"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_18",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla",
+    "version": "0.42.2",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-dev",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_18",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla (development files)",
+    "version": "0.42.2",
+    "visiblename": "libfilezilla-dev"
+  },
+  {
+    "binname": "libfilezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_18",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package libfilezilla",
+    "version": "0.42.2",
+    "visiblename": "libfilezilla-lang"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.45.0-r0",
+    "repo": "alpine_3_19",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla",
+    "version": "0.45.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-dev",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.45.0-r0",
+    "repo": "alpine_3_19",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla (development files)",
+    "version": "0.45.0",
+    "visiblename": "libfilezilla-dev"
+  },
+  {
+    "binname": "libfilezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.45.0-r0",
+    "repo": "alpine_3_19",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package libfilezilla",
+    "version": "0.45.0",
+    "visiblename": "libfilezilla-lang"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.47.0-r0",
+    "repo": "alpine_3_20",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla",
+    "version": "0.47.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-dev",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.47.0-r0",
+    "repo": "alpine_3_20",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla (development files)",
+    "version": "0.47.0",
+    "visiblename": "libfilezilla-dev"
+  },
+  {
+    "binname": "libfilezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.47.0-r0",
+    "repo": "alpine_3_20",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package libfilezilla",
+    "version": "0.47.0",
+    "visiblename": "libfilezilla-lang"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_21",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-dev",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_21",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla (development files)",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-dev"
+  },
+  {
+    "binname": "libfilezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_21",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package libfilezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-lang"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_22",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-dev",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_22",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla (development files)",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-dev"
+  },
+  {
+    "binname": "libfilezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_22",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package libfilezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-lang"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_23",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-dev",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_23",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla (development files)",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-dev"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla11"
+    ],
+    "categories": [
+      "libdevel"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.26.0-1",
+    "repo": "pureos_byzantium",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "0.26.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_23",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package libfilezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-lang"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_24",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-dev",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_24",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla (development files)",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-dev"
+  },
+  {
+    "binname": "libfilezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_3_24",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package libfilezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-lang"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_edge",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-dev",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_edge",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "C++ library for filezilla (development files)",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-dev"
+  },
+  {
+    "binname": "libfilezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "0.49.0-r0",
+    "repo": "alpine_edge",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package libfilezilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla-lang"
+  },
+  {
+    "binnames": [
+      "libfilezilla-common",
+      "libfilezilla-devel",
+      "libfilezilla58",
+      "libfilezilla58-debuginfo"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rider@altlinux.org"
+    ],
+    "origversion": "0.56.1-alt1",
+    "repo": "alt_p11",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "Small and modern C++ library",
+    "version": "0.56.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-common",
+      "libfilezilla-devel",
+      "libfilezilla59",
+      "libfilezilla59-debuginfo"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rider@altlinux.org"
+    ],
+    "origversion": "0.57.0-alt1",
+    "repo": "altsisyphus",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "summary": "Small and modern C++ library",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "categories": [
+      "libs"
+    ],
+    "maintainers": [
+      "fallback-mnt-aosc@repology"
+    ],
+    "origversion": null,
+    "repo": "aosc",
+    "srcname": "runtime-network/libfilezilla",
+    "status": "outdated",
+    "summary": "Runtime libraries for FileZilla",
+    "version": "0.56.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1:0.57.0-1",
+    "repo": "arch",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-svn",
+    "licenses": [
+      "GPL2"
+    ],
+    "maintainers": [
+      "pmattern@aur"
+    ],
+    "origversion": "0.24.1.r9959-1",
+    "repo": "aur",
+    "srcname": "libfilezilla-svn",
+    "status": "rolling",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.24.1.r9959",
+    "visiblename": "libfilezilla-svn"
+  },
+  {
+    "binname": "mingw-w64-libfilezilla-svn",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "martchus@aur"
+    ],
+    "origversion": "r7253-1",
+    "repo": "aur",
+    "srcname": "mingw-w64-libfilezilla-svn",
+    "status": "rolling",
+    "summary": "Library used by FileZilla (mingw-w64, svn version)",
+    "version": "r7253",
+    "visiblename": "mingw-w64-libfilezilla-svn"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1:0.57.0-1",
+    "repo": "artix",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "world",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "licenses": [
+      "GPL-2+"
+    ],
+    "origversion": null,
+    "repo": "chromebrew",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "libfilezilla is a small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs.",
+    "version": "0.50.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-debuginfo",
+    "categories": [
+      "Debug"
+    ],
+    "maintainers": [
+      "orphaned@cygwin"
+    ],
+    "origversion": "0.10.0-1",
+    "repo": "cygwin",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "FileZilla I/O library",
+    "version": "0.10.0",
+    "visiblename": "libfilezilla-debuginfo"
+  },
+  {
+    "binname": "libfilezilla-devel",
+    "categories": [
+      "Libs"
+    ],
+    "maintainers": [
+      "orphaned@cygwin"
+    ],
+    "origversion": "0.10.0-1",
+    "repo": "cygwin",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "FileZilla I/O library",
+    "version": "0.10.0",
+    "visiblename": "libfilezilla-devel"
+  },
+  {
+    "binname": "libfilezilla0",
+    "categories": [
+      "Libs"
+    ],
+    "maintainers": [
+      "orphaned@cygwin"
+    ],
+    "origversion": "0.10.0-1",
+    "repo": "cygwin",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "FileZilla I/O library",
+    "version": "0.10.0",
+    "visiblename": "libfilezilla0"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla11"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.26.0-1",
+    "repo": "debian_11",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "bullseye/main",
+    "version": "0.26.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla34"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "philip.wyett@kathenas.org"
+    ],
+    "origversion": "0.41.0-2",
+    "repo": "debian_12",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "0.41.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla46"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "gusnan@debian.org"
+    ],
+    "origversion": "0.49.0-2",
+    "repo": "debian_13",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla59"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "michael@micl.dev"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "debian_14",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "forky/main",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-common",
+      "libfilezilla-dev",
+      "libfilezilla46"
+    ],
+    "categories": [
+      "libs"
+    ],
+    "maintainers": [
+      "gusnan@debian.org"
+    ],
+    "origversion": "0.49.0-2",
+    "repo": "pureos_landing",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla59"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "michael@micl.dev"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "debian_unstable",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "sid/main",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla0"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.15.1-1",
+    "repo": "deepin_unstable",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.15.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla41"
+    ],
+    "categories": [
+      "libs"
+    ],
+    "maintainers": [
+      "philip.wyett@kathenas.org"
+    ],
+    "origversion": "0.45.0-5deepin0",
+    "repo": "deepin_23",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.45.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla41"
+    ],
+    "categories": [
+      "libs"
+    ],
+    "maintainers": [
+      "philip.wyett@kathenas.org"
+    ],
+    "origversion": "0.45.0-5deepin0",
+    "repo": "deepin_25",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.45.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla11"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.26.0-1",
+    "repo": "devuan_4_0",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "0.26.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla59"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "michael@micl.dev"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "devuan_unstable",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "0.32.0-1.el8",
+    "repo": "epel_8",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.32.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "0.37.2-1.el9",
+    "repo": "epel_9",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.37.2",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.51.1-1.el10_1",
+    "repo": "epel_10",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.51.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "categories": [
+      "net-libs"
+    ],
+    "maintainers": [
+      "fallback-mnt-exherbo@repology"
+    ],
+    "origversion": null,
+    "repo": "exherbo",
+    "srcname": "net-libs/libfilezilla",
+    "status": "outdated",
+    "subrepo": "SuperHeron-misc",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.56.1",
+    "visiblename": "net-libs/libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.47.0-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.47.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.41.1-2.fc39",
+    "repo": "fedora_39",
+    "srcname": "libfilezilla",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.41.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.48.1-1.fc40",
+    "repo": "fedora_40",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.48.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.46.0-1.fc40",
+    "repo": "fedora_40",
+    "srcname": "libfilezilla",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.46.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.49.0-1.fc41",
+    "repo": "fedora_41",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.48.1-2.fc41",
+    "repo": "fedora_41",
+    "srcname": "libfilezilla",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.48.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.49.0-2.fc42",
+    "repo": "fedora_42",
+    "srcname": "libfilezilla",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.50.0-1.fc42",
+    "repo": "fedora_42",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.50.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.51.1-1.fc43",
+    "repo": "fedora_43",
+    "srcname": "libfilezilla",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.51.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.53.1-1.fc43",
+    "repo": "fedora_43",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.53.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.54.0-1.fc44",
+    "repo": "fedora_44",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.54.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.57.0-1.fc46",
+    "repo": "fedora_rawhide",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "development",
+    "summary": "C++ Library for FileZilla",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "categories": [
+      "ftp"
+    ],
+    "maintainers": [
+      "pi@freebsd.org"
+    ],
+    "origversion": null,
+    "repo": "freebsd",
+    "srcname": "ftp/libfilezilla",
+    "status": "outdated",
+    "summary": "C++ library for building platform-independent programs",
+    "version": "0.49.0",
+    "visiblename": "ftp/libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "voyageur@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "legacy",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.56.1",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "voyageur@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "newest",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "Cross-platform C++ library used by Filezilla client",
+    "version": "0.51.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "outdated",
+    "version": "0.51.1",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla59"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "michael@micl.dev"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "kali_rolling",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL2"
+    ],
+    "maintainers": [
+      "demm@kaosx.us"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "kaos",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "apps",
+    "summary": "Small C++ library, offering a typesafe, multi-threaded event system and process handling for spawning child processes.",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "voyageur@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "legacy",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.50.0",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "voyageur@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "legacy",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.51.0",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "voyageur@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "outdated",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.51.1",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "voyageur@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "legacy",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.54.0",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "voyageur@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "legacy",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.55.2",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "voyageur@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "legacy",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.54.1",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "categories": [
+      "dev-libs"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "voyageur@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "dev-libs/libfilezilla",
+    "status": "outdated",
+    "summary": "C++ library offering some basic functionality for platform-independent programs",
+    "version": "0.55.5",
+    "visiblename": "dev-libs/libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "categories": [
+      "devel"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "nomaintainer@macports.org"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "devel/libfilezilla",
+    "status": "outdated",
+    "summary": "Shared component for Filezilla programs",
+    "version": "0.55.4",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "lib64filezilla57",
+      "lib64filezilla-devel",
+      "libfilezilla-i18n"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "0.55.4-1.mga10",
+    "repo": "mageia_10",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Small and modern C++ library for FileZilla",
+    "version": "0.55.4",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla36",
+      "libfilezilla-devel",
+      "libfilezilla-i18n",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "0.42.2-1.mga9",
+    "repo": "mageia_9",
+    "srcname": "libfilezilla",
+    "status": "legacy",
+    "subrepo": "core/release",
+    "summary": "Small and modern C++ library for FileZilla",
+    "version": "0.42.2",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "lib64filezilla41",
+      "lib64filezilla-devel",
+      "libfilezilla-i18n",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "0.45.0-1.mga9",
+    "repo": "mageia_9",
+    "srcname": "libfilezilla",
+    "status": "legacy",
+    "subrepo": "core/updates",
+    "summary": "Small and modern C++ library for FileZilla",
+    "version": "0.45.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "lib64filezilla43",
+      "lib64filezilla-devel",
+      "libfilezilla-i18n",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "0.47.0-1.mga9",
+    "repo": "mageia_9",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "core/updates",
+    "summary": "Small and modern C++ library for FileZilla",
+    "version": "0.47.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "lib64filezilla59",
+      "lib64filezilla-devel",
+      "libfilezilla-i18n"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "0.57.0-1.mga11",
+    "repo": "mageia_cauldron",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Small and modern C++ library for FileZilla",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1:0.57.0-1",
+    "repo": "manjaro_stable",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1:0.57.0-1",
+    "repo": "manjaro_testing",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1:0.57.0-1",
+    "repo": "manjaro_unstable",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "mingw-w64-clang-x86_64-libfilezilla",
+    "licenses": [
+      "spdx:GPL-2.0-or-later"
+    ],
+    "origversion": "0.56.1-2",
+    "repo": "msys2_clang64",
+    "srcname": "mingw-w64-libfilezilla",
+    "status": "outdated",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs (mingw-w64)",
+    "version": "0.56.1",
+    "visiblename": "mingw-w64-clang-x86_64-libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla34"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "philip.wyett@kathenas.org"
+    ],
+    "origversion": "0.41.0-2",
+    "repo": "raspbian_oldstable",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.41.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "mingw-w64-clang-aarch64-libfilezilla",
+    "licenses": [
+      "spdx:GPL-2.0-or-later"
+    ],
+    "origversion": "0.56.1-2",
+    "repo": "msys2_clangarm64",
+    "srcname": "mingw-w64-libfilezilla",
+    "status": "outdated",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs (mingw-w64)",
+    "version": "0.56.1",
+    "visiblename": "mingw-w64-clang-aarch64-libfilezilla"
+  },
+  {
+    "binname": "mingw-w64-ucrt-x86_64-libfilezilla",
+    "licenses": [
+      "spdx:GPL-2.0-or-later"
+    ],
+    "origversion": "0.56.1-2",
+    "repo": "msys2_ucrt64",
+    "srcname": "mingw-w64-libfilezilla",
+    "status": "outdated",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs (mingw-w64)",
+    "version": "0.56.1",
+    "visiblename": "mingw-w64-ucrt-x86_64-libfilezilla"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "mail@pascal-wittmann.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "A modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.47.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "mail@pascal-wittmann.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "Modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.47.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "mail@pascal-wittmann.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "Modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "mail@pascal-wittmann.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "Modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.51.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me",
+      "mail@pascal-wittmann.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "Modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.54.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me",
+      "mail@pascal-wittmann.de"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "summary": "Modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "categories": [
+      "net"
+    ],
+    "maintainers": [
+      "bket@openbsd.org"
+    ],
+    "origversion": null,
+    "repo": "openbsd",
+    "srcname": "net/libfilezilla",
+    "status": "newest",
+    "summary": "support library for FileZilla",
+    "version": "0.57.0",
+    "visiblename": "net/libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla",
+      "libfilezilla-devel"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "silvan@openmamba.org"
+    ],
+    "origversion": "0.57.0-1mamba",
+    "repo": "openmamba",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "base",
+    "summary": "A C++ library offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "lib64filezilla",
+      "lib64filezilla-devel"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "0.49.0-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Small and modern C++ library",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "lib64filezilla",
+      "lib64filezilla-devel"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "Small and modern C++ library",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "lib64filezilla",
+      "lib64filezilla-devel"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "Small and modern C++ library",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "categories": [
+      "Development/Libraries/C and C++"
+    ],
+    "licenses": [
+      "GPL-2.0+"
+    ],
+    "origversion": "0.12.2-bp155.2.14",
+    "repo": "opensuse_leap_15_5",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "C++ library for filezilla",
+    "version": "0.12.2",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "categories": [
+      "Development/Libraries/C and C++"
+    ],
+    "licenses": [
+      "GPL-2.0+"
+    ],
+    "origversion": "0.12.2-bp156.3.4",
+    "repo": "opensuse_leap_15_6",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "C++ library for filezilla",
+    "version": "0.12.2",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource",
+      "libfilezilla59",
+      "libfilezilla-devel",
+      "libfilezilla-lang"
+    ],
+    "categories": [
+      "Development/Libraries/C and C++"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.57.0-1.1",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "src-oss",
+    "summary": "C++ library for filezilla",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource",
+      "libfilezilla59",
+      "libfilezilla-devel",
+      "libfilezilla-lang"
+    ],
+    "categories": [
+      "Development/Libraries/C and C++"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "0.57.0-149.5",
+    "repo": "opensuse_network_tumbleweed",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "summary": "C++ library for filezilla",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1:0.57.0-1",
+    "repo": "parabola",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla11"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.26.0-1",
+    "repo": "pardus_21",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.26.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla46"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "gusnan@debian.org"
+    ],
+    "origversion": "0.49.0-2",
+    "repo": "parrot",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla46"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "gusnan@debian.org"
+    ],
+    "origversion": "0.49.0-2",
+    "repo": "parrot",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "categories": [
+      "System/Libraries"
+    ],
+    "origversion": "0.57.0-1pclos2026",
+    "repo": "pclinuxos",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "summary": "Small and modern C++ library for FileZilla",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "categories": [
+      "Libry"
+    ],
+    "licenses": [
+      "LGPLv2"
+    ],
+    "maintainers": [
+      "suvari@pisilinux.org"
+    ],
+    "origversion": null,
+    "repo": "pisi_main",
+    "srcname": "network/library/libfilezilla",
+    "status": "outdated",
+    "subrepo": "main",
+    "summary": "libfilezilla is a small and modern C++ library.",
+    "version": "0.55.5",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "categories": [
+      "net"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.50.0nb2",
+    "repo": "pkgsrc_2026_1",
+    "srcname": "net/libfilezilla",
+    "status": "outdated",
+    "summary": "Library for building high-performing, platform-independent programs",
+    "version": "0.50.0",
+    "visiblename": "net/libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "categories": [
+      "net"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_2026_2",
+    "srcname": "net/libfilezilla",
+    "status": "outdated",
+    "summary": "Library for building high-performing, platform-independent programs",
+    "version": "0.56.1",
+    "visiblename": "net/libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "categories": [
+      "net"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_current",
+    "srcname": "net/libfilezilla",
+    "status": "newest",
+    "summary": "Library for building high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "net/libfilezilla"
+  },
+  {
+    "origversion": "0.55.4-1",
+    "repo": "pld",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "version": "0.55.4",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "categories": [
+      "ftp"
+    ],
+    "maintainers": [
+      "kraileth@elderlinux.org"
+    ],
+    "origversion": null,
+    "repo": "ravenports",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "summary": "C++ lib for building platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-locales",
+      "lib64filezilla16",
+      "lib64filezilla-devel"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "0.31.1-1",
+    "repo": "rosa_2019_1",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Small and modern C++ library",
+    "version": "0.31.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-locales",
+      "lib64filezilla51",
+      "lib64filezilla-devel",
+      "libfilezilla-debuginfo",
+      "libfilezilla-debugsource"
+    ],
+    "categories": [
+      "System/Libraries"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "a.proklov@rosa.ru"
+    ],
+    "origversion": "0.54.0-1",
+    "repo": "rosa_13",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "Small and modern C++ library",
+    "version": "0.54.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "origversion": null,
+    "repo": "salix_14_2",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "libfilezilla (a small and modern C++ library)",
+    "version": "0.4.0.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "categories": [
+      "libraries"
+    ],
+    "maintainers": [
+      "willysr@slackbuilds.org"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "libraries/libfilezilla",
+    "status": "newest",
+    "version": "0.57.0",
+    "visiblename": "libraries/libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "categories": [
+      "programming"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "harveydevel@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "libfilezilla",
+    "version": "0.54.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "harveydevel@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "Debug symbols for libfilezilla",
+    "version": "0.54.1",
+    "visiblename": "libfilezilla-dbginfo"
+  },
+  {
+    "binname": "libfilezilla-devel",
+    "categories": [
+      "programming.devel"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "harveydevel@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "summary": "Development files for libfilezilla",
+    "version": "0.54.1",
+    "visiblename": "libfilezilla-devel"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla0"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.19.3-1build1",
+    "repo": "trisquel_10_0",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "nabia/main",
+    "version": "0.19.3",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla24"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "philip.wyett@kathenas.org"
+    ],
+    "origversion": "0.36.0-2",
+    "repo": "trisquel_11_0",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "aramo/main",
+    "version": "0.36.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla0"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.4.0.1-1",
+    "repo": "ubuntu_16_04",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "xenial/universe",
+    "version": "0.4.0.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla0"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.11.0-1",
+    "repo": "ubuntu_18_04",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "bionic/universe",
+    "version": "0.11.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla0"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "0.19.3-1build1",
+    "repo": "ubuntu_20_04",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "focal/universe",
+    "version": "0.19.3",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla24"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "philip.wyett@kathenas.org"
+    ],
+    "origversion": "0.36.0-2",
+    "repo": "ubuntu_22_04",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "0.36.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla42t64"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "0.46.0-3.1ubuntu0.1",
+    "repo": "ubuntu_24_04",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "noble-updates/universe",
+    "version": "0.46.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla42t64"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "0.46.0-3.1build3",
+    "repo": "ubuntu_24_04",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "noble/universe",
+    "version": "0.46.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla46"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "gusnan@debian.org"
+    ],
+    "origversion": "0.49.0-2",
+    "repo": "ubuntu_25_04",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "plucky/universe",
+    "version": "0.49.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla48"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "gusnan@debian.org"
+    ],
+    "origversion": "0.51.1-1",
+    "repo": "ubuntu_25_10",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "questing/universe",
+    "version": "0.51.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla53"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "gusnan@debian.org"
+    ],
+    "origversion": "0.54.1-1",
+    "repo": "ubuntu_26_04",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "resolute/universe",
+    "version": "0.54.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binnames": [
+      "libfilezilla-dev",
+      "libfilezilla-common",
+      "libfilezilla59"
+    ],
+    "categories": [
+      "universe/libs"
+    ],
+    "maintainers": [
+      "michael@micl.dev"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "ubuntu_26_10",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "orphan@voidlinux.org"
+    ],
+    "origversion": "0.51.1_1",
+    "repo": "void_x86_64",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "x86_64",
+    "summary": "Small and modern C++ library, which offers some basic functionalities",
+    "version": "0.51.1",
+    "visiblename": "libfilezilla"
+  },
+  {
+    "binname": "libfilezilla-devel",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "orphan@voidlinux.org"
+    ],
+    "origversion": "0.51.1_1",
+    "repo": "void_x86_64",
+    "srcname": "libfilezilla",
+    "status": "outdated",
+    "subrepo": "x86_64",
+    "summary": "Small and modern C++ library, which offers some basic functionalities - development files",
+    "version": "0.51.1",
+    "visiblename": "libfilezilla-devel"
+  },
+  {
+    "maintainers": [
+      "wonkru-dev@proton.me"
+    ],
+    "origversion": "0.57.0-1",
+    "repo": "vylen",
+    "srcname": "libfilezilla",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Small and modern C++ library, offering some basic functionality to build high-performing, platform-independent programs",
+    "version": "0.57.0",
+    "visiblename": "libfilezilla"
+  }
+]

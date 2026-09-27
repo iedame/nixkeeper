@@ -1,0 +1,169 @@
+[
+  {
+    "binname": "backrest",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "extras",
+    "version": "1.14.1",
+    "visiblename": "backrest"
+  },
+  {
+    "binnames": [
+      "backrest",
+      "backrest-debuginfo"
+    ],
+    "categories": [
+      "Archiving/Backup"
+    ],
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "amakeenk@altlinux.org"
+    ],
+    "origversion": "1.14.1-alt1",
+    "repo": "alt_p11",
+    "srcname": "backrest",
+    "status": "newest",
+    "summary": "Web UI and orchestrator for restic backup",
+    "version": "1.14.1",
+    "visiblename": "backrest"
+  },
+  {
+    "binnames": [
+      "backrest",
+      "backrest-debuginfo"
+    ],
+    "categories": [
+      "Archiving/Backup"
+    ],
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "amakeenk@altlinux.org"
+    ],
+    "origversion": "1.14.1-alt1",
+    "repo": "altsisyphus",
+    "srcname": "backrest",
+    "status": "newest",
+    "summary": "Web UI and orchestrator for restic backup",
+    "version": "1.14.1",
+    "visiblename": "backrest"
+  },
+  {
+    "binname": "backrest",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "evine@aur"
+    ],
+    "origversion": "1.14.1-1",
+    "repo": "aur",
+    "srcname": "backrest",
+    "status": "newest",
+    "summary": "A web UI and orchestrator for restic backup.",
+    "version": "1.14.1",
+    "visiblename": "backrest"
+  },
+  {
+    "binname": "backrest",
+    "categories": [
+      "sysutils"
+    ],
+    "maintainers": [
+      "dtxdf@freebsd.org"
+    ],
+    "origversion": "1.14.1_3",
+    "repo": "freebsd",
+    "srcname": "sysutils/backrest",
+    "status": "newest",
+    "summary": "Web UI and orchestrator for restic backup",
+    "version": "1.14.1",
+    "visiblename": "sysutils/backrest"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "git@williamvandervalk.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "backrest",
+    "status": "outdated",
+    "summary": "Web UI and orchestrator for restic backup",
+    "version": "1.5.0",
+    "visiblename": "backrest"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "git@williamvandervalk.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "backrest",
+    "status": "outdated",
+    "summary": "Web UI and orchestrator for restic backup",
+    "version": "1.8.1",
+    "visiblename": "backrest"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "backrest",
+    "status": "outdated",
+    "summary": "Web UI and orchestrator for restic backup",
+    "version": "1.10.1",
+    "visiblename": "backrest"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "git@ieda.me",
+      "alexandru.italia32+nixpkgs@gmail.com",
+      "phanirithvij2000@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "backrest",
+    "status": "newest",
+    "summary": "Web UI and orchestrator for restic backup",
+    "version": "1.14.1",
+    "visiblename": "backrest"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "git@ieda.me",
+      "alexandru.italia32+nixpkgs@gmail.com",
+      "phanirithvij2000@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "backrest",
+    "status": "newest",
+    "summary": "Web UI and orchestrator for restic backup",
+    "version": "1.14.1",
+    "visiblename": "backrest"
+  }
+]

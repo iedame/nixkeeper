@@ -1,0 +1,110 @@
+[
+  {
+    "binname": "ringracers",
+    "licenses": [
+      "GPL-2.0"
+    ],
+    "maintainers": [
+      "steelt@aur"
+    ],
+    "origversion": "2.4-2",
+    "repo": "aur",
+    "srcname": "ringracers",
+    "status": "newest",
+    "summary": "Kart racing video game originally based on the 3D Sonic the Hedgehog fangame Sonic Robo Blast 2",
+    "version": "2.4",
+    "visiblename": "ringracers"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "donovanglover@github",
+      "foss-contact@thehans255.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "ringracers",
+    "status": "outdated",
+    "summary": "Kart racing video game based on Sonic Robo Blast 2 (SRB2), itself based on a modified version of Doom Legacy",
+    "version": "2.3",
+    "visiblename": "ringracers"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "donovanglover@github",
+      "foss-contact@thehans255.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "ringracers",
+    "status": "outdated",
+    "summary": "Kart racing video game based on Sonic Robo Blast 2 (SRB2), itself based on a modified version of Doom Legacy",
+    "version": "2.3",
+    "visiblename": "ringracers"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "donovanglover@github",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "ringracers",
+    "status": "newest",
+    "summary": "Kart racing video game based on Sonic Robo Blast 2 (SRB2), itself based on a modified version of Doom Legacy",
+    "version": "2.4",
+    "visiblename": "ringracers"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "donovanglover@github",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "ringracers",
+    "status": "newest",
+    "summary": "Kart racing video game based on Sonic Robo Blast 2 (SRB2), itself based on a modified version of Doom Legacy",
+    "version": "2.4",
+    "visiblename": "ringracers"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "donovanglover@github",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "ringracers",
+    "status": "newest",
+    "summary": "Kart racing video game based on Sonic Robo Blast 2 (SRB2), itself based on a modified version of Doom Legacy",
+    "version": "2.4",
+    "visiblename": "ringracers"
+  },
+  {
+    "binname": "ringracers",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "games",
+    "version": "2.4",
+    "visiblename": "ringracers"
+  }
+]

@@ -1,0 +1,87 @@
+[
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "christoph.hollizeck@hey.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "msedgedriver",
+    "status": "outdated",
+    "summary": "WebDriver implementation that controls an Edge browser running on the local machine",
+    "version": "130.0.2849.1",
+    "visiblename": "msedgedriver"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "christoph.hollizeck@hey.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "msedgedriver",
+    "status": "outdated",
+    "summary": "WebDriver implementation that controls an Edge browser running on the local machine",
+    "version": "130.0.2849.1",
+    "visiblename": "msedgedriver"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "christoph.hollizeck@hey.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "msedgedriver",
+    "status": "outdated",
+    "summary": "WebDriver implementation that controls an Edge browser running on the local machine",
+    "version": "149.0.4022.80",
+    "visiblename": "msedgedriver"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "christoph.hollizeck@hey.com",
+      "ulrik.strid@outlook.com",
+      "maeve@oa.ke",
+      "viniciusvilela19@gmail.com",
+      "jon@jh86.org",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "msedgedriver",
+    "status": "outdated",
+    "summary": "WebDriver implementation that controls an Edge browser running on the local machine",
+    "version": "153.0.4234.48",
+    "visiblename": "msedgedriver"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "christoph.hollizeck@hey.com",
+      "ulrik.strid@outlook.com",
+      "maeve@oa.ke",
+      "viniciusvilela19@gmail.com",
+      "jon@jh86.org",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "msedgedriver",
+    "status": "unique",
+    "summary": "WebDriver implementation that controls an Edge browser running on the local machine",
+    "version": "154.0.4258.37",
+    "visiblename": "msedgedriver"
+  }
+]

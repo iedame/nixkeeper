@@ -1,0 +1,602 @@
+[
+  {
+    "binname": "egoboo",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "sanskritfritz@aur"
+    ],
+    "origversion": "2.8.1-5",
+    "repo": "aur",
+    "srcname": "egoboo",
+    "status": "newest",
+    "summary": "An action RPG/dungeon crawling adventure with OpenGL 3D graphics.",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "binname": "egoboo-git",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "fallback-mnt-aur@repology"
+    ],
+    "origversion": "2.8.1.r1367.873a0a9-1",
+    "repo": "aur",
+    "srcname": "egoboo-git",
+    "status": "rolling",
+    "summary": "An action RPG/dungeon crawling adventure with OpenGL 3D graphics (development version)",
+    "version": "2.8.1.r1367.873a0a9",
+    "visiblename": "egoboo-git"
+  },
+  {
+    "binname": "egoboo",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "amdmi3@amdmi3.ru"
+    ],
+    "origversion": "2.8.1_1,1",
+    "repo": "freebsd",
+    "srcname": "games/egoboo",
+    "status": "newest",
+    "summary": "3D dungeon crawling adventure in the spirit of NetHack",
+    "version": "2.8.1",
+    "visiblename": "games/egoboo"
+  },
+  {
+    "categories": [
+      "games-rpg"
+    ],
+    "licenses": [
+      "GPL-3+"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "2.8.1-r2",
+    "repo": "gentoo",
+    "srcname": "games-rpg/egoboo",
+    "status": "newest",
+    "summary": "3D dungeon crawling adventure in the spirit of NetHack",
+    "version": "2.8.1",
+    "visiblename": "games-rpg/egoboo"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "2.8.1 (2010-12-23)",
+    "repo": "libregamewiki",
+    "srcname": "Egoboo",
+    "status": "newest",
+    "version": "2.8.1",
+    "visiblename": "Egoboo"
+  },
+  {
+    "categories": [
+      "games-rpg"
+    ],
+    "licenses": [
+      "GPL-3+"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "2.8.1-r2",
+    "repo": "liguros_stable",
+    "srcname": "games-rpg/egoboo",
+    "status": "newest",
+    "summary": "3D dungeon crawling adventure in the spirit of NetHack",
+    "version": "2.8.1",
+    "visiblename": "games-rpg/egoboo"
+  },
+  {
+    "categories": [
+      "games-rpg"
+    ],
+    "licenses": [
+      "GPL-3+"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "2.8.1-r2",
+    "repo": "liguros_develop",
+    "srcname": "games-rpg/egoboo",
+    "status": "newest",
+    "summary": "3D dungeon crawling adventure in the spirit of NetHack",
+    "version": "2.8.1",
+    "visiblename": "games-rpg/egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "1:2.8.1-14.mga10",
+    "repo": "mageia_10",
+    "srcname": "egoboo",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "3D dungeon crawling game",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo-data"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "origversion": "1:2.8.1-10.mga10",
+    "repo": "mageia_10",
+    "srcname": "egoboo-data",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Data files for egoboo",
+    "version": "2.8.1",
+    "visiblename": "egoboo-data"
+  },
+  {
+    "binnames": [
+      "egoboo",
+      "egoboo-debuginfo",
+      "egoboo-debugsource"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "1:2.8.1-11.mga9",
+    "repo": "mageia_9",
+    "srcname": "egoboo",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "3D dungeon crawling game",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo-data"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "origversion": "1:2.8.1-9.mga9",
+    "repo": "mageia_9",
+    "srcname": "egoboo-data",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Data files for egoboo",
+    "version": "2.8.1",
+    "visiblename": "egoboo-data"
+  },
+  {
+    "binnames": [
+      "egoboo"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "1:2.8.1-14.mga10",
+    "repo": "mageia_cauldron",
+    "srcname": "egoboo",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "3D dungeon crawling game",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo-data"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "origversion": "1:2.8.1-10.mga10",
+    "repo": "mageia_cauldron",
+    "srcname": "egoboo-data",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Data files for egoboo",
+    "version": "2.8.1",
+    "visiblename": "egoboo-data"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "egoboo",
+    "status": "outdated",
+    "summary": "3D dungeon crawling adventure",
+    "version": "2.7.3",
+    "visiblename": "egoboo"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "egoboo",
+    "status": "outdated",
+    "summary": "3D dungeon crawling adventure",
+    "version": "2.7.3",
+    "visiblename": "egoboo"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "egoboo",
+    "status": "outdated",
+    "summary": "3D dungeon crawling adventure",
+    "version": "2.7.3",
+    "visiblename": "egoboo"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "egoboo",
+    "status": "outdated",
+    "summary": "3D dungeon crawling adventure",
+    "version": "2.7.3",
+    "visiblename": "egoboo"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "egoboo",
+    "status": "outdated",
+    "summary": "3D dungeon crawling adventure",
+    "version": "2.7.3",
+    "visiblename": "egoboo"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "egoboo",
+    "status": "newest",
+    "summary": "3D dungeon crawling adventure",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "binname": "egoboo",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": "2.8.1p1",
+    "repo": "openbsd",
+    "srcname": "games/egoboo",
+    "status": "newest",
+    "summary": "dungeon-crawling action-RPG adventure",
+    "version": "2.8.1",
+    "visiblename": "games/egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo-data"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "1:2.8.1-2",
+    "repo": "openmandriva_6_0",
+    "srcname": "egoboo-data",
+    "status": "newest",
+    "subrepo": "unsupported/release",
+    "summary": "Data files for egoboo",
+    "version": "2.8.1",
+    "visiblename": "egoboo-data"
+  },
+  {
+    "binnames": [
+      "egoboo-data"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "1:2.8.1-2",
+    "repo": "openmandriva_rolling",
+    "srcname": "egoboo-data",
+    "status": "newest",
+    "subrepo": "unsupported/release",
+    "summary": "Data files for egoboo",
+    "version": "2.8.1",
+    "visiblename": "egoboo-data"
+  },
+  {
+    "binnames": [
+      "egoboo-data"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "1:2.8.1-2",
+    "repo": "openmandriva_cooker",
+    "srcname": "egoboo-data",
+    "status": "newest",
+    "subrepo": "unsupported/release",
+    "summary": "Data files for egoboo",
+    "version": "2.8.1",
+    "visiblename": "egoboo-data"
+  },
+  {
+    "binnames": [
+      "egoboo",
+      "egoboo-debuginfo",
+      "egoboo-debugsource",
+      "egoboo-data"
+    ],
+    "categories": [
+      "Amusements/Games/RPG"
+    ],
+    "licenses": [
+      "GPL-3.0+"
+    ],
+    "origversion": "2.8.1-4.32",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "egoboo",
+    "status": "newest",
+    "summary": "A top down graphical (3D) RPG in the spirit of Nethack",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "categories": [
+      "Games/Adventure"
+    ],
+    "origversion": "2.81-1pclos2013",
+    "repo": "pclinuxos",
+    "srcname": "egoboo",
+    "status": "incorrect",
+    "summary": "3D dungeon crawling game",
+    "version": "2.81",
+    "visiblename": "egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "1:2.8.1-4",
+    "repo": "rosa_2019_1",
+    "srcname": "egoboo",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "3D dungeon crawling game",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo-data"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "1:2.8.1-4",
+    "repo": "rosa_2019_1",
+    "srcname": "egoboo-data",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "Data files for egoboo",
+    "version": "2.8.1",
+    "visiblename": "egoboo-data"
+  },
+  {
+    "binnames": [
+      "egoboo",
+      "egoboo-debuginfo",
+      "egoboo-debugsource"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "a.proklov@rosa.ru"
+    ],
+    "origversion": "1:2.8.1-5",
+    "repo": "rosa_13",
+    "srcname": "egoboo",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "3D dungeon crawling game",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo-data"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "1:2.8.1-4",
+    "repo": "rosa_13",
+    "srcname": "egoboo-data",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "Data files for egoboo",
+    "version": "2.8.1",
+    "visiblename": "egoboo-data"
+  },
+  {
+    "binnames": [
+      "egoboo",
+      "egoboo-debuginfo",
+      "egoboo-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/RPG"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "origversion": "2.7.7-1",
+    "repo": "rpmsphere",
+    "srcname": "egoboo",
+    "status": "outdated",
+    "summary": "A top down graphical (3D) RPG in the spirit of Nethack",
+    "version": "2.7.7",
+    "visiblename": "egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo-data"
+    ],
+    "categories": [
+      "Amusements/Games"
+    ],
+    "licenses": [
+      "GPL+"
+    ],
+    "origversion": "2.7.7-1",
+    "repo": "rpmsphere",
+    "srcname": "egoboo-data",
+    "status": "outdated",
+    "summary": "Data files for the Egoboo RPG",
+    "version": "2.7.7",
+    "visiblename": "egoboo-data"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "erik@slackbuilds.org"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/egoboo",
+    "status": "newest",
+    "version": "2.8.1",
+    "visiblename": "games/egoboo"
+  },
+  {
+    "licenses": [
+      "GNU General Public License"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q3504857",
+    "status": "legacy",
+    "summary": "open source dungeon crawling action role-playing video game",
+    "version": "2.7.7",
+    "visiblename": "Egoboo"
+  },
+  {
+    "licenses": [
+      "GNU General Public License"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q3504857",
+    "status": "newest",
+    "summary": "open source dungeon crawling action role-playing video game",
+    "version": "2.8.1",
+    "visiblename": "Egoboo"
+  }
+]

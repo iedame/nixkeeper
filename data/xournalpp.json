@@ -1,0 +1,2429 @@
+[
+  {
+    "categories": [
+      "Office"
+    ],
+    "origversion": "1.1.2-1pclos2022",
+    "repo": "pclinuxos",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Note taking software designed around a tablet",
+    "version": "1.1.2",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "oss@cogitri.dev"
+    ],
+    "origversion": "1.1.2-r0",
+    "repo": "alpine_3_17",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package xournalpp",
+    "version": "1.1.2",
+    "visiblename": "xournalpp-lang"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "oss@cogitri.dev"
+    ],
+    "origversion": "1.1.2-r0",
+    "repo": "alpine_3_17",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support",
+    "version": "1.1.2",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbg",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "oss@cogitri.dev"
+    ],
+    "origversion": "1.1.2-r0",
+    "repo": "alpine_3_17",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (debug symbols)",
+    "version": "1.1.2",
+    "visiblename": "xournalpp-dbg"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "oss@cogitri.dev"
+    ],
+    "origversion": "1.1.3-r1",
+    "repo": "alpine_3_18",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support",
+    "version": "1.1.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbg",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "oss@cogitri.dev"
+    ],
+    "origversion": "1.1.3-r1",
+    "repo": "alpine_3_18",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (debug symbols)",
+    "version": "1.1.3",
+    "visiblename": "xournalpp-dbg"
+  },
+  {
+    "binname": "xournalpp-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "oss@cogitri.dev"
+    ],
+    "origversion": "1.1.3-r1",
+    "repo": "alpine_3_18",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package xournalpp",
+    "version": "1.1.3",
+    "visiblename": "xournalpp-lang"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.2-r0",
+    "repo": "alpine_3_19",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support",
+    "version": "1.2.2",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbg",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.2-r0",
+    "repo": "alpine_3_19",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (debug symbols)",
+    "version": "1.2.2",
+    "visiblename": "xournalpp-dbg"
+  },
+  {
+    "binname": "xournalpp-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.2-r0",
+    "repo": "alpine_3_19",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (documentation)",
+    "version": "1.2.2",
+    "visiblename": "xournalpp-doc"
+  },
+  {
+    "binname": "xournalpp-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.2-r0",
+    "repo": "alpine_3_19",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package xournalpp",
+    "version": "1.2.2",
+    "visiblename": "xournalpp-lang"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.3-r0",
+    "repo": "alpine_3_20",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support",
+    "version": "1.2.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbg",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.3-r0",
+    "repo": "alpine_3_20",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (debug symbols)",
+    "version": "1.2.3",
+    "visiblename": "xournalpp-dbg"
+  },
+  {
+    "binname": "xournalpp-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.3-r0",
+    "repo": "alpine_3_20",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (documentation)",
+    "version": "1.2.3",
+    "visiblename": "xournalpp-doc"
+  },
+  {
+    "binname": "xournalpp-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.3-r0",
+    "repo": "alpine_3_20",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package xournalpp",
+    "version": "1.2.3",
+    "visiblename": "xournalpp-lang"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.4-r0",
+    "repo": "alpine_3_21",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support",
+    "version": "1.2.4",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbg",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.4-r0",
+    "repo": "alpine_3_21",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (debug symbols)",
+    "version": "1.2.4",
+    "visiblename": "xournalpp-dbg"
+  },
+  {
+    "binname": "xournalpp-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.4-r0",
+    "repo": "alpine_3_21",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (documentation)",
+    "version": "1.2.4",
+    "visiblename": "xournalpp-doc"
+  },
+  {
+    "binname": "xournalpp",
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "fallback-mnt-aosc@repology"
+    ],
+    "origversion": "1.3.1-1",
+    "repo": "aosc",
+    "srcname": "runtime-productivity/xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting note-taking software",
+    "version": "1.3.1",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.4-r0",
+    "repo": "alpine_3_21",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package xournalpp",
+    "version": "1.2.4",
+    "visiblename": "xournalpp-lang"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.7-r0",
+    "repo": "alpine_3_22",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support",
+    "version": "1.2.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbg",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.7-r0",
+    "repo": "alpine_3_22",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (debug symbols)",
+    "version": "1.2.7",
+    "visiblename": "xournalpp-dbg"
+  },
+  {
+    "binname": "xournalpp-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.7-r0",
+    "repo": "alpine_3_22",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (documentation)",
+    "version": "1.2.7",
+    "visiblename": "xournalpp-doc"
+  },
+  {
+    "binname": "xournalpp-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.7-r0",
+    "repo": "alpine_3_22",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package xournalpp",
+    "version": "1.2.7",
+    "visiblename": "xournalpp-lang"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.8-r0",
+    "repo": "alpine_3_23",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support",
+    "version": "1.2.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbg",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.8-r0",
+    "repo": "alpine_3_23",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (debug symbols)",
+    "version": "1.2.8",
+    "visiblename": "xournalpp-dbg"
+  },
+  {
+    "binname": "xournalpp-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.8-r0",
+    "repo": "alpine_3_23",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support (documentation)",
+    "version": "1.2.8",
+    "visiblename": "xournalpp-doc"
+  },
+  {
+    "binname": "xournalpp-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.2.8-r0",
+    "repo": "alpine_3_23",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package xournalpp",
+    "version": "1.2.8",
+    "visiblename": "xournalpp-lang"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.8-1",
+    "repo": "arch",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.3.8-r0",
+    "repo": "alpine_3_24",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbg",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.3.8-r0",
+    "repo": "alpine_3_24",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Handwriting notetaking software with PDF annotation support (debug symbols)",
+    "version": "1.3.8",
+    "visiblename": "xournalpp-dbg"
+  },
+  {
+    "binname": "xournalpp-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.3.8-r0",
+    "repo": "alpine_3_24",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Handwriting notetaking software with PDF annotation support (documentation)",
+    "version": "1.3.8",
+    "visiblename": "xournalpp-doc"
+  },
+  {
+    "binname": "xournalpp-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.3.8-r0",
+    "repo": "alpine_3_24",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Languages for package xournalpp",
+    "version": "1.3.8",
+    "visiblename": "xournalpp-lang"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.3.8-r0",
+    "repo": "alpine_edge",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbg",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.3.8-r0",
+    "repo": "alpine_edge",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Handwriting notetaking software with PDF annotation support (debug symbols)",
+    "version": "1.3.8",
+    "visiblename": "xournalpp-dbg"
+  },
+  {
+    "binname": "xournalpp-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.3.8-r0",
+    "repo": "alpine_edge",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Handwriting notetaking software with PDF annotation support (documentation)",
+    "version": "1.3.8",
+    "visiblename": "xournalpp-doc"
+  },
+  {
+    "binname": "xournalpp-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "1.3.8-r0",
+    "repo": "alpine_edge",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Languages for package xournalpp",
+    "version": "1.3.8",
+    "visiblename": "xournalpp-lang"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-debuginfo",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Office"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "george@altlinux.org"
+    ],
+    "origversion": "1.2.1-alt1",
+    "repo": "alt_p11",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.1",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-debuginfo",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Office"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "george@altlinux.org"
+    ],
+    "origversion": "1.2.7-alt1",
+    "repo": "altsisyphus",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-git",
+    "licenses": [
+      "GPL2"
+    ],
+    "maintainers": [
+      "thynkon@aur"
+    ],
+    "origversion": "1.2.8.r544.g3aeb44b7b-1",
+    "repo": "aur",
+    "srcname": "xournalpp-git",
+    "status": "rolling",
+    "summary": "Xournal++ is a handwriting Notetaking software with PDF annotation support. Supports Pen input like Wacom Tablets.",
+    "version": "1.2.8.r544.g3aeb44b7b",
+    "visiblename": "xournalpp-git"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "artix",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "world",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.4-r0",
+    "repo": "chimera",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.4",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-locale",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.4-r0",
+    "repo": "chimera",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Handwriting notetaking software with PDF annotation support (locale data)",
+    "version": "1.3.4",
+    "visiblename": "xournalpp-locale"
+  },
+  {
+    "binname": "xournalpp-man",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.4-r0",
+    "repo": "chimera",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Handwriting notetaking software with PDF annotation support (manual pages)",
+    "version": "1.3.4",
+    "visiblename": "xournalpp-man"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.1.3-1",
+    "repo": "debian_12",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "1.1.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.6-1",
+    "repo": "debian_13",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org",
+      "werdahias@debian.org"
+    ],
+    "origversion": "1.3.1-1~bpo13+1",
+    "repo": "debian_13_backports",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "trixie-backports/main",
+    "version": "1.3.1",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "debian_14",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "forky/main",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "debian_unstable",
+    "srcname": "xournalpp",
+    "status": "legacy",
+    "subrepo": "sid/main",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.8-1",
+    "repo": "debian_unstable",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "sid/main",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "x11"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.7-1",
+    "repo": "deepin_25",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "community",
+    "version": "1.2.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.8-1",
+    "repo": "devuan_unstable",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "1.1.3-1.el8",
+    "repo": "epel_8",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.1.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.7-1.el9",
+    "repo": "epel_9",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.7-1.el10_3",
+    "repo": "epel_10",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "1.2.1-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "xournalpp",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.1",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.2.4-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.4",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.2.6-1.fc40",
+    "repo": "fedora_40",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "1.2.3-1.fc40",
+    "repo": "fedora_40",
+    "srcname": "xournalpp",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.2.8-1.fc41",
+    "repo": "fedora_41",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "1.2.3-2.fc41",
+    "repo": "fedora_41",
+    "srcname": "xournalpp",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.2.6-1.fc42",
+    "repo": "fedora_42",
+    "srcname": "xournalpp",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.4-2.fc42",
+    "repo": "fedora_42",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.3.4",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.2.8-1.fc43",
+    "repo": "fedora_43",
+    "srcname": "xournalpp",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.7-2.fc43",
+    "repo": "fedora_43",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.3-2.fc44",
+    "repo": "fedora_44",
+    "srcname": "xournalpp",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.3.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.7-1.fc44",
+    "repo": "fedora_44",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-plugins",
+      "xournalpp-ui"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.7-2.fc46",
+    "repo": "fedora_rawhide",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "development",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "categories": [
+      "graphics"
+    ],
+    "maintainers": [
+      "yuri@freebsd.org"
+    ],
+    "origversion": null,
+    "repo": "freebsd",
+    "srcname": "graphics/xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "graphics/xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "dilfridge@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "app-text/xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.4",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "dilfridge@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "app-text/xournalpp",
+    "status": "rolling",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "9999",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "dilfridge@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "app-text/xournalpp",
+    "status": "legacy",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.2.8",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.5",
+    "visiblename": "xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "app-text/xournalpp",
+    "status": "legacy",
+    "version": "1.2.3",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "app-text/xournalpp",
+    "status": "outdated",
+    "version": "1.2.7~dev",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "kali_rolling",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "dilfridge@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "app-text/xournalpp",
+    "status": "rolling",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "9999",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "dilfridge@gentoo.org"
+    ],
+    "origversion": "1.2.5-r1",
+    "repo": "liguros_stable",
+    "srcname": "app-text/xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.2.5",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "dilfridge@gentoo.org"
+    ],
+    "origversion": "1.2.3-r1",
+    "repo": "liguros_stable",
+    "srcname": "app-text/xournalpp",
+    "status": "legacy",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.2.3",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "dilfridge@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "app-text/xournalpp",
+    "status": "legacy",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.2.8",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "dilfridge@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "app-text/xournalpp",
+    "status": "rolling",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "9999",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "categories": [
+      "app-text"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "dilfridge@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "app-text/xournalpp",
+    "status": "outdated",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.4",
+    "visiblename": "app-text/xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "categories": [
+      "x11"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "nomaintainer@macports.org"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "x11/xournalpp",
+    "status": "outdated",
+    "summary": "A hand note taking software",
+    "version": "1.2.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "Office/Utilities"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "1.3.1-1.mga10",
+    "repo": "mageia_10",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Note taking software designed around a tablet",
+    "version": "1.3.1",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource"
+    ],
+    "categories": [
+      "Office/Utilities"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "1.1.3-2.mga9",
+    "repo": "mageia_9",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Note taking software designed around a tablet",
+    "version": "1.1.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "Office/Utilities"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "1.3.7-1.mga11",
+    "repo": "mageia_cauldron",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Note taking software designed around a tablet",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "manjaro_stable",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "manjaro_testing",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.8-1",
+    "repo": "manjaro_unstable",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "mingw-w64-clang-x86_64-xournalpp",
+    "licenses": [
+      "spdx:GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.8-1",
+    "repo": "msys2_clang64",
+    "srcname": "mingw-w64-xournalpp",
+    "status": "newest",
+    "summary": "Handwriting notetaking software with PDF annotation support (mingw-w64)",
+    "version": "1.3.8",
+    "visiblename": "mingw-w64-clang-x86_64-xournalpp"
+  },
+  {
+    "binname": "mingw-w64-clang-aarch64-xournalpp",
+    "licenses": [
+      "spdx:GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.8-1",
+    "repo": "msys2_clangarm64",
+    "srcname": "mingw-w64-xournalpp",
+    "status": "newest",
+    "summary": "Handwriting notetaking software with PDF annotation support (mingw-w64)",
+    "version": "1.3.8",
+    "visiblename": "mingw-w64-clang-aarch64-xournalpp"
+  },
+  {
+    "binname": "mingw-w64-ucrt-x86_64-xournalpp",
+    "licenses": [
+      "spdx:GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.8-1",
+    "repo": "msys2_ucrt64",
+    "srcname": "mingw-w64-xournalpp",
+    "status": "newest",
+    "summary": "Handwriting notetaking software with PDF annotation support (mingw-w64)",
+    "version": "1.3.8",
+    "visiblename": "mingw-w64-ucrt-x86_64-xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "x11"
+    ],
+    "maintainers": [
+      "swamprabbit@mxlinux.org"
+    ],
+    "origversion": "1.1.0+git20210809-1~mx21+1",
+    "repo": "mx_21",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.1.0+git20210809",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "x11"
+    ],
+    "maintainers": [
+      "stevep@mxlinux.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.3-1~mx21+1",
+    "repo": "mx_21_testing",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "version": "1.2.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "x11"
+    ],
+    "maintainers": [
+      "stevep@mxlinux.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.6-0.1~mx23",
+    "repo": "mx_23_testing",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "version": "1.3.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "x11"
+    ],
+    "maintainers": [
+      "stevep@mxlinux.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.6-0.1~mx25",
+    "repo": "mx_25_testing",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "version": "1.3.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "sikmir@disroot.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Xournal++ is a handwriting Notetaking software with PDF annotation support",
+    "version": "1.2.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "sikmir@disroot.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Xournal++ is a handwriting Notetaking software with PDF annotation support",
+    "version": "1.2.4",
+    "visiblename": "xournalpp"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "sikmir@disroot.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Xournal++ is a handwriting Notetaking software with PDF annotation support",
+    "version": "1.2.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me",
+      "sikmir@disroot.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Xournal++ is a handwriting Notetaking software with PDF annotation support",
+    "version": "1.3.2",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "categories": [
+      "editors"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_2026_1",
+    "srcname": "editors/xournalpp",
+    "status": "outdated",
+    "summary": "Take notes, sketch and annotate PDFs",
+    "version": "1.3.3",
+    "visiblename": "editors/xournalpp"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me",
+      "sikmir@disroot.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Xournal++ is a handwriting Notetaking software with PDF annotation support",
+    "version": "1.3.4",
+    "visiblename": "xournalpp"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me",
+      "sikmir@disroot.org"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Xournal++ is a handwriting Notetaking software with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "categories": [
+      "print"
+    ],
+    "maintainers": [
+      "edd@openbsd.org"
+    ],
+    "origversion": "1.3.7p0",
+    "repo": "openbsd",
+    "srcname": "print/xournalpp",
+    "status": "outdated",
+    "summary": "handwriting notetaking with PDF annotation support",
+    "version": "1.3.7",
+    "visiblename": "print/xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "Office/Utilities"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.2.6-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Notetaking software designed around a tablet",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "Office/Utilities"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Notetaking software designed around a tablet",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "Office/Utilities"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Notetaking software designed around a tablet",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "categories": [
+      "Productivity/Office/Other"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.1.3-bp155.1.5",
+    "repo": "opensuse_leap_15_5",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "Notetaking software designed around a tablet",
+    "version": "1.1.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "categories": [
+      "Productivity/Office/Other"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.2.1-bp156.1.10",
+    "repo": "opensuse_leap_15_6",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "Notetaking software designed around a tablet",
+    "version": "1.2.1",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource",
+      "xournalpp-lang"
+    ],
+    "categories": [
+      "Productivity/Office/Other"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.7-1.1",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "src-oss",
+    "summary": "Notetaking software designed around a tablet",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.3.8-1",
+    "repo": "parabola",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Handwriting notetaking software with PDF annotation support",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.6-1",
+    "repo": "parrot",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.6-1",
+    "repo": "parrot",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "categories": [
+      "app:gui"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "admins@pisilinux.org"
+    ],
+    "origversion": null,
+    "repo": "pisi_main",
+    "srcname": "office/misc/xournalpp",
+    "status": "outdated",
+    "subrepo": "main",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support.",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "categories": [
+      "editors"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "1.3.3nb2",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "editors/xournalpp",
+    "status": "outdated",
+    "summary": "Take notes, sketch and annotate PDFs",
+    "version": "1.3.3",
+    "visiblename": "editors/xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "categories": [
+      "editors"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "1.3.7nb1",
+    "repo": "pkgsrc_current",
+    "srcname": "editors/xournalpp",
+    "status": "outdated",
+    "summary": "Take notes, sketch and annotate PDFs",
+    "version": "1.3.7",
+    "visiblename": "editors/xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "x11"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.6-1",
+    "repo": "pureos_landing",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.1.3-1",
+    "repo": "raspbian_oldstable",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.1.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.6-1",
+    "repo": "raspbian_stable",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "x11"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.1-1+rpi1",
+    "repo": "raspbian_testing",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.3.1",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource"
+    ],
+    "categories": [
+      "Office"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "neurofreak@bk.ru"
+    ],
+    "origversion": "1.2.6-2",
+    "repo": "rosa_2019_1",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp",
+      "xournalpp-debuginfo",
+      "xournalpp-debugsource"
+    ],
+    "categories": [
+      "Office"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "a.proklov@rosa.ru"
+    ],
+    "origversion": "1.3.4-1",
+    "repo": "rosa_13",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "Handwriting note-taking software with PDF annotation support",
+    "version": "1.3.4",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "extras",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "categories": [
+      "office"
+    ],
+    "maintainers": [
+      "cristiano.urban.slack@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "office/xournalpp",
+    "status": "outdated",
+    "version": "1.2.8",
+    "visiblename": "office/xournalpp"
+  },
+  {
+    "binname": "xournalpp",
+    "categories": [
+      "office.viewers"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later",
+      "GPL-3.0-or-later",
+      "ISC",
+      "CC-BY-SA-4.0",
+      "CC0-1.0"
+    ],
+    "maintainers": [
+      "josephriches@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournalpp-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later",
+      "GPL-3.0-or-later",
+      "ISC",
+      "CC-BY-SA-4.0",
+      "CC0-1.0"
+    ],
+    "maintainers": [
+      "josephriches@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "summary": "Debug symbols for xournalpp",
+    "version": "1.3.8",
+    "visiblename": "xournalpp-dbginfo"
+  },
+  {
+    "binname": "xournalpp",
+    "maintainers": [
+      "termux@github"
+    ],
+    "origversion": null,
+    "repo": "termux",
+    "srcname": "xournalpp",
+    "status": "newest",
+    "summary": "A hand note taking software",
+    "version": "1.3.8",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "bap@debian.org"
+    ],
+    "origversion": "1.1.1-1",
+    "repo": "trisquel_11_0",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "aramo/main",
+    "version": "1.1.1",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "bap@debian.org"
+    ],
+    "origversion": "1.1.1-1",
+    "repo": "ubuntu_22_04",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "1.1.1",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.2-2build3",
+    "repo": "ubuntu_24_04",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "noble/universe",
+    "version": "1.2.2",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.6-1",
+    "repo": "ubuntu_25_04",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "plucky/universe",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.7-1build1",
+    "repo": "ubuntu_25_10",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "questing/universe",
+    "version": "1.2.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.3-1",
+    "repo": "ubuntu_26_04",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "resolute/universe",
+    "version": "1.3.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "ubuntu_26_10",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "stonking/universe",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binname": "xournal",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "mobinmob@disroot.org"
+    ],
+    "origversion": "1.3.4_1",
+    "repo": "void_x86_64",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "x86_64",
+    "summary": "Handwriting Notetaking software with PDF annotation support - transitional dummy package",
+    "version": "1.3.4",
+    "visiblename": "xournal"
+  },
+  {
+    "binname": "xournalpp",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "mobinmob@disroot.org"
+    ],
+    "origversion": "1.3.4_1",
+    "repo": "void_x86_64",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "x86_64",
+    "summary": "Handwriting Notetaking software with PDF annotation support",
+    "version": "1.3.4",
+    "visiblename": "xournalpp"
+  },
+  {
+    "licenses": [
+      "GNU General Public License, version 2.0 or later"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q62704288",
+    "status": "outdated",
+    "summary": "application for making notes and annotating PDF files with a stylus",
+    "version": "1.3.7",
+    "visiblename": "Xournal++"
+  }
+]

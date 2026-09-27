@@ -1,0 +1,75 @@
+[
+  {
+    "binname": "fastmail",
+    "licenses": [
+      "custom:fastmail"
+    ],
+    "maintainers": [
+      "phnx47@aur"
+    ],
+    "origversion": "1.8.0-3",
+    "repo": "aur",
+    "srcname": "fastmail",
+    "status": "newest",
+    "summary": "Desktop app for email, calendar and contacts",
+    "version": "1.8.0",
+    "visiblename": "fastmail"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "fastmail",
+    "status": "newest",
+    "summary": "Email client",
+    "version": "1.8.0",
+    "visiblename": "Fastmail"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "enzime@github",
+      "hey@winston.sh"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "fastmail-desktop",
+    "status": "outdated",
+    "summary": "Dedicated desktop app for Fastmail",
+    "version": "1.2.1",
+    "visiblename": "fastmail-desktop"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "hey@winston.sh"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "fastmail-desktop",
+    "status": "outdated",
+    "summary": "Dedicated desktop app for Fastmail",
+    "version": "1.4.0",
+    "visiblename": "fastmail-desktop"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "git@ieda.me",
+      "hey@winston.sh",
+      "git+nixpkgs@mar.in"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "fastmail-desktop",
+    "status": "newest",
+    "summary": "Dedicated desktop app for Fastmail",
+    "version": "1.8.0",
+    "visiblename": "fastmail-desktop"
+  }
+]

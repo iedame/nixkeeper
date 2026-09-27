@@ -1,0 +1,108 @@
+[
+  {
+    "binname": "d-seams",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "haozeke@aur"
+    ],
+    "origversion": "2.0.1-1",
+    "repo": "aur",
+    "srcname": "d-seams",
+    "status": "outdated",
+    "summary": "d-SEAMS: deferred structural elucidation analysis for molecular simulations (C++ core)",
+    "version": "2.0.1",
+    "visiblename": "d-seams"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "r95g10@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "d-seams",
+    "status": "outdated",
+    "summary": "d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations",
+    "version": "1.0.1",
+    "visiblename": "d-SEAMS"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "r95g10@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "d-seams",
+    "status": "outdated",
+    "summary": "d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations",
+    "version": "1.0.1",
+    "visiblename": "d-SEAMS"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "r95g10@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "d-seams",
+    "status": "outdated",
+    "summary": "d-SEAMS: Deferred Structural Elucidation Analysis for Molecular Simulations",
+    "version": "1.0.1",
+    "visiblename": "d-SEAMS"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "r95g10@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "d-seams",
+    "status": "outdated",
+    "summary": "Deferred Structural Elucidation Analysis for Molecular Simulations",
+    "version": "1.0.1",
+    "visiblename": "d-SEAMS"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "d-seams",
+    "status": "outdated",
+    "summary": "Deferred Structural Elucidation Analysis for Molecular Simulations",
+    "version": "1.0.1",
+    "visiblename": "d-SEAMS"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "d-seams",
+    "status": "newest",
+    "summary": "Deferred Structural Elucidation Analysis for Molecular Simulations",
+    "version": "2.10.0",
+    "visiblename": "d-seams"
+  }
+]

@@ -1,0 +1,80 @@
+[
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "bbedit",
+    "status": "outdated",
+    "summary": "Powerful and full-featured professional HTML and text editor for macOS",
+    "version": "15.5.3",
+    "visiblename": "bbedit"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "bbedit",
+    "status": "outdated",
+    "summary": "Powerful and full-featured professional HTML and text editor for macOS",
+    "version": "15.5.5",
+    "visiblename": "bbedit"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "bbedit",
+    "status": "outdated",
+    "summary": "Powerful and full-featured professional HTML and text editor for macOS",
+    "version": "15.5.5",
+    "visiblename": "bbedit"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "bbedit",
+    "status": "newest",
+    "summary": "Text, code, and markup editor",
+    "version": "16.0.3",
+    "visiblename": "BBEdit"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "bbedit@14",
+    "status": "legacy",
+    "summary": "Text, code, and markup editor",
+    "version": "14.6.9",
+    "visiblename": "BBEdit"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "bbedit",
+    "status": "newest",
+    "summary": "Powerful and full-featured professional HTML and text editor for macOS",
+    "version": "16.0.3",
+    "visiblename": "bbedit"
+  }
+]

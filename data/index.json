@@ -1,6 +1,62 @@
 {
-  "checkedAt": "2026-09-27T21:27:06.559065+00:00",
+  "checkedAt": "2026-09-27T22:03:04.551946+00:00",
   "packages": [
+    {
+      "name": "backrest",
+      "nixStatus": "newest",
+      "nixVersion": "1.14.1",
+      "nixVulnerable": false,
+      "refVersion": "1.14.1",
+      "repoCount": 9
+    },
+    {
+      "name": "bbedit",
+      "nixStatus": "newest",
+      "nixVersion": "16.0.3",
+      "nixVulnerable": false,
+      "refVersion": "16.0.3",
+      "repoCount": 5
+    },
+    {
+      "name": "bolt-launcher",
+      "nixStatus": "newest",
+      "nixVersion": "0.24.0",
+      "nixVulnerable": false,
+      "refVersion": "0.24.0",
+      "repoCount": 11
+    },
+    {
+      "name": "d-seams",
+      "nixStatus": "newest",
+      "nixVersion": "2.10.0",
+      "nixVulnerable": false,
+      "refVersion": null,
+      "repoCount": 6
+    },
+    {
+      "name": "egoboo",
+      "nixStatus": "newest",
+      "nixVersion": "2.8.1",
+      "nixVulnerable": false,
+      "refVersion": "2.8.1",
+      "repoCount": 33
+    },
+    {
+      "name": "fastmail",
+      "nixStatus": "newest",
+      "nixVersion": "1.8.0",
+      "nixVulnerable": false,
+      "refVersion": "1.8.0",
+      "repoCount": 4
+    },
+    {
+      "name": "filezilla",
+      "nixStatus": "newest",
+      "nixVersion": "3.71.1",
+      "nixVulnerable": false,
+      "refVersion": "3.71.1",
+      "repoCount": 157
+    },
     {
       "name": "freedink",
       "nixStatus": "newest",
@@ -10,12 +66,132 @@
       "repoCount": 67
     },
     {
+      "name": "fzssh",
+      "nixStatus": "newest",
+      "nixVersion": "1.4.0",
+      "nixVulnerable": false,
+      "refVersion": "1.4.0",
+      "repoCount": 41
+    },
+    {
+      "name": "google-chrome",
+      "nixStatus": "newest",
+      "nixVersion": "154.0.8037.57",
+      "nixVulnerable": false,
+      "refVersion": "154.0.8037.57",
+      "repoCount": 63
+    },
+    {
+      "name": "heroic-games-launcher",
+      "nixStatus": "newest",
+      "nixVersion": "2.22.3",
+      "nixVulnerable": false,
+      "refVersion": "2.22.3",
+      "repoCount": 40
+    },
+    {
+      "name": "libfilezilla",
+      "nixStatus": "newest",
+      "nixVersion": "0.57.0",
+      "nixVulnerable": false,
+      "refVersion": "0.57.0",
+      "repoCount": 143
+    },
+    {
+      "name": "lincity",
+      "nixStatus": "devel",
+      "nixVersion": "1.13.1",
+      "nixVulnerable": false,
+      "refVersion": "1.12.1",
+      "repoCount": 51
+    },
+    {
+      "name": "lincity-ng",
+      "nixStatus": "newest",
+      "nixVersion": "2.15.0",
+      "nixVulnerable": false,
+      "refVersion": "2.15.0",
+      "repoCount": 88
+    },
+    {
       "name": "linkding",
       "nixStatus": "unique",
       "nixVersion": "1.47.0",
       "nixVulnerable": false,
       "refVersion": null,
       "repoCount": 1
+    },
+    {
+      "name": "microsoft-edge",
+      "nixStatus": "newest",
+      "nixVersion": "154.0.4258.37",
+      "nixVulnerable": false,
+      "refVersion": "154.0.4258.37",
+      "repoCount": 44
+    },
+    {
+      "name": "msedgedriver",
+      "nixStatus": "unique",
+      "nixVersion": "154.0.4258.37",
+      "nixVulnerable": false,
+      "refVersion": null,
+      "repoCount": 4
+    },
+    {
+      "name": "ringracers",
+      "nixStatus": "newest",
+      "nixVersion": "2.4",
+      "nixVulnerable": false,
+      "refVersion": "2.4",
+      "repoCount": 6
+    },
+    {
+      "name": "runelite",
+      "nixStatus": "newest",
+      "nixVersion": "2.8.0",
+      "nixVulnerable": false,
+      "refVersion": "2.8.0",
+      "repoCount": 11
+    },
+    {
+      "name": "scanmem",
+      "nixStatus": "newest",
+      "nixVersion": "0.17",
+      "nixVulnerable": false,
+      "refVersion": "0.17",
+      "repoCount": 86
+    },
+    {
+      "name": "typioca",
+      "nixStatus": "newest",
+      "nixVersion": "3.1.0",
+      "nixVulnerable": false,
+      "refVersion": "3.1.0",
+      "repoCount": 14
+    },
+    {
+      "name": "unciv",
+      "nixStatus": "outdated",
+      "nixVersion": "4.22.1",
+      "nixVulnerable": false,
+      "refVersion": "4.22.4",
+      "repoCount": 18
+    },
+    {
+      "name": "wesnoth",
+      "nixStatus": "newest",
+      "nixVersion": "1.18.8",
+      "nixVulnerable": false,
+      "refVersion": "1.18.8",
+      "repoCount": 173
+    },
+    {
+      "name": "xournalpp",
+      "nixStatus": "outdated",
+      "nixVersion": "1.3.7",
+      "nixVulnerable": false,
+      "refVersion": "1.3.8",
+      "repoCount": 136
     },
     {
       "name": "1password",

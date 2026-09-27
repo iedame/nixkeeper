@@ -1,0 +1,177 @@
+[
+  {
+    "binname": "runelite",
+    "licenses": [
+      "BSD"
+    ],
+    "maintainers": [
+      "abex@aur"
+    ],
+    "origversion": "1:2.8.0-1",
+    "repo": "aur",
+    "srcname": "runelite",
+    "status": "newest",
+    "summary": "Open source Old School RuneScape client.",
+    "version": "2.8.0",
+    "visiblename": "runelite"
+  },
+  {
+    "binname": "runelite-git",
+    "licenses": [
+      "BSD"
+    ],
+    "maintainers": [
+      "abex@aur"
+    ],
+    "origversion": "1.12.13.r4.g02e33cb-1",
+    "repo": "aur",
+    "srcname": "runelite-git",
+    "status": "rolling",
+    "summary": "Open source Old School RuneScape client. (Git Version)",
+    "version": "1.12.13.r4.g02e33cb",
+    "visiblename": "runelite-git"
+  },
+  {
+    "binname": "runelite",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "newest",
+    "summary": "A popular free, open-source and super fast client for Old School RuneScape",
+    "version": "2.8.0",
+    "visiblename": "RuneLite"
+  },
+  {
+    "binname": "runelite",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "avereeken@fastmail.de"
+    ],
+    "origversion": "2.2.0_2",
+    "repo": "freebsd",
+    "srcname": "games/runelite",
+    "status": "outdated",
+    "summary": "Open source Old School RuneScape client",
+    "version": "2.2.0",
+    "visiblename": "games/runelite"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "runelite",
+    "status": "newest",
+    "summary": "Client for Old School RuneScape",
+    "version": "2.8.0",
+    "visiblename": "RuneLite"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "karlwfmeakin@gmail.com",
+      "moody@posixcafe.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "runelite",
+    "status": "outdated",
+    "summary": "Open source Old School RuneScape client",
+    "version": "2.7.1",
+    "visiblename": "runelite"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "karlwfmeakin@gmail.com",
+      "moody@posixcafe.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "runelite",
+    "status": "outdated",
+    "summary": "Open source Old School RuneScape client",
+    "version": "2.7.2",
+    "visiblename": "runelite"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "karlwfmeakin@gmail.com",
+      "moody@posixcafe.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "runelite",
+    "status": "outdated",
+    "summary": "Open source Old School RuneScape client",
+    "version": "2.7.2",
+    "visiblename": "runelite"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "karlwfmeakin@gmail.com",
+      "moody@posixcafe.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "runelite",
+    "status": "outdated",
+    "summary": "Open source Old School RuneScape client",
+    "version": "2.7.2",
+    "visiblename": "runelite"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "karlwfmeakin@gmail.com",
+      "moody@posixcafe.org"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "runelite",
+    "status": "outdated",
+    "summary": "Open source Old School RuneScape client",
+    "version": "2.7.2",
+    "visiblename": "runelite"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "karlwfmeakin@gmail.com",
+      "moody@posixcafe.org",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "runelite",
+    "status": "newest",
+    "summary": "Open source Old School RuneScape client",
+    "version": "2.8.0",
+    "visiblename": "runelite"
+  },
+  {
+    "binname": "runelite",
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "games",
+    "version": "2.8.0",
+    "visiblename": "runelite"
+  }
+]

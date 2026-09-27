@@ -1,0 +1,223 @@
+[
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "typioca",
+    "status": "newest",
+    "summary": "Cozy typing speed tester in terminal",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "binname": "typioca",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "sysroot@aur"
+    ],
+    "origversion": "3.1.0-1",
+    "repo": "aur",
+    "srcname": "typioca",
+    "status": "newest",
+    "summary": "Tapioca (/\u02cct\u00e6pi\u02c8o\u028ak\u0259/) is a starch extracted from the storage roots of the cassava plant. Pearl tapioca is a common ingredient in Asian desserts...and sweet drinks such as bubble tea.",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "binname": "typioca-bin",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "vitaliikuzhdin@aur"
+    ],
+    "origversion": "3.1.0-1",
+    "repo": "aur",
+    "srcname": "typioca-bin",
+    "status": "newest",
+    "summary": "Minimal, terminal based typing speed tester",
+    "version": "3.1.0",
+    "visiblename": "typioca-bin"
+  },
+  {
+    "binname": "typioca-git",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "energi@aur"
+    ],
+    "origversion": "3.1.0-1",
+    "repo": "aur",
+    "srcname": "typioca-git",
+    "status": "rolling",
+    "summary": "Minimal, terminal based typing speed tester",
+    "version": "3.1.0",
+    "visiblename": "typioca-git"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "typioca",
+    "status": "newest",
+    "summary": "Cozy typing speed tester in terminal",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "typioca",
+    "status": "rolling",
+    "summary": "Cozy typing speed tester in terminal",
+    "version": "HEAD",
+    "visiblename": "typioca"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "figsoda@pm.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "typioca",
+    "status": "outdated",
+    "summary": "Cozy typing speed tester in terminal",
+    "version": "2.11.2",
+    "visiblename": "typioca"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "figsoda@pm.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "typioca",
+    "status": "newest",
+    "summary": "Cozy typing speed tester in terminal",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "figsoda@pm.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "typioca",
+    "status": "newest",
+    "summary": "Cozy typing speed tester in terminal",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "typioca",
+    "status": "newest",
+    "summary": "Cozy typing speed tester in terminal",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "typioca",
+    "status": "newest",
+    "summary": "Cozy typing speed tester in terminal",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "binnames": [
+      "typioca",
+      "typioca-debuginfo",
+      "typioca-debugsource",
+      "typioca-bash-completion",
+      "typioca-zsh-completion"
+    ],
+    "categories": [
+      "Productivity/Text/Utilities"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "3.1.0-1.9",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "typioca",
+    "status": "newest",
+    "subrepo": "src-oss",
+    "summary": "Minimal terminal based typing speed tester",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "binname": "typioca",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "binname": "typioca",
+    "maintainers": [
+      "termux-user-repository@github"
+    ],
+    "origversion": null,
+    "repo": "tur",
+    "srcname": "typioca",
+    "status": "newest",
+    "summary": "Cozy typing speed tester",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  },
+  {
+    "binname": "typioca",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "duncaen@voidlinux.org"
+    ],
+    "origversion": "3.1.0_1",
+    "repo": "void_x86_64",
+    "srcname": "typioca",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Minimal, terminal based typing speed tester",
+    "version": "3.1.0",
+    "visiblename": "typioca"
+  }
+]

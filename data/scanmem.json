@@ -1,0 +1,1586 @@
+[
+  {
+    "binnames": [
+      "gameconqueror",
+      "libscanmem",
+      "libscanmem-debuginfo",
+      "libscanmem-devel",
+      "scanmem",
+      "scanmem-debuginfo"
+    ],
+    "categories": [
+      "Development/Debuggers"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "valintinr@altlinux.org"
+    ],
+    "origversion": "0.17-alt1",
+    "repo": "alt_p11",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Simple debugging utility",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "gameconqueror",
+      "libscanmem",
+      "libscanmem-debuginfo",
+      "libscanmem-devel",
+      "scanmem",
+      "scanmem-debuginfo"
+    ],
+    "categories": [
+      "Development/Debuggers"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "valintinr@altlinux.org"
+    ],
+    "origversion": "0.17-alt1",
+    "repo": "altsisyphus",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Simple debugging utility",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "libscanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "arch",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (library)",
+    "version": "0.17",
+    "visiblename": "libscanmem"
+  },
+  {
+    "binname": "scanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "arch",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "gameconqueror",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "arch",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (gtk GUI)",
+    "version": "0.17",
+    "visiblename": "gameconqueror"
+  },
+  {
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "0.17-bp156.4.6",
+    "repo": "opensuse_leap_15_6",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "main/oss",
+    "summary": "Interactive debugging utility",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "scanmem-git",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "anthraxx@aur"
+    ],
+    "origversion": "0.17.1035.0cc3830-1",
+    "repo": "aur",
+    "srcname": "scanmem-git",
+    "status": "rolling",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process",
+    "version": "0.17.1035.0cc3830",
+    "visiblename": "scanmem-git"
+  },
+  {
+    "binname": "libscanmem-git",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "anthraxx@aur"
+    ],
+    "origversion": "0.17.1035.0cc3830-1",
+    "repo": "aur",
+    "srcname": "scanmem-git",
+    "status": "rolling",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (library)",
+    "version": "0.17.1035.0cc3830",
+    "visiblename": "libscanmem-git"
+  },
+  {
+    "binname": "gameconqueror-git",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "anthraxx@aur"
+    ],
+    "origversion": "0.17.1035.0cc3830-1",
+    "repo": "aur",
+    "srcname": "scanmem-git",
+    "status": "rolling",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (gtk GUI)",
+    "version": "0.17.1035.0cc3830",
+    "visiblename": "gameconqueror-git"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-3",
+    "repo": "debian_11",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "bullseye/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5",
+    "repo": "debian_12",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "bookworm/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5",
+    "repo": "debian_13",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "trixie/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-6",
+    "repo": "debian_14",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "forky/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-6",
+    "repo": "debian_unstable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "sid/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-2",
+    "repo": "deepin_unstable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5",
+    "repo": "deepin_25",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "community",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-3",
+    "repo": "devuan_4_0",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "chimaera/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-6",
+    "repo": "devuan_unstable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "scanmem-libs",
+      "scanmem-devel",
+      "gameconqueror",
+      "scanmem-debuginfo",
+      "scanmem-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv3+ and LGPLv3+"
+    ],
+    "origversion": "0.17-15.fc39.1",
+    "repo": "fedora_39",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "scanmem-libs",
+      "scanmem-devel",
+      "gameconqueror",
+      "scanmem-debuginfo",
+      "scanmem-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv3+ and LGPLv3+"
+    ],
+    "origversion": "0.17-16.fc40.1",
+    "repo": "fedora_40",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "scanmem-libs",
+      "scanmem-devel",
+      "gameconqueror"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv3+ and LGPLv3+"
+    ],
+    "origversion": "0.17-17.fc41.1",
+    "repo": "fedora_41",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "scanmem-libs",
+      "scanmem-devel",
+      "gameconqueror"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND LGPL-3.0-or-later"
+    ],
+    "origversion": "0.17-19.fc42.1",
+    "repo": "fedora_42",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "scanmem-libs",
+      "scanmem-devel",
+      "gameconqueror"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND LGPL-3.0-or-later"
+    ],
+    "origversion": "0.17-22.fc43.1",
+    "repo": "fedora_43",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "scanmem-libs",
+      "scanmem-devel",
+      "gameconqueror"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND LGPL-3.0-or-later"
+    ],
+    "origversion": "0.17-23.fc44.1",
+    "repo": "fedora_44",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "scanmem-libs",
+      "scanmem-devel",
+      "gameconqueror"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND LGPL-3.0-or-later"
+    ],
+    "origversion": "0.17-24.fc45.1",
+    "repo": "fedora_rawhide",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "development",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "scanmem",
+    "categories": [
+      "sysutils"
+    ],
+    "maintainers": [
+      "danfe@freebsd.org"
+    ],
+    "origversion": "0.17_1",
+    "repo": "freebsd",
+    "srcname": "sysutils/scanmem",
+    "status": "newest",
+    "summary": "Locate and modify various data in an executing process",
+    "version": "0.17",
+    "visiblename": "sysutils/scanmem"
+  },
+  {
+    "categories": [
+      "dev-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "maintainer-needed@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "dev-util/scanmem",
+    "status": "newest",
+    "summary": "Locate and modify variables in executing processes",
+    "version": "0.17",
+    "visiblename": "dev-util/scanmem"
+  },
+  {
+    "binname": "scanmem",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-6",
+    "repo": "kali_rolling",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "categories": [
+      "dev-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "fallback-mnt-liguros@repology"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "dev-util/scanmem",
+    "status": "newest",
+    "summary": "Locate and modify variables in executing processes",
+    "version": "0.17",
+    "visiblename": "dev-util/scanmem"
+  },
+  {
+    "categories": [
+      "dev-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "fallback-mnt-liguros@repology"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "dev-util/scanmem",
+    "status": "newest",
+    "summary": "Locate and modify variables in executing processes",
+    "version": "0.17",
+    "visiblename": "dev-util/scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "libscanmem1",
+      "libscanmem-devel",
+      "gameconqueror"
+    ],
+    "categories": [
+      "Development/Tools"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "origversion": "0.17-8.mga10",
+    "repo": "mageia_10",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "lib64scanmem1",
+      "lib64scanmem-devel",
+      "gameconqueror",
+      "scanmem-debuginfo",
+      "scanmem-debugsource"
+    ],
+    "categories": [
+      "Development/Tools"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "origversion": "0.17-6.mga9",
+    "repo": "mageia_9",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "libscanmem1",
+      "libscanmem-devel",
+      "gameconqueror"
+    ],
+    "categories": [
+      "Development/Tools"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "origversion": "0.17-8.mga10",
+    "repo": "mageia_cauldron",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Memory scanner",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "gameconqueror",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "manjaro_stable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (gtk GUI)",
+    "version": "0.17",
+    "visiblename": "gameconqueror"
+  },
+  {
+    "binname": "libscanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "manjaro_stable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (library)",
+    "version": "0.17",
+    "visiblename": "libscanmem"
+  },
+  {
+    "binname": "scanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "manjaro_stable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "gameconqueror",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "manjaro_testing",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (gtk GUI)",
+    "version": "0.17",
+    "visiblename": "gameconqueror"
+  },
+  {
+    "binname": "libscanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "manjaro_testing",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (library)",
+    "version": "0.17",
+    "visiblename": "libscanmem"
+  },
+  {
+    "binname": "scanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "manjaro_testing",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "scanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "manjaro_unstable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "gameconqueror",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "manjaro_unstable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (gtk GUI)",
+    "version": "0.17",
+    "visiblename": "gameconqueror"
+  },
+  {
+    "binname": "libscanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "manjaro_unstable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (library)",
+    "version": "0.17",
+    "visiblename": "libscanmem"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Memory scanner for finding and poking addresses in executing processes",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Memory scanner for finding and poking addresses in executing processes",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Memory scanner for finding and poking addresses in executing processes",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Memory scanner for finding and poking addresses in executing processes",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Memory scanner for finding and poking addresses in executing processes",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Memory scanner for finding and poking addresses in executing processes",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "0.17-bp155.3.10",
+    "repo": "opensuse_leap_15_5",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "main/oss",
+    "summary": "Interactive debugging utility",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "scanmem-debuginfo",
+      "scanmem-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "0.17-3.8",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "src-oss",
+    "summary": "Interactive debugging utility",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "gameconqueror",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "parabola",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (gtk GUI)",
+    "version": "0.17",
+    "visiblename": "gameconqueror"
+  },
+  {
+    "binname": "scanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "parabola",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "libscanmem",
+    "licenses": [
+      "GPL3"
+    ],
+    "origversion": "0.17-11",
+    "repo": "parabola",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary variable in an executing process (library)",
+    "version": "0.17",
+    "visiblename": "libscanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-3",
+    "repo": "pardus_21",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5",
+    "repo": "parrot",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "parrot-updates/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5",
+    "repo": "parrot",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "parrot/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "categories": [
+      "Development/Tools"
+    ],
+    "origversion": "0.07-1pclos2010",
+    "repo": "pclinuxos",
+    "srcname": "scanmem",
+    "status": "outdated",
+    "summary": "Simple console application debugging utility",
+    "version": "0.07",
+    "visiblename": "scanmem"
+  },
+  {
+    "origversion": "0.13-3",
+    "repo": "pld",
+    "srcname": "scanmem",
+    "status": "outdated",
+    "version": "0.13",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "gameconqueror",
+      "scanmem"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-2",
+    "repo": "pureos_amber",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "amber/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "gameconqueror",
+      "scanmem"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-3",
+    "repo": "pureos_byzantium",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "byzantium/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "gameconqueror",
+      "scanmem"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5",
+    "repo": "pureos_landing",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "landing/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5",
+    "repo": "raspbian_oldstable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5",
+    "repo": "raspbian_stable",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-6",
+    "repo": "raspbian_testing",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror",
+      "lib64scanmem1",
+      "lib64scanmem-devel"
+    ],
+    "categories": [
+      "Development/Tools"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "0.17-2",
+    "repo": "rosa_2019_1",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "Simple interactive debugging utility",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror",
+      "lib64scanmem1",
+      "lib64scanmem-devel",
+      "scanmem-debuginfo",
+      "scanmem-debugsource"
+    ],
+    "categories": [
+      "Development/Tools"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "0.17-2",
+    "repo": "rosa_13",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "Simple interactive debugging utility",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "categories": [
+      "system"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "system/scanmem",
+    "status": "newest",
+    "version": "0.17",
+    "visiblename": "system/scanmem"
+  },
+  {
+    "binname": "scanmem",
+    "categories": [
+      "system.utils"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "josephriches@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "scanmem is a debugging utility designed to isolate the address of an arbitrary variable in an executing process.",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "scanmem-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "josephriches@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Debug symbols for scanmem",
+    "version": "0.17",
+    "visiblename": "scanmem-dbginfo"
+  },
+  {
+    "binname": "scanmem-devel",
+    "categories": [
+      "programming.devel"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "josephriches@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "scanmem",
+    "status": "newest",
+    "summary": "Development files for scanmem",
+    "version": "0.17",
+    "visiblename": "scanmem-devel"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-3",
+    "repo": "trisquel_10_0",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "nabia/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-3",
+    "repo": "trisquel_11_0",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "aramo/main",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "coolwanglu@gmail.com",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.13-1",
+    "repo": "ubuntu_14_04",
+    "srcname": "scanmem",
+    "status": "outdated",
+    "subrepo": "trusty/universe",
+    "version": "0.13",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "coolwanglu@gmail.com",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.13-1",
+    "repo": "ubuntu_16_04",
+    "srcname": "scanmem",
+    "status": "outdated",
+    "subrepo": "xenial/universe",
+    "version": "0.13",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-2",
+    "repo": "ubuntu_18_04",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "bionic/universe",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-3",
+    "repo": "ubuntu_20_04",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "focal/universe",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-3",
+    "repo": "ubuntu_22_04",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "jammy/universe",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5build2",
+    "repo": "ubuntu_24_04",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "noble/universe",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5build2",
+    "repo": "ubuntu_25_04",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "plucky/universe",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-5build2",
+    "repo": "ubuntu_25_10",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "questing/universe",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-6",
+    "repo": "ubuntu_26_04",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "resolute/universe",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binnames": [
+      "scanmem",
+      "gameconqueror"
+    ],
+    "categories": [
+      "universe/utils"
+    ],
+    "maintainers": [
+      "s.parschauer@gmx.de",
+      "kartik@debian.org"
+    ],
+    "origversion": "0.17-6",
+    "repo": "ubuntu_26_10",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "scanmem",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "abc@pompel.me"
+    ],
+    "origversion": "0.17_6",
+    "repo": "void_x86_64",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary var",
+    "version": "0.17",
+    "visiblename": "scanmem"
+  },
+  {
+    "binname": "gameconqueror",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "abc@pompel.me"
+    ],
+    "origversion": "0.17_6",
+    "repo": "void_x86_64",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "GameConqueror is a GUI front-end for scanmem, providing more features",
+    "version": "0.17",
+    "visiblename": "gameconqueror"
+  },
+  {
+    "binname": "libscanmem",
+    "licenses": [
+      "LGPL-3.0-only"
+    ],
+    "maintainers": [
+      "abc@pompel.me"
+    ],
+    "origversion": "0.17_6",
+    "repo": "void_x86_64",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary var - runtime library",
+    "version": "0.17",
+    "visiblename": "libscanmem"
+  },
+  {
+    "binname": "libscanmem-devel",
+    "licenses": [
+      "LGPL-3.0-only"
+    ],
+    "maintainers": [
+      "abc@pompel.me"
+    ],
+    "origversion": "0.17_6",
+    "repo": "void_x86_64",
+    "srcname": "scanmem",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Memory scanner designed to isolate the address of an arbitrary var - development files",
+    "version": "0.17",
+    "visiblename": "libscanmem-devel"
+  }
+]

@@ -1,0 +1,1671 @@
+[
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data",
+      "lincity-ng-debuginfo"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aris@altlinux.org"
+    ],
+    "origversion": "2.12.0-alt1",
+    "repo": "alt_p11",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "summary": "LinCity-NG is a city simulation game",
+    "version": "2.12.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data",
+      "lincity-ng-debuginfo"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aris@altlinux.org"
+    ],
+    "origversion": "2.15.0-alt1",
+    "repo": "altsisyphus",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "summary": "LinCity-NG is a city simulation game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "fallback-mnt-aosc@repology"
+    ],
+    "origversion": "2.14.2-1",
+    "repo": "aosc",
+    "srcname": "app-games/lincity-ng",
+    "status": "outdated",
+    "summary": "City simulation game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "licenses": [
+      "CC-BY-SA-2.0",
+      "GPL-2.0-or-later",
+      "LicenseRef-ArevFontsCopyright",
+      "LicenseRef-BitstreamVeraFontsCopyright"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "arch",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A city simulation game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng-git",
+    "licenses": [
+      "CC-BY-SA-2.0",
+      "GPL-2.0-or-later",
+      "LicenseRef-ArevFontsCopyright",
+      "LicenseRef-BitstreamVeraFontsCopyright"
+    ],
+    "maintainers": [
+      "v1993@aur"
+    ],
+    "origversion": "1:2.14.2.r62.g352a8419-1",
+    "repo": "aur",
+    "srcname": "lincity-ng-git",
+    "status": "rolling",
+    "summary": "A city simulation game (development version)",
+    "version": "2.14.2.r62.g352a8419",
+    "visiblename": "lincity-ng-git"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-4",
+    "repo": "debian_11",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "bullseye/main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-5",
+    "repo": "debian_12",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.12.0-2",
+    "repo": "debian_13",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "2.12.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "debian_14",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "forky/main",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "debian_unstable",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "sid/main",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-3",
+    "repo": "deepin_unstable",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-4",
+    "repo": "devuan_4_0",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "devuan_unstable",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "maintainers": [
+      "fallback-mnt-exherbo@repology"
+    ],
+    "origversion": null,
+    "repo": "exherbo",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "newest",
+    "subrepo": "games",
+    "summary": "A city simulation game",
+    "version": "2.15.0",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data",
+      "lincity-ng-debuginfo",
+      "lincity-ng-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.9-0.30.20210424gitd35c3be.fc39",
+    "repo": "fedora_39",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "City Simulation Game",
+    "version": "2.9",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data",
+      "lincity-ng-debuginfo",
+      "lincity-ng-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.9-0.33.20210424gitd35c3be.fc40",
+    "repo": "fedora_40",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "City Simulation Game",
+    "version": "2.9",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.9-0.34.20210424gitd35c3be.fc41",
+    "repo": "fedora_41",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "City Simulation Game",
+    "version": "2.9",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.13.1-1.fc42",
+    "repo": "fedora_42",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "City Simulation Game",
+    "version": "2.13.1",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.9-0.34.20210424gitd35c3be.fc41",
+    "repo": "fedora_42",
+    "srcname": "lincity-ng",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "City Simulation Game",
+    "version": "2.9",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.14.2-1.fc43",
+    "repo": "fedora_43",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "City Simulation Game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.13.1-1.fc43",
+    "repo": "fedora_43",
+    "srcname": "lincity-ng",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "City Simulation Game",
+    "version": "2.13.1",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "lincity_ng",
+    "status": "outdated",
+    "summary": "City building game",
+    "version": "2.13.1",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.14.2-1.fc44",
+    "repo": "fedora_44",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "City Simulation Game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.14.2-1.fc44",
+    "repo": "fedora_rawhide",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "development",
+    "summary": "City Simulation Game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "uzsolt@freebsd.org"
+    ],
+    "origversion": "2.14.2_2",
+    "repo": "freebsd",
+    "srcname": "games/lincity-ng",
+    "status": "outdated",
+    "summary": "Improved rich city simulation game for X",
+    "version": "2.14.2",
+    "visiblename": "games/lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2+",
+      "BitstreamVera",
+      "CC-BY-SA-2.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "outdated",
+    "summary": "City simulation game",
+    "version": "2.13.1",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2+",
+      "BitstreamVera",
+      "CC-BY-SA-2.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "rolling",
+    "summary": "City simulation game",
+    "version": "9999",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2+",
+      "BitstreamVera",
+      "CC-BY-SA-2.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "2.9_beta-r1",
+    "repo": "gentoo",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "legacy",
+    "summary": "City simulation game",
+    "version": "2.9_beta",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "games-simulation/lincity_ng",
+    "status": "outdated",
+    "version": "2.9~git",
+    "visiblename": "games-simulation/lincity_ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "kali_rolling",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "2.15.0 (2026-05-08)",
+    "repo": "libregamewiki",
+    "srcname": "LinCity-NG",
+    "status": "newest",
+    "version": "2.15.0",
+    "visiblename": "LinCity-NG"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2+",
+      "BitstreamVera",
+      "CC-BY-SA-2.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "outdated",
+    "summary": "City simulation game",
+    "version": "2.13.1",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2+",
+      "BitstreamVera",
+      "CC-BY-SA-2.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "2.9_beta-r1",
+    "repo": "liguros_stable",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "legacy",
+    "summary": "City simulation game",
+    "version": "2.9_beta",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2+",
+      "BitstreamVera",
+      "CC-BY-SA-2.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "rolling",
+    "summary": "City simulation game",
+    "version": "9999",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2+",
+      "BitstreamVera",
+      "CC-BY-SA-2.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "rolling",
+    "summary": "City simulation game",
+    "version": "9999",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2+",
+      "BitstreamVera",
+      "CC-BY-SA-2.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "outdated",
+    "summary": "City simulation game",
+    "version": "2.13.1",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2+",
+      "BitstreamVera",
+      "CC-BY-SA-2.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "2.9_beta-r1",
+    "repo": "liguros_develop",
+    "srcname": "games-simulation/lincity-ng",
+    "status": "legacy",
+    "summary": "City simulation game",
+    "version": "2.9_beta",
+    "visiblename": "games-simulation/lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "nomaintainer@macports.org"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "games/lincity-ng",
+    "status": "outdated",
+    "summary": "3D city simulation game",
+    "version": "2.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.14.2-1.mga10",
+    "repo": "mageia_10",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Lincity - A City Simulation Game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-debuginfo",
+      "lincity-ng-debugsource"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.9-0.beta.13.mga9",
+    "repo": "mageia_9",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Lincity - A City Simulation Game",
+    "version": "2.9-beta13",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.15.0-3.mga11",
+    "repo": "mageia_cauldron",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Lincity - A City Simulation Game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "licenses": [
+      "CC-BY-SA-2.0",
+      "GPL-2.0-or-later",
+      "LicenseRef-ArevFontsCopyright",
+      "LicenseRef-BitstreamVeraFontsCopyright"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "manjaro_stable",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A city simulation game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "licenses": [
+      "CC-BY-SA-2.0",
+      "GPL-2.0-or-later",
+      "LicenseRef-ArevFontsCopyright",
+      "LicenseRef-BitstreamVeraFontsCopyright"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "manjaro_testing",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A city simulation game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "licenses": [
+      "CC-BY-SA-2.0",
+      "GPL-2.0-or-later",
+      "LicenseRef-ArevFontsCopyright",
+      "LicenseRef-BitstreamVeraFontsCopyright"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "manjaro_unstable",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A city simulation game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "licenses": [
+      "GPL-2.0"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "lincity_ng",
+    "status": "outdated",
+    "summary": "City building game",
+    "version": "2.9beta.20211125",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "lincity_ng",
+    "status": "outdated",
+    "summary": "City building game",
+    "version": "2.9beta.20211125",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "summary": "City building game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "summary": "City building game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "summary": "City building game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": null,
+    "repo": "openbsd",
+    "srcname": "games/lincity-ng",
+    "status": "outdated",
+    "summary": "city simulation game",
+    "version": "2.14.2",
+    "visiblename": "games/lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng"
+    ],
+    "categories": [
+      "Graphical Desktop/Applications/Games"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "silvan@openmamba.org"
+    ],
+    "origversion": "2.15.0-1mamba",
+    "repo": "openmamba",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "base",
+    "summary": "A City Simulation Game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "2.12.0-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "unsupported/release",
+    "summary": "Lincity - A City Simulation Game",
+    "version": "2.12.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "2.14.2-2",
+    "repo": "openmandriva_rolling",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "unsupported/release",
+    "summary": "Lincity - A City Simulation Game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "2.14.2-2",
+    "repo": "openmandriva_cooker",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "unsupported/release",
+    "summary": "Lincity - A City Simulation Game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-debuginfo",
+      "lincity-ng-debugsource",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "Amusements/Games/Strategy/Real Time"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.14.2-1.18",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "lincity-ng",
+    "status": "legacy",
+    "summary": "City Simulation Game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-debuginfo",
+      "lincity-ng-debugsource",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "Amusements/Games/Strategy/Real Time"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.15.0-1.21",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "summary": "City Simulation Game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "game/board/lincity-ng.lha",
+    "categories": [
+      "game/board"
+    ],
+    "origversion": null,
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "LinCity-NG is a City Simulation Game",
+    "version": "2.0",
+    "visiblename": "lincity-ng.lha"
+  },
+  {
+    "binname": "lincity-ng",
+    "licenses": [
+      "CC-BY-SA-2.0",
+      "GPL-2.0-or-later",
+      "LicenseRef-ArevFontsCopyright",
+      "LicenseRef-BitstreamVeraFontsCopyright"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "parabola",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A city simulation game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-4",
+    "repo": "pardus_21",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.12.0-2",
+    "repo": "parrot",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "2.12.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.12.0-2",
+    "repo": "parrot",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "2.12.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ryoon@netbsd.org"
+    ],
+    "origversion": "2.0nb23",
+    "repo": "pkgsrc_2026_1",
+    "srcname": "games/lincity-ng",
+    "status": "outdated",
+    "summary": "Open source SimCity like game",
+    "version": "2.0",
+    "visiblename": "games/lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ryoon@netbsd.org"
+    ],
+    "origversion": "2.0nb23",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/lincity-ng",
+    "status": "outdated",
+    "summary": "Open source SimCity like game",
+    "version": "2.0",
+    "visiblename": "games/lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ryoon@netbsd.org"
+    ],
+    "origversion": "2.0nb23",
+    "repo": "pkgsrc_current",
+    "srcname": "games/lincity-ng",
+    "status": "outdated",
+    "summary": "Open source SimCity like game",
+    "version": "2.0",
+    "visiblename": "games/lincity-ng"
+  },
+  {
+    "origversion": "2.14.2-1",
+    "repo": "pld",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-3",
+    "repo": "pureos_amber",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "amber/main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-4",
+    "repo": "pureos_byzantium",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.12.0-2",
+    "repo": "pureos_landing",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "2.12.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-5",
+    "repo": "raspbian_oldstable",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.12.0-2",
+    "repo": "raspbian_stable",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "2.12.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.14.2-1",
+    "repo": "raspbian_testing",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-debuginfo",
+      "lincity-ng-debugsource"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "m.novosyolov@rosalinux.ru"
+    ],
+    "origversion": "2.9-1",
+    "repo": "rosa_2019_1",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "Lincity - A City Simulation Game",
+    "version": "2.9",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-debuginfo",
+      "lincity-ng-debugsource"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "a.proklov@rosa.ru"
+    ],
+    "origversion": "2.14.2-1",
+    "repo": "rosa_13",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "Lincity - A City Simulation Game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "zhu.qunying@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/lincity-ng",
+    "status": "outdated",
+    "version": "2.13.1",
+    "visiblename": "games/lincity-ng"
+  },
+  {
+    "categories": [
+      "extra/game"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "rene@exactco.de"
+    ],
+    "origversion": null,
+    "repo": "t2",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "summary": "A city simulation game",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "maintainers": [
+      "intintedao@github"
+    ],
+    "origversion": null,
+    "repo": "termux",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "summary": "LinCity NG is a city building game based on the classic LinCity",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-3build1",
+    "repo": "trisquel_10_0",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "nabia/main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-4",
+    "repo": "trisquel_11_0",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "aramo/main",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@gambaru.de",
+      "kibi@debian.org"
+    ],
+    "origversion": "2.0-4",
+    "repo": "ubuntu_14_04",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "trusty/universe",
+    "version": "2.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@gambaru.de"
+    ],
+    "origversion": "2.9~git20150314-1",
+    "repo": "ubuntu_16_04",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "xenial/universe",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-3",
+    "repo": "ubuntu_18_04",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "bionic/universe",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-3build1",
+    "repo": "ubuntu_20_04",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "focal/universe",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.9~git20150314-4",
+    "repo": "ubuntu_22_04",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "2.9~git20150314",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.10.2-1",
+    "repo": "ubuntu_24_04",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "noble/universe",
+    "version": "2.10.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.12.0-2",
+    "repo": "ubuntu_25_04",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "plucky/universe",
+    "version": "2.12.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.12.0-2build1",
+    "repo": "ubuntu_25_10",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "questing/universe",
+    "version": "2.12.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.14.2-1",
+    "repo": "ubuntu_26_04",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "subrepo": "resolute/universe",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
+    ],
+    "origversion": "2.15.0-1",
+    "repo": "ubuntu_26_10",
+    "srcname": "lincity-ng",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "2.15.0",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q26272002",
+    "status": "newest",
+    "summary": "2005 video game",
+    "version": "2.15.0",
+    "visiblename": "LinCity-NG"
+  }
+]

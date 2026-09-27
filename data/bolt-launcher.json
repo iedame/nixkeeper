@@ -1,0 +1,214 @@
+[
+  {
+    "binname": "bolt-launcher",
+    "licenses": [
+      "AGPL3"
+    ],
+    "maintainers": [
+      "adamcake@aur"
+    ],
+    "origversion": "0.24.0-3",
+    "repo": "aur",
+    "srcname": "bolt-launcher",
+    "status": "newest",
+    "summary": "Free open-source third-party implementation of the Jagex Launcher",
+    "version": "0.24.0",
+    "visiblename": "bolt-launcher"
+  },
+  {
+    "binname": "bolt-launcher-bin",
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-aur@repology"
+    ],
+    "origversion": "0.20.6-1",
+    "repo": "aur",
+    "srcname": "bolt-launcher-bin",
+    "status": "outdated",
+    "summary": "Free open-source third-party implementation of the Jagex Launcher",
+    "version": "0.20.6",
+    "visiblename": "bolt-launcher-bin"
+  },
+  {
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "anthony@nezia.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "bolt-launcher",
+    "status": "outdated",
+    "summary": "An alternative launcher for RuneScape.",
+    "version": "0.15.0",
+    "visiblename": "bolt-launcher"
+  },
+  {
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "anthony@nezia.dev",
+      "jasper@surmont.dev",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "bolt-launcher",
+    "status": "outdated",
+    "summary": "Alternative launcher for RuneScape",
+    "version": "0.21.0",
+    "visiblename": "bolt-launcher"
+  },
+  {
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "anthony@nezia.dev",
+      "jasper@surmont.dev",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "bolt-launcher",
+    "status": "outdated",
+    "summary": "Alternative launcher for RuneScape",
+    "version": "0.21.1",
+    "visiblename": "bolt-launcher"
+  },
+  {
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "anthony@nezia.dev",
+      "jasper@surmont.dev",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "bolt-launcher",
+    "status": "newest",
+    "summary": "Alternative launcher for RuneScape",
+    "version": "0.24.0",
+    "visiblename": "bolt-launcher"
+  },
+  {
+    "binname": "bolt-launcher",
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "owen@fyralabs.com"
+    ],
+    "origversion": "0.24.0-1.fcrawhide",
+    "repo": "terra_rawhide",
+    "srcname": "bolt-launcher",
+    "status": "newest",
+    "summary": "A third-party, free-software launcher for your favourite MMORPG",
+    "version": "0.24.0",
+    "visiblename": "bolt-launcher"
+  },
+  {
+    "binname": "bolt-launcher",
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "owen@fyralabs.com"
+    ],
+    "origversion": "0.24.0-1.fcrawhide",
+    "repo": "terra_rawhide",
+    "srcname": "bolt-launcher",
+    "status": "newest",
+    "summary": "A third-party, free-software launcher for your favourite MMORPG",
+    "version": "0.24.0",
+    "visiblename": "bolt-launcher"
+  },
+  {
+    "binname": "bolt-launcher-debuginfo",
+    "categories": [
+      "Development/Debug"
+    ],
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "owen@fyralabs.com"
+    ],
+    "origversion": "0.24.0-1.fcrawhide",
+    "repo": "terra_rawhide",
+    "srcname": "bolt-launcher",
+    "status": "newest",
+    "summary": "Debug information for package bolt-launcher",
+    "version": "0.24.0",
+    "visiblename": "bolt-launcher-debuginfo"
+  },
+  {
+    "binname": "bolt-launcher-debuginfo",
+    "categories": [
+      "Development/Debug"
+    ],
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "owen@fyralabs.com"
+    ],
+    "origversion": "0.24.0-1.fcrawhide",
+    "repo": "terra_rawhide",
+    "srcname": "bolt-launcher",
+    "status": "newest",
+    "summary": "Debug information for package bolt-launcher",
+    "version": "0.24.0",
+    "visiblename": "bolt-launcher-debuginfo"
+  },
+  {
+    "binname": "bolt-launcher-debugsource",
+    "categories": [
+      "Development/Debug"
+    ],
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "owen@fyralabs.com"
+    ],
+    "origversion": "0.24.0-1.fcrawhide",
+    "repo": "terra_rawhide",
+    "srcname": "bolt-launcher",
+    "status": "newest",
+    "summary": "Debug sources for package bolt-launcher",
+    "version": "0.24.0",
+    "visiblename": "bolt-launcher-debugsource"
+  },
+  {
+    "binname": "bolt-launcher-debugsource",
+    "categories": [
+      "Development/Debug"
+    ],
+    "licenses": [
+      "AGPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "owen@fyralabs.com"
+    ],
+    "origversion": "0.24.0-1.fcrawhide",
+    "repo": "terra_rawhide",
+    "srcname": "bolt-launcher",
+    "status": "newest",
+    "summary": "Debug sources for package bolt-launcher",
+    "version": "0.24.0",
+    "visiblename": "bolt-launcher-debugsource"
+  }
+]

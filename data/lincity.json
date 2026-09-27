@@ -1,0 +1,869 @@
+[
+  {
+    "origversion": null,
+    "repo": "gobolinux",
+    "srcname": "Lincity",
+    "status": "outdated",
+    "version": "1.12.0",
+    "visiblename": "Lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-17",
+    "repo": "kali_rolling",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "1.13.1-r4",
+    "repo": "liguros_stable",
+    "srcname": "games-simulation/lincity",
+    "status": "devel",
+    "summary": "City simulation game for X",
+    "version": "1.13.1",
+    "visiblename": "games-simulation/lincity"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "1.13.1-r4",
+    "repo": "liguros_develop",
+    "srcname": "games-simulation/lincity",
+    "status": "devel",
+    "summary": "City simulation game for X",
+    "version": "1.13.1",
+    "visiblename": "games-simulation/lincity"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "1.13.1 (2004-07-09)",
+    "repo": "libregamewiki",
+    "srcname": "Lincity",
+    "status": "devel",
+    "version": "1.13.1",
+    "visiblename": "Lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-15",
+    "repo": "ubuntu_22_04",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "jammy/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binname": "lincity",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "furrykef@aur"
+    ],
+    "origversion": "1.13.1-3",
+    "repo": "aur",
+    "srcname": "lincity",
+    "status": "devel",
+    "summary": "A free construction and management simulation game",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-15",
+    "repo": "debian_11",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "bullseye/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-15",
+    "repo": "debian_12",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "bookworm/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-16",
+    "repo": "debian_13",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "trixie/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-17",
+    "repo": "debian_14",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "forky/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-17",
+    "repo": "debian_unstable",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "sid/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-13",
+    "repo": "deepin_unstable",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-15",
+    "repo": "devuan_4_0",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "chimaera/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-17",
+    "repo": "devuan_unstable",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "unstable/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binname": "lincity",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@freebsd.org"
+    ],
+    "origversion": "1.13.1_9",
+    "repo": "freebsd",
+    "srcname": "games/lincity",
+    "status": "devel",
+    "summary": "Rich city simulation game for X",
+    "version": "1.13.1",
+    "visiblename": "games/lincity"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "1.13.1-r4",
+    "repo": "gentoo",
+    "srcname": "games-simulation/lincity",
+    "status": "devel",
+    "summary": "City simulation game for X",
+    "version": "1.13.1",
+    "visiblename": "games-simulation/lincity"
+  },
+  {
+    "binname": "lincity",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "nomaintainer@macports.org"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "games/lincity",
+    "status": "outdated",
+    "summary": "city simulation game",
+    "version": "1.13.0",
+    "visiblename": "lincity"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "lincity",
+    "status": "devel",
+    "summary": "City simulation game",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "lincity",
+    "status": "devel",
+    "summary": "City simulation game",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "lincity",
+    "status": "devel",
+    "summary": "City simulation game",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "lincity",
+    "status": "devel",
+    "summary": "City simulation game",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "lincity",
+    "status": "devel",
+    "summary": "City simulation game",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "lincity",
+    "status": "devel",
+    "summary": "City simulation game",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binname": "lincity",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": "1.13.1p4",
+    "repo": "openbsd",
+    "srcname": "games/lincity",
+    "status": "devel",
+    "summary": "Rich city simulation game for X",
+    "version": "1.13.1",
+    "visiblename": "games/lincity"
+  },
+  {
+    "binnames": [
+      "lincity",
+      "lincity-debuginfo",
+      "lincity-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/Strategy/Real Time"
+    ],
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "origversion": "1.13.1-5.54",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "lincity",
+    "status": "devel",
+    "summary": "SimCity Clone",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-15",
+    "repo": "pardus_21",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-16",
+    "repo": "parrot",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "parrot-updates/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-16",
+    "repo": "parrot",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "parrot/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binname": "lincity",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "1.12.1nb3",
+    "repo": "pkgsrc_2026_1",
+    "srcname": "games/lincity",
+    "status": "newest",
+    "summary": "Free clone of SimCity for X11",
+    "version": "1.12.1",
+    "visiblename": "games/lincity"
+  },
+  {
+    "binname": "lincity",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "1.12.1nb3",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/lincity",
+    "status": "newest",
+    "summary": "Free clone of SimCity for X11",
+    "version": "1.12.1",
+    "visiblename": "games/lincity"
+  },
+  {
+    "binname": "lincity",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "1.12.1nb3",
+    "repo": "pkgsrc_current",
+    "srcname": "games/lincity",
+    "status": "newest",
+    "summary": "Free clone of SimCity for X11",
+    "version": "1.12.1",
+    "visiblename": "games/lincity"
+  },
+  {
+    "origversion": "1.13.1-8",
+    "repo": "pld",
+    "srcname": "lincity",
+    "status": "devel",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-13",
+    "repo": "pureos_amber",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "amber/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-15",
+    "repo": "pureos_byzantium",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "byzantium/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-16",
+    "repo": "pureos_landing",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "landing/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-15",
+    "repo": "raspbian_oldstable",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-16",
+    "repo": "raspbian_stable",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-17",
+    "repo": "raspbian_testing",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-13",
+    "repo": "trisquel_10_0",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "nabia/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-15",
+    "repo": "trisquel_11_0",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "aramo/main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-11",
+    "repo": "ubuntu_14_04",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "trusty/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-12",
+    "repo": "ubuntu_16_04",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "xenial/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-13",
+    "repo": "ubuntu_18_04",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "bionic/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-13",
+    "repo": "ubuntu_20_04",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "focal/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "1.13.1-16build1",
+    "repo": "ubuntu_24_04",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "noble/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "1.13.1-16build1",
+    "repo": "ubuntu_25_04",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "plucky/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-17",
+    "repo": "ubuntu_25_10",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "questing/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-17",
+    "repo": "ubuntu_26_04",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "resolute/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-17",
+    "repo": "ubuntu_26_10",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "stonking/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "licenses": [
+      "GNU General Public License"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q389431",
+    "status": "newest",
+    "summary": "fee construction and management simulation game",
+    "version": "1.12.1",
+    "visiblename": "Q389431"
+  },
+  {
+    "licenses": [
+      "GNU General Public License"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q389431",
+    "status": "devel",
+    "summary": "fee construction and management simulation game",
+    "version": "1.13.1",
+    "visiblename": "Q389431"
+  }
+]
