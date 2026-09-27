@@ -1,0 +1,1236 @@
+[
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-3",
+    "repo": "trisquel_10_0",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "nabia/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine",
+      "freedink-engine-debuginfo"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "george@altlinux.org"
+    ],
+    "origversion": "109.6-alt2",
+    "repo": "alt_p11",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine",
+      "freedink-engine-debuginfo"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "george@altlinux.org"
+    ],
+    "origversion": "109.6-alt2",
+    "repo": "altsisyphus",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-3",
+    "repo": "debian_11",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "bullseye/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-4",
+    "repo": "debian_12",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "bookworm/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-7",
+    "repo": "debian_13",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "trixie/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-8",
+    "repo": "debian_14",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "forky/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-8",
+    "repo": "debian_unstable",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "sid/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "beuc@debian.org"
+    ],
+    "origversion": "109.6-1",
+    "repo": "deepin_unstable",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-7",
+    "repo": "deepin_25",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "community",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-3",
+    "repo": "devuan_4_0",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "chimaera/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-8",
+    "repo": "devuan_unstable",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine",
+      "freedink-debuginfo",
+      "freedink-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "109.6-13.fc39",
+    "repo": "fedora_39",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine",
+      "freedink-debuginfo",
+      "freedink-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "109.6-15.fc40",
+    "repo": "fedora_40",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "109.6-16.fc41",
+    "repo": "fedora_41",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "109.6-17.fc42",
+    "repo": "fedora_42",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "109.6-18.fc43",
+    "repo": "fedora_43",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "109.6-19.fc44",
+    "repo": "fedora_44",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "109.6-20.fc45",
+    "repo": "fedora_rawhide",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "development",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binname": "freedink-engine",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@freebsd.org"
+    ],
+    "origversion": "108.4_6",
+    "repo": "freebsd",
+    "srcname": "games/freedink-engine",
+    "status": "outdated",
+    "summary": "Dink Smallwood RPG and RPG Construction Set",
+    "version": "108.4",
+    "visiblename": "games/freedink-engine"
+  },
+  {
+    "binname": "freedink",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@freebsd.org"
+    ],
+    "origversion": null,
+    "repo": "freebsd",
+    "srcname": "games/freedink",
+    "status": "outdated",
+    "summary": "Metaport for FreeDink engine and data",
+    "version": "108.4",
+    "visiblename": "games/freedink"
+  },
+  {
+    "categories": [
+      "games-rpg"
+    ],
+    "licenses": [
+      "GPL-3+",
+      "LGPL-2.1+"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-rpg/freedink",
+    "status": "newest",
+    "summary": "Dink Smallwood is an adventure/role-playing game, similar to Zelda (2D top view)",
+    "version": "109.6",
+    "visiblename": "games-rpg/freedink"
+  },
+  {
+    "binname": "freedink",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Twisted adventures of young pig farmer Dink Smallwood",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binname": "freedink-engine",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "freedink-engine",
+    "status": "newest",
+    "summary": "Twisted adventures of young pig farmer Dink Smallwood",
+    "version": "109.6",
+    "visiblename": "freedink-engine"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Portable version of the Dink Smallwood game engine",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-8",
+    "repo": "kali_rolling",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-3",
+    "repo": "trisquel_11_0",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "aramo/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "categories": [
+      "games-rpg"
+    ],
+    "licenses": [
+      "GPL-3+",
+      "LGPL-2.1+"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-rpg/freedink",
+    "status": "newest",
+    "summary": "Dink Smallwood is an adventure/role-playing game, similar to Zelda (2D top view)",
+    "version": "109.6",
+    "visiblename": "games-rpg/freedink"
+  },
+  {
+    "categories": [
+      "games-rpg"
+    ],
+    "licenses": [
+      "GPL-3+",
+      "LGPL-2.1+"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-rpg/freedink",
+    "status": "newest",
+    "summary": "Dink Smallwood is an adventure/role-playing game, similar to Zelda (2D top view)",
+    "version": "109.6",
+    "visiblename": "games-rpg/freedink"
+  },
+  {
+    "binname": "freedink",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "GPL-3+"
+    ],
+    "maintainers": [
+      "nomaintainer@macports.org"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "games/freedink",
+    "status": "outdated",
+    "summary": "FreeDink is a portable and enhanced version of the Dink Smallwood game engine.",
+    "version": "1.08.20090120",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "109.6-4.mga10",
+    "repo": "mageia_10",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-debuginfo",
+      "freedink-debugsource"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "109.6-3.mga9",
+    "repo": "mageia_9",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "109.6-4.mga10",
+    "repo": "mageia_cauldron",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "freedink",
+    "status": "outdated",
+    "summary": "A free, portable and enhanced version of the Dink Smallwood game engine",
+    "version": "1.08.20121209",
+    "visiblename": "freedink"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "freedink",
+    "status": "outdated",
+    "summary": "Free, portable and enhanced version of the Dink Smallwood game engine",
+    "version": "1.08.20121209",
+    "visiblename": "freedink"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "freedink",
+    "status": "outdated",
+    "summary": "Free, portable and enhanced version of the Dink Smallwood game engine",
+    "version": "1.08.20121209",
+    "visiblename": "freedink"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Free, portable and enhanced version of the Dink Smallwood game engine",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Free, portable and enhanced version of the Dink Smallwood game engine",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Free, portable and enhanced version of the Dink Smallwood game engine",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binname": "freedink",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": "109.6p7",
+    "repo": "openbsd",
+    "srcname": "games/freedink/game",
+    "status": "newest",
+    "summary": "free clone of Dink Smallwood game",
+    "version": "109.6",
+    "visiblename": "games/freedink/game"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-debuginfo",
+      "freedink-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/RPG"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "109.6-1.17",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-debuginfo",
+      "freedink-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/RPG"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "109.6-3.22",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binname": "game/adventure/freedink.lha",
+    "categories": [
+      "game/adventure"
+    ],
+    "origversion": null,
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "FreeDink, a 2D adventure/RPG game",
+    "version": "1.08r5",
+    "visiblename": "freedink.lha"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-3",
+    "repo": "pardus_21",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-7",
+    "repo": "parrot",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "parrot-updates/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-7",
+    "repo": "parrot",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "parrot/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "categories": [
+      "Games/Adventure"
+    ],
+    "origversion": "109.6-2pclos2023",
+    "repo": "pclinuxos",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Humorous top-down adventure and role-playing game",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "beuc@debian.org"
+    ],
+    "origversion": "109.6-1",
+    "repo": "pureos_amber",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "amber/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-3",
+    "repo": "pureos_byzantium",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "byzantium/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink",
+      "freedink-engine"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-7",
+    "repo": "pureos_landing",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "landing/main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-4",
+    "repo": "raspbian_oldstable",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-7",
+    "repo": "raspbian_stable",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-8",
+    "repo": "raspbian_testing",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "categories": [
+      "Games"
+    ],
+    "origversion": null,
+    "repo": "serenityos",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Adventure/role-playing game, similar to classic Zelda",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/freedink",
+    "status": "newest",
+    "version": "109.6",
+    "visiblename": "games/freedink"
+  },
+  {
+    "binname": "freedink",
+    "categories": [
+      "games.rpg"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "jakob@knugen.nu"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Free, portable and enhanced version of the Dink Smallwood game engine",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binname": "freedink-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "jakob@knugen.nu"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "freedink",
+    "status": "newest",
+    "summary": "Debug symbols for freedink",
+    "version": "109.6",
+    "visiblename": "freedink-dbginfo"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink-engine-dbg",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "beuc@debian.org"
+    ],
+    "origversion": "1.08.20120427-2.1ubuntu1",
+    "repo": "ubuntu_14_04",
+    "srcname": "freedink",
+    "status": "outdated",
+    "subrepo": "trusty/universe",
+    "version": "1.08.20120427",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink-engine-dbg",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "beuc@debian.org"
+    ],
+    "origversion": "108.4-1",
+    "repo": "ubuntu_16_04",
+    "srcname": "freedink",
+    "status": "outdated",
+    "subrepo": "xenial/universe",
+    "version": "108.4",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink-engine-dbg",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "beuc@debian.org"
+    ],
+    "origversion": "108.4+dfsg-3",
+    "repo": "ubuntu_18_04",
+    "srcname": "freedink",
+    "status": "outdated",
+    "subrepo": "bionic/universe",
+    "version": "108.4",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-3",
+    "repo": "ubuntu_20_04",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "focal/universe",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-3",
+    "repo": "ubuntu_22_04",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "jammy/universe",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-5",
+    "repo": "ubuntu_24_04",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "noble/universe",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "packages@qa.debian.org"
+    ],
+    "origversion": "109.6-6",
+    "repo": "ubuntu_25_04",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "plucky/universe",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-7",
+    "repo": "ubuntu_25_10",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "questing/universe",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-8",
+    "repo": "ubuntu_26_04",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "resolute/universe",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "binnames": [
+      "freedink-engine",
+      "freedink"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "109.6-8",
+    "repo": "ubuntu_26_10",
+    "srcname": "freedink",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "109.6",
+    "visiblename": "freedink"
+  },
+  {
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q72271637",
+    "status": "newest",
+    "summary": "an adventure/role-playing game and re-implementation of the engine for the role-playing game Dink Smallwood",
+    "version": "109.6",
+    "visiblename": "Q72271637"
+  }
+]

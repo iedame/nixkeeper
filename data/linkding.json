@@ -1,0 +1,33 @@
+[
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "squat@github"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "linkding",
+    "status": "outdated",
+    "summary": "Self-hosted bookmark manager designed to be minimal, fast, and easy to set up",
+    "version": "1.45.0",
+    "visiblename": "linkding"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "git@ieda.me",
+      "squat@github"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "linkding",
+    "status": "unique",
+    "summary": "Self-hosted bookmark manager designed to be minimal, fast, and easy to set up",
+    "version": "1.47.0",
+    "visiblename": "linkding"
+  }
+]

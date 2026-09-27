@@ -1,21 +1,37 @@
 {
-  "checkedAt": "2026-09-27T20:32:46.512872+00:00",
+  "checkedAt": "2026-09-27T20:46:59.783014+00:00",
   "packages": [
     {
-      "name": "httpie",
+      "name": "freedink",
       "nixStatus": "newest",
-      "nixVersion": "3.2.4",
+      "nixVersion": "109.6",
       "nixVulnerable": false,
-      "refVersion": "3.2.4",
-      "repoCount": 105
+      "refVersion": "109.6",
+      "repoCount": 67
     },
     {
-      "name": "zellij",
-      "nixStatus": "newest",
-      "nixVersion": "0.45.1",
+      "name": "linkding",
+      "nixStatus": "unique",
+      "nixVersion": "1.47.0",
       "nixVulnerable": false,
-      "refVersion": "0.45.1",
-      "repoCount": 125
+      "refVersion": null,
+      "repoCount": 1
+    },
+    {
+      "name": "1password",
+      "nixStatus": "newest",
+      "nixVersion": "8.12.36",
+      "nixVulnerable": false,
+      "refVersion": "8.12.36",
+      "repoCount": 29
+    },
+    {
+      "name": "opentyrian",
+      "nixStatus": "outdated",
+      "nixVersion": "2.1.20221123",
+      "nixVulnerable": false,
+      "refVersion": "2.1.20260913",
+      "repoCount": 62
     }
   ]
 }
