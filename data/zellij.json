@@ -1,0 +1,2068 @@
+[
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.45.1-1",
+    "repo": "artix",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "galaxy",
+    "summary": "A terminal multiplexer",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.44.3-r0",
+    "repo": "chimera",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.44.3",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.45.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.45.0",
+    "visiblename": "zellij"
+  },
+  {
+    "maintainers": [
+      "tbier@posteo.de"
+    ],
+    "origversion": null,
+    "repo": "crux_37",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.42.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-doc",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.34.4-r0",
+    "repo": "alpine_3_18",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer (documentation)",
+    "version": "0.34.4",
+    "visiblename": "zellij-doc"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": null,
+    "repo": "aerynos",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-zsh-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.31.4-r0",
+    "repo": "alpine_3_17",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Zsh completions for zellij",
+    "version": "0.31.4",
+    "visiblename": "zellij-zsh-completion"
+  },
+  {
+    "binname": "zellij-doc",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.31.4-r0",
+    "repo": "alpine_3_17",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer (documentation)",
+    "version": "0.31.4",
+    "visiblename": "zellij-doc"
+  },
+  {
+    "binname": "zellij-bash-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.31.4-r0",
+    "repo": "alpine_3_17",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Bash completions for zellij",
+    "version": "0.31.4",
+    "visiblename": "zellij-bash-completion"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.31.4-r0",
+    "repo": "alpine_3_17",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer",
+    "version": "0.31.4",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-fish-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.31.4-r0",
+    "repo": "alpine_3_17",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Fish completions for zellij",
+    "version": "0.31.4",
+    "visiblename": "zellij-fish-completion"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.34.4-r0",
+    "repo": "alpine_3_18",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer",
+    "version": "0.34.4",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-bash-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.34.4-r0",
+    "repo": "alpine_3_18",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Bash completions for zellij",
+    "version": "0.34.4",
+    "visiblename": "zellij-bash-completion"
+  },
+  {
+    "binname": "zellij-fish-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.34.4-r0",
+    "repo": "alpine_3_18",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Fish completions for zellij",
+    "version": "0.34.4",
+    "visiblename": "zellij-fish-completion"
+  },
+  {
+    "binname": "zellij-doc",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.44.3-r0",
+    "repo": "chimera",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Terminal workspace with batteries included (documentation)",
+    "version": "0.44.3",
+    "visiblename": "zellij-doc"
+  },
+  {
+    "binname": "zellij-zsh-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.34.4-r0",
+    "repo": "alpine_3_18",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Zsh completions for zellij",
+    "version": "0.34.4",
+    "visiblename": "zellij-zsh-completion"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.38.2-r0",
+    "repo": "alpine_3_19",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer",
+    "version": "0.38.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-bash-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.38.2-r0",
+    "repo": "alpine_3_19",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Bash completions for zellij",
+    "version": "0.38.2",
+    "visiblename": "zellij-bash-completion"
+  },
+  {
+    "binname": "zellij-doc",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.38.2-r0",
+    "repo": "alpine_3_19",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer (documentation)",
+    "version": "0.38.2",
+    "visiblename": "zellij-doc"
+  },
+  {
+    "binname": "zellij-fish-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.38.2-r0",
+    "repo": "alpine_3_19",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Fish completions for zellij",
+    "version": "0.38.2",
+    "visiblename": "zellij-fish-completion"
+  },
+  {
+    "binname": "zellij-zsh-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.38.2-r0",
+    "repo": "alpine_3_19",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Zsh completions for zellij",
+    "version": "0.38.2",
+    "visiblename": "zellij-zsh-completion"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_20",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer",
+    "version": "0.40.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-bash-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_20",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Bash completions for zellij",
+    "version": "0.40.0",
+    "visiblename": "zellij-bash-completion"
+  },
+  {
+    "binname": "zellij-doc",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_20",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer (documentation)",
+    "version": "0.40.0",
+    "visiblename": "zellij-doc"
+  },
+  {
+    "binname": "zellij-fish-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_20",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Fish completions for zellij",
+    "version": "0.40.0",
+    "visiblename": "zellij-fish-completion"
+  },
+  {
+    "binname": "zellij-fishcomp",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.44.3-r0",
+    "repo": "chimera",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Terminal workspace with batteries included (fish completions)",
+    "version": "0.44.3",
+    "visiblename": "zellij-fishcomp"
+  },
+  {
+    "binname": "zellij-zsh-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_20",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Zsh completions for zellij",
+    "version": "0.40.0",
+    "visiblename": "zellij-zsh-completion"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_21",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer",
+    "version": "0.40.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-bash-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_21",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Bash completions for zellij",
+    "version": "0.40.0",
+    "visiblename": "zellij-bash-completion"
+  },
+  {
+    "binname": "zellij-doc",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_21",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer (documentation)",
+    "version": "0.40.0",
+    "visiblename": "zellij-doc"
+  },
+  {
+    "binname": "zellij-fish-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_21",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Fish completions for zellij",
+    "version": "0.40.0",
+    "visiblename": "zellij-fish-completion"
+  },
+  {
+    "binname": "zellij-zsh-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.40.0-r0",
+    "repo": "alpine_3_21",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Zsh completions for zellij",
+    "version": "0.40.0",
+    "visiblename": "zellij-zsh-completion"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.41.2-r0",
+    "repo": "alpine_3_22",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer",
+    "version": "0.41.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-bash-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.41.2-r0",
+    "repo": "alpine_3_22",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Bash completions for zellij",
+    "version": "0.41.2",
+    "visiblename": "zellij-bash-completion"
+  },
+  {
+    "binname": "zellij-doc",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.41.2-r0",
+    "repo": "alpine_3_22",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer (documentation)",
+    "version": "0.41.2",
+    "visiblename": "zellij-doc"
+  },
+  {
+    "binname": "zellij-fish-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.41.2-r0",
+    "repo": "alpine_3_22",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Fish completions for zellij",
+    "version": "0.41.2",
+    "visiblename": "zellij-fish-completion"
+  },
+  {
+    "binname": "zellij-zshcomp",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.44.3-r0",
+    "repo": "chimera",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Terminal workspace with batteries included (zsh completions)",
+    "version": "0.44.3",
+    "visiblename": "zellij-zshcomp"
+  },
+  {
+    "binname": "zellij-zsh-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.41.2-r0",
+    "repo": "alpine_3_22",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Zsh completions for zellij",
+    "version": "0.41.2",
+    "visiblename": "zellij-zsh-completion"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_23",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer",
+    "version": "0.42.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-bash-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_23",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Bash completions for zellij",
+    "version": "0.42.2",
+    "visiblename": "zellij-bash-completion"
+  },
+  {
+    "binname": "zellij-doc",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_23",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer (documentation)",
+    "version": "0.42.2",
+    "visiblename": "zellij-doc"
+  },
+  {
+    "binname": "zellij-fish-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_23",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Fish completions for zellij",
+    "version": "0.42.2",
+    "visiblename": "zellij-fish-completion"
+  },
+  {
+    "binname": "zellij-zsh-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_23",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Zsh completions for zellij",
+    "version": "0.42.2",
+    "visiblename": "zellij-zsh-completion"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_24",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer",
+    "version": "0.42.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-bash-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_24",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Bash completions for zellij",
+    "version": "0.42.2",
+    "visiblename": "zellij-bash-completion"
+  },
+  {
+    "binname": "zellij-doc",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_24",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer (documentation)",
+    "version": "0.42.2",
+    "visiblename": "zellij-doc"
+  },
+  {
+    "binname": "zellij-fish-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_24",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Fish completions for zellij",
+    "version": "0.42.2",
+    "visiblename": "zellij-fish-completion"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": null,
+    "repo": "chromebrew",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "A terminal multiplexer",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-zsh-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.42.2-r0",
+    "repo": "alpine_3_24",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Zsh completions for zellij",
+    "version": "0.42.2",
+    "visiblename": "zellij-zsh-completion"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.45.1-r0",
+    "repo": "alpine_edge",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Terminal multiplexer",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-bash-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.45.1-r0",
+    "repo": "alpine_edge",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Bash completions for zellij",
+    "version": "0.45.1",
+    "visiblename": "zellij-bash-completion"
+  },
+  {
+    "binname": "zellij-fish-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.45.1-r0",
+    "repo": "alpine_edge",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Fish completions for zellij",
+    "version": "0.45.1",
+    "visiblename": "zellij-fish-completion"
+  },
+  {
+    "binname": "zellij-zsh-completion",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "guddaff@protonmail.com"
+    ],
+    "origversion": "0.45.1-r0",
+    "repo": "alpine_edge",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Zsh completions for zellij",
+    "version": "0.45.1",
+    "visiblename": "zellij-zsh-completion"
+  },
+  {
+    "binnames": [
+      "zellij"
+    ],
+    "categories": [
+      "Terminals"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "k0tran@altlinux.org"
+    ],
+    "origversion": "0.45.1-alt1",
+    "repo": "alt_p11",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binnames": [
+      "zellij"
+    ],
+    "categories": [
+      "Terminals"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "k0tran@altlinux.org"
+    ],
+    "origversion": "0.45.1-alt1",
+    "repo": "altsisyphus",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "fallback-mnt-aosc@repology"
+    ],
+    "origversion": null,
+    "repo": "aosc",
+    "srcname": "app-utils/zellij",
+    "status": "outdated",
+    "summary": "A terminal workspace and a terminal multiplexer",
+    "version": "0.44.3",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.45.1-1",
+    "repo": "arch",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A terminal multiplexer",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-git",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "henil@aur",
+      "alerque@aur"
+    ],
+    "origversion": "0.40.1.r33.gabe0f87-1",
+    "repo": "aur",
+    "srcname": "zellij-git",
+    "status": "rolling",
+    "summary": "A terminal multiplexer",
+    "version": "0.40.1.r33.gabe0f87",
+    "visiblename": "zellij-git"
+  },
+  {
+    "binname": "zellij-bashcomp",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.44.3-r0",
+    "repo": "chimera",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Terminal workspace with batteries included (bash completions)",
+    "version": "0.44.3",
+    "visiblename": "zellij-bashcomp"
+  },
+  {
+    "maintainers": [
+      "tbier@posteo.de"
+    ],
+    "origversion": null,
+    "repo": "crux_38",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "contrib",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "categories": [
+      "app-terminal"
+    ],
+    "maintainers": [
+      "fallback-mnt-exherbo@repology"
+    ],
+    "origversion": null,
+    "repo": "exherbo",
+    "srcname": "app-terminal/zellij",
+    "status": "outdated",
+    "subrepo": "keruspe",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.43.1",
+    "visiblename": "app-terminal/zellij"
+  },
+  {
+    "binname": "zellij",
+    "categories": [
+      "sysutils"
+    ],
+    "maintainers": [
+      "ashish@freebsd.org"
+    ],
+    "origversion": null,
+    "repo": "freebsd",
+    "srcname": "sysutils/zellij",
+    "status": "newest",
+    "summary": "Versatile, extensible terminal multiplexer",
+    "version": "0.45.1",
+    "visiblename": "sysutils/zellij"
+  },
+  {
+    "categories": [
+      "app-misc"
+    ],
+    "licenses": [
+      "MIT",
+      "0BSD",
+      "Apache-2.0",
+      "Apache-2.0-with-LLVM-exceptions",
+      "BSD",
+      "CC0-1.0",
+      "ISC",
+      "MPL-2.0",
+      "Unicode-3.0",
+      "ZLIB"
+    ],
+    "maintainers": [
+      "chutzpah@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "app-misc/zellij",
+    "status": "newest",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "app-misc/zellij"
+  },
+  {
+    "categories": [
+      "app-misc"
+    ],
+    "licenses": [
+      "MIT",
+      "0BSD",
+      "Apache-2.0",
+      "Apache-2.0-with-LLVM-exceptions",
+      "BSD",
+      "CC0-1.0",
+      "ISC",
+      "MPL-2.0",
+      "Unicode-3.0",
+      "ZLIB"
+    ],
+    "maintainers": [
+      "chutzpah@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "app-misc/zellij",
+    "status": "legacy",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.44.3",
+    "visiblename": "app-misc/zellij"
+  },
+  {
+    "categories": [
+      "app-misc"
+    ],
+    "licenses": [
+      "MIT",
+      "0BSD",
+      "Apache-2.0",
+      "Apache-2.0-with-LLVM-exceptions",
+      "BSD",
+      "CC0-1.0",
+      "ISC",
+      "MPL-2.0",
+      "Unicode-3.0",
+      "ZLIB"
+    ],
+    "maintainers": [
+      "chutzpah@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": "0.45.0-r1",
+    "repo": "gentoo",
+    "srcname": "app-misc/zellij",
+    "status": "legacy",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.0",
+    "visiblename": "app-misc/zellij"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "Pluggable terminal workspace, with terminal multiplexer as the base feature",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "zellij",
+    "status": "rolling",
+    "summary": "Pluggable terminal workspace, with terminal multiplexer as the base feature",
+    "version": "HEAD",
+    "visiblename": "zellij"
+  },
+  {
+    "categories": [
+      "app-misc"
+    ],
+    "licenses": [
+      "MIT",
+      "Apache-2.0",
+      "Apache-2.0-with-LLVM-exceptions",
+      "BSD",
+      "CC0-1.0",
+      "ISC",
+      "MPL-2.0",
+      "Unicode-DFS-2016",
+      "WTFPL-2",
+      "ZLIB"
+    ],
+    "maintainers": [
+      "chutzpah@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "app-misc/zellij",
+    "status": "outdated",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.43.1",
+    "visiblename": "app-misc/zellij"
+  },
+  {
+    "categories": [
+      "app-misc"
+    ],
+    "licenses": [
+      "MIT",
+      "Apache-2.0",
+      "Apache-2.0-with-LLVM-exceptions",
+      "BSD",
+      "CC0-1.0",
+      "ISC",
+      "MPL-2.0",
+      "Unicode-DFS-2016",
+      "WTFPL-2",
+      "ZLIB"
+    ],
+    "maintainers": [
+      "chutzpah@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "app-misc/zellij",
+    "status": "legacy",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.42.2",
+    "visiblename": "app-misc/zellij"
+  },
+  {
+    "categories": [
+      "app-misc"
+    ],
+    "licenses": [
+      "MIT",
+      "0BSD",
+      "Apache-2.0",
+      "Apache-2.0-with-LLVM-exceptions",
+      "BSD",
+      "CC0-1.0",
+      "ISC",
+      "MPL-2.0",
+      "Unicode-3.0",
+      "ZLIB"
+    ],
+    "maintainers": [
+      "chutzpah@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "app-misc/zellij",
+    "status": "legacy",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.44.2",
+    "visiblename": "app-misc/zellij"
+  },
+  {
+    "categories": [
+      "app-misc"
+    ],
+    "licenses": [
+      "MIT",
+      "0BSD",
+      "Apache-2.0",
+      "Apache-2.0-with-LLVM-exceptions",
+      "BSD",
+      "CC0-1.0",
+      "ISC",
+      "MPL-2.0",
+      "Unicode-3.0",
+      "ZLIB"
+    ],
+    "maintainers": [
+      "chutzpah@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "app-misc/zellij",
+    "status": "outdated",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.44.3",
+    "visiblename": "app-misc/zellij"
+  },
+  {
+    "categories": [
+      "app-misc"
+    ],
+    "licenses": [
+      "MIT",
+      "0BSD",
+      "Apache-2.0",
+      "Apache-2.0-with-LLVM-exceptions",
+      "BSD",
+      "CC0-1.0",
+      "ISC",
+      "MPL-2.0",
+      "Unicode-3.0",
+      "ZLIB"
+    ],
+    "maintainers": [
+      "chutzpah@gentoo.org",
+      "dlan@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "app-misc/zellij",
+    "status": "legacy",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.44.1",
+    "visiblename": "app-misc/zellij"
+  },
+  {
+    "binname": "zellij",
+    "categories": [
+      "sysutils"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "herbygillot@github"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "sysutils/zellij",
+    "status": "newest",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.45.1-1",
+    "repo": "manjaro_stable",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A terminal multiplexer",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.45.1-1",
+    "repo": "manjaro_testing",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A terminal multiplexer",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.45.1-1",
+    "repo": "manjaro_unstable",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A terminal multiplexer",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tyagiansh23@gmail.com",
+      "mail-maintainer@0x4a6f.dev",
+      "ashish.is@lostca.se",
+      "pyrox@pyrox.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "zellij",
+    "status": "outdated",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.40.1",
+    "visiblename": "zellij"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tyagiansh23@gmail.com",
+      "mail-maintainer@0x4a6f.dev",
+      "ashish.is@lostca.se",
+      "pyrox@pyrox.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "zellij",
+    "status": "outdated",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.41.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.44.3-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.44.3",
+    "visiblename": "zellij"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tyagiansh23@gmail.com",
+      "mail-maintainer@0x4a6f.dev",
+      "ashish.is@lostca.se",
+      "mail@beyermatthias.de",
+      "xiaoyin_c@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "zellij",
+    "status": "outdated",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.43.1",
+    "visiblename": "zellij"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tyagiansh23@gmail.com",
+      "mail-maintainer@0x4a6f.dev",
+      "ashish.is@lostca.se",
+      "mail@beyermatthias.de",
+      "xiaoyin_c@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "zellij",
+    "status": "outdated",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.43.1",
+    "visiblename": "zellij"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tyagiansh23@gmail.com",
+      "mail-maintainer@0x4a6f.dev",
+      "ashish.is@lostca.se",
+      "mail@beyermatthias.de",
+      "xiaoyin_c@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tyagiansh23@gmail.com",
+      "mail-maintainer@0x4a6f.dev",
+      "ashish.is@lostca.se",
+      "mail@beyermatthias.de",
+      "xiaoyin_c@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "zellij-unwrapped",
+    "status": "newest",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij-unwrapped"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.41.2-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.41.2",
+    "visiblename": "zellij"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tyagiansh23@gmail.com",
+      "mail-maintainer@0x4a6f.dev",
+      "ashish.is@lostca.se",
+      "mail@beyermatthias.de",
+      "xiaoyin_c@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tyagiansh23@gmail.com",
+      "mail-maintainer@0x4a6f.dev",
+      "ashish.is@lostca.se",
+      "mail@beyermatthias.de",
+      "xiaoyin_c@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "zellij-unwrapped",
+    "status": "newest",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij-unwrapped"
+  },
+  {
+    "binnames": [
+      "zellij",
+      "zellij-debuginfo",
+      "zellij-debugsource",
+      "zellij-bash-completion",
+      "zellij-fish-completion",
+      "zellij-zsh-completion"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.44.3-1.4",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "src-oss",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.44.3",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "0.45.1-1",
+    "repo": "parabola",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A terminal multiplexer",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_2026_2",
+    "srcname": "misc/zellij",
+    "status": "outdated",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.44.3",
+    "visiblename": "misc/zellij"
+  },
+  {
+    "binname": "zellij",
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_current",
+    "srcname": "misc/zellij",
+    "status": "outdated",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.44.3",
+    "visiblename": "misc/zellij"
+  },
+  {
+    "binname": "zellij",
+    "categories": [
+      "rust"
+    ],
+    "maintainers": [
+      "kraileth@elderlinux.org"
+    ],
+    "origversion": null,
+    "repo": "ravenports",
+    "srcname": "zellij",
+    "status": "outdated",
+    "summary": "Pluggable terminal workspace / multiplexer",
+    "version": "0.45.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binnames": [
+      "zellij",
+      "zellij-debuginfo",
+      "zellij-debugsource"
+    ],
+    "categories": [
+      "Terminals"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "symbianflo@gmail.com"
+    ],
+    "origversion": "0.31.4-1",
+    "repo": "rosa_2019_1",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "A terminal multiplexer",
+    "version": "0.31.4",
+    "visiblename": "zellij"
+  },
+  {
+    "binnames": [
+      "zellij",
+      "zellij-debuginfo",
+      "zellij-debugsource"
+    ],
+    "categories": [
+      "Terminals"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "a.proklov@rosa.ru"
+    ],
+    "origversion": "0.44.1-1",
+    "repo": "rosa_13",
+    "srcname": "zellij",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "A terminal multiplexer",
+    "version": "0.44.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "categories": [
+      "system.utils"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "maddock.evan@vivaldi.net"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "maddock.evan@vivaldi.net"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "Debug symbols for zellij",
+    "version": "0.45.1",
+    "visiblename": "zellij-dbginfo"
+  },
+  {
+    "binname": "bin/zellij",
+    "categories": [
+      "bin"
+    ],
+    "maintainers": [
+      "anton@samokhvalov.xyz"
+    ],
+    "origversion": null,
+    "repo": "stalix",
+    "srcname": "bin/zellij",
+    "status": "newest",
+    "version": "0.45.1",
+    "visiblename": "bin/zellij"
+  },
+  {
+    "binname": "bin/zellij",
+    "categories": [
+      "bin"
+    ],
+    "maintainers": [
+      "anton@samokhvalov.xyz"
+    ],
+    "origversion": null,
+    "repo": "stalix_dev",
+    "srcname": "bin/zellij",
+    "status": "newest",
+    "version": "0.45.1",
+    "visiblename": "bin/zellij"
+  },
+  {
+    "categories": [
+      "extra/tool"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "rene@exactco.de"
+    ],
+    "origversion": null,
+    "repo": "t2",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "me@xjonathan.dev"
+    ],
+    "origversion": null,
+    "repo": "termux",
+    "srcname": "zellij",
+    "status": "newest",
+    "summary": "A terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tranzystorek.io@protonmail.com"
+    ],
+    "origversion": "0.45.1_1",
+    "repo": "void_x86_64",
+    "srcname": "zellij",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Terminal workspace with batteries included",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.45.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "newest",
+    "subrepo": "terminal",
+    "version": "0.45.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.44.2-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.44.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.44.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.44.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.44.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.44.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.43.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.43.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.43.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.43.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.42.2-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.42.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.42.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.42.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.42.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.42.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.41.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.41.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.41.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.41.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.40.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.40.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.40.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.40.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.39.2-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.39.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.39.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.39.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.39.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.39.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.38.2-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.38.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.38.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.38.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.38.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.38.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.37.2-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.37.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.37.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.37.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.37.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.37.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.36.0-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.36.0",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.35.2-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.35.2",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.35.1-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.35.1",
+    "visiblename": "zellij"
+  },
+  {
+    "binname": "zellij",
+    "maintainers": [
+      "ops2deb@upciti.com"
+    ],
+    "origversion": "0.34.4-1~ops2deb",
+    "repo": "wakemeops",
+    "status": "legacy",
+    "subrepo": "terminal",
+    "version": "0.34.4",
+    "visiblename": "zellij"
+  }
+]

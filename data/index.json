@@ -1,0 +1,21 @@
+{
+  "checkedAt": "2026-09-27T20:32:46.512872+00:00",
+  "packages": [
+    {
+      "name": "httpie",
+      "nixStatus": "newest",
+      "nixVersion": "3.2.4",
+      "nixVulnerable": false,
+      "refVersion": "3.2.4",
+      "repoCount": 105
+    },
+    {
+      "name": "zellij",
+      "nixStatus": "newest",
+      "nixVersion": "0.45.1",
+      "nixVulnerable": false,
+      "refVersion": "0.45.1",
+      "repoCount": 125
+    }
+  ]
+}
