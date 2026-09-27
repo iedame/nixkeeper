@@ -1,0 +1,51 @@
+name: Sync package data
+
+on:
+  schedule:
+    - cron: '0 6 * * *'   # daily at 06:00 UTC
+  workflow_dispatch: {}    # lets you trigger a run manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0   # full history so the rebase below has something to work with
+
+      - name: Prepare data branch
+        run: |
+          git config user.name "pkgwatch-bot"
+          git config user.email "pkgwatch-bot@users.noreply.github.com"
+
+          if git ls-remote --exit-code --heads origin data > /dev/null 2>&1; then
+            # data branch exists: bring its accumulated history forward,
+            # replayed on top of main's current tip.
+            git fetch origin data
+            git checkout -b data origin/data
+            git rebase origin/main
+          else
+            # first run: nothing to rebase yet, just branch off main.
+            git checkout -B data
+          fi
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Fetch package data from Repology
+        run: nix run .#fetch
+
+      - name: Commit and push if anything changed
+        run: |
+          git add -f data/
+          if git diff --cached --quiet; then
+            echo "No package changes since last run."
+            exit 0
+          fi
+          git commit -m "sync: package data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push --force-with-lease origin data
