@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 
 OUT_DIR = "data"
 NIX_REPO = "nix_unstable"
-USER_AGENT = "pkgwatch/1.0 (personal package tracker)"
+USER_AGENT = "nixkeeper/1.0 (personal package tracker)"
 # Override with e.g. REPOLOGY_BASE_URL=https://repology.amdmi3.ru if the
 # main domain is unreachable.
 BASE_URL = os.environ.get("REPOLOGY_BASE_URL", "https://repology.org")

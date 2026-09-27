@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>pkgwatch — nixpkgs unstable</title>
+<title>nixkeeper — nixpkgs unstable</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -105,7 +105,7 @@
 
   <header class="top">
     <div class="wordmark">
-      <h1><span class="dot">▪</span> pkgwatch</h1>
+      <h1><span class="dot">▪</span> nixkeeper</h1>
       <span class="tag">nixpkgs unstable, checked against every other repo</span>
     </div>
     <div class="actions">
@@ -139,7 +139,7 @@ function detectRepo() {
   if (params.get('owner') && params.get('repo')) {
     return { owner: params.get('owner'), repo: params.get('repo') };
   }
-  const stored = localStorage.getItem('pkgwatch:repo');
+  const stored = localStorage.getItem('nixkeeper:repo');
   if (stored) { try { return JSON.parse(stored); } catch (e) {} }
 
   const host = location.hostname;
