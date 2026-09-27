@@ -16,6 +16,7 @@
             runtimeInputs = [ pkgs.python3 ];
             text = ''python3 ${./scripts/fetch.py}'';
           }}/bin/pkgwatch-fetch";
+        meta.description = "Fetch Repology status for tracked packages";
         };
 
         devShells.default = pkgs.mkShell {
