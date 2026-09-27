@@ -31,7 +31,7 @@ def read_packages():
 
 
 def fetch_project(name):
-    url = f"https://repology.org/api/v1/project/{name}"
+    url = f"https://repology.amdmi3.ru/api/v1/project/{name}"
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=20) as resp:
