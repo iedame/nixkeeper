@@ -18,7 +18,7 @@ NIX_REPO = "nix_unstable"
 USER_AGENT = "pkgwatch/1.0 (personal package tracker)"
 # Override with e.g. REPOLOGY_BASE_URL=https://repology.amdmi3.ru if the
 # main domain is unreachable.
-BASE_URL = os.environ.get("REPOLOGY_BASE_URL", "https://repology.amdmi3.ru")
+BASE_URL = os.environ.get("REPOLOGY_BASE_URL", "https://repology.org")
 
 
 def read_packages():
@@ -65,6 +65,7 @@ def main():
             "name": name,
             "nixVersion": nix.get("version") if nix else None,
             "nixStatus": nix.get("status") if nix else "missing",
+            "nixVulnerable": bool(nix.get("vulnerable")) if nix else False,
             "refVersion": ref,
             "repoCount": len(others),
         })

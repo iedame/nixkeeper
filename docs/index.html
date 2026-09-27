@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>pkgwatch — nixpkgs unstable</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f7f8; --surface: #ffffff; --ink: #14171a; --ink-soft: #565c63; --ink-faint: #90959b;
+    --hairline: #e3e5e8; --hairline-strong: #d2d5d9;
+    --accent: #3654c9;
+    --ok: #1f8a5f; --ok-soft: #e7f4ee;
+    --warn: #b8730a; --warn-soft: #fbf1e1;
+    --stale: #8b8f94; --stale-soft: #eeeeef;
+    --danger: #c4433a; --danger-soft: #fbe9e7;
+    --radius: 8px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #16181c; --surface: #1d2025; --ink: #edeff2; --ink-soft: #a3a8b0; --ink-faint: #6c7178;
+      --hairline: #2b2f35; --hairline-strong: #383d44; --accent: #7b8cef;
+      --ok: #4fc793; --ok-soft: #1b2e27; --warn: #e0a344; --warn-soft: #332714;
+      --stale: #82868c; --stale-soft: #24262a; --danger: #e0776e; --danger-soft: #33201e;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: 'Instrument Sans', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; }
+  .shell { max-width: 920px; margin: 0 auto; padding: 28px 20px 80px; }
+
+  header.top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 18px; border-bottom: 1px solid var(--hairline-strong); flex-wrap: wrap; }
+  .wordmark { display: flex; align-items: baseline; gap: 10px; }
+  .wordmark .dot { color: var(--accent); }
+  .wordmark h1 { font-size: 19px; font-weight: 700; margin: 0; letter-spacing: -0.01em; }
+  .wordmark .tag { color: var(--ink-faint); font-size: 13px; }
+
+  .actions { display: flex; align-items: center; gap: 8px; }
+  input[type="search"] {
+    font-family: inherit; font-size: 14px; padding: 8px 12px; width: 170px;
+    border: 1px solid var(--hairline-strong); border-radius: var(--radius);
+    background: var(--surface); color: var(--ink); outline: none;
+  }
+  input[type="search"]:focus { border-color: var(--accent); }
+  .btn { font-family: inherit; font-size: 13px; font-weight: 500; padding: 7px 12px; border-radius: var(--radius); border: 1px solid var(--hairline-strong); background: var(--surface); color: var(--ink-soft); cursor: pointer; }
+  .btn:hover { color: var(--ink); }
+  .btn:focus-visible, input:focus-visible, .row:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .stats { display: flex; gap: 22px; padding: 14px 2px 18px; color: var(--ink-soft); font-size: 13px; flex-wrap: wrap; }
+  .stats b { color: var(--ink); font-weight: 600; }
+  .stats .sep { color: var(--hairline-strong); }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th { text-align: left; font-size: 12px; font-weight: 500; color: var(--ink-faint); padding: 0 10px 8px; border-bottom: 1px solid var(--hairline); }
+  .wrap { overflow-x: auto; }
+  tbody tr.row { cursor: pointer; border-bottom: 1px solid var(--hairline); }
+  tbody tr.row:hover { background: var(--surface); }
+  tbody tr.row td { padding: 12px 10px; vertical-align: middle; }
+
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
+  .status-dot.ok { background: var(--ok); } .status-dot.warn { background: var(--warn); }
+  .status-dot.missing { background: var(--danger); } .status-dot.neutral { background: var(--ink-faint); }
+
+  .pkg-name { display: flex; align-items: center; gap: 10px; }
+  .pkg-name .n { font-weight: 600; font-size: 14.5px; }
+
+  .ver { font-size: 13px; white-space: nowrap; }
+  .ver .ref { color: var(--ink-faint); }
+  .badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 20px; font-weight: 500; margin-left: 5px; }
+  .badge.warn { background: var(--warn-soft); color: var(--warn); }
+  .badge.missing { background: var(--danger-soft); color: var(--danger); }
+  .badge.vuln { background: var(--danger-soft); color: var(--danger); }
+  .badge.neutral { background: var(--stale-soft); color: var(--ink-soft); }
+
+  .repos-count { font-size: 13px; color: var(--ink-soft); }
+  .chev { color: var(--ink-faint); font-size: 12px; transition: transform .15s; }
+  tr.row.open .chev { transform: rotate(90deg); }
+
+  tr.detail { display: none; } tr.detail.open { display: table-row; }
+  tr.detail td { padding: 4px 10px 18px 10px; border-bottom: 1px solid var(--hairline); }
+  .detail-inner { padding-left: 18px; }
+  .nix-line { font-size: 14px; margin-bottom: 10px; }
+  .other-label { font-size: 11.5px; color: var(--ink-faint); margin: 2px 0 6px; }
+  .repo-chips { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .repo-chip { font-size: 12.5px; padding: 4px 9px; border-radius: 6px; background: var(--bg); border: 1px solid var(--hairline); color: var(--ink-soft); display: inline-flex; gap: 6px; align-items: baseline; }
+  .repo-chip .v { color: var(--ink); }
+  .repo-chip.ahead .v { color: var(--warn); }
+  .detail-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .files-link { font-size: 13px; color: var(--accent); text-decoration: none; font-weight: 500; }
+  .files-link:hover { text-decoration: underline; }
+  .loading, .empty, .error { color: var(--ink-faint); font-size: 13px; padding: 30px 4px; text-align: center; }
+  .error { color: var(--danger); }
+  .error code { background: var(--bg); padding: 1px 5px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+
+  footer.legend { display: flex; gap: 16px; padding-top: 20px; margin-top: 8px; border-top: 1px solid var(--hairline); font-size: 12.5px; color: var(--ink-faint); flex-wrap: wrap; }
+  footer.legend span { display: inline-flex; align-items: center; gap: 6px; }
+
+  @media (max-width: 640px) { .repos-count, thead th.repos { display: none; } input[type="search"] { width: 120px; } }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <header class="top">
+    <div class="wordmark">
+      <h1><span class="dot">▪</span> pkgwatch</h1>
+      <span class="tag">nixpkgs unstable, checked against every other repo</span>
+    </div>
+    <div class="actions">
+      <input type="search" id="search" placeholder="Filter packages…" aria-label="Filter packages" disabled>
+      <button class="btn" id="refreshBtn">Refresh</button>
+    </div>
+  </header>
+
+  <div class="stats" id="stats"></div>
+  <div id="content">
+    <div class="loading">Loading package data…</div>
+  </div>
+
+  <footer class="legend">
+    <span><span class="status-dot ok"></span> up to date</span>
+    <span><span class="status-dot warn"></span> nixpkgs is behind</span>
+    <span><span class="status-dot missing"></span> not in nixpkgs unstable</span>
+    <span><span class="status-dot neutral"></span> devel / rolling / other scheme</span>
+  </footer>
+
+</div>
+
+<script>
+const NIX_REPO = 'nix_unstable';
+
+// Figure out which repo's data branch to read. Works unmodified on a
+// GitHub Pages project site (https://<owner>.github.io/<repo>/); override
+// with ?owner=...&repo=... when testing locally or on a custom domain.
+function detectRepo() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('owner') && params.get('repo')) {
+    return { owner: params.get('owner'), repo: params.get('repo') };
+  }
+  const stored = localStorage.getItem('pkgwatch:repo');
+  if (stored) { try { return JSON.parse(stored); } catch (e) {} }
+
+  const host = location.hostname;
+  const owner = host.endsWith('.github.io') ? host.split('.')[0] : null;
+  const seg = location.pathname.split('/').filter(Boolean)[0] || null;
+  if (owner && seg) return { owner, repo: seg };
+  return null;
+}
+
+function rawUrl(owner, repo, path) {
+  return `https://raw.githubusercontent.com/${owner}/${repo}/data/${path}`;
+}
+
+let repoInfo = detectRepo();
+const detailCache = new Map(); // name -> parsed per-package Repology JSON
+let packages = [];
+let checkedAt = null;
+
+async function loadIndex() {
+  const content = document.getElementById('content');
+  if (!repoInfo) {
+    content.innerHTML = `<div class="error">
+      Couldn't tell which GitHub repo to read from this URL.<br>
+      Add <code>?owner=you&repo=your-repo</code> to the address, or open this from your GitHub Pages project site.
+    </div>`;
+    return;
+  }
+  try {
+    const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, 'data/index.json'), { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.status);
+    const data = await res.json();
+    packages = data.packages || [];
+    checkedAt = data.checkedAt || null;
+    document.getElementById('search').disabled = false;
+    render(currentFiltered());
+  } catch (err) {
+    content.innerHTML = `<div class="error">
+      Couldn't load <code>data/index.json</code> from the <code>data</code> branch of
+      <code>${repoInfo.owner}/${repoInfo.repo}</code>.<br>
+      Check that the repo is public and the sync workflow has run at least once.
+    </div>`;
+  }
+}
+
+function computeStatus(pkg) {
+  if (pkg.nixStatus === 'missing') return 'missing';
+  if (pkg.nixStatus === 'outdated') return 'warn';
+  if (pkg.nixStatus === 'newest' || pkg.nixStatus === 'unique') return 'ok';
+  return 'neutral';
+}
+
+function timeAgo(iso) {
+  if (!iso) return 'never';
+  const diff = Date.now() - new Date(iso).getTime();
+  const m = Math.floor(diff / 60000);
+  if (m < 1) return 'just now';
+  if (m < 60) return m + 'm ago';
+  const h = Math.floor(m / 60);
+  if (h < 24) return h + 'h ago';
+  return Math.floor(h / 24) + 'd ago';
+}
+
+function renderStats() {
+  const total = packages.length;
+  const warn = packages.filter(p => computeStatus(p) === 'warn').length;
+  const missing = packages.filter(p => computeStatus(p) === 'missing').length;
+  const vuln = packages.filter(p => p.nixVulnerable).length;
+  document.getElementById('stats').innerHTML = `
+    <span><b>${total}</b> tracked</span><span class="sep">·</span>
+    <span><b style="color:var(--warn)">${warn}</b> behind</span><span class="sep">·</span>
+    <span><b style="color:var(--danger)">${missing}</b> not in nixpkgs</span>
+    ${vuln ? `<span class="sep">·</span><span><b style="color:var(--danger)">${vuln}</b> flagged vulnerable</span>` : ''}
+    <span class="sep">·</span><span>checked ${timeAgo(checkedAt)}</span>
+  `;
+}
+
+function escapeHtml(s) { return (s || '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function render(list) {
+  renderStats();
+  const content = document.getElementById('content');
+  if (!list.length) {
+    content.innerHTML = `<div class="empty">No packages match.</div>`;
+    return;
+  }
+  content.innerHTML = `<div class="wrap"><table>
+    <thead><tr>
+      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th class="repos">vs. other repos</th><th aria-hidden="true"></th>
+    </tr></thead>
+    <tbody id="rows"></tbody>
+  </table></div>`;
+
+  const rowsEl = document.getElementById('rows');
+  list.forEach(pkg => {
+    const st = computeStatus(pkg);
+    const verCell = st === 'missing' ? `<span class="badge missing">not packaged</span>`
+      : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}`;
+
+    const tr = document.createElement('tr');
+    tr.className = 'row'; tr.tabIndex = 0;
+    tr.innerHTML = `
+      <td><div class="pkg-name"><span class="status-dot ${st}"></span><span class="n">${escapeHtml(pkg.name)}</span></div></td>
+      <td class="ver mono">${verCell}</td>
+      <td class="repos-count">${pkg.repoCount} repos checked</td>
+      <td><span class="chev">▸</span></td>
+    `;
+
+    const detail = document.createElement('tr');
+    detail.className = 'detail';
+    detail.innerHTML = `<td colspan="4"><div class="detail-inner">
+      <div class="nix-line">Loading detail…</div>
+    </div></td>`;
+
+    tr.addEventListener('click', async () => {
+      const isOpen = tr.classList.toggle('open');
+      detail.classList.toggle('open', isOpen);
+      if (isOpen) await fillDetail(pkg, detail.querySelector('.detail-inner'));
+    });
+    tr.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tr.click(); } });
+
+    rowsEl.appendChild(tr);
+    rowsEl.appendChild(detail);
+  });
+}
+
+async function fillDetail(pkg, el) {
+  let entries = detailCache.get(pkg.name);
+  if (!entries) {
+    try {
+      const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, `data/${encodeURIComponent(pkg.name)}.json`), { cache: 'no-store' });
+      entries = res.ok ? await res.json() : [];
+      detailCache.set(pkg.name, entries);
+    } catch (e) { entries = []; }
+  }
+
+  const others = entries.filter(e => e.repo !== NIX_REPO);
+  const homepage = entries.map(e => (e.www || [])[0]).find(Boolean);
+
+  const st = computeStatus(pkg);
+  const nixLine = st === 'missing'
+    ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
+    : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>` : ' — matches the newest version seen anywhere.'}`;
+
+  el.innerHTML = `
+    <div class="nix-line">${nixLine}</div>
+    ${others.length ? `<div class="other-label">Compared against</div><div class="repo-chips">
+      ${others.map(e => `<span class="repo-chip ${e.status === 'newest' && e.version !== pkg.nixVersion ? 'ahead' : ''}">${escapeHtml(e.repo)} <span class="v mono">${escapeHtml(e.version || '?')}</span></span>`).join('')}
+    </div>` : ''}
+    <div class="detail-row">
+      ${homepage ? `<a class="files-link" href="${escapeHtml(homepage)}" target="_blank" rel="noopener">Homepage →</a>` : ''}
+      <a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.name)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>
+    </div>
+  `;
+}
+
+function currentFiltered() {
+  const q = document.getElementById('search').value.trim().toLowerCase();
+  return q ? packages.filter(p => p.name.toLowerCase().includes(q)) : packages;
+}
+
+document.getElementById('search').addEventListener('input', () => render(currentFiltered()));
+document.getElementById('refreshBtn').addEventListener('click', () => {
+  detailCache.clear();
+  document.getElementById('content').innerHTML = `<div class="loading">Loading package data…</div>`;
+  loadIndex();
+});
+
+loadIndex();
+</script>
+</body>
+</html>
