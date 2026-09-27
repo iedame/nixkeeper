@@ -6,6 +6,7 @@ data/index.json summary focused on the nix_unstable status of each.
 """
 import json
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -14,6 +15,10 @@ import urllib.request
 from datetime import datetime, timezone
 
 OUT_DIR = "data"
+# Built from scratch each run, then swapped in for OUT_DIR only once every
+# fetch succeeded, so removed packages disappear and a failed run leaves the
+# previous data intact.
+TMP_DIR = OUT_DIR + ".tmp"
 NIX_REPO = "nix_unstable"
 USER_AGENT = "nixkeeper/1.0 (personal package tracker)"
 # repology.org has occasionally been unreachable; repology.amdmi3.ru (the
@@ -54,7 +59,8 @@ def fetch_project(name):
 
 
 def main():
-    os.makedirs(OUT_DIR, exist_ok=True)
+    shutil.rmtree(TMP_DIR, ignore_errors=True)  # leftover from a failed run
+    os.makedirs(TMP_DIR)
     packages = read_packages()
     index = []
 
@@ -62,7 +68,7 @@ def main():
         print(f"Fetching {name}...", file=sys.stderr)
         entries = fetch_project(name)
 
-        with open(os.path.join(OUT_DIR, f"{name}.json"), "w") as f:
+        with open(os.path.join(TMP_DIR, f"{name}.json"), "w") as f:
             json.dump(entries, f, indent=2, sort_keys=True)
 
         nix = next((e for e in entries if e.get("repo") == NIX_REPO), None)
@@ -79,11 +85,14 @@ def main():
         })
         time.sleep(1)  # be polite to Repology's API
 
-    with open(os.path.join(OUT_DIR, "index.json"), "w") as f:
+    with open(os.path.join(TMP_DIR, "index.json"), "w") as f:
         json.dump({
             "checkedAt": datetime.now(timezone.utc).isoformat(),
             "packages": index,
         }, f, indent=2, sort_keys=True)
+
+    shutil.rmtree(OUT_DIR, ignore_errors=True)
+    os.rename(TMP_DIR, OUT_DIR)
 
 
 if __name__ == "__main__":
