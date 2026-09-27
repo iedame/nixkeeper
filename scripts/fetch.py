@@ -16,6 +16,9 @@ from datetime import datetime, timezone
 OUT_DIR = "data"
 NIX_REPO = "nix_unstable"
 USER_AGENT = "pkgwatch/1.0 (personal package tracker)"
+# Override with e.g. REPOLOGY_BASE_URL=https://repology.amdmi3.ru if the
+# main domain is unreachable.
+BASE_URL = os.environ.get("REPOLOGY_BASE_URL", "https://repology.org")
 
 
 def read_packages():
@@ -31,7 +34,7 @@ def read_packages():
 
 
 def fetch_project(name):
-    url = f"https://repology.amdmi3.ru/api/v1/project/{name}"
+    url = f"{BASE_URL}/api/v1/project/{name}"
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     try:
         with urllib.request.urlopen(req, timeout=20) as resp:
