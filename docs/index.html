@@ -48,9 +48,14 @@
   .btn:hover { color: var(--ink); }
   .btn:focus-visible, input:focus-visible, .row:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-  .stats { display: flex; gap: 22px; padding: 14px 2px 18px; color: var(--ink-soft); font-size: 13px; flex-wrap: wrap; }
+  .stats { display: flex; align-items: center; gap: 6px; padding: 12px 0 16px; color: var(--ink-soft); font-size: 13px; flex-wrap: wrap; }
   .stats b { color: var(--ink); font-weight: 600; }
-  .stats .sep { color: var(--hairline-strong); }
+  .stat-btn { font: inherit; color: inherit; background: none; border: 1px solid transparent; border-radius: var(--radius); padding: 4px 9px; cursor: pointer; }
+  .stat-btn:hover:not(:disabled) { background: var(--surface); border-color: var(--hairline); }
+  .stat-btn[aria-pressed="true"] { background: var(--surface); border-color: var(--hairline-strong); color: var(--ink); }
+  .stat-btn:disabled { cursor: default; opacity: .6; }
+  .stat-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .stats .checked { margin-left: auto; color: var(--ink-faint); }
 
   table { width: 100%; border-collapse: collapse; }
   thead th { text-align: left; font-size: 12px; font-weight: 500; color: var(--ink-faint); padding: 0 10px 8px; border-bottom: 1px solid var(--hairline); }
@@ -75,6 +80,9 @@
   .badge.neutral { background: var(--stale-soft); color: var(--ink-soft); }
 
   .repos-count { font-size: 13px; color: var(--ink-soft); }
+  .failure-btn { font: inherit; font-size: 12.5px; color: var(--ink-soft); background: none; border: 1px solid transparent; border-radius: var(--radius); padding: 4px 9px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+  .failure-btn:hover { background: var(--bg); border-color: var(--hairline); color: var(--ink); }
+  .failure-btn.failing { color: var(--danger); }
   .chev { color: var(--ink-faint); font-size: 12px; transition: transform .15s; }
   tr.row.open .chev { transform: rotate(90deg); }
 
@@ -157,6 +165,14 @@ let repoInfo = detectRepo();
 const detailCache = new Map(); // name -> parsed per-package Repology JSON
 let packages = [];
 let checkedAt = null;
+let activeFilter = 'all'; // 'all' | 'warn' | 'missing' | 'vuln'
+
+const FILTERS = {
+  all:     { label: 'tracked',         test: () => true },
+  warn:    { label: 'behind',          color: 'var(--warn)',   test: p => computeStatus(p) === 'warn' },
+  missing: { label: 'not in nixpkgs',  color: 'var(--danger)', test: p => computeStatus(p) === 'missing' },
+  vuln:    { label: 'flagged vulnerable', color: 'var(--danger)', test: p => p.nixVulnerable },
+};
 
 async function loadIndex() {
   const content = document.getElementById('content');
@@ -203,17 +219,17 @@ function timeAgo(iso) {
 }
 
 function renderStats() {
-  const total = packages.length;
-  const warn = packages.filter(p => computeStatus(p) === 'warn').length;
-  const missing = packages.filter(p => computeStatus(p) === 'missing').length;
-  const vuln = packages.filter(p => p.nixVulnerable).length;
-  document.getElementById('stats').innerHTML = `
-    <span><b>${total}</b> tracked</span><span class="sep">·</span>
-    <span><b style="color:var(--warn)">${warn}</b> behind</span><span class="sep">·</span>
-    <span><b style="color:var(--danger)">${missing}</b> not in nixpkgs</span>
-    ${vuln ? `<span class="sep">·</span><span><b style="color:var(--danger)">${vuln}</b> flagged vulnerable</span>` : ''}
-    <span class="sep">·</span><span>checked ${timeAgo(checkedAt)}</span>
-  `;
+  const buttons = Object.entries(FILTERS).map(([key, f]) => {
+    const count = packages.filter(f.test).length;
+    // "vulnerable" only shows up when something is actually flagged.
+    if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
+    const pressed = activeFilter === key;
+    return `<button class="stat-btn" data-filter="${key}" aria-pressed="${pressed}"
+      ${!count && key !== 'all' && !pressed ? 'disabled' : ''}>
+      <b${f.color ? ` style="color:${f.color}"` : ''}>${count}</b> ${f.label}</button>`;
+  }).join('');
+  document.getElementById('stats').innerHTML =
+    `${buttons}<span class="checked">checked ${timeAgo(checkedAt)}</span>`;
 }
 
 function escapeHtml(s) { return (s || '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -222,12 +238,12 @@ function render(list) {
   renderStats();
   const content = document.getElementById('content');
   if (!list.length) {
-    content.innerHTML = `<div class="empty">No packages match.</div>`;
+    content.innerHTML = `<div class="empty">No packages match${activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}.</div>`;
     return;
   }
   content.innerHTML = `<div class="wrap"><table>
     <thead><tr>
-      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th class="repos">vs. other repos</th><th aria-hidden="true"></th>
+      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th class="repos">vs. other repos</th><th>build failures</th><th>update failures</th><th aria-hidden="true"></th>
     </tr></thead>
     <tbody id="rows"></tbody>
   </table></div>`;
@@ -244,26 +260,47 @@ function render(list) {
       <td><div class="pkg-name"><span class="status-dot ${st}"></span><span class="n">${escapeHtml(pkg.name)}</span></div></td>
       <td class="ver mono">${verCell}</td>
       <td class="repos-count">${pkg.repoCount} repos checked</td>
+      <td>${failureCell('build', pkg.buildFailure)}</td>
+      <td>${failureCell('update', pkg.updateFailure)}</td>
       <td><span class="chev">▸</span></td>
     `;
 
     const detail = document.createElement('tr');
     detail.className = 'detail';
-    detail.innerHTML = `<td colspan="4"><div class="detail-inner">
+    detail.innerHTML = `<td colspan="6"><div class="detail-inner">
       <div class="nix-line">Loading detail…</div>
     </div></td>`;
+
+    tr.querySelectorAll('.failure-btn').forEach(btn => btn.addEventListener('click', e => {
+      e.stopPropagation(); // don't expand the row
+      const url = FAILURE_URLS[btn.dataset.kind](pkg);
+      if (url) window.open(url, '_blank', 'noopener');
+    }));
 
     tr.addEventListener('click', async () => {
       const isOpen = tr.classList.toggle('open');
       detail.classList.toggle('open', isOpen);
       if (isOpen) await fillDetail(pkg, detail.querySelector('.detail-inner'));
     });
-    tr.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); tr.click(); } });
+    tr.addEventListener('keydown', e => { if (e.target === tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tr.click(); } });
 
     rowsEl.appendChild(tr);
     rowsEl.appendChild(detail);
   });
 }
+
+// Placeholders until failure data exists: the fetch script doesn't produce
+// `buildFailure` / `updateFailure` yet, so every package reads as passing.
+function failureCell(kind, failing) {
+  return `<button class="failure-btn${failing ? ' failing' : ''}" type="button" data-kind="${kind}">
+    <span class="status-dot ${failing ? 'missing' : 'ok'}"></span>${failing ? 'failure reported' : 'none reported'}</button>`;
+}
+
+// TODO: link each kind to its log once we have one (build: e.g. Hydra).
+const FAILURE_URLS = {
+  build: pkg => null,
+  update: pkg => null,
+};
 
 async function fillDetail(pkg, el) {
   let entries = detailCache.get(pkg.name);
@@ -297,8 +334,16 @@ async function fillDetail(pkg, el) {
 
 function currentFiltered() {
   const q = document.getElementById('search').value.trim().toLowerCase();
-  return q ? packages.filter(p => p.name.toLowerCase().includes(q)) : packages;
+  return packages.filter(p => FILTERS[activeFilter].test(p) && (!q || p.name.toLowerCase().includes(q)));
 }
+
+document.getElementById('stats').addEventListener('click', e => {
+  const btn = e.target.closest('.stat-btn');
+  if (!btn) return;
+  // Clicking the active filter again goes back to showing everything.
+  activeFilter = btn.dataset.filter === activeFilter ? 'all' : btn.dataset.filter;
+  render(currentFiltered());
+});
 
 document.getElementById('search').addEventListener('input', () => render(currentFiltered()));
 document.getElementById('refreshBtn').addEventListener('click', () => {
