@@ -3,6 +3,8 @@
 # Repology uses a generic upstream name (e.g. "ncurses"), not a
 # distro-prefixed one (e.g. not "netbsd.ncurses").
 [
-  "httpie"
-  "zellij"
+  "freedink"
+  "linkding"
+  "1password"
+  "opentyrian"
 ]
