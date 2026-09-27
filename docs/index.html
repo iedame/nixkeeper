@@ -69,7 +69,10 @@
   .status-dot.missing { background: var(--danger); } .status-dot.neutral { background: var(--ink-faint); }
 
   .pkg-name { display: flex; align-items: center; gap: 10px; }
-  .pkg-name .n { font-weight: 600; font-size: 14.5px; }
+  .pkg-name .n { font-weight: 600; font-size: 14.5px; white-space: nowrap; }
+  .plat { font-size: 10.5px; font-weight: 500; padding: 1px 6px; border-radius: 4px; background: var(--stale-soft); color: var(--ink-soft); }
+  .plat + .plat { margin-left: -5px; }
+  .plat.any { color: var(--ink-faint); }
 
   .ver { font-size: 13px; white-space: nowrap; }
   .ver .ref { color: var(--ink-faint); }
@@ -79,7 +82,7 @@
   .badge.vuln { background: var(--danger-soft); color: var(--danger); }
   .badge.neutral { background: var(--stale-soft); color: var(--ink-soft); }
 
-  .repos-count { font-size: 13px; color: var(--ink-soft); }
+  .repos-count { font-size: 13px; color: var(--ink-soft); white-space: nowrap; }
   .failure-btn { font: inherit; font-size: 12.5px; color: var(--ink-soft); background: none; border: 1px solid transparent; border-radius: var(--radius); padding: 4px 9px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
   .failure-btn:hover { background: var(--bg); border-color: var(--hairline); color: var(--ink); }
   .failure-btn.failing { color: var(--danger); }
@@ -257,7 +260,7 @@ function render(list) {
     const tr = document.createElement('tr');
     tr.className = 'row'; tr.tabIndex = 0;
     tr.innerHTML = `
-      <td><div class="pkg-name"><span class="status-dot ${st}"></span><span class="n">${escapeHtml(pkg.name)}</span></div></td>
+      <td><div class="pkg-name"><span class="status-dot ${st}"></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
       <td class="ver mono">${verCell}</td>
       <td class="repos-count">${pkg.repoCount} repos checked</td>
       <td>${failureCell('build', pkg.buildFailure)}</td>
@@ -302,18 +305,29 @@ const FAILURE_URLS = {
   update: pkg => null,
 };
 
+// From nixpkgs meta.platforms; null means nixpkgs doesn't restrict it.
+function platformTags(pkg) {
+  const pl = pkg.platforms;
+  if (pl === undefined) return '';
+  if (pl === null) return `<span class="plat any" title="nixpkgs doesn't restrict its platforms">any platform</span>`;
+  return (pl.linux ? `<span class="plat">Linux</span>` : '') + (pl.darwin ? `<span class="plat">macOS</span>` : '');
+}
+
 async function fillDetail(pkg, el) {
-  let entries = detailCache.get(pkg.name);
+  // Raw Repology data is stored per project; pname only when Repology
+  // doesn't know the package at all.
+  const file = pkg.project || pkg.name;
+  let entries = detailCache.get(file);
   if (!entries) {
     try {
-      const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, `data/${encodeURIComponent(pkg.name)}.json`), { cache: 'no-store' });
+      const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, `data/${encodeURIComponent(file)}.json`), { cache: 'no-store' });
       entries = res.ok ? await res.json() : [];
-      detailCache.set(pkg.name, entries);
+      detailCache.set(file, entries);
     } catch (e) { entries = []; }
   }
 
   const others = entries.filter(e => e.repo !== NIX_REPO);
-  const homepage = entries.map(e => (e.www || [])[0]).find(Boolean);
+  const homepage = pkg.homepage;
 
   const st = computeStatus(pkg);
   const nixLine = st === 'missing'
@@ -327,14 +341,14 @@ async function fillDetail(pkg, el) {
     </div>` : ''}
     <div class="detail-row">
       ${homepage ? `<a class="files-link" href="${escapeHtml(homepage)}" target="_blank" rel="noopener">Homepage →</a>` : ''}
-      <a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.name)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>
+      ${pkg.project ? `<a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>` : ''}
     </div>
   `;
 }
 
 function currentFiltered() {
   const q = document.getElementById('search').value.trim().toLowerCase();
-  return packages.filter(p => FILTERS[activeFilter].test(p) && (!q || p.name.toLowerCase().includes(q)));
+  return packages.filter(p => FILTERS[activeFilter].test(p) && (!q || [p.name, p.project, ...(p.attrs || [])].some(n => n && n.toLowerCase().includes(q))));
 }
 
 document.getElementById('stats').addEventListener('click', e => {

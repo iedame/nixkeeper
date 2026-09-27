@@ -1,0 +1,4 @@
+[
+  "1password"
+  "opentyrian"
+]
