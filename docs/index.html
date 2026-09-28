@@ -331,10 +331,10 @@ function platformTags(pkg) {
   return (pl.linux ? `<span class="plat">Linux</span>` : '') + (pl.darwin ? `<span class="plat">macOS</span>` : '');
 }
 
-// Open nixpkgs PRs / issues with the package's pname in the title. Counts come from
+// Open nixpkgs PRs / issues with the package's attribute name in the title. Counts come from
 // the fetch script's GitHub search; without them the buttons are plain links.
 function githubLinks(pkg) {
-  const term = pkg.pname || pkg.name;
+  const term = pkg.searchTerm || pkg.name;
   const link = (kind, path, label, count) => {
     const q = encodeURIComponent(`is:${kind} state:open in:title ${term}`);
     return `<a class="gh-btn" href="https://github.com/NixOS/nixpkgs/${path}?q=${q}" target="_blank" rel="noopener"
@@ -344,13 +344,13 @@ function githubLinks(pkg) {
 }
 
 async function fillDetail(pkg, el) {
-  // Raw Repology data is stored per project; pname only when Repology
-  // doesn't know the package at all.
-  const file = pkg.project || pkg.name;
+  // Raw Repology data is stored per project, under a file-name-safe version
+  // of its name (python:requests -> python_requests.json).
+  const file = pkg.dataFile || `${pkg.project || pkg.name}.json`;
   let entries = detailCache.get(file);
   if (!entries) {
     try {
-      const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, `data/${encodeURIComponent(file)}.json`), { cache: 'no-store' });
+      const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, `data/${encodeURIComponent(file)}`), { cache: 'no-store' });
       entries = res.ok ? await res.json() : [];
       detailCache.set(file, entries);
     } catch (e) { entries = []; }

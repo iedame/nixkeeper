@@ -2,14 +2,16 @@
 """Fetch Repology status for every package tracked in package-lists/.
 
 The tracked set is every nixpkgs package whose meta.maintainers includes one
-of the GitHub handles in package-lists/default.nix, plus every pname from the
-lists it imports. Each is looked up on Repology via its nixpkgs attribute name.
+of the GitHub handles in package-lists/default.nix, plus every entry from the
+lists it imports (an attribute name, or a pname). Each is looked up on
+Repology via its nixpkgs attribute name.
 
 Writes one raw JSON file per Repology project to data/<project>.json, plus a
 data/index.json summary focused on the nix_unstable status of each.
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -45,6 +47,11 @@ RETRY_DELAYS = [5, 15]  # seconds before each retry of a failed Repology request
 MAX_FAILED_SHARE = 0.5
 GITHUB_REPO = "NixOS/nixpkgs"
 GITHUB_SEARCH_BATCH = 20  # searches per GraphQL request
+# nixpkgs PR/issue titles name packages in versioned sets by their alias
+# ("python3Packages.requests: 2.34 -> 2.35"), which the index doesn't carry.
+SEARCH_ALIASES = [
+    (re.compile(r"^python3\d+Packages\."), "python3Packages."),
+]
 
 
 def read_lists():
@@ -63,10 +70,21 @@ def load_nixpkgs_index():
     print("Downloading nixpkgs package index...", file=sys.stderr)
     req = urllib.request.Request(NIXPKGS_INDEX_URL, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=120) as resp:
-        packages = json.loads(brotli.decompress(resp.read()))["packages"]
-    # Only top-level attributes: a pname like "heroic" would otherwise also
-    # match nested sets such as typstPackages.heroic.
-    return {attr: p for attr, p in packages.items() if "." not in attr}
+        # Includes nested sets (haskellPackages.foo), but not aliases such as
+        # python3Packages: those need their versioned name (python313Packages).
+        return json.loads(brotli.decompress(resp.read()))["packages"]
+
+
+def data_file(key):
+    """File name for a project's raw data: Repology names like python:requests
+    contain characters that don't belong in file names or URLs."""
+    return re.sub(r"[^A-Za-z0-9._+-]", "_", key) + ".json"
+
+
+def search_term(attr):
+    for pattern, alias in SEARCH_ALIASES:
+        attr = pattern.sub(alias, attr)
+    return attr
 
 
 def platforms(pkgs):
@@ -123,17 +141,18 @@ def project_by_name(name):
     return (name, entries) if entries else (None, None)
 
 
-def resolve(pname, attrs):
-    """Find the Repology project for a tracked pname. Returns (project,
-    entries), (None, None) if Repology doesn't know it; raises on failure."""
+def resolve(fallback, attrs):
+    """Find the Repology project for tracked nixpkgs attrs, else for fallback
+    as a project name. Returns (project, entries), (None, None) if Repology
+    doesn't know it; raises on failure."""
     for attr in attrs:
         project, entries = project_for_attr(attr)
         time.sleep(1)  # be polite to Repology's API
         if project:
             return project, entries
-    # Not in nixpkgs, or Repology hasn't caught up yet: try the pname as a
+    # Not in nixpkgs, or Repology hasn't caught up yet: try the fallback as a
     # Repology project name directly.
-    project, entries = project_by_name(pname)
+    project, entries = project_by_name(fallback)
     time.sleep(1)
     return project, entries
 
@@ -151,11 +170,11 @@ def previous_project(previous, pname, attrs):
     """Reuse the last run's data for a pname whose lookup failed. Returns
     (project, entries, stale_since), or None if there's nothing to reuse."""
     for row in previous["packages"]:
-        if pname in (row.get("pname"), row["name"]) or set(attrs) & set(row.get("attrs") or []):
+        if pname in (row.get("searchTerm"), row["name"]) or set(attrs) & set(row.get("attrs") or []):
             entries = []
             if row.get("project"):
                 try:
-                    with open(os.path.join(OUT_DIR, f"{row['project']}.json")) as f:
+                    with open(os.path.join(OUT_DIR, row.get("dataFile") or f"{row['project']}.json")) as f:
                         entries = json.load(f)
                 except (OSError, ValueError):
                     return None
@@ -177,7 +196,11 @@ def project_rows(proj, nixpkgs):
             groups.setdefault(e.get("version"), []).append(e)
     if len(groups) < 2:
         nix = next(iter(groups.values()), nix_all)[:1]
-        return [make_row(proj, proj["name"], proj["attrs"], nix[0] if nix else None, others, nixpkgs, devel=False)]
+        attrs = sorted(proj["attrs"])
+        # Named after its nixpkgs attribute, like the lists and GitHub searches;
+        # the list entry itself when nixpkgs doesn't have it.
+        name = attrs[0] if attrs else proj["name"]
+        return [make_row(proj, name, attrs, nix[0] if nix else None, others, nixpkgs, devel=False)]
 
     # Stable first: the variant Repology calls newest, else the shortest attr
     # (wesnoth before wesnoth-devel). The rest compare against devel versions.
@@ -186,14 +209,10 @@ def project_rows(proj, nixpkgs):
         min(len(e["srcname"]) for e in g),
         min(e["srcname"] for e in g),
     ))
-    rows, used = [], set()
+    rows = []
     for i, group in enumerate(ordered):
         attrs = sorted(e["srcname"] for e in group)
-        pname = nixpkgs[attrs[0]].get("pname") if attrs[0] in nixpkgs else None
-        # Variants can share a pname (_1password-gui / -beta): fall back to the attr.
-        name = pname if pname and pname not in used else attrs[0]
-        used.add(name)
-        rows.append(make_row(proj, name, attrs, group[0], others, nixpkgs, devel=i > 0))
+        rows.append(make_row(proj, attrs[0], attrs, group[0], others, nixpkgs, devel=i > 0))
     return rows
 
 
@@ -201,10 +220,12 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
     newest = lambda status: next((e.get("version") for e in others if e.get("status") == status), None)
     row = {
         "name": name,
-        # What the page's GitHub PR/issue searches use. Differs from name
-        # when split variants share a pname (_1password-gui-beta -> 1password).
-        "pname": (nixpkgs[attrs[0]].get("pname") if attrs and attrs[0] in nixpkgs else None) or name,
+        # What the GitHub PR/issue searches use: the attribute name, which
+        # unlike the pname tells variants apart (_1password-gui and
+        # _1password-gui-beta are both pname "1password").
+        "searchTerm": search_term(attrs[0]) if attrs else name,
         "project": proj["project"],
+        "dataFile": proj["dataFile"],
         "attrs": attrs,
         "nixVersion": nix.get("version") if nix else None,
         "nixStatus": nix.get("status") if nix else "missing",
@@ -262,7 +283,7 @@ def github_search_counts(token, queries):
 
 
 def add_github_counts(rows):
-    """Open nixpkgs PRs and issues with each row's pname in the title: the same
+    """Open nixpkgs PRs and issues with each row's attribute name in the title: the same
     searches the page links to. Title-only because nixpkgs titles name the
     package, while bodies of big rebuild PRs list hundreds of unrelated ones."""
     token = github_token()
@@ -270,7 +291,7 @@ def add_github_counts(rows):
         print("No GITHUB_TOKEN or gh login: skipping open PR/issue counts.", file=sys.stderr)
         return
     searches = [
-        (row, field, f"repo:{GITHUB_REPO} is:{kind} state:open in:title {row['pname']}")
+        (row, field, f"repo:{GITHUB_REPO} is:{kind} state:open in:title {row['searchTerm']}")
         for row in rows
         for kind, field in (("pr", "openPRs"), ("issue", "openIssues"))
     ]
@@ -289,30 +310,41 @@ def main():
     lists = read_lists()
     nixpkgs = load_nixpkgs_index()
 
-    # pname -> nixpkgs attributes to look up (empty if nixpkgs lacks it)
+    # name -> (nixpkgs attrs to look up, Repology project name to try if none
+    # of them resolve). Maintained packages go one attr at a time: with nested
+    # sets a pname can mean unrelated packages (foo, python313Packages.foo).
     wanted = {}
     handles = {h.lower() for h in lists["maintainers"]}
     for attr, p in sorted(nixpkgs.items()):
         if any(isinstance(m, dict) and (m.get("github") or "").lower() in handles
                for m in p["meta"].get("maintainers") or []):
-            wanted.setdefault(p.get("pname") or attr, []).append(attr)
+            wanted[attr] = ([attr], p.get("pname") or attr)
+    # Bare pnames only match top-level packages: "heroic" shouldn't pull in
+    # typstPackages.heroic.
     by_pname = {}
     for attr, p in nixpkgs.items():
-        by_pname.setdefault(p.get("pname"), []).append(attr)
-    for pname in lists["extraPackages"]:
-        wanted.setdefault(pname, sorted(by_pname.get(pname, [])))
+        if "." not in attr:
+            by_pname.setdefault(p.get("pname"), []).append(attr)
+    for name in lists["extraPackages"]:
+        # An exact attribute name tracks just that package (_1password-gui
+        # without its -beta, which shares the pname "1password").
+        attrs = [name] if name in nixpkgs else sorted(by_pname.get(name, []))
+        if not attrs:
+            print(f"  {name} is neither a nixpkgs attribute nor a top-level pname "
+                  "(aliases like python3Packages need their versioned name)", file=sys.stderr)
+        wanted.setdefault(name, (attrs, name))
 
     # Several attrs (wesnoth / wesnoth-devel, heroic / heroic-unwrapped) can
     # map to one Repology project; they're fetched once and split into rows
     # below.
     previous = load_previous_run()
-    projects = {}  # project -> {"name", "project", "attrs", "entries"[, "staleSince"]}
+    projects = {}  # project -> {"name", "project", "attrs", "entries", "dataFile"[, "staleSince"]}
     failed = []
-    for pname, attrs in sorted(wanted.items()):
+    for pname, (attrs, fallback) in sorted(wanted.items()):
         print(f"Resolving {pname}...", file=sys.stderr)
         stale_since = None
         try:
-            project, entries = resolve(pname, attrs)
+            project, entries = resolve(fallback, attrs)
         except (urllib.error.URLError, OSError, ValueError) as e:
             failed.append(pname)
             reused = previous_project(previous, pname, attrs)
@@ -324,11 +356,12 @@ def main():
 
         key = project or pname
         if key in projects:
-            projects[key]["attrs"] += attrs
+            projects[key]["attrs"] += [a for a in attrs if a not in projects[key]["attrs"]]
             continue
-        with open(os.path.join(TMP_DIR, f"{key}.json"), "w") as f:
+        with open(os.path.join(TMP_DIR, data_file(key)), "w") as f:
             json.dump(entries or [], f, indent=2, sort_keys=True)
-        projects[key] = {"name": pname, "project": project, "attrs": attrs, "entries": entries or []}
+        projects[key] = {"name": pname, "project": project, "attrs": attrs,
+                         "entries": entries or [], "dataFile": data_file(key)}
         if stale_since:
             projects[key]["staleSince"] = stale_since
 

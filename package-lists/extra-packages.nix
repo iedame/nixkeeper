@@ -1,4 +1,5 @@
 [
-  "1password"
+  "_1password-gui"
+  "_1password-gui-beta"
   "opentyrian"
 ]

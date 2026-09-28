@@ -5,7 +5,8 @@
     "iedame"
   ];
 
-  # Each file is a list of nixpkgs pnames to track on top of the above.
+  # Each file is a list of packages to track on top of the above: nixpkgs
+  # attribute names (exactly that package) or pnames (every package with it).
   extraPackages = builtins.concatLists (map import [
     # General
     ./extra-packages.nix
