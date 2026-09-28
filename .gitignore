@@ -1,3 +1,7 @@
 /data/
 .DS_Store
 /data.tmp/
+__pycache__/
+/result
+*.egg-info/
+/build/

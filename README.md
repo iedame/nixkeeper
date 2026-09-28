@@ -1,3 +1,32 @@
-nix flake check
+# nixkeeper
 
-nix eval --extra-experimental-features 'nix-command flakes' --json -f package-lists
+Tracks how nixpkgs unstable compares to every other repo Repology knows about,
+for a curated set of packages, and shows it on a static page (`docs/`).
+
+## What gets tracked
+
+`package-lists/default.nix` lists GitHub handles under `maintainers` (every
+nixpkgs package they maintain is tracked) and imports further lists of
+nixpkgs attribute names (exactly that package, e.g. `haskellPackages.pandoc`)
+or pnames (every top-level package with that pname).
+
+## Layout
+
+- `nixkeeper/`: the sync, as a Python package
+  - `sources/`: nixpkgs index + package lists, Repology, GitHub
+  - `tracking.py` → `lookup.py` → `rows.py` → `history.py` → `output.py`,
+    run in that order by `__main__.py`
+- `tests/`: offline tests, one file per module
+- `docs/index.html`: the page, reading `data/` from the `data` branch
+- `.github/workflows/`: `sync.yml` (daily sync), `check.yml` (tests on push)
+
+## Commands
+
+```bash
+nix run .#sync          # sync into data/ (alias: nix run .#fetch)
+nix flake check         # build the package, which runs the tests
+nix develop -c python3 -m unittest discover -s tests -t .   # tests, quickly
+nix eval --json -f package-lists                             # what the lists evaluate to
+```
+
+New files must be `git add`ed before Nix sees them.

@@ -1,5 +1,5 @@
 {
-  description = "nixkeeper — fetches Repology status for tracked packages";
+  description = "nixkeeper — tracks how nixpkgs unstable compares to other repos";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
   inputs.flake-utils.url = "github:numtide/flake-utils";
@@ -8,27 +8,41 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        python = pkgs.python3.withPackages (ps: [ ps.brotli ]);
-      in {
-        apps.fetch = {
-          type = "app";
-          program = "${pkgs.writeShellApplication {
-            name = "nixkeeper-fetch";
-            runtimeInputs = [ python ];
-            text = ''python3 ${./scripts/fetch.py}'';
-          }}/bin/nixkeeper-fetch";
-        meta.description = "Fetch Repology status for tracked packages";
+        inherit (pkgs) lib;
+        py = pkgs.python3Packages;
+
+        nixkeeper = py.buildPythonApplication {
+          pname = "nixkeeper";
+          version = "0.1.0";
+          pyproject = true;
+          src = lib.fileset.toSource {
+            root = ./.;
+            fileset = lib.fileset.unions [ ./pyproject.toml ./nixkeeper ./tests ];
+          };
+          build-system = [ py.setuptools ];
+          dependencies = [ py.brotli ];
+          # The offline tests run as part of every build.
+          nativeCheckInputs = [ py.unittestCheckHook ];
+          unittestFlagsArray = [ "-s" "tests" "-t" "." "-v" ];
+          meta.mainProgram = "nixkeeper-sync";
         };
+
+        sync = {
+          type = "app";
+          program = lib.getExe nixkeeper;
+          meta.description = "Sync package data: nixpkgs + Repology + GitHub -> data/";
+        };
+      in {
+        packages.default = nixkeeper;
+
+        apps.sync = sync;
+        apps.fetch = sync; # old name, kept as an alias
+        apps.default = sync;
+
+        checks.nixkeeper = nixkeeper; # building it runs the tests
 
         devShells.default = pkgs.mkShell {
-          packages = [ python ];
+          packages = [ (pkgs.python3.withPackages (ps: [ ps.brotli ])) ];
         };
-
-        # Offline tests for fetch.py's logic (scripts/test_fetch.py).
-        checks.tests = pkgs.runCommand "nixkeeper-tests" { nativeBuildInputs = [ python ]; } ''
-          cd ${./scripts}
-          PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_fetch
-          touch $out
-        '';
       });
 }

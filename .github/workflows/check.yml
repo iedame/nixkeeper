@@ -14,5 +14,5 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Run flake checks (includes fetch.py tests)
+      - name: Run flake checks (builds nixkeeper, which runs its tests)
         run: nix flake check

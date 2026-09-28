@@ -1,0 +1,24 @@
+"""One sync: nixpkgs index + package lists -> tracked packages -> Repology ->
+rows -> GitHub counts -> data/. Run from the repository root (it reads
+package-lists/ and writes data/ there): `nix run .#sync`."""
+from datetime import datetime, timezone
+
+from . import history, lookup, output, rows, tracking
+from .sources import github
+from .sources import nixpkgs as nixpkgs_source
+
+
+def main():
+    now = datetime.now(timezone.utc).isoformat()
+    nixpkgs = nixpkgs_source.load_index()
+    wanted = tracking.tracked_packages(nixpkgs_source.read_lists(), nixpkgs)
+    previous = history.load_previous_run()
+    projects = lookup.collect_projects(wanted, previous)
+    index_rows = rows.build_rows(projects, nixpkgs)
+    history.add_outdated_since(index_rows, previous, now)
+    github.add_counts(index_rows)
+    output.write(projects, {"checkedAt": now, "packages": index_rows})
+
+
+if __name__ == "__main__":
+    main()

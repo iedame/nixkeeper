@@ -1,0 +1,37 @@
+"""Settings shared across nixkeeper. Modules read these as config.NAME at call
+time, so tests can patch them."""
+import os
+import re
+
+OUT_DIR = "data"
+LISTS_DIR = "package-lists"
+NIX_REPO = "nix_unstable"
+USER_AGENT = "nixkeeper/1.0 (personal package tracker)"
+
+# Every package in nixos-unstable with its meta (maintainers, platforms, ...).
+# Same channel Repology's nix_unstable tracks, and far cheaper than evaluating
+# nixpkgs ourselves.
+NIXPKGS_INDEX_URL = "https://channels.nixos.org/nixos-unstable/packages.json.br"
+
+# repology.org has occasionally been unreachable; repology.amdmi3.ru (the
+# author's own domain) has served as a working fallback. Tried in order;
+# set REPOLOGY_BASE_URL to force a single one instead.
+_override = os.environ.get("REPOLOGY_BASE_URL")
+REPOLOGY_URLS = [_override] if _override else ["https://repology.org", "https://repology.amdmi3.ru"]
+RETRY_DELAYS = [5, 15]  # seconds before each retry of a failed Repology request
+# If more lookups than this fail, Repology is likely down: abort and keep the
+# previous data (the page flags it as stale) instead of publishing a run that's
+# mostly "not refreshed".
+MAX_FAILED_SHARE = 0.5
+
+# Repology statuses the page shows as outdated ("legacy": outdated while the
+# same repo has a newer version in another package).
+OUTDATED_STATUSES = {"outdated", "legacy"}
+
+GITHUB_REPO = "NixOS/nixpkgs"
+GITHUB_SEARCH_BATCH = 20  # searches per GraphQL request
+# nixpkgs PR/issue titles name packages in versioned sets by their alias
+# ("python3Packages.requests: 2.34 -> 2.35"), which the index doesn't carry.
+SEARCH_ALIASES = [
+    (re.compile(r"^python3\d+Packages\."), "python3Packages."),
+]

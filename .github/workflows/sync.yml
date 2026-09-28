@@ -37,8 +37,8 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Fetch package data from Repology
-        run: nix run .#fetch
+      - name: Sync package data
+        run: nix run .#sync
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # for open PR/issue counts
 
