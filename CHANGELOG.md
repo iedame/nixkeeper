@@ -41,8 +41,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - Packages Repology flags as vulnerable link to its list of known CVEs, in
   the package details and in the status issue.
 
+- Hourly quick check (`nix run .#quick-check`, `quick-check.yml`): update
+  checks marked `frequent = true` also run every hour against the last
+  published data, refreshing just those packages' Repology data. Writes,
+  commits and notifies only when something changed. First ones: google-chrome
+  (Google's version history API) and microsoft-edge (Microsoft's Debian
+  repository), Linux stable.
+
 ### Changed
 
+- The daily sync and the quick check share a concurrency group, so they never
+  push to the data branch at the same time.
 - Hydra and the update logs share one retrying HTTP helper.
 - "Outdated" means outdated per Repology or per an update check, everywhere:
   the page, "outdated since" and the status issue.

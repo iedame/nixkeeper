@@ -11,6 +11,7 @@ dependencies = ["brotli"]
 
 [project.scripts]
 nixkeeper-sync = "nixkeeper.__main__:main"
+nixkeeper-quick-check = "nixkeeper.quick:main"
 
 [tool.setuptools.packages.find]
 include = ["nixkeeper*"]

@@ -100,6 +100,11 @@
           inherit sync;
           fetch = sync; # old name, kept as an alias
           default = sync;
+          quick-check = {
+            type = "app";
+            program = lib.getExe' nixkeeper "nixkeeper-quick-check";
+            meta.description = "Run the frequent update checks against the last sync's data/";
+          };
         };
 
         formatter = treefmt.config.build.wrapper;

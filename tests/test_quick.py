@@ -1,0 +1,150 @@
+import io
+import json
+import os
+import tempfile
+import unittest
+from unittest import mock
+
+from nixkeeper import notify, quick
+from nixkeeper.sources import http, repology
+from nixkeeper.sources import nixpkgs as nixpkgs_source
+from tests.helpers import nix, other
+
+CHECKS = {
+    "google-chrome": {
+        "url": "https://versionhistory.example/chrome",
+        "pattern": r'"version": "([0-9.]+)"',
+        "frequent": True,
+    },
+    "bbedit": {"url": "https://example.org/bbedit", "pattern": r"BBEdit ([0-9.]+)"},
+}
+
+
+def chrome_row(**extra):
+    return {
+        "name": "google-chrome",
+        "attrs": ["google-chrome"],
+        "project": "google-chrome",
+        "dataFile": "google-chrome.json",
+        "nixVersion": "154.0.8037.57",
+        "nixStatus": "newest",
+        "nixVulnerable": False,
+        "refVersion": "154.0.8037.57",
+        "repoCount": 1,
+        "builds": [],
+        "unfree": True,
+        **extra,
+    }
+
+
+def entries(nix_version, newest):
+    return [
+        nix(
+            "google-chrome",
+            nix_version,
+            "newest" if nix_version == newest else "outdated",
+        ),
+        other("arch", newest, "newest"),
+    ]
+
+
+def api(*versions):
+    return json.dumps({"versions": [{"version": v} for v in versions]})
+
+
+class QuickCheck(unittest.TestCase):
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.dir.cleanup)
+        cwd = os.getcwd()
+        os.chdir(self.dir.name)
+        self.addCleanup(os.chdir, cwd)
+        os.mkdir("data")
+        self.stderr = io.StringIO()
+        patcher = mock.patch("sys.stderr", self.stderr)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def publish(self, *rows):
+        index = {"checkedAt": "2026-09-30T06:00:00+00:00", "packages": list(rows)}
+        with open("data/index.json", "w") as f:
+            json.dump(index, f)
+        return index
+
+    def run_quick(self, page, nix_version="154.0.8037.57", newest="154.0.8037.57"):
+        """quick.main() with Repology answering nix_version for nixpkgs and
+        the check's URL answering page."""
+        with (
+            mock.patch.object(
+                nixpkgs_source, "read_lists", return_value={"updateChecks": CHECKS}
+            ),
+            mock.patch.object(
+                repology,
+                "project_by_name",
+                return_value=("google-chrome", entries(nix_version, newest)),
+            ),
+            mock.patch.object(http, "get", return_value=page) as get,
+            mock.patch.object(notify, "notify") as notified,
+        ):
+            quick.main()
+        with open("data/index.json") as f:
+            return json.load(f), notified, get
+
+    def test_new_release_is_written_and_notified(self):
+        before = self.publish(chrome_row(), {"name": "bbedit", "attrs": ["bbedit"]})
+        index, notified, get = self.run_quick(api("154.0.8040.12", "154.0.8037.57"))
+        chrome = index["packages"][0]
+        self.assertEqual(chrome["refVersion"], "154.0.8040.12")
+        self.assertTrue(chrome["upstream"]["newer"])
+        self.assertIn("outdatedSince", chrome)
+        self.assertEqual(index["packages"][1], before["packages"][1])  # untouched
+        self.assertEqual(index["checkedAt"], before["checkedAt"])  # the full sync's
+        get.assert_called_once_with(CHECKS["google-chrome"]["url"])  # not bbedit's
+        notified.assert_called_once()
+        self.assertEqual(notified.call_args.args[0], before)  # compared with before
+        self.assertTrue(os.path.exists("data/google-chrome.json"))
+
+    def test_nothing_changed_writes_nothing(self):
+        up = {
+            "version": "154.0.8037.57",
+            "label": "versionhistory.example",
+            "url": CHECKS["google-chrome"]["url"],
+            "checkedAt": "2026-09-30T06:00:00+00:00",
+            "newer": False,
+        }
+        before = self.publish(chrome_row(upstream=up))
+        index, notified, _ = self.run_quick(api("154.0.8037.57"))
+        self.assertEqual(index, before)
+        notified.assert_not_called()
+        self.assertIn("Nothing changed", self.stderr.getvalue())
+
+    def test_nixpkgs_catching_up_clears_outdated(self):
+        up = {"version": "154.0.8040.12", "url": "x", "newer": True}
+        self.publish(
+            chrome_row(
+                refVersion="154.0.8040.12",
+                upstream=up,
+                outdatedSince="2026-09-30T07:23:00+00:00",
+            )
+        )
+        index, _, _ = self.run_quick(
+            api("154.0.8040.12"), nix_version="154.0.8040.12", newest="154.0.8040.12"
+        )
+        chrome = index["packages"][0]
+        self.assertEqual(chrome["nixVersion"], "154.0.8040.12")
+        self.assertFalse(chrome["upstream"]["newer"])
+        self.assertNotIn("outdatedSince", chrome)
+
+    def test_failing_check_is_marked_and_notified_once(self):
+        self.publish(chrome_row())
+        index, notified, _ = self.run_quick("<html>moved</html>")
+        failing = index["packages"][0]["notRefreshed"]["upstream"]
+        self.assertIn("matches", failing["reason"])
+        notified.assert_called_once()
+        # Next hour, still failing: nothing new to write or say.
+        _, notified, _ = self.run_quick("<html>moved</html>")
+        notified.assert_not_called()
+
+    def test_needs_a_previous_sync(self):
+        with self.assertRaises(SystemExit):
+            quick.main()

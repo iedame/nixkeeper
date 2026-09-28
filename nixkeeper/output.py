@@ -28,3 +28,14 @@ def write(projects, index, out_dir=config.OUT_DIR):
         json.dump(index, f, indent=2, sort_keys=True)
     shutil.rmtree(out_dir, ignore_errors=True)
     os.rename(tmp_dir, out_dir)
+
+
+def update(files, out_dir=config.OUT_DIR):
+    """Replace some files in an existing out_dir ({file name: data}), each
+    written aside first so a failure never leaves one half-written. For
+    partial runs (the quick check), which leave everything else as it was."""
+    for name, data in files.items():
+        path = os.path.join(out_dir, name)
+        with open(path + ".tmp", "w") as f:
+            json.dump(data, f, indent=2, sort_keys=True)
+        os.replace(path + ".tmp", path)

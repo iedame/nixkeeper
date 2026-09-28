@@ -27,6 +27,7 @@ or pnames (every top-level package with that pname).
 
 ```bash
 nix run .#sync          # sync into data/ (alias: nix run .#fetch)
+nix run .#quick-check   # only the frequent update checks, against data/ (hourly in CI)
 nix fmt                 # format everything (Nix, Python, the page)
 nix flake check         # tests, formatting, linters, package-list checks
 nix develop -c python3 -m unittest discover -s tests -t .   # tests, quickly

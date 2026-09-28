@@ -1,0 +1,57 @@
+name: Quick update check
+
+# The update checks marked `frequent = true` in package-lists/update-checks.nix,
+# hourly, on top of the daily sync (nixkeeper/quick.py). Commits only when a
+# result changed, so most runs push nothing.
+on:
+  schedule:
+    - cron: '23 * * * *'   # hourly; off the hour, when GitHub's scheduler is busiest
+  workflow_dispatch: {}
+
+# Both workflows push to the data branch: never at the same time.
+concurrency:
+  group: data-branch
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  issues: write  # the status issue (nixkeeper/notify.py)
+
+jobs:
+  quick-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7
+        with:
+          ref: main
+          fetch-depth: 0   # full history so the rebase below has something to work with
+
+      - name: Prepare data branch
+        run: |
+          git config user.name "nixkeeper-bot"
+          git config user.email "nixkeeper-bot@users.noreply.github.com"
+          # Same as the daily sync: the data branch, replayed on top of main,
+          # so this runs main's current code against the last published data.
+          git fetch origin data
+          git checkout -b data origin/data
+          git rebase origin/main
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Run the frequent update checks
+        run: nix run .#quick-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub checks and the status issue
+          NIXKEEPER_NOTIFY: "1"  # only CI updates the status issue
+
+      - name: Commit and push if anything changed
+        run: |
+          git add -f data/
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git commit -m "quick check: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git push --force-with-lease origin data

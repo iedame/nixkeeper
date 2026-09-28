@@ -84,8 +84,9 @@ let
               "url must start with https:// or http://"
           )
         )
+        ++ lib.optional (!builtins.isBool (check.frequent or false)) (at "frequent must be true or false")
         ++ map (k: at "unknown field ${k}") (
-          builtins.filter (k: !builtins.elem k fields) (builtins.attrNames check)
+          builtins.filter (k: !builtins.elem k (fields ++ [ "frequent" ])) (builtins.attrNames check)
         );
     in
     lib.optional (!isTracked lists name) (at "not a tracked package (use its row name, the attribute)")
