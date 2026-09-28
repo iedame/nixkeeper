@@ -112,7 +112,9 @@
             ruff check --no-cache .
             deadnix --fail .
             statix check .
-            actionlint
+            # Named explicitly: on its own actionlint looks for .git, which the
+            # flake source (CI's view of the repo) doesn't include.
+            actionlint .github/workflows/*.yml
             biome lint docs
             touch $out
           '';
