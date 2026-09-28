@@ -5,9 +5,13 @@ on:
     - cron: '0 6 * * *'   # daily at 06:00 UTC
   workflow_dispatch: {}    # lets you trigger a run manually from the Actions tab
 
+# Anything not listed here is "none", and GitHub's search then leaves pull
+# requests out for this token: without pull-requests: read, the open PR counts
+# silently came back as issue counts.
 permissions:
   contents: write
   issues: write  # the status issue (nixkeeper/notify.py)
+  pull-requests: read  # open PR counts (nixkeeper/sources/github.py)
 
 jobs:
   sync:
