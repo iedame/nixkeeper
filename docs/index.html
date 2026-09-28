@@ -57,6 +57,7 @@
   .stat-btn:disabled { cursor: default; opacity: .6; }
   .stat-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .stats .checked { margin-left: auto; color: var(--ink-faint); }
+  .stats .checked.stale { color: var(--danger); }
 
   table { width: 100%; border-collapse: collapse; }
   thead th { text-align: left; font-size: 12px; font-weight: 500; color: var(--ink-faint); padding: 0 10px 8px; border-bottom: 1px solid var(--hairline); }
@@ -175,6 +176,9 @@ const detailCache = new Map(); // name -> parsed per-package Repology JSON
 let packages = [];
 let checkedAt = null;
 let activeFilter = 'all'; // 'all' | 'warn' | 'missing' | 'vuln'
+// The sync runs daily; older than this means runs are failing or GitHub has
+// paused the schedule (it does after 60 days without commits).
+const STALE_AFTER_HOURS = 48;
 
 const FILTERS = {
   all:     { label: 'tracked',         test: () => true },
@@ -203,7 +207,7 @@ async function loadIndex() {
   } catch (err) {
     content.innerHTML = `<div class="error">
       Couldn't load <code>data/index.json</code> from the <code>data</code> branch of
-      <code>${repoInfo.owner}/${repoInfo.repo}</code>.<br>
+      <code>${escapeHtml(repoInfo.owner)}/${escapeHtml(repoInfo.repo)}</code>.<br>
       Check that the repo is public and the sync workflow has run at least once.
     </div>`;
   }
@@ -241,8 +245,10 @@ function renderStats() {
       ${!count && key !== 'all' && !pressed ? 'disabled' : ''}>
       <b${f.color ? ` style="color:${f.color}"` : ''}>${count}</b> ${f.label}</button>`;
   }).join('');
-  document.getElementById('stats').innerHTML =
-    `${buttons}<span class="checked">checked ${timeAgo(checkedAt)}</span>`;
+  const stale = !checkedAt || Date.now() - new Date(checkedAt).getTime() > STALE_AFTER_HOURS * 3600e3;
+  document.getElementById('stats').innerHTML = `${buttons}<span class="checked${stale ? ' stale' : ''}"
+    ${stale ? 'title="The daily sync hasn\'t updated the data in over 2 days. Check the workflow in the Actions tab."' : ''}>
+    checked ${timeAgo(checkedAt)}${stale ? ' — sync may be failing' : ''}</span>`;
 }
 
 function escapeHtml(s) { return (s || '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -265,7 +271,7 @@ function render(list) {
   list.forEach(pkg => {
     const st = computeStatus(pkg);
     const verCell = st === 'missing' ? `<span class="badge missing">not packaged</span>`
-      : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}`;
+      : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}`;
 
     const tr = document.createElement('tr');
     tr.className = 'row'; tr.tabIndex = 0;

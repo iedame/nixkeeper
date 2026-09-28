@@ -38,6 +38,11 @@ USER_AGENT = "nixkeeper/1.0 (personal package tracker)"
 # set REPOLOGY_BASE_URL to force a single one instead.
 override = os.environ.get("REPOLOGY_BASE_URL")
 BASE_URLS = [override] if override else ["https://repology.org", "https://repology.amdmi3.ru"]
+RETRY_DELAYS = [5, 15]  # seconds before each retry of a failed Repology request
+# If more lookups than this fail, Repology is likely down: abort and keep the
+# previous data (the page flags it as stale) instead of publishing a run that's
+# mostly "not refreshed".
+MAX_FAILED_SHARE = 0.5
 GITHUB_REPO = "NixOS/nixpkgs"
 
 
@@ -75,21 +80,26 @@ def platforms(pkgs):
 
 
 def repology_get(path):
-    """GET a Repology path, trying each domain. Returns (json, final_url), or
-    (None, None) on 404."""
+    """GET a Repology path, trying each domain, and retrying the lot after
+    RETRY_DELAYS seconds. Returns (json, final_url), or (None, None) on 404."""
     last_err = None
-    for base in BASE_URLS:
-        req = urllib.request.Request(base + path, headers={"User-Agent": USER_AGENT})
-        try:
-            with urllib.request.urlopen(req, timeout=20) as resp:
-                return json.loads(resp.read().decode()), resp.geturl()
-        except urllib.error.HTTPError as e:
-            if e.code == 404:
-                return None, None
-            last_err = e
-        except (urllib.error.URLError, OSError) as e:
-            print(f"  {base} unreachable ({e}), trying next domain...", file=sys.stderr)
-            last_err = e
+    for delay in [0, *RETRY_DELAYS]:
+        if delay:
+            print(f"  retrying in {delay}s...", file=sys.stderr)
+            time.sleep(delay)
+        for base in BASE_URLS:
+            req = urllib.request.Request(base + path, headers={"User-Agent": USER_AGENT})
+            try:
+                with urllib.request.urlopen(req, timeout=20) as resp:
+                    return json.loads(resp.read().decode()), resp.geturl()
+            except urllib.error.HTTPError as e:
+                if e.code == 404:
+                    return None, None
+                print(f"  {base} answered {e.code}", file=sys.stderr)
+                last_err = e
+            except (urllib.error.URLError, OSError, ValueError) as e:
+                print(f"  {base} failed ({e}), trying next domain...", file=sys.stderr)
+                last_err = e
     raise last_err
 
 
@@ -110,6 +120,46 @@ def project_by_name(name):
     entries, _ = repology_get(f"/api/v1/project/{urllib.parse.quote(name)}")
     # Repology answers an unknown project with an empty list, not a 404.
     return (name, entries) if entries else (None, None)
+
+
+def resolve(pname, attrs):
+    """Find the Repology project for a tracked pname. Returns (project,
+    entries), (None, None) if Repology doesn't know it; raises on failure."""
+    for attr in attrs:
+        project, entries = project_for_attr(attr)
+        time.sleep(1)  # be polite to Repology's API
+        if project:
+            return project, entries
+    # Not in nixpkgs, or Repology hasn't caught up yet: try the pname as a
+    # Repology project name directly.
+    project, entries = project_by_name(pname)
+    time.sleep(1)
+    return project, entries
+
+
+def load_previous_run():
+    """The last successful run's index, or an empty one."""
+    try:
+        with open(os.path.join(OUT_DIR, "index.json")) as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return {"packages": []}
+
+
+def previous_project(previous, pname, attrs):
+    """Reuse the last run's data for a pname whose lookup failed. Returns
+    (project, entries, stale_since), or None if there's nothing to reuse."""
+    for row in previous["packages"]:
+        if pname in (row.get("pname"), row["name"]) or set(attrs) & set(row.get("attrs") or []):
+            entries = []
+            if row.get("project"):
+                try:
+                    with open(os.path.join(OUT_DIR, f"{row['project']}.json")) as f:
+                        entries = json.load(f)
+                except (OSError, ValueError):
+                    return None
+            return row.get("project"), entries, row.get("staleSince") or previous.get("checkedAt")
+    return None
 
 
 def project_rows(proj, nixpkgs):
@@ -238,20 +288,22 @@ def main():
     # Several attrs (wesnoth / wesnoth-devel, heroic / heroic-unwrapped) can
     # map to one Repology project; they're fetched once and split into rows
     # below.
-    projects = {}  # project -> {"name", "project", "attrs", "entries"}
+    previous = load_previous_run()
+    projects = {}  # project -> {"name", "project", "attrs", "entries"[, "staleSince"]}
+    failed = []
     for pname, attrs in sorted(wanted.items()):
         print(f"Resolving {pname}...", file=sys.stderr)
-        project, entries = None, None
-        for attr in attrs:
-            project, entries = project_for_attr(attr)
-            time.sleep(1)  # be polite to Repology's API
-            if project:
-                break
-        if not project:
-            # Not in nixpkgs, or Repology hasn't caught up yet: try the pname
-            # as a Repology project name directly.
-            project, entries = project_by_name(pname)
-            time.sleep(1)
+        stale_since = None
+        try:
+            project, entries = resolve(pname, attrs)
+        except (urllib.error.URLError, OSError, ValueError) as e:
+            failed.append(pname)
+            reused = previous_project(previous, pname, attrs)
+            if not reused:
+                print(f"  giving up on {pname} ({e}); no previous data, skipping it this run", file=sys.stderr)
+                continue
+            project, entries, stale_since = reused
+            print(f"  giving up on {pname} ({e}); reusing data from {stale_since}", file=sys.stderr)
 
         key = project or pname
         if key in projects:
@@ -260,8 +312,19 @@ def main():
         with open(os.path.join(TMP_DIR, f"{key}.json"), "w") as f:
             json.dump(entries or [], f, indent=2, sort_keys=True)
         projects[key] = {"name": pname, "project": project, "attrs": attrs, "entries": entries or []}
+        if stale_since:
+            projects[key]["staleSince"] = stale_since
 
-    rows = [row for proj in projects.values() for row in project_rows(proj, nixpkgs)]
+    if len(failed) > MAX_FAILED_SHARE * len(wanted):
+        sys.exit(f"Repology lookups failed for {len(failed)} of {len(wanted)} packages; "
+                 f"keeping the previous data. Failed: {', '.join(failed)}")
+
+    rows = []
+    for proj in projects.values():
+        for row in project_rows(proj, nixpkgs):
+            if proj.get("staleSince"):
+                row["staleSince"] = proj["staleSince"]  # when its data was last fetched
+            rows.append(row)
     add_github_counts(rows)
     with open(os.path.join(TMP_DIR, "index.json"), "w") as f:
         json.dump({
