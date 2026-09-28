@@ -26,7 +26,8 @@
 
         nixkeeper = py.buildPythonApplication {
           pname = "nixkeeper";
-          version = "0.1.0";
+          # One version for both: bump it in pyproject.toml.
+          inherit ((lib.importTOML ./pyproject.toml).project) version;
           pyproject = true;
           src = lib.fileset.toSource {
             root = ./.;
