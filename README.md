@@ -17,6 +17,9 @@ or pnames (every top-level package with that pname).
   - `tracking.py` → `lookup.py` → `rows.py` → `history.py` → `output.py`,
     run in that order by `__main__.py`
 - `tests/`: offline tests, one file per module
+- `nix/package-lists.nix`: `nix flake check` validates the package lists
+  against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
+  handles, duplicates)
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/` from the `data` branch
 - `.github/workflows/`: `sync.yml` (daily sync), `check.yml` (tests on push)
 

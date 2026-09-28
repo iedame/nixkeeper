@@ -66,6 +66,26 @@ def add_counts(rows):
         counts = search_counts(tok, [q for _, _, q in batch])
         for (row, field, _), count in zip(batch, counts):
             row[field] = count
+    for warning in count_warnings(rows):
+        print(f"::warning::{warning}", file=sys.stderr)
+
+
+def count_warnings(rows):
+    """Counts that are probably wrong without any error saying so. ::warning::
+    lines show up as annotations on the workflow run."""
+    warnings = []
+    fields = ("openPRs", "openIssues")
+    missing = sum(1 for row in rows for f in fields if row.get(f) is None)
+    if missing:
+        warnings.append(f"{missing} of {2 * len(rows)} open PR/issue searches failed; those counts are blank")
+    counted = [(row["openPRs"], row["openIssues"]) for row in rows
+               if row.get("openPRs") is not None and row.get("openIssues") is not None]
+    # A token that can't see pull requests gets issue counts back for the PR
+    # searches (see permissions in .github/workflows/sync.yml).
+    if len(counted) >= 5 and any(prs for prs, _ in counted) and all(prs == issues for prs, issues in counted):
+        warnings.append("every package's open PR count equals its open issue count: the token probably "
+                        "can't see pull requests (does the workflow grant pull-requests: read?)")
+    return warnings
 
 
 STATUS_LABEL = "nixkeeper-status"

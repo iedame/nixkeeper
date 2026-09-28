@@ -46,3 +46,34 @@ class GitHubCounts(unittest.TestCase):
     def test_failed_request_blanks_its_batch(self):
         with mock.patch("urllib.request.urlopen", side_effect=http_error(401)):
             self.assertEqual(github.search_counts("t", ["q0", "q1"]), [None, None])
+
+
+class CountWarnings(unittest.TestCase):
+    @staticmethod
+    def rows(*counts):
+        return [{"searchTerm": str(i), "openPRs": p, "openIssues": i_} for i, (p, i_) in enumerate(counts)]
+
+    def test_prs_mirroring_issues_warns(self):
+        [warning] = github.count_warnings(self.rows((5, 5), (1, 1), (0, 0), (0, 0), (2, 2)))
+        self.assertIn("pull-requests: read", warning)
+
+    def test_real_looking_counts_dont_warn(self):
+        # 17 of 28 were equal in real data (mostly 0/0): only *all* equal is suspicious.
+        self.assertEqual(github.count_warnings(self.rows((1, 5), (1, 1), (0, 0), (0, 0), (1, 0))), [])
+
+    def test_all_zero_or_too_few_rows_dont_warn(self):
+        self.assertEqual(github.count_warnings(self.rows(*[(0, 0)] * 10)), [])
+        self.assertEqual(github.count_warnings(self.rows((3, 3), (1, 1))), [])
+
+    def test_failed_searches_warn(self):
+        [warning] = github.count_warnings(self.rows((1, None), (None, None), (0, 0)))
+        self.assertIn("3 of 6", warning)
+
+    def test_add_counts_prints_warnings(self):
+        rows = [{"searchTerm": t} for t in "abcde"]
+        stderr = io.StringIO()
+        with mock.patch("sys.stderr", stderr), \
+             mock.patch.object(github, "token", return_value="t"), \
+             mock.patch.object(github, "search_counts", side_effect=lambda tok, qs: [2] * len(qs)):
+            github.add_counts(rows)
+        self.assertIn("::warning::every package's open PR count equals", stderr.getvalue())

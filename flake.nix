@@ -27,6 +27,10 @@
           meta.mainProgram = "nixkeeper-sync";
         };
 
+        listsChecker = import ./nix/package-lists.nix {
+          pkgs = import nixpkgs { inherit system; config.allowAliases = false; };
+        };
+
         sync = {
           type = "app";
           program = lib.getExe nixkeeper;
@@ -40,6 +44,19 @@
         apps.default = sync;
 
         checks.nixkeeper = nixkeeper; # building it runs the tests
+        checks.package-lists = listsChecker.check (import ./package-lists);
+        # The checker itself, against lists with known problems.
+        checks.package-lists-checker =
+          let
+            found = map (p: p.entry) (listsChecker.problems {
+              maintainers = [ "iedame" "IEDAME" "no-such-handle-nixkeeper" ];
+              extraPackages = [ "opentyrian" "haskellPackages.pandoc" "python313Packages.requests"
+                                "python3Packages.requests" "nosuchpkg-nixkeeper" "opentyrian" ];
+            });
+            expected = [ "no-such-handle-nixkeeper" "opentyrian" "python3Packages.requests" "nosuchpkg-nixkeeper" ];
+          in
+          assert lib.assertMsg (found == expected) "package-lists checker found ${builtins.toJSON found}";
+          pkgs.runCommand "package-lists-checker-ok" { } "touch $out";
 
         devShells.default = pkgs.mkShell {
           packages = [ (pkgs.python3.withPackages (ps: [ ps.brotli ])) ];
