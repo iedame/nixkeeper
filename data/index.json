@@ -1,52 +1,55 @@
 {
-  "checkedAt": "2026-09-28T01:36:18.084558+00:00",
+  "checkedAt": "2026-09-28T02:17:10.771270+00:00",
   "packages": [
     {
       "attrs": [
         "_1password-gui"
       ],
+      "dataFile": "1password.json",
       "devel": false,
       "homepage": "https://1password.com/",
-      "name": "1password",
+      "name": "_1password-gui",
       "nixStatus": "newest",
       "nixVersion": "8.12.36",
       "nixVulnerable": false,
-      "openIssues": 3,
-      "openPRs": 4,
+      "openIssues": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
       },
-      "pname": "1password",
       "project": "1password",
       "refVersion": "8.12.36",
-      "repoCount": 29
+      "repoCount": 29,
+      "searchTerm": "_1password-gui"
     },
     {
       "attrs": [
         "_1password-gui-beta"
       ],
+      "dataFile": "1password.json",
       "devel": true,
       "homepage": "https://1password.com/",
       "name": "_1password-gui-beta",
       "nixStatus": "legacy",
       "nixVersion": "8.12.32-26.BETA",
       "nixVulnerable": false,
-      "openIssues": 3,
-      "openPRs": 4,
+      "openIssues": 0,
+      "openPRs": 0,
       "platforms": {
         "darwin": true,
         "linux": true
       },
-      "pname": "1password",
       "project": "1password",
       "refVersion": "8.12.36",
-      "repoCount": 29
+      "repoCount": 29,
+      "searchTerm": "_1password-gui-beta"
     },
     {
       "attrs": [
         "backrest"
       ],
+      "dataFile": "backrest.json",
       "devel": false,
       "homepage": "https://github.com/garethgeorge/backrest",
       "name": "backrest",
@@ -59,15 +62,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "backrest",
       "project": "backrest",
       "refVersion": "1.14.1",
-      "repoCount": 9
+      "repoCount": 9,
+      "searchTerm": "backrest"
     },
     {
       "attrs": [
         "bbedit"
       ],
+      "dataFile": "bbedit.json",
       "devel": false,
       "homepage": "https://www.barebones.com/products/bbedit/",
       "name": "bbedit",
@@ -80,15 +84,16 @@
         "darwin": true,
         "linux": false
       },
-      "pname": "bbedit",
       "project": "bbedit",
       "refVersion": "16.0.3",
-      "repoCount": 5
+      "repoCount": 5,
+      "searchTerm": "bbedit"
     },
     {
       "attrs": [
         "bolt-launcher"
       ],
+      "dataFile": "bolt-launcher.json",
       "devel": false,
       "homepage": "https://codeberg.org/Adamcake/Bolt",
       "name": "bolt-launcher",
@@ -101,15 +106,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "bolt-launcher",
       "project": "bolt-launcher",
       "refVersion": "0.24.0",
-      "repoCount": 11
+      "repoCount": 11,
+      "searchTerm": "bolt-launcher"
     },
     {
       "attrs": [
         "d-seams"
       ],
+      "dataFile": "d-seams.json",
       "devel": false,
       "homepage": "https://dseams.info",
       "name": "d-seams",
@@ -122,15 +128,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "d-seams",
       "project": "d-seams",
       "refVersion": null,
-      "repoCount": 6
+      "repoCount": 6,
+      "searchTerm": "d-seams"
     },
     {
       "attrs": [
         "egoboo"
       ],
+      "dataFile": "egoboo.json",
       "devel": false,
       "homepage": "https://egoboo.sourceforge.net/",
       "name": "egoboo",
@@ -143,15 +150,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "egoboo",
       "project": "egoboo",
       "refVersion": "2.8.1",
-      "repoCount": 33
+      "repoCount": 33,
+      "searchTerm": "egoboo"
     },
     {
       "attrs": [
         "fastmail-desktop"
       ],
+      "dataFile": "fastmail.json",
       "devel": false,
       "homepage": "https://www.fastmail.com/blog/desktop-app/",
       "name": "fastmail-desktop",
@@ -164,15 +172,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "fastmail-desktop",
       "project": "fastmail",
       "refVersion": "1.8.0",
-      "repoCount": 4
+      "repoCount": 4,
+      "searchTerm": "fastmail-desktop"
     },
     {
       "attrs": [
         "filezilla"
       ],
+      "dataFile": "filezilla.json",
       "devel": false,
       "homepage": "https://filezilla-project.org/",
       "name": "filezilla",
@@ -185,15 +194,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "filezilla",
       "project": "filezilla",
       "refVersion": "3.71.1",
-      "repoCount": 157
+      "repoCount": 157,
+      "searchTerm": "filezilla"
     },
     {
       "attrs": [
         "freedink"
       ],
+      "dataFile": "freedink.json",
       "devel": false,
       "homepage": "https://gnu.org/software/freedink/",
       "name": "freedink",
@@ -206,15 +216,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "freedink",
       "project": "freedink",
       "refVersion": "109.6",
-      "repoCount": 67
+      "repoCount": 67,
+      "searchTerm": "freedink"
     },
     {
       "attrs": [
         "fzssh"
       ],
+      "dataFile": "fzssh.json",
       "devel": false,
       "homepage": "https://lib.filezilla-project.org/",
       "name": "fzssh",
@@ -224,15 +235,16 @@
       "openIssues": 0,
       "openPRs": 0,
       "platforms": null,
-      "pname": "fzssh",
       "project": "fzssh",
       "refVersion": "1.4.0",
-      "repoCount": 41
+      "repoCount": 41,
+      "searchTerm": "fzssh"
     },
     {
       "attrs": [
         "google-chrome"
       ],
+      "dataFile": "google-chrome.json",
       "devel": false,
       "homepage": "https://www.google.com/chrome/browser/",
       "name": "google-chrome",
@@ -245,16 +257,17 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "google-chrome",
       "project": "google-chrome",
       "refVersion": "154.0.8037.57",
-      "repoCount": 63
+      "repoCount": 63,
+      "searchTerm": "google-chrome"
     },
     {
       "attrs": [
         "heroic",
         "heroic-unwrapped"
       ],
+      "dataFile": "heroic-games-launcher.json",
       "devel": false,
       "homepage": "https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher",
       "name": "heroic",
@@ -267,15 +280,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "heroic",
       "project": "heroic-games-launcher",
       "refVersion": "2.22.3",
-      "repoCount": 40
+      "repoCount": 40,
+      "searchTerm": "heroic"
     },
     {
       "attrs": [
         "libfilezilla"
       ],
+      "dataFile": "libfilezilla.json",
       "devel": false,
       "homepage": "https://lib.filezilla-project.org/",
       "name": "libfilezilla",
@@ -288,15 +302,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "libfilezilla",
       "project": "libfilezilla",
       "refVersion": "0.57.0",
-      "repoCount": 143
+      "repoCount": 143,
+      "searchTerm": "libfilezilla"
     },
     {
       "attrs": [
         "lincity"
       ],
+      "dataFile": "lincity.json",
       "devel": true,
       "homepage": "https://sourceforge.net/projects/lincity",
       "name": "lincity",
@@ -306,15 +321,16 @@
       "openIssues": 1,
       "openPRs": 0,
       "platforms": null,
-      "pname": "lincity",
       "project": "lincity",
       "refVersion": "1.12.1",
-      "repoCount": 51
+      "repoCount": 51,
+      "searchTerm": "lincity"
     },
     {
       "attrs": [
         "lincity-ng"
       ],
+      "dataFile": "lincity-ng.json",
       "devel": false,
       "homepage": "https://github.com/lincity-ng/lincity-ng",
       "name": "lincity-ng",
@@ -327,15 +343,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "lincity-ng",
       "project": "lincity-ng",
       "refVersion": "2.15.0",
-      "repoCount": 88
+      "repoCount": 88,
+      "searchTerm": "lincity-ng"
     },
     {
       "attrs": [
         "linkding"
       ],
+      "dataFile": "linkding.json",
       "devel": false,
       "homepage": "https://linkding.link/",
       "name": "linkding",
@@ -348,15 +365,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "linkding",
       "project": "linkding",
       "refVersion": null,
-      "repoCount": 1
+      "repoCount": 1,
+      "searchTerm": "linkding"
     },
     {
       "attrs": [
         "microsoft-edge"
       ],
+      "dataFile": "microsoft-edge.json",
       "devel": false,
       "homepage": "https://www.microsoft.com/en-us/edge",
       "name": "microsoft-edge",
@@ -369,15 +387,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "microsoft-edge",
       "project": "microsoft-edge",
       "refVersion": "154.0.4258.37",
-      "repoCount": 44
+      "repoCount": 44,
+      "searchTerm": "microsoft-edge"
     },
     {
       "attrs": [
         "msedgedriver"
       ],
+      "dataFile": "msedgedriver.json",
       "devel": false,
       "homepage": "https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver",
       "name": "msedgedriver",
@@ -390,15 +409,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "msedgedriver",
       "project": "msedgedriver",
       "refVersion": null,
-      "repoCount": 4
+      "repoCount": 4,
+      "searchTerm": "msedgedriver"
     },
     {
       "attrs": [
         "opentyrian"
       ],
+      "dataFile": "opentyrian.json",
       "devel": false,
       "homepage": "https://github.com/opentyrian/opentyrian",
       "name": "opentyrian",
@@ -408,15 +428,16 @@
       "openIssues": 0,
       "openPRs": 1,
       "platforms": null,
-      "pname": "opentyrian",
       "project": "opentyrian",
       "refVersion": "2.1.20260913",
-      "repoCount": 62
+      "repoCount": 62,
+      "searchTerm": "opentyrian"
     },
     {
       "attrs": [
         "ringracers"
       ],
+      "dataFile": "ringracers.json",
       "devel": false,
       "homepage": "https://kartkrew.org",
       "name": "ringracers",
@@ -429,15 +450,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "ringracers",
       "project": "ringracers",
       "refVersion": "2.4",
-      "repoCount": 6
+      "repoCount": 6,
+      "searchTerm": "ringracers"
     },
     {
       "attrs": [
         "runelite"
       ],
+      "dataFile": "runelite.json",
       "devel": false,
       "homepage": "https://runelite.net/",
       "name": "runelite",
@@ -450,15 +472,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "runelite",
       "project": "runelite",
       "refVersion": "2.8.0",
-      "repoCount": 11
+      "repoCount": 11,
+      "searchTerm": "runelite"
     },
     {
       "attrs": [
         "scanmem"
       ],
+      "dataFile": "scanmem.json",
       "devel": false,
       "homepage": "https://github.com/scanmem/scanmem",
       "name": "scanmem",
@@ -471,15 +494,16 @@
         "darwin": false,
         "linux": true
       },
-      "pname": "scanmem",
       "project": "scanmem",
       "refVersion": "0.17",
-      "repoCount": 86
+      "repoCount": 86,
+      "searchTerm": "scanmem"
     },
     {
       "attrs": [
         "typioca"
       ],
+      "dataFile": "typioca.json",
       "devel": false,
       "homepage": "https://github.com/bloznelis/typioca",
       "name": "typioca",
@@ -492,15 +516,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "typioca",
       "project": "typioca",
       "refVersion": "3.1.0",
-      "repoCount": 14
+      "repoCount": 14,
+      "searchTerm": "typioca"
     },
     {
       "attrs": [
         "unciv"
       ],
+      "dataFile": "unciv.json",
       "devel": false,
       "homepage": "https://github.com/yairm210/Unciv",
       "name": "unciv",
@@ -513,15 +538,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "unciv",
       "project": "unciv",
       "refVersion": "4.22.4",
-      "repoCount": 18
+      "repoCount": 18,
+      "searchTerm": "unciv"
     },
     {
       "attrs": [
         "wesnoth"
       ],
+      "dataFile": "wesnoth.json",
       "devel": false,
       "homepage": "https://www.wesnoth.org/",
       "name": "wesnoth",
@@ -534,15 +560,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "wesnoth",
       "project": "wesnoth",
       "refVersion": "1.18.8",
-      "repoCount": 173
+      "repoCount": 173,
+      "searchTerm": "wesnoth"
     },
     {
       "attrs": [
         "wesnoth-devel"
       ],
+      "dataFile": "wesnoth.json",
       "devel": true,
       "homepage": "https://www.wesnoth.org/",
       "name": "wesnoth-devel",
@@ -555,15 +582,16 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "wesnoth-devel",
       "project": "wesnoth",
       "refVersion": "1.19.24",
-      "repoCount": 173
+      "repoCount": 173,
+      "searchTerm": "wesnoth-devel"
     },
     {
       "attrs": [
         "xournalpp"
       ],
+      "dataFile": "xournalpp.json",
       "devel": false,
       "homepage": "https://xournalpp.github.io/",
       "name": "xournalpp",
@@ -576,10 +604,10 @@
         "darwin": true,
         "linux": true
       },
-      "pname": "xournalpp",
       "project": "xournalpp",
       "refVersion": "1.3.8",
-      "repoCount": 136
+      "repoCount": 136,
+      "searchTerm": "xournalpp"
     }
   ]
 }
