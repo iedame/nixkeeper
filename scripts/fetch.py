@@ -44,6 +44,7 @@ RETRY_DELAYS = [5, 15]  # seconds before each retry of a failed Repology request
 # mostly "not refreshed".
 MAX_FAILED_SHARE = 0.5
 GITHUB_REPO = "NixOS/nixpkgs"
+GITHUB_SEARCH_BATCH = 20  # searches per GraphQL request
 
 
 def read_lists():
@@ -233,36 +234,52 @@ def github_token():
         return None
 
 
-def github_open_count(token, kind, term):
-    """Number of open nixpkgs PRs or issues (kind "pr" / "issue") with term in
-    the title: the same search the page links to. Title-only because nixpkgs
-    titles name the package, while bodies of big rebuild PRs list hundreds of
-    unrelated ones. None if the search failed."""
-    query = urllib.parse.urlencode({"q": f"repo:{GITHUB_REPO} is:{kind} state:open in:title {term}", "per_page": 1})
-    req = urllib.request.Request(f"https://api.github.com/search/issues?{query}", headers={
+def github_search_counts(token, queries):
+    """Run several GitHub issue/PR searches in one GraphQL request and return
+    their result counts, in order. A search GitHub couldn't answer gives None;
+    a failed request gives all None."""
+    params = ", ".join(f"$q{i}: String!" for i in range(len(queries)))
+    fields = "\n".join(f"  s{i}: search(type: ISSUE, first: 0, query: $q{i}) {{ issueCount }}" for i in range(len(queries)))
+    body = json.dumps({
+        "query": f"query({params}) {{\n{fields}\n}}",
+        "variables": {f"q{i}": q for i, q in enumerate(queries)},
+    }).encode()
+    req = urllib.request.Request("https://api.github.com/graphql", data=body, headers={
         "User-Agent": USER_AGENT,
-        "Accept": "application/vnd.github+json",
         "Authorization": f"Bearer {token}",
+        "Content-Type": "application/json",
     })
     try:
-        with urllib.request.urlopen(req, timeout=20) as resp:
-            return json.loads(resp.read().decode())["total_count"]
-    except (urllib.error.URLError, OSError, KeyError) as e:
-        # e.g. rate limited: leave this count blank rather than fail the run
-        print(f"  GitHub search for {kind} {term!r} failed ({e})", file=sys.stderr)
-        return None
+        with urllib.request.urlopen(req, timeout=60) as resp:
+            result = json.loads(resp.read().decode())
+    except (urllib.error.URLError, OSError, ValueError) as e:
+        print(f"  GitHub search batch failed ({e})", file=sys.stderr)
+        return [None] * len(queries)
+    for err in result.get("errors") or []:
+        print(f"  GitHub search error: {err.get('message')}", file=sys.stderr)
+    data = result.get("data") or {}
+    return [(data.get(f"s{i}") or {}).get("issueCount") for i in range(len(queries))]
 
 
 def add_github_counts(rows):
+    """Open nixpkgs PRs and issues with each row's pname in the title: the same
+    searches the page links to. Title-only because nixpkgs titles name the
+    package, while bodies of big rebuild PRs list hundreds of unrelated ones."""
     token = github_token()
     if not token:
         print("No GITHUB_TOKEN or gh login: skipping open PR/issue counts.", file=sys.stderr)
         return
-    for row in rows:
-        print(f"Counting open PRs/issues for {row['pname']}...", file=sys.stderr)
-        for kind, field in (("pr", "openPRs"), ("issue", "openIssues")):
-            row[field] = github_open_count(token, kind, row["pname"])
-            time.sleep(2.1)  # search API allows 30 requests/minute
+    searches = [
+        (row, field, f"repo:{GITHUB_REPO} is:{kind} state:open in:title {row['pname']}")
+        for row in rows
+        for kind, field in (("pr", "openPRs"), ("issue", "openIssues"))
+    ]
+    print(f"Counting open PRs/issues ({len(searches)} searches)...", file=sys.stderr)
+    for start in range(0, len(searches), GITHUB_SEARCH_BATCH):
+        batch = searches[start:start + GITHUB_SEARCH_BATCH]
+        counts = github_search_counts(token, [q for _, _, q in batch])
+        for (row, field, _), count in zip(batch, counts):
+            row[field] = count
 
 
 def main():
