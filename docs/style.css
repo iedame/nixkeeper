@@ -388,6 +388,17 @@ button.plat[aria-pressed="true"] {
 .build-line .since {
   color: var(--ink-soft);
 }
+.log-excerpt {
+  font-size: 12px;
+  color: var(--ink-soft);
+  background: var(--bg);
+  border: 1px solid var(--hairline);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin: 0 0 10px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
 .build-note {
   font-size: 12px;
   color: var(--ink-faint);

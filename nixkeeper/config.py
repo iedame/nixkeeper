@@ -47,6 +47,14 @@ HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 # run reuses the previous run's results instead of retrying each job.
 HYDRA_MAX_CONSECUTIVE_FAILURES = 3
 
+# Logs of nixpkgs-update (the r-ryantm bot): one directory per attribute, one
+# log per attempt (<attr>/<YYYY-MM-DD>.log). It tries each package every ten
+# days or so. Moved from nixpkgs-update-logs.nix-community.org in 2026.
+NIXPKGS_UPDATE_LOGS_URL = "https://nixpkgs-update-logs.nixos.org"
+# After this many lookups in a row fail, the log site is likely down (as for
+# Hydra).
+UPDATE_LOGS_MAX_CONSECUTIVE_FAILURES = 3
+
 GITHUB_REPO = "NixOS/nixpkgs"
 GITHUB_SEARCH_BATCH = 20  # searches per GraphQL request
 # nixpkgs PR/issue titles name packages in versioned sets by their alias

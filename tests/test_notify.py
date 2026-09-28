@@ -61,6 +61,19 @@ class Text(unittest.TestCase):
             "(https://hydra.nixos.org/build/345227373/log)",
         )
 
+    def test_update_failure_links_its_log(self):
+        log = "https://nixpkgs-update-logs.nixos.org/egoboo/2026-09-15.log"
+        row = {
+            "name": "egoboo",
+            "nixStatus": "newest",
+            "updateFailure": True,
+            "update": {"attr": "egoboo", "date": "2026-09-15", "log": log},
+        }
+        self.assertEqual(
+            notify.describe(row, NOW),
+            f"`egoboo` — update failure reported · [update log]({log})",
+        )
+
     def test_marked_broken(self):
         row = {
             "name": "libfilezilla",

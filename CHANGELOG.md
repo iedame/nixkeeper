@@ -16,6 +16,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   x86_64-linux). They show as "marked broken" (amber) with a link to the
   package source, don't count as failed, and are listed in the status issue
   without notifying.
+- Update failures from nixpkgs-update (r-ryantm), read from its public logs:
+  the latest attempt per package, recognised as failed, PR opened, PR already
+  open, or nothing to update. A failure counts as failed and notifies; one at a
+  version nixpkgs has since reached is shown as superseded. Clicking the update
+  cell shows the attempt, the end of a failed log, and links to the logs.
+
+### Changed
+
+- Hydra and the update logs share one retrying HTTP helper.
 
 ## [0.2.0] - 2026-09-28
 

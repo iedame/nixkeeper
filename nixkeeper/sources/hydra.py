@@ -5,10 +5,10 @@ import sys
 import time
 import urllib.error
 import urllib.parse
-import urllib.request
 from datetime import UTC, datetime
 
 from .. import config
+from . import http
 
 # Hydra's buildstatus codes. 1 and 6 ("failed with output") are the package's
 # own failure; 2 is a dependency's. Anything else (aborted, cancelled, timed
@@ -18,30 +18,9 @@ DEPENDENCY_FAILED = 2
 
 
 def get(path):
-    """GET a Hydra path as JSON, retrying after RETRY_DELAYS seconds. Returns
-    None on 404."""
-    last_err = None
-    for delay in [0, *config.RETRY_DELAYS]:
-        if delay:
-            print(f"  retrying in {delay}s...", file=sys.stderr)
-            time.sleep(delay)
-        req = urllib.request.Request(
-            config.HYDRA_URL + path,
-            headers={"User-Agent": config.USER_AGENT, "Accept": "application/json"},
-        )
-        try:
-            with urllib.request.urlopen(req, timeout=20) as resp:
-                return json.loads(resp.read().decode())
-        except urllib.error.HTTPError as e:
-            e.close()  # an HTTP error is also an open response
-            if e.code == 404:
-                return None
-            print(f"  Hydra answered {e.code}", file=sys.stderr)
-            last_err = e
-        except (urllib.error.URLError, OSError, ValueError) as e:
-            print(f"  Hydra request failed ({e})", file=sys.stderr)
-            last_err = e
-    raise last_err
+    """GET a Hydra path as JSON. Returns None on 404."""
+    body = http.get(config.HYDRA_URL + path, accept="application/json")
+    return None if body is None else json.loads(body)
 
 
 def status(buildstatus):

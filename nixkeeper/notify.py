@@ -41,6 +41,9 @@ def describe(row, now):
         f"[{build_label(row, b)} log]({config.HYDRA_URL}/build/{b['build']}/log)"
         for b in failed_builds(row)
     ]
+    update = row.get("update")
+    if row.get("updateFailure") and update:
+        logs.append(f"[update log]({update['log']})")
     if logs:
         text += " · " + " · ".join(logs)
     broken = [build_label(row, b) for b in broken_builds(row)]

@@ -264,30 +264,31 @@ function render(list) {
       <div class="nix-line">Loading detail…</div>
     </div></td>`;
 
-    // One panel under the row, showing either the package details (clicking
-    // the row) or its builds (clicking the build cell). Clicking what's shown
-    // closes it; clicking the other switches.
+    // One panel under the row, showing the package details (clicking the
+    // row), its builds or its latest update attempt (clicking those cells).
+    // Clicking what's shown closes it; clicking something else switches.
     const inner = detail.querySelector('.detail-inner');
-    const buildBtn = tr.querySelector('.failure-btn[data-kind="build"]');
+    const panelBtns = tr.querySelectorAll('.failure-btn');
     const toggle = async (mode) => {
       const closing = tr.classList.contains('open') && detail.dataset.mode === mode;
       tr.classList.toggle('open', !closing);
       detail.classList.toggle('open', !closing);
       detail.dataset.mode = closing ? '' : mode;
-      buildBtn?.setAttribute('aria-expanded', !closing && mode === 'builds');
+      for (const btn of panelBtns) {
+        btn.setAttribute('aria-expanded', !closing && btn.dataset.kind === mode);
+      }
       if (closing) return;
-      if (mode === 'builds') fillBuilds(pkg, inner);
+      if (mode === 'build') fillBuilds(pkg, inner);
+      else if (mode === 'update') fillUpdate(pkg, inner);
       else await fillDetail(pkg, inner);
     };
 
-    buildBtn?.addEventListener('click', (e) => {
-      e.stopPropagation(); // not the row's own click
-      toggle('builds');
-    });
-    // Update failures: no data yet.
-    tr.querySelector('.failure-btn[data-kind="update"]').addEventListener('click', (e) =>
-      e.stopPropagation(),
-    );
+    for (const btn of panelBtns) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // not the row's own click
+        toggle(btn.dataset.kind);
+      });
+    }
 
     for (const a of tr.querySelectorAll('.gh-btn')) {
       a.addEventListener('click', (e) => e.stopPropagation());
@@ -336,11 +337,58 @@ function buildCell(pkg) {
   return failureButton('build', 'ok', 'none reported', extra);
 }
 
-// Placeholder until update failure data exists: every package reads as passing.
+// nixpkgs-update's latest attempt. `update` is null when the bot never tried
+// and missing for packages not in nixpkgs.
 function updateCell(pkg) {
-  return pkg.updateFailure
-    ? failureButton('update', 'missing', 'failure reported')
-    : failureButton('update', 'ok', 'none reported');
+  if (pkg.update === undefined) return '<span class="failure-na" title="Not in nixpkgs">—</span>';
+  const extra = 'aria-expanded="false" title="Show the latest nixpkgs-update attempt"';
+  if (pkg.updateFailure) return failureButton('update', 'missing', 'failure reported', extra);
+  if (pkg.update === null) return failureButton('update', 'neutral', 'not attempted', extra);
+  return failureButton('update', 'ok', 'none reported', extra);
+}
+
+const prLink = (n, text) =>
+  `<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${n}" target="_blank" rel="noopener">${text}</a>`;
+const UPDATE_OUTCOME = {
+  failed: { dot: 'missing', text: () => 'failed' },
+  superseded: {
+    dot: 'neutral',
+    text: (u) => `failed, but nixpkgs has <span class="mono">${escapeHtml(u.to)}</span> by now`,
+  },
+  prOpened: { dot: 'ok', text: (u) => `opened ${prLink(u.pr, `PR #${u.pr} ↗`)}` },
+  prExists: {
+    dot: 'ok',
+    text: (u) => `a PR was already open${u.pr ? ` (${prLink(u.pr, `#${u.pr} ↗`)})` : ''}`,
+  },
+  noChange: { dot: 'ok', text: () => 'nothing to update' },
+  other: { dot: 'neutral', text: () => 'finished without a recognisable result' },
+};
+
+function fillUpdate(pkg, el) {
+  const u = pkg.update;
+  if (!u) {
+    el.innerHTML = `<div class="nix-line">nixpkgs-update hasn't tried to update this package (it may have no update source it understands).</div>`;
+    return;
+  }
+  const dir = u.log.slice(0, u.log.lastIndexOf('/') + 1); // every attempt's log
+  // A plain day: read as midday UTC, so no time zone moves it to the day before.
+  const day = `${u.date}T12:00:00Z`;
+  // "0 -> 1" means the package's updateScript picks the version.
+  const versions =
+    u.from && !(u.from === '0' && u.to === '1')
+      ? ` · <span class="mono">${escapeHtml(u.from)} → ${escapeHtml(u.to)}</span>`
+      : '';
+  const o = UPDATE_OUTCOME[u.outcome] || UPDATE_OUTCOME.other;
+  el.innerHTML = `
+    <div class="nix-line">Latest nixpkgs-update attempt${(pkg.attrs || []).length > 1 ? ` at <span class="mono">${escapeHtml(u.attr)}</span>` : ''} · ${escapeHtml(longDate(day))} (${shortAge(day)} ago)${versions}</div>
+    <div class="build-list"><div class="build-line">
+      <span class="status-dot ${o.dot}"></span><span class="st ${o.dot}">${o.text(u)}</span>
+    </div></div>
+    ${u.excerpt?.length ? `<pre class="log-excerpt mono">${u.excerpt.map(escapeHtml).join('\n')}</pre>` : ''}
+    <div class="detail-row">
+      <a class="files-link" href="${escapeHtml(u.log)}" target="_blank" rel="noopener">log ↗</a>
+      <a class="files-link" href="${escapeHtml(dir)}" target="_blank" rel="noopener">all attempts ↗</a>
+    </div>`;
 }
 
 const HYDRA = 'https://hydra.nixos.org';
