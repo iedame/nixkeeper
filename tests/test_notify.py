@@ -42,6 +42,25 @@ class Text(unittest.TestCase):
         self.assertIn("**Caught up:** `xournalpp`", body)  # quiet changes still listed
         self.assertIn("**Now tracked:** `fzssh`", body)
 
+    def test_build_failure_links_its_log(self):
+        row = {
+            "name": "ac-library",
+            "nixStatus": "newest",
+            "builds": [
+                {
+                    "attr": "ac-library",
+                    "system": "aarch64-darwin",
+                    "status": "failed",
+                    "build": 345227373,
+                }
+            ],
+        }
+        self.assertEqual(
+            notify.describe(row, NOW),
+            "`ac-library` — build failure on aarch64-darwin · [aarch64-darwin log]"
+            "(https://hydra.nixos.org/build/345227373/log)",
+        )
+
     def test_nothing_to_report(self):
         rows = [{"name": "a", "nixStatus": "newest"}]
         body = notify.status_body(rows, diff({"packages": rows}, rows), NOW)

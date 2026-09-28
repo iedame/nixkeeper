@@ -63,7 +63,16 @@ const FILTERS = {
 // Everything shown in red: not found in nixpkgs, or a build or update
 // failure reported.
 function hasFailure(pkg) {
-  return computeStatus(pkg) === 'missing' || Boolean(pkg.buildFailure || pkg.updateFailure);
+  return (
+    computeStatus(pkg) === 'missing' || failedBuilds(pkg).length > 0 || Boolean(pkg.updateFailure)
+  );
+}
+
+// Hydra builds that failed, on the selected platform only while one is.
+function failedBuilds(pkg) {
+  return (pkg.builds || []).filter(
+    (b) => b.status === 'failed' && (!platformFilter || b.system.endsWith(`-${platformFilter}`)),
+  );
 }
 
 // Default order: failed, then outdated (longest outdated first), then the
@@ -243,8 +252,8 @@ function render(list) {
       <td><div class="pkg-name"><span class="status-dot ${st}"></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
       <td class="ver mono">${verCell}</td>
       <td>${githubLinks(pkg)}</td>
-      <td>${failureCell('build', pkg.buildFailure)}</td>
-      <td>${failureCell('update', pkg.updateFailure)}</td>
+      <td>${buildCell(pkg)}</td>
+      <td>${updateCell(pkg)}</td>
       <td><span class="chev">▸</span></td>
     `;
 
@@ -254,13 +263,30 @@ function render(list) {
       <div class="nix-line">Loading detail…</div>
     </div></td>`;
 
-    for (const btn of tr.querySelectorAll('.failure-btn')) {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation(); // don't expand the row
-        const url = FAILURE_URLS[btn.dataset.kind](pkg);
-        if (url) window.open(url, '_blank', 'noopener');
-      });
-    }
+    // One panel under the row, showing either the package details (clicking
+    // the row) or its builds (clicking the build cell). Clicking what's shown
+    // closes it; clicking the other switches.
+    const inner = detail.querySelector('.detail-inner');
+    const buildBtn = tr.querySelector('.failure-btn[data-kind="build"]');
+    const toggle = async (mode) => {
+      const closing = tr.classList.contains('open') && detail.dataset.mode === mode;
+      tr.classList.toggle('open', !closing);
+      detail.classList.toggle('open', !closing);
+      detail.dataset.mode = closing ? '' : mode;
+      buildBtn?.setAttribute('aria-expanded', !closing && mode === 'builds');
+      if (closing) return;
+      if (mode === 'builds') fillBuilds(pkg, inner);
+      else await fillDetail(pkg, inner);
+    };
+
+    buildBtn?.addEventListener('click', (e) => {
+      e.stopPropagation(); // not the row's own click
+      toggle('builds');
+    });
+    // Update failures: no data yet.
+    tr.querySelector('.failure-btn[data-kind="update"]').addEventListener('click', (e) =>
+      e.stopPropagation(),
+    );
 
     for (const a of tr.querySelectorAll('.gh-btn')) {
       a.addEventListener('click', (e) => e.stopPropagation());
@@ -274,11 +300,7 @@ function render(list) {
       });
     }
 
-    tr.addEventListener('click', async () => {
-      const isOpen = tr.classList.toggle('open');
-      detail.classList.toggle('open', isOpen);
-      if (isOpen) await fillDetail(pkg, detail.querySelector('.detail-inner'));
-    });
+    tr.addEventListener('click', () => toggle('info'));
     tr.addEventListener('keydown', (e) => {
       if (e.target === tr && (e.key === 'Enter' || e.key === ' ')) {
         e.preventDefault();
@@ -291,18 +313,82 @@ function render(list) {
   });
 }
 
-// Placeholders until failure data exists: the fetch script doesn't produce
-// `buildFailure` / `updateFailure` yet, so every package reads as passing.
-function failureCell(kind, failing) {
-  return `<button class="failure-btn${failing ? ' failing' : ''}" type="button" data-kind="${kind}">
-    <span class="status-dot ${failing ? 'missing' : 'ok'}"></span>${failing ? 'failure reported' : 'none reported'}</button>`;
+function failureButton(kind, dot, text, extra = '') {
+  return `<button class="failure-btn${dot === 'missing' ? ' failing' : ''}" type="button" data-kind="${kind}" ${extra}>
+    <span class="status-dot ${dot}"></span>${text}</button>`;
 }
 
-// TODO: link each kind to its log once we have one (build: e.g. Hydra).
-const FAILURE_URLS = {
-  build: (_pkg) => null,
-  update: (_pkg) => null,
+// Whether Hydra built this at all: not for unfree packages, nor ones nixpkgs
+// keeps off Hydra (hydraPlatforms).
+function hydraBuildsIt(pkg) {
+  return !pkg.unfree && pkg.builds.some((b) => b.status !== 'notBuilt');
+}
+
+function buildCell(pkg) {
+  if (!pkg.builds) return '<span class="failure-na" title="Not in nixpkgs">—</span>';
+  const extra = 'aria-expanded="false" title="Show Hydra builds"';
+  if (failedBuilds(pkg).length) return failureButton('build', 'missing', 'failure reported', extra);
+  if (!hydraBuildsIt(pkg)) return failureButton('build', 'neutral', 'not built by Hydra', extra);
+  return failureButton('build', 'ok', 'none reported', extra);
+}
+
+// Placeholder until update failure data exists: every package reads as passing.
+function updateCell(pkg) {
+  return pkg.updateFailure
+    ? failureButton('update', 'missing', 'failure reported')
+    : failureButton('update', 'ok', 'none reported');
+}
+
+const HYDRA = 'https://hydra.nixos.org';
+const BUILD_STATUS = {
+  ok: { dot: 'ok', text: 'built OK' },
+  failed: { dot: 'missing', text: 'failed' },
+  dependency: { dot: 'warn', text: "didn't build: a dependency failed" },
+  unfinished: { dot: 'warn', text: "didn't finish (timed out or aborted)" },
+  notBuilt: { dot: 'neutral', text: 'not built by Hydra on this platform' },
+  unknown: { dot: 'neutral', text: "couldn't check Hydra on the last run" },
 };
+
+function buildLine(pkg, b) {
+  const s = BUILD_STATUS[b.status] || BUILD_STATUS.unknown;
+  const multi = (pkg.attrs || []).length > 1;
+  let links = '';
+  if (b.status === 'failed') {
+    links = `<a class="files-link" href="${HYDRA}/build/${b.build}/log" target="_blank" rel="noopener">log ↗</a>
+      <span class="since">${b.lastSuccess ? `last succeeded ${escapeHtml(longDate(b.lastSuccess))} (${shortAge(b.lastSuccess)} ago)` : 'never built successfully'}</span>`;
+  } else if (b.build) {
+    links = `<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>`;
+  }
+  return `<div class="build-line">
+    <span class="status-dot ${s.dot}"></span>
+    <span class="mono sys">${escapeHtml(b.system)}</span>
+    ${multi ? `<span class="mono attr">${escapeHtml(b.attr)}</span>` : ''}
+    <span class="st ${s.dot}">${s.text}</span>${links}
+  </div>`;
+}
+
+function fillBuilds(pkg, el) {
+  const jobset = `<span class="mono">nixpkgs/unstable</span>`;
+  let body;
+  if (pkg.unfree) {
+    body = `<div class="nix-line">Hydra doesn't build unfree packages, so there are no build results for this one.</div>`;
+  } else if (!hydraBuildsIt(pkg)) {
+    body = `<div class="nix-line">Hydra doesn't build this package (nixpkgs may exclude it with <span class="mono">hydraPlatforms</span>).</div>`;
+  } else {
+    const darwin = pkg.platforms === null || pkg.platforms?.darwin;
+    body = `<div class="nix-line">Hydra builds of nixpkgs master (jobset ${jobset})</div>
+      <div class="build-list">${pkg.builds.map((b) => buildLine(pkg, b)).join('')}</div>
+      ${darwin ? '<div class="build-note">x86_64-darwin is no longer built by nixpkgs.</div>' : ''}`;
+  }
+  const jobLinks = (pkg.builds || [])
+    .filter((b) => b.status !== 'notBuilt')
+    .map(
+      (b) =>
+        `<a class="files-link" href="${HYDRA}/job/nixpkgs/unstable/${encodeURIComponent(`${b.attr}.${b.system}`)}" target="_blank" rel="noopener">${escapeHtml(pkg.attrs.length > 1 ? `${b.attr}.${b.system}` : b.system)} job ↗</a>`,
+    )
+    .join('');
+  el.innerHTML = `${body}${jobLinks ? `<div class="detail-row">${jobLinks}</div>` : ''}`;
+}
 
 // From nixpkgs meta.platforms; null means nixpkgs doesn't restrict it.
 function platformTags(pkg) {

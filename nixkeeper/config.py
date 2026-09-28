@@ -36,6 +36,17 @@ MAX_FAILED_SHARE = 0.5
 # same repo has a newer version in another package).
 OUTDATED_STATUSES = {"outdated", "legacy"}
 
+# Hydra, nixpkgs' build farm. The nixpkgs/unstable jobset builds master (not the
+# nixos-unstable channel, which only advances once enough of it has built).
+HYDRA_URL = "https://hydra.nixos.org"
+HYDRA_PROJECT = "nixpkgs"
+HYDRA_JOBSET = "unstable"
+# Platforms nixpkgs builds; x86_64-darwin is no longer one of them.
+HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
+# After this many lookups in a row fail, Hydra is likely down: the rest of the
+# run reuses the previous run's results instead of retrying each job.
+HYDRA_MAX_CONSECUTIVE_FAILURES = 3
+
 GITHUB_REPO = "NixOS/nixpkgs"
 GITHUB_SEARCH_BATCH = 20  # searches per GraphQL request
 # nixpkgs PR/issue titles name packages in versioned sets by their alias

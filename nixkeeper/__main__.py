@@ -1,11 +1,12 @@
 """One sync: nixpkgs index + package lists -> tracked packages -> Repology ->
-rows -> GitHub counts -> data/ -> status issue. Run from the repository root (it reads
-package-lists/ and writes data/ there): `nix run .#sync`."""
+rows -> Hydra builds -> GitHub counts -> data/ -> status issue. Run from the
+repository root (it reads package-lists/ and writes data/ there):
+`nix run .#sync`."""
 
 from datetime import UTC, datetime
 
 from . import history, lookup, notify, output, rows, tracking
-from .sources import github
+from .sources import github, hydra
 from .sources import nixpkgs as nixpkgs_source
 
 
@@ -18,6 +19,7 @@ def main():
     index_rows = rows.build_rows(projects, nixpkgs)
     rows.add_source_links(index_rows, nixpkgs, nixpkgs_source.channel_revision())
     history.add_outdated_since(index_rows, previous, now)
+    hydra.add_builds(index_rows, nixpkgs, previous)
     github.add_counts(index_rows)
     output.write(projects, {"checkedAt": now, "packages": index_rows})
     notify.notify(previous, index_rows, now)

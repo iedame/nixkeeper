@@ -7,7 +7,16 @@ import sys
 import urllib.error
 from datetime import datetime
 
-from .changes import NOTIFY, diff, failures, is_outdated, should_notify
+from . import config
+from .changes import (
+    NOTIFY,
+    build_label,
+    diff,
+    failed_builds,
+    failures,
+    is_outdated,
+    should_notify,
+)
 from .sources import github
 
 TITLE = "nixkeeper status"
@@ -27,6 +36,12 @@ def describe(row, now):
             text += f" · outdated {days_text(row['outdatedSince'], now)}"
     if failures(row):
         text += " — " + ", ".join(failures(row))
+    logs = [
+        f"[{build_label(row, b)} log]({config.HYDRA_URL}/build/{b['build']}/log)"
+        for b in failed_builds(row)
+    ]
+    if logs:
+        text += " · " + " · ".join(logs)
     if row.get("staleSince"):
         text += f" — Repology lookup failed, showing data from {row['staleSince'][:10]}"
     return text
@@ -42,6 +57,7 @@ CHANGE_LABELS = {
     "vulnerable": "Newly flagged vulnerable",
     "notRefreshed": "Not refreshed",
     "caughtUp": "Caught up",
+    "fixed": "No longer failing",
     "added": "Now tracked",
     "removed": "No longer tracked",
 }

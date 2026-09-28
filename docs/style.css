@@ -343,6 +343,56 @@ button.plat[aria-pressed="true"] {
 .failure-btn.failing {
   color: var(--danger);
 }
+.failure-btn[aria-expanded="true"] {
+  background: var(--surface);
+  border-color: var(--hairline-strong);
+  color: var(--ink);
+}
+.failure-na {
+  color: var(--ink-faint);
+  padding: 4px 9px;
+}
+
+.build-list {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.build-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+.build-line .sys {
+  min-width: 118px;
+  color: var(--ink-soft);
+}
+.build-line .attr {
+  color: var(--ink-soft);
+}
+.build-line .st {
+  min-width: 70px;
+}
+.build-line .st.missing {
+  color: var(--danger);
+  font-weight: 500;
+}
+.build-line .st.warn {
+  color: var(--warn);
+}
+.build-line .st.neutral {
+  color: var(--ink-faint);
+}
+.build-line .since {
+  color: var(--ink-soft);
+}
+.build-note {
+  font-size: 12px;
+  color: var(--ink-faint);
+  margin-bottom: 10px;
+}
 .gh-links {
   display: inline-flex;
   gap: 6px;
