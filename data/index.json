@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-28T04:06:07.343250+00:00",
+  "checkedAt": "2026-09-28T04:17:05.399401+00:00",
   "packages": [
     {
       "attrs": [
@@ -13,7 +13,7 @@
       "nixVersion": "8.12.36",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
@@ -102,7 +102,7 @@
       "nixVersion": "0.24.0",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": false,
         "linux": true
@@ -212,7 +212,7 @@
       "nixVersion": "109.6",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
@@ -253,7 +253,7 @@
       "nixVersion": "154.0.8037.57",
       "nixVulnerable": false,
       "openIssues": 5,
-      "openPRs": 5,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
@@ -276,7 +276,7 @@
       "nixVersion": "2.22.3",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": false,
         "linux": true
@@ -320,7 +320,7 @@
       "nixVersion": "1.13.1",
       "nixVulnerable": false,
       "openIssues": 1,
-      "openPRs": 1,
+      "openPRs": 0,
       "platforms": null,
       "project": "lincity",
       "refVersion": "1.12.1",
@@ -339,7 +339,7 @@
       "nixVersion": "2.15.0",
       "nixVulnerable": false,
       "openIssues": 1,
-      "openPRs": 1,
+      "openPRs": 0,
       "platforms": {
         "darwin": false,
         "linux": true
@@ -361,7 +361,7 @@
       "nixVersion": "1.47.0",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": false,
         "linux": true
@@ -383,7 +383,7 @@
       "nixVersion": "154.0.4258.37",
       "nixVulnerable": false,
       "openIssues": 1,
-      "openPRs": 1,
+      "openPRs": 0,
       "platforms": {
         "darwin": false,
         "linux": true
@@ -427,7 +427,7 @@
       "nixVersion": "2.1.20221123",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "outdatedSince": "2026-09-28T03:09:58.527549+00:00",
       "platforms": null,
       "project": "opentyrian",
@@ -535,7 +535,7 @@
       "nixVersion": "4.22.1",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "outdatedSince": "2026-09-28T03:09:58.527549+00:00",
       "platforms": {
         "darwin": true,
