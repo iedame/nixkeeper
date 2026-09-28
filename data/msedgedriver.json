@@ -59,9 +59,9 @@
     "origversion": null,
     "repo": "nix_stable_26_05",
     "srcname": "msedgedriver",
-    "status": "outdated",
+    "status": "unique",
     "summary": "WebDriver implementation that controls an Edge browser running on the local machine",
-    "version": "153.0.4234.48",
+    "version": "154.0.4258.37",
     "visiblename": "msedgedriver"
   },
   {

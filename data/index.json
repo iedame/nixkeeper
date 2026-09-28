@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-28T05:01:43.574445+00:00",
+  "checkedAt": "2026-09-28T05:30:32.045337+00:00",
   "packages": [
     {
       "attrs": [
@@ -21,7 +21,8 @@
       "project": "1password",
       "refVersion": "8.12.36",
       "repoCount": 29,
-      "searchTerm": "_1password-gui"
+      "searchTerm": "_1password-gui",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/_1/_1password-gui/package.nix#L29"
     },
     {
       "attrs": [
@@ -44,7 +45,8 @@
       "project": "1password",
       "refVersion": "8.12.36",
       "repoCount": 29,
-      "searchTerm": "_1password-gui-beta"
+      "searchTerm": "_1password-gui-beta",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/_1/_1password-gui/package.nix#L29"
     },
     {
       "attrs": [
@@ -66,7 +68,8 @@
       "project": "backrest",
       "refVersion": "1.14.1",
       "repoCount": 9,
-      "searchTerm": "backrest"
+      "searchTerm": "backrest",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ba/backrest/package.nix#L200"
     },
     {
       "attrs": [
@@ -88,7 +91,8 @@
       "project": "bbedit",
       "refVersion": "16.0.3",
       "repoCount": 5,
-      "searchTerm": "bbedit"
+      "searchTerm": "bbedit",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/bb/bbedit/package.nix#L34"
     },
     {
       "attrs": [
@@ -110,7 +114,8 @@
       "project": "bolt-launcher",
       "refVersion": "0.24.0",
       "repoCount": 11,
-      "searchTerm": "bolt-launcher"
+      "searchTerm": "bolt-launcher",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/bo/bolt-launcher/package.nix#L157"
     },
     {
       "attrs": [
@@ -132,7 +137,8 @@
       "project": "d-seams",
       "refVersion": null,
       "repoCount": 6,
-      "searchTerm": "d-seams"
+      "searchTerm": "d-seams",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/d-/d-seams/package.nix#L50"
     },
     {
       "attrs": [
@@ -154,7 +160,8 @@
       "project": "egoboo",
       "refVersion": "2.8.1",
       "repoCount": 33,
-      "searchTerm": "egoboo"
+      "searchTerm": "egoboo",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/eg/egoboo/package.nix#L88"
     },
     {
       "attrs": [
@@ -176,7 +183,8 @@
       "project": "fastmail",
       "refVersion": "1.8.0",
       "repoCount": 4,
-      "searchTerm": "fastmail-desktop"
+      "searchTerm": "fastmail-desktop",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/fa/fastmail-desktop/package.nix#L20"
     },
     {
       "attrs": [
@@ -198,7 +206,8 @@
       "project": "filezilla",
       "refVersion": "3.71.1",
       "repoCount": 157,
-      "searchTerm": "filezilla"
+      "searchTerm": "filezilla",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/fi/filezilla/package.nix#L75"
     },
     {
       "attrs": [
@@ -220,7 +229,8 @@
       "project": "freedink",
       "refVersion": "109.6",
       "repoCount": 67,
-      "searchTerm": "freedink"
+      "searchTerm": "freedink",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/fr/freedink/package.nix#L114"
     },
     {
       "attrs": [
@@ -239,7 +249,8 @@
       "project": "fzssh",
       "refVersion": "1.4.0",
       "repoCount": 41,
-      "searchTerm": "fzssh"
+      "searchTerm": "fzssh",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/fz/fzssh/package.nix#L55"
     },
     {
       "attrs": [
@@ -261,7 +272,8 @@
       "project": "google-chrome",
       "refVersion": "154.0.8037.57",
       "repoCount": 63,
-      "searchTerm": "google-chrome"
+      "searchTerm": "google-chrome",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/go/google-chrome/package.nix#L354"
     },
     {
       "attrs": [
@@ -284,7 +296,8 @@
       "project": "heroic-games-launcher",
       "refVersion": "2.22.3",
       "repoCount": 40,
-      "searchTerm": "heroic"
+      "searchTerm": "heroic",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/he/heroic-unwrapped/package.nix#L135"
     },
     {
       "attrs": [
@@ -306,7 +319,8 @@
       "project": "libfilezilla",
       "refVersion": "0.57.0",
       "repoCount": 143,
-      "searchTerm": "libfilezilla"
+      "searchTerm": "libfilezilla",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/li/libfilezilla/package.nix#L44"
     },
     {
       "attrs": [
@@ -325,7 +339,8 @@
       "project": "lincity",
       "refVersion": "1.12.1",
       "repoCount": 51,
-      "searchTerm": "lincity"
+      "searchTerm": "lincity",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/li/lincity/package.nix#L83"
     },
     {
       "attrs": [
@@ -347,7 +362,8 @@
       "project": "lincity-ng",
       "refVersion": "2.15.0",
       "repoCount": 88,
-      "searchTerm": "lincity-ng"
+      "searchTerm": "lincity-ng",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/li/lincity-ng/package.nix#L77"
     },
     {
       "attrs": [
@@ -369,7 +385,8 @@
       "project": "linkding",
       "refVersion": null,
       "repoCount": 1,
-      "searchTerm": "linkding"
+      "searchTerm": "linkding",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/li/linkding/package.nix#L292"
     },
     {
       "attrs": [
@@ -391,7 +408,8 @@
       "project": "microsoft-edge",
       "refVersion": "154.0.4258.37",
       "repoCount": 44,
-      "searchTerm": "microsoft-edge"
+      "searchTerm": "microsoft-edge",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/mi/microsoft-edge/package.nix#L269"
     },
     {
       "attrs": [
@@ -413,7 +431,8 @@
       "project": "msedgedriver",
       "refVersion": null,
       "repoCount": 4,
-      "searchTerm": "msedgedriver"
+      "searchTerm": "msedgedriver",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ms/msedgedriver/package.nix#L53"
     },
     {
       "attrs": [
@@ -433,7 +452,8 @@
       "project": "opentyrian",
       "refVersion": "2.1.20260913",
       "repoCount": 62,
-      "searchTerm": "opentyrian"
+      "searchTerm": "opentyrian",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/op/opentyrian/package.nix#L43"
     },
     {
       "attrs": [
@@ -455,7 +475,8 @@
       "project": "ringracers",
       "refVersion": "2.4",
       "repoCount": 6,
-      "searchTerm": "ringracers"
+      "searchTerm": "ringracers",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ri/ringracers/package.nix#L113"
     },
     {
       "attrs": [
@@ -477,7 +498,8 @@
       "project": "runelite",
       "refVersion": "2.8.0",
       "repoCount": 11,
-      "searchTerm": "runelite"
+      "searchTerm": "runelite",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ru/runelite/package.nix#L80"
     },
     {
       "attrs": [
@@ -499,7 +521,8 @@
       "project": "scanmem",
       "refVersion": "0.17",
       "repoCount": 86,
-      "searchTerm": "scanmem"
+      "searchTerm": "scanmem",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/sc/scanmem/package.nix#L60"
     },
     {
       "attrs": [
@@ -521,7 +544,8 @@
       "project": "typioca",
       "refVersion": "3.1.0",
       "repoCount": 14,
-      "searchTerm": "typioca"
+      "searchTerm": "typioca",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ty/typioca/package.nix#L35"
     },
     {
       "attrs": [
@@ -544,7 +568,8 @@
       "project": "unciv",
       "refVersion": "4.22.4",
       "repoCount": 18,
-      "searchTerm": "unciv"
+      "searchTerm": "unciv",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/un/unciv/package.nix#L73"
     },
     {
       "attrs": [
@@ -566,7 +591,8 @@
       "project": "wesnoth",
       "refVersion": "1.18.8",
       "repoCount": 173,
-      "searchTerm": "wesnoth"
+      "searchTerm": "wesnoth",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/we/wesnoth/package.nix#L147"
     },
     {
       "attrs": [
@@ -588,7 +614,8 @@
       "project": "wesnoth",
       "refVersion": "1.19.24",
       "repoCount": 173,
-      "searchTerm": "wesnoth-devel"
+      "searchTerm": "wesnoth-devel",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/we/wesnoth/package.nix#L147"
     },
     {
       "attrs": [
@@ -611,7 +638,8 @@
       "project": "xournalpp",
       "refVersion": "1.3.8",
       "repoCount": 136,
-      "searchTerm": "xournalpp"
+      "searchTerm": "xournalpp",
+      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/xo/xournalpp/package.nix#L84"
     }
   ]
 }
