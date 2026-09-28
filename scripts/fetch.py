@@ -184,9 +184,11 @@ def github_token():
 
 
 def github_open_count(token, kind, term):
-    """Number of open nixpkgs PRs or issues (kind "pr" / "issue") matching
-    term: the same search the page links to. None if the search failed."""
-    query = urllib.parse.urlencode({"q": f"repo:{GITHUB_REPO} is:{kind} state:open {term}", "per_page": 1})
+    """Number of open nixpkgs PRs or issues (kind "pr" / "issue") with term in
+    the title: the same search the page links to. Title-only because nixpkgs
+    titles name the package, while bodies of big rebuild PRs list hundreds of
+    unrelated ones. None if the search failed."""
+    query = urllib.parse.urlencode({"q": f"repo:{GITHUB_REPO} is:{kind} state:open in:title {term}", "per_page": 1})
     req = urllib.request.Request(f"https://api.github.com/search/issues?{query}", headers={
         "User-Agent": USER_AGENT,
         "Accept": "application/vnd.github+json",
