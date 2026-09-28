@@ -507,8 +507,9 @@ async function fillDetail(pkg, el) {
 
   const st = computeStatus(pkg);
   const up = pkg.upstream;
+  // "in the wesnoth/wesnoth tags" or "on www.barebones.com".
   const upLink = up
-    ? `<a class="files-link" href="${escapeHtml(up.url)}" target="_blank" rel="noopener">${escapeHtml(up.repo)} tags ↗</a>`
+    ? `${up.repo ? 'in the' : 'on'} <a class="files-link" href="${escapeHtml(up.url)}" target="_blank" rel="noopener">${escapeHtml(up.label || `${up.repo} tags`)} ↗</a>`
     : '';
   const since = pkg.outdatedSince
     ? ` — outdated since ${escapeHtml(longDate(pkg.outdatedSince))} (${daysText(pkg.outdatedSince)})`
@@ -517,7 +518,7 @@ async function fillDetail(pkg, el) {
   // When the update check is what makes it outdated, say where the newer
   // version came from, and how it compares with Repology.
   const upstreamLine = () =>
-    `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>; nixkeeper's update check found <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span> in the ${upLink}${
+    `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>; nixkeeper's update check found <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span> ${upLink}${
       pkg.refVersion !== up.version
         ? `; Repology's newest is <span class="mono">${escapeHtml(pkg.refVersion)}</span>`
         : repologyOutdated
@@ -536,7 +537,7 @@ async function fillDetail(pkg, el) {
               : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`
         }${
           up && !up.newer
-            ? ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest in the ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
+            ? ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
             : ''
         }`;
 

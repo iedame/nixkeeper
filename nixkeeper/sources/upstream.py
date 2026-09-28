@@ -1,5 +1,6 @@
 """nixkeeper's own update checks (package-lists/update-checks.nix): the newest
-upstream release of a package, straight from its repository's tags. A version
+upstream release of a package, from its GitHub repository's tags or from a web
+page such as the vendor's release notes. A version
 only counts as newest on Repology once repositories it trusts package it (the
 AUR alone doesn't), so without this a fresh release leaves nixpkgs looking up
 to date."""
@@ -7,8 +8,9 @@ to date."""
 import re
 import sys
 import urllib.error
+import urllib.parse
 
-from . import github
+from . import github, http
 
 
 def version_key(version):
@@ -25,14 +27,25 @@ def is_newer(version, than):
     return bool(than) and version_key(version) > version_key(than)
 
 
-def latest(tags, pattern):
-    """The highest version among tags matching pattern (its capture group,
-    if it has one, is the version), or None if none match."""
-    regex = re.compile(pattern)
-    versions = [
-        m.group(1) if regex.groups else m.group(0) for m in map(regex.search, tags) if m
-    ]
+def highest(matches, regex):
+    """The highest version among regex matches (its capture group, if it has
+    one, is the version), or None if there are none."""
+    versions = [m.group(1) if regex.groups else m.group(0) for m in matches if m]
     return max(versions, key=version_key, default=None)
+
+
+def latest(tags, pattern):
+    """The highest version among tags matching pattern (each tag on its own,
+    so ^ and $ mean the tag's start and end)."""
+    regex = re.compile(pattern)
+    return highest(map(regex.search, tags), regex)
+
+
+def latest_on_page(text, pattern):
+    """The highest version anywhere on a page (a release-notes page lists
+    old versions too; which comes first doesn't matter)."""
+    regex = re.compile(pattern)
+    return highest(regex.finditer(text), regex)
 
 
 def apply(row, found):
@@ -65,21 +78,36 @@ def add_checks(rows, checks, previous):
         if before.get(name):
             apply(by_name[name], before[name])
 
+    def found(name, version, where, what, **extra):
+        if version is None:
+            keep_previous(name, f"nothing in {where} matches {what}")
+        else:
+            apply(by_name[name], {"version": version, **extra})
+
+    github_checks = {n: c for n, c in wanted.items() if "github" in c}
+    if github_checks:
+        check_github(github_checks, keep_previous, found)
+    for name, check in wanted.items():
+        if "url" in check:
+            check_page(name, check, keep_previous, found)
+
+
+def check_github(checks, keep_previous, found):
+    """All GitHub checks, in one request."""
     token = github.token()
     if not token:
-        for name in wanted:
+        for name in checks:
             keep_previous(name, "no GITHUB_TOKEN or gh login")
         return
-    repos = sorted({check["github"] for check in wanted.values()})
     try:
-        tags = github.latest_tags(token, repos)
+        tags = github.latest_tags(token, sorted({c["github"] for c in checks.values()}))
     except (urllib.error.URLError, OSError, ValueError) as e:
         if isinstance(e, urllib.error.HTTPError):
             e.close()
-        for name in wanted:
+        for name in checks:
             keep_previous(name, f"GitHub request failed ({e})")
         return
-    for name, check in wanted.items():
+    for name, check in checks.items():
         repo = check["github"]
         if repo not in tags:
             keep_previous(name, f"couldn't read the tags of {repo}")
@@ -89,14 +117,37 @@ def add_checks(rows, checks, previous):
         except re.error as e:
             keep_previous(name, f"invalid tags pattern ({e})")
             continue
-        if version is None:
-            keep_previous(name, f"no tag of {repo} matches {check['tags']}")
-            continue
-        apply(
-            by_name[name],
-            {
-                "version": version,
-                "repo": repo,
-                "url": f"https://github.com/{repo}/tags",
-            },
+        found(
+            name,
+            version,
+            f"the tags of {repo}",
+            check["tags"],
+            repo=repo,
+            label=f"{repo} tags",
+            url=f"https://github.com/{repo}/tags",
         )
+
+
+def check_page(name, check, keep_previous, found):
+    """A check against a web page, e.g. a vendor's release notes."""
+    url = check["url"]
+    try:
+        text = http.get(url)
+        if text is None:
+            keep_previous(name, f"{url} answered 404 (moved?)")
+            return
+        version = latest_on_page(text, check["pattern"])
+    except (urllib.error.URLError, OSError) as e:
+        keep_previous(name, f"couldn't fetch {url} ({e})")
+        return
+    except re.error as e:
+        keep_previous(name, f"invalid pattern ({e})")
+        return
+    found(
+        name,
+        version,
+        url,
+        check["pattern"],
+        label=urllib.parse.urlsplit(url).netloc,
+        url=url,
+    )

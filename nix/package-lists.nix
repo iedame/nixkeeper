@@ -70,14 +70,34 @@ let
         entry = "updateChecks.${name}";
         inherit reason;
       };
+      # A check is github + tags, or url + pattern.
+      kind =
+        fields: valid:
+        lib.optional (!builtins.isString (check.${builtins.elemAt fields 1} or null)) (
+          at "${builtins.elemAt fields 1} must be a regex string"
+        )
+        ++ lib.optional (!valid) (
+          at (
+            if check ? github then
+              ''github must be "owner/repo"''
+            else
+              "url must start with https:// or http://"
+          )
+        )
+        ++ map (k: at "unknown field ${k}") (
+          builtins.filter (k: !builtins.elem k fields) (builtins.attrNames check)
+        );
     in
     lib.optional (!isTracked lists name) (at "not a tracked package (use its row name, the attribute)")
-    ++ lib.optional (builtins.match "[^/ ]+/[^/ ]+" (check.github or "") == null) (
-      at ''github must be "owner/repo"''
-    )
-    ++ lib.optional (!builtins.isString (check.tags or null)) (at "tags must be a regex string")
-    ++ map (k: at "unknown field ${k}") (
-      builtins.filter (k: k != "github" && k != "tags") (builtins.attrNames check)
+    ++ (
+      if check ? github && check ? url then
+        [ (at "use either github (+ tags) or url (+ pattern), not both") ]
+      else if check ? github then
+        kind [ "github" "tags" ] (builtins.match "[^/ ]+/[^/ ]+" check.github != null)
+      else if check ? url then
+        kind [ "url" "pattern" ] (builtins.match "https?://.+" check.url != null)
+      else
+        [ (at "needs github + tags, or url + pattern") ]
     );
 in
 rec {
@@ -132,11 +152,12 @@ rec {
           import json, re, sys
           bad = []
           for name, check in json.load(open(sys.argv[1])).items():
+              field = "tags" if "github" in check else "pattern"
               try:
-                  if re.compile(check["tags"]).groups > 1:
-                      bad.append(f"{name}: tags has more than one capture group")
+                  if re.compile(check[field]).groups > 1:
+                      bad.append(f"{name}: {field} has more than one capture group")
               except re.error as e:
-                  bad.append(f"{name}: tags is not a valid regex ({e})")
+                  bad.append(f"{name}: {field} is not a valid regex ({e})")
           if bad:
               sys.exit("package-lists/update-checks.nix has problems:\n  - " + "\n  - ".join(bad))
           EOF

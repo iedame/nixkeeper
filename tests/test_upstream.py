@@ -4,9 +4,10 @@ import unittest
 import urllib.error
 from unittest import mock
 
+from nixkeeper import config
 from nixkeeper.changes import is_outdated
 from nixkeeper.sources import github, upstream
-from tests.helpers import response
+from tests.helpers import http_error, response
 
 WESNOTH_TAGS = ["1.19.28", "1.18.8", "1.19.27", "1.19.9", "1.19.24", "1.18.7"]
 CHECK = {"github": "wesnoth/wesnoth", "tags": r"^(1\.19\.[0-9]+)$"}
@@ -89,6 +90,7 @@ class AddChecks(unittest.TestCase):
             {
                 "version": "1.19.28",
                 "repo": "wesnoth/wesnoth",
+                "label": "wesnoth/wesnoth tags",
                 "url": "https://github.com/wesnoth/wesnoth/tags",
                 "newer": True,
             },
@@ -114,6 +116,75 @@ class AddChecks(unittest.TestCase):
         self.assertIn(
             "::warning::update check for wesnoth-devel", self.stderr.getvalue()
         )
+
+
+# Trimmed from https://www.barebones.com/support/bbedit/updates.html (2026-09).
+BBEDIT_PAGE = """<h2>BBEdit 16.0.3</h2><p>Fixed a crash in BBEdit 16.0.2 when...</p>
+<h2>BBEdit 15.5.5</h2><p>Requires macOS 12 or later.</p><h2>BBEdit 14.6.9</h2>"""
+BBEDIT = {
+    "url": "https://www.barebones.com/support/bbedit/updates.html",
+    "pattern": r"BBEdit ([0-9]+\.[0-9]+\.[0-9]+)",
+}
+
+
+class PageChecks(unittest.TestCase):
+    def setUp(self):
+        self.stderr = io.StringIO()
+        for patcher in (
+            mock.patch("sys.stderr", self.stderr),
+            mock.patch("time.sleep"),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_highest_version_anywhere_on_the_page(self):
+        self.assertEqual(
+            upstream.latest_on_page(BBEDIT_PAGE, BBEDIT["pattern"]), "16.0.3"
+        )
+        # Order on the page doesn't matter.
+        reversed_page = "BBEdit 15.5.5 ... BBEdit 16.0.3"
+        self.assertEqual(
+            upstream.latest_on_page(reversed_page, BBEDIT["pattern"]), "16.0.3"
+        )
+
+    def run_check(self, rows, urlopen, previous=None):
+        with (
+            mock.patch("urllib.request.urlopen", **urlopen),
+            mock.patch.object(github, "token", return_value="t"),
+        ):
+            upstream.add_checks(rows, {"bbedit": BBEDIT}, previous or {"packages": []})
+
+    def test_page_check(self):
+        page = response("x")
+        page.read.return_value = BBEDIT_PAGE.encode()
+        rows = [row("bbedit", "16.0.2", "newest", "16.0.2")]
+        self.run_check(rows, {"return_value": page})
+        self.assertEqual(
+            rows[0]["upstream"],
+            {
+                "version": "16.0.3",
+                "label": "www.barebones.com",
+                "url": BBEDIT["url"],
+                "newer": True,
+            },
+        )
+        self.assertEqual(rows[0]["refVersion"], "16.0.3")
+
+    def test_page_problems_keep_previous_result(self):
+        old = {"version": "16.0.3", "label": "www.barebones.com", "newer": False}
+        previous = {"packages": [{"name": "bbedit", "upstream": old}]}
+        nothing = response("x")
+        nothing.read.return_value = b"<p>Page redesigned</p>"
+        for why, urlopen in (
+            ("answered 404", {"side_effect": http_error(404)}),
+            ("couldn't fetch", {"side_effect": urllib.error.URLError("down")}),
+            ("matches", {"return_value": nothing}),
+        ):
+            with self.subTest(why=why), mock.patch.object(config, "RETRY_DELAYS", []):
+                rows = [row("bbedit", "16.0.3", "newest", "16.0.3")]
+                self.run_check(rows, urlopen, previous)
+                self.assertEqual(rows[0]["upstream"]["version"], "16.0.3")
+                self.assertIn(why, self.stderr.getvalue())
 
 
 class LatestTags(unittest.TestCase):

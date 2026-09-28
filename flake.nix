@@ -151,6 +151,14 @@
                       github = "not a repo";
                       tag = "typo";
                     };
+                    "haskellPackages.pandoc" = {
+                      github = "jgm/pandoc";
+                      url = "https://pandoc.org";
+                    };
+                    lincity = {
+                      url = "ftp://example.org";
+                      pattern = "([0-9.]+)";
+                    };
                   };
                 }
               );
@@ -159,10 +167,12 @@
                 "opentyrian"
                 "python3Packages.requests"
                 "nosuchpkg-nixkeeper"
+                "updateChecks.haskellPackages.pandoc" # both github and url
                 "updateChecks.hello" # not tracked
                 "updateChecks.hello" # github isn't owner/repo
                 "updateChecks.hello" # no tags
                 "updateChecks.hello" # unknown field "tag"
+                "updateChecks.lincity" # url isn't http(s); tracked via iedame
               ];
             in
             assert lib.assertMsg (found == expected) "package-lists checker found ${builtins.toJSON found}";
