@@ -10,6 +10,7 @@ import sys
 import urllib.error
 import urllib.parse
 
+from .. import history
 from . import github, http
 
 
@@ -58,9 +59,11 @@ def apply(row, found):
         row["refVersion"] = found["version"]
 
 
-def add_checks(rows, checks, previous):
-    """Run the update checks for rows that have one. A check that can't run
-    keeps the previous run's result."""
+def add_checks(rows, checks, previous, now):
+    """Run the update checks for rows that have one. A check that can't run,
+    GitHub or web page alike, keeps the previous run's result and marks the
+    row as not refreshed: usually the check itself needs fixing (a moved page,
+    a changed tag scheme)."""
     by_name = {row["name"]: row for row in rows}
     for name in sorted(set(checks) - set(by_name)):
         print(
@@ -71,18 +74,20 @@ def add_checks(rows, checks, previous):
     if not wanted:
         return
     print(f"Running {len(wanted)} update checks...", file=sys.stderr)
-    before = {row["name"]: row.get("upstream") for row in previous["packages"]}
+    before = {row["name"]: row for row in previous["packages"]}
 
     def keep_previous(name, why):
         print(f"::warning::update check for {name}: {why}", file=sys.stderr)
-        if before.get(name):
-            apply(by_name[name], before[name])
+        old = before.get(name) or {}
+        if old.get("upstream"):
+            apply(by_name[name], old["upstream"])
+        history.not_refreshed(by_name[name], "upstream", why, old, now)
 
     def found(name, version, where, what, **extra):
         if version is None:
             keep_previous(name, f"nothing in {where} matches {what}")
         else:
-            apply(by_name[name], {"version": version, **extra})
+            apply(by_name[name], {"version": version, "checkedAt": now, **extra})
 
     github_checks = {n: c for n, c in wanted.items() if "github" in c}
     if github_checks:
@@ -110,7 +115,9 @@ def check_github(checks, keep_previous, found):
     for name, check in checks.items():
         repo = check["github"]
         if repo not in tags:
-            keep_previous(name, f"couldn't read the tags of {repo}")
+            keep_previous(
+                name, f"couldn't read the tags of {repo} (renamed or deleted?)"
+            )
             continue
         try:
             version = latest(tags[repo], check["tags"])

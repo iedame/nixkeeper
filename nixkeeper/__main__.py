@@ -21,12 +21,12 @@ def main():
     revision = nixpkgs_source.channel_revision()
     rows.add_source_links(index_rows, nixpkgs, revision)
     # Before outdated-since: a check can make a row outdated.
-    upstream.add_checks(index_rows, lists.get("updateChecks") or {}, previous)
+    upstream.add_checks(index_rows, lists.get("updateChecks") or {}, previous, now)
     history.add_outdated_since(index_rows, previous, now)
     in_nixpkgs = {a for row in index_rows for a in row["attrs"] if a in nixpkgs}
     broken = nixpkgs_source.broken(in_nixpkgs, revision)
-    hydra.add_builds(index_rows, nixpkgs, previous, broken)
-    nixpkgs_update.add_attempts(index_rows, nixpkgs, previous)
+    hydra.add_builds(index_rows, nixpkgs, previous, now, broken)
+    nixpkgs_update.add_attempts(index_rows, nixpkgs, previous, now)
     github.add_counts(index_rows)
     output.write(projects, {"checkedAt": now, "packages": index_rows})
     notify.notify(previous, index_rows, now)

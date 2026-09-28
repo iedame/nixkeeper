@@ -31,6 +31,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   checks: wesnoth-devel (GitHub tags, the 1.19 series) and bbedit (its
   updates page).
 
+- Sources that couldn't be refreshed are shown, not just logged: when an
+  update check (GitHub or web page), Hydra or the nixpkgs-update logs fail, the
+  row keeps its last known result and says so, with the reason and since when
+  ("check failing" badge, "not refreshed" tags, a note in the panels). The
+  status issue lists them under "Not refreshed" and comments once per newly
+  failing source; working again is listed quietly.
+
 ### Changed
 
 - Hydra and the update logs share one retrying HTTP helper.

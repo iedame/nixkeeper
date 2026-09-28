@@ -8,7 +8,7 @@ import sys
 import time
 import urllib.error
 
-from .. import config
+from .. import config, history
 from ..rows import search_term
 from . import http
 
@@ -93,11 +93,11 @@ def superseded(attempt, nix_version):
     return attempt.get("to") not in (None, "1") and attempt["to"] == nix_version
 
 
-def add_attempts(rows, nixpkgs, previous):
+def add_attempts(rows, nixpkgs, previous, now):
     """Give every row in nixpkgs the bot's latest attempt ("update", None if
     it never tried) and whether that failed ("updateFailure"). With several
     attrs, the most recently attempted one counts. A row whose lookup fails
-    keeps the previous run's result."""
+    keeps the previous run's result and is marked as not refreshed."""
     print("Checking nixpkgs-update logs...", file=sys.stderr)
     before = {row["name"]: row for row in previous["packages"]}
     failed = consecutive = 0
@@ -108,7 +108,7 @@ def add_attempts(rows, nixpkgs, previous):
         down = consecutive >= config.UPDATE_LOGS_MAX_CONSECUTIVE_FAILURES
         try:
             if down:
-                raise OSError("the log site seems down, not asking")
+                raise OSError("not asked: it didn't answer earlier lookups")
             attempts = [a for a in map(latest_attempt, attrs) if a]
             consecutive = 0
         except (urllib.error.URLError, OSError) as e:
@@ -119,6 +119,9 @@ def add_attempts(rows, nixpkgs, previous):
             old = before.get(row["name"], {})
             row["update"] = old.get("update")
             row["updateFailure"] = bool(old.get("updateFailure"))
+            history.not_refreshed(
+                row, "update", f"couldn't read the nixpkgs-update logs ({e})", old, now
+            )
             continue
         attempt = max(attempts, key=lambda a: a["date"], default=None)
         if (

@@ -10,6 +10,7 @@ from datetime import datetime
 from . import config
 from .changes import (
     NOTIFY,
+    STALE_LABELS,
     broken_builds,
     build_label,
     diff,
@@ -17,6 +18,7 @@ from .changes import (
     failures,
     is_outdated,
     should_notify,
+    stale_sources,
 )
 from .sources import github
 
@@ -53,7 +55,13 @@ def describe(row, now):
     if broken:
         text += " — marked broken in nixpkgs on " + ", ".join(broken)
     if row.get("staleSince"):
-        text += f" — Repology lookup failed, showing data from {row['staleSince'][:10]}"
+        text += (
+            f" — {STALE_LABELS['repology']}, showing data from {row['staleSince'][:10]}"
+        )
+    for source, info in (row.get("notRefreshed") or {}).items():
+        text += (
+            f" — {STALE_LABELS[source]} since {info['since'][:10]}: {info['reason']}"
+        )
     return text
 
 
@@ -66,6 +74,7 @@ CHANGE_LABELS = {
     "failed": "Newly failed",
     "vulnerable": "Newly flagged vulnerable",
     "notRefreshed": "Not refreshed",
+    "refreshed": "Refreshed again",
     "caughtUp": "Caught up",
     "fixed": "No longer failing",
     "broken": "Marked broken in nixpkgs",
@@ -100,7 +109,7 @@ def status_body(rows, changes, now, page_url=None):
         ),
         ("Flagged vulnerable", [r for r in rows if r.get("nixVulnerable")]),
         ("Marked broken in nixpkgs", [r for r in rows if broken_builds(r)]),
-        ("Not refreshed", [r for r in rows if r.get("staleSince")]),
+        ("Not refreshed", [r for r in rows if stale_sources(r)]),
     ]
     parts = [
         f"Checked {now[:16].replace('T', ' ')} UTC · {len(rows)} packages tracked"

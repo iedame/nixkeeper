@@ -114,6 +114,28 @@ class Diff(unittest.TestCase):
             )
         )
 
+    def test_each_source_not_refreshing_notifies_once(self):
+        hydra = {"builds": {"since": "2026-09-29", "reason": "down"}}
+        both = {**hydra, "upstream": {"since": "2026-09-30", "reason": "404"}}
+        c = self.changes([row("x")], [row("x", notRefreshed=hydra)])
+        self.assertTrue(should_notify(c))
+        # Still failing: not news. Another source failing too: news.
+        self.assertFalse(
+            should_notify(
+                self.changes(
+                    [row("x", notRefreshed=hydra)], [row("x", notRefreshed=hydra)]
+                )
+            )
+        )
+        c = self.changes([row("x", notRefreshed=hydra)], [row("x", notRefreshed=both)])
+        self.assertEqual([r["name"] for r in c["notRefreshed"]], ["x"])
+
+    def test_refreshed_again_is_quiet(self):
+        hydra = {"builds": {"since": "2026-09-29", "reason": "down"}}
+        c = self.changes([row("x", notRefreshed=hydra)], [row("x")])
+        self.assertEqual([r["name"] for r in c["refreshed"]], ["x"])
+        self.assertFalse(should_notify(c))
+
     def test_added_and_removed_are_quiet(self):
         c = self.changes([row("old")], [row("new", "outdated")])
         self.assertEqual([r["name"] for r in c["added"]], ["new"])

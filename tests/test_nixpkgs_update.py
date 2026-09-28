@@ -7,6 +7,8 @@ from nixkeeper import config
 from nixkeeper.sources import nixpkgs_update
 from tests.helpers import http_error, pkg
 
+NOW = "2026-09-30T06:00:00+00:00"
+
 # Trimmed from real logs at nixpkgs-update-logs.nixos.org (2026-09).
 HEAD = (
     "Running nixpkgs-update (https://nix-community.org/update-bot/) with UPDATE_INFO: "
@@ -113,7 +115,9 @@ class AddAttempts(unittest.TestCase):
         nixpkgs = {a: pkg(a) for row in rows for a in row["attrs"]}
         urlopen, calls = fake_site(pages)
         with mock.patch("urllib.request.urlopen", side_effect=urlopen):
-            nixpkgs_update.add_attempts(rows, nixpkgs, previous or {"packages": []})
+            nixpkgs_update.add_attempts(
+                rows, nixpkgs, previous or {"packages": []}, NOW
+            )
         return calls
 
     def test_rows(self):
@@ -187,7 +191,7 @@ class AddAttempts(unittest.TestCase):
                 "urllib.request.urlopen", side_effect=urllib.error.URLError("down")
             ) as urlopen,
         ):
-            nixpkgs_update.add_attempts(rows, nixpkgs, previous)
+            nixpkgs_update.add_attempts(rows, nixpkgs, previous, NOW)
         self.assertEqual((rows[0]["update"], rows[0]["updateFailure"]), (old, True))
         self.assertIsNone(rows[4]["update"])
         self.assertEqual(
@@ -196,3 +200,6 @@ class AddAttempts(unittest.TestCase):
         self.assertIn(
             "::warning::5 nixpkgs-update log lookups failed", self.stderr.getvalue()
         )
+        for r in rows:
+            self.assertEqual(r["notRefreshed"]["update"]["since"], NOW)
+        self.assertIn("down", rows[0]["notRefreshed"]["update"]["reason"])

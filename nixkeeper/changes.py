@@ -43,7 +43,23 @@ def failures(row):
 # Changes that notify (posted as a comment), then ones only listed in the
 # status issue: good news and bookkeeping shouldn't ping anyone.
 NOTIFY = ("outdated", "failed", "vulnerable", "notRefreshed")
-QUIET = ("caughtUp", "fixed", "broken", "added", "removed")
+QUIET = ("caughtUp", "fixed", "broken", "refreshed", "added", "removed")
+
+# What a source that couldn't be refreshed means for the row, for the issue.
+STALE_LABELS = {
+    "repology": "Repology lookup failed",
+    "upstream": "nixkeeper's update check failing (package-lists/update-checks.nix)",
+    "builds": "Hydra builds not refreshed",
+    "update": "nixpkgs-update logs not refreshed",
+}
+
+
+def stale_sources(row):
+    """Which of the row's sources couldn't be refreshed on its run."""
+    sources = set(row.get("notRefreshed") or {})
+    if row.get("staleSince"):
+        sources.add("repology")
+    return sources
 
 
 def diff(previous, rows):
@@ -76,8 +92,12 @@ def diff(previous, rows):
             changes["fixed"].append(row)
         if row.get("nixVulnerable") and not old.get("nixVulnerable"):
             changes["vulnerable"].append(row)
-        if row.get("staleSince") and not old.get("staleSince"):
+        # Per source: Hydra failing too, a day after an update check, is news.
+        now_stale, was_stale = stale_sources(row), stale_sources(old)
+        if now_stale - was_stale:
             changes["notRefreshed"].append(row)
+        if was_stale - now_stale:
+            changes["refreshed"].append(row)
     changes["removed"] = sorted(name for name in before if name not in names)
     return changes
 

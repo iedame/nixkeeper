@@ -246,7 +246,7 @@ function render(list) {
     const verCell =
       st === 'missing'
         ? `<span class="badge missing">not packaged</span>`
-        : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}`;
+        : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. Fix it in package-lists/update-checks.nix.">check failing</span>` : ''}`;
 
     const tr = document.createElement('tr');
     tr.className = 'row';
@@ -317,9 +317,22 @@ function render(list) {
   });
 }
 
-function failureButton(kind, dot, text, extra = '') {
+// A source the last sync couldn't refresh ("builds", "update", "upstream"):
+// what's shown is from before `since`. null if it refreshed fine.
+const notRefreshed = (pkg, source) => pkg.notRefreshed?.[source] || null;
+const staleText = (info, what) =>
+  `${what} since ${longDate(info.since)} (${daysText(info.since)}): ${info.reason}`;
+// The same, as a line at the top of a panel.
+const staleNote = (info, what, after) =>
+  info ? `<div class="stale-note">⚠ ${escapeHtml(staleText(info, what))}. ${after}</div>` : '';
+
+function failureButton(kind, dot, text, extra = '', stale = null) {
   return `<button class="failure-btn${dot === 'missing' ? ' failing' : ''}" type="button" data-kind="${kind}" ${extra}>
-    <span class="status-dot ${dot}"></span>${text}</button>`;
+    <span class="status-dot ${dot}"></span>${text}${
+      stale
+        ? ` <span class="stale-tag" title="${escapeHtml(staleText(stale, 'Not refreshed'))}">not refreshed</span>`
+        : ''
+    }</button>`;
 }
 
 // Whether Hydra built this at all: not for unfree packages, nor ones nixpkgs
@@ -330,23 +343,36 @@ function hydraBuildsIt(pkg) {
 
 function buildCell(pkg) {
   if (!pkg.builds) return '<span class="failure-na" title="Not in nixpkgs">—</span>';
-  const extra = 'aria-expanded="false" title="Show Hydra builds"';
-  if (failedBuilds(pkg).length) return failureButton('build', 'missing', 'failure reported', extra);
+  const button = (dot, text) =>
+    failureButton(
+      'build',
+      dot,
+      text,
+      'aria-expanded="false" title="Show Hydra builds"',
+      notRefreshed(pkg, 'builds'),
+    );
+  if (failedBuilds(pkg).length) return button('missing', 'failure reported');
   // Known failures: shown, but not counted as failed.
-  if (buildsWith(pkg, 'broken').length)
-    return failureButton('build', 'warn', 'marked broken', extra);
-  if (!hydraBuildsIt(pkg)) return failureButton('build', 'neutral', 'not built by Hydra', extra);
-  return failureButton('build', 'ok', 'none reported', extra);
+  if (buildsWith(pkg, 'broken').length) return button('warn', 'marked broken');
+  if (!hydraBuildsIt(pkg)) return button('neutral', 'not built by Hydra');
+  return button('ok', 'none reported');
 }
 
 // nixpkgs-update's latest attempt. `update` is null when the bot never tried
 // and missing for packages not in nixpkgs.
 function updateCell(pkg) {
   if (pkg.update === undefined) return '<span class="failure-na" title="Not in nixpkgs">—</span>';
-  const extra = 'aria-expanded="false" title="Show the latest nixpkgs-update attempt"';
-  if (pkg.updateFailure) return failureButton('update', 'missing', 'failure reported', extra);
-  if (pkg.update === null) return failureButton('update', 'neutral', 'not attempted', extra);
-  return failureButton('update', 'ok', 'none reported', extra);
+  const button = (dot, text) =>
+    failureButton(
+      'update',
+      dot,
+      text,
+      'aria-expanded="false" title="Show the latest nixpkgs-update attempt"',
+      notRefreshed(pkg, 'update'),
+    );
+  if (pkg.updateFailure) return button('missing', 'failure reported');
+  if (pkg.update === null) return button('neutral', 'not attempted');
+  return button('ok', 'none reported');
 }
 
 const prLink = (n, text) =>
@@ -368,8 +394,13 @@ const UPDATE_OUTCOME = {
 
 function fillUpdate(pkg, el) {
   const u = pkg.update;
+  const stale = staleNote(
+    notRefreshed(pkg, 'update'),
+    'Not refreshed',
+    'Showing the last known attempt.',
+  );
   if (!u) {
-    el.innerHTML = `<div class="nix-line">nixpkgs-update hasn't tried to update this package (it may have no update source it understands).</div>`;
+    el.innerHTML = `${stale}<div class="nix-line">nixpkgs-update hasn't tried to update this package (it may have no update source it understands).</div>`;
     return;
   }
   const dir = u.log.slice(0, u.log.lastIndexOf('/') + 1); // every attempt's log
@@ -381,7 +412,7 @@ function fillUpdate(pkg, el) {
       ? ` · <span class="mono">${escapeHtml(u.from)} → ${escapeHtml(u.to)}</span>`
       : '';
   const o = UPDATE_OUTCOME[u.outcome] || UPDATE_OUTCOME.other;
-  el.innerHTML = `
+  el.innerHTML = `${stale}
     <div class="nix-line">Latest nixpkgs-update attempt${(pkg.attrs || []).length > 1 ? ` at <span class="mono">${escapeHtml(u.attr)}</span>` : ''} · ${escapeHtml(longDate(day))} (${shortAge(day)} ago)${versions}</div>
     <div class="build-list"><div class="build-line">
       <span class="status-dot ${o.dot}"></span><span class="st ${o.dot}">${o.text(u)}</span>
@@ -448,7 +479,12 @@ function fillBuilds(pkg, el) {
         `<a class="files-link" href="${HYDRA}/job/nixpkgs/unstable/${encodeURIComponent(`${b.attr}.${b.system}`)}" target="_blank" rel="noopener">${escapeHtml(pkg.attrs.length > 1 ? `${b.attr}.${b.system}` : b.system)} job ↗</a>`,
     )
     .join('');
-  el.innerHTML = `${body}${jobLinks ? `<div class="detail-row">${jobLinks}</div>` : ''}`;
+  const stale = staleNote(
+    notRefreshed(pkg, 'builds'),
+    'Not refreshed',
+    'Showing the last known results.',
+  );
+  el.innerHTML = `${stale}${body}${jobLinks ? `<div class="detail-row">${jobLinks}</div>` : ''}`;
 }
 
 // From nixpkgs meta.platforms; null means nixpkgs doesn't restrict it.
@@ -525,6 +561,16 @@ async function fillDetail(pkg, el) {
           ? ''
           : ", which Repology doesn't count as newest yet"
     }${since}`;
+  // A check that can't refresh needs fixing in nixkeeper, so the details say
+  // so plainly, with the last result it's still using.
+  const failing = notRefreshed(pkg, 'upstream');
+  const checkNote = failing
+    ? `<div class="stale-note">⚠ ${escapeHtml(staleText(failing, "nixkeeper's update check has been failing"))}.${
+        up
+          ? ` Still using its last result: <span class="mono">${escapeHtml(up.version)}</span>${up.checkedAt ? ` (${escapeHtml(longDate(up.checkedAt))})` : ''}.`
+          : ' It has no result yet.'
+      } Fix it in <span class="mono">package-lists/update-checks.nix</span>.</div>`
+    : '';
   const nixLine = up?.newer
     ? upstreamLine()
     : st === 'missing'
@@ -536,13 +582,13 @@ async function fillDetail(pkg, el) {
               ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
               : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`
         }${
-          up && !up.newer
+          up && !up.newer && !failing
             ? ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
             : ''
         }`;
 
   el.innerHTML = `
-    <div class="nix-line">${nixLine}</div>
+    <div class="nix-line">${nixLine}</div>${checkNote}
     ${
       others.length
         ? `<div class="other-label">Compared against</div><div class="repo-chips">

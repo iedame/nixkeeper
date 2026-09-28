@@ -76,6 +76,26 @@ class Text(unittest.TestCase):
             " · outdated today",
         )
 
+    def test_not_refreshed_says_what_and_why(self):
+        row = {
+            "name": "bbedit",
+            "nixStatus": "newest",
+            "notRefreshed": {
+                "upstream": {
+                    "since": "2026-09-30T06:00:00+00:00",
+                    "reason": "https://example.org answered 404 (moved?)",
+                }
+            },
+        }
+        self.assertEqual(
+            notify.describe(row, NOW),
+            "`bbedit` — nixkeeper's update check failing "
+            "(package-lists/update-checks.nix) since 2026-09-30: "
+            "https://example.org answered 404 (moved?)",
+        )
+        body = notify.status_body([row], diff({"packages": []}, [row]), NOW)
+        self.assertIn("### Not refreshed (1)", body)
+
     def test_update_failure_links_its_log(self):
         log = "https://nixpkgs-update-logs.nixos.org/egoboo/2026-09-15.log"
         row = {

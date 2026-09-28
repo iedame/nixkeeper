@@ -9,6 +9,8 @@ from nixkeeper.changes import is_outdated
 from nixkeeper.sources import github, upstream
 from tests.helpers import http_error, response
 
+NOW = "2026-09-30T06:00:00+00:00"
+
 WESNOTH_TAGS = ["1.19.28", "1.18.8", "1.19.27", "1.19.9", "1.19.24", "1.18.7"]
 CHECK = {"github": "wesnoth/wesnoth", "tags": r"^(1\.19\.[0-9]+)$"}
 
@@ -74,7 +76,7 @@ class AddChecks(unittest.TestCase):
     def run_checks(self, rows, checks, tags=None, error=None, previous=None):
         kwargs = {"side_effect": error} if error else {"return_value": tags}
         with mock.patch.object(github, "latest_tags", **kwargs) as latest_tags:
-            upstream.add_checks(rows, checks, previous or {"packages": []})
+            upstream.add_checks(rows, checks, previous or {"packages": []}, NOW)
         return latest_tags
 
     def test_check(self):
@@ -93,29 +95,63 @@ class AddChecks(unittest.TestCase):
                 "label": "wesnoth/wesnoth tags",
                 "url": "https://github.com/wesnoth/wesnoth/tags",
                 "newer": True,
+                "checkedAt": NOW,
             },
         )
         self.assertNotIn("upstream", rows[1])  # no check for it
         self.assertIn("not-tracked: not a tracked package", self.stderr.getvalue())
 
-    def test_failure_keeps_previous_result(self):
+    def test_failure_keeps_previous_result_and_says_so(self):
         old = {"version": "1.19.26", "repo": "wesnoth/wesnoth", "newer": True}
         previous = {"packages": [{"name": "wesnoth-devel", "upstream": old}]}
-        for kwargs in (
-            {"error": urllib.error.URLError("down")},
-            {"tags": {}},  # GitHub couldn't read the repository
-            {"tags": {"wesnoth/wesnoth": ["nightly"]}},  # nothing matches
+        for reason, kwargs in (
+            ("GitHub request failed", {"error": urllib.error.URLError("down")}),
+            ("renamed or deleted?", {"tags": {}}),
+            ("matches", {"tags": {"wesnoth/wesnoth": ["nightly"]}}),
         ):
-            with self.subTest(**kwargs):
+            with self.subTest(reason=reason):
                 rows = [row()]
                 self.run_checks(
                     rows, {"wesnoth-devel": CHECK}, previous=previous, **kwargs
                 )
                 self.assertEqual(rows[0]["upstream"]["version"], "1.19.26")
                 self.assertEqual(rows[0]["refVersion"], "1.19.26")
+                failing = rows[0]["notRefreshed"]["upstream"]
+                self.assertEqual(failing["since"], NOW)
+                self.assertIn(reason, failing["reason"])
         self.assertIn(
             "::warning::update check for wesnoth-devel", self.stderr.getvalue()
         )
+
+    def test_no_token_counts_as_failing(self):
+        rows = [row()]
+        with mock.patch.object(github, "token", return_value=None):
+            self.run_checks(rows, {"wesnoth-devel": CHECK}, {})
+        self.assertNotIn("upstream", rows[0])  # nothing to fall back on
+        self.assertIn("no GITHUB_TOKEN", rows[0]["notRefreshed"]["upstream"]["reason"])
+
+    def test_failing_since_carries_over(self):
+        since = "2026-09-28T06:00:00+00:00"
+        previous = {
+            "packages": [
+                {
+                    "name": "wesnoth-devel",
+                    "notRefreshed": {"upstream": {"since": since, "reason": "x"}},
+                }
+            ]
+        }
+        rows = [row()]
+        self.run_checks(rows, {"wesnoth-devel": CHECK}, {}, previous=previous)
+        self.assertEqual(rows[0]["notRefreshed"]["upstream"]["since"], since)
+        # Working again: no marker.
+        rows = [row()]
+        self.run_checks(
+            rows,
+            {"wesnoth-devel": CHECK},
+            {"wesnoth/wesnoth": WESNOTH_TAGS},
+            previous=previous,
+        )
+        self.assertNotIn("notRefreshed", rows[0])
 
 
 # Trimmed from https://www.barebones.com/support/bbedit/updates.html (2026-09).
@@ -152,7 +188,9 @@ class PageChecks(unittest.TestCase):
             mock.patch("urllib.request.urlopen", **urlopen),
             mock.patch.object(github, "token", return_value="t"),
         ):
-            upstream.add_checks(rows, {"bbedit": BBEDIT}, previous or {"packages": []})
+            upstream.add_checks(
+                rows, {"bbedit": BBEDIT}, previous or {"packages": []}, NOW
+            )
 
     def test_page_check(self):
         page = response("x")
@@ -166,6 +204,7 @@ class PageChecks(unittest.TestCase):
                 "label": "www.barebones.com",
                 "url": BBEDIT["url"],
                 "newer": True,
+                "checkedAt": NOW,
             },
         )
         self.assertEqual(rows[0]["refVersion"], "16.0.3")
@@ -184,6 +223,7 @@ class PageChecks(unittest.TestCase):
                 rows = [row("bbedit", "16.0.3", "newest", "16.0.3")]
                 self.run_check(rows, urlopen, previous)
                 self.assertEqual(rows[0]["upstream"]["version"], "16.0.3")
+                self.assertIn(why, rows[0]["notRefreshed"]["upstream"]["reason"])
                 self.assertIn(why, self.stderr.getvalue())
 
 

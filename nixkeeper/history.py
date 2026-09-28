@@ -1,5 +1,6 @@
 """What carries over from the previous run: its data, for lookups that fail,
-and when each package became outdated."""
+when each package became outdated, and since when a source couldn't be
+refreshed."""
 
 import json
 import os
@@ -41,6 +42,18 @@ def previous_project(previous, pname, attrs, out_dir=config.OUT_DIR):
                 row.get("staleSince") or previous.get("checkedAt"),
             )
     return None
+
+
+def not_refreshed(row, source, reason, before, now):
+    """Record that source ("builds", "update" or "upstream") couldn't be
+    refreshed for row this run, so what it shows is the previous run's (or
+    nothing). before is the row's previous-run version, if any: the date it
+    started failing carries over, so "since" stays the first failing run."""
+    since = ((before or {}).get("notRefreshed") or {}).get(source, {}).get("since")
+    row.setdefault("notRefreshed", {})[source] = {
+        "since": since or now,
+        "reason": reason,
+    }
 
 
 def add_outdated_since(rows, previous, now):

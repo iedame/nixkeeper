@@ -7,6 +7,8 @@ from nixkeeper import config
 from nixkeeper.sources import hydra
 from tests.helpers import http_error, pkg, response
 
+NOW = "2026-09-30T06:00:00+00:00"
+
 # Shaped like hydra.nixos.org's answers (checked 2026-09-28).
 OK = [{"id": 345280810, "buildstatus": 0, "finished": 1, "system": "aarch64-darwin"}]
 FAILED = [
@@ -156,7 +158,7 @@ class AddBuilds(unittest.TestCase):
             }
         )
         with mock.patch("urllib.request.urlopen", side_effect=urlopen):
-            hydra.add_builds(rows, nixpkgs, {"packages": []})
+            hydra.add_builds(rows, nixpkgs, {"packages": []}, NOW)
         self.assertEqual(
             [(b["system"], b["status"]) for b in rows[0]["builds"]],
             [("x86_64-linux", "ok"), ("aarch64-darwin", "failed")],
@@ -164,7 +166,11 @@ class AddBuilds(unittest.TestCase):
         # Marked broken on darwin: the same failure, but known.
         with mock.patch("urllib.request.urlopen", side_effect=urlopen):
             hydra.add_builds(
-                rows, nixpkgs, {"packages": []}, {"ac-library": ["aarch64-darwin"]}
+                rows,
+                nixpkgs,
+                {"packages": []},
+                NOW,
+                {"ac-library": ["aarch64-darwin"]},
             )
         self.assertEqual(
             [(b["system"], b["status"]) for b in rows[0]["builds"]],
@@ -185,8 +191,21 @@ class AddBuilds(unittest.TestCase):
                 "urllib.request.urlopen", side_effect=urllib.error.URLError("down")
             ) as urlopen,
         ):
-            hydra.add_builds(rows, nixpkgs, previous)
+            hydra.add_builds(rows, nixpkgs, previous, NOW)
         self.assertEqual(rows[0]["builds"], [old])
         self.assertEqual(rows[5]["builds"][0]["status"], "unknown")
         self.assertEqual(urlopen.call_count, config.HYDRA_MAX_CONSECUTIVE_FAILURES)
         self.assertIn("::warning::6 Hydra lookups failed", self.stderr.getvalue())
+        # Every row says it's showing old results, and why.
+        for r in rows:
+            self.assertEqual(r["notRefreshed"]["builds"]["since"], NOW)
+        self.assertIn("down", rows[0]["notRefreshed"]["builds"]["reason"])
+        self.assertIn("didn't answer", rows[5]["notRefreshed"]["builds"]["reason"])
+
+    def test_refreshed_rows_have_no_marker(self):
+        nixpkgs = {"hello": pkg("hello", ["x86_64-linux"])}
+        rows = [{"name": "hello", "attrs": ["hello"]}]
+        urlopen, _ = fake_hydra({"hello.x86_64-linux": OK})
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            hydra.add_builds(rows, nixpkgs, {"packages": []}, NOW)
+        self.assertNotIn("notRefreshed", rows[0])

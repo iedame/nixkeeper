@@ -7,7 +7,7 @@ import urllib.error
 import urllib.parse
 from datetime import UTC, datetime
 
-from .. import config
+from .. import config, history
 from . import http
 
 # Hydra's buildstatus codes. 1 and 6 ("failed with output") are the package's
@@ -101,11 +101,11 @@ def systems(pkg):
     return wanted
 
 
-def add_builds(rows, nixpkgs, previous, broken=None):
+def add_builds(rows, nixpkgs, previous, now, broken=None):
     """Give every row in nixpkgs its Hydra results ("builds"), or mark it unfree
     ("unfree": true, no builds). broken: {attr: [systems]} nixpkgs marks
     broken. A job whose lookup fails keeps the previous run's result, if there
-    is one."""
+    is one, and the row is marked as not refreshed."""
     broken = broken or {}
     print("Checking Hydra builds...", file=sys.stderr)
     before = {
@@ -113,8 +113,10 @@ def add_builds(rows, nixpkgs, previous, broken=None):
         for row in previous["packages"]
         for b in row.get("builds") or []
     }
+    before_rows = {row["name"]: row for row in previous["packages"]}
     failed = consecutive = 0
     for row in rows:
+        error = None
         pkgs = {a: nixpkgs[a] for a in row["attrs"] if a in nixpkgs}
         if not pkgs:
             continue  # not in nixpkgs: nothing Hydra could build
@@ -130,7 +132,7 @@ def add_builds(rows, nixpkgs, previous, broken=None):
                 down = consecutive >= config.HYDRA_MAX_CONSECUTIVE_FAILURES
                 try:
                     if down:
-                        raise OSError("Hydra seems down, not asking")
+                        raise OSError("not asked: it didn't answer earlier lookups")
                     builds.append(check(attr, system, is_broken))
                     consecutive = 0
                 except (urllib.error.URLError, OSError, ValueError) as e:
@@ -138,6 +140,7 @@ def add_builds(rows, nixpkgs, previous, broken=None):
                     consecutive += not down
                     if not down:
                         print(f"  {attr}.{system}: {e}", file=sys.stderr)
+                    error = error or str(e)
                     build = dict(
                         before.get((attr, system))
                         or {"attr": attr, "system": system, "status": "unknown"}
@@ -146,6 +149,14 @@ def add_builds(rows, nixpkgs, previous, broken=None):
                         build["status"] = "broken"
                     builds.append(build)
         row["builds"] = builds
+        if error:
+            history.not_refreshed(
+                row,
+                "builds",
+                f"couldn't reach Hydra ({error})",
+                before_rows.get(row["name"]),
+                now,
+            )
     if failed:
         print(
             f"::warning::{failed} Hydra lookups failed; those show the previous "
