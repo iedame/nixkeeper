@@ -1,40 +1,5 @@
 [
   {
-    "binname": "com.google.Chrome",
-    "categories": [
-      "Communications"
-    ],
-    "licenses": [
-      "Chrome license"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "com.google.Chrome",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Chrome"
-  },
-  {
-    "licenses": [
-      "google-chrome"
-    ],
-    "origversion": null,
-    "repo": "chromebrew",
-    "srcname": "google_chrome",
-    "status": "newest",
-    "summary": "Google Chrome is a fast, easy to use, and secure web browser.",
-    "version": "154.0.8037.57",
-    "visiblename": "google_chrome"
-  },
-  {
-    "binname": "GoogleChrome",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Google Chrome"
-  },
-  {
     "binname": "google-chrome",
     "categories": [
       "non-free/web"
@@ -113,6 +78,26 @@
     "summary": "The popular web browser by Google (Dev Channel)",
     "version": "156.0.8072.0",
     "visiblename": "google-chrome-dev"
+  },
+  {
+    "binname": "GoogleChrome",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Google Chrome"
+  },
+  {
+    "licenses": [
+      "google-chrome"
+    ],
+    "origversion": null,
+    "repo": "chromebrew",
+    "srcname": "google_chrome",
+    "status": "newest",
+    "summary": "Google Chrome is a fast, easy to use, and secure web browser.",
+    "version": "154.0.8037.57",
+    "visiblename": "google_chrome"
   },
   {
     "categories": [
@@ -244,7 +229,7 @@
     "srcname": "google-chrome@canary",
     "status": "ignored",
     "summary": "Web browser",
-    "version": "156.0.8075.0",
+    "version": "156.0.8076.0",
     "visiblename": "Google Chrome Canary"
   },
   {
@@ -321,6 +306,21 @@
     "summary": "Freeware web browser developed by Google",
     "version": "154.0.8037.57",
     "visiblename": "google-chrome"
+  },
+  {
+    "binname": "com.google.Chrome",
+    "categories": [
+      "Communications"
+    ],
+    "licenses": [
+      "Chrome license"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "com.google.Chrome",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Chrome"
   },
   {
     "binname": "google-chrome-x64",
@@ -410,19 +410,6 @@
     "visiblename": "Google Chrome"
   },
   {
-    "licenses": [
-      "google-chrome"
-    ],
-    "origversion": null,
-    "repo": "chromebrew",
-    "srcname": "google_chrome_beta",
-    "status": "outdated",
-    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Beta Channel)",
-    "version": "128.0.6613.18-1",
-    "visiblename": "google_chrome_beta",
-    "vulnerable": true
-  },
-  {
     "binname": "google-chrome-for-enterprise",
     "origversion": null,
     "repo": "chocolatey",
@@ -457,6 +444,19 @@
     ],
     "origversion": null,
     "repo": "chromebrew",
+    "srcname": "google_chrome_beta",
+    "status": "outdated",
+    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Beta Channel)",
+    "version": "128.0.6613.18-1",
+    "visiblename": "google_chrome_beta",
+    "vulnerable": true
+  },
+  {
+    "licenses": [
+      "google-chrome"
+    ],
+    "origversion": null,
+    "repo": "chromebrew",
     "srcname": "google_chrome_unstable",
     "status": "outdated",
     "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Dev Channel)",
@@ -472,6 +472,20 @@
     "status": "outdated",
     "version": "86.0.4240.111-1",
     "visiblename": "google-chrome",
+    "vulnerable": true
+  },
+  {
+    "binname": "google-chrome-unstable-deb",
+    "maintainers": [
+      "oren@taumoda.com"
+    ],
+    "origversion": "139.0.7232.3-1",
+    "repo": "pacstall",
+    "srcname": "google-chrome-unstable-deb",
+    "status": "outdated",
+    "summary": "The web browser built by Google - Developer/Unstable channel",
+    "version": "139.0.7232.3",
+    "visiblename": "google-chrome-unstable-deb",
     "vulnerable": true
   },
   {
@@ -530,6 +544,20 @@
     "vulnerable": true
   },
   {
+    "binname": "chrome",
+    "licenses": [
+      "Freeware"
+    ],
+    "origversion": null,
+    "repo": "reactos",
+    "srcname": "chrome",
+    "status": "outdated",
+    "summary": "Google Chrome is a cross-platform web browser developed by Google, based on the open source base of Chromium.",
+    "version": "49.0.2623.112",
+    "visiblename": "Chrome 49",
+    "vulnerable": true
+  },
+  {
     "categories": [
       "www-client"
     ],
@@ -565,6 +593,19 @@
     "summary": "The web browser from Google",
     "version": "151.0.7922.137",
     "visiblename": "www-client/google-chrome",
+    "vulnerable": true
+  },
+  {
+    "categories": [
+      "Networking/WWW"
+    ],
+    "origversion": "153.0.8010.47-1pclos2026",
+    "repo": "pclinuxos",
+    "srcname": "google-chrome-browser",
+    "status": "outdated",
+    "summary": "Google Chrome",
+    "version": "153.0.8010.47",
+    "visiblename": "google-chrome-browser",
     "vulnerable": true
   },
   {
@@ -660,6 +701,20 @@
     "summary": "The web browser from Google",
     "version": "149.0.7827.114",
     "visiblename": "www-client/google-chrome",
+    "vulnerable": true
+  },
+  {
+    "binname": "google-chrome",
+    "licenses": [
+      "custom:chrome"
+    ],
+    "origversion": "114.0.5735.106-1",
+    "repo": "rebornos",
+    "srcname": "google-chrome",
+    "status": "outdated",
+    "summary": "The popular and trusted web browser by Google (Stable Channel)",
+    "version": "114.0.5735.106",
+    "visiblename": "google-chrome",
     "vulnerable": true
   },
   {
@@ -894,33 +949,6 @@
     "vulnerable": true
   },
   {
-    "binname": "google-chrome-unstable-deb",
-    "maintainers": [
-      "oren@taumoda.com"
-    ],
-    "origversion": "139.0.7232.3-1",
-    "repo": "pacstall",
-    "srcname": "google-chrome-unstable-deb",
-    "status": "outdated",
-    "summary": "The web browser built by Google - Developer/Unstable channel",
-    "version": "139.0.7232.3",
-    "visiblename": "google-chrome-unstable-deb",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "Networking/WWW"
-    ],
-    "origversion": "153.0.8010.47-1pclos2026",
-    "repo": "pclinuxos",
-    "srcname": "google-chrome-browser",
-    "status": "outdated",
-    "summary": "Google Chrome",
-    "version": "153.0.8010.47",
-    "visiblename": "google-chrome-browser",
-    "vulnerable": true
-  },
-  {
     "categories": [
       "app:gui"
     ],
@@ -955,34 +983,6 @@
     "status": "outdated",
     "summary": "Fast, secure and modern web browser with built-in privacy features",
     "version": "147.0.7727.101",
-    "visiblename": "google-chrome",
-    "vulnerable": true
-  },
-  {
-    "binname": "chrome",
-    "licenses": [
-      "Freeware"
-    ],
-    "origversion": null,
-    "repo": "reactos",
-    "srcname": "chrome",
-    "status": "outdated",
-    "summary": "Google Chrome is a cross-platform web browser developed by Google, based on the open source base of Chromium.",
-    "version": "49.0.2623.112",
-    "visiblename": "Chrome 49",
-    "vulnerable": true
-  },
-  {
-    "binname": "google-chrome",
-    "licenses": [
-      "custom:chrome"
-    ],
-    "origversion": "114.0.5735.106-1",
-    "repo": "rebornos",
-    "srcname": "google-chrome",
-    "status": "outdated",
-    "summary": "The popular and trusted web browser by Google (Stable Channel)",
-    "version": "114.0.5735.106",
     "visiblename": "google-chrome",
     "vulnerable": true
   }
