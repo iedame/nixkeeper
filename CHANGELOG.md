@@ -9,6 +9,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-09-28
+
 ### Added
 
 - Platforms where nixpkgs marks a package broken (`meta.broken`, evaluated per
@@ -164,6 +166,7 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.2.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/iedame/nixkeeper/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/iedame/nixkeeper/compare/v0.1.0...v0.2.0
 [0.1.0]: https://github.com/iedame/nixkeeper/releases/tag/v0.1.0
