@@ -83,6 +83,7 @@
 
   .ver { font-size: 13px; white-space: nowrap; }
   .ver .ref { color: var(--ink-faint); }
+  .ver .age { color: var(--warn); font-family: 'Instrument Sans', system-ui, sans-serif; font-size: 12px; }
   .badge { display: inline-block; font-size: 11px; padding: 2px 7px; border-radius: 20px; font-weight: 500; margin-left: 5px; }
   .badge.warn { background: var(--warn-soft); color: var(--warn); }
   .badge.devel.ok { background: var(--ok-soft); color: var(--ok-devel); }
@@ -211,8 +212,9 @@ function hasFailure(pkg) {
   return computeStatus(pkg) === 'missing' || Boolean(pkg.buildFailure || pkg.updateFailure);
 }
 
-// Default order: failed, then outdated, then the rest; alphabetical within
-// each group (the index arrives sorted by name and Array.sort is stable).
+// Default order: failed, then outdated (longest outdated first), then the
+// rest; otherwise alphabetical (the index arrives sorted by name and
+// Array.sort is stable).
 function attentionRank(pkg) {
   if (hasFailure(pkg)) return 0;
   if (computeStatus(pkg) === 'warn') return 1;
@@ -281,6 +283,26 @@ function computeStatus(pkg) {
   return 'neutral';
 }
 
+// How long a package has been outdated, one letter per unit: <1 d, 3 d, 2 w,
+// 5 m (months), 2 y.
+function shortAge(iso) {
+  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400e3);
+  if (days < 1) return '<1 d';
+  if (days < 7) return days + ' d';
+  if (days < 30) return Math.floor(days / 7) + ' w';
+  if (days < 365) return Math.min(11, Math.floor(days / 30)) + ' m'; // 360-364 days: not "12 m" before "1 y"
+  return Math.floor(days / 365) + ' y';
+}
+
+function daysText(iso) {
+  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400e3);
+  return days < 1 ? 'today' : days === 1 ? '1 day' : days + ' days';
+}
+
+function longDate(iso) {
+  return new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
 function timeAgo(iso) {
   if (!iso) return 'never';
   const diff = Date.now() - new Date(iso).getTime();
@@ -333,7 +355,7 @@ function render(list) {
   list.forEach(pkg => {
     const st = computeStatus(pkg);
     const verCell = st === 'missing' ? `<span class="badge missing">not packaged</span>`
-      : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}`;
+      : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}`;
 
     const tr = document.createElement('tr');
     tr.className = 'row'; tr.tabIndex = 0;
@@ -432,7 +454,7 @@ async function fillDetail(pkg, el) {
   const st = computeStatus(pkg);
   const nixLine = st === 'missing'
     ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
-    : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>`
+    : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${pkg.outdatedSince ? ` — outdated since ${escapeHtml(longDate(pkg.outdatedSince))} (${daysText(pkg.outdatedSince)})` : ''}`
       : st === 'neutral' ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
       : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`}`;
 
@@ -452,7 +474,10 @@ function currentFiltered() {
   writeViewToUrl();
   const q = document.getElementById('search').value.trim().toLowerCase();
   const list = packages.filter(p => inPlatform(p) && FILTERS[activeFilter].test(p) && (!q || [p.name, p.project, ...(p.attrs || [])].some(n => n && n.toLowerCase().includes(q))));
-  return sortAZ ? list : list.sort((a, b) => attentionRank(a) - attentionRank(b));
+  return sortAZ ? list : list.sort((a, b) =>
+    attentionRank(a) - attentionRank(b)
+    // ISO dates in UTC compare correctly as strings; undated ones go last.
+    || (attentionRank(a) === 1 ? (a.outdatedSince || '~').localeCompare(b.outdatedSince || '~') : 0));
 }
 
 document.getElementById('stats').addEventListener('click', e => {

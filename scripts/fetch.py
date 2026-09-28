@@ -45,6 +45,9 @@ RETRY_DELAYS = [5, 15]  # seconds before each retry of a failed Repology request
 # previous data (the page flags it as stale) instead of publishing a run that's
 # mostly "not refreshed".
 MAX_FAILED_SHARE = 0.5
+# Repology statuses the page shows as outdated ("legacy": outdated while the
+# same repo has a newer version in another package).
+OUTDATED_STATUSES = {"outdated", "legacy"}
 GITHUB_REPO = "NixOS/nixpkgs"
 GITHUB_SEARCH_BATCH = 20  # searches per GraphQL request
 # nixpkgs PR/issue titles name packages in versioned sets by their alias
@@ -380,22 +383,36 @@ def build_rows(projects, nixpkgs):
     return sorted(rows, key=lambda p: p["name"].lower())
 
 
+def add_outdated_since(rows, previous, now):
+    """Mark when each outdated row first became outdated. Neither Repology nor
+    nixpkgs has that date, so it's carried from run to run: kept while the row
+    stays outdated (even if nixpkgs updates but is still behind), set to now
+    when it newly falls behind, dropped once it's caught up."""
+    before = {row["name"]: row for row in previous["packages"]}
+    for row in rows:
+        if row["nixStatus"] in OUTDATED_STATUSES:
+            row["outdatedSince"] = before.get(row["name"], {}).get("outdatedSince") or now
+
+
 def main():
     shutil.rmtree(TMP_DIR, ignore_errors=True)  # leftover from a failed run
     os.makedirs(TMP_DIR)
 
+    now = datetime.now(timezone.utc).isoformat()
     nixpkgs = load_nixpkgs_index()
     wanted = tracked_packages(read_lists(), nixpkgs)
-    projects = collect_projects(wanted, load_previous_run())
+    previous = load_previous_run()
+    projects = collect_projects(wanted, previous)
     for proj in projects.values():
         with open(os.path.join(TMP_DIR, proj["dataFile"]), "w") as f:
             json.dump(proj["entries"], f, indent=2, sort_keys=True)
 
     rows = build_rows(projects, nixpkgs)
+    add_outdated_since(rows, previous, now)
     add_github_counts(rows)
     with open(os.path.join(TMP_DIR, "index.json"), "w") as f:
         json.dump({
-            "checkedAt": datetime.now(timezone.utc).isoformat(),
+            "checkedAt": now,
             "packages": rows,
         }, f, indent=2, sort_keys=True)
 
