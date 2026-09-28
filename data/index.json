@@ -1,10 +1,11 @@
 {
-  "checkedAt": "2026-09-28T12:58:06.294380+00:00",
+  "checkedAt": "2026-09-28T13:32:23.347579+00:00",
   "packages": [
     {
       "attrs": [
         "_1password-gui"
       ],
+      "builds": [],
       "dataFile": "1password.json",
       "devel": false,
       "homepage": "https://1password.com/",
@@ -22,12 +23,14 @@
       "refVersion": "8.12.36",
       "repoCount": 29,
       "searchTerm": "_1password-gui",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/_1/_1password-gui/package.nix#L29"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/_1/_1password-gui/package.nix#L29",
+      "unfree": true
     },
     {
       "attrs": [
         "_1password-gui-beta"
       ],
+      "builds": [],
       "dataFile": "1password.json",
       "devel": true,
       "homepage": "https://1password.com/",
@@ -46,11 +49,32 @@
       "refVersion": "8.12.36",
       "repoCount": 29,
       "searchTerm": "_1password-gui-beta",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/_1/_1password-gui/package.nix#L29"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/_1/_1password-gui/package.nix#L29",
+      "unfree": true
     },
     {
       "attrs": [
         "backrest"
+      ],
+      "builds": [
+        {
+          "attr": "backrest",
+          "build": 345844377,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "backrest",
+          "build": 345844378,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "backrest",
+          "build": 345844384,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
       ],
       "dataFile": "backrest.json",
       "devel": false,
@@ -75,6 +99,7 @@
       "attrs": [
         "bbedit"
       ],
+      "builds": [],
       "dataFile": "bbedit.json",
       "devel": false,
       "homepage": "https://www.barebones.com/products/bbedit/",
@@ -92,11 +117,26 @@
       "refVersion": "16.0.3",
       "repoCount": 5,
       "searchTerm": "bbedit",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/bb/bbedit/package.nix#L34"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/bb/bbedit/package.nix#L34",
+      "unfree": true
     },
     {
       "attrs": [
         "bolt-launcher"
+      ],
+      "builds": [
+        {
+          "attr": "bolt-launcher",
+          "build": 345234142,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "bolt-launcher",
+          "build": 345234136,
+          "status": "ok",
+          "system": "aarch64-linux"
+        }
       ],
       "dataFile": "bolt-launcher.json",
       "devel": false,
@@ -121,6 +161,20 @@
       "attrs": [
         "d-seams"
       ],
+      "builds": [
+        {
+          "attr": "d-seams",
+          "build": 345889876,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "d-seams",
+          "build": 345889883,
+          "status": "ok",
+          "system": "aarch64-linux"
+        }
+      ],
       "dataFile": "d-seams.json",
       "devel": false,
       "homepage": "https://dseams.info",
@@ -143,6 +197,26 @@
     {
       "attrs": [
         "egoboo"
+      ],
+      "builds": [
+        {
+          "attr": "egoboo",
+          "build": 346814312,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "egoboo",
+          "build": 346814313,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "egoboo",
+          "build": 346814311,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
       ],
       "dataFile": "egoboo.json",
       "devel": false,
@@ -167,6 +241,7 @@
       "attrs": [
         "fastmail-desktop"
       ],
+      "builds": [],
       "dataFile": "fastmail.json",
       "devel": false,
       "homepage": "https://www.fastmail.com/blog/desktop-app/",
@@ -184,11 +259,26 @@
       "refVersion": "1.8.0",
       "repoCount": 4,
       "searchTerm": "fastmail-desktop",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fa/fastmail-desktop/package.nix#L20"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fa/fastmail-desktop/package.nix#L20",
+      "unfree": true
     },
     {
       "attrs": [
         "filezilla"
+      ],
+      "builds": [
+        {
+          "attr": "filezilla",
+          "build": 346371544,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "filezilla",
+          "build": 346371550,
+          "status": "ok",
+          "system": "aarch64-linux"
+        }
       ],
       "dataFile": "filezilla.json",
       "devel": false,
@@ -213,6 +303,26 @@
       "attrs": [
         "freedink"
       ],
+      "builds": [
+        {
+          "attr": "freedink",
+          "build": 346053128,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "freedink",
+          "build": 346053127,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "freedink",
+          "build": 346053129,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
+      ],
       "dataFile": "freedink.json",
       "devel": false,
       "homepage": "https://gnu.org/software/freedink/",
@@ -236,6 +346,25 @@
       "attrs": [
         "fzssh"
       ],
+      "builds": [
+        {
+          "attr": "fzssh",
+          "build": 346371559,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "fzssh",
+          "build": 346371558,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "fzssh",
+          "status": "notBuilt",
+          "system": "aarch64-darwin"
+        }
+      ],
       "dataFile": "fzssh.json",
       "devel": false,
       "homepage": "https://lib.filezilla-project.org/",
@@ -256,6 +385,7 @@
       "attrs": [
         "google-chrome"
       ],
+      "builds": [],
       "dataFile": "google-chrome.json",
       "devel": false,
       "homepage": "https://www.google.com/chrome/browser/",
@@ -273,12 +403,39 @@
       "refVersion": "154.0.8037.57",
       "repoCount": 63,
       "searchTerm": "google-chrome",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/go/google-chrome/package.nix#L354"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/go/google-chrome/package.nix#L354",
+      "unfree": true
     },
     {
       "attrs": [
         "heroic",
         "heroic-unwrapped"
+      ],
+      "builds": [
+        {
+          "attr": "heroic",
+          "build": 346765208,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "heroic",
+          "build": 270096289,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "heroic-unwrapped",
+          "build": 346765207,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "heroic-unwrapped",
+          "build": 346765206,
+          "status": "ok",
+          "system": "aarch64-linux"
+        }
       ],
       "dataFile": "heroic-games-launcher.json",
       "devel": false,
@@ -303,6 +460,27 @@
       "attrs": [
         "libfilezilla"
       ],
+      "builds": [
+        {
+          "attr": "libfilezilla",
+          "build": 345290619,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "libfilezilla",
+          "build": 345290618,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "libfilezilla",
+          "build": 300373373,
+          "lastSuccess": "2024-12-03T17:20:37+00:00",
+          "status": "failed",
+          "system": "aarch64-darwin"
+        }
+      ],
       "dataFile": "libfilezilla.json",
       "devel": false,
       "homepage": "https://lib.filezilla-project.org/",
@@ -326,6 +504,26 @@
       "attrs": [
         "lincity"
       ],
+      "builds": [
+        {
+          "attr": "lincity",
+          "build": 345293451,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "lincity",
+          "build": 345293449,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "lincity",
+          "build": 345293447,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
+      ],
       "dataFile": "lincity.json",
       "devel": true,
       "homepage": "https://sourceforge.net/projects/lincity",
@@ -345,6 +543,20 @@
     {
       "attrs": [
         "lincity-ng"
+      ],
+      "builds": [
+        {
+          "attr": "lincity-ng",
+          "build": 346053411,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "lincity-ng",
+          "build": 346053410,
+          "status": "ok",
+          "system": "aarch64-linux"
+        }
       ],
       "dataFile": "lincity-ng.json",
       "devel": false,
@@ -369,6 +581,20 @@
       "attrs": [
         "linkding"
       ],
+      "builds": [
+        {
+          "attr": "linkding",
+          "build": 346853533,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "linkding",
+          "build": 346853532,
+          "status": "ok",
+          "system": "aarch64-linux"
+        }
+      ],
       "dataFile": "linkding.json",
       "devel": false,
       "homepage": "https://linkding.link/",
@@ -392,6 +618,7 @@
       "attrs": [
         "microsoft-edge"
       ],
+      "builds": [],
       "dataFile": "microsoft-edge.json",
       "devel": false,
       "homepage": "https://www.microsoft.com/en-us/edge",
@@ -409,12 +636,14 @@
       "refVersion": "154.0.4258.37",
       "repoCount": 44,
       "searchTerm": "microsoft-edge",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/mi/microsoft-edge/package.nix#L345"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/mi/microsoft-edge/package.nix#L345",
+      "unfree": true
     },
     {
       "attrs": [
         "msedgedriver"
       ],
+      "builds": [],
       "dataFile": "msedgedriver.json",
       "devel": false,
       "homepage": "https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver",
@@ -432,12 +661,14 @@
       "refVersion": null,
       "repoCount": 4,
       "searchTerm": "msedgedriver",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ms/msedgedriver/package.nix#L58"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ms/msedgedriver/package.nix#L58",
+      "unfree": true
     },
     {
       "attrs": [
         "opentyrian"
       ],
+      "builds": [],
       "dataFile": "opentyrian.json",
       "devel": false,
       "homepage": "https://github.com/opentyrian/opentyrian",
@@ -453,11 +684,32 @@
       "refVersion": "2.1.20260913",
       "repoCount": 62,
       "searchTerm": "opentyrian",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/op/opentyrian/package.nix#L43"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/op/opentyrian/package.nix#L43",
+      "unfree": true
     },
     {
       "attrs": [
         "ringracers"
+      ],
+      "builds": [
+        {
+          "attr": "ringracers",
+          "build": 346054674,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "ringracers",
+          "build": 346054675,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "ringracers",
+          "build": 346054673,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
       ],
       "dataFile": "ringracers.json",
       "devel": false,
@@ -482,6 +734,20 @@
       "attrs": [
         "runelite"
       ],
+      "builds": [
+        {
+          "attr": "runelite",
+          "build": 346371106,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "runelite",
+          "build": 346371105,
+          "status": "ok",
+          "system": "aarch64-linux"
+        }
+      ],
       "dataFile": "runelite.json",
       "devel": false,
       "homepage": "https://runelite.net/",
@@ -504,6 +770,20 @@
     {
       "attrs": [
         "scanmem"
+      ],
+      "builds": [
+        {
+          "attr": "scanmem",
+          "build": 345417955,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "scanmem",
+          "build": 345417952,
+          "status": "ok",
+          "system": "aarch64-linux"
+        }
       ],
       "dataFile": "scanmem.json",
       "devel": false,
@@ -528,6 +808,26 @@
       "attrs": [
         "typioca"
       ],
+      "builds": [
+        {
+          "attr": "typioca",
+          "build": 345432913,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "typioca",
+          "build": 345432911,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "typioca",
+          "build": 345432909,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
+      ],
       "dataFile": "typioca.json",
       "devel": false,
       "homepage": "https://github.com/bloznelis/typioca",
@@ -550,6 +850,26 @@
     {
       "attrs": [
         "unciv"
+      ],
+      "builds": [
+        {
+          "attr": "unciv",
+          "build": 346520388,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "unciv",
+          "build": 346520387,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "unciv",
+          "build": 346520389,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
       ],
       "dataFile": "unciv.json",
       "devel": false,
@@ -575,6 +895,26 @@
       "attrs": [
         "wesnoth"
       ],
+      "builds": [
+        {
+          "attr": "wesnoth",
+          "build": 346054863,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "wesnoth",
+          "build": 346054858,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "wesnoth",
+          "build": 346054857,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
+      ],
       "dataFile": "wesnoth.json",
       "devel": false,
       "homepage": "https://www.wesnoth.org/",
@@ -598,6 +938,26 @@
       "attrs": [
         "wesnoth-devel"
       ],
+      "builds": [
+        {
+          "attr": "wesnoth-devel",
+          "build": 346054859,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "wesnoth-devel",
+          "build": 346054862,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "wesnoth-devel",
+          "build": 346054861,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
+      ],
       "dataFile": "wesnoth.json",
       "devel": true,
       "homepage": "https://www.wesnoth.org/",
@@ -620,6 +980,26 @@
     {
       "attrs": [
         "xournalpp"
+      ],
+      "builds": [
+        {
+          "attr": "xournalpp",
+          "build": 345440686,
+          "status": "ok",
+          "system": "x86_64-linux"
+        },
+        {
+          "attr": "xournalpp",
+          "build": 345440685,
+          "status": "ok",
+          "system": "aarch64-linux"
+        },
+        {
+          "attr": "xournalpp",
+          "build": 345440690,
+          "status": "ok",
+          "system": "aarch64-darwin"
+        }
       ],
       "dataFile": "xournalpp.json",
       "devel": false,
