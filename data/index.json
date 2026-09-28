@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-28T05:30:32.045337+00:00",
+  "checkedAt": "2026-09-28T12:58:06.294380+00:00",
   "packages": [
     {
       "attrs": [
@@ -22,7 +22,7 @@
       "refVersion": "8.12.36",
       "repoCount": 29,
       "searchTerm": "_1password-gui",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/_1/_1password-gui/package.nix#L29"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/_1/_1password-gui/package.nix#L29"
     },
     {
       "attrs": [
@@ -46,7 +46,7 @@
       "refVersion": "8.12.36",
       "repoCount": 29,
       "searchTerm": "_1password-gui-beta",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/_1/_1password-gui/package.nix#L29"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/_1/_1password-gui/package.nix#L29"
     },
     {
       "attrs": [
@@ -69,7 +69,7 @@
       "refVersion": "1.14.1",
       "repoCount": 9,
       "searchTerm": "backrest",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ba/backrest/package.nix#L200"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ba/backrest/package.nix#L200"
     },
     {
       "attrs": [
@@ -92,7 +92,7 @@
       "refVersion": "16.0.3",
       "repoCount": 5,
       "searchTerm": "bbedit",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/bb/bbedit/package.nix#L34"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/bb/bbedit/package.nix#L34"
     },
     {
       "attrs": [
@@ -115,7 +115,7 @@
       "refVersion": "0.24.0",
       "repoCount": 11,
       "searchTerm": "bolt-launcher",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/bo/bolt-launcher/package.nix#L157"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/bo/bolt-launcher/package.nix#L157"
     },
     {
       "attrs": [
@@ -138,7 +138,7 @@
       "refVersion": null,
       "repoCount": 6,
       "searchTerm": "d-seams",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/d-/d-seams/package.nix#L50"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/d-/d-seams/package.nix#L50"
     },
     {
       "attrs": [
@@ -161,7 +161,7 @@
       "refVersion": "2.8.1",
       "repoCount": 33,
       "searchTerm": "egoboo",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/eg/egoboo/package.nix#L88"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/eg/egoboo/package.nix#L88"
     },
     {
       "attrs": [
@@ -184,7 +184,7 @@
       "refVersion": "1.8.0",
       "repoCount": 4,
       "searchTerm": "fastmail-desktop",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/fa/fastmail-desktop/package.nix#L20"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fa/fastmail-desktop/package.nix#L20"
     },
     {
       "attrs": [
@@ -207,7 +207,7 @@
       "refVersion": "3.71.1",
       "repoCount": 157,
       "searchTerm": "filezilla",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/fi/filezilla/package.nix#L75"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fi/filezilla/package.nix#L75"
     },
     {
       "attrs": [
@@ -230,7 +230,7 @@
       "refVersion": "109.6",
       "repoCount": 67,
       "searchTerm": "freedink",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/fr/freedink/package.nix#L114"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fr/freedink/package.nix#L114"
     },
     {
       "attrs": [
@@ -250,7 +250,7 @@
       "refVersion": "1.4.0",
       "repoCount": 41,
       "searchTerm": "fzssh",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/fz/fzssh/package.nix#L55"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fz/fzssh/package.nix#L55"
     },
     {
       "attrs": [
@@ -273,7 +273,7 @@
       "refVersion": "154.0.8037.57",
       "repoCount": 63,
       "searchTerm": "google-chrome",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/go/google-chrome/package.nix#L354"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/go/google-chrome/package.nix#L354"
     },
     {
       "attrs": [
@@ -297,7 +297,7 @@
       "refVersion": "2.22.3",
       "repoCount": 40,
       "searchTerm": "heroic",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/he/heroic-unwrapped/package.nix#L135"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/he/heroic-unwrapped/package.nix#L135"
     },
     {
       "attrs": [
@@ -320,7 +320,7 @@
       "refVersion": "0.57.0",
       "repoCount": 143,
       "searchTerm": "libfilezilla",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/li/libfilezilla/package.nix#L44"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/libfilezilla/package.nix#L44"
     },
     {
       "attrs": [
@@ -340,7 +340,7 @@
       "refVersion": "1.12.1",
       "repoCount": 51,
       "searchTerm": "lincity",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/li/lincity/package.nix#L83"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/lincity/package.nix#L83"
     },
     {
       "attrs": [
@@ -363,7 +363,7 @@
       "refVersion": "2.15.0",
       "repoCount": 88,
       "searchTerm": "lincity-ng",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/li/lincity-ng/package.nix#L77"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/lincity-ng/package.nix#L77"
     },
     {
       "attrs": [
@@ -386,7 +386,7 @@
       "refVersion": null,
       "repoCount": 1,
       "searchTerm": "linkding",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/li/linkding/package.nix#L292"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/linkding/package.nix#L292"
     },
     {
       "attrs": [
@@ -402,14 +402,14 @@
       "openIssues": 1,
       "openPRs": 0,
       "platforms": {
-        "darwin": false,
+        "darwin": true,
         "linux": true
       },
       "project": "microsoft-edge",
       "refVersion": "154.0.4258.37",
       "repoCount": 44,
       "searchTerm": "microsoft-edge",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/mi/microsoft-edge/package.nix#L269"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/mi/microsoft-edge/package.nix#L345"
     },
     {
       "attrs": [
@@ -425,14 +425,14 @@
       "openIssues": 0,
       "openPRs": 0,
       "platforms": {
-        "darwin": false,
+        "darwin": true,
         "linux": true
       },
       "project": "msedgedriver",
       "refVersion": null,
       "repoCount": 4,
       "searchTerm": "msedgedriver",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ms/msedgedriver/package.nix#L53"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ms/msedgedriver/package.nix#L58"
     },
     {
       "attrs": [
@@ -453,7 +453,7 @@
       "refVersion": "2.1.20260913",
       "repoCount": 62,
       "searchTerm": "opentyrian",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/op/opentyrian/package.nix#L43"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/op/opentyrian/package.nix#L43"
     },
     {
       "attrs": [
@@ -476,7 +476,7 @@
       "refVersion": "2.4",
       "repoCount": 6,
       "searchTerm": "ringracers",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ri/ringracers/package.nix#L113"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ri/ringracers/package.nix#L113"
     },
     {
       "attrs": [
@@ -499,7 +499,7 @@
       "refVersion": "2.8.0",
       "repoCount": 11,
       "searchTerm": "runelite",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ru/runelite/package.nix#L80"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ru/runelite/package.nix#L80"
     },
     {
       "attrs": [
@@ -522,7 +522,7 @@
       "refVersion": "0.17",
       "repoCount": 86,
       "searchTerm": "scanmem",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/sc/scanmem/package.nix#L60"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/sc/scanmem/package.nix#L60"
     },
     {
       "attrs": [
@@ -545,7 +545,7 @@
       "refVersion": "3.1.0",
       "repoCount": 14,
       "searchTerm": "typioca",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/ty/typioca/package.nix#L35"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ty/typioca/package.nix#L35"
     },
     {
       "attrs": [
@@ -569,7 +569,7 @@
       "refVersion": "4.22.4",
       "repoCount": 18,
       "searchTerm": "unciv",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/un/unciv/package.nix#L73"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/un/unciv/package.nix#L73"
     },
     {
       "attrs": [
@@ -592,7 +592,7 @@
       "refVersion": "1.18.8",
       "repoCount": 173,
       "searchTerm": "wesnoth",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/we/wesnoth/package.nix#L147"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/we/wesnoth/package.nix#L147"
     },
     {
       "attrs": [
@@ -615,7 +615,7 @@
       "refVersion": "1.19.24",
       "repoCount": 173,
       "searchTerm": "wesnoth-devel",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/we/wesnoth/package.nix#L147"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/we/wesnoth/package.nix#L147"
     },
     {
       "attrs": [
@@ -639,7 +639,7 @@
       "refVersion": "1.3.8",
       "repoCount": 136,
       "searchTerm": "xournalpp",
-      "source": "https://github.com/NixOS/nixpkgs/blob/e158d9ed9b51c98974c5e66e1ba1c9e0255fecaa/pkgs/by-name/xo/xournalpp/package.nix#L84"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/xo/xournalpp/package.nix#L84"
     }
   ]
 }

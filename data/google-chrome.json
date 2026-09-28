@@ -1,5 +1,40 @@
 [
   {
+    "binname": "com.google.Chrome",
+    "categories": [
+      "Communications"
+    ],
+    "licenses": [
+      "Chrome license"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "com.google.Chrome",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Chrome"
+  },
+  {
+    "licenses": [
+      "google-chrome"
+    ],
+    "origversion": null,
+    "repo": "chromebrew",
+    "srcname": "google_chrome",
+    "status": "newest",
+    "summary": "Google Chrome is a fast, easy to use, and secure web browser.",
+    "version": "154.0.8037.57",
+    "visiblename": "google_chrome"
+  },
+  {
+    "binname": "GoogleChrome",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Google Chrome"
+  },
+  {
     "binname": "google-chrome",
     "categories": [
       "non-free/web"
@@ -78,26 +113,6 @@
     "summary": "The popular web browser by Google (Dev Channel)",
     "version": "156.0.8072.0",
     "visiblename": "google-chrome-dev"
-  },
-  {
-    "binname": "GoogleChrome",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Google Chrome"
-  },
-  {
-    "licenses": [
-      "google-chrome"
-    ],
-    "origversion": null,
-    "repo": "chromebrew",
-    "srcname": "google_chrome",
-    "status": "newest",
-    "summary": "Google Chrome is a fast, easy to use, and secure web browser.",
-    "version": "154.0.8037.57",
-    "visiblename": "google_chrome"
   },
   {
     "categories": [
@@ -185,6 +200,24 @@
     "status": "outdated",
     "summary": "The web browser from Google",
     "version": "155.0.8040.2",
+    "visiblename": "www-client/google-chrome-unstable"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "google-chrome"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "www-client/google-chrome-unstable",
+    "status": "devel",
+    "summary": "The web browser from Google",
+    "version": "156.0.8072.0",
     "visiblename": "www-client/google-chrome-unstable"
   },
   {
@@ -290,21 +323,6 @@
     "visiblename": "google-chrome"
   },
   {
-    "binname": "com.google.Chrome",
-    "categories": [
-      "Communications"
-    ],
-    "licenses": [
-      "Chrome license"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "com.google.Chrome",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Chrome"
-  },
-  {
     "binname": "google-chrome-x64",
     "categories": [
       "Communications"
@@ -397,25 +415,11 @@
     ],
     "origversion": null,
     "repo": "chromebrew",
-    "srcname": "google_chrome_unstable",
+    "srcname": "google_chrome_beta",
     "status": "outdated",
-    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Dev Channel)",
-    "version": "129.0.6628.3-1",
-    "visiblename": "google_chrome_unstable",
-    "vulnerable": true
-  },
-  {
-    "binname": "google-chrome",
-    "licenses": [
-      "custom:chrome"
-    ],
-    "origversion": "114.0.5735.106-1",
-    "repo": "rebornos",
-    "srcname": "google-chrome",
-    "status": "outdated",
-    "summary": "The popular and trusted web browser by Google (Stable Channel)",
-    "version": "114.0.5735.106",
-    "visiblename": "google-chrome",
+    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Beta Channel)",
+    "version": "128.0.6613.18-1",
+    "visiblename": "google_chrome_beta",
     "vulnerable": true
   },
   {
@@ -453,11 +457,11 @@
     ],
     "origversion": null,
     "repo": "chromebrew",
-    "srcname": "google_chrome_beta",
+    "srcname": "google_chrome_unstable",
     "status": "outdated",
-    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Beta Channel)",
-    "version": "128.0.6613.18-1",
-    "visiblename": "google_chrome_beta",
+    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Dev Channel)",
+    "version": "129.0.6628.3-1",
+    "visiblename": "google_chrome_unstable",
     "vulnerable": true
   },
   {
@@ -545,21 +549,6 @@
     "vulnerable": true
   },
   {
-    "binname": "google-chrome-deb",
-    "maintainers": [
-      "oren@taumoda.com",
-      "jimedrand@disroot.org"
-    ],
-    "origversion": "152.0.7977.64-1",
-    "repo": "pacstall",
-    "srcname": "google-chrome-deb",
-    "status": "outdated",
-    "summary": "The popular and trusted web browser by Google",
-    "version": "152.0.7977.64",
-    "visiblename": "google-chrome-deb",
-    "vulnerable": true
-  },
-  {
     "categories": [
       "www-client"
     ],
@@ -576,25 +565,6 @@
     "summary": "The web browser from Google",
     "version": "151.0.7922.137",
     "visiblename": "www-client/google-chrome",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "google-chrome"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "gentoo",
-    "srcname": "www-client/google-chrome-unstable",
-    "status": "outdated",
-    "summary": "The web browser from Google",
-    "version": "153.0.7993.0",
-    "visiblename": "www-client/google-chrome-unstable",
     "vulnerable": true
   },
   {
@@ -909,6 +879,21 @@
     "vulnerable": true
   },
   {
+    "binname": "google-chrome-deb",
+    "maintainers": [
+      "oren@taumoda.com",
+      "jimedrand@disroot.org"
+    ],
+    "origversion": "152.0.7977.64-1",
+    "repo": "pacstall",
+    "srcname": "google-chrome-deb",
+    "status": "outdated",
+    "summary": "The popular and trusted web browser by Google",
+    "version": "152.0.7977.64",
+    "visiblename": "google-chrome-deb",
+    "vulnerable": true
+  },
+  {
     "binname": "google-chrome-unstable-deb",
     "maintainers": [
       "oren@taumoda.com"
@@ -985,6 +970,20 @@
     "summary": "Google Chrome is a cross-platform web browser developed by Google, based on the open source base of Chromium.",
     "version": "49.0.2623.112",
     "visiblename": "Chrome 49",
+    "vulnerable": true
+  },
+  {
+    "binname": "google-chrome",
+    "licenses": [
+      "custom:chrome"
+    ],
+    "origversion": "114.0.5735.106-1",
+    "repo": "rebornos",
+    "srcname": "google-chrome",
+    "status": "outdated",
+    "summary": "The popular and trusted web browser by Google (Stable Channel)",
+    "version": "114.0.5735.106",
+    "visiblename": "google-chrome",
     "vulnerable": true
   }
 ]
