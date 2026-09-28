@@ -44,7 +44,7 @@ jobs:
         run: nix run .#quick-check
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub checks and the status issue
-          NIXKEEPER_NOTIFY: "1"  # only CI updates the status issue
+          NIXKEEPER_NOTIFY: github-issue  # the status issue; local runs don't notify
 
       - name: Commit and push if anything changed
         run: |

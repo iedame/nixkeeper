@@ -51,13 +51,26 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - MIT license (`LICENSE`, also declared in `pyproject.toml` and the flake's
   package metadata). The README notes where the published data comes from.
 
+- Runs outside GitHub too (groundwork for self-hosting): the data directory,
+  the package lists (Nix folder or JSON), a token file, the notification
+  method and the page URL are settings (see the README). The page finds its
+  data next to itself, through a `<meta>` setting, or on GitHub as before.
+
 ### Changed
 
+- Notifications go through a choice of method (`NIXKEEPER_NOTIFY`); the status
+  issue is `github-issue` (the old value `1` still works). It never posts with
+  the local `gh` login.
 - The daily sync and the quick check share a concurrency group, so they never
   push to the data branch at the same time.
 - Hydra and the update logs share one retrying HTTP helper.
 - "Outdated" means outdated per Repology or per an update check, everywhere:
   the page, "outdated since" and the status issue.
+
+### Fixed
+
+- The data directory was fixed when the code loaded, so functions defaulting
+  to it ignored a later setting.
 
 ## [0.2.0] - 2026-09-28
 

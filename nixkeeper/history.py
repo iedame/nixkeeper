@@ -9,8 +9,9 @@ from . import config
 from .changes import is_outdated
 
 
-def load_previous_run(out_dir=config.OUT_DIR):
+def load_previous_run(out_dir=None):
     """The last successful run's index, or an empty one."""
+    out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
     try:
         with open(os.path.join(out_dir, "index.json")) as f:
             return json.load(f)
@@ -18,9 +19,10 @@ def load_previous_run(out_dir=config.OUT_DIR):
         return {"packages": []}
 
 
-def previous_project(previous, pname, attrs, out_dir=config.OUT_DIR):
+def previous_project(previous, pname, attrs, out_dir=None):
     """Reuse the last run's data for a pname whose lookup failed. Returns
     (project, entries, stale_since), or None if there's nothing to reuse."""
+    out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
     for row in previous["packages"]:
         if pname in (row.get("searchTerm"), row["name"]) or set(attrs) & set(
             row.get("attrs") or []

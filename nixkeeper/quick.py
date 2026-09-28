@@ -11,7 +11,7 @@ import sys
 import urllib.error
 from datetime import UTC, datetime
 
-from . import config, history, notify, output, rows
+from . import history, notify, output, rows
 from .sources import nixpkgs as nixpkgs_source
 from .sources import repology, upstream
 
@@ -102,7 +102,7 @@ def main():
     # checkedAt stays the full sync's: it's what the page's staleness warning
     # and the sources the quick check doesn't touch go by.
     index = {**previous, "packages": packages}
-    output.update({**data_files, "index.json": index}, config.OUT_DIR)
+    output.update({**data_files, "index.json": index})
     print("Changes written.", file=sys.stderr)
     notify.notify(previous, packages, now)
 

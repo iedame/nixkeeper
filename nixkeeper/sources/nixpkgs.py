@@ -11,9 +11,14 @@ import brotli
 from .. import config
 
 
-def read_lists():
-    """package-lists/default.nix, evaluated:
-    {"maintainers": [...], "extraPackages": [...]}."""
+def read_lists(path=None):
+    """The package lists: {"maintainers": [...], "extraPackages": [...],
+    "updateChecks": {...}}. From a JSON file as is, or from the Nix folder
+    (package-lists/) by evaluating it."""
+    path = path or config.LISTS
+    if path.endswith(".json"):
+        with open(path) as f:
+            return json.load(f)
     result = subprocess.run(
         [
             "nix",
@@ -22,7 +27,7 @@ def read_lists():
             "nix-command flakes",
             "--json",
             "-f",
-            config.LISTS_DIR,
+            path,
         ],
         capture_output=True,
         text=True,

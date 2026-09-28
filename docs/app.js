@@ -1,25 +1,48 @@
 const NIX_REPO = 'nix_unstable';
 
-// Figure out which repo's data branch to read. Works unmodified on a
-// GitHub Pages project site (https://<owner>.github.io/<repo>/); override
-// with ?owner=...&repo=... when testing locally or on a custom domain.
-function detectRepo() {
+// Where the data (index.json and the per-project files) lives, as a URL
+// ending in "/". First of:
+//   1. ?data=<url> in the address: for testing; same site only, so a link
+//      can't point someone's page at data from elsewhere
+//   2. <meta name="nixkeeper-data" content="<url>"> in index.html: a host
+//      that keeps the data somewhere else sets it
+//   3. data/ next to the page, when one server serves both (self-hosting)
+//   4. on a GitHub Pages project site (https://<owner>.github.io/<repo>/),
+//      the repo's data branch; ?owner=...&repo=... names another repo
+async function findDataBase() {
   const params = new URLSearchParams(location.search);
-  if (params.get('owner') && params.get('repo')) {
-    return { owner: params.get('owner'), repo: params.get('repo') };
+  const asked = params.get('data');
+  if (asked) {
+    const url = new URL(asked, location.href);
+    if (url.origin === location.origin) return withSlash(url.href);
   }
+  const meta = document.querySelector('meta[name="nixkeeper-data"]')?.content;
+  if (meta) return withSlash(new URL(meta, location.href).href);
+  try {
+    const res = await fetch('data/index.json', { method: 'HEAD', cache: 'no-store' });
+    if (res.ok) return new URL('data/', location.href).href;
+  } catch {
+    // not served here: try GitHub
+  }
+  const repo = githubRepo(params);
+  return repo ? `https://raw.githubusercontent.com/${repo}/data/data/` : null;
+}
+
+const withSlash = (url) => (url.endsWith('/') ? url : `${url}/`);
+
+// "owner/repo" from ?owner=&repo=, or from a GitHub Pages project site's
+// address.
+function githubRepo(params) {
+  if (params.get('owner') && params.get('repo'))
+    return `${params.get('owner')}/${params.get('repo')}`;
   const host = location.hostname;
   const owner = host.endsWith('.github.io') ? host.split('.')[0] : null;
   const seg = location.pathname.split('/').filter(Boolean)[0] || null;
-  if (owner && seg) return { owner, repo: seg };
-  return null;
+  return owner && seg ? `${owner}/${seg}` : null;
 }
 
-function rawUrl(owner, repo, path) {
-  return `https://raw.githubusercontent.com/${owner}/${repo}/data/${path}`;
-}
-
-const repoInfo = detectRepo();
+let dataBase = null; // set by loadIndex
+const dataUrl = (path) => new URL(path, dataBase).href;
 const detailCache = new Map(); // name -> parsed per-package Repology JSON
 let packages = [];
 let checkedAt = null;
@@ -116,17 +139,18 @@ function writeViewToUrl() {
 
 async function loadIndex() {
   const content = document.getElementById('content');
-  if (!repoInfo) {
+  dataBase = dataBase || (await findDataBase());
+  if (!dataBase) {
     content.innerHTML = `<div class="error">
-      Couldn't tell which GitHub repo to read from this URL.<br>
-      Add <code>?owner=you&repo=your-repo</code> to the address, or open this from your GitHub Pages project site.
+      Couldn't find the data to show.<br>
+      Serve it as <code>data/</code> next to this page, set it with
+      <code>&lt;meta name="nixkeeper-data"&gt;</code> in <code>index.html</code>,
+      or open this from its GitHub Pages site.
     </div>`;
     return;
   }
   try {
-    const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, 'data/index.json'), {
-      cache: 'no-store',
-    });
+    const res = await fetch(dataUrl('index.json'), { cache: 'no-store' });
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     packages = data.packages || [];
@@ -135,9 +159,8 @@ async function loadIndex() {
     render(currentFiltered());
   } catch {
     content.innerHTML = `<div class="error">
-      Couldn't load <code>data/index.json</code> from the <code>data</code> branch of
-      <code>${escapeHtml(repoInfo.owner)}/${escapeHtml(repoInfo.repo)}</code>.<br>
-      Check that the repo is public and the sync workflow has run at least once.
+      Couldn't load <code>${escapeHtml(dataUrl('index.json'))}</code>.<br>
+      Check that the sync has run at least once (and, on GitHub, that the repo is public).
     </div>`;
   }
 }
@@ -213,7 +236,7 @@ function renderStats() {
     : '';
   document.getElementById('stats').innerHTML =
     `${buttons}${platformChip}<span class="checked${stale ? ' stale' : ''}"
-    ${stale ? 'title="The daily sync hasn\'t updated the data in over 2 days. Check the workflow in the Actions tab."' : ''}>
+    ${stale ? 'title="The daily sync hasn\'t updated the data in over 2 days. Check where it runs (on GitHub: the Actions tab)."' : ''}>
     checked ${timeAgo(checkedAt)}${stale ? ' — sync may be failing' : ''}</span>`;
 }
 
@@ -527,10 +550,7 @@ async function fillDetail(pkg, el) {
   let entries = detailCache.get(file);
   if (!entries) {
     try {
-      const res = await fetch(
-        rawUrl(repoInfo.owner, repoInfo.repo, `data/${encodeURIComponent(file)}`),
-        { cache: 'no-store' },
-      );
+      const res = await fetch(dataUrl(encodeURIComponent(file)), { cache: 'no-store' });
       entries = res.ok ? await res.json() : [];
       detailCache.set(file, entries);
     } catch {

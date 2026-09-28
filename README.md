@@ -37,6 +37,28 @@ nix eval --json -f package-lists                             # what the lists ev
 
 New files must be `git add`ed before Nix sees them.
 
+## Running elsewhere
+
+Everything defaults to running from a checkout with the GitHub workflows.
+Elsewhere (a server, a service), these environment variables change that:
+
+| Variable | Default | What it sets |
+|---|---|---|
+| `NIXKEEPER_DATA_DIR` | `data` | where the data is written, and the previous run read from |
+| `NIXKEEPER_LISTS` | `package-lists` | the package lists: that Nix folder, or a JSON file of what it evaluates to |
+| `NIXKEEPER_GITHUB_TOKEN_FILE` | – | a file holding a GitHub token (else `GITHUB_TOKEN`, else the local `gh` login) |
+| `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issue up to date (the workflows set it) |
+| `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issue lives |
+| `NIXKEEPER_PAGE_URL` | the GitHub Pages site | the page link in notifications |
+
+The status issue is only posted with a token given explicitly (the token file
+or `GITHUB_TOKEN`), never with the local `gh` login.
+
+The page finds its data by itself when `data/` is served next to it. Otherwise
+it reads the repository's `data` branch on a GitHub Pages site, or wherever
+`<meta name="nixkeeper-data" content="…">` in `docs/index.html` points.
+`?data=<url>` (same site only) overrides it for testing.
+
 ## License
 
 nixkeeper's code is released under the [MIT License](LICENSE).

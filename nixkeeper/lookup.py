@@ -8,15 +8,14 @@ from .output import data_file
 from .sources import repology
 
 
-def collect_projects(
-    wanted, previous, resolve=repology.resolve, out_dir=config.OUT_DIR
-):
+def collect_projects(wanted, previous, resolve=repology.resolve, out_dir=None):
     """Look up every tracked package on Repology, falling back to the previous
     run's data (in out_dir) when a lookup fails. Several attrs (wesnoth /
     wesnoth-devel, heroic / heroic-unwrapped) can map to one project; those
     are merged here and split into rows by rows.project_rows. Returns project
     -> {"name", "project", "attrs", "entries", "dataFile"[, "staleSince"]}, or
     exits if too many lookups failed."""
+    out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
     projects = {}
     failed = []
     for pname, (attrs, fallback) in sorted(wanted.items()):

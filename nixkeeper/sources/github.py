@@ -10,10 +10,26 @@ import urllib.request
 from .. import config
 
 
-def token():
-    """GITHUB_TOKEN (set by the workflow), else the local gh login, else None."""
+def token(use_gh=True):
+    """A GitHub token, or None: from the file NIXKEEPER_GITHUB_TOKEN_FILE names
+    (how a service gets its secrets, e.g. systemd credentials), else
+    GITHUB_TOKEN (set by the workflows), else the local gh login unless
+    use_gh is false."""
+    path = os.environ.get("NIXKEEPER_GITHUB_TOKEN_FILE")
+    if path:
+        try:
+            with open(path) as f:
+                return f.read().strip() or None
+        except OSError as e:
+            print(
+                f"::warning::couldn't read NIXKEEPER_GITHUB_TOKEN_FILE ({e})",
+                file=sys.stderr,
+            )
+            return None
     if os.environ.get("GITHUB_TOKEN"):
         return os.environ["GITHUB_TOKEN"]
+    if not use_gh:
+        return None
     try:
         result = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True)
         return result.stdout.strip() or None
