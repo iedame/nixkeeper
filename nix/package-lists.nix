@@ -47,6 +47,16 @@ let
 
   # Whether the sync tracks a row of this name: listed itself, listed by
   # pname, or maintained by one of the handles (see nixkeeper/tracking.py).
+  # extraPackages as named lists ({ extra = [ ... ]; gaming-team = [ ... ]; });
+  # a plain list counts as "extra" (see nixkeeper/tracking.py).
+  extraLists =
+    lists:
+    let
+      extra = lists.extraPackages or [ ];
+    in
+    if builtins.isList extra then { inherit extra; } else extra;
+  allEntries = lists: lib.concatLists (builtins.attrValues (extraLists lists));
+
   isTracked =
     lists: name:
     let
@@ -54,11 +64,11 @@ let
       meta = (builtins.tryEval (if builtins.isAttrs pkg then pkg.meta or { } else { })).value;
       handles = map lib.toLower lists.maintainers;
     in
-    builtins.elem name lists.extraPackages
+    builtins.elem name (allEntries lists)
     || (
       isAttribute name
       && (
-        builtins.elem (pkg.pname or null) lists.extraPackages
+        builtins.elem (pkg.pname or null) (allEntries lists)
         || builtins.any (m: builtins.elem (lib.toLower (m.github or "")) handles) (meta.maintainers or [ ])
       )
     );
@@ -107,8 +117,17 @@ rec {
     lists:
     let
       badHandles = builtins.filter (h: !(githubHandles ? ${lib.toLower h})) lists.maintainers;
-      entries = lists.extraPackages;
-      duplicates = lib.unique (builtins.filter (e: lib.count (x: x == e) entries > 1) entries);
+      entries = allEntries lists;
+      # Within one list: being on two lists is fine (it shows under both).
+      duplicates = lib.concatLists (
+        lib.mapAttrsToList (
+          list: es:
+          map (e: {
+            entry = e;
+            reason = "listed more than once in ${list}";
+          }) (lib.unique (builtins.filter (e: lib.count (x: x == e) es > 1) es))
+        ) (extraLists lists)
+      );
       unknown = builtins.filter (e: !(isAttribute e) && !(topLevelPnames ? ${e})) (lib.unique entries);
       reason =
         e:
@@ -124,10 +143,11 @@ rec {
       entry = h;
       reason = "maintainers: no nixpkgs maintainer has this GitHub handle";
     }) badHandles
-    ++ map (e: {
-      entry = e;
-      reason = "listed more than once";
-    }) duplicates
+    ++ duplicates
+    ++ lib.optional (extraLists lists ? maintained) {
+      entry = "extraPackages.maintained";
+      reason = "that list name is taken: it's the packages found through maintainers";
+    }
     ++ map (e: {
       entry = e;
       reason = reason e;

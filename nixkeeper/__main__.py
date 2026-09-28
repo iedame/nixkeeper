@@ -18,6 +18,7 @@ def main():
     previous = history.load_previous_run()
     projects = lookup.collect_projects(wanted, previous)
     index_rows = rows.build_rows(projects, nixpkgs)
+    tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
     revision = nixpkgs_source.channel_revision()
     rows.add_source_links(index_rows, nixpkgs, revision)
     # Before outdated-since: a check can make a row outdated.

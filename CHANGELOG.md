@@ -56,6 +56,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   method and the page URL are settings (see the README). The page finds its
   data next to itself, through a `<meta>` setting, or on GitHub as before.
 
+- Filters for the package lists: `extraPackages` in `package-lists/default.nix`
+  holds named lists (`extra`, `gaming-team`), and the page shows a filter for
+  each next to `maintained` (packages found through `maintainers`). The counts
+  follow it, and `?list=<name>` is a shareable page of one list. A plain list
+  still works, as `extra`.
+
 ### Changed
 
 - Notifications go through a choice of method (`NIXKEEPER_NOTIFY`); the status

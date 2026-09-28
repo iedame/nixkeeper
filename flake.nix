@@ -183,8 +183,31 @@
                 "updateChecks.hello" # unknown field "tag"
                 "updateChecks.lincity" # url isn't http(s); tracked via iedame
               ];
+              # Named lists: on two lists is fine, twice in one isn't, and
+              # "maintained" is taken.
+              foundNamed = map (p: p.entry) (
+                listsChecker.problems {
+                  maintainers = [ "iedame" ];
+                  extraPackages = {
+                    extra = [ "opentyrian" ];
+                    gaming-team = [
+                      "opentyrian"
+                      "freedink"
+                      "freedink"
+                    ];
+                    maintained = [ ];
+                  };
+                }
+              );
+              expectedNamed = [
+                "freedink"
+                "extraPackages.maintained"
+              ];
             in
             assert lib.assertMsg (found == expected) "package-lists checker found ${builtins.toJSON found}";
+            assert lib.assertMsg (
+              foundNamed == expectedNamed
+            ) "package-lists checker found ${builtins.toJSON foundNamed} (named lists)";
             pkgs.runCommand "package-lists-checker-ok" { } "touch $out";
         };
 

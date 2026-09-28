@@ -6,9 +6,14 @@ for a curated set of packages, and shows it on a static page (`docs/`).
 ## What gets tracked
 
 `package-lists/default.nix` lists GitHub handles under `maintainers` (every
-nixpkgs package they maintain is tracked) and imports further lists of
-nixpkgs attribute names (exactly that package, e.g. `haskellPackages.pandoc`)
-or pnames (every top-level package with that pname).
+nixpkgs package they maintain is tracked) and imports further named lists
+under `extraPackages` (`extra`, `gaming-team`, ...) of nixpkgs attribute names
+(exactly that package, e.g. `haskellPackages.pandoc`) or pnames (every
+top-level package with that pname).
+
+Each list is a filter on the page, next to `maintained` for the packages
+found through `maintainers`. `?list=gaming-team` in the address is a page of
+just that list, to share with the people it's for.
 
 ## Layout
 

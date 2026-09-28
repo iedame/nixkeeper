@@ -2,7 +2,7 @@ import io
 import unittest
 from unittest import mock
 
-from nixkeeper.tracking import tracked_packages
+from nixkeeper.tracking import add_lists, extra_lists, list_names, tracked_packages
 from tests.helpers import NIXPKGS
 
 
@@ -60,3 +60,43 @@ class TrackedPackages(unittest.TestCase):
 
     def test_maintained_entry_wins_over_same_name_in_lists(self):
         self.assertEqual(self.wanted(["wesnoth"])["wesnoth"], (["wesnoth"], "wesnoth"))
+
+
+class Lists(unittest.TestCase):
+    LISTS = {
+        "maintainers": ["iedame"],
+        "extraPackages": {
+            "extra": ["_1password-gui", "fzssh-unknown"],
+            "gaming-team": ["wesnoth", "heroic"],
+        },
+    }
+
+    def test_named_lists_are_tracked_like_one(self):
+        with mock.patch("sys.stderr", io.StringIO()):
+            w = tracked_packages(self.LISTS, NIXPKGS)
+        self.assertEqual(w["_1password-gui"], (["_1password-gui"], "_1password-gui"))
+        self.assertEqual(w["heroic"], (["heroic"], "heroic"))  # extra + maintained
+
+    def test_plain_list_is_the_extra_list(self):
+        self.assertEqual(extra_lists({"extraPackages": ["a"]}), {"extra": ["a"]})
+        self.assertEqual(extra_lists({}), {})
+
+    def test_rows_get_every_list_they_are_on(self):
+        rows = [
+            {"name": "wesnoth", "attrs": ["wesnoth"]},  # maintained + gaming-team
+            {"name": "heroic", "attrs": ["heroic", "heroic-unwrapped"]},
+            {"name": "_1password-gui", "attrs": ["_1password-gui"]},
+            {"name": "fzssh-unknown", "attrs": []},  # not in nixpkgs: by its name
+            {"name": "bbedit", "attrs": ["bbedit"]},  # on no list
+        ]
+        add_lists(rows, list_names(self.LISTS, NIXPKGS))
+        self.assertEqual(
+            {row["name"]: row["lists"] for row in rows},
+            {
+                "wesnoth": ["maintained", "gaming-team"],
+                "heroic": ["maintained", "gaming-team"],
+                "_1password-gui": ["extra"],
+                "fzssh-unknown": ["extra"],
+                "bbedit": [],
+            },
+        )

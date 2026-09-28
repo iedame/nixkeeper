@@ -49,6 +49,18 @@ let checkedAt = null;
 let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
 let sortAZ = false; // default order puts what needs attention first
 let platformFilter = null; // null | 'linux' | 'darwin', combined with activeFilter
+// null, or a list from package-lists/ ("maintained", "gaming-team", ...):
+// ?list=gaming-team is a page of just that list's packages, to share.
+let listFilter = null;
+const inList = (pkg) => !listFilter || (pkg.lists || []).includes(listFilter);
+// Every list some package is on: "maintained" first, as the sync sorts them.
+function allLists() {
+  const seen = [];
+  for (const p of packages) for (const l of p.lists || []) if (!seen.includes(l)) seen.push(l);
+  return seen.sort((a, b) =>
+    a === 'maintained' ? -1 : b === 'maintained' ? 1 : a.localeCompare(b),
+  );
+}
 
 // "any platform" (no restriction in nixpkgs) counts as both.
 const PLATFORMS = {
@@ -121,6 +133,8 @@ function readViewFromUrl() {
   sortAZ = params.get('sort') === 'az';
   platformFilter =
     Object.keys(PLATFORMS).find((k) => PLATFORMS[k].param === params.get('platform')) || null;
+  // Any name: which lists exist is only known once the data has loaded.
+  listFilter = params.get('list') || null;
   document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
 }
 
@@ -132,6 +146,7 @@ function writeViewToUrl() {
   set('q', q);
   set('sort', sortAZ ? 'az' : '');
   set('platform', platformFilter && PLATFORMS[platformFilter].param);
+  set('list', listFilter);
   const query = params.toString();
   // replaceState, not pushState: typing a search shouldn't fill the history.
   history.replaceState(null, '', location.pathname + (query ? `?${query}` : '') + location.hash);
@@ -215,9 +230,10 @@ function timeAgo(iso) {
 }
 
 function renderStats() {
-  // Counts follow the platform filter, so "outdated" means outdated on macOS
-  // while macOS is selected.
-  const base = packages.filter(inPlatform);
+  // Counts follow the platform and list filters, so "outdated" means
+  // outdated on macOS, or on the gaming-team list, while that's selected.
+  const base = packages.filter((p) => inPlatform(p) && inList(p));
+  renderLists();
   const buttons = Object.entries(FILTERS)
     .map(([key, f]) => {
       const count = base.filter(f.test).length;
@@ -238,6 +254,28 @@ function renderStats() {
     `${buttons}${platformChip}<span class="checked${stale ? ' stale' : ''}"
     ${stale ? 'title="The daily sync hasn\'t updated the data in over 2 days. Check where it runs (on GitHub: the Actions tab)."' : ''}>
     checked ${timeAgo(checkedAt)}${stale ? ' — sync may be failing' : ''}</span>`;
+}
+
+// The lists from package-lists/, as a second row of filters. Hidden when
+// there's only one (or data from before lists existed).
+function renderLists() {
+  const el = document.getElementById('lists');
+  const names = allLists();
+  if (listFilter && !names.includes(listFilter)) names.push(listFilter); // e.g. a renamed list
+  if (names.length < 2) {
+    el.innerHTML = '';
+    return;
+  }
+  const base = packages.filter(inPlatform);
+  el.innerHTML = `<span class="lists-label">lists</span>${names
+    .map((name) => {
+      const pressed = listFilter === name;
+      const count = base.filter((p) => (p.lists || []).includes(name)).length;
+      return `<button class="stat-btn" type="button" data-list="${escapeHtml(name)}" aria-pressed="${pressed}"
+        title="${pressed ? 'Show every list' : `Show only the ${escapeHtml(name)} list (shareable: it's in the address)`}">
+        <b>${count}</b> ${escapeHtml(name)}</button>`;
+    })
+    .join('')}`;
 }
 
 function escapeHtml(s) {
@@ -638,6 +676,7 @@ function currentFiltered() {
   const list = packages.filter(
     (p) =>
       inPlatform(p) &&
+      inList(p) &&
       FILTERS[activeFilter].test(p) &&
       (!q || [p.name, p.project, ...(p.attrs || [])].some((n) => n?.toLowerCase().includes(q))),
   );
@@ -663,6 +702,14 @@ document.getElementById('stats').addEventListener('click', (e) => {
   if (!btn) return;
   // Clicking the active filter again goes back to showing everything.
   activeFilter = btn.dataset.filter === activeFilter ? 'all' : btn.dataset.filter;
+  render(currentFiltered());
+});
+
+document.getElementById('lists').addEventListener('click', (e) => {
+  const btn = e.target.closest('.stat-btn');
+  if (!btn) return;
+  // Clicking the active list again shows every list.
+  listFilter = btn.dataset.list === listFilter ? null : btn.dataset.list;
   render(currentFiltered());
 });
 
