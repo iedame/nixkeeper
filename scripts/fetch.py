@@ -157,16 +157,16 @@ def resolve(fallback, attrs):
     return project, entries
 
 
-def load_previous_run():
+def load_previous_run(out_dir=OUT_DIR):
     """The last successful run's index, or an empty one."""
     try:
-        with open(os.path.join(OUT_DIR, "index.json")) as f:
+        with open(os.path.join(out_dir, "index.json")) as f:
             return json.load(f)
     except (OSError, ValueError):
         return {"packages": []}
 
 
-def previous_project(previous, pname, attrs):
+def previous_project(previous, pname, attrs, out_dir=OUT_DIR):
     """Reuse the last run's data for a pname whose lookup failed. Returns
     (project, entries, stale_since), or None if there's nothing to reuse."""
     for row in previous["packages"]:
@@ -174,7 +174,7 @@ def previous_project(previous, pname, attrs):
             entries = []
             if row.get("project"):
                 try:
-                    with open(os.path.join(OUT_DIR, row.get("dataFile") or f"{row['project']}.json")) as f:
+                    with open(os.path.join(out_dir, row.get("dataFile") or f"{row['project']}.json")) as f:
                         entries = json.load(f)
                 except (OSError, ValueError):
                     return None
@@ -303,16 +303,11 @@ def add_github_counts(rows):
             row[field] = count
 
 
-def main():
-    shutil.rmtree(TMP_DIR, ignore_errors=True)  # leftover from a failed run
-    os.makedirs(TMP_DIR)
-
-    lists = read_lists()
-    nixpkgs = load_nixpkgs_index()
-
-    # name -> (nixpkgs attrs to look up, Repology project name to try if none
-    # of them resolve). Maintained packages go one attr at a time: with nested
-    # sets a pname can mean unrelated packages (foo, python313Packages.foo).
+def tracked_packages(lists, nixpkgs):
+    """What to track, from the package lists and the nixpkgs index: name ->
+    (nixpkgs attrs to look up, Repology project name to try if none of them
+    resolve). Maintained packages go one attr at a time: with nested sets a
+    pname can mean unrelated packages (foo, python313Packages.foo)."""
     wanted = {}
     handles = {h.lower() for h in lists["maintainers"]}
     for attr, p in sorted(nixpkgs.items()):
@@ -333,12 +328,17 @@ def main():
             print(f"  {name} is neither a nixpkgs attribute nor a top-level pname "
                   "(aliases like python3Packages need their versioned name)", file=sys.stderr)
         wanted.setdefault(name, (attrs, name))
+    return wanted
 
-    # Several attrs (wesnoth / wesnoth-devel, heroic / heroic-unwrapped) can
-    # map to one Repology project; they're fetched once and split into rows
-    # below.
-    previous = load_previous_run()
-    projects = {}  # project -> {"name", "project", "attrs", "entries", "dataFile"[, "staleSince"]}
+
+def collect_projects(wanted, previous, resolve=resolve, out_dir=OUT_DIR):
+    """Look up every tracked package on Repology, falling back to the previous
+    run's data (in out_dir) when a lookup fails. Several attrs (wesnoth /
+    wesnoth-devel, heroic / heroic-unwrapped) can map to one project; those
+    are merged here and split into rows by project_rows. Returns project ->
+    {"name", "project", "attrs", "entries", "dataFile"[, "staleSince"]}, or
+    exits if too many lookups failed."""
+    projects = {}
     failed = []
     for pname, (attrs, fallback) in sorted(wanted.items()):
         print(f"Resolving {pname}...", file=sys.stderr)
@@ -347,7 +347,7 @@ def main():
             project, entries = resolve(fallback, attrs)
         except (urllib.error.URLError, OSError, ValueError) as e:
             failed.append(pname)
-            reused = previous_project(previous, pname, attrs)
+            reused = previous_project(previous, pname, attrs, out_dir)
             if not reused:
                 print(f"  giving up on {pname} ({e}); no previous data, skipping it this run", file=sys.stderr)
                 continue
@@ -358,8 +358,6 @@ def main():
         if key in projects:
             projects[key]["attrs"] += [a for a in attrs if a not in projects[key]["attrs"]]
             continue
-        with open(os.path.join(TMP_DIR, data_file(key)), "w") as f:
-            json.dump(entries or [], f, indent=2, sort_keys=True)
         projects[key] = {"name": pname, "project": project, "attrs": attrs,
                          "entries": entries or [], "dataFile": data_file(key)}
         if stale_since:
@@ -368,18 +366,37 @@ def main():
     if len(failed) > MAX_FAILED_SHARE * len(wanted):
         sys.exit(f"Repology lookups failed for {len(failed)} of {len(wanted)} packages; "
                  f"keeping the previous data. Failed: {', '.join(failed)}")
+    return projects
 
+
+def build_rows(projects, nixpkgs):
+    """All index rows, sorted by name."""
     rows = []
     for proj in projects.values():
         for row in project_rows(proj, nixpkgs):
             if proj.get("staleSince"):
                 row["staleSince"] = proj["staleSince"]  # when its data was last fetched
             rows.append(row)
+    return sorted(rows, key=lambda p: p["name"].lower())
+
+
+def main():
+    shutil.rmtree(TMP_DIR, ignore_errors=True)  # leftover from a failed run
+    os.makedirs(TMP_DIR)
+
+    nixpkgs = load_nixpkgs_index()
+    wanted = tracked_packages(read_lists(), nixpkgs)
+    projects = collect_projects(wanted, load_previous_run())
+    for proj in projects.values():
+        with open(os.path.join(TMP_DIR, proj["dataFile"]), "w") as f:
+            json.dump(proj["entries"], f, indent=2, sort_keys=True)
+
+    rows = build_rows(projects, nixpkgs)
     add_github_counts(rows)
     with open(os.path.join(TMP_DIR, "index.json"), "w") as f:
         json.dump({
             "checkedAt": datetime.now(timezone.utc).isoformat(),
-            "packages": sorted(rows, key=lambda p: p["name"].lower()),
+            "packages": rows,
         }, f, indent=2, sort_keys=True)
 
     shutil.rmtree(OUT_DIR, ignore_errors=True)

@@ -23,5 +23,12 @@
         devShells.default = pkgs.mkShell {
           packages = [ python ];
         };
+
+        # Offline tests for fetch.py's logic (scripts/test_fetch.py).
+        checks.tests = pkgs.runCommand "nixkeeper-tests" { nativeBuildInputs = [ python ]; } ''
+          cd ${./scripts}
+          PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v test_fetch
+          touch $out
+        '';
       });
 }
