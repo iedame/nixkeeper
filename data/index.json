@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-28T18:11:38.624549+00:00",
+  "checkedAt": "2026-09-28T18:43:25.457645+00:00",
   "packages": [
     {
       "attrs": [
@@ -9,6 +9,9 @@
       "dataFile": "1password.json",
       "devel": false,
       "homepage": "https://1password.com/",
+      "lists": [
+        "extra"
+      ],
       "name": "_1password-gui",
       "nixStatus": "newest",
       "nixVersion": "8.12.36",
@@ -48,6 +51,9 @@
       "dataFile": "1password.json",
       "devel": true,
       "homepage": "https://1password.com/",
+      "lists": [
+        "extra"
+      ],
       "name": "_1password-gui-beta",
       "nixStatus": "legacy",
       "nixVersion": "8.12.32-26.BETA",
@@ -103,6 +109,9 @@
       "dataFile": "backrest.json",
       "devel": false,
       "homepage": "https://github.com/garethgeorge/backrest",
+      "lists": [
+        "maintained"
+      ],
       "name": "backrest",
       "nixStatus": "newest",
       "nixVersion": "1.14.1",
@@ -136,6 +145,9 @@
       "dataFile": "bbedit.json",
       "devel": false,
       "homepage": "https://www.barebones.com/products/bbedit/",
+      "lists": [
+        "maintained"
+      ],
       "name": "bbedit",
       "nixStatus": "newest",
       "nixVersion": "16.0.3",
@@ -163,7 +175,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-28T18:11:38.624549+00:00",
+        "checkedAt": "2026-09-28T18:43:25.457645+00:00",
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
@@ -191,6 +203,9 @@
       "dataFile": "bolt-launcher.json",
       "devel": false,
       "homepage": "https://codeberg.org/Adamcake/Bolt",
+      "lists": [
+        "maintained"
+      ],
       "name": "bolt-launcher",
       "nixStatus": "newest",
       "nixVersion": "0.24.0",
@@ -238,6 +253,9 @@
       "dataFile": "d-seams.json",
       "devel": false,
       "homepage": "https://dseams.info",
+      "lists": [
+        "maintained"
+      ],
       "name": "d-seams",
       "nixStatus": "newest",
       "nixVersion": "2.10.0",
@@ -291,6 +309,9 @@
       "dataFile": "egoboo.json",
       "devel": false,
       "homepage": "https://egoboo.sourceforge.net/",
+      "lists": [
+        "maintained"
+      ],
       "name": "egoboo",
       "nixStatus": "newest",
       "nixVersion": "2.8.1",
@@ -329,6 +350,9 @@
       "dataFile": "fastmail.json",
       "devel": false,
       "homepage": "https://www.fastmail.com/blog/desktop-app/",
+      "lists": [
+        "maintained"
+      ],
       "name": "fastmail-desktop",
       "nixStatus": "newest",
       "nixVersion": "1.8.0",
@@ -377,6 +401,9 @@
       "dataFile": "filezilla.json",
       "devel": false,
       "homepage": "https://filezilla-project.org/",
+      "lists": [
+        "maintained"
+      ],
       "name": "filezilla",
       "nixStatus": "newest",
       "nixVersion": "3.71.1",
@@ -430,6 +457,10 @@
       "dataFile": "freedink.json",
       "devel": false,
       "homepage": "https://gnu.org/software/freedink/",
+      "lists": [
+        "maintained",
+        "gaming-team"
+      ],
       "name": "freedink",
       "nixStatus": "newest",
       "nixVersion": "109.6",
@@ -474,6 +505,9 @@
       "dataFile": "fzssh.json",
       "devel": false,
       "homepage": "https://lib.filezilla-project.org/",
+      "lists": [
+        "maintained"
+      ],
       "name": "fzssh",
       "nixStatus": "newest",
       "nixVersion": "1.4.0",
@@ -504,6 +538,9 @@
       "dataFile": "google-chrome.json",
       "devel": false,
       "homepage": "https://www.google.com/chrome/browser/",
+      "lists": [
+        "maintained"
+      ],
       "name": "google-chrome",
       "nixStatus": "newest",
       "nixVersion": "154.0.8037.57",
@@ -530,7 +567,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-28T18:11:38.624549+00:00",
+        "checkedAt": "2026-09-28T18:43:25.457645+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": false,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -571,6 +608,9 @@
       "dataFile": "heroic-games-launcher.json",
       "devel": false,
       "homepage": "https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher",
+      "lists": [
+        "maintained"
+      ],
       "name": "heroic",
       "nixStatus": "newest",
       "nixVersion": "2.22.3",
@@ -624,6 +664,9 @@
       "dataFile": "libfilezilla.json",
       "devel": false,
       "homepage": "https://lib.filezilla-project.org/",
+      "lists": [
+        "maintained"
+      ],
       "name": "libfilezilla",
       "nixStatus": "newest",
       "nixVersion": "0.57.0",
@@ -676,6 +719,9 @@
       "dataFile": "lincity.json",
       "devel": true,
       "homepage": "https://sourceforge.net/projects/lincity",
+      "lists": [
+        "maintained"
+      ],
       "name": "lincity",
       "nixStatus": "devel",
       "nixVersion": "1.13.1",
@@ -712,6 +758,9 @@
       "dataFile": "lincity-ng.json",
       "devel": false,
       "homepage": "https://github.com/lincity-ng/lincity-ng",
+      "lists": [
+        "maintained"
+      ],
       "name": "lincity-ng",
       "nixStatus": "newest",
       "nixVersion": "2.15.0",
@@ -758,6 +807,9 @@
       "dataFile": "linkding.json",
       "devel": false,
       "homepage": "https://linkding.link/",
+      "lists": [
+        "maintained"
+      ],
       "name": "linkding",
       "nixStatus": "unique",
       "nixVersion": "1.47.0",
@@ -791,6 +843,9 @@
       "dataFile": "microsoft-edge.json",
       "devel": false,
       "homepage": "https://www.microsoft.com/en-us/edge",
+      "lists": [
+        "maintained"
+      ],
       "name": "microsoft-edge",
       "nixStatus": "newest",
       "nixVersion": "154.0.4258.37",
@@ -818,7 +873,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-28T18:11:38.624549+00:00",
+        "checkedAt": "2026-09-28T18:43:25.457645+00:00",
         "label": "packages.microsoft.com",
         "newer": false,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
@@ -833,6 +888,9 @@
       "dataFile": "msedgedriver.json",
       "devel": false,
       "homepage": "https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver",
+      "lists": [
+        "maintained"
+      ],
       "name": "msedgedriver",
       "nixStatus": "unique",
       "nixVersion": "154.0.4258.37",
@@ -860,6 +918,9 @@
       "dataFile": "opentyrian.json",
       "devel": false,
       "homepage": "https://github.com/opentyrian/opentyrian",
+      "lists": [
+        "extra"
+      ],
       "name": "opentyrian",
       "nixStatus": "outdated",
       "nixVersion": "2.1.20221123",
@@ -911,6 +972,9 @@
       "dataFile": "ringracers.json",
       "devel": false,
       "homepage": "https://kartkrew.org",
+      "lists": [
+        "maintained"
+      ],
       "name": "ringracers",
       "nixStatus": "newest",
       "nixVersion": "2.4",
@@ -950,6 +1014,9 @@
       "dataFile": "runelite.json",
       "devel": false,
       "homepage": "https://runelite.net/",
+      "lists": [
+        "maintained"
+      ],
       "name": "runelite",
       "nixStatus": "newest",
       "nixVersion": "2.8.0",
@@ -996,6 +1063,9 @@
       "dataFile": "scanmem.json",
       "devel": false,
       "homepage": "https://github.com/scanmem/scanmem",
+      "lists": [
+        "maintained"
+      ],
       "name": "scanmem",
       "nixStatus": "newest",
       "nixVersion": "0.17",
@@ -1041,6 +1111,9 @@
       "dataFile": "typioca.json",
       "devel": false,
       "homepage": "https://github.com/bloznelis/typioca",
+      "lists": [
+        "maintained"
+      ],
       "name": "typioca",
       "nixStatus": "newest",
       "nixVersion": "3.1.0",
@@ -1086,6 +1159,9 @@
       "dataFile": "unciv.json",
       "devel": false,
       "homepage": "https://github.com/yairm210/Unciv",
+      "lists": [
+        "maintained"
+      ],
       "name": "unciv",
       "nixStatus": "outdated",
       "nixVersion": "4.22.1",
@@ -1140,6 +1216,9 @@
       "dataFile": "wesnoth.json",
       "devel": false,
       "homepage": "https://www.wesnoth.org/",
+      "lists": [
+        "maintained"
+      ],
       "name": "wesnoth",
       "nixStatus": "newest",
       "nixVersion": "1.18.8",
@@ -1192,6 +1271,9 @@
       "dataFile": "wesnoth.json",
       "devel": true,
       "homepage": "https://www.wesnoth.org/",
+      "lists": [
+        "maintained"
+      ],
       "name": "wesnoth-devel",
       "nixStatus": "devel",
       "nixVersion": "1.19.24",
@@ -1223,7 +1305,7 @@
       },
       "updateFailure": true,
       "upstream": {
-        "checkedAt": "2026-09-28T18:11:38.624549+00:00",
+        "checkedAt": "2026-09-28T18:43:25.457645+00:00",
         "label": "wesnoth/wesnoth tags",
         "newer": true,
         "repo": "wesnoth/wesnoth",
@@ -1258,6 +1340,9 @@
       "dataFile": "xournalpp.json",
       "devel": false,
       "homepage": "https://xournalpp.github.io/",
+      "lists": [
+        "maintained"
+      ],
       "name": "xournalpp",
       "nixStatus": "outdated",
       "nixVersion": "1.3.7",
