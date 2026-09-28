@@ -17,7 +17,7 @@ or pnames (every top-level package with that pname).
   - `tracking.py` → `lookup.py` → `rows.py` → `history.py` → `output.py`,
     run in that order by `__main__.py`
 - `tests/`: offline tests, one file per module
-- `docs/index.html`: the page, reading `data/` from the `data` branch
+- `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/` from the `data` branch
 - `.github/workflows/`: `sync.yml` (daily sync), `check.yml` (tests on push)
 
 ## Commands
