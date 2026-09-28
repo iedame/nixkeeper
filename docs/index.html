@@ -174,7 +174,7 @@ let repoInfo = detectRepo();
 const detailCache = new Map(); // name -> parsed per-package Repology JSON
 let packages = [];
 let checkedAt = null;
-let activeFilter = 'all'; // 'all' | 'warn' | 'missing' | 'vuln'
+let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
 let sortAZ = false; // default order puts what needs attention first
 // The sync runs daily; older than this means runs are failing or GitHub has
 // paused the schedule (it does after 60 days without commits).
@@ -184,19 +184,22 @@ const STALE_AFTER_HOURS = 48;
 const FILTERS = {
   all:     { label: 'tracked',         test: () => true },
   warn:    { label: 'outdated',        param: 'outdated',       color: 'var(--warn)',   test: p => computeStatus(p) === 'warn' },
-  missing: { label: 'not in nixpkgs',  param: 'not-in-nixpkgs', color: 'var(--danger)', test: p => computeStatus(p) === 'missing' },
+  failed:  { label: 'failed',          param: 'failed',         color: 'var(--danger)', test: p => hasFailure(p) },
   vuln:    { label: 'flagged vulnerable', param: 'vulnerable',  color: 'var(--danger)', test: p => p.nixVulnerable },
 };
 
-// Default order: outdated, then not in nixpkgs, then reported failures, then
-// the rest; alphabetical within each group (the index arrives sorted by name
-// and Array.sort is stable).
+// Everything shown in red: not found in nixpkgs, or a build or update
+// failure reported.
+function hasFailure(pkg) {
+  return computeStatus(pkg) === 'missing' || Boolean(pkg.buildFailure || pkg.updateFailure);
+}
+
+// Default order: failed, then outdated, then the rest; alphabetical within
+// each group (the index arrives sorted by name and Array.sort is stable).
 function attentionRank(pkg) {
-  const st = computeStatus(pkg);
-  if (st === 'warn') return 0;
-  if (st === 'missing') return 1;
-  if (pkg.buildFailure || pkg.updateFailure) return 2;
-  return 3;
+  if (hasFailure(pkg)) return 0;
+  if (computeStatus(pkg) === 'warn') return 1;
+  return 2;
 }
 
 // Filter, search and sort live in the page address, so a view survives a
