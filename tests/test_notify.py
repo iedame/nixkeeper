@@ -76,6 +76,23 @@ class Text(unittest.TestCase):
             " · outdated today",
         )
 
+    def test_vulnerable_links_known_cves(self):
+        row = {
+            "name": "python313Packages.requests",
+            "nixStatus": "newest",
+            "project": "python:requests",
+            "nixVulnerable": True,
+        }
+        self.assertEqual(
+            notify.describe(row, NOW),
+            "`python313Packages.requests` — flagged vulnerable ([known CVEs]"
+            "(https://repology.org/project/python%3Arequests/cves))",
+        )
+        body = notify.status_body([row], diff({"packages": []}, [row]), NOW)
+        self.assertIn(
+            "### Flagged vulnerable (1)\n- `python313Packages.requests`", body
+        )
+
     def test_not_refreshed_says_what_and_why(self):
         row = {
             "name": "bbedit",

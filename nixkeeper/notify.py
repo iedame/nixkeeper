@@ -5,6 +5,7 @@ changed for the worse. Only CI posts: it sets NIXKEEPER_NOTIFY=1."""
 import os
 import sys
 import urllib.error
+import urllib.parse
 from datetime import datetime
 
 from . import config
@@ -30,6 +31,12 @@ def days_text(since, now):
     return "today" if days < 1 else "1 day" if days == 1 else f"{days} days"
 
 
+def cves_url(project):
+    """Repology's list of CVEs for a project, with the versions they affect.
+    (Its API only says whether a version is vulnerable, not to what.)"""
+    return f"https://repology.org/project/{urllib.parse.quote(project)}/cves"
+
+
 def describe(row, now):
     """One package, as a bullet's text."""
     text = f"`{row['name']}`"
@@ -42,6 +49,10 @@ def describe(row, now):
             text += f" · outdated {days_text(row['outdatedSince'], now)}"
     if failures(row):
         text += " — " + ", ".join(failures(row))
+    if row.get("nixVulnerable"):
+        text += " — flagged vulnerable"
+        if row.get("project"):
+            text += f" ([known CVEs]({cves_url(row['project'])}))"
     logs = [
         f"[{build_label(row, b)} log]({config.HYDRA_URL}/build/{b['build']}/log)"
         for b in failed_builds(row)

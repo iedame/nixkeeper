@@ -588,7 +588,15 @@ async function fillDetail(pkg, el) {
         }`;
 
   el.innerHTML = `
-    <div class="nix-line">${nixLine}</div>${checkNote}
+    <div class="nix-line">${nixLine}</div>${checkNote}${
+      pkg.nixVulnerable
+        ? `<div class="vuln-note">⚠ Repology flags nixpkgs' version <span class="mono">${escapeHtml(pkg.nixVersion)}</span> as vulnerable.${
+            pkg.project
+              ? ` <a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/cves" target="_blank" rel="noopener">Known CVEs ↗</a>`
+              : ''
+          }</div>`
+        : ''
+    }
     ${
       others.length
         ? `<div class="other-label">Compared against</div><div class="repo-chips">

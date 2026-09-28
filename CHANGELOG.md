@@ -38,6 +38,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   status issue lists them under "Not refreshed" and comments once per newly
   failing source; working again is listed quietly.
 
+- Packages Repology flags as vulnerable link to its list of known CVEs, in
+  the package details and in the status issue.
+
 ### Changed
 
 - Hydra and the update logs share one retrying HTTP helper.

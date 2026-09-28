@@ -397,6 +397,14 @@ button.plat[aria-pressed="true"] {
   padding: 6px 10px;
   margin-bottom: 10px;
 }
+.vuln-note {
+  font-size: 12.5px;
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
+}
 .stale-tag {
   font-size: 10.5px;
   color: var(--ink-soft);
