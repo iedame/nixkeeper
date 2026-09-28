@@ -33,7 +33,7 @@ const PLATFORMS = {
   darwin: { label: 'macOS', param: 'macos' },
 };
 function onPlatform(pkg, key) {
-  return pkg.platforms === null || Boolean(pkg.platforms && pkg.platforms[key]);
+  return pkg.platforms === null || Boolean(pkg.platforms?.[key]);
 }
 function inPlatform(pkg) {
   return !platformFilter || onPlatform(pkg, platformFilter);
@@ -101,7 +101,7 @@ function writeViewToUrl() {
   set('platform', platformFilter && PLATFORMS[platformFilter].param);
   const query = params.toString();
   // replaceState, not pushState: typing a search shouldn't fill the history.
-  history.replaceState(null, '', location.pathname + (query ? '?' + query : '') + location.hash);
+  history.replaceState(null, '', location.pathname + (query ? `?${query}` : '') + location.hash);
 }
 
 async function loadIndex() {
@@ -123,7 +123,7 @@ async function loadIndex() {
     checkedAt = data.checkedAt || null;
     document.getElementById('search').disabled = false;
     render(currentFiltered());
-  } catch (err) {
+  } catch {
     content.innerHTML = `<div class="error">
       Couldn't load <code>data/index.json</code> from the <code>data</code> branch of
       <code>${escapeHtml(repoInfo.owner)}/${escapeHtml(repoInfo.repo)}</code>.<br>
@@ -149,15 +149,15 @@ function computeStatus(pkg) {
 function shortAge(iso) {
   const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400e3);
   if (days < 1) return '<1 d';
-  if (days < 7) return days + ' d';
-  if (days < 30) return Math.floor(days / 7) + ' w';
-  if (days < 365) return Math.min(11, Math.floor(days / 30)) + ' m'; // 360-364 days: not "12 m" before "1 y"
-  return Math.floor(days / 365) + ' y';
+  if (days < 7) return `${days} d`;
+  if (days < 30) return `${Math.floor(days / 7)} w`;
+  if (days < 365) return `${Math.min(11, Math.floor(days / 30))} m`; // 360-364 days: not "12 m" before "1 y"
+  return `${Math.floor(days / 365)} y`;
 }
 
 function daysText(iso) {
   const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400e3);
-  return days < 1 ? 'today' : days === 1 ? '1 day' : days + ' days';
+  return days < 1 ? 'today' : days === 1 ? '1 day' : `${days} days`;
 }
 
 function longDate(iso) {
@@ -173,10 +173,10 @@ function timeAgo(iso) {
   const diff = Date.now() - new Date(iso).getTime();
   const m = Math.floor(diff / 60000);
   if (m < 1) return 'just now';
-  if (m < 60) return m + 'm ago';
+  if (m < 60) return `${m}m ago`;
   const h = Math.floor(m / 60);
-  if (h < 24) return h + 'h ago';
-  return Math.floor(h / 24) + 'd ago';
+  if (h < 24) return `${h}h ago`;
+  return `${Math.floor(h / 24)}d ago`;
 }
 
 function renderStats() {
@@ -300,8 +300,8 @@ function failureCell(kind, failing) {
 
 // TODO: link each kind to its log once we have one (build: e.g. Hydra).
 const FAILURE_URLS = {
-  build: (pkg) => null,
-  update: (pkg) => null,
+  build: (_pkg) => null,
+  update: (_pkg) => null,
 };
 
 // From nixpkgs meta.platforms; null means nixpkgs doesn't restrict it.
@@ -345,7 +345,7 @@ async function fillDetail(pkg, el) {
       );
       entries = res.ok ? await res.json() : [];
       detailCache.set(file, entries);
-    } catch (e) {
+    } catch {
       entries = [];
     }
   }
@@ -388,7 +388,7 @@ function currentFiltered() {
     (p) =>
       inPlatform(p) &&
       FILTERS[activeFilter].test(p) &&
-      (!q || [p.name, p.project, ...(p.attrs || [])].some((n) => n && n.toLowerCase().includes(q))),
+      (!q || [p.name, p.project, ...(p.attrs || [])].some((n) => n?.toLowerCase().includes(q))),
   );
   return sortAZ
     ? list

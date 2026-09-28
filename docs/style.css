@@ -383,7 +383,7 @@ tr.detail {
 tr.detail.open {
   display: table-row;
 }
-tr.detail td {
+tbody tr.detail td {
   padding: 4px 10px 18px 10px;
   border-bottom: 1px solid var(--hairline);
 }
