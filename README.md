@@ -21,7 +21,8 @@ or pnames (every top-level package with that pname).
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates)
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/` from the `data` branch
-- `.github/workflows/`: `sync.yml` (daily sync), `check.yml` (tests on push)
+- `.github/workflows/`: `sync.yml` (daily sync), `quick-check.yml` (hourly
+  frequent update checks), `check.yml` (tests on push)
 
 ## Commands
 
@@ -35,3 +36,17 @@ nix eval --json -f package-lists                             # what the lists ev
 ```
 
 New files must be `git add`ed before Nix sees them.
+
+## License
+
+nixkeeper's code is released under the [MIT License](LICENSE).
+
+The published data (the `data` branch) is collected from other projects and
+remains subject to their terms: [Repology](https://repology.org), nixpkgs'
+[channel index](https://channels.nixos.org), [Hydra](https://hydra.nixos.org),
+the [nixpkgs-update logs](https://nixpkgs-update-logs.nixos.org), GitHub, and
+the release pages named in `package-lists/update-checks.nix`.
+
+Fetching the nixpkgs-update logs follows the approach of
+[nixpkgs-update-notifier](https://github.com/asymmetric/nixpkgs-update-notifier),
+reimplemented here.

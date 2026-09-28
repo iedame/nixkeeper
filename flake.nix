@@ -32,6 +32,7 @@
           src = lib.fileset.toSource {
             root = ./.;
             fileset = lib.fileset.unions [
+              ./LICENSE # shipped with the package (pyproject.toml: license-files)
               ./pyproject.toml
               ./nixkeeper
               ./tests
@@ -48,7 +49,10 @@
             "."
             "-v"
           ];
-          meta.mainProgram = "nixkeeper-sync";
+          meta = {
+            mainProgram = "nixkeeper-sync";
+            license = lib.licenses.mit;
+          };
         };
 
         listsChecker = import ./nix/package-lists.nix {

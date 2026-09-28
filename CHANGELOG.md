@@ -48,6 +48,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   (Google's version history API) and microsoft-edge (Microsoft's Debian
   repository), Linux stable.
 
+- MIT license (`LICENSE`, also declared in `pyproject.toml` and the flake's
+  package metadata). The README notes where the published data comes from.
+
 ### Changed
 
 - The daily sync and the quick check share a concurrency group, so they never

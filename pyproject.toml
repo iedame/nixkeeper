@@ -1,11 +1,13 @@
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=77"]  # license as an SPDX expression
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "nixkeeper"
 version = "0.2.0"
 description = "Tracks how nixpkgs unstable compares to other repos, for a curated set of packages"
+license = "MIT"
+license-files = ["LICENSE"]
 requires-python = ">=3.11"
 dependencies = ["brotli"]
 
