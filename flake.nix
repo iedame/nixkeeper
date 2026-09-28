@@ -1,5 +1,5 @@
 {
-  description = "nixkeeper — tracks how nixpkgs unstable compares to other repos";
+  description = "Health dashboard for the nixpkgs packages you maintain: new releases, build and update failures, and vulnerabilities, in one place.";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -50,6 +50,7 @@
             "-v"
           ];
           meta = {
+            description = "Health dashboard for the nixpkgs packages you maintain";
             mainProgram = "nixkeeper-sync";
             license = lib.licenses.mit;
           };
@@ -94,7 +95,7 @@
         sync = {
           type = "app";
           program = lib.getExe nixkeeper;
-          meta.description = "Sync package data: nixpkgs + Repology + GitHub -> data/";
+          meta.description = "Sync data/: Repology, update checks, Hydra, nixpkgs-update logs, GitHub";
         };
       in
       {

@@ -1,7 +1,24 @@
 # nixkeeper
 
-Tracks how nixpkgs unstable compares to every other repo Repology knows about,
-for a curated set of packages, and shows it on a static page (`docs/`).
+Health dashboard for the nixpkgs packages you maintain: new releases, build
+and update failures, and vulnerabilities, in one place.
+
+For each package it tracks, nixkeeper shows on one static page (`docs/`):
+
+- **New releases**: whether nixpkgs unstable is behind, per
+  [Repology](https://repology.org) and nixkeeper's own update checks (a
+  project's tags or release page, hourly for the ones marked frequent)
+- **Build failures**: [Hydra](https://hydra.nixos.org)'s latest builds on
+  x86_64-linux, aarch64-linux and aarch64-darwin, and where nixpkgs marks it
+  broken
+- **Update failures**: the latest attempt of the
+  [nixpkgs-update](https://nixpkgs-update-logs.nixos.org) bot (r-ryantm)
+- **Vulnerabilities**: versions Repology flags, with their known CVEs
+- **Open PRs and issues** in nixpkgs that name the package
+
+A daily sync (GitHub Actions, or anywhere: see [Running elsewhere](#running-elsewhere))
+refreshes it all and keeps a status issue up to date, commenting when something
+newly needs attention.
 
 ## What gets tracked
 

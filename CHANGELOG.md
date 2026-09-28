@@ -64,6 +64,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- Described as what it has become: "Health dashboard for the nixpkgs packages
+  you maintain", in the README (with what it checks), the page ("your nixpkgs
+  packages, at a glance"), `flake.nix` and `pyproject.toml`.
 - Notifications go through a choice of method (`NIXKEEPER_NOTIFY`); the status
   issue is `github-issue` (the old value `1` still works). It never posts with
   the local `gh` login.
