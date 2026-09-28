@@ -47,6 +47,7 @@
   input[type="search"]:focus { border-color: var(--accent); }
   .btn { font-family: inherit; font-size: 13px; font-weight: 500; padding: 7px 12px; border-radius: var(--radius); border: 1px solid var(--hairline-strong); background: var(--surface); color: var(--ink-soft); cursor: pointer; }
   .btn:hover { color: var(--ink); }
+  .btn[aria-pressed="true"] { color: var(--ink); border-color: var(--ink-faint); background: var(--bg); }
   .btn:focus-visible, input:focus-visible, .row:focus-visible, a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
   .stats { display: flex; align-items: center; gap: 6px; padding: 12px 0 16px; color: var(--ink-soft); font-size: 13px; flex-wrap: wrap; }
@@ -128,6 +129,7 @@
     </div>
     <div class="actions">
       <input type="search" id="search" placeholder="Filter packages…" aria-label="Filter packages" disabled>
+      <button class="btn" id="sortBtn" aria-pressed="false" title="Sort alphabetically instead of by what needs attention">A–Z</button>
       <button class="btn" id="refreshBtn">Refresh</button>
     </div>
   </header>
@@ -157,9 +159,6 @@ function detectRepo() {
   if (params.get('owner') && params.get('repo')) {
     return { owner: params.get('owner'), repo: params.get('repo') };
   }
-  const stored = localStorage.getItem('nixkeeper:repo');
-  if (stored) { try { return JSON.parse(stored); } catch (e) {} }
-
   const host = location.hostname;
   const owner = host.endsWith('.github.io') ? host.split('.')[0] : null;
   const seg = location.pathname.split('/').filter(Boolean)[0] || null;
@@ -176,16 +175,52 @@ const detailCache = new Map(); // name -> parsed per-package Repology JSON
 let packages = [];
 let checkedAt = null;
 let activeFilter = 'all'; // 'all' | 'warn' | 'missing' | 'vuln'
+let sortAZ = false; // default order puts what needs attention first
 // The sync runs daily; older than this means runs are failing or GitHub has
 // paused the schedule (it does after 60 days without commits).
 const STALE_AFTER_HOURS = 48;
 
+// `param` is how each filter appears in the page address (?filter=outdated).
 const FILTERS = {
   all:     { label: 'tracked',         test: () => true },
-  warn:    { label: 'outdated',        color: 'var(--warn)',   test: p => computeStatus(p) === 'warn' },
-  missing: { label: 'not in nixpkgs',  color: 'var(--danger)', test: p => computeStatus(p) === 'missing' },
-  vuln:    { label: 'flagged vulnerable', color: 'var(--danger)', test: p => p.nixVulnerable },
+  warn:    { label: 'outdated',        param: 'outdated',       color: 'var(--warn)',   test: p => computeStatus(p) === 'warn' },
+  missing: { label: 'not in nixpkgs',  param: 'not-in-nixpkgs', color: 'var(--danger)', test: p => computeStatus(p) === 'missing' },
+  vuln:    { label: 'flagged vulnerable', param: 'vulnerable',  color: 'var(--danger)', test: p => p.nixVulnerable },
 };
+
+// Default order: outdated, then not in nixpkgs, then reported failures, then
+// the rest; alphabetical within each group (the index arrives sorted by name
+// and Array.sort is stable).
+function attentionRank(pkg) {
+  const st = computeStatus(pkg);
+  if (st === 'warn') return 0;
+  if (st === 'missing') return 1;
+  if (pkg.buildFailure || pkg.updateFailure) return 2;
+  return 3;
+}
+
+// Filter, search and sort live in the page address, so a view survives a
+// reload and can be bookmarked or shared. Other parameters (owner, repo) are
+// left alone.
+function readViewFromUrl() {
+  const params = new URLSearchParams(location.search);
+  activeFilter = Object.keys(FILTERS).find(k => FILTERS[k].param && FILTERS[k].param === params.get('filter')) || 'all';
+  document.getElementById('search').value = params.get('q') || '';
+  sortAZ = params.get('sort') === 'az';
+  document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
+}
+
+function writeViewToUrl() {
+  const params = new URLSearchParams(location.search);
+  const q = document.getElementById('search').value.trim();
+  const set = (k, v) => v ? params.set(k, v) : params.delete(k);
+  set('filter', FILTERS[activeFilter].param);
+  set('q', q);
+  set('sort', sortAZ ? 'az' : '');
+  const query = params.toString();
+  // replaceState, not pushState: typing a search shouldn't fill the history.
+  history.replaceState(null, '', location.pathname + (query ? '?' + query : '') + location.hash);
+}
 
 async function loadIndex() {
   const content = document.getElementById('content');
@@ -379,8 +414,10 @@ async function fillDetail(pkg, el) {
 }
 
 function currentFiltered() {
+  writeViewToUrl();
   const q = document.getElementById('search').value.trim().toLowerCase();
-  return packages.filter(p => FILTERS[activeFilter].test(p) && (!q || [p.name, p.project, ...(p.attrs || [])].some(n => n && n.toLowerCase().includes(q))));
+  const list = packages.filter(p => FILTERS[activeFilter].test(p) && (!q || [p.name, p.project, ...(p.attrs || [])].some(n => n && n.toLowerCase().includes(q))));
+  return sortAZ ? list : list.sort((a, b) => attentionRank(a) - attentionRank(b));
 }
 
 document.getElementById('stats').addEventListener('click', e => {
@@ -392,12 +429,19 @@ document.getElementById('stats').addEventListener('click', e => {
 });
 
 document.getElementById('search').addEventListener('input', () => render(currentFiltered()));
+document.getElementById('sortBtn').addEventListener('click', e => {
+  sortAZ = !sortAZ;
+  e.currentTarget.setAttribute('aria-pressed', sortAZ);
+  if (packages.length) render(currentFiltered());
+  else writeViewToUrl();
+});
 document.getElementById('refreshBtn').addEventListener('click', () => {
   detailCache.clear();
   document.getElementById('content').innerHTML = `<div class="loading">Loading package data…</div>`;
   loadIndex();
 });
 
+readViewFromUrl();
 loadIndex();
 </script>
 </body>
