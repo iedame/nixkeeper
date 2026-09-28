@@ -1,96 +1,5 @@
 [
   {
-    "origversion": null,
-    "repo": "gobolinux",
-    "srcname": "Lincity",
-    "status": "outdated",
-    "version": "1.12.0",
-    "visiblename": "Lincity"
-  },
-  {
-    "binnames": [
-      "lincity"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "kaol@debian.org"
-    ],
-    "origversion": "1.13.1-17",
-    "repo": "kali_rolling",
-    "srcname": "lincity",
-    "status": "devel",
-    "subrepo": "main",
-    "version": "1.13.1",
-    "visiblename": "lincity"
-  },
-  {
-    "categories": [
-      "games-simulation"
-    ],
-    "licenses": [
-      "GPL-2"
-    ],
-    "maintainers": [
-      "games@gentoo.org"
-    ],
-    "origversion": "1.13.1-r4",
-    "repo": "liguros_stable",
-    "srcname": "games-simulation/lincity",
-    "status": "devel",
-    "summary": "City simulation game for X",
-    "version": "1.13.1",
-    "visiblename": "games-simulation/lincity"
-  },
-  {
-    "categories": [
-      "games-simulation"
-    ],
-    "licenses": [
-      "GPL-2"
-    ],
-    "maintainers": [
-      "games@gentoo.org"
-    ],
-    "origversion": "1.13.1-r4",
-    "repo": "liguros_develop",
-    "srcname": "games-simulation/lincity",
-    "status": "devel",
-    "summary": "City simulation game for X",
-    "version": "1.13.1",
-    "visiblename": "games-simulation/lincity"
-  },
-  {
-    "categories": [
-      "games"
-    ],
-    "origversion": "1.13.1 (2004-07-09)",
-    "repo": "libregamewiki",
-    "srcname": "Lincity",
-    "status": "devel",
-    "version": "1.13.1",
-    "visiblename": "Lincity"
-  },
-  {
-    "binnames": [
-      "lincity"
-    ],
-    "categories": [
-      "universe/games"
-    ],
-    "maintainers": [
-      "kaol@debian.org"
-    ],
-    "origversion": "1.13.1-15",
-    "repo": "ubuntu_22_04",
-    "srcname": "lincity",
-    "status": "devel",
-    "subrepo": "jammy/universe",
-    "version": "1.13.1",
-    "visiblename": "lincity"
-  },
-  {
     "binname": "lincity",
     "licenses": [
       "GPL-2.0-only"
@@ -275,6 +184,79 @@
     ],
     "origversion": "1.13.1-r4",
     "repo": "gentoo",
+    "srcname": "games-simulation/lincity",
+    "status": "devel",
+    "summary": "City simulation game for X",
+    "version": "1.13.1",
+    "visiblename": "games-simulation/lincity"
+  },
+  {
+    "origversion": null,
+    "repo": "gobolinux",
+    "srcname": "Lincity",
+    "status": "outdated",
+    "version": "1.12.0",
+    "visiblename": "Lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-17",
+    "repo": "kali_rolling",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "main",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "1.13.1 (2004-07-09)",
+    "repo": "libregamewiki",
+    "srcname": "Lincity",
+    "status": "devel",
+    "version": "1.13.1",
+    "visiblename": "Lincity"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "1.13.1-r4",
+    "repo": "liguros_stable",
+    "srcname": "games-simulation/lincity",
+    "status": "devel",
+    "summary": "City simulation game for X",
+    "version": "1.13.1",
+    "visiblename": "games-simulation/lincity"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "1.13.1-r4",
+    "repo": "liguros_develop",
     "srcname": "games-simulation/lincity",
     "status": "devel",
     "summary": "City simulation game for X",
@@ -489,7 +471,7 @@
       "pkgsrc-users@netbsd.org"
     ],
     "origversion": "1.12.1nb3",
-    "repo": "pkgsrc_2026_1",
+    "repo": "pkgsrc_2026_2",
     "srcname": "games/lincity",
     "status": "newest",
     "summary": "Free clone of SimCity for X11",
@@ -505,7 +487,7 @@
       "pkgsrc-users@netbsd.org"
     ],
     "origversion": "1.12.1nb3",
-    "repo": "pkgsrc_2026_2",
+    "repo": "pkgsrc_2026_3",
     "srcname": "games/lincity",
     "status": "newest",
     "summary": "Free clone of SimCity for X11",
@@ -749,6 +731,24 @@
     "srcname": "lincity",
     "status": "devel",
     "subrepo": "focal/universe",
+    "version": "1.13.1",
+    "visiblename": "lincity"
+  },
+  {
+    "binnames": [
+      "lincity"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "kaol@debian.org"
+    ],
+    "origversion": "1.13.1-15",
+    "repo": "ubuntu_22_04",
+    "srcname": "lincity",
+    "status": "devel",
+    "subrepo": "jammy/universe",
     "version": "1.13.1",
     "visiblename": "lincity"
   },
