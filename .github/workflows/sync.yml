@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  issues: write  # the status issue (nixkeeper/notify.py)
 
 jobs:
   sync:
@@ -40,7 +41,8 @@ jobs:
       - name: Sync package data
         run: nix run .#sync
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # for open PR/issue counts
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR/issue counts and the status issue
+          NIXKEEPER_NOTIFY: "1"  # only CI updates the status issue
 
       - name: Commit and push if anything changed
         run: |

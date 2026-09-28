@@ -1,9 +1,9 @@
 """One sync: nixpkgs index + package lists -> tracked packages -> Repology ->
-rows -> GitHub counts -> data/. Run from the repository root (it reads
+rows -> GitHub counts -> data/ -> status issue. Run from the repository root (it reads
 package-lists/ and writes data/ there): `nix run .#sync`."""
 from datetime import datetime, timezone
 
-from . import history, lookup, output, rows, tracking
+from . import history, lookup, notify, output, rows, tracking
 from .sources import github
 from .sources import nixpkgs as nixpkgs_source
 
@@ -18,6 +18,7 @@ def main():
     history.add_outdated_since(index_rows, previous, now)
     github.add_counts(index_rows)
     output.write(projects, {"checkedAt": now, "packages": index_rows})
+    notify.notify(previous, index_rows, now)
 
 
 if __name__ == "__main__":

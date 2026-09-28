@@ -66,3 +66,44 @@ def add_counts(rows):
         counts = search_counts(tok, [q for _, _, q in batch])
         for (row, field, _), count in zip(batch, counts):
             row[field] = count
+
+
+STATUS_LABEL = "nixkeeper-status"
+
+
+def api(method, path, token, body=None):
+    """Call the GitHub REST API; returns the decoded JSON (None if empty)."""
+    req = urllib.request.Request(
+        f"https://api.github.com{path}", method=method,
+        data=json.dumps(body).encode() if body is not None else None,
+        headers={
+            "User-Agent": config.USER_AGENT,
+            "Accept": "application/vnd.github+json",
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        })
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        data = resp.read()
+    return json.loads(data) if data else None
+
+
+def update_status_issue(repo, token, title, body, comment=None):
+    """Rewrite the open issue labelled STATUS_LABEL (opening it if there's
+    none), then post comment if given. Returns the issue number."""
+    try:
+        api("POST", f"/repos/{repo}/labels", token, {
+            "name": STATUS_LABEL, "color": "5319e7",
+            "description": "The issue nixkeeper keeps up to date"})
+    except urllib.error.HTTPError as e:
+        if e.code != 422:  # 422: the label already exists
+            raise
+    issues = api("GET", f"/repos/{repo}/issues?labels={STATUS_LABEL}&state=open&per_page=1", token)
+    if issues:
+        number = issues[0]["number"]
+        api("PATCH", f"/repos/{repo}/issues/{number}", token, {"body": body})
+    else:
+        number = api("POST", f"/repos/{repo}/issues", token,
+                     {"title": title, "body": body, "labels": [STATUS_LABEL]})["number"]
+    if comment:
+        api("POST", f"/repos/{repo}/issues/{number}/comments", token, {"body": comment})
+    return number

@@ -1,4 +1,5 @@
 """Sample data and fakes shared by the tests."""
+import io
 import json
 import urllib.error
 from unittest import mock
@@ -43,7 +44,9 @@ def response(body, url="https://repology.org/api/v1/project/x"):
 
 
 def http_error(code):
-    return urllib.error.HTTPError("https://example.org", code, "err", {}, None)
+    # With a body of its own, HTTPError doesn't create a temporary file (which
+    # would show up as a ResourceWarning).
+    return urllib.error.HTTPError("https://example.org", code, "err", {}, io.BytesIO())
 
 
 LINUX = ["x86_64-linux", "aarch64-linux"]
