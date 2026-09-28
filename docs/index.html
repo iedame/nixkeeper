@@ -88,6 +88,10 @@
   .failure-btn { font: inherit; font-size: 12.5px; color: var(--ink-soft); background: none; border: 1px solid transparent; border-radius: var(--radius); padding: 4px 9px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
   .failure-btn:hover { background: var(--bg); border-color: var(--hairline); color: var(--ink); }
   .failure-btn.failing { color: var(--danger); }
+  .gh-links { display: inline-flex; gap: 6px; }
+  .gh-btn { font-size: 12px; color: var(--ink-soft); text-decoration: none; border: 1px solid var(--hairline); border-radius: 6px; padding: 3px 8px; white-space: nowrap; display: inline-flex; gap: 5px; align-items: baseline; }
+  .gh-btn:hover { border-color: var(--hairline-strong); color: var(--ink); background: var(--bg); }
+  .gh-btn b { font-weight: 600; color: var(--ink); }
   .chev { color: var(--ink-faint); font-size: 12px; transition: transform .15s; }
   tr.row.open .chev { transform: rotate(90deg); }
 
@@ -252,7 +256,7 @@ function render(list) {
   }
   content.innerHTML = `<div class="wrap"><table>
     <thead><tr>
-      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>build failures</th><th>update failures</th><th aria-hidden="true"></th>
+      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>open on GitHub</th><th>build failures</th><th>update failures</th><th aria-hidden="true"></th>
     </tr></thead>
     <tbody id="rows"></tbody>
   </table></div>`;
@@ -268,6 +272,7 @@ function render(list) {
     tr.innerHTML = `
       <td><div class="pkg-name"><span class="status-dot ${st}"></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
       <td class="ver mono">${verCell}</td>
+      <td>${githubLinks(pkg)}</td>
       <td>${failureCell('build', pkg.buildFailure)}</td>
       <td>${failureCell('update', pkg.updateFailure)}</td>
       <td><span class="chev">▸</span></td>
@@ -275,7 +280,7 @@ function render(list) {
 
     const detail = document.createElement('tr');
     detail.className = 'detail';
-    detail.innerHTML = `<td colspan="5"><div class="detail-inner">
+    detail.innerHTML = `<td colspan="6"><div class="detail-inner">
       <div class="nix-line">Loading detail…</div>
     </div></td>`;
 
@@ -284,6 +289,8 @@ function render(list) {
       const url = FAILURE_URLS[btn.dataset.kind](pkg);
       if (url) window.open(url, '_blank', 'noopener');
     }));
+
+    tr.querySelectorAll('.gh-btn').forEach(a => a.addEventListener('click', e => e.stopPropagation()));
 
     tr.addEventListener('click', async () => {
       const isOpen = tr.classList.toggle('open');
@@ -316,6 +323,18 @@ function platformTags(pkg) {
   if (pl === undefined) return '';
   if (pl === null) return `<span class="plat any" title="nixpkgs doesn't restrict its platforms">any platform</span>`;
   return (pl.linux ? `<span class="plat">Linux</span>` : '') + (pl.darwin ? `<span class="plat">macOS</span>` : '');
+}
+
+// Open nixpkgs PRs / issues mentioning the package's pname. Counts come from
+// the fetch script's GitHub search; without them the buttons are plain links.
+function githubLinks(pkg) {
+  const term = pkg.pname || pkg.name;
+  const link = (kind, path, label, count) => {
+    const q = encodeURIComponent(`is:${kind} state:open ${term}`);
+    return `<a class="gh-btn" href="https://github.com/NixOS/nixpkgs/${path}?q=${q}" target="_blank" rel="noopener"
+      title="Open nixpkgs ${label} mentioning ${escapeHtml(term)}">${label}${count != null ? ` <b>${count}</b>` : ''}</a>`;
+  };
+  return `<span class="gh-links">${link('pr', 'pulls', 'PRs', pkg.openPRs)}${link('issue', 'issues', 'issues', pkg.openIssues)}</span>`;
 }
 
 async function fillDetail(pkg, el) {

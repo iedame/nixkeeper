@@ -38,6 +38,7 @@ USER_AGENT = "nixkeeper/1.0 (personal package tracker)"
 # set REPOLOGY_BASE_URL to force a single one instead.
 override = os.environ.get("REPOLOGY_BASE_URL")
 BASE_URLS = [override] if override else ["https://repology.org", "https://repology.amdmi3.ru"]
+GITHUB_REPO = "NixOS/nixpkgs"
 
 
 def read_lists():
@@ -149,6 +150,9 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
     newest = lambda status: next((e.get("version") for e in others if e.get("status") == status), None)
     row = {
         "name": name,
+        # What the page's GitHub PR/issue searches use. Differs from name
+        # when split variants share a pname (_1password-gui-beta -> 1password).
+        "pname": (nixpkgs[attrs[0]].get("pname") if attrs and attrs[0] in nixpkgs else None) or name,
         "project": proj["project"],
         "attrs": attrs,
         "nixVersion": nix.get("version") if nix else None,
@@ -166,6 +170,47 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         homepage = next((p["meta"].get("homepage") for p in pkgs if p["meta"].get("homepage")), None)
         row["homepage"] = homepage[0] if isinstance(homepage, list) else homepage
     return row
+
+
+def github_token():
+    """GITHUB_TOKEN (set by the workflow), else the local gh login, else None."""
+    if os.environ.get("GITHUB_TOKEN"):
+        return os.environ["GITHUB_TOKEN"]
+    try:
+        result = subprocess.run(["gh", "auth", "token"], capture_output=True, text=True)
+        return result.stdout.strip() or None
+    except FileNotFoundError:
+        return None
+
+
+def github_open_count(token, kind, term):
+    """Number of open nixpkgs PRs or issues (kind "pr" / "issue") matching
+    term: the same search the page links to. None if the search failed."""
+    query = urllib.parse.urlencode({"q": f"repo:{GITHUB_REPO} is:{kind} state:open {term}", "per_page": 1})
+    req = urllib.request.Request(f"https://api.github.com/search/issues?{query}", headers={
+        "User-Agent": USER_AGENT,
+        "Accept": "application/vnd.github+json",
+        "Authorization": f"Bearer {token}",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=20) as resp:
+            return json.loads(resp.read().decode())["total_count"]
+    except (urllib.error.URLError, OSError, KeyError) as e:
+        # e.g. rate limited: leave this count blank rather than fail the run
+        print(f"  GitHub search for {kind} {term!r} failed ({e})", file=sys.stderr)
+        return None
+
+
+def add_github_counts(rows):
+    token = github_token()
+    if not token:
+        print("No GITHUB_TOKEN or gh login: skipping open PR/issue counts.", file=sys.stderr)
+        return
+    for row in rows:
+        print(f"Counting open PRs/issues for {row['pname']}...", file=sys.stderr)
+        for kind, field in (("pr", "openPRs"), ("issue", "openIssues")):
+            row[field] = github_open_count(token, kind, row["pname"])
+            time.sleep(2.1)  # search API allows 30 requests/minute
 
 
 def main():
@@ -215,6 +260,7 @@ def main():
         projects[key] = {"name": pname, "project": project, "attrs": attrs, "entries": entries or []}
 
     rows = [row for proj in projects.values() for row in project_rows(proj, nixpkgs)]
+    add_github_counts(rows)
     with open(os.path.join(TMP_DIR, "index.json"), "w") as f:
         json.dump({
             "checkedAt": datetime.now(timezone.utc).isoformat(),

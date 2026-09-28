@@ -39,6 +39,8 @@ jobs:
 
       - name: Fetch package data from Repology
         run: nix run .#fetch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # for open PR/issue counts
 
       - name: Commit and push if anything changed
         run: |
