@@ -137,8 +137,8 @@
   </div>
 
   <footer class="legend">
-    <span><span class="status-dot ok"></span> up to date</span>
-    <span><span class="status-dot warn"></span> nixpkgs is behind</span>
+    <span><span class="status-dot ok"></span> newest</span>
+    <span><span class="status-dot warn"></span> outdated</span>
     <span><span class="status-dot missing"></span> not in nixpkgs unstable</span>
     <span><span class="status-dot neutral"></span> rolling / other scheme</span>
   </footer>
@@ -178,7 +178,7 @@ let activeFilter = 'all'; // 'all' | 'warn' | 'missing' | 'vuln'
 
 const FILTERS = {
   all:     { label: 'tracked',         test: () => true },
-  warn:    { label: 'behind',          color: 'var(--warn)',   test: p => computeStatus(p) === 'warn' },
+  warn:    { label: 'outdated',        color: 'var(--warn)',   test: p => computeStatus(p) === 'warn' },
   missing: { label: 'not in nixpkgs',  color: 'var(--danger)', test: p => computeStatus(p) === 'missing' },
   vuln:    { label: 'flagged vulnerable', color: 'var(--danger)', test: p => p.nixVulnerable },
 };
@@ -211,7 +211,7 @@ async function loadIndex() {
 
 // Follows Repology's statuses. "legacy" means outdated while the same repo
 // carries a newer version in another package (e.g. a beta overtaken by the
-// stable release), so it counts as behind. Whether a row is a devel variant
+// stable release), so it counts as outdated. Whether a row is a devel variant
 // comes separately from pkg.devel and only shades its "devel" badge.
 function computeStatus(pkg) {
   if (pkg.nixStatus === 'missing') return 'missing';
