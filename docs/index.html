@@ -73,9 +73,13 @@
 
   .pkg-name { display: flex; align-items: center; gap: 10px; }
   .pkg-name .n { font-weight: 600; font-size: 14.5px; white-space: nowrap; }
-  .plat { font-size: 10.5px; font-weight: 500; padding: 1px 6px; border-radius: 4px; background: var(--stale-soft); color: var(--ink-soft); }
+  .plat { font: inherit; font-size: 10.5px; font-weight: 500; padding: 1px 6px; border-radius: 4px; border: 1px solid transparent; background: var(--stale-soft); color: var(--ink-soft); }
   .plat + .plat { margin-left: -5px; }
   .plat.any { color: var(--ink-faint); }
+  button.plat { cursor: pointer; }
+  button.plat:hover { color: var(--ink); border-color: var(--hairline-strong); }
+  button.plat[aria-pressed="true"] { color: var(--accent); border-color: var(--accent); }
+  .plat-filter { font: inherit; font-size: 12.5px; color: var(--accent); background: none; border: 1px solid var(--accent); border-radius: var(--radius); padding: 3px 9px; cursor: pointer; }
 
   .ver { font-size: 13px; white-space: nowrap; }
   .ver .ref { color: var(--ink-faint); }
@@ -176,6 +180,19 @@ let packages = [];
 let checkedAt = null;
 let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
 let sortAZ = false; // default order puts what needs attention first
+let platformFilter = null; // null | 'linux' | 'darwin', combined with activeFilter
+
+// "any platform" (no restriction in nixpkgs) counts as both.
+const PLATFORMS = {
+  linux:  { label: 'Linux', param: 'linux' },
+  darwin: { label: 'macOS', param: 'macos' },
+};
+function onPlatform(pkg, key) {
+  return pkg.platforms === null || Boolean(pkg.platforms && pkg.platforms[key]);
+}
+function inPlatform(pkg) {
+  return !platformFilter || onPlatform(pkg, platformFilter);
+}
 // The sync runs daily; older than this means runs are failing or GitHub has
 // paused the schedule (it does after 60 days without commits).
 const STALE_AFTER_HOURS = 48;
@@ -210,6 +227,7 @@ function readViewFromUrl() {
   activeFilter = Object.keys(FILTERS).find(k => FILTERS[k].param && FILTERS[k].param === params.get('filter')) || 'all';
   document.getElementById('search').value = params.get('q') || '';
   sortAZ = params.get('sort') === 'az';
+  platformFilter = Object.keys(PLATFORMS).find(k => PLATFORMS[k].param === params.get('platform')) || null;
   document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
 }
 
@@ -220,6 +238,7 @@ function writeViewToUrl() {
   set('filter', FILTERS[activeFilter].param);
   set('q', q);
   set('sort', sortAZ ? 'az' : '');
+  set('platform', platformFilter && PLATFORMS[platformFilter].param);
   const query = params.toString();
   // replaceState, not pushState: typing a search shouldn't fill the history.
   history.replaceState(null, '', location.pathname + (query ? '?' + query : '') + location.hash);
@@ -274,8 +293,11 @@ function timeAgo(iso) {
 }
 
 function renderStats() {
+  // Counts follow the platform filter, so "outdated" means outdated on macOS
+  // while macOS is selected.
+  const base = packages.filter(inPlatform);
   const buttons = Object.entries(FILTERS).map(([key, f]) => {
-    const count = packages.filter(f.test).length;
+    const count = base.filter(f.test).length;
     // "vulnerable" only shows up when something is actually flagged.
     if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
     const pressed = activeFilter === key;
@@ -284,7 +306,9 @@ function renderStats() {
       <b${f.color ? ` style="color:${f.color}"` : ''}>${count}</b> ${f.label}</button>`;
   }).join('');
   const stale = !checkedAt || Date.now() - new Date(checkedAt).getTime() > STALE_AFTER_HOURS * 3600e3;
-  document.getElementById('stats').innerHTML = `${buttons}<span class="checked${stale ? ' stale' : ''}"
+  const platformChip = platformFilter
+    ? `<button class="plat-filter" title="Show all platforms">${PLATFORMS[platformFilter].label} only ✕</button>` : '';
+  document.getElementById('stats').innerHTML = `${buttons}${platformChip}<span class="checked${stale ? ' stale' : ''}"
     ${stale ? 'title="The daily sync hasn\'t updated the data in over 2 days. Check the workflow in the Actions tab."' : ''}>
     checked ${timeAgo(checkedAt)}${stale ? ' — sync may be failing' : ''}</span>`;
 }
@@ -335,6 +359,12 @@ function render(list) {
     }));
 
     tr.querySelectorAll('.gh-btn').forEach(a => a.addEventListener('click', e => e.stopPropagation()));
+    tr.querySelectorAll('button.plat').forEach(btn => btn.addEventListener('click', e => {
+      e.stopPropagation(); // don't expand the row
+      // Clicking the active platform again shows all platforms.
+      platformFilter = platformFilter === btn.dataset.platform ? null : btn.dataset.platform;
+      render(currentFiltered());
+    }));
 
     tr.addEventListener('click', async () => {
       const isOpen = tr.classList.toggle('open');
@@ -366,7 +396,9 @@ function platformTags(pkg) {
   const pl = pkg.platforms;
   if (pl === undefined) return '';
   if (pl === null) return `<span class="plat any" title="nixpkgs doesn't restrict its platforms">any platform</span>`;
-  return (pl.linux ? `<span class="plat">Linux</span>` : '') + (pl.darwin ? `<span class="plat">macOS</span>` : '');
+  return Object.entries(PLATFORMS).filter(([key]) => pl[key]).map(([key, p]) =>
+    `<button class="plat" type="button" data-platform="${key}" aria-pressed="${platformFilter === key}"
+      title="${platformFilter === key ? 'Show all platforms' : `Show only packages available on ${p.label}`}">${p.label}</button>`).join('');
 }
 
 // Open nixpkgs PRs / issues with the package's attribute name in the title. Counts come from
@@ -419,11 +451,16 @@ async function fillDetail(pkg, el) {
 function currentFiltered() {
   writeViewToUrl();
   const q = document.getElementById('search').value.trim().toLowerCase();
-  const list = packages.filter(p => FILTERS[activeFilter].test(p) && (!q || [p.name, p.project, ...(p.attrs || [])].some(n => n && n.toLowerCase().includes(q))));
+  const list = packages.filter(p => inPlatform(p) && FILTERS[activeFilter].test(p) && (!q || [p.name, p.project, ...(p.attrs || [])].some(n => n && n.toLowerCase().includes(q))));
   return sortAZ ? list : list.sort((a, b) => attentionRank(a) - attentionRank(b));
 }
 
 document.getElementById('stats').addEventListener('click', e => {
+  if (e.target.closest('.plat-filter')) {
+    platformFilter = null;
+    render(currentFiltered());
+    return;
+  }
   const btn = e.target.closest('.stat-btn');
   if (!btn) return;
   // Clicking the active filter again goes back to showing everything.
