@@ -14,3 +14,10 @@ nixkeeper-sync = "nixkeeper.__main__:main"
 
 [tool.setuptools.packages.find]
 include = ["nixkeeper*"]
+
+[tool.ruff]
+line-length = 88  # Python's standard (Black / ruff default)
+
+[tool.ruff.lint]
+# pycodestyle, pyflakes, bugbear, pyupgrade, simplify, isort
+select = ["E", "F", "W", "B", "UP", "SIM", "I"]

@@ -19,7 +19,7 @@ function rawUrl(owner, repo, path) {
   return `https://raw.githubusercontent.com/${owner}/${repo}/data/${path}`;
 }
 
-let repoInfo = detectRepo();
+const repoInfo = detectRepo();
 const detailCache = new Map(); // name -> parsed per-package Repology JSON
 let packages = [];
 let checkedAt = null;
@@ -29,7 +29,7 @@ let platformFilter = null; // null | 'linux' | 'darwin', combined with activeFil
 
 // "any platform" (no restriction in nixpkgs) counts as both.
 const PLATFORMS = {
-  linux:  { label: 'Linux', param: 'linux' },
+  linux: { label: 'Linux', param: 'linux' },
   darwin: { label: 'macOS', param: 'macos' },
 };
 function onPlatform(pkg, key) {
@@ -44,10 +44,20 @@ const STALE_AFTER_HOURS = 48;
 
 // `param` is how each filter appears in the page address (?filter=outdated).
 const FILTERS = {
-  all:     { label: 'tracked',         test: () => true },
-  warn:    { label: 'outdated',        param: 'outdated',       color: 'var(--warn)',   test: p => computeStatus(p) === 'warn' },
-  failed:  { label: 'failed',          param: 'failed',         color: 'var(--danger)', test: p => hasFailure(p) },
-  vuln:    { label: 'flagged vulnerable', param: 'vulnerable',  color: 'var(--danger)', test: p => p.nixVulnerable },
+  all: { label: 'tracked', test: () => true },
+  warn: {
+    label: 'outdated',
+    param: 'outdated',
+    color: 'var(--warn)',
+    test: (p) => computeStatus(p) === 'warn',
+  },
+  failed: { label: 'failed', param: 'failed', color: 'var(--danger)', test: (p) => hasFailure(p) },
+  vuln: {
+    label: 'flagged vulnerable',
+    param: 'vulnerable',
+    color: 'var(--danger)',
+    test: (p) => p.nixVulnerable,
+  },
 };
 
 // Everything shown in red: not found in nixpkgs, or a build or update
@@ -70,17 +80,21 @@ function attentionRank(pkg) {
 // left alone.
 function readViewFromUrl() {
   const params = new URLSearchParams(location.search);
-  activeFilter = Object.keys(FILTERS).find(k => FILTERS[k].param && FILTERS[k].param === params.get('filter')) || 'all';
+  activeFilter =
+    Object.keys(FILTERS).find(
+      (k) => FILTERS[k].param && FILTERS[k].param === params.get('filter'),
+    ) || 'all';
   document.getElementById('search').value = params.get('q') || '';
   sortAZ = params.get('sort') === 'az';
-  platformFilter = Object.keys(PLATFORMS).find(k => PLATFORMS[k].param === params.get('platform')) || null;
+  platformFilter =
+    Object.keys(PLATFORMS).find((k) => PLATFORMS[k].param === params.get('platform')) || null;
   document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
 }
 
 function writeViewToUrl() {
   const params = new URLSearchParams(location.search);
   const q = document.getElementById('search').value.trim();
-  const set = (k, v) => v ? params.set(k, v) : params.delete(k);
+  const set = (k, v) => (v ? params.set(k, v) : params.delete(k));
   set('filter', FILTERS[activeFilter].param);
   set('q', q);
   set('sort', sortAZ ? 'az' : '');
@@ -100,7 +114,9 @@ async function loadIndex() {
     return;
   }
   try {
-    const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, 'data/index.json'), { cache: 'no-store' });
+    const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, 'data/index.json'), {
+      cache: 'no-store',
+    });
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     packages = data.packages || [];
@@ -123,7 +139,8 @@ async function loadIndex() {
 function computeStatus(pkg) {
   if (pkg.nixStatus === 'missing') return 'missing';
   if (pkg.nixStatus === 'outdated' || pkg.nixStatus === 'legacy') return 'warn';
-  if (pkg.nixStatus === 'newest' || pkg.nixStatus === 'unique' || pkg.nixStatus === 'devel') return 'ok';
+  if (pkg.nixStatus === 'newest' || pkg.nixStatus === 'unique' || pkg.nixStatus === 'devel')
+    return 'ok';
   return 'neutral';
 }
 
@@ -144,7 +161,11 @@ function daysText(iso) {
 }
 
 function longDate(iso) {
-  return new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' });
+  return new Date(iso).toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
 }
 
 function timeAgo(iso) {
@@ -162,24 +183,36 @@ function renderStats() {
   // Counts follow the platform filter, so "outdated" means outdated on macOS
   // while macOS is selected.
   const base = packages.filter(inPlatform);
-  const buttons = Object.entries(FILTERS).map(([key, f]) => {
-    const count = base.filter(f.test).length;
-    // "vulnerable" only shows up when something is actually flagged.
-    if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
-    const pressed = activeFilter === key;
-    return `<button class="stat-btn" data-filter="${key}" aria-pressed="${pressed}"
+  const buttons = Object.entries(FILTERS)
+    .map(([key, f]) => {
+      const count = base.filter(f.test).length;
+      // "vulnerable" only shows up when something is actually flagged.
+      if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
+      const pressed = activeFilter === key;
+      return `<button class="stat-btn" data-filter="${key}" aria-pressed="${pressed}"
       ${!count && key !== 'all' && !pressed ? 'disabled' : ''}>
       <b${f.color ? ` style="color:${f.color}"` : ''}>${count}</b> ${f.label}</button>`;
-  }).join('');
-  const stale = !checkedAt || Date.now() - new Date(checkedAt).getTime() > STALE_AFTER_HOURS * 3600e3;
+    })
+    .join('');
+  const stale =
+    !checkedAt || Date.now() - new Date(checkedAt).getTime() > STALE_AFTER_HOURS * 3600e3;
   const platformChip = platformFilter
-    ? `<button class="plat-filter" title="Show all platforms">${PLATFORMS[platformFilter].label} only ✕</button>` : '';
-  document.getElementById('stats').innerHTML = `${buttons}${platformChip}<span class="checked${stale ? ' stale' : ''}"
+    ? `<button class="plat-filter" title="Show all platforms">${PLATFORMS[platformFilter].label} only ✕</button>`
+    : '';
+  document.getElementById('stats').innerHTML =
+    `${buttons}${platformChip}<span class="checked${stale ? ' stale' : ''}"
     ${stale ? 'title="The daily sync hasn\'t updated the data in over 2 days. Check the workflow in the Actions tab."' : ''}>
     checked ${timeAgo(checkedAt)}${stale ? ' — sync may be failing' : ''}</span>`;
 }
 
-function escapeHtml(s) { return (s || '').toString().replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function escapeHtml(s) {
+  return (s || '')
+    .toString()
+    .replace(
+      /[&<>"']/g,
+      (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
+    );
+}
 
 function render(list) {
   renderStats();
@@ -196,13 +229,16 @@ function render(list) {
   </table></div>`;
 
   const rowsEl = document.getElementById('rows');
-  list.forEach(pkg => {
+  list.forEach((pkg) => {
     const st = computeStatus(pkg);
-    const verCell = st === 'missing' ? `<span class="badge missing">not packaged</span>`
-      : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}`;
+    const verCell =
+      st === 'missing'
+        ? `<span class="badge missing">not packaged</span>`
+        : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}`;
 
     const tr = document.createElement('tr');
-    tr.className = 'row'; tr.tabIndex = 0;
+    tr.className = 'row';
+    tr.tabIndex = 0;
     tr.innerHTML = `
       <td><div class="pkg-name"><span class="status-dot ${st}"></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
       <td class="ver mono">${verCell}</td>
@@ -218,26 +254,37 @@ function render(list) {
       <div class="nix-line">Loading detail…</div>
     </div></td>`;
 
-    tr.querySelectorAll('.failure-btn').forEach(btn => btn.addEventListener('click', e => {
-      e.stopPropagation(); // don't expand the row
-      const url = FAILURE_URLS[btn.dataset.kind](pkg);
-      if (url) window.open(url, '_blank', 'noopener');
-    }));
+    for (const btn of tr.querySelectorAll('.failure-btn')) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // don't expand the row
+        const url = FAILURE_URLS[btn.dataset.kind](pkg);
+        if (url) window.open(url, '_blank', 'noopener');
+      });
+    }
 
-    tr.querySelectorAll('.gh-btn').forEach(a => a.addEventListener('click', e => e.stopPropagation()));
-    tr.querySelectorAll('button.plat').forEach(btn => btn.addEventListener('click', e => {
-      e.stopPropagation(); // don't expand the row
-      // Clicking the active platform again shows all platforms.
-      platformFilter = platformFilter === btn.dataset.platform ? null : btn.dataset.platform;
-      render(currentFiltered());
-    }));
+    for (const a of tr.querySelectorAll('.gh-btn')) {
+      a.addEventListener('click', (e) => e.stopPropagation());
+    }
+    for (const btn of tr.querySelectorAll('button.plat')) {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation(); // don't expand the row
+        // Clicking the active platform again shows all platforms.
+        platformFilter = platformFilter === btn.dataset.platform ? null : btn.dataset.platform;
+        render(currentFiltered());
+      });
+    }
 
     tr.addEventListener('click', async () => {
       const isOpen = tr.classList.toggle('open');
       detail.classList.toggle('open', isOpen);
       if (isOpen) await fillDetail(pkg, detail.querySelector('.detail-inner'));
     });
-    tr.addEventListener('keydown', e => { if (e.target === tr && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); tr.click(); } });
+    tr.addEventListener('keydown', (e) => {
+      if (e.target === tr && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        tr.click();
+      }
+    });
 
     rowsEl.appendChild(tr);
     rowsEl.appendChild(detail);
@@ -253,18 +300,24 @@ function failureCell(kind, failing) {
 
 // TODO: link each kind to its log once we have one (build: e.g. Hydra).
 const FAILURE_URLS = {
-  build: pkg => null,
-  update: pkg => null,
+  build: (pkg) => null,
+  update: (pkg) => null,
 };
 
 // From nixpkgs meta.platforms; null means nixpkgs doesn't restrict it.
 function platformTags(pkg) {
   const pl = pkg.platforms;
   if (pl === undefined) return '';
-  if (pl === null) return `<span class="plat any" title="nixpkgs doesn't restrict its platforms">any platform</span>`;
-  return Object.entries(PLATFORMS).filter(([key]) => pl[key]).map(([key, p]) =>
-    `<button class="plat" type="button" data-platform="${key}" aria-pressed="${platformFilter === key}"
-      title="${platformFilter === key ? 'Show all platforms' : `Show only packages available on ${p.label}`}">${p.label}</button>`).join('');
+  if (pl === null)
+    return `<span class="plat any" title="nixpkgs doesn't restrict its platforms">any platform</span>`;
+  return Object.entries(PLATFORMS)
+    .filter(([key]) => pl[key])
+    .map(
+      ([key, p]) =>
+        `<button class="plat" type="button" data-platform="${key}" aria-pressed="${platformFilter === key}"
+      title="${platformFilter === key ? 'Show all platforms' : `Show only packages available on ${p.label}`}">${p.label}</button>`,
+    )
+    .join('');
 }
 
 // Open nixpkgs PRs / issues with the package's attribute name in the title. Counts come from
@@ -286,27 +339,41 @@ async function fillDetail(pkg, el) {
   let entries = detailCache.get(file);
   if (!entries) {
     try {
-      const res = await fetch(rawUrl(repoInfo.owner, repoInfo.repo, `data/${encodeURIComponent(file)}`), { cache: 'no-store' });
+      const res = await fetch(
+        rawUrl(repoInfo.owner, repoInfo.repo, `data/${encodeURIComponent(file)}`),
+        { cache: 'no-store' },
+      );
       entries = res.ok ? await res.json() : [];
       detailCache.set(file, entries);
-    } catch (e) { entries = []; }
+    } catch (e) {
+      entries = [];
+    }
   }
 
-  const others = entries.filter(e => e.repo !== NIX_REPO);
+  const others = entries.filter((e) => e.repo !== NIX_REPO);
   const homepage = pkg.homepage;
 
   const st = computeStatus(pkg);
-  const nixLine = st === 'missing'
-    ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
-    : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${pkg.outdatedSince ? ` — outdated since ${escapeHtml(longDate(pkg.outdatedSince))} (${daysText(pkg.outdatedSince)})` : ''}`
-      : st === 'neutral' ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
-      : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`}`;
+  const nixLine =
+    st === 'missing'
+      ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
+      : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${
+          st === 'warn'
+            ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${pkg.outdatedSince ? ` — outdated since ${escapeHtml(longDate(pkg.outdatedSince))} (${daysText(pkg.outdatedSince)})` : ''}`
+            : st === 'neutral'
+              ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
+              : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`
+        }`;
 
   el.innerHTML = `
     <div class="nix-line">${nixLine}</div>
-    ${others.length ? `<div class="other-label">Compared against</div><div class="repo-chips">
-      ${others.map(e => `<span class="repo-chip ${e.status === 'newest' && e.version !== pkg.nixVersion ? 'ahead' : ''}">${escapeHtml(e.repo)} <span class="v mono">${escapeHtml(e.version || '?')}</span></span>`).join('')}
-    </div>` : ''}
+    ${
+      others.length
+        ? `<div class="other-label">Compared against</div><div class="repo-chips">
+      ${others.map((e) => `<span class="repo-chip ${e.status === 'newest' && e.version !== pkg.nixVersion ? 'ahead' : ''}">${escapeHtml(e.repo)} <span class="v mono">${escapeHtml(e.version || '?')}</span></span>`).join('')}
+    </div>`
+        : ''
+    }
     <div class="detail-row">
       ${homepage ? `<a class="files-link" href="${escapeHtml(homepage)}" target="_blank" rel="noopener">Homepage →</a>` : ''}
       ${pkg.project ? `<a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>` : ''}
@@ -317,14 +384,25 @@ async function fillDetail(pkg, el) {
 function currentFiltered() {
   writeViewToUrl();
   const q = document.getElementById('search').value.trim().toLowerCase();
-  const list = packages.filter(p => inPlatform(p) && FILTERS[activeFilter].test(p) && (!q || [p.name, p.project, ...(p.attrs || [])].some(n => n && n.toLowerCase().includes(q))));
-  return sortAZ ? list : list.sort((a, b) =>
-    attentionRank(a) - attentionRank(b)
-    // ISO dates in UTC compare correctly as strings; undated ones go last.
-    || (attentionRank(a) === 1 ? (a.outdatedSince || '~').localeCompare(b.outdatedSince || '~') : 0));
+  const list = packages.filter(
+    (p) =>
+      inPlatform(p) &&
+      FILTERS[activeFilter].test(p) &&
+      (!q || [p.name, p.project, ...(p.attrs || [])].some((n) => n && n.toLowerCase().includes(q))),
+  );
+  return sortAZ
+    ? list
+    : list.sort(
+        (a, b) =>
+          attentionRank(a) - attentionRank(b) ||
+          // ISO dates in UTC compare correctly as strings; undated ones go last.
+          (attentionRank(a) === 1
+            ? (a.outdatedSince || '~').localeCompare(b.outdatedSince || '~')
+            : 0),
+      );
 }
 
-document.getElementById('stats').addEventListener('click', e => {
+document.getElementById('stats').addEventListener('click', (e) => {
   if (e.target.closest('.plat-filter')) {
     platformFilter = null;
     render(currentFiltered());
@@ -338,7 +416,7 @@ document.getElementById('stats').addEventListener('click', e => {
 });
 
 document.getElementById('search').addEventListener('input', () => render(currentFiltered()));
-document.getElementById('sortBtn').addEventListener('click', e => {
+document.getElementById('sortBtn').addEventListener('click', (e) => {
   sortAZ = !sortAZ;
   e.currentTarget.setAttribute('aria-pressed', sortAZ);
   if (packages.length) render(currentFiltered());

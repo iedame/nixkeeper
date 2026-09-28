@@ -1,5 +1,6 @@
 """Settings shared across nixkeeper. Modules read these as config.NAME at call
 time, so tests can patch them."""
+
 import os
 import re
 
@@ -17,7 +18,9 @@ NIXPKGS_INDEX_URL = "https://channels.nixos.org/nixos-unstable/packages.json.br"
 # author's own domain) has served as a working fallback. Tried in order;
 # set REPOLOGY_BASE_URL to force a single one instead.
 _override = os.environ.get("REPOLOGY_BASE_URL")
-REPOLOGY_URLS = [_override] if _override else ["https://repology.org", "https://repology.amdmi3.ru"]
+REPOLOGY_URLS = (
+    [_override] if _override else ["https://repology.org", "https://repology.amdmi3.ru"]
+)
 RETRY_DELAYS = [5, 15]  # seconds before each retry of a failed Repology request
 # If more lookups than this fail, Repology is likely down: abort and keep the
 # previous data (the page flags it as stale) instead of publishing a run that's

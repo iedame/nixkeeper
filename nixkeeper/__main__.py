@@ -1,7 +1,8 @@
 """One sync: nixpkgs index + package lists -> tracked packages -> Repology ->
 rows -> GitHub counts -> data/ -> status issue. Run from the repository root (it reads
 package-lists/ and writes data/ there): `nix run .#sync`."""
-from datetime import datetime, timezone
+
+from datetime import UTC, datetime
 
 from . import history, lookup, notify, output, rows, tracking
 from .sources import github
@@ -9,7 +10,7 @@ from .sources import nixpkgs as nixpkgs_source
 
 
 def main():
-    now = datetime.now(timezone.utc).isoformat()
+    now = datetime.now(UTC).isoformat()
     nixpkgs = nixpkgs_source.load_index()
     wanted = tracking.tracked_packages(nixpkgs_source.read_lists(), nixpkgs)
     previous = history.load_previous_run()

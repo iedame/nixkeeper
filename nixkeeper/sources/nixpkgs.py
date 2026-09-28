@@ -1,4 +1,5 @@
 """nixpkgs side: the package lists (Nix files) and the channel's package index."""
+
 import json
 import subprocess
 import sys
@@ -10,14 +11,21 @@ from .. import config
 
 
 def read_lists():
-    """package-lists/default.nix, evaluated: {"maintainers": [...], "extraPackages": [...]}."""
+    """package-lists/default.nix, evaluated:
+    {"maintainers": [...], "extraPackages": [...]}."""
     result = subprocess.run(
         [
-            "nix", "eval",
-            "--extra-experimental-features", "nix-command flakes",
-            "--json", "-f", config.LISTS_DIR,
+            "nix",
+            "eval",
+            "--extra-experimental-features",
+            "nix-command flakes",
+            "--json",
+            "-f",
+            config.LISTS_DIR,
         ],
-        capture_output=True, text=True, check=True,
+        capture_output=True,
+        text=True,
+        check=True,
     )
     return json.loads(result.stdout)
 
@@ -25,7 +33,9 @@ def read_lists():
 def load_index():
     """attribute -> package (pname, version, meta) for all of nixos-unstable."""
     print("Downloading nixpkgs package index...", file=sys.stderr)
-    req = urllib.request.Request(config.NIXPKGS_INDEX_URL, headers={"User-Agent": config.USER_AGENT})
+    req = urllib.request.Request(
+        config.NIXPKGS_INDEX_URL, headers={"User-Agent": config.USER_AGENT}
+    )
     with urllib.request.urlopen(req, timeout=120) as resp:
         # Includes nested sets (haskellPackages.foo), but not aliases such as
         # python3Packages: those need their versioned name (python313Packages).

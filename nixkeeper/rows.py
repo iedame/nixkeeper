@@ -1,4 +1,5 @@
 """Turning Repology projects into the page's rows."""
+
 from . import config
 from .sources.nixpkgs import platforms
 
@@ -29,24 +30,37 @@ def project_rows(proj, nixpkgs):
         # Named after its nixpkgs attribute, like the lists and GitHub searches;
         # the list entry itself when nixpkgs doesn't have it.
         name = attrs[0] if attrs else proj["name"]
-        return [make_row(proj, name, attrs, nix[0] if nix else None, others, nixpkgs, devel=False)]
+        return [
+            make_row(
+                proj, name, attrs, nix[0] if nix else None, others, nixpkgs, devel=False
+            )
+        ]
 
     # Stable first: the variant Repology calls newest, else the shortest attr
     # (wesnoth before wesnoth-devel). The rest compare against devel versions.
-    ordered = sorted(groups.values(), key=lambda g: (
-        not any(e.get("status") == "newest" for e in g),
-        min(len(e["srcname"]) for e in g),
-        min(e["srcname"] for e in g),
-    ))
+    ordered = sorted(
+        groups.values(),
+        key=lambda g: (
+            not any(e.get("status") == "newest" for e in g),
+            min(len(e["srcname"]) for e in g),
+            min(e["srcname"] for e in g),
+        ),
+    )
     rows = []
     for i, group in enumerate(ordered):
         attrs = sorted(e["srcname"] for e in group)
-        rows.append(make_row(proj, attrs[0], attrs, group[0], others, nixpkgs, devel=i > 0))
+        rows.append(
+            make_row(proj, attrs[0], attrs, group[0], others, nixpkgs, devel=i > 0)
+        )
     return rows
 
 
 def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
-    newest = lambda status: next((e.get("version") for e in others if e.get("status") == status), None)
+    def newest(status):
+        return next(
+            (e.get("version") for e in others if e.get("status") == status), None
+        )
+
     row = {
         "name": name,
         # The attribute name, which unlike the pname tells variants apart
@@ -67,7 +81,9 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
     pkgs = [nixpkgs[a] for a in attrs if a in nixpkgs]
     if pkgs:  # not in nixpkgs: nothing to say about platforms or homepage
         row["platforms"] = platforms(pkgs)
-        homepage = next((p["meta"].get("homepage") for p in pkgs if p["meta"].get("homepage")), None)
+        homepage = next(
+            (p["meta"].get("homepage") for p in pkgs if p["meta"].get("homepage")), None
+        )
         row["homepage"] = homepage[0] if isinstance(homepage, list) else homepage
     return row
 

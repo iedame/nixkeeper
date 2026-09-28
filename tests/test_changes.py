@@ -27,19 +27,38 @@ class Diff(unittest.TestCase):
         self.assertFalse(should_notify(c))
 
     def test_newly_failed(self):
-        for now in (row("x", "missing"), row("x", buildFailure=True), row("x", updateFailure=True)):
+        for now in (
+            row("x", "missing"),
+            row("x", buildFailure=True),
+            row("x", updateFailure=True),
+        ):
             with self.subTest(now=now):
                 self.assertTrue(should_notify(self.changes([row("x")], [now])))
         # Still failing, for another reason: not new.
-        self.assertFalse(should_notify(self.changes([row("x", "missing")], [row("x", "missing", buildFailure=True)])))
+        self.assertFalse(
+            should_notify(
+                self.changes(
+                    [row("x", "missing")], [row("x", "missing", buildFailure=True)]
+                )
+            )
+        )
 
     def test_newly_vulnerable(self):
         c = self.changes([row("x")], [row("x", nixVulnerable=True)])
         self.assertEqual([r["name"] for r in c["vulnerable"]], ["x"])
 
     def test_not_refreshed_notifies_once(self):
-        self.assertTrue(should_notify(self.changes([row("x")], [row("x", staleSince="2026-09-20")])))
-        self.assertFalse(should_notify(self.changes([row("x", staleSince="2026-09-20")], [row("x", staleSince="2026-09-20")])))
+        self.assertTrue(
+            should_notify(self.changes([row("x")], [row("x", staleSince="2026-09-20")]))
+        )
+        self.assertFalse(
+            should_notify(
+                self.changes(
+                    [row("x", staleSince="2026-09-20")],
+                    [row("x", staleSince="2026-09-20")],
+                )
+            )
+        )
 
     def test_added_and_removed_are_quiet(self):
         c = self.changes([row("old")], [row("new", "outdated")])

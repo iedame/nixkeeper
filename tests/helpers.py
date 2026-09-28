@@ -1,4 +1,5 @@
 """Sample data and fakes shared by the tests."""
+
 import io
 import json
 import urllib.error
@@ -19,7 +20,12 @@ def pkg(pname, platforms=None, maintainers=(), homepage=None):
 
 def nix(srcname, version, status):
     """A Repology entry for nix_unstable."""
-    return {"repo": "nix_unstable", "srcname": srcname, "version": version, "status": status}
+    return {
+        "repo": "nix_unstable",
+        "srcname": srcname,
+        "version": version,
+        "status": status,
+    }
 
 
 def other(repo, version, status):
@@ -30,8 +36,14 @@ def other(repo, version, status):
 def project(name, attrs, entries, project_name=None, **extra):
     """A lookup.collect_projects() result entry."""
     key = project_name or name
-    return {"name": name, "project": project_name, "attrs": attrs, "entries": entries,
-            "dataFile": data_file(key), **extra}
+    return {
+        "name": name,
+        "project": project_name,
+        "attrs": attrs,
+        "entries": entries,
+        "dataFile": data_file(key),
+        **extra,
+    }
 
 
 def response(body, url="https://repology.org/api/v1/project/x"):
@@ -55,7 +67,12 @@ DARWIN = ["aarch64-darwin"]
 NIXPKGS = {
     "wesnoth": pkg("wesnoth", LINUX + DARWIN, ["iedame"], "https://www.wesnoth.org/"),
     "wesnoth-devel": pkg("wesnoth-devel", LINUX + DARWIN, ["IEDAME"]),
-    "heroic": pkg("heroic", LINUX, ["iedame"], ["https://heroic.example", "https://mirror.example"]),
+    "heroic": pkg(
+        "heroic",
+        LINUX,
+        ["iedame"],
+        ["https://heroic.example", "https://mirror.example"],
+    ),
     "heroic-unwrapped": pkg("heroic-unwrapped", LINUX, ["iedame"]),
     "typstPackages.heroic": pkg("heroic", LINUX),
     "_1password-gui": pkg("1password", LINUX + DARWIN),

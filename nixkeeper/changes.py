@@ -1,4 +1,5 @@
 """What changed since the previous run, for notifications."""
+
 from . import config
 
 

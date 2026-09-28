@@ -20,8 +20,15 @@ class Output(unittest.TestCase):
             with open(os.path.join(out, "removed-package.json"), "w") as f:
                 f.write("[]")
             os.makedirs(out + ".tmp")  # leftover from a failed run
-            write({"wesnoth": project("wesnoth", ["wesnoth"], [{"repo": "x"}], "wesnoth")},
-                  {"checkedAt": "now", "packages": []}, out)
+            write(
+                {
+                    "wesnoth": project(
+                        "wesnoth", ["wesnoth"], [{"repo": "x"}], "wesnoth"
+                    )
+                },
+                {"checkedAt": "now", "packages": []},
+                out,
+            )
             self.assertEqual(sorted(os.listdir(out)), ["index.json", "wesnoth.json"])
             self.assertFalse(os.path.exists(out + ".tmp"))
             with open(os.path.join(out, "wesnoth.json")) as f:

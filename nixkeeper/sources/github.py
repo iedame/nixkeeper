@@ -1,4 +1,5 @@
 """GitHub: open nixpkgs PR / issue counts, via batched GraphQL searches."""
+
 import json
 import os
 import subprocess
@@ -25,16 +26,25 @@ def search_counts(token, queries):
     their result counts, in order. A search GitHub couldn't answer gives None;
     a failed request gives all None."""
     params = ", ".join(f"$q{i}: String!" for i in range(len(queries)))
-    fields = "\n".join(f"  s{i}: search(type: ISSUE, first: 0, query: $q{i}) {{ issueCount }}" for i in range(len(queries)))
-    body = json.dumps({
-        "query": f"query({params}) {{\n{fields}\n}}",
-        "variables": {f"q{i}": q for i, q in enumerate(queries)},
-    }).encode()
-    req = urllib.request.Request("https://api.github.com/graphql", data=body, headers={
-        "User-Agent": config.USER_AGENT,
-        "Authorization": f"Bearer {token}",
-        "Content-Type": "application/json",
-    })
+    fields = "\n".join(
+        f"  s{i}: search(type: ISSUE, first: 0, query: $q{i}) {{ issueCount }}"
+        for i in range(len(queries))
+    )
+    body = json.dumps(
+        {
+            "query": f"query({params}) {{\n{fields}\n}}",
+            "variables": {f"q{i}": q for i, q in enumerate(queries)},
+        }
+    ).encode()
+    req = urllib.request.Request(
+        "https://api.github.com/graphql",
+        data=body,
+        headers={
+            "User-Agent": config.USER_AGENT,
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        },
+    )
     try:
         with urllib.request.urlopen(req, timeout=60) as resp:
             result = json.loads(resp.read().decode())
@@ -53,18 +63,26 @@ def add_counts(rows):
     the package, while bodies of big rebuild PRs list hundreds of unrelated ones."""
     tok = token()
     if not tok:
-        print("No GITHUB_TOKEN or gh login: skipping open PR/issue counts.", file=sys.stderr)
+        print(
+            "No GITHUB_TOKEN or gh login: skipping open PR/issue counts.",
+            file=sys.stderr,
+        )
         return
     searches = [
-        (row, field, f"repo:{config.GITHUB_REPO} is:{kind} state:open in:title {row['searchTerm']}")
+        (
+            row,
+            field,
+            f"repo:{config.GITHUB_REPO} is:{kind} state:open "
+            f"in:title {row['searchTerm']}",
+        )
         for row in rows
         for kind, field in (("pr", "openPRs"), ("issue", "openIssues"))
     ]
     print(f"Counting open PRs/issues ({len(searches)} searches)...", file=sys.stderr)
     for start in range(0, len(searches), config.GITHUB_SEARCH_BATCH):
-        batch = searches[start:start + config.GITHUB_SEARCH_BATCH]
+        batch = searches[start : start + config.GITHUB_SEARCH_BATCH]
         counts = search_counts(tok, [q for _, _, q in batch])
-        for (row, field, _), count in zip(batch, counts):
+        for (row, field, _), count in zip(batch, counts, strict=True):
             row[field] = count
     for warning in count_warnings(rows):
         print(f"::warning::{warning}", file=sys.stderr)
@@ -77,14 +95,27 @@ def count_warnings(rows):
     fields = ("openPRs", "openIssues")
     missing = sum(1 for row in rows for f in fields if row.get(f) is None)
     if missing:
-        warnings.append(f"{missing} of {2 * len(rows)} open PR/issue searches failed; those counts are blank")
-    counted = [(row["openPRs"], row["openIssues"]) for row in rows
-               if row.get("openPRs") is not None and row.get("openIssues") is not None]
+        warnings.append(
+            f"{missing} of {2 * len(rows)} open PR/issue searches failed; "
+            "those counts are blank"
+        )
+    counted = [
+        (row["openPRs"], row["openIssues"])
+        for row in rows
+        if row.get("openPRs") is not None and row.get("openIssues") is not None
+    ]
     # A token that can't see pull requests gets issue counts back for the PR
     # searches (see permissions in .github/workflows/sync.yml).
-    if len(counted) >= 5 and any(prs for prs, _ in counted) and all(prs == issues for prs, issues in counted):
-        warnings.append("every package's open PR count equals its open issue count: the token probably "
-                        "can't see pull requests (does the workflow grant pull-requests: read?)")
+    if (
+        len(counted) >= 5
+        and any(prs for prs, _ in counted)
+        and all(prs == issues for prs, issues in counted)
+    ):
+        warnings.append(
+            "every package's open PR count equals its open issue count: the token "
+            "probably can't see pull requests (does the workflow grant "
+            "pull-requests: read?)"
+        )
     return warnings
 
 
@@ -94,14 +125,16 @@ STATUS_LABEL = "nixkeeper-status"
 def api(method, path, token, body=None):
     """Call the GitHub REST API; returns the decoded JSON (None if empty)."""
     req = urllib.request.Request(
-        f"https://api.github.com{path}", method=method,
+        f"https://api.github.com{path}",
+        method=method,
         data=json.dumps(body).encode() if body is not None else None,
         headers={
             "User-Agent": config.USER_AGENT,
             "Accept": "application/vnd.github+json",
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",
-        })
+        },
+    )
     with urllib.request.urlopen(req, timeout=30) as resp:
         data = resp.read()
     return json.loads(data) if data else None
@@ -111,19 +144,35 @@ def update_status_issue(repo, token, title, body, comment=None):
     """Rewrite the open issue labelled STATUS_LABEL (opening it if there's
     none), then post comment if given. Returns the issue number."""
     try:
-        api("POST", f"/repos/{repo}/labels", token, {
-            "name": STATUS_LABEL, "color": "5319e7",
-            "description": "The issue nixkeeper keeps up to date"})
+        api(
+            "POST",
+            f"/repos/{repo}/labels",
+            token,
+            {
+                "name": STATUS_LABEL,
+                "color": "5319e7",
+                "description": "The issue nixkeeper keeps up to date",
+            },
+        )
     except urllib.error.HTTPError as e:
         if e.code != 422:  # 422: the label already exists
             raise
-    issues = api("GET", f"/repos/{repo}/issues?labels={STATUS_LABEL}&state=open&per_page=1", token)
+        e.close()
+    issues = api(
+        "GET",
+        f"/repos/{repo}/issues?labels={STATUS_LABEL}&state=open&per_page=1",
+        token,
+    )
     if issues:
         number = issues[0]["number"]
         api("PATCH", f"/repos/{repo}/issues/{number}", token, {"body": body})
     else:
-        number = api("POST", f"/repos/{repo}/issues", token,
-                     {"title": title, "body": body, "labels": [STATUS_LABEL]})["number"]
+        number = api(
+            "POST",
+            f"/repos/{repo}/issues",
+            token,
+            {"title": title, "body": body, "labels": [STATUS_LABEL]},
+        )["number"]
     if comment:
         api("POST", f"/repos/{repo}/issues/{number}/comments", token, {"body": comment})
     return number

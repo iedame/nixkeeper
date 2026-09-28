@@ -1,4 +1,5 @@
 """Repology API client: project lookups with domain fallback and retries."""
+
 import json
 import sys
 import time
@@ -38,13 +39,16 @@ def get(path):
             print(f"  retrying in {delay}s...", file=sys.stderr)
             time.sleep(delay)
         for base in _domains():
-            req = urllib.request.Request(base + path, headers={"User-Agent": config.USER_AGENT})
+            req = urllib.request.Request(
+                base + path, headers={"User-Agent": config.USER_AGENT}
+            )
             try:
                 with urllib.request.urlopen(req, timeout=20) as resp:
                     result = json.loads(resp.read().decode()), resp.geturl()
                 _answered(base)
                 return result
             except urllib.error.HTTPError as e:
+                e.close()  # an HTTP error is also an open response
                 if e.code == 404:
                     _answered(base)
                     return None, None
@@ -59,10 +63,14 @@ def get(path):
 def project_for_attr(attr):
     """Resolve a nixpkgs attribute to its Repology project. Returns
     (project, entries), or (None, None) if Repology doesn't know it."""
-    query = urllib.parse.urlencode({
-        "repo": config.NIX_REPO, "name_type": "srcname",
-        "target_page": "api_v1_project", "name": attr,
-    })
+    query = urllib.parse.urlencode(
+        {
+            "repo": config.NIX_REPO,
+            "name_type": "srcname",
+            "target_page": "api_v1_project",
+            "name": attr,
+        }
+    )
     entries, url = get(f"/tools/project-by?{query}")
     if entries is None:
         return None, None
