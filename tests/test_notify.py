@@ -61,6 +61,21 @@ class Text(unittest.TestCase):
             "(https://hydra.nixos.org/build/345227373/log)",
         )
 
+    def test_outdated_by_update_check(self):
+        row = {
+            "name": "wesnoth-devel",
+            "nixStatus": "devel",
+            "nixVersion": "1.19.24",
+            "refVersion": "1.19.28",
+            "upstream": {"version": "1.19.28", "newer": True},
+            "outdatedSince": NOW,
+        }
+        self.assertEqual(
+            notify.describe(row, NOW),
+            "`wesnoth-devel` 1.19.24 → 1.19.28 (found by nixkeeper's update check)"
+            " · outdated today",
+        )
+
     def test_update_failure_links_its_log(self):
         log = "https://nixpkgs-update-logs.nixos.org/egoboo/2026-09-15.log"
         row = {

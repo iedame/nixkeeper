@@ -44,6 +44,41 @@ let
   githubHandles = lib.genAttrs (map (m: lib.toLower m.github) (
     builtins.filter (m: m ? github) (builtins.attrValues lib.maintainers)
   )) (_: true);
+
+  # Whether the sync tracks a row of this name: listed itself, listed by
+  # pname, or maintained by one of the handles (see nixkeeper/tracking.py).
+  isTracked =
+    lists: name:
+    let
+      pkg = lib.attrByPath (lib.splitString "." name) null pkgs;
+      meta = (builtins.tryEval (if builtins.isAttrs pkg then pkg.meta or { } else { })).value;
+      handles = map lib.toLower lists.maintainers;
+    in
+    builtins.elem name lists.extraPackages
+    || (
+      isAttribute name
+      && (
+        builtins.elem (pkg.pname or null) lists.extraPackages
+        || builtins.any (m: builtins.elem (lib.toLower (m.github or "")) handles) (meta.maintainers or [ ])
+      )
+    );
+
+  checkProblems =
+    lists: name: check:
+    let
+      at = reason: {
+        entry = "updateChecks.${name}";
+        inherit reason;
+      };
+    in
+    lib.optional (!isTracked lists name) (at "not a tracked package (use its row name, the attribute)")
+    ++ lib.optional (builtins.match "[^/ ]+/[^/ ]+" (check.github or "") == null) (
+      at ''github must be "owner/repo"''
+    )
+    ++ lib.optional (!builtins.isString (check.tags or null)) (at "tags must be a regex string")
+    ++ map (k: at "unknown field ${k}") (
+      builtins.filter (k: k != "github" && k != "tags") (builtins.attrNames check)
+    );
 in
 rec {
   # [ { entry, reason } ] for everything the sync would get wrong.
@@ -75,16 +110,38 @@ rec {
     ++ map (e: {
       entry = e;
       reason = reason e;
-    }) unknown;
+    }) unknown
+    ++ lib.concatLists (lib.mapAttrsToList (checkProblems lists) (lists.updateChecks or { }));
 
-  # A derivation that builds only if lists has no problems.
+  # A derivation that builds only if lists has no problems. The update checks'
+  # tag patterns are Python regexes, so Python compiles them.
   check =
     lists:
     let
       ps = problems lists;
     in
     if ps == [ ] then
-      pkgs.runCommand "package-lists-ok" { } "touch $out"
+      pkgs.runCommand "package-lists-ok"
+        {
+          nativeBuildInputs = [ pkgs.python3 ];
+          checks = builtins.toJSON (lists.updateChecks or { });
+          passAsFile = [ "checks" ];
+        }
+        ''
+          python3 - "$checksPath" <<'EOF'
+          import json, re, sys
+          bad = []
+          for name, check in json.load(open(sys.argv[1])).items():
+              try:
+                  if re.compile(check["tags"]).groups > 1:
+                      bad.append(f"{name}: tags has more than one capture group")
+              except re.error as e:
+                  bad.append(f"{name}: tags is not a valid regex ({e})")
+          if bad:
+              sys.exit("package-lists/update-checks.nix has problems:\n  - " + "\n  - ".join(bad))
+          EOF
+          touch $out
+        ''
     else
       throw (
         "package-lists/ has problems:\n"

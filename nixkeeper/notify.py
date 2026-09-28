@@ -33,6 +33,9 @@ def describe(row, now):
     text = f"`{row['name']}`"
     if is_outdated(row):
         text += f" {row['nixVersion']} → {row.get('refVersion') or '?'}"
+        upstream = row.get("upstream") or {}
+        if upstream.get("newer") and upstream["version"] == row.get("refVersion"):
+            text += " (found by nixkeeper's update check)"
         if row.get("outdatedSince"):
             text += f" · outdated {days_text(row['outdatedSince'], now)}"
     if failures(row):

@@ -23,4 +23,8 @@
       # ./aarch64-linux-2024.nix
     ]
   );
+
+  # Where to look for new releases of some tracked packages, on top of
+  # Repology. See the file for the format.
+  updateChecks = import ./update-checks.nix;
 }

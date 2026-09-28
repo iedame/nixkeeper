@@ -149,6 +149,8 @@ async function loadIndex() {
 function computeStatus(pkg) {
   if (pkg.nixStatus === 'missing') return 'missing';
   if (pkg.nixStatus === 'outdated' || pkg.nixStatus === 'legacy') return 'warn';
+  // nixkeeper's own update check found a release Repology hasn't seen.
+  if (pkg.upstream?.newer) return 'warn';
   if (pkg.nixStatus === 'newest' || pkg.nixStatus === 'unique' || pkg.nixStatus === 'devel')
     return 'ok';
   return 'neutral';
@@ -504,15 +506,38 @@ async function fillDetail(pkg, el) {
   const homepage = pkg.homepage;
 
   const st = computeStatus(pkg);
-  const nixLine =
-    st === 'missing'
+  const up = pkg.upstream;
+  const upLink = up
+    ? `<a class="files-link" href="${escapeHtml(up.url)}" target="_blank" rel="noopener">${escapeHtml(up.repo)} tags ↗</a>`
+    : '';
+  const since = pkg.outdatedSince
+    ? ` — outdated since ${escapeHtml(longDate(pkg.outdatedSince))} (${daysText(pkg.outdatedSince)})`
+    : '';
+  const repologyOutdated = ['outdated', 'legacy'].includes(pkg.nixStatus);
+  // When the update check is what makes it outdated, say where the newer
+  // version came from, and how it compares with Repology.
+  const upstreamLine = () =>
+    `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>; nixkeeper's update check found <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span> in the ${upLink}${
+      pkg.refVersion !== up.version
+        ? `; Repology's newest is <span class="mono">${escapeHtml(pkg.refVersion)}</span>`
+        : repologyOutdated
+          ? ''
+          : ", which Repology doesn't count as newest yet"
+    }${since}`;
+  const nixLine = up?.newer
+    ? upstreamLine()
+    : st === 'missing'
       ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
       : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${
           st === 'warn'
-            ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${pkg.outdatedSince ? ` — outdated since ${escapeHtml(longDate(pkg.outdatedSince))} (${daysText(pkg.outdatedSince)})` : ''}`
+            ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${since}`
             : st === 'neutral'
               ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
               : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`
+        }${
+          up && !up.newer
+            ? ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest in the ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
+            : ''
         }`;
 
   el.innerHTML = `

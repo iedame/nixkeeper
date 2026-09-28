@@ -5,6 +5,7 @@ import json
 import os
 
 from . import config
+from .changes import is_outdated
 
 
 def load_previous_run(out_dir=config.OUT_DIR):
@@ -49,7 +50,7 @@ def add_outdated_since(rows, previous, now):
     when it newly falls behind, dropped once it's caught up."""
     before = {row["name"]: row for row in previous["packages"]}
     for row in rows:
-        if row["nixStatus"] in config.OUTDATED_STATUSES:
+        if is_outdated(row):
             row["outdatedSince"] = (
                 before.get(row["name"], {}).get("outdatedSince") or now
             )

@@ -4,7 +4,11 @@ from . import config
 
 
 def is_outdated(row):
-    return row.get("nixStatus") in config.OUTDATED_STATUSES
+    """Outdated per Repology, or per nixkeeper's own update check (a release
+    Repology hasn't seen yet)."""
+    return row.get("nixStatus") in config.OUTDATED_STATUSES or bool(
+        (row.get("upstream") or {}).get("newer")
+    )
 
 
 def failed_builds(row):

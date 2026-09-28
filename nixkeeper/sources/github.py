@@ -21,6 +21,26 @@ def token():
         return None
 
 
+def graphql(token, query, variables):
+    """One GitHub GraphQL request. Returns its data, printing any errors
+    (parts GitHub couldn't answer are then missing or null); raises if the
+    request itself fails."""
+    req = urllib.request.Request(
+        "https://api.github.com/graphql",
+        data=json.dumps({"query": query, "variables": variables}).encode(),
+        headers={
+            "User-Agent": config.USER_AGENT,
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json",
+        },
+    )
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        result = json.loads(resp.read().decode())
+    for err in result.get("errors") or []:
+        print(f"  GitHub error: {err.get('message')}", file=sys.stderr)
+    return result.get("data") or {}
+
+
 def search_counts(token, queries):
     """Run several GitHub issue/PR searches in one GraphQL request and return
     their result counts, in order. A search GitHub couldn't answer gives None;
@@ -30,31 +50,40 @@ def search_counts(token, queries):
         f"  s{i}: search(type: ISSUE, first: 0, query: $q{i}) {{ issueCount }}"
         for i in range(len(queries))
     )
-    body = json.dumps(
-        {
-            "query": f"query({params}) {{\n{fields}\n}}",
-            "variables": {f"q{i}": q for i, q in enumerate(queries)},
-        }
-    ).encode()
-    req = urllib.request.Request(
-        "https://api.github.com/graphql",
-        data=body,
-        headers={
-            "User-Agent": config.USER_AGENT,
-            "Authorization": f"Bearer {token}",
-            "Content-Type": "application/json",
-        },
-    )
     try:
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            result = json.loads(resp.read().decode())
+        data = graphql(
+            token,
+            f"query({params}) {{\n{fields}\n}}",
+            {f"q{i}": q for i, q in enumerate(queries)},
+        )
     except (urllib.error.URLError, OSError, ValueError) as e:
+        if isinstance(e, urllib.error.HTTPError):
+            e.close()
         print(f"  GitHub search batch failed ({e})", file=sys.stderr)
         return [None] * len(queries)
-    for err in result.get("errors") or []:
-        print(f"  GitHub search error: {err.get('message')}", file=sys.stderr)
-    data = result.get("data") or {}
     return [(data.get(f"s{i}") or {}).get("issueCount") for i in range(len(queries))]
+
+
+def latest_tags(token, repos):
+    """The 100 most recent tags (by commit date) of each "owner/repo", in one
+    request: {repo: [tag names]}. A repository GitHub couldn't answer is
+    missing; raises if the request fails."""
+    params = ", ".join(f"$o{i}: String!, $n{i}: String!" for i in range(len(repos)))
+    fields = "\n".join(
+        f"  r{i}: repository(owner: $o{i}, name: $n{i}) {{ refs(refPrefix: "
+        '"refs/tags/", first: 100, orderBy: {field: TAG_COMMIT_DATE, '
+        "direction: DESC}) { nodes { name } } }"
+        for i in range(len(repos))
+    )
+    variables = {}
+    for i, repo in enumerate(repos):
+        variables[f"o{i}"], variables[f"n{i}"] = repo.split("/", 1)
+    data = graphql(token, f"query({params}) {{\n{fields}\n}}", variables)
+    return {
+        repo: [n["name"] for n in data[f"r{i}"]["refs"]["nodes"]]
+        for i, repo in enumerate(repos)
+        if (data.get(f"r{i}") or {}).get("refs")
+    }
 
 
 def add_counts(rows):

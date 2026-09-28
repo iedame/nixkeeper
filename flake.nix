@@ -138,6 +138,20 @@
                     "nosuchpkg-nixkeeper"
                     "opentyrian"
                   ];
+                  updateChecks = {
+                    opentyrian = {
+                      github = "opentyrian/opentyrian"; # listed: fine
+                      tags = "^v(.+)$";
+                    };
+                    wesnoth = {
+                      github = "wesnoth/wesnoth"; # maintained by iedame: fine
+                      tags = "^(1\\.18\\.[0-9]+)$";
+                    };
+                    hello = {
+                      github = "not a repo";
+                      tag = "typo";
+                    };
+                  };
                 }
               );
               expected = [
@@ -145,6 +159,10 @@
                 "opentyrian"
                 "python3Packages.requests"
                 "nosuchpkg-nixkeeper"
+                "updateChecks.hello" # not tracked
+                "updateChecks.hello" # github isn't owner/repo
+                "updateChecks.hello" # no tags
+                "updateChecks.hello" # unknown field "tag"
               ];
             in
             assert lib.assertMsg (found == expected) "package-lists checker found ${builtins.toJSON found}";

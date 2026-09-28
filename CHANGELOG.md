@@ -22,9 +22,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   version nixpkgs has since reached is shown as superseded. Clicking the update
   cell shows the attempt, the end of a failed log, and links to the logs.
 
+- nixkeeper's own update checks (`package-lists/update-checks.nix`): for a
+  listed package, the newest version among its GitHub repository's tags that
+  match a pattern. If that's newer than nixpkgs', the package counts as
+  outdated even while Repology says newest, and the page says the check found
+  it. `nix flake check` validates the entries and their patterns. First check:
+  wesnoth-devel (the 1.19 series).
+
 ### Changed
 
 - Hydra and the update logs share one retrying HTTP helper.
+- "Outdated" means outdated per Repology or per an update check, everywhere:
+  the page, "outdated since" and the status issue.
 
 ## [0.2.0] - 2026-09-28
 
