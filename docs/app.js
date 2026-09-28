@@ -68,12 +68,13 @@ function hasFailure(pkg) {
   );
 }
 
-// Hydra builds that failed, on the selected platform only while one is.
-function failedBuilds(pkg) {
+// Hydra builds with a status, on the selected platform only while one is.
+function buildsWith(pkg, status) {
   return (pkg.builds || []).filter(
-    (b) => b.status === 'failed' && (!platformFilter || b.system.endsWith(`-${platformFilter}`)),
+    (b) => b.status === status && (!platformFilter || b.system.endsWith(`-${platformFilter}`)),
   );
 }
+const failedBuilds = (pkg) => buildsWith(pkg, 'failed');
 
 // Default order: failed, then outdated (longest outdated first), then the
 // rest; otherwise alphabetical (the index arrives sorted by name and
@@ -328,6 +329,9 @@ function buildCell(pkg) {
   if (!pkg.builds) return '<span class="failure-na" title="Not in nixpkgs">—</span>';
   const extra = 'aria-expanded="false" title="Show Hydra builds"';
   if (failedBuilds(pkg).length) return failureButton('build', 'missing', 'failure reported', extra);
+  // Known failures: shown, but not counted as failed.
+  if (buildsWith(pkg, 'broken').length)
+    return failureButton('build', 'warn', 'marked broken', extra);
   if (!hydraBuildsIt(pkg)) return failureButton('build', 'neutral', 'not built by Hydra', extra);
   return failureButton('build', 'ok', 'none reported', extra);
 }
@@ -343,6 +347,7 @@ const HYDRA = 'https://hydra.nixos.org';
 const BUILD_STATUS = {
   ok: { dot: 'ok', text: 'built OK' },
   failed: { dot: 'missing', text: 'failed' },
+  broken: { dot: 'warn', text: 'marked broken in nixpkgs' },
   dependency: { dot: 'warn', text: "didn't build: a dependency failed" },
   unfinished: { dot: 'warn', text: "didn't finish (timed out or aborted)" },
   notBuilt: { dot: 'neutral', text: 'not built by Hydra on this platform' },
@@ -352,10 +357,16 @@ const BUILD_STATUS = {
 function buildLine(pkg, b) {
   const s = BUILD_STATUS[b.status] || BUILD_STATUS.unknown;
   const multi = (pkg.attrs || []).length > 1;
+  const since =
+    'lastSuccess' in b
+      ? `<span class="since">${b.lastSuccess ? `last succeeded ${escapeHtml(longDate(b.lastSuccess))} (${shortAge(b.lastSuccess)} ago)` : 'never built successfully'}</span>`
+      : '';
   let links = '';
   if (b.status === 'failed') {
-    links = `<a class="files-link" href="${HYDRA}/build/${b.build}/log" target="_blank" rel="noopener">log ↗</a>
-      <span class="since">${b.lastSuccess ? `last succeeded ${escapeHtml(longDate(b.lastSuccess))} (${shortAge(b.lastSuccess)} ago)` : 'never built successfully'}</span>`;
+    links = `<a class="files-link" href="${HYDRA}/build/${b.build}/log" target="_blank" rel="noopener">log ↗</a>${since}`;
+  } else if (b.status === 'broken') {
+    // Where to fix it: the package's source, at the line nixpkgs points to.
+    links = `${since}${pkg.source ? `<a class="files-link" href="${escapeHtml(pkg.source)}" target="_blank" rel="noopener">source ↗</a>` : ''}`;
   } else if (b.build) {
     links = `<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>`;
   }

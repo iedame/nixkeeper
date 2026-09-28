@@ -73,6 +73,23 @@ class Diff(unittest.TestCase):
         self.assertEqual([r["name"] for r in c["fixed"]], ["x"])
         self.assertFalse(should_notify(c))
 
+    def test_marked_broken_is_quiet_and_not_a_failure(self):
+        broken = row("x", builds=[build("x", "aarch64-darwin", "broken")])
+        self.assertEqual(failures(broken), [])
+        c = self.changes([row("x")], [broken])
+        self.assertEqual([r["name"] for r in c["broken"]], ["x"])
+        self.assertFalse(should_notify(c))
+        # Once is enough.
+        self.assertEqual(self.changes([broken], [broken])["broken"], [])
+
+    def test_failure_marked_broken_is_not_fixed(self):
+        c = self.changes(
+            [row("x", builds=[build("x", "aarch64-darwin", "failed")])],
+            [row("x", builds=[build("x", "aarch64-darwin", "broken")])],
+        )
+        self.assertEqual([r["name"] for r in c["broken"]], ["x"])
+        self.assertEqual(c["fixed"], [])
+
     def test_failure_names_other_attrs(self):
         r = row("heroic", attrs=["heroic", "heroic-unwrapped"])
         r["builds"] = [build("heroic-unwrapped", "x86_64-linux", "failed")]

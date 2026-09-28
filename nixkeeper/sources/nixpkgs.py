@@ -47,6 +47,56 @@ def channel_revision():
     return revision or config.NIXPKGS_BRANCH
 
 
+# meta.broken of each attribute (null if it doesn't evaluate), on the
+# platform of the legacyPackages it's applied to.
+BROKEN_EXPR = """pkgs: map (attr:
+  let
+    pkg = pkgs.lib.attrByPath (pkgs.lib.splitString "." attr) { } pkgs;
+    r = builtins.tryEval (pkg.meta.broken or false);
+  in if r.success then r.value else null) (builtins.fromJSON ''{attrs}'')"""
+
+
+def broken(attrs, revision):
+    """{attr: [systems where nixpkgs marks it broken]} at the channel's
+    revision. The index can't say: it's evaluated for x86_64-linux only, and
+    `broken = stdenv.hostPlatform.isDarwin;` is false there. Evaluates nixpkgs
+    per platform instead (evaluation only, so darwin works from Linux). Empty
+    if that fails: this is extra information, not worth failing the sync."""
+    attrs = sorted(attrs)
+    result = {}
+    for system in config.HYDRA_SYSTEMS:
+        try:
+            out = subprocess.run(
+                [
+                    "nix",
+                    "eval",
+                    "--extra-experimental-features",
+                    "nix-command flakes",
+                    "--json",
+                    f"github:NixOS/nixpkgs/{revision}#legacyPackages.{system}",
+                    "--apply",
+                    BROKEN_EXPR.replace("{attrs}", json.dumps(attrs)),
+                ],
+                capture_output=True,
+                text=True,
+                check=True,
+            )
+            values = json.loads(out.stdout)
+        except (subprocess.CalledProcessError, OSError, ValueError) as e:
+            # nix's last line of output says what went wrong.
+            lines = (getattr(e, "stderr", None) or "").strip().splitlines()
+            print(
+                f"::warning::Couldn't evaluate meta.broken on {system}: "
+                f"{lines[-1] if lines else e}",
+                file=sys.stderr,
+            )
+            return {}
+        for attr, is_broken in zip(attrs, values, strict=True):
+            if is_broken:
+                result.setdefault(attr, []).append(system)
+    return result
+
+
 def load_index():
     """attribute -> package (pname, version, meta) for all of nixos-unstable."""
     print("Downloading nixpkgs package index...", file=sys.stderr)

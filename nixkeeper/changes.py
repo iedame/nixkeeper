@@ -11,6 +11,11 @@ def failed_builds(row):
     return [b for b in row.get("builds") or [] if b["status"] == "failed"]
 
 
+def broken_builds(row):
+    """Jobs nixpkgs marks broken: known failures, so not counted as failed."""
+    return [b for b in row.get("builds") or [] if b["status"] == "broken"]
+
+
 def build_label(row, build):
     """Which job failed: the platform, plus the attribute when the row has more
     than one (heroic / heroic-unwrapped)."""
@@ -34,7 +39,7 @@ def failures(row):
 # Changes that notify (posted as a comment), then ones only listed in the
 # status issue: good news and bookkeeping shouldn't ping anyone.
 NOTIFY = ("outdated", "failed", "vulnerable", "notRefreshed")
-QUIET = ("caughtUp", "fixed", "added", "removed")
+QUIET = ("caughtUp", "fixed", "broken", "added", "removed")
 
 
 def diff(previous, rows):
@@ -57,7 +62,13 @@ def diff(previous, rows):
         now_failing, was_failing = set(failures(row)), set(failures(old))
         if now_failing - was_failing:
             changes["failed"].append(row)
-        if was_failing and not now_failing:
+        newly_broken = {build_label(row, b) for b in broken_builds(row)} - {
+            build_label(old, b) for b in broken_builds(old)
+        }
+        if newly_broken:
+            changes["broken"].append(row)
+        # A failure nixpkgs now marks broken isn't fixed, just acknowledged.
+        elif was_failing and not now_failing:
             changes["fixed"].append(row)
         if row.get("nixVulnerable") and not old.get("nixVulnerable"):
             changes["vulnerable"].append(row)

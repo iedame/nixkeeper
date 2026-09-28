@@ -61,6 +61,27 @@ class Text(unittest.TestCase):
             "(https://hydra.nixos.org/build/345227373/log)",
         )
 
+    def test_marked_broken(self):
+        row = {
+            "name": "libfilezilla",
+            "nixStatus": "newest",
+            "builds": [
+                {"attr": "libfilezilla", "system": "x86_64-linux", "status": "ok"},
+                {
+                    "attr": "libfilezilla",
+                    "system": "aarch64-darwin",
+                    "status": "broken",
+                },
+            ],
+        }
+        body = notify.status_body([row], diff({"packages": []}, [row]), NOW)
+        self.assertIn(
+            "### Marked broken in nixpkgs (1)\n- `libfilezilla` — marked broken in "
+            "nixpkgs on aarch64-darwin",
+            body,
+        )
+        self.assertNotIn("### Failed", body)
+
     def test_nothing_to_report(self):
         rows = [{"name": "a", "nixStatus": "newest"}]
         body = notify.status_body(rows, diff({"packages": rows}, rows), NOW)

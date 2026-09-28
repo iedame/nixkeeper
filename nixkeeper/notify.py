@@ -10,6 +10,7 @@ from datetime import datetime
 from . import config
 from .changes import (
     NOTIFY,
+    broken_builds,
     build_label,
     diff,
     failed_builds,
@@ -42,6 +43,9 @@ def describe(row, now):
     ]
     if logs:
         text += " · " + " · ".join(logs)
+    broken = [build_label(row, b) for b in broken_builds(row)]
+    if broken:
+        text += " — marked broken in nixpkgs on " + ", ".join(broken)
     if row.get("staleSince"):
         text += f" — Repology lookup failed, showing data from {row['staleSince'][:10]}"
     return text
@@ -58,6 +62,7 @@ CHANGE_LABELS = {
     "notRefreshed": "Not refreshed",
     "caughtUp": "Caught up",
     "fixed": "No longer failing",
+    "broken": "Marked broken in nixpkgs",
     "added": "Now tracked",
     "removed": "No longer tracked",
 }
@@ -88,6 +93,7 @@ def status_body(rows, changes, now, page_url=None):
             ),
         ),
         ("Flagged vulnerable", [r for r in rows if r.get("nixVulnerable")]),
+        ("Marked broken in nixpkgs", [r for r in rows if broken_builds(r)]),
         ("Not refreshed", [r for r in rows if r.get("staleSince")]),
     ]
     parts = [

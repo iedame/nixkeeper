@@ -79,20 +79,23 @@ def last_success(job):
     return datetime.fromtimestamp(stoptime, UTC).isoformat() if stoptime else None
 
 
-def check(attr, system):
+def check(attr, system, broken=False):
     """One job's result: {"attr", "system", "status", "build"?, "lastSuccess"?}.
-    status is ok / failed / dependency / unfinished, or notBuilt when Hydra has
-    no build of it."""
+    status is ok / failed / dependency / unfinished, notBuilt when Hydra has no
+    build of it, or broken when nixpkgs marks it broken there (whatever Hydra's
+    last build did: the failure is known)."""
     job = f"{attr}.{system}"
     result = {"attr": attr, "system": system}
     build = latest_build(job)
     time.sleep(1)  # be polite to Hydra
     if build is None:
-        return {**result, "status": "notBuilt"}
+        return {**result, "status": "broken" if broken else "notBuilt"}
     result.update(status=status(build.get("buildstatus")), build=build["id"])
-    if result["status"] == "failed":
+    if broken or result["status"] == "failed":
         result["lastSuccess"] = last_success(job)
         time.sleep(1)
+    if broken:
+        result["status"] = "broken"
     return result
 
 
@@ -119,10 +122,12 @@ def systems(pkg):
     return wanted
 
 
-def add_builds(rows, nixpkgs, previous):
+def add_builds(rows, nixpkgs, previous, broken=None):
     """Give every row in nixpkgs its Hydra results ("builds"), or mark it unfree
-    ("unfree": true, no builds). A job whose lookup fails keeps the previous
-    run's result, if there is one."""
+    ("unfree": true, no builds). broken: {attr: [systems]} nixpkgs marks
+    broken. A job whose lookup fails keeps the previous run's result, if there
+    is one."""
+    broken = broken or {}
     print("Checking Hydra builds...", file=sys.stderr)
     before = {
         (b["attr"], b["system"]): b
@@ -142,21 +147,25 @@ def add_builds(rows, nixpkgs, previous):
         builds = []
         for attr, pkg in free.items():
             for system in systems(pkg):
+                is_broken = system in broken.get(attr, [])
                 down = consecutive >= config.HYDRA_MAX_CONSECUTIVE_FAILURES
                 try:
                     if down:
                         raise OSError("Hydra seems down, not asking")
-                    builds.append(check(attr, system))
+                    builds.append(check(attr, system, is_broken))
                     consecutive = 0
                 except (urllib.error.URLError, OSError, ValueError) as e:
                     failed += 1
                     consecutive += not down
                     if not down:
                         print(f"  {attr}.{system}: {e}", file=sys.stderr)
-                    builds.append(
+                    build = dict(
                         before.get((attr, system))
                         or {"attr": attr, "system": system, "status": "unknown"}
                     )
+                    if is_broken:
+                        build["status"] = "broken"
+                    builds.append(build)
         row["builds"] = builds
     if failed:
         print(

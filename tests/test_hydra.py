@@ -79,6 +79,22 @@ class Hydra(unittest.TestCase):
         result, _ = self.check({})
         self.assertEqual(result["status"], "notBuilt")
 
+    def test_marked_broken(self):
+        urlopen, _ = fake_hydra(
+            {"ac-library.aarch64-darwin": FAILED},
+            {"ac-library.aarch64-darwin": LAST_SUCCESS},
+        )
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            result = hydra.check("ac-library", "aarch64-darwin", broken=True)
+            never_built = hydra.check("other", "aarch64-darwin", broken=True)
+        self.assertEqual(result["status"], "broken")
+        self.assertEqual(result["build"], 345227373)
+        self.assertEqual(result["lastSuccess"], "2024-03-14T08:00:00+00:00")
+        self.assertEqual(
+            never_built,
+            {"attr": "other", "system": "aarch64-darwin", "status": "broken"},
+        )
+
     def test_statuses(self):
         self.assertEqual(hydra.status(0), "ok")
         self.assertEqual(hydra.status(1), "failed")
@@ -144,6 +160,15 @@ class AddBuilds(unittest.TestCase):
         self.assertEqual(
             [(b["system"], b["status"]) for b in rows[0]["builds"]],
             [("x86_64-linux", "ok"), ("aarch64-darwin", "failed")],
+        )
+        # Marked broken on darwin: the same failure, but known.
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            hydra.add_builds(
+                rows, nixpkgs, {"packages": []}, {"ac-library": ["aarch64-darwin"]}
+            )
+        self.assertEqual(
+            [(b["system"], b["status"]) for b in rows[0]["builds"]],
+            [("x86_64-linux", "ok"), ("aarch64-darwin", "broken")],
         )
         self.assertEqual(rows[1], {**rows[1], "unfree": True, "builds": []})
         self.assertNotIn("builds", rows[2])  # not in nixpkgs
