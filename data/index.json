@@ -1,20 +1,44 @@
 {
-  "checkedAt": "2026-09-27T22:54:28.055315+00:00",
+  "checkedAt": "2026-09-28T00:20:25.107921+00:00",
   "packages": [
     {
       "attrs": [
-        "_1password-gui",
-        "_1password-gui-beta"
+        "_1password-gui"
       ],
+      "devel": false,
       "homepage": "https://1password.com/",
       "name": "1password",
       "nixStatus": "newest",
       "nixVersion": "8.12.36",
       "nixVulnerable": false,
+      "openIssues": 14,
+      "openPRs": 21,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "1password",
+      "project": "1password",
+      "refVersion": "8.12.36",
+      "repoCount": 29
+    },
+    {
+      "attrs": [
+        "_1password-gui-beta"
+      ],
+      "devel": true,
+      "homepage": "https://1password.com/",
+      "name": "_1password-gui-beta",
+      "nixStatus": "legacy",
+      "nixVersion": "8.12.32-26.BETA",
+      "nixVulnerable": false,
+      "openIssues": 14,
+      "openPRs": 21,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "pname": "1password",
       "project": "1password",
       "refVersion": "8.12.36",
       "repoCount": 29
@@ -23,15 +47,19 @@
       "attrs": [
         "backrest"
       ],
+      "devel": false,
       "homepage": "https://github.com/garethgeorge/backrest",
       "name": "backrest",
       "nixStatus": "newest",
       "nixVersion": "1.14.1",
       "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 5,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "backrest",
       "project": "backrest",
       "refVersion": "1.14.1",
       "repoCount": 9
@@ -40,15 +68,19 @@
       "attrs": [
         "bbedit"
       ],
+      "devel": false,
       "homepage": "https://www.barebones.com/products/bbedit/",
       "name": "bbedit",
       "nixStatus": "newest",
       "nixVersion": "16.0.3",
       "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": false
       },
+      "pname": "bbedit",
       "project": "bbedit",
       "refVersion": "16.0.3",
       "repoCount": 5
@@ -57,15 +89,19 @@
       "attrs": [
         "bolt-launcher"
       ],
+      "devel": false,
       "homepage": "https://codeberg.org/Adamcake/Bolt",
       "name": "bolt-launcher",
       "nixStatus": "newest",
       "nixVersion": "0.24.0",
       "nixVulnerable": false,
+      "openIssues": 3,
+      "openPRs": 3,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "bolt-launcher",
       "project": "bolt-launcher",
       "refVersion": "0.24.0",
       "repoCount": 11
@@ -74,15 +110,19 @@
       "attrs": [
         "d-seams"
       ],
+      "devel": false,
       "homepage": "https://dseams.info",
       "name": "d-seams",
       "nixStatus": "newest",
       "nixVersion": "2.10.0",
       "nixVulnerable": false,
+      "openIssues": 9,
+      "openPRs": 2,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "d-seams",
       "project": "d-seams",
       "refVersion": null,
       "repoCount": 6
@@ -91,15 +131,19 @@
       "attrs": [
         "egoboo"
       ],
+      "devel": false,
       "homepage": "https://egoboo.sourceforge.net/",
       "name": "egoboo",
       "nixStatus": "newest",
       "nixVersion": "2.8.1",
       "nixVulnerable": false,
+      "openIssues": 2,
+      "openPRs": 0,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "egoboo",
       "project": "egoboo",
       "refVersion": "2.8.1",
       "repoCount": 33
@@ -108,15 +152,19 @@
       "attrs": [
         "fastmail-desktop"
       ],
+      "devel": false,
       "homepage": "https://www.fastmail.com/blog/desktop-app/",
       "name": "fastmail-desktop",
       "nixStatus": "newest",
       "nixVersion": "1.8.0",
       "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 3,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "fastmail-desktop",
       "project": "fastmail",
       "refVersion": "1.8.0",
       "repoCount": 4
@@ -125,15 +173,19 @@
       "attrs": [
         "filezilla"
       ],
+      "devel": false,
       "homepage": "https://filezilla-project.org/",
       "name": "filezilla",
       "nixStatus": "newest",
       "nixVersion": "3.71.1",
       "nixVulnerable": false,
+      "openIssues": 2,
+      "openPRs": 1,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "filezilla",
       "project": "filezilla",
       "refVersion": "3.71.1",
       "repoCount": 157
@@ -142,15 +194,19 @@
       "attrs": [
         "freedink"
       ],
+      "devel": false,
       "homepage": "https://gnu.org/software/freedink/",
       "name": "freedink",
       "nixStatus": "newest",
       "nixVersion": "109.6",
       "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 2,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "freedink",
       "project": "freedink",
       "refVersion": "109.6",
       "repoCount": 67
@@ -159,12 +215,16 @@
       "attrs": [
         "fzssh"
       ],
+      "devel": false,
       "homepage": "https://lib.filezilla-project.org/",
       "name": "fzssh",
       "nixStatus": "newest",
       "nixVersion": "1.4.0",
       "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
       "platforms": null,
+      "pname": "fzssh",
       "project": "fzssh",
       "refVersion": "1.4.0",
       "repoCount": 41
@@ -173,15 +233,19 @@
       "attrs": [
         "google-chrome"
       ],
+      "devel": false,
       "homepage": "https://www.google.com/chrome/browser/",
       "name": "google-chrome",
       "nixStatus": "newest",
       "nixVersion": "154.0.8037.57",
       "nixVulnerable": false,
+      "openIssues": 59,
+      "openPRs": 17,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "google-chrome",
       "project": "google-chrome",
       "refVersion": "154.0.8037.57",
       "repoCount": 63
@@ -191,15 +255,19 @@
         "heroic",
         "heroic-unwrapped"
       ],
+      "devel": false,
       "homepage": "https://github.com/Heroic-Games-Launcher/HeroicGamesLauncher",
       "name": "heroic",
       "nixStatus": "newest",
       "nixVersion": "2.22.3",
       "nixVulnerable": false,
+      "openIssues": 9,
+      "openPRs": 12,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "heroic",
       "project": "heroic-games-launcher",
       "refVersion": "2.22.3",
       "repoCount": 40
@@ -208,15 +276,19 @@
       "attrs": [
         "libfilezilla"
       ],
+      "devel": false,
       "homepage": "https://lib.filezilla-project.org/",
       "name": "libfilezilla",
       "nixStatus": "newest",
       "nixVersion": "0.57.0",
       "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 0,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "libfilezilla",
       "project": "libfilezilla",
       "refVersion": "0.57.0",
       "repoCount": 143
@@ -225,12 +297,16 @@
       "attrs": [
         "lincity"
       ],
+      "devel": true,
       "homepage": "https://sourceforge.net/projects/lincity",
       "name": "lincity",
       "nixStatus": "devel",
       "nixVersion": "1.13.1",
       "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 1,
       "platforms": null,
+      "pname": "lincity",
       "project": "lincity",
       "refVersion": "1.12.1",
       "repoCount": 51
@@ -239,15 +315,19 @@
       "attrs": [
         "lincity-ng"
       ],
+      "devel": false,
       "homepage": "https://github.com/lincity-ng/lincity-ng",
       "name": "lincity-ng",
       "nixStatus": "newest",
       "nixVersion": "2.15.0",
       "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 1,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "lincity-ng",
       "project": "lincity-ng",
       "refVersion": "2.15.0",
       "repoCount": 88
@@ -256,15 +336,19 @@
       "attrs": [
         "linkding"
       ],
+      "devel": false,
       "homepage": "https://linkding.link/",
       "name": "linkding",
       "nixStatus": "unique",
       "nixVersion": "1.47.0",
       "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 4,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "linkding",
       "project": "linkding",
       "refVersion": null,
       "repoCount": 1
@@ -273,15 +357,19 @@
       "attrs": [
         "microsoft-edge"
       ],
+      "devel": false,
       "homepage": "https://www.microsoft.com/en-us/edge",
       "name": "microsoft-edge",
       "nixStatus": "newest",
       "nixVersion": "154.0.4258.37",
       "nixVulnerable": false,
+      "openIssues": 6,
+      "openPRs": 5,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "microsoft-edge",
       "project": "microsoft-edge",
       "refVersion": "154.0.4258.37",
       "repoCount": 44
@@ -290,15 +378,19 @@
       "attrs": [
         "msedgedriver"
       ],
+      "devel": false,
       "homepage": "https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver",
       "name": "msedgedriver",
       "nixStatus": "unique",
       "nixVersion": "154.0.4258.37",
       "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "msedgedriver",
       "project": "msedgedriver",
       "refVersion": null,
       "repoCount": 4
@@ -307,12 +399,16 @@
       "attrs": [
         "opentyrian"
       ],
+      "devel": false,
       "homepage": "https://github.com/opentyrian/opentyrian",
       "name": "opentyrian",
       "nixStatus": "outdated",
       "nixVersion": "2.1.20221123",
       "nixVulnerable": false,
+      "openIssues": 2,
+      "openPRs": 1,
       "platforms": null,
+      "pname": "opentyrian",
       "project": "opentyrian",
       "refVersion": "2.1.20260913",
       "repoCount": 62
@@ -321,15 +417,19 @@
       "attrs": [
         "ringracers"
       ],
+      "devel": false,
       "homepage": "https://kartkrew.org",
       "name": "ringracers",
       "nixStatus": "newest",
       "nixVersion": "2.4",
       "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 0,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "ringracers",
       "project": "ringracers",
       "refVersion": "2.4",
       "repoCount": 6
@@ -338,15 +438,19 @@
       "attrs": [
         "runelite"
       ],
+      "devel": false,
       "homepage": "https://runelite.net/",
       "name": "runelite",
       "nixStatus": "newest",
       "nixVersion": "2.8.0",
       "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 1,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "runelite",
       "project": "runelite",
       "refVersion": "2.8.0",
       "repoCount": 11
@@ -355,15 +459,19 @@
       "attrs": [
         "scanmem"
       ],
+      "devel": false,
       "homepage": "https://github.com/scanmem/scanmem",
       "name": "scanmem",
       "nixStatus": "newest",
       "nixVersion": "0.17",
       "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
       "platforms": {
         "darwin": false,
         "linux": true
       },
+      "pname": "scanmem",
       "project": "scanmem",
       "refVersion": "0.17",
       "repoCount": 86
@@ -372,15 +480,19 @@
       "attrs": [
         "typioca"
       ],
+      "devel": false,
       "homepage": "https://github.com/bloznelis/typioca",
       "name": "typioca",
       "nixStatus": "newest",
       "nixVersion": "3.1.0",
       "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 0,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "typioca",
       "project": "typioca",
       "refVersion": "3.1.0",
       "repoCount": 14
@@ -389,50 +501,82 @@
       "attrs": [
         "unciv"
       ],
+      "devel": false,
       "homepage": "https://github.com/yairm210/Unciv",
       "name": "unciv",
       "nixStatus": "outdated",
       "nixVersion": "4.22.1",
       "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 2,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "unciv",
       "project": "unciv",
       "refVersion": "4.22.4",
       "repoCount": 18
     },
     {
       "attrs": [
-        "wesnoth",
-        "wesnoth-devel"
+        "wesnoth"
       ],
+      "devel": false,
       "homepage": "https://www.wesnoth.org/",
       "name": "wesnoth",
       "nixStatus": "newest",
       "nixVersion": "1.18.8",
       "nixVulnerable": false,
+      "openIssues": 2,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "wesnoth",
       "project": "wesnoth",
       "refVersion": "1.18.8",
       "repoCount": 173
     },
     {
       "attrs": [
+        "wesnoth-devel"
+      ],
+      "devel": true,
+      "homepage": "https://www.wesnoth.org/",
+      "name": "wesnoth-devel",
+      "nixStatus": "devel",
+      "nixVersion": "1.19.24",
+      "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 1,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "pname": "wesnoth-devel",
+      "project": "wesnoth",
+      "refVersion": "1.19.24",
+      "repoCount": 173
+    },
+    {
+      "attrs": [
         "xournalpp"
       ],
+      "devel": false,
       "homepage": "https://xournalpp.github.io/",
       "name": "xournalpp",
       "nixStatus": "outdated",
       "nixVersion": "1.3.7",
       "nixVulnerable": false,
+      "openIssues": 2,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
       },
+      "pname": "xournalpp",
       "project": "xournalpp",
       "refVersion": "1.3.8",
       "repoCount": 136
