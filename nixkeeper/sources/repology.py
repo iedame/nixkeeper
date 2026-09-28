@@ -8,22 +8,45 @@ import urllib.request
 
 from .. import config
 
+# The domain that last answered: tried first for the rest of the run, so an
+# unreachable repology.org costs one failed connection, not one per lookup.
+_working = None
+
+
+def _domains():
+    domains = list(config.REPOLOGY_URLS)
+    if _working in domains:
+        domains.remove(_working)
+        domains.insert(0, _working)
+    return domains
+
+
+def _answered(base):
+    global _working
+    if base != _working and base != config.REPOLOGY_URLS[0]:
+        print(f"  using {base} for the rest of the run", file=sys.stderr)
+    _working = base
+
 
 def get(path):
-    """GET a Repology path, trying each domain, and retrying the lot after
-    RETRY_DELAYS seconds. Returns (json, final_url), or (None, None) on 404."""
+    """GET a Repology path, trying each domain (the last one that answered
+    first), and retrying the lot after RETRY_DELAYS seconds. Returns (json,
+    final_url), or (None, None) on 404."""
     last_err = None
     for delay in [0, *config.RETRY_DELAYS]:
         if delay:
             print(f"  retrying in {delay}s...", file=sys.stderr)
             time.sleep(delay)
-        for base in config.REPOLOGY_URLS:
+        for base in _domains():
             req = urllib.request.Request(base + path, headers={"User-Agent": config.USER_AGENT})
             try:
                 with urllib.request.urlopen(req, timeout=20) as resp:
-                    return json.loads(resp.read().decode()), resp.geturl()
+                    result = json.loads(resp.read().decode()), resp.geturl()
+                _answered(base)
+                return result
             except urllib.error.HTTPError as e:
                 if e.code == 404:
+                    _answered(base)
                     return None, None
                 print(f"  {base} answered {e.code}", file=sys.stderr)
                 last_err = e
