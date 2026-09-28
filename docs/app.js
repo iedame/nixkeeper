@@ -332,6 +332,11 @@ function githubLinks(pkg) {
   return `<span class="gh-links">${link('pr', 'pulls', 'PRs', pkg.openPRs)}${link('issue', 'issues', 'issues', pkg.openIssues)}</span>`;
 }
 
+// "…/pkgs/by-name/we/wesnoth/package.nix#L147" -> "package.nix"
+function sourceFileName(url) {
+  return url.split('#')[0].split('/').pop();
+}
+
 async function fillDetail(pkg, el) {
   // Raw Repology data is stored per project, under a file-name-safe version
   // of its name (python:requests -> python_requests.json).
@@ -376,6 +381,7 @@ async function fillDetail(pkg, el) {
     }
     <div class="detail-row">
       ${homepage ? `<a class="files-link" href="${escapeHtml(homepage)}" target="_blank" rel="noopener">Homepage →</a>` : ''}
+      ${pkg.source ? `<a class="files-link" href="${escapeHtml(pkg.source)}" target="_blank" rel="noopener" title="Where nixpkgs defines this package">${escapeHtml(sourceFileName(pkg.source))} ↗</a>` : ''}
       ${pkg.project ? `<a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>` : ''}
     </div>
   `;

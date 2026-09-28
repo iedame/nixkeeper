@@ -16,6 +16,7 @@ def main():
     previous = history.load_previous_run()
     projects = lookup.collect_projects(wanted, previous)
     index_rows = rows.build_rows(projects, nixpkgs)
+    rows.add_source_links(index_rows, nixpkgs, nixpkgs_source.channel_revision())
     history.add_outdated_since(index_rows, previous, now)
     github.add_counts(index_rows)
     output.write(projects, {"checkedAt": now, "packages": index_rows})

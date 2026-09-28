@@ -97,3 +97,29 @@ def build_rows(projects, nixpkgs):
                 row["staleSince"] = proj["staleSince"]  # when its data was last fetched
             rows.append(row)
     return sorted(rows, key=lambda p: p["name"].lower())
+
+
+def source_url(position, revision):
+    """GitHub link for a meta.position, e.g.
+    "pkgs/by-name/we/wesnoth/package.nix:147"."""
+    path, _, line = position.rpartition(":")
+    if not line.isdigit():
+        path, line = position, ""
+    url = config.NIXPKGS_SOURCE_URL.format(revision=revision, path=path)
+    return f"{url}#L{line}" if line else url
+
+
+def add_source_links(rows, nixpkgs, revision):
+    """Link each row to where nixpkgs defines it: the first of its attrs that
+    has a position (packages not in nixpkgs get none)."""
+    for row in rows:
+        position = next(
+            (
+                nixpkgs[a]["meta"]["position"]
+                for a in row["attrs"]
+                if a in nixpkgs and nixpkgs[a]["meta"].get("position")
+            ),
+            None,
+        )
+        if position:
+            row["source"] = source_url(position, revision)

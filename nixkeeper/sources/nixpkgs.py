@@ -3,6 +3,7 @@
 import json
 import subprocess
 import sys
+import urllib.error
 import urllib.request
 
 import brotli
@@ -28,6 +29,22 @@ def read_lists():
         check=True,
     )
     return json.loads(result.stdout)
+
+
+def channel_revision():
+    """The nixpkgs commit the channel (and so the index) was built from, or the
+    branch name if it can't be fetched: links then still work, their line
+    numbers just may have drifted."""
+    req = urllib.request.Request(
+        config.NIXPKGS_REVISION_URL, headers={"User-Agent": config.USER_AGENT}
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            revision = resp.read().decode().strip()
+    except (urllib.error.URLError, OSError) as e:
+        print(f"  couldn't fetch the channel revision ({e})", file=sys.stderr)
+        return config.NIXPKGS_BRANCH
+    return revision or config.NIXPKGS_BRANCH
 
 
 def load_index():

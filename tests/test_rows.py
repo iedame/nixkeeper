@@ -1,6 +1,6 @@
 import unittest
 
-from nixkeeper.rows import build_rows, search_term
+from nixkeeper.rows import add_source_links, build_rows, search_term, source_url
 from tests.helpers import NIXPKGS, nix, other, project
 
 
@@ -185,3 +185,42 @@ class SearchTerm(unittest.TestCase):
             search_term("haskellPackages.pandoc"), "haskellPackages.pandoc"
         )
         self.assertEqual(search_term("heroic"), "heroic")
+
+
+class SourceLinks(unittest.TestCase):
+    NIXPKGS = {
+        "wesnoth": {"meta": {"position": "pkgs/by-name/we/wesnoth/package.nix:147"}},
+        "heroic": {"meta": {}},  # no position recorded
+        "heroic-unwrapped": {
+            "meta": {"position": "pkgs/by-name/he/heroic-unwrapped/package.nix:135"}
+        },
+    }
+
+    def test_source_url(self):
+        self.assertEqual(
+            source_url("pkgs/by-name/we/wesnoth/package.nix:147", "abc123"),
+            "https://github.com/NixOS/nixpkgs/blob/abc123/pkgs/by-name/we/wesnoth/package.nix#L147",
+        )
+        self.assertEqual(
+            source_url("pkgs/top-level/all-packages.nix", "nixos-unstable"),
+            "https://github.com/NixOS/nixpkgs/blob/nixos-unstable/pkgs/top-level/all-packages.nix",
+        )
+
+    def test_first_attr_with_a_position(self):
+        rows = [
+            {"attrs": ["wesnoth"]},
+            {"attrs": ["heroic", "heroic-unwrapped"]},
+            {"attrs": []},  # not in nixpkgs
+            {"attrs": ["gone"]},  # not in the index
+        ]
+        add_source_links(rows, self.NIXPKGS, "rev")
+        self.assertTrue(
+            rows[0]["source"].endswith("/rev/pkgs/by-name/we/wesnoth/package.nix#L147")
+        )
+        self.assertTrue(
+            rows[1]["source"].endswith(
+                "/rev/pkgs/by-name/he/heroic-unwrapped/package.nix#L135"
+            )
+        )
+        self.assertNotIn("source", rows[2])
+        self.assertNotIn("source", rows[3])

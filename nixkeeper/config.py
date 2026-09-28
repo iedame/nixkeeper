@@ -13,6 +13,11 @@ USER_AGENT = "nixkeeper/1.0 (personal package tracker)"
 # Same channel Repology's nix_unstable tracks, and far cheaper than evaluating
 # nixpkgs ourselves.
 NIXPKGS_INDEX_URL = "https://channels.nixos.org/nixos-unstable/packages.json.br"
+# The nixpkgs commit that channel was built from: source links point there, so
+# their line numbers match the data even after the files change.
+NIXPKGS_REVISION_URL = "https://channels.nixos.org/nixos-unstable/git-revision"
+NIXPKGS_BRANCH = "nixos-unstable"  # link target if the revision can't be fetched
+NIXPKGS_SOURCE_URL = "https://github.com/NixOS/nixpkgs/blob/{revision}/{path}"
 
 # repology.org has occasionally been unreachable; repology.amdmi3.ru (the
 # author's own domain) has served as a working fallback. Tried in order;
