@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-28T14:05:54.795869+00:00",
+  "checkedAt": "2026-09-28T14:41:23.787161+00:00",
   "packages": [
     {
       "attrs": [
@@ -24,7 +24,21 @@
       "repoCount": 29,
       "searchTerm": "_1password-gui",
       "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/_1/_1password-gui/package.nix#L29",
-      "unfree": true
+      "unfree": true,
+      "update": {
+        "attr": "_1password-gui",
+        "date": "2026-09-23",
+        "excerpt": [
+          "Running phase: glibPreInstallPhase",
+          "Running phase: installPhase",
+          "install: cannot stat 'resources/1password.desktop': No such file or directory"
+        ],
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/_1password-gui/2026-09-23.log",
+        "outcome": "failed",
+        "to": "1"
+      },
+      "updateFailure": true
     },
     {
       "attrs": [
@@ -50,7 +64,17 @@
       "repoCount": 29,
       "searchTerm": "_1password-gui-beta",
       "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/_1/_1password-gui/package.nix#L29",
-      "unfree": true
+      "unfree": true,
+      "update": {
+        "attr": "_1password-gui-beta",
+        "date": "2026-08-02",
+        "from": "8.12.28",
+        "log": "https://nixpkgs-update-logs.nixos.org/_1password-gui-beta/2026-08-02.log",
+        "outcome": "prOpened",
+        "pr": 548407,
+        "to": "8.12.30"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -93,7 +117,16 @@
       "refVersion": "1.14.1",
       "repoCount": 9,
       "searchTerm": "backrest",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ba/backrest/package.nix#L200"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ba/backrest/package.nix#L200",
+      "update": {
+        "attr": "backrest",
+        "date": "2026-09-20",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/backrest/2026-09-20.log",
+        "outcome": "noChange",
+        "to": "1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -118,7 +151,17 @@
       "repoCount": 5,
       "searchTerm": "bbedit",
       "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/bb/bbedit/package.nix#L34",
-      "unfree": true
+      "unfree": true,
+      "update": {
+        "attr": "bbedit",
+        "date": "2026-08-31",
+        "from": "15.5.5",
+        "log": "https://nixpkgs-update-logs.nixos.org/bbedit/2026-08-31.log",
+        "outcome": "prExists",
+        "pr": 558133,
+        "to": "16.0.3"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -155,7 +198,17 @@
       "refVersion": "0.24.0",
       "repoCount": 11,
       "searchTerm": "bolt-launcher",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/bo/bolt-launcher/package.nix#L157"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/bo/bolt-launcher/package.nix#L157",
+      "update": {
+        "attr": "bolt-launcher",
+        "date": "2026-09-08",
+        "from": "0.22.0",
+        "log": "https://nixpkgs-update-logs.nixos.org/bolt-launcher/2026-09-08.log",
+        "outcome": "prExists",
+        "pr": 559959,
+        "to": "0.23.2"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -192,7 +245,17 @@
       "refVersion": null,
       "repoCount": 6,
       "searchTerm": "d-seams",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/d-/d-seams/package.nix#L50"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/d-/d-seams/package.nix#L50",
+      "update": {
+        "attr": "d-seams",
+        "date": "2026-09-15",
+        "from": "1.0.1",
+        "log": "https://nixpkgs-update-logs.nixos.org/d-seams/2026-09-15.log",
+        "outcome": "prExists",
+        "pr": 562937,
+        "to": "2.10.0"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -235,7 +298,21 @@
       "refVersion": "2.8.1",
       "repoCount": 33,
       "searchTerm": "egoboo",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/eg/egoboo/package.nix#L88"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/eg/egoboo/package.nix#L88",
+      "update": {
+        "attr": "egoboo",
+        "date": "2026-09-15",
+        "excerpt": [
+          "no configure script, doing nothing",
+          "Running phase: buildPhase",
+          "/nix/store/dp0zdsysxsli2xncj4prvhsik08qn697-stdenv-linux/setup: line 1770: cd: source: No such file or directory"
+        ],
+        "from": "2.7.3",
+        "log": "https://nixpkgs-update-logs.nixos.org/egoboo/2026-09-15.log",
+        "outcome": "superseded",
+        "to": "2.8.1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -260,7 +337,17 @@
       "repoCount": 4,
       "searchTerm": "fastmail-desktop",
       "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fa/fastmail-desktop/package.nix#L20",
-      "unfree": true
+      "unfree": true,
+      "update": {
+        "attr": "fastmail-desktop",
+        "date": "2026-09-25",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/fastmail-desktop/2026-09-25.log",
+        "outcome": "prOpened",
+        "pr": 567005,
+        "to": "1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -297,7 +384,17 @@
       "refVersion": "3.71.1",
       "repoCount": 157,
       "searchTerm": "filezilla",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fi/filezilla/package.nix#L75"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fi/filezilla/package.nix#L75",
+      "update": {
+        "attr": "filezilla",
+        "date": "2026-09-19",
+        "from": "3.70.6",
+        "log": "https://nixpkgs-update-logs.nixos.org/filezilla/2026-09-19.log",
+        "outcome": "prExists",
+        "pr": 559927,
+        "to": "3.71.1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -340,7 +437,9 @@
       "refVersion": "109.6",
       "repoCount": 67,
       "searchTerm": "freedink",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fr/freedink/package.nix#L114"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fr/freedink/package.nix#L114",
+      "update": null,
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -379,7 +478,16 @@
       "refVersion": "1.4.0",
       "repoCount": 41,
       "searchTerm": "fzssh",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fz/fzssh/package.nix#L55"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/fz/fzssh/package.nix#L55",
+      "update": {
+        "attr": "fzssh",
+        "date": "2026-09-21",
+        "from": "1.3.0",
+        "log": "https://nixpkgs-update-logs.nixos.org/fzssh/2026-09-21.log",
+        "outcome": "noChange",
+        "to": "1.4.0"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -404,7 +512,16 @@
       "repoCount": 63,
       "searchTerm": "google-chrome",
       "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/go/google-chrome/package.nix#L354",
-      "unfree": true
+      "unfree": true,
+      "update": {
+        "attr": "google-chrome",
+        "date": "2026-09-20",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/google-chrome/2026-09-20.log",
+        "outcome": "noChange",
+        "to": "1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -454,7 +571,16 @@
       "refVersion": "2.22.3",
       "repoCount": 40,
       "searchTerm": "heroic",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/he/heroic-unwrapped/package.nix#L135"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/he/heroic-unwrapped/package.nix#L135",
+      "update": {
+        "attr": "heroic-unwrapped",
+        "date": "2026-09-26",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/heroic-unwrapped/2026-09-26.log",
+        "outcome": "noChange",
+        "to": "1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -498,7 +624,16 @@
       "refVersion": "0.57.0",
       "repoCount": 143,
       "searchTerm": "libfilezilla",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/libfilezilla/package.nix#L44"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/libfilezilla/package.nix#L44",
+      "update": {
+        "attr": "libfilezilla",
+        "date": "2026-08-30",
+        "from": "0.56.1",
+        "log": "https://nixpkgs-update-logs.nixos.org/libfilezilla/2026-08-30.log",
+        "outcome": "noChange",
+        "to": "0.57.0"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -538,7 +673,9 @@
       "refVersion": "1.12.1",
       "repoCount": 51,
       "searchTerm": "lincity",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/lincity/package.nix#L83"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/lincity/package.nix#L83",
+      "update": null,
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -575,7 +712,16 @@
       "refVersion": "2.15.0",
       "repoCount": 88,
       "searchTerm": "lincity-ng",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/lincity-ng/package.nix#L77"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/lincity-ng/package.nix#L77",
+      "update": {
+        "attr": "lincity-ng",
+        "date": "2026-08-05",
+        "from": "2.14.2",
+        "log": "https://nixpkgs-update-logs.nixos.org/lincity-ng/2026-08-05.log",
+        "outcome": "noChange",
+        "to": "2.15.0"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -612,7 +758,16 @@
       "refVersion": null,
       "repoCount": 1,
       "searchTerm": "linkding",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/linkding/package.nix#L292"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/li/linkding/package.nix#L292",
+      "update": {
+        "attr": "linkding",
+        "date": "2026-09-25",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/linkding/2026-09-25.log",
+        "outcome": "noChange",
+        "to": "1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -637,7 +792,17 @@
       "repoCount": 44,
       "searchTerm": "microsoft-edge",
       "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/mi/microsoft-edge/package.nix#L345",
-      "unfree": true
+      "unfree": true,
+      "update": {
+        "attr": "microsoft-edge",
+        "date": "2026-09-25",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/microsoft-edge/2026-09-25.log",
+        "outcome": "prExists",
+        "pr": 566773,
+        "to": "1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -662,7 +827,9 @@
       "repoCount": 4,
       "searchTerm": "msedgedriver",
       "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ms/msedgedriver/package.nix#L58",
-      "unfree": true
+      "unfree": true,
+      "update": null,
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -685,7 +852,16 @@
       "repoCount": 62,
       "searchTerm": "opentyrian",
       "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/op/opentyrian/package.nix#L43",
-      "unfree": true
+      "unfree": true,
+      "update": {
+        "attr": "opentyrian",
+        "date": "2026-09-23",
+        "from": "2.1.20221123",
+        "log": "https://nixpkgs-update-logs.nixos.org/opentyrian/2026-09-23.log",
+        "outcome": "noChange",
+        "to": "2.1.20260913"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -728,7 +904,9 @@
       "refVersion": "2.4",
       "repoCount": 6,
       "searchTerm": "ringracers",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ri/ringracers/package.nix#L113"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ri/ringracers/package.nix#L113",
+      "update": null,
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -765,7 +943,16 @@
       "refVersion": "2.8.0",
       "repoCount": 11,
       "searchTerm": "runelite",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ru/runelite/package.nix#L80"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ru/runelite/package.nix#L80",
+      "update": {
+        "attr": "runelite",
+        "date": "2026-09-22",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/runelite/2026-09-22.log",
+        "outcome": "noChange",
+        "to": "1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -802,7 +989,9 @@
       "refVersion": "0.17",
       "repoCount": 86,
       "searchTerm": "scanmem",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/sc/scanmem/package.nix#L60"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/sc/scanmem/package.nix#L60",
+      "update": null,
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -845,7 +1034,9 @@
       "refVersion": "3.1.0",
       "repoCount": 14,
       "searchTerm": "typioca",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ty/typioca/package.nix#L35"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/ty/typioca/package.nix#L35",
+      "update": null,
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -889,7 +1080,17 @@
       "refVersion": "4.22.4",
       "repoCount": 18,
       "searchTerm": "unciv",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/un/unciv/package.nix#L73"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/un/unciv/package.nix#L73",
+      "update": {
+        "attr": "unciv",
+        "date": "2026-09-20",
+        "from": "4.21.19",
+        "log": "https://nixpkgs-update-logs.nixos.org/unciv/2026-09-20.log",
+        "outcome": "prOpened",
+        "pr": 565255,
+        "to": "4.22.1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -932,7 +1133,16 @@
       "refVersion": "1.18.8",
       "repoCount": 173,
       "searchTerm": "wesnoth",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/we/wesnoth/package.nix#L147"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/we/wesnoth/package.nix#L147",
+      "update": {
+        "attr": "wesnoth",
+        "date": "2026-09-25",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/wesnoth/2026-09-25.log",
+        "outcome": "noChange",
+        "to": "1"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -975,7 +1185,21 @@
       "refVersion": "1.19.24",
       "repoCount": 173,
       "searchTerm": "wesnoth-devel",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/we/wesnoth/package.nix#L147"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/we/wesnoth/package.nix#L147",
+      "update": {
+        "attr": "wesnoth-devel",
+        "date": "2026-09-22",
+        "excerpt": [
+          "  installed.",
+          "",
+          "-- Configuring incomplete, errors occurred!"
+        ],
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/wesnoth-devel/2026-09-22.log",
+        "outcome": "failed",
+        "to": "1"
+      },
+      "updateFailure": true
     },
     {
       "attrs": [
@@ -1019,7 +1243,16 @@
       "refVersion": "1.3.8",
       "repoCount": 136,
       "searchTerm": "xournalpp",
-      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/xo/xournalpp/package.nix#L84"
+      "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/xo/xournalpp/package.nix#L84",
+      "update": {
+        "attr": "xournalpp",
+        "date": "2026-09-22",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/xournalpp/2026-09-22.log",
+        "outcome": "noChange",
+        "to": "1"
+      },
+      "updateFailure": false
     }
   ]
 }
