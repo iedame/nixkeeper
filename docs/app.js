@@ -111,11 +111,75 @@ function buildsWith(pkg, status) {
 }
 const failedBuilds = (pkg) => buildsWith(pkg, 'failed');
 
-// Default order: failed, then outdated (longest outdated first), then the
-// rest; otherwise alphabetical (the index arrives sorted by name and
-// Array.sort is stable).
+// Version order as the sync compares them (nixkeeper/versions.py): numbers
+// as numbers, a letter part before a number (1.0rc1 < 1.0.1).
+function compareVersions(a, b) {
+  const parts = (v) =>
+    (v.match(/\d+|[A-Za-z]+/g) || []).map((p) => (/^\d/.test(p) ? [1, +p, ''] : [0, 0, p]));
+  const [pa, pb] = [parts(a), parts(b)];
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    if (!pa[i] || !pb[i]) return pa[i] ? 1 : -1;
+    for (let j = 0; j < 3; j++) if (pa[i][j] !== pb[i][j]) return pa[i][j] < pb[i][j] ? -1 : 1;
+  }
+  return 0;
+}
+
+// The version master has, when ahead of the channel: Hydra's build there, or
+// what an update PR merged into master brings (before Hydra has built it),
+// whichever is higher (on_master in nixkeeper/changes.py).
+function onMaster(pkg) {
+  const versions = [pkg.master, pkg.masterPR?.to].filter(Boolean);
+  return versions.sort(compareVersions).pop() || null;
+}
+
+// Outdated, but master already has the target version (or newer): the update
+// is merged and waits for nixos-unstable, usually a few days (see
+// waiting_for_channel in nixkeeper/changes.py).
+function waitingForChannel(pkg) {
+  return (
+    computeStatus(pkg) === 'warn' &&
+    Boolean(onMaster(pkg)) &&
+    compareVersions(pkg.refVersion || '', onMaster(pkg)) <= 0
+  );
+}
+
+// Where the package's update stands on GitHub, in GitHub's own colors:
+// "on master" (merged, purple) while waiting for the channel, else an open
+// update PR (green; grey while a draft). A link to the PR when it's known.
+function prBadge(pkg) {
+  const badge = (cls, text, title, pr) =>
+    pr
+      ? ` <a class="badge ${cls}" href="${escapeHtml(pr.url)}" target="_blank" rel="noopener" title="${escapeHtml(title)}">${text}</a>`
+      : ` <span class="badge ${cls}" title="${escapeHtml(title)}">${text}</span>`;
+  if (waitingForChannel(pkg)) {
+    const pr = pkg.masterPR;
+    return badge(
+      'onmaster',
+      'on master',
+      `master already has ${onMaster(pkg)}: merged${pr ? ` in #${pr.number} (${pr.title})` : ''}, waiting for nixos-unstable to catch up (usually a few days)`,
+      pr,
+    );
+  }
+  const pr = pkg.openPR;
+  if (!pr) return '';
+  const behind =
+    pkg.refVersion && compareVersions(pr.to, pkg.refVersion) < 0
+      ? ` (the newest is ${pkg.refVersion})`
+      : '';
+  return badge(
+    pr.draft ? 'prdraft' : 'propen',
+    `PR #${pr.number}`,
+    `${pr.draft ? 'Draft update PR' : 'Update PR waiting for review'}: ${pr.title}${behind}`,
+    pr,
+  );
+}
+
+// Default order: failed, then outdated (longest outdated first), then
+// outdated but already fixed on master, then the rest; otherwise
+// alphabetical (the index arrives sorted by name and Array.sort is stable).
 function attentionRank(pkg) {
   if (hasFailure(pkg)) return 0;
+  if (waitingForChannel(pkg)) return 1.5;
   if (computeStatus(pkg) === 'warn') return 1;
   return 2;
 }
@@ -307,13 +371,13 @@ function render(list) {
     const verCell =
       st === 'missing'
         ? `<span class="badge missing">not packaged</span>`
-        : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. Fix it in package-lists/update-checks.nix.">check failing</span>` : ''}`;
+        : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${prBadge(pkg)}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. Fix it in package-lists/update-checks.nix.">check failing</span>` : ''}`;
 
     const tr = document.createElement('tr');
     tr.className = 'row';
     tr.tabIndex = 0;
     tr.innerHTML = `
-      <td><div class="pkg-name"><span class="status-dot ${st}"></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
+      <td><div class="pkg-name"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}"${waitingForChannel(pkg) ? ' title="Update merged: on master, waiting for nixos-unstable"' : ''}></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
       <td class="ver mono">${verCell}</td>
       <td>${githubLinks(pkg)}</td>
       <td>${buildCell(pkg)}</td>
@@ -353,8 +417,8 @@ function render(list) {
       });
     }
 
-    for (const a of tr.querySelectorAll('.gh-btn')) {
-      a.addEventListener('click', (e) => e.stopPropagation());
+    for (const a of tr.querySelectorAll('.gh-btn, a.badge')) {
+      a.addEventListener('click', (e) => e.stopPropagation()); // open the link, not the row
     }
     for (const btn of tr.querySelectorAll('button.plat')) {
       btn.addEventListener('click', (e) => {
@@ -443,11 +507,14 @@ const prLink = (n, text) =>
   `<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${n}" target="_blank" rel="noopener">${text}</a>`;
 const UPDATE_OUTCOME = {
   failed: { dot: 'missing', text: () => 'failed' },
-  // nixpkgs has moved on since the attempt (updated another way).
+  // nixpkgs has moved on since the attempt (updated another way): in the
+  // channel, or merged on master and not in the channel yet.
   superseded: {
     dot: 'neutral',
-    text: (_u, pkg) =>
-      `failed, but nixpkgs has moved on to <span class="mono">${escapeHtml(pkg.nixVersion)}</span> since`,
+    text: (u, pkg) =>
+      u.supersededOn === 'master'
+        ? `failed, but master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (merged, waiting for nixos-unstable)`
+        : `failed, but nixpkgs has moved on to <span class="mono">${escapeHtml(pkg.nixVersion)}</span> since`,
   },
   prOpened: { dot: 'ok', text: (u) => `opened ${prLink(u.pr, `PR #${u.pr} ↗`)}` },
   prExists: {
@@ -651,7 +718,21 @@ async function fillDetail(pkg, el) {
         }`;
 
   el.innerHTML = `
-    <div class="nix-line">${nixLine}</div>${checkNote}${
+    <div class="nix-line">${nixLine}</div>${
+      onMaster(pkg)
+        ? `<div class="master-note">master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (${[
+            pkg.masterPR &&
+              `merged in <a class="files-link" href="${escapeHtml(pkg.masterPR.url)}" target="_blank" rel="noopener">#${pkg.masterPR.number} ↗</a>`,
+            pkg.master ? 'built by Hydra' : 'not built by Hydra yet',
+          ]
+            .filter(Boolean)
+            .join(', ')})${
+            waitingForChannel(pkg)
+              ? ': the update is merged, and reaches nixos-unstable when the channel next advances, usually within a few days.'
+              : ', not in nixos-unstable yet.'
+          }</div>`
+        : ''
+    }${checkNote}${
       pkg.nixVulnerable
         ? `<div class="vuln-note">⚠ Repology flags nixpkgs' version <span class="mono">${escapeHtml(pkg.nixVersion)}</span> as vulnerable.${
             pkg.project

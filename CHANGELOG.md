@@ -9,6 +9,32 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- "On master": when master has a newer version than the nixos-unstable
+  channel (built by Hydra, or brought by an update PR merged into master, so
+  before Hydra has built it), the row says so, and an outdated package whose
+  update is merged shows as waiting for the channel: in GitHub's merged-PR
+  purple (its status dot and age, an "on master" badge like GitHub's "Merged"
+  label, linking to the merged PR, and a note in the details), sorted after
+  the other outdated packages. It doesn't trigger "Newly outdated" in the
+  status issue. PRs merged into staging don't count: they reach master weeks
+  later.
+- Update PRs: an open PR updating a package (title
+  `<attribute>: <old> -> <new>`, aiming past nixpkgs' version) shows as a
+  badge linking to it, in GitHub's open-PR green (grey while a draft). The
+  status issue links it too.
+- Hourly PR check (`nix run .#pr-check`): the update PRs of every outdated
+  package, open and merged into master, so those badges show within the hour.
+  One GitHub request; it commits only when a badge changes.
+
+### Changed
+
+- The hourly workflow is now `hourly.yml`, running the frequent update checks
+  (`nix run .#frequent-check`, renamed from `quick-check`, which still works)
+  and the PR check, with one commit. The frequent check no longer refreshes
+  GitHub counts: those stay daily.
+
 ### Fixed
 
 - An update failure clears as soon as nixpkgs has moved on from the version
@@ -16,6 +42,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   "superseded". Before, it only cleared at the bot's next attempt, up to ~10
   days later, for packages with their own update script (`0 -> 1` in the
   log), such as wesnoth-devel.
+- A failure also counts as superseded once master has moved on (the fix is
+  merged, not yet in the channel), so a row waiting for the channel doesn't
+  also show as failed.
 - The update cell shows a superseded failure as a grey "superseded" instead of
   "none reported", so a bot attempt that broke stays visible.
 

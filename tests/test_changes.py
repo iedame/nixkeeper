@@ -1,6 +1,6 @@
 import unittest
 
-from nixkeeper.changes import diff, failures, should_notify
+from nixkeeper.changes import diff, failures, should_notify, waiting_for_channel
 
 
 def row(name, status="newest", **extra):
@@ -146,3 +146,26 @@ class Diff(unittest.TestCase):
     def test_first_run_notifies_nothing(self):
         c = self.changes([], [row("a", "outdated"), row("b", "missing")])
         self.assertFalse(should_notify(c))
+
+
+class WaitingForChannel(unittest.TestCase):
+    """Outdated with the update already on master: merged, waiting for
+    nixos-unstable."""
+
+    def outdated(self, **extra):
+        return row("wesnoth-devel", "outdated", refVersion="1.19.28", **extra)
+
+    def test_waiting(self):
+        self.assertTrue(waiting_for_channel(self.outdated(master="1.19.28")))
+        self.assertTrue(waiting_for_channel(self.outdated(master="1.19.29")))
+        # master ahead of the channel, but not yet at the newest: still to do.
+        self.assertFalse(waiting_for_channel(self.outdated(master="1.19.26")))
+        self.assertFalse(waiting_for_channel(self.outdated()))
+        self.assertFalse(waiting_for_channel(row("x", master="2")))  # not outdated
+
+    def test_not_newly_outdated_news(self):
+        before = {"packages": [row("wesnoth-devel")]}
+        c = diff(before, [self.outdated(master="1.19.28")])
+        self.assertEqual(c["outdated"], [])
+        c = diff(before, [self.outdated()])
+        self.assertEqual([r["name"] for r in c["outdated"]], ["wesnoth-devel"])

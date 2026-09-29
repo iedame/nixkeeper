@@ -113,6 +113,44 @@ class Text(unittest.TestCase):
         body = notify.status_body([row], diff({"packages": []}, [row]), NOW)
         self.assertIn("### Not refreshed (1)", body)
 
+    def test_waiting_for_channel(self):
+        row = {
+            "name": "wesnoth-devel",
+            "nixStatus": "outdated",
+            "nixVersion": "1.19.24",
+            "refVersion": "1.19.28",
+            "master": "1.19.28",
+            "outdatedSince": NOW,
+        }
+        self.assertEqual(
+            notify.describe(row, NOW),
+            "`wesnoth-devel` 1.19.24 → 1.19.28 · outdated today"
+            " · on master (1.19.28), waiting for nixos-unstable",
+        )
+
+    def test_update_prs(self):
+        url = "https://github.com/NixOS/nixpkgs/pull/"
+        outdated = {
+            "name": "google-chrome",
+            "nixStatus": "outdated",
+            "nixVersion": "1",
+            "refVersion": "2",
+            "openPR": {"number": 7, "url": f"{url}7", "draft": False},
+        }
+        self.assertTrue(
+            notify.describe(outdated, NOW).endswith(f" · PR [#7]({url}7) open")
+        )
+        waiting = {
+            **outdated,
+            "master": "2",
+            "masterPR": {"number": 6, "url": f"{url}6"},
+        }
+        self.assertTrue(
+            notify.describe(waiting, NOW).endswith(
+                f" · on master (2), waiting for nixos-unstable ([#6]({url}6))"
+            )
+        )
+
     def test_update_failure_links_its_log(self):
         log = "https://nixpkgs-update-logs.nixos.org/egoboo/2026-09-15.log"
         row = {

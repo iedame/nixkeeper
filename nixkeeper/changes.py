@@ -1,6 +1,7 @@
 """What changed since the previous run, for notifications."""
 
 from . import config
+from .versions import is_newer, version_key
 
 
 def is_outdated(row):
@@ -8,6 +9,27 @@ def is_outdated(row):
     Repology hasn't seen yet)."""
     return row.get("nixStatus") in config.OUTDATED_STATUSES or bool(
         (row.get("upstream") or {}).get("newer")
+    )
+
+
+def on_master(row):
+    """The version master has, when it's ahead of the channel: what Hydra
+    built there ("master"), or what an update PR merged into master brings
+    ("masterPR", known before Hydra has built it), whichever is higher."""
+    versions = [row.get("master"), (row.get("masterPR") or {}).get("to")]
+    versions = [v for v in versions if v]
+    return max(versions, key=version_key, default=None)
+
+
+def waiting_for_channel(row):
+    """Outdated, but master already has the version it's compared against (or
+    newer): the update is merged and only waits for nixos-unstable to catch up,
+    usually a few days. Nothing to do but wait."""
+    master = on_master(row)
+    return (
+        is_outdated(row)
+        and bool(master)
+        and not is_newer(row.get("refVersion") or "", master)
     )
 
 
@@ -74,7 +96,8 @@ def diff(previous, rows):
         if old is None:
             changes["added"].append(row)
             continue
-        if is_outdated(row) and not is_outdated(old):
+        # Already fixed on master (updated before this sync noticed): not news.
+        if is_outdated(row) and not is_outdated(old) and not waiting_for_channel(row):
             changes["outdated"].append(row)
         if is_outdated(old) and not is_outdated(row):
             changes["caughtUp"].append(row)

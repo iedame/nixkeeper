@@ -124,6 +124,16 @@ class Parse(unittest.TestCase):
         self.assertFalse(superseded({"to": "1"}, "1.19.28"))
         self.assertFalse(superseded({"was": "2.7.3"}, None))
 
+    def test_superseded_says_where(self):
+        superseded = nixpkgs_update.superseded
+        was = {"was": "wesnoth-devel-1.19.24"}
+        self.assertEqual(superseded(was, "1.19.28"), "nixos-unstable")
+        # Merged on master, the channel not there yet.
+        self.assertEqual(superseded(was, "1.19.24", "1.19.28"), "master")
+        # The channel counts first when both have moved on.
+        self.assertEqual(superseded(was, "1.19.28", "1.19.30"), "nixos-unstable")
+        self.assertIsNone(superseded(was, "1.19.24", None))
+
 
 class AddAttempts(unittest.TestCase):
     def setUp(self):
@@ -182,26 +192,33 @@ class AddAttempts(unittest.TestCase):
 
     def test_update_script_failure_clears_once_nixpkgs_updates(self):
         """wesnoth-devel: the bot failed 1.19.24 -> 1.19.28, then a manual PR
-        got 1.19.28 into the channel before the bot tried again."""
+        got 1.19.28 merged (built on master), then into the channel, before
+        the bot tried again."""
         pages = {
             "/wesnoth-devel/": listing("2026-09-22"),
             "/wesnoth-devel/2026-09-22.log": UPDATE_SCRIPT_FAILED,
         }
-        for nix_version, failing in (("1.19.24", True), ("1.19.28", False)):
-            with self.subTest(nix_version=nix_version):
-                rows = [
-                    {
-                        "name": "wesnoth-devel",
-                        "attrs": ["wesnoth-devel"],
-                        "nixVersion": nix_version,
-                    }
-                ]
-                self.run_attempts(rows, pages)
-                self.assertEqual(rows[0]["updateFailure"], failing)
+        stages = (
+            # channel, master (from Hydra): failing?, superseded where
+            ("1.19.24", None, True, None),  # nothing merged yet
+            ("1.19.24", "1.19.28", False, "master"),  # merged
+            ("1.19.28", None, False, "nixos-unstable"),  # in the channel
+        )
+        for nix_version, master, failing, where in stages:
+            with self.subTest(nix_version=nix_version, master=master):
+                row = {
+                    "name": "wesnoth-devel",
+                    "attrs": ["wesnoth-devel"],
+                    "nixVersion": nix_version,
+                }
+                if master:
+                    row["master"] = master
+                self.run_attempts([row], pages)
+                self.assertEqual(row["updateFailure"], failing)
                 self.assertEqual(
-                    rows[0]["update"]["outcome"],
-                    "failed" if failing else "superseded",
+                    row["update"]["outcome"], "failed" if failing else "superseded"
                 )
+                self.assertEqual(row["update"].get("supersededOn"), where)
 
     def test_versioned_sets_use_the_alias(self):
         rows = [

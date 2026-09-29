@@ -19,8 +19,10 @@ from .changes import (
     failed_builds,
     failures,
     is_outdated,
+    on_master,
     should_notify,
     stale_sources,
+    waiting_for_channel,
 )
 from .sources import github
 
@@ -48,6 +50,13 @@ def describe(row, now):
             text += " (found by nixkeeper's update check)"
         if row.get("outdatedSince"):
             text += f" · outdated {days_text(row['outdatedSince'], now)}"
+        if waiting_for_channel(row):
+            text += f" · on master ({on_master(row)}), waiting for nixos-unstable"
+            if pr := row.get("masterPR"):
+                text += f" ([#{pr['number']}]({pr['url']}))"
+        elif pr := row.get("openPR"):
+            state = "draft PR" if pr["draft"] else "PR"
+            text += f" · {state} [#{pr['number']}]({pr['url']}) open"
     if failures(row):
         text += " — " + ", ".join(failures(row))
     if row.get("nixVulnerable"):

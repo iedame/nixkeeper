@@ -1,14 +1,20 @@
-name: Quick update check
+name: Hourly checks
 
-# The update checks marked `frequent = true` in package-lists/update-checks.nix,
-# hourly, on top of the daily sync (nixkeeper/quick.py). Commits only when a
-# result changed, so most runs push nothing.
+# Two small checks on top of the daily sync, against the last published data:
+#   frequent-check: the update checks marked `frequent = true` in
+#     package-lists/update-checks.nix (nixkeeper/frequent.py)
+#   pr-check: outdated packages' update PRs, open and merged into master
+#     (nixkeeper/prcheck.py)
+# One workflow, one commit: both change little, and most hours nothing, so
+# most runs push nothing.
 on:
   schedule:
     - cron: '23 * * * *'   # hourly; off the hour, when GitHub's scheduler is busiest
   workflow_dispatch: {}
 
-# Both workflows push to the data branch: never at the same time.
+# The daily sync pushes to the data branch too: never at the same time. (Only
+# one run can wait per group; a second waiting run would cancel it, which is
+# why these checks share one workflow instead of two.)
 concurrency:
   group: data-branch
   cancel-in-progress: false
@@ -16,9 +22,12 @@ concurrency:
 permissions:
   contents: write
   issues: write  # the status issue (nixkeeper/notify.py)
+  # The PR searches: without it they silently come back as issue searches
+  # (see sync.yml).
+  pull-requests: read
 
 jobs:
-  quick-check:
+  hourly:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main
@@ -40,18 +49,27 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@main
 
-      - name: Run the frequent update checks
-        run: nix run .#quick-check
+      - name: Frequent update checks
+        run: nix run .#frequent-check
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub checks and the status issue
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub tag checks, status issue
           NIXKEEPER_NOTIFY: github-issue  # the status issue; local runs don't notify
 
+      - name: Update PRs
+        # Also when the frequent checks failed: they're independent.
+        if: ${{ !cancelled() }}
+        run: nix run .#pr-check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR searches, status issue
+          NIXKEEPER_NOTIFY: github-issue
+
       - name: Commit and push if anything changed
+        if: ${{ !cancelled() }}
         run: |
           git add -f data/
           if git diff --cached --quiet; then
             echo "Nothing changed."
             exit 0
           fi
-          git commit -m "quick check: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          git commit -m "hourly: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
           git push --force-with-lease origin data

@@ -97,19 +97,26 @@
           program = lib.getExe nixkeeper;
           meta.description = "Sync data/: Repology, update checks, Hydra, nixpkgs-update logs, GitHub";
         };
+        # The hourly checks (.github/workflows/hourly.yml), against data/.
+        frequent-check = {
+          type = "app";
+          program = lib.getExe' nixkeeper "nixkeeper-frequent-check";
+          meta.description = "Run the frequent update checks (frequent = true) against data/";
+        };
+        pr-check = {
+          type = "app";
+          program = lib.getExe' nixkeeper "nixkeeper-pr-check";
+          meta.description = "Look for outdated packages' update PRs, open and merged, against data/";
+        };
       in
       {
         packages.default = nixkeeper;
 
         apps = {
-          inherit sync;
+          inherit sync frequent-check pr-check;
           fetch = sync; # old name, kept as an alias
+          quick-check = frequent-check; # old name, kept as an alias
           default = sync;
-          quick-check = {
-            type = "app";
-            program = lib.getExe' nixkeeper "nixkeeper-quick-check";
-            meta.description = "Run the frequent update checks against the last sync's data/";
-          };
         };
 
         formatter = treefmt.config.build.wrapper;

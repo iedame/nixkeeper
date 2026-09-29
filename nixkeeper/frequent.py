@@ -1,17 +1,15 @@
-"""The quick check: the update checks marked `frequent = true` in
+"""The frequent check: the update checks marked `frequent = true` in
 package-lists/update-checks.nix, run hourly for packages where a new release
-matters within the hour (browsers, for their security fixes). Starts from the
-last published data and touches only those packages: their Repology data
-(so the comparison uses nixpkgs' current version) and their update check.
-Writes data/ and updates the status issue only if something changed.
-Run from the repository root: `nix run .#quick-check`."""
+matters within the hour (browsers, for their security fixes). Touches only
+those packages: their Repology data (so the comparison uses nixpkgs' current
+version) and their update check. Run from the repository root:
+`nix run .#frequent-check`."""
 
-import copy
 import sys
 import urllib.error
 from datetime import UTC, datetime
 
-from . import history, notify, output, rows
+from . import history, partial, rows
 from .sources import nixpkgs as nixpkgs_source
 from .sources import repology, upstream
 
@@ -53,20 +51,9 @@ def refresh_repology(row, previous, now):
     return entries
 
 
-def meaningful(packages):
-    """packages without what changes every run anyway (when a check last
-    succeeded), to tell whether anything worth publishing changed."""
-    packages = copy.deepcopy(packages)
-    for row in packages:
-        (row.get("upstream") or {}).pop("checkedAt", None)
-    return packages
-
-
 def main():
     now = datetime.now(UTC).isoformat()
-    previous = history.load_previous_run()
-    if not previous["packages"]:
-        sys.exit("No previous run in data/: run the full sync first (nix run .#sync).")
+    previous, packages = partial.load()
     checks = {
         name: check
         for name, check in (
@@ -74,13 +61,15 @@ def main():
         ).items()
         if check.get("frequent")
     }
-    packages = copy.deepcopy(previous["packages"])
     by_name = {row["name"]: row for row in packages}
     selected = [by_name[name] for name in checks if name in by_name]
     if not selected:
         print("No frequent update checks for tracked packages.", file=sys.stderr)
         return
-    print(f"Quick check: {', '.join(row['name'] for row in selected)}", file=sys.stderr)
+    print(
+        f"Frequent check: {', '.join(row['name'] for row in selected)}",
+        file=sys.stderr,
+    )
     data_files = {}
     for row in selected:
         for key in REFRESHED:
@@ -95,16 +84,7 @@ def main():
                 data_files[row["dataFile"]] = entries
     upstream.add_checks(selected, checks, previous, now)
     history.add_outdated_since(selected, previous, now)
-
-    if meaningful(packages) == meaningful(previous["packages"]):
-        print("Nothing changed.", file=sys.stderr)
-        return
-    # checkedAt stays the full sync's: it's what the page's staleness warning
-    # and the sources the quick check doesn't touch go by.
-    index = {**previous, "packages": packages}
-    output.update({**data_files, "index.json": index})
-    print("Changes written.", file=sys.stderr)
-    notify.notify(previous, packages, now)
+    partial.publish(previous, packages, now, data_files)
 
 
 if __name__ == "__main__":

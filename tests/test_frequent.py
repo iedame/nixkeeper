@@ -5,8 +5,8 @@ import tempfile
 import unittest
 from unittest import mock
 
-from nixkeeper import notify, quick
-from nixkeeper.sources import http, repology
+from nixkeeper import frequent, notify
+from nixkeeper.sources import github, http, repology
 from nixkeeper.sources import nixpkgs as nixpkgs_source
 from tests.helpers import nix, other
 
@@ -52,7 +52,7 @@ def api(*versions):
     return json.dumps({"versions": [{"version": v} for v in versions]})
 
 
-class QuickCheck(unittest.TestCase):
+class FrequentCheck(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.TemporaryDirectory()
         self.addCleanup(self.dir.cleanup)
@@ -71,8 +71,8 @@ class QuickCheck(unittest.TestCase):
             json.dump(index, f)
         return index
 
-    def run_quick(self, page, nix_version="154.0.8037.57", newest="154.0.8037.57"):
-        """quick.main() with Repology answering nix_version for nixpkgs and
+    def run_frequent(self, page, nix_version="154.0.8037.57", newest="154.0.8037.57"):
+        """frequent.main() with Repology answering nix_version for nixpkgs and
         the check's URL answering page."""
         with (
             mock.patch.object(
@@ -85,14 +85,16 @@ class QuickCheck(unittest.TestCase):
             ),
             mock.patch.object(http, "get", return_value=page) as get,
             mock.patch.object(notify, "notify") as notified,
+            # Never a GitHub token (nor the local gh login) from the tests.
+            mock.patch.object(github, "token", return_value=None),
         ):
-            quick.main()
+            frequent.main()
         with open("data/index.json") as f:
             return json.load(f), notified, get
 
     def test_new_release_is_written_and_notified(self):
         before = self.publish(chrome_row(), {"name": "bbedit", "attrs": ["bbedit"]})
-        index, notified, get = self.run_quick(api("154.0.8040.12", "154.0.8037.57"))
+        index, notified, get = self.run_frequent(api("154.0.8040.12", "154.0.8037.57"))
         chrome = index["packages"][0]
         self.assertEqual(chrome["refVersion"], "154.0.8040.12")
         self.assertTrue(chrome["upstream"]["newer"])
@@ -113,7 +115,7 @@ class QuickCheck(unittest.TestCase):
             "newer": False,
         }
         before = self.publish(chrome_row(upstream=up))
-        index, notified, _ = self.run_quick(api("154.0.8037.57"))
+        index, notified, _ = self.run_frequent(api("154.0.8037.57"))
         self.assertEqual(index, before)
         notified.assert_not_called()
         self.assertIn("Nothing changed", self.stderr.getvalue())
@@ -127,7 +129,7 @@ class QuickCheck(unittest.TestCase):
                 outdatedSince="2026-09-30T07:23:00+00:00",
             )
         )
-        index, _, _ = self.run_quick(
+        index, _, _ = self.run_frequent(
             api("154.0.8040.12"), nix_version="154.0.8040.12", newest="154.0.8040.12"
         )
         chrome = index["packages"][0]
@@ -137,14 +139,14 @@ class QuickCheck(unittest.TestCase):
 
     def test_failing_check_is_marked_and_notified_once(self):
         self.publish(chrome_row())
-        index, notified, _ = self.run_quick("<html>moved</html>")
+        index, notified, _ = self.run_frequent("<html>moved</html>")
         failing = index["packages"][0]["notRefreshed"]["upstream"]
         self.assertIn("matches", failing["reason"])
         notified.assert_called_once()
         # Next hour, still failing: nothing new to write or say.
-        _, notified, _ = self.run_quick("<html>moved</html>")
+        _, notified, _ = self.run_frequent("<html>moved</html>")
         notified.assert_not_called()
 
     def test_needs_a_previous_sync(self):
         with self.assertRaises(SystemExit):
-            quick.main()
+            frequent.main()

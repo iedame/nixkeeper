@@ -14,7 +14,9 @@ For each package it tracks, nixkeeper shows on one static page (`docs/`):
 - **Update failures**: the latest attempt of the
   [nixpkgs-update](https://nixpkgs-update-logs.nixos.org) bot (r-ryantm)
 - **Vulnerabilities**: versions Repology flags, with their known CVEs
-- **Open PRs and issues** in nixpkgs that name the package
+- **Open PRs and issues** in nixpkgs that name the package, with the update
+  PR one click away: open (GitHub's green), or merged and on master (purple)
+  while it waits for the channel
 
 A daily sync (GitHub Actions, or anywhere: see [Running elsewhere](#running-elsewhere))
 refreshes it all and keeps a status issue up to date, commenting when something
@@ -43,16 +45,17 @@ just that list, to share with the people it's for.
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates)
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/` from the `data` branch
-- `.github/workflows/`: `sync.yml` (daily sync), `quick-check.yml` (hourly
-  frequent update checks), `check.yml` (tests on push)
+- `.github/workflows/`: `sync.yml` (daily sync), `hourly.yml` (frequent
+  update checks and update PRs), `check.yml` (tests on push)
 
 ## Commands
 
 ```bash
-nix run .#sync          # sync into data/ (alias: nix run .#fetch)
-nix run .#quick-check   # only the frequent update checks, against data/ (hourly in CI)
-nix fmt                 # format everything (Nix, Python, the page)
-nix flake check         # tests, formatting, linters, package-list checks
+nix run .#sync            # sync into data/ (alias: nix run .#fetch)
+nix run .#frequent-check  # only the frequent update checks, against data/ (hourly in CI)
+nix run .#pr-check        # outdated packages' update PRs, against data/ (hourly in CI)
+nix fmt                   # format everything (Nix, Python, the page)
+nix flake check           # tests, formatting, linters, package-list checks
 nix develop -c python3 -m unittest discover -s tests -t .   # tests, quickly
 nix eval --json -f package-lists                             # what the lists evaluate to
 ```

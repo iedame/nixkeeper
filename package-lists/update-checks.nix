@@ -17,7 +17,7 @@
 # package shows as outdated.
 #
 # Either kind can add `frequent = true;` to be checked every hour, not just in
-# the daily sync (.github/workflows/quick-check.yml): for packages whose new
+# the daily sync (.github/workflows/hourly.yml): for packages whose new
 # releases matter within the hour, like browsers' security fixes.
 {
   wesnoth-devel = {

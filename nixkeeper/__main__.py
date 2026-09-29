@@ -6,6 +6,7 @@ and writes data/ there): `nix run .#sync`."""
 from datetime import UTC, datetime
 
 from . import history, lookup, notify, output, rows, tracking
+from .changes import is_outdated
 from .sources import github, hydra, nixpkgs_update, upstream
 from .sources import nixpkgs as nixpkgs_source
 
@@ -28,7 +29,10 @@ def main():
     broken = nixpkgs_source.broken(in_nixpkgs, revision)
     hydra.add_builds(index_rows, nixpkgs, previous, now, broken)
     nixpkgs_update.add_attempts(index_rows, nixpkgs, previous, now)
-    github.add_counts(index_rows)
+    github.add_counts(index_rows)  # and open update PRs
+    outdated = [row for row in index_rows if is_outdated(row)]
+    github.add_update_prs(outdated, open_prs=False)  # merged into master
+    nixpkgs_update.recheck_superseded(outdated)
     output.write(projects, {"checkedAt": now, "packages": index_rows})
     notify.notify(previous, index_rows, now)
 

@@ -209,3 +209,73 @@ class AddBuilds(unittest.TestCase):
         with mock.patch("urllib.request.urlopen", side_effect=urlopen):
             hydra.add_builds(rows, nixpkgs, {"packages": []}, NOW)
         self.assertNotIn("notRefreshed", rows[0])
+
+
+class MasterVersion(unittest.TestCase):
+    """What master has, from Hydra's build names, when it's ahead of the
+    channel (a merged update the channel hasn't picked up yet)."""
+
+    def row(self, *names, attrs=("wesnoth-devel",)):
+        return {
+            "name": attrs[0],
+            "attrs": list(attrs),
+            "builds": [
+                {"attr": attr, "system": "x86_64-linux", "status": "ok", "name": name}
+                for attr, name in names
+            ],
+        }
+
+    def pkgs(self, version="1.19.24"):
+        return {"wesnoth-devel": pkg("wesnoth-devel", version=version)}
+
+    def test_master_ahead(self):
+        row = self.row(("wesnoth-devel", "wesnoth-devel-1.19.28"))
+        self.assertEqual(hydra.master_version(row, self.pkgs()), "1.19.28")
+
+    def test_master_same_as_channel(self):
+        row = self.row(("wesnoth-devel", "wesnoth-devel-1.19.24"))
+        self.assertIsNone(hydra.master_version(row, self.pkgs()))
+
+    def test_newest_across_platforms(self):
+        row = self.row(
+            ("wesnoth-devel", "wesnoth-devel-1.19.26"),
+            ("wesnoth-devel", "wesnoth-devel-1.19.28"),
+        )
+        self.assertEqual(hydra.master_version(row, self.pkgs()), "1.19.28")
+
+    def test_pname_with_dashes_and_other_names(self):
+        # The pname, not the attribute, prefixes the name (1password-8.12.36).
+        pkgs = {"_1password-gui": pkg("1password", version="8.12.34")}
+        row = self.row(
+            ("_1password-gui", "1password-8.12.36"), attrs=("_1password-gui",)
+        )
+        self.assertEqual(hydra.master_version(row, pkgs), "8.12.36")
+        # A build whose name doesn't fit (renamed pname): no guess.
+        row = self.row(("_1password-gui", "onepassword-9"), attrs=("_1password-gui",))
+        self.assertIsNone(hydra.master_version(row, pkgs))
+
+    def test_the_rows_own_attribute_first(self):
+        pkgs = {
+            "heroic": pkg("heroic", version="2.1"),
+            "heroic-unwrapped": pkg("heroic-unwrapped", version="2.1"),
+        }
+        row = self.row(
+            ("heroic-unwrapped", "heroic-unwrapped-2.3"),
+            ("heroic", "heroic-2.2"),
+            attrs=("heroic", "heroic-unwrapped"),
+        )
+        self.assertEqual(hydra.master_version(row, pkgs), "2.2")
+
+    def test_add_builds_records_it(self):
+        nixpkgs = {"hello": pkg("hello", ["x86_64-linux"], version="2.12.2")}
+        rows = [{"name": "hello", "attrs": ["hello"]}]
+        build = [{"id": 1, "buildstatus": 0, "nixname": "hello-2.12.3"}]
+        urlopen, _ = fake_hydra({"hello.x86_64-linux": build})
+        with (
+            mock.patch("urllib.request.urlopen", side_effect=urlopen),
+            mock.patch("time.sleep"),
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            hydra.add_builds(rows, nixpkgs, {"packages": []}, NOW)
+        self.assertEqual(rows[0]["builds"][0]["name"], "hello-2.12.3")
+        self.assertEqual(rows[0]["master"], "2.12.3")

@@ -17,6 +17,15 @@
   --stale-soft: #eeeeef;
   --danger: #c4433a;
   --danger-soft: #fbe9e7;
+  /* GitHub's merged-PR purple (Primer "done"), for "on master": the update
+     is merged. fgColor-done, bgColor-done-emphasis, bgColor-done-muted. */
+  --merged: #8250df;
+  --merged-emphasis: #8250df;
+  --merged-soft: #fbefff;
+  /* GitHub's open and draft PR labels (Primer bgColor-success-emphasis,
+     bgColor-neutral-emphasis). */
+  --pr-open: #1f883d;
+  --pr-draft: #59636e;
   --radius: 8px;
 }
 @media (prefers-color-scheme: dark) {
@@ -39,6 +48,11 @@
     --stale-soft: #24262a;
     --danger: #e0776e;
     --danger-soft: #33201e;
+    --merged: #ab7df8;
+    --merged-emphasis: #8957e5;
+    --merged-soft: #ab7df826;
+    --pr-open: #238636;
+    --pr-draft: #656c76;
   }
 }
 * {
@@ -234,6 +248,9 @@ tbody tr.row td {
 .status-dot.warn {
   background: var(--warn);
 }
+.status-dot.merged {
+  background: var(--merged);
+}
 .status-dot.missing {
   background: var(--danger);
 }
@@ -301,6 +318,10 @@ button.plat[aria-pressed="true"] {
   font-family: "Instrument Sans", system-ui, sans-serif;
   font-size: 12px;
 }
+/* Waiting for the channel: the merged purple, like its dot. */
+.ver .age.merged {
+  color: var(--merged);
+}
 .badge {
   display: inline-block;
   font-size: 11px;
@@ -328,6 +349,35 @@ button.plat[aria-pressed="true"] {
 .badge.vuln {
   background: var(--danger-soft);
   color: var(--danger);
+}
+/* Outdated, but the update is already on master: GitHub's "Merged" label,
+   solid purple with white text. */
+.badge.onmaster {
+  background: var(--merged-emphasis);
+  color: #ffffff;
+}
+/* An open update PR, like GitHub's "Open" and "Draft" labels. */
+.badge.propen {
+  background: var(--pr-open);
+  color: #ffffff;
+}
+.badge.prdraft {
+  background: var(--pr-draft);
+  color: #ffffff;
+}
+a.badge {
+  text-decoration: none;
+}
+a.badge:hover {
+  filter: brightness(1.12);
+}
+.master-note {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  background: var(--merged-soft);
+  border-radius: 6px;
+  padding: 6px 10px;
+  margin-bottom: 10px;
 }
 .badge.neutral {
   background: var(--stale-soft);

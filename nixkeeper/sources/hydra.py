@@ -8,6 +8,7 @@ import urllib.parse
 from datetime import UTC, datetime
 
 from .. import config, history
+from ..versions import is_newer, version_key
 from . import http
 
 # Hydra's buildstatus codes. 1 and 6 ("failed with output") are the package's
@@ -59,10 +60,12 @@ def last_success(job):
 
 
 def check(attr, system, broken=False):
-    """One job's result: {"attr", "system", "status", "build"?, "lastSuccess"?}.
-    status is ok / failed / dependency / unfinished, notBuilt when Hydra has no
-    build of it, or broken when nixpkgs marks it broken there (whatever Hydra's
-    last build did: the failure is known)."""
+    """One job's result: {"attr", "system", "status", "build"?, "name"?,
+    "lastSuccess"?}. status is ok / failed / dependency / unfinished,
+    notBuilt when Hydra has no build of it, or broken when nixpkgs marks it
+    broken there (whatever Hydra's last build did: the failure is known). name
+    is what master built, e.g. "wesnoth-devel-1.19.28": master can be ahead of
+    the channel."""
     job = f"{attr}.{system}"
     result = {"attr": attr, "system": system}
     build = latest_build(job)
@@ -70,6 +73,8 @@ def check(attr, system, broken=False):
     if build is None:
         return {**result, "status": "broken" if broken else "notBuilt"}
     result.update(status=status(build.get("buildstatus")), build=build["id"])
+    if build.get("nixname"):
+        result["name"] = build["nixname"]
     if broken or result["status"] == "failed":
         result["lastSuccess"] = last_success(job)
         time.sleep(1)
@@ -99,6 +104,27 @@ def systems(pkg):
     if meta.get("hydraPlatforms") is not None:
         wanted = [s for s in wanted if s in meta["hydraPlatforms"]]
     return wanted
+
+
+def master_version(row, pkgs):
+    """The version master has for row, if it's newer than the channel's: Hydra
+    builds master, the channel lags it by a few days (a merged update shows
+    here first). From the builds' names ("wesnoth-devel-1.19.28") and the
+    channel index's pname and version, which are in the same format; the row's
+    own attribute first, when it has several. None if master isn't ahead, or
+    Hydra has no build to tell (unfree packages)."""
+    for attr in sorted(pkgs, key=lambda a: a != row["name"]):
+        pkg = pkgs[attr]
+        prefix = f"{pkg.get('pname')}-"
+        versions = [
+            b["name"][len(prefix) :]
+            for b in row["builds"]
+            if b["attr"] == attr and (b.get("name") or "").startswith(prefix)
+        ]
+        if versions:
+            newest = max(versions, key=version_key)
+            return newest if is_newer(newest, pkg.get("version")) else None
+    return None
 
 
 def add_builds(rows, nixpkgs, previous, now, broken=None):
@@ -149,6 +175,8 @@ def add_builds(rows, nixpkgs, previous, now, broken=None):
                         build["status"] = "broken"
                     builds.append(build)
         row["builds"] = builds
+        if master := master_version(row, free):
+            row["master"] = master
         if error:
             history.not_refreshed(
                 row,

@@ -34,7 +34,7 @@ def write(projects, index, out_dir=None):
 def update(files, out_dir=None):
     """Replace some files in an existing out_dir ({file name: data}), each
     written aside first so a failure never leaves one half-written. For
-    partial runs (the quick check), which leave everything else as it was."""
+    partial runs (the hourly checks), which leave everything else as it was."""
     out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
     for name, data in files.items():
         path = os.path.join(out_dir, name)

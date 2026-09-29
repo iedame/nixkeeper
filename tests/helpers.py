@@ -8,14 +8,17 @@ from unittest import mock
 from nixkeeper.output import data_file
 
 
-def pkg(pname, platforms=None, maintainers=(), homepage=None):
+def pkg(pname, platforms=None, maintainers=(), homepage=None, version=None):
     """A nixpkgs index entry, trimmed to the fields nixkeeper reads."""
     meta = {"maintainers": [{"github": m} for m in maintainers]}
     if platforms is not None:
         meta["platforms"] = platforms
     if homepage is not None:
         meta["homepage"] = homepage
-    return {"pname": pname, "meta": meta}
+    entry = {"pname": pname, "meta": meta}
+    if version is not None:
+        entry["version"] = version
+    return entry
 
 
 def nix(srcname, version, status):

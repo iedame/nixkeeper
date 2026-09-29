@@ -9,6 +9,7 @@ import time
 import urllib.error
 
 from .. import config, history
+from ..changes import on_master
 from ..rows import search_term
 from . import http
 
@@ -99,15 +100,39 @@ def latest_attempt(attr):
     return {"attr": attr, "date": date, "log": url, **parse(log)}
 
 
-def superseded(attempt, nix_version):
-    """Whether nixpkgs has moved on since the attempt (someone updated it
-    another way), so its failure no longer matters. Unknown (False) when the
-    log doesn't say what nixpkgs had then."""
+def moved_on(attempt, version):
+    """Whether version differs from what nixpkgs had when the bot tried.
+    Unknown (False) when the log doesn't say what that was."""
     was = attempt.get("was")
-    if not was or not nix_version:
+    if not was or not version:
         return False
     # A name-version ends in the version: wesnoth-devel-1.19.24.
-    return was != nix_version and not was.endswith(f"-{nix_version}")
+    return was != version and not was.endswith(f"-{version}")
+
+
+def superseded(attempt, nix_version, master=None):
+    """Where nixpkgs has moved on since the attempt (someone updated it
+    another way), so its failure no longer matters: "nixos-unstable" (the
+    channel), "master" (merged, not in the channel yet), or None."""
+    if moved_on(attempt, nix_version):
+        return "nixos-unstable"
+    if moved_on(attempt, master):
+        return "master"
+    return None
+
+
+def recheck_superseded(rows):
+    """Mark failures superseded that are, now that more is known about master
+    (an update PR merged there, found after the logs were read): so a row
+    waiting for the channel doesn't also show as failed."""
+    for row in rows:
+        attempt = row.get("update")
+        if not attempt or attempt.get("outcome") != "failed":
+            continue
+        where = superseded(attempt, row.get("nixVersion"), on_master(row))
+        if where:
+            attempt.update(outcome="superseded", supersededOn=where)
+            row["updateFailure"] = False
 
 
 def add_attempts(rows, nixpkgs, previous, now):
@@ -141,12 +166,14 @@ def add_attempts(rows, nixpkgs, previous, now):
             )
             continue
         attempt = max(attempts, key=lambda a: a["date"], default=None)
-        if (
+        # "master" comes from Hydra, read before this.
+        where = (
             attempt
             and attempt["outcome"] == "failed"
-            and superseded(attempt, row.get("nixVersion"))
-        ):
-            attempt["outcome"] = "superseded"
+            and superseded(attempt, row.get("nixVersion"), row.get("master"))
+        )
+        if where:
+            attempt.update(outcome="superseded", supersededOn=where)
         row["update"] = attempt
         row["updateFailure"] = bool(attempt and attempt["outcome"] == "failed")
     if failed:

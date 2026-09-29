@@ -5,7 +5,7 @@ on:
     - cron: '0 6 * * *'   # daily at 06:00 UTC
   workflow_dispatch: {}    # lets you trigger a run manually from the Actions tab
 
-# The quick check (quick-check.yml) also pushes to the data branch: never at
+# The hourly checks (hourly.yml) also push to the data branch: never at
 # the same time. A run waits for the other instead of cancelling it.
 concurrency:
   group: data-branch
