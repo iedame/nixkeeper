@@ -1,40 +1,5 @@
 [
   {
-    "binname": "GoogleChrome",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Google Chrome"
-  },
-  {
-    "binname": "com.google.Chrome",
-    "categories": [
-      "Communications"
-    ],
-    "licenses": [
-      "Chrome license"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "com.google.Chrome",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Chrome"
-  },
-  {
-    "licenses": [
-      "freeware"
-    ],
-    "origversion": null,
-    "repo": "wikidata",
-    "srcname": "Q777",
-    "status": "outdated",
-    "summary": "web browser developed by Google",
-    "version": "155.0.8059.12",
-    "visiblename": "Google Chrome"
-  },
-  {
     "binname": "google-chrome",
     "categories": [
       "non-free/web"
@@ -115,6 +80,14 @@
     "visiblename": "google-chrome-dev"
   },
   {
+    "binname": "GoogleChrome",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Google Chrome"
+  },
+  {
     "licenses": [
       "google-chrome"
     ],
@@ -136,10 +109,10 @@
     "origversion": null,
     "repo": "exherbo",
     "srcname": "net-www/google-chrome-bin",
-    "status": "outdated",
+    "status": "newest",
     "subrepo": "desktop",
     "summary": "A fast, secure, and free web browser built for the modern web",
-    "version": "154.0.8037.57",
+    "version": "154.0.8037.92",
     "visiblename": "net-www/google-chrome-bin"
   },
   {
@@ -335,6 +308,21 @@
     "visiblename": "google-chrome"
   },
   {
+    "binname": "com.google.Chrome",
+    "categories": [
+      "Communications"
+    ],
+    "licenses": [
+      "Chrome license"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "com.google.Chrome",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Chrome"
+  },
+  {
     "binname": "google-chrome-x64",
     "categories": [
       "Communications"
@@ -368,9 +356,9 @@
     ],
     "origversion": null,
     "repo": "scoop",
-    "status": "outdated",
+    "status": "ignored",
     "subrepo": "extras",
-    "version": "154.0.8037.58",
+    "version": "154.0.8037.93",
     "visiblename": "googlechrome"
   },
   {
@@ -422,12 +410,32 @@
     "visiblename": "Google Chrome"
   },
   {
-    "binname": "google-chrome-x64",
+    "licenses": [
+      "freeware"
+    ],
     "origversion": null,
-    "repo": "chocolatey",
+    "repo": "wikidata",
+    "srcname": "Q777",
     "status": "outdated",
-    "version": "47.0.2526.81",
-    "visiblename": "Google Chrome (64-bit only) [deprecated]",
+    "summary": "web browser developed by Google",
+    "version": "155.0.8059.12",
+    "visiblename": "Google Chrome"
+  },
+  {
+    "binname": "linux-chrome",
+    "categories": [
+      "www"
+    ],
+    "maintainers": [
+      "emulation@freebsd.org"
+    ],
+    "origversion": null,
+    "repo": "freebsd",
+    "srcname": "www/linux-chrome",
+    "status": "outdated",
+    "summary": "Google web browser based on WebKit",
+    "version": "152.0.7977.75",
+    "visiblename": "www/linux-chrome",
     "vulnerable": true
   },
   {
@@ -448,6 +456,15 @@
     "summary": "Google Chrome",
     "version": "120.0.6099.225",
     "visiblename": "[Deprecated] Google Chrome All Users",
+    "vulnerable": true
+  },
+  {
+    "binname": "google-chrome-x64",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "version": "47.0.2526.81",
+    "visiblename": "Google Chrome (64-bit only) [deprecated]",
     "vulnerable": true
   },
   {
@@ -484,23 +501,6 @@
     "status": "outdated",
     "version": "86.0.4240.111-1",
     "visiblename": "google-chrome",
-    "vulnerable": true
-  },
-  {
-    "binname": "linux-chrome",
-    "categories": [
-      "www"
-    ],
-    "maintainers": [
-      "emulation@freebsd.org"
-    ],
-    "origversion": null,
-    "repo": "freebsd",
-    "srcname": "www/linux-chrome",
-    "status": "outdated",
-    "summary": "Google web browser based on WebKit",
-    "version": "152.0.7977.75",
-    "visiblename": "www/linux-chrome",
     "vulnerable": true
   },
   {

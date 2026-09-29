@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-29T21:11:12.205560+00:00",
+  "checkedAt": "2026-09-29T22:59:45.183190+00:00",
   "packages": [
     {
       "attrs": [
@@ -39,6 +39,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/_1password-gui/2026-09-23.log",
         "outcome": "superseded",
+        "supersededOn": "nixos-unstable",
         "to": "1",
         "was": "1password-8.12.34"
       },
@@ -92,18 +93,21 @@
         {
           "attr": "backrest",
           "build": 347087778,
+          "name": "backrest-1.14.1",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "backrest",
           "build": 347087772,
+          "name": "backrest-1.14.1",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "backrest",
           "build": 347087784,
+          "name": "backrest-1.14.1",
           "status": "ok",
           "system": "aarch64-darwin"
         }
@@ -179,7 +183,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-29T21:11:12.205560+00:00",
+        "checkedAt": "2026-09-29T22:59:45.183190+00:00",
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
@@ -194,12 +198,14 @@
         {
           "attr": "bolt-launcher",
           "build": 347089545,
+          "name": "bolt-launcher-0.24.0",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "bolt-launcher",
           "build": 347089785,
+          "name": "bolt-launcher-0.24.0",
           "status": "ok",
           "system": "aarch64-linux"
         }
@@ -245,12 +251,14 @@
         {
           "attr": "d-seams",
           "build": 347098091,
+          "name": "d-seams-2.10.0",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "d-seams",
           "build": 347098089,
+          "name": "d-seams-2.10.0",
           "status": "ok",
           "system": "aarch64-linux"
         }
@@ -296,18 +304,21 @@
         {
           "attr": "egoboo",
           "build": 347101605,
+          "name": "egoboo-2.8.1",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "egoboo",
           "build": 347101603,
+          "name": "egoboo-2.8.1",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "egoboo",
           "build": 347101604,
+          "name": "egoboo-2.8.1",
           "status": "ok",
           "system": "aarch64-darwin"
         }
@@ -344,6 +355,7 @@
         "from": "2.7.3",
         "log": "https://nixpkgs-update-logs.nixos.org/egoboo/2026-09-15.log",
         "outcome": "superseded",
+        "supersededOn": "nixos-unstable",
         "to": "2.8.1",
         "was": "2.7.3"
       },
@@ -396,12 +408,14 @@
         {
           "attr": "filezilla",
           "build": 347103770,
+          "name": "filezilla-3.71.1",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "filezilla",
           "build": 347103783,
+          "name": "filezilla-3.71.1",
           "status": "ok",
           "system": "aarch64-linux"
         }
@@ -447,18 +461,21 @@
         {
           "attr": "freedink",
           "build": 347105164,
+          "name": "freedink-109.6",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "freedink",
           "build": 347105159,
+          "name": "freedink-109.6",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "freedink",
           "build": 347105163,
+          "name": "freedink-109.6",
           "status": "ok",
           "system": "aarch64-darwin"
         }
@@ -496,12 +513,14 @@
         {
           "attr": "fzssh",
           "build": 347105606,
+          "name": "fzssh-1.4.0",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "fzssh",
           "build": 347105604,
+          "name": "fzssh-1.4.0",
           "status": "ok",
           "system": "aarch64-linux"
         },
@@ -551,12 +570,21 @@
       "lists": [
         "maintained"
       ],
+      "masterPR": {
+        "base": "master",
+        "draft": false,
+        "from": "154.0.8037.57",
+        "number": 568387,
+        "title": "google-chrome: 154.0.8037.57 -> 154.0.8037.92",
+        "to": "154.0.8037.92",
+        "url": "https://github.com/NixOS/nixpkgs/pull/568387"
+      },
       "name": "google-chrome",
       "nixStatus": "outdated",
       "nixVersion": "154.0.8037.57",
       "nixVulnerable": false,
       "openIssues": 5,
-      "openPRs": 3,
+      "openPRs": 2,
       "outdatedSince": "2026-09-29T21:11:12.205560+00:00",
       "platforms": {
         "darwin": true,
@@ -579,7 +607,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-29T21:11:12.205560+00:00",
+        "checkedAt": "2026-09-29T22:59:45.183190+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -595,24 +623,28 @@
         {
           "attr": "heroic",
           "build": 347137788,
+          "name": "heroic-2.22.3",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "heroic",
           "build": 270096289,
+          "name": "heroic",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "heroic-unwrapped",
           "build": 347137798,
+          "name": "heroic-unwrapped-2.22.3",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "heroic-unwrapped",
           "build": 347137696,
+          "name": "heroic-unwrapped-2.22.3",
           "status": "ok",
           "system": "aarch64-linux"
         }
@@ -657,12 +689,14 @@
         {
           "attr": "libfilezilla",
           "build": 347147120,
+          "name": "libfilezilla-0.57.0",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "libfilezilla",
           "build": 347147114,
+          "name": "libfilezilla-0.57.0",
           "status": "ok",
           "system": "aarch64-linux"
         },
@@ -670,6 +704,7 @@
           "attr": "libfilezilla",
           "build": 300373373,
           "lastSuccess": "2024-12-03T17:20:37+00:00",
+          "name": "libfilezilla-0.49.0",
           "status": "broken",
           "system": "aarch64-darwin"
         }
@@ -714,18 +749,21 @@
         {
           "attr": "lincity",
           "build": 347149936,
+          "name": "lincity-1.13.1",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "lincity",
           "build": 347149935,
+          "name": "lincity-1.13.1",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "lincity",
           "build": 347149932,
+          "name": "lincity-1.13.1",
           "status": "ok",
           "system": "aarch64-darwin"
         }
@@ -759,12 +797,14 @@
         {
           "attr": "lincity-ng",
           "build": 347149947,
+          "name": "lincity-ng-2.15.0",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "lincity-ng",
           "build": 347149956,
+          "name": "lincity-ng-2.15.0",
           "status": "ok",
           "system": "aarch64-linux"
         }
@@ -809,12 +849,14 @@
         {
           "attr": "linkding",
           "build": 347150205,
+          "name": "linkding-1.47.0",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "linkding",
           "build": 347150148,
+          "name": "linkding-1.47.0",
           "status": "ok",
           "system": "aarch64-linux"
         }
@@ -868,12 +910,13 @@
       "nixVulnerable": false,
       "openIssues": 1,
       "openPRs": 1,
+      "outdatedSince": "2026-09-29T22:59:45.183190+00:00",
       "platforms": {
         "darwin": true,
         "linux": true
       },
       "project": "microsoft-edge",
-      "refVersion": "154.0.4258.37",
+      "refVersion": "154.0.4258.48",
       "repoCount": 44,
       "searchTerm": "microsoft-edge",
       "source": "https://github.com/NixOS/nixpkgs/blob/7a0f122f5090cf4c2ade2a13a0e229d4e19ba71f/pkgs/by-name/mi/microsoft-edge/package.nix#L345",
@@ -890,11 +933,11 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-29T21:11:12.205560+00:00",
+        "checkedAt": "2026-09-29T22:59:45.183190+00:00",
         "label": "packages.microsoft.com",
-        "newer": false,
+        "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
-        "version": "154.0.4258.37"
+        "version": "154.0.4258.48"
       }
     },
     {
@@ -943,6 +986,15 @@
       "nixVersion": "2.1.20221123",
       "nixVulnerable": false,
       "openIssues": 0,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "2.1.20221123",
+        "number": 567536,
+        "title": "opentyrian: 2.1.20221123 -> 2.1.20260913, adopt",
+        "to": "2.1.20260913,",
+        "url": "https://github.com/NixOS/nixpkgs/pull/567536"
+      },
       "openPRs": 1,
       "outdatedSince": "2026-09-28T03:09:58.527549+00:00",
       "platforms": null,
@@ -971,18 +1023,21 @@
         {
           "attr": "ringracers",
           "build": 347266277,
+          "name": "ringracers-2.4",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "ringracers",
           "build": 347266276,
+          "name": "ringracers-2.4",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "ringracers",
           "build": 347266290,
+          "name": "ringracers-2.4",
           "status": "ok",
           "system": "aarch64-darwin"
         }
@@ -1019,12 +1074,14 @@
         {
           "attr": "runelite",
           "build": 347272688,
+          "name": "runelite-2.8.0",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "runelite",
           "build": 347272779,
+          "name": "runelite-2.8.0",
           "status": "ok",
           "system": "aarch64-linux"
         }
@@ -1069,12 +1126,14 @@
         {
           "attr": "scanmem",
           "build": 347274741,
+          "name": "scanmem-0.17",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "scanmem",
           "build": 347274740,
+          "name": "scanmem-0.17",
           "status": "ok",
           "system": "aarch64-linux"
         }
@@ -1111,18 +1170,21 @@
         {
           "attr": "typioca",
           "build": 347289794,
+          "name": "typioca-3.1.0",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "typioca",
           "build": 347289791,
+          "name": "typioca-3.1.0",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "typioca",
           "build": 347289790,
+          "name": "typioca-3.1.0",
           "status": "ok",
           "system": "aarch64-darwin"
         }
@@ -1159,18 +1221,21 @@
         {
           "attr": "unciv",
           "build": 347290270,
+          "name": "unciv-4.22.1",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "unciv",
           "build": 347290269,
+          "name": "unciv-4.22.1",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "unciv",
           "build": 347290294,
+          "name": "unciv-4.22.1",
           "status": "ok",
           "system": "aarch64-darwin"
         }
@@ -1217,18 +1282,21 @@
         {
           "attr": "wesnoth",
           "build": 347295536,
+          "name": "wesnoth-1.18.8",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "wesnoth",
           "build": 347295542,
+          "name": "wesnoth-1.18.8",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "wesnoth",
           "build": 347295535,
+          "name": "wesnoth-1.18.8",
           "status": "ok",
           "system": "aarch64-darwin"
         }
@@ -1273,18 +1341,21 @@
         {
           "attr": "wesnoth-devel",
           "build": 347295540,
+          "name": "wesnoth-devel-1.19.24",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "wesnoth-devel",
           "build": 347295539,
+          "name": "wesnoth-devel-1.19.24",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "wesnoth-devel",
           "build": 347295537,
+          "name": "wesnoth-devel-1.19.24",
           "status": "ok",
           "system": "aarch64-darwin"
         }
@@ -1295,6 +1366,15 @@
       "lists": [
         "maintained"
       ],
+      "masterPR": {
+        "base": "master",
+        "draft": false,
+        "from": "1.19.24",
+        "number": 568190,
+        "title": "wesnoth-devel: 1.19.24 -> 1.19.28",
+        "to": "1.19.28",
+        "url": "https://github.com/NixOS/nixpkgs/pull/568190"
+      },
       "name": "wesnoth-devel",
       "nixStatus": "devel",
       "nixVersion": "1.19.24",
@@ -1321,13 +1401,14 @@
         ],
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/wesnoth-devel/2026-09-22.log",
-        "outcome": "failed",
+        "outcome": "superseded",
+        "supersededOn": "master",
         "to": "1",
         "was": "wesnoth-devel-1.19.24"
       },
-      "updateFailure": true,
+      "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-29T21:11:12.205560+00:00",
+        "checkedAt": "2026-09-29T22:59:45.183190+00:00",
         "label": "wesnoth/wesnoth tags",
         "newer": true,
         "repo": "wesnoth/wesnoth",
@@ -1343,18 +1424,21 @@
         {
           "attr": "xournalpp",
           "build": 347297570,
+          "name": "xournalpp-1.3.7",
           "status": "ok",
           "system": "x86_64-linux"
         },
         {
           "attr": "xournalpp",
           "build": 347297568,
+          "name": "xournalpp-1.3.7",
           "status": "ok",
           "system": "aarch64-linux"
         },
         {
           "attr": "xournalpp",
           "build": 347297567,
+          "name": "xournalpp-1.3.7",
           "status": "ok",
           "system": "aarch64-darwin"
         }

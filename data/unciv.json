@@ -1,15 +1,29 @@
 [
   {
-    "binname": "unciv",
     "licenses": [
       "MPL-2.0"
     ],
+    "maintainers": [
+      "milan.svoboda@centrum.cz"
+    ],
     "origversion": null,
-    "repo": "scoop",
+    "repo": "nix_stable_24_05",
+    "srcname": "unciv",
     "status": "outdated",
-    "subrepo": "games",
-    "version": "4.22.4",
+    "summary": "An open-source Android/Desktop remake of Civ V",
+    "version": "4.11.13",
     "visiblename": "unciv"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "4.21.11 (2026-08-22)",
+    "repo": "libregamewiki",
+    "srcname": "Unciv",
+    "status": "outdated",
+    "version": "4.21.11",
+    "visiblename": "Unciv"
   },
   {
     "binname": "unciv",
@@ -20,12 +34,12 @@
       "petercxy@aur",
       "lilac@aur"
     ],
-    "origversion": "4.22.4.REL-1",
+    "origversion": "4.22.5.REL-1",
     "repo": "aur",
     "srcname": "unciv",
     "status": "outdated",
     "summary": "Open-source remake of Civilization V",
-    "version": "4.22.4.REL",
+    "version": "4.22.5.REL",
     "visiblename": "unciv"
   },
   {
@@ -73,21 +87,6 @@
     "visiblename": "games-strategy/unciv-bin"
   },
   {
-    "licenses": [
-      "MPL-2.0"
-    ],
-    "maintainers": [
-      "git@ieda.me"
-    ],
-    "origversion": null,
-    "repo": "nix_unstable",
-    "srcname": "unciv",
-    "status": "outdated",
-    "summary": "Open-source Android/Desktop remake of Civ V",
-    "version": "4.22.1",
-    "visiblename": "unciv"
-  },
-  {
     "categories": [
       "games-strategy"
     ],
@@ -113,17 +112,6 @@
     "summary": "Open-source Android/Desktop remake of Civ V",
     "version": "4.22.5",
     "visiblename": "unciv"
-  },
-  {
-    "categories": [
-      "games"
-    ],
-    "origversion": "4.21.11 (2026-08-22)",
-    "repo": "libregamewiki",
-    "srcname": "Unciv",
-    "status": "outdated",
-    "version": "4.21.11",
-    "visiblename": "Unciv"
   },
   {
     "categories": [
@@ -226,21 +214,6 @@
       "milan.svoboda@centrum.cz"
     ],
     "origversion": null,
-    "repo": "nix_stable_24_05",
-    "srcname": "unciv",
-    "status": "outdated",
-    "summary": "An open-source Android/Desktop remake of Civ V",
-    "version": "4.11.13",
-    "visiblename": "unciv"
-  },
-  {
-    "licenses": [
-      "MPL-2.0"
-    ],
-    "maintainers": [
-      "milan.svoboda@centrum.cz"
-    ],
-    "origversion": null,
     "repo": "nix_stable_24_11",
     "srcname": "unciv",
     "status": "outdated",
@@ -291,6 +264,33 @@
     "status": "outdated",
     "summary": "Open-source Android/Desktop remake of Civ V",
     "version": "4.19.15",
+    "visiblename": "unciv"
+  },
+  {
+    "licenses": [
+      "MPL-2.0"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "unciv",
+    "status": "outdated",
+    "summary": "Open-source Android/Desktop remake of Civ V",
+    "version": "4.22.1",
+    "visiblename": "unciv"
+  },
+  {
+    "binname": "unciv",
+    "licenses": [
+      "MPL-2.0"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "outdated",
+    "subrepo": "games",
+    "version": "4.22.4",
     "visiblename": "unciv"
   }
 ]
