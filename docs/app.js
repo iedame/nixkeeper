@@ -432,6 +432,9 @@ function updateCell(pkg) {
       notRefreshed(pkg, 'update'),
     );
   if (pkg.updateFailure) return button('missing', 'failure reported');
+  // The bot's last attempt failed, but nixpkgs has moved on since: not a
+  // failure anymore, though the next attempt may well break the same way.
+  if (pkg.update?.outcome === 'superseded') return button('neutral', 'superseded');
   if (pkg.update === null) return button('neutral', 'not attempted');
   return button('ok', 'none reported');
 }

@@ -16,6 +16,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   "superseded". Before, it only cleared at the bot's next attempt, up to ~10
   days later, for packages with their own update script (`0 -> 1` in the
   log), such as wesnoth-devel.
+- The update cell shows a superseded failure as a grey "superseded" instead of
+  "none reported", so a bot attempt that broke stays visible.
 
 ## [0.3.0] - 2026-09-28
 
