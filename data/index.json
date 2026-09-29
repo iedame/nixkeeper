@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-28T18:43:25.457645+00:00",
+  "checkedAt": "2026-09-29T12:10:19.876477+00:00",
   "packages": [
     {
       "attrs": [
@@ -175,7 +175,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-28T18:43:25.457645+00:00",
+        "checkedAt": "2026-09-29T12:10:19.876477+00:00",
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
@@ -387,7 +387,7 @@
       "builds": [
         {
           "attr": "filezilla",
-          "build": 346371544,
+          "build": 347079084,
           "status": "ok",
           "system": "x86_64-linux"
         },
@@ -546,7 +546,7 @@
       "nixVersion": "154.0.8037.57",
       "nixVulnerable": false,
       "openIssues": 5,
-      "openPRs": 1,
+      "openPRs": 2,
       "platforms": {
         "darwin": true,
         "linux": true
@@ -567,7 +567,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-28T18:43:25.457645+00:00",
+        "checkedAt": "2026-09-29T12:10:19.876477+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": false,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -799,7 +799,7 @@
         },
         {
           "attr": "linkding",
-          "build": 346853532,
+          "build": 347150148,
           "status": "ok",
           "system": "aarch64-linux"
         }
@@ -851,7 +851,7 @@
       "nixVersion": "154.0.4258.37",
       "nixVulnerable": false,
       "openIssues": 1,
-      "openPRs": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
@@ -873,7 +873,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-28T18:43:25.457645+00:00",
+        "checkedAt": "2026-09-29T12:10:19.876477+00:00",
         "label": "packages.microsoft.com",
         "newer": false,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
@@ -1202,7 +1202,7 @@
         },
         {
           "attr": "wesnoth",
-          "build": 346054858,
+          "build": 347295542,
           "status": "ok",
           "system": "aarch64-linux"
         },
@@ -1224,7 +1224,7 @@
       "nixVersion": "1.18.8",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
@@ -1257,7 +1257,7 @@
         },
         {
           "attr": "wesnoth-devel",
-          "build": 346054862,
+          "build": 347295539,
           "status": "ok",
           "system": "aarch64-linux"
         },
@@ -1279,7 +1279,7 @@
       "nixVersion": "1.19.24",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "outdatedSince": "2026-09-28T15:25:14.169600+00:00",
       "platforms": {
         "darwin": true,
@@ -1305,7 +1305,7 @@
       },
       "updateFailure": true,
       "upstream": {
-        "checkedAt": "2026-09-28T18:43:25.457645+00:00",
+        "checkedAt": "2026-09-29T12:10:19.876477+00:00",
         "label": "wesnoth/wesnoth tags",
         "newer": true,
         "repo": "wesnoth/wesnoth",
@@ -1326,7 +1326,7 @@
         },
         {
           "attr": "xournalpp",
-          "build": 345440685,
+          "build": 347297568,
           "status": "ok",
           "system": "aarch64-linux"
         },

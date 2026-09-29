@@ -1,32 +1,61 @@
 [
   {
-    "licenses": [
-      "GPL-2.0-or-later"
+    "binnames": [
+      "lincity-ng",
+      "lincity-ng-data"
+    ],
+    "categories": [
+      "games"
     ],
     "maintainers": [
-      "7c6f434c@mail.ru"
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org"
     ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
-    "srcname": "lincity_ng",
+    "origversion": "2.14.2-1",
+    "repo": "raspbian_testing",
+    "srcname": "lincity-ng",
     "status": "outdated",
-    "summary": "City building game",
-    "version": "2.13.1",
+    "subrepo": "main",
+    "version": "2.14.2",
     "visiblename": "lincity-ng"
   },
   {
-    "licenses": [
-      "GPL-2.0-or-later"
+    "binname": "lincity-ng",
+    "categories": [
+      "games"
     ],
     "maintainers": [
-      "7c6f434c@mail.ru",
-      "git@ieda.me"
+      "ryoon@netbsd.org"
     ],
-    "origversion": null,
-    "repo": "nix_stable_25_11",
+    "origversion": "2.0nb23",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/lincity-ng",
+    "status": "outdated",
+    "summary": "Open source SimCity like game",
+    "version": "2.0",
+    "visiblename": "games/lincity-ng"
+  },
+  {
+    "binname": "lincity-ng",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ryoon@netbsd.org"
+    ],
+    "origversion": "2.0nb23",
+    "repo": "pkgsrc_current",
+    "srcname": "games/lincity-ng",
+    "status": "outdated",
+    "summary": "Open source SimCity like game",
+    "version": "2.0",
+    "visiblename": "games/lincity-ng"
+  },
+  {
+    "origversion": "2.14.2-1",
+    "repo": "pld",
     "srcname": "lincity-ng",
     "status": "outdated",
-    "summary": "City building game",
     "version": "2.14.2",
     "visiblename": "lincity-ng"
   },
@@ -346,22 +375,6 @@
     "visiblename": "lincity-ng"
   },
   {
-    "binname": "lincity-ng",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "ryoon@netbsd.org"
-    ],
-    "origversion": "2.0nb23",
-    "repo": "pkgsrc_2026_2",
-    "srcname": "games/lincity-ng",
-    "status": "outdated",
-    "summary": "Open source SimCity like game",
-    "version": "2.0",
-    "visiblename": "games/lincity-ng"
-  },
-  {
     "binnames": [
       "lincity-ng",
       "lincity-ng-data"
@@ -432,13 +445,13 @@
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "origversion": "2.14.2-1.fc43",
+    "origversion": "2.13.1-1.fc43",
     "repo": "fedora_43",
     "srcname": "lincity-ng",
-    "status": "outdated",
-    "subrepo": "updates",
+    "status": "legacy",
+    "subrepo": "release",
     "summary": "City Simulation Game",
-    "version": "2.14.2",
+    "version": "2.13.1",
     "visiblename": "lincity-ng"
   },
   {
@@ -452,30 +465,14 @@
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "origversion": "2.13.1-1.fc43",
+    "origversion": "2.14.2-1.fc43",
     "repo": "fedora_43",
     "srcname": "lincity-ng",
-    "status": "legacy",
-    "subrepo": "release",
-    "summary": "City Simulation Game",
-    "version": "2.13.1",
-    "visiblename": "lincity-ng"
-  },
-  {
-    "binname": "lincity-ng",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "ryoon@netbsd.org"
-    ],
-    "origversion": "2.0nb23",
-    "repo": "pkgsrc_2026_3",
-    "srcname": "games/lincity-ng",
     "status": "outdated",
-    "summary": "Open source SimCity like game",
-    "version": "2.0",
-    "visiblename": "games/lincity-ng"
+    "subrepo": "updates",
+    "summary": "City Simulation Game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
   },
   {
     "binnames": [
@@ -919,6 +916,37 @@
       "GPL-2.0-or-later"
     ],
     "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "lincity_ng",
+    "status": "outdated",
+    "summary": "City building game",
+    "version": "2.13.1",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "lincity-ng",
+    "status": "outdated",
+    "summary": "City building game",
+    "version": "2.14.2",
+    "visiblename": "lincity-ng"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
       "7c6f434c@mail.ru",
       "git@ieda.me"
     ],
@@ -1157,7 +1185,7 @@
     "repo": "parrot",
     "srcname": "lincity-ng",
     "status": "outdated",
-    "subrepo": "parrot-updates/main",
+    "subrepo": "parrot/main",
     "version": "2.12.0",
     "visiblename": "lincity-ng"
   },
@@ -1177,7 +1205,7 @@
     "repo": "parrot",
     "srcname": "lincity-ng",
     "status": "outdated",
-    "subrepo": "parrot/main",
+    "subrepo": "parrot-updates/main",
     "version": "2.12.0",
     "visiblename": "lincity-ng"
   },
@@ -1190,20 +1218,12 @@
       "ryoon@netbsd.org"
     ],
     "origversion": "2.0nb23",
-    "repo": "pkgsrc_current",
+    "repo": "pkgsrc_2026_2",
     "srcname": "games/lincity-ng",
     "status": "outdated",
     "summary": "Open source SimCity like game",
     "version": "2.0",
     "visiblename": "games/lincity-ng"
-  },
-  {
-    "origversion": "2.14.2-1",
-    "repo": "pld",
-    "srcname": "lincity-ng",
-    "status": "outdated",
-    "version": "2.14.2",
-    "visiblename": "lincity-ng"
   },
   {
     "binnames": [
@@ -1303,26 +1323,6 @@
     "status": "outdated",
     "subrepo": "main",
     "version": "2.12.0",
-    "visiblename": "lincity-ng"
-  },
-  {
-    "binnames": [
-      "lincity-ng",
-      "lincity-ng-data"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "apo@debian.org"
-    ],
-    "origversion": "2.14.2-1",
-    "repo": "raspbian_testing",
-    "srcname": "lincity-ng",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "2.14.2",
     "visiblename": "lincity-ng"
   },
   {

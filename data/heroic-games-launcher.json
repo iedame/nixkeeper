@@ -185,6 +185,21 @@
     "visiblename": "Heroic Games Launcher"
   },
   {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "aidalgol+nixpkgs@fastmail.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "heroic",
+    "status": "outdated",
+    "summary": "Native GOG, Epic, and Amazon Games Launcher for Linux, Windows and Mac",
+    "version": "2.17.2",
+    "visiblename": "heroic"
+  },
+  {
     "categories": [
       "games-util"
     ],
@@ -365,21 +380,6 @@
     ],
     "origversion": null,
     "repo": "nix_stable_25_05",
-    "srcname": "heroic",
-    "status": "outdated",
-    "summary": "Native GOG, Epic, and Amazon Games Launcher for Linux, Windows and Mac",
-    "version": "2.17.2",
-    "visiblename": "heroic"
-  },
-  {
-    "licenses": [
-      "GPL-3.0-only"
-    ],
-    "maintainers": [
-      "aidalgol+nixpkgs@fastmail.net"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
     "srcname": "heroic-unwrapped",
     "status": "outdated",
     "summary": "Native GOG, Epic, and Amazon Games Launcher for Linux, Windows and Mac",
@@ -534,13 +534,13 @@
     "licenses": [
       "GPL-3.0-only"
     ],
-    "origversion": "2.22.1-1.3",
+    "origversion": "2.22.3-1.1",
     "repo": "opensuse_tumbleweed",
     "srcname": "heroic-games-launcher",
-    "status": "outdated",
+    "status": "newest",
     "subrepo": "src-oss",
     "summary": "Native Games launcher for GOG, Epic and Amazon",
-    "version": "2.22.1",
+    "version": "2.22.3",
     "visiblename": "heroic-games-launcher"
   },
   {

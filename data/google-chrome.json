@@ -1,5 +1,26 @@
 [
   {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "google-chrome@beta",
+    "status": "outdated",
+    "summary": "Web browser",
+    "version": "155.0.8059.12",
+    "visiblename": "Google Chrome Beta"
+  },
+  {
+    "binname": "googlechrome",
+    "licenses": [
+      "Freeware"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "ignored",
+    "subrepo": "extras",
+    "version": "154.0.8037.58",
+    "visiblename": "googlechrome"
+  },
+  {
     "binname": "google-chrome",
     "categories": [
       "non-free/web"
@@ -217,19 +238,10 @@
   {
     "origversion": null,
     "repo": "homebrew_casks",
-    "srcname": "google-chrome@beta",
-    "status": "outdated",
-    "summary": "Web browser",
-    "version": "155.0.8059.12",
-    "visiblename": "Google Chrome Beta"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew_casks",
     "srcname": "google-chrome@canary",
     "status": "ignored",
     "summary": "Web browser",
-    "version": "156.0.8076.0",
+    "version": "156.0.8077.0",
     "visiblename": "Google Chrome Canary"
   },
   {
@@ -338,18 +350,6 @@
     "visiblename": "Chrome 64 bit"
   },
   {
-    "binname": "googlechrome",
-    "licenses": [
-      "Freeware"
-    ],
-    "origversion": null,
-    "repo": "scoop",
-    "status": "ignored",
-    "subrepo": "extras",
-    "version": "154.0.8037.58",
-    "visiblename": "googlechrome"
-  },
-  {
     "binname": "googlechrome-beta",
     "licenses": [
       "Freeware"
@@ -382,7 +382,7 @@
     "repo": "scoop",
     "status": "ignored",
     "subrepo": "versions",
-    "version": "156.0.8075.0",
+    "version": "156.0.8078.0",
     "visiblename": "googlechrome-canary"
   },
   {
@@ -475,20 +475,6 @@
     "vulnerable": true
   },
   {
-    "binname": "google-chrome-unstable-deb",
-    "maintainers": [
-      "oren@taumoda.com"
-    ],
-    "origversion": "139.0.7232.3-1",
-    "repo": "pacstall",
-    "srcname": "google-chrome-unstable-deb",
-    "status": "outdated",
-    "summary": "The web browser built by Google - Developer/Unstable channel",
-    "version": "139.0.7232.3",
-    "visiblename": "google-chrome-unstable-deb",
-    "vulnerable": true
-  },
-  {
     "binname": "linux-chrome",
     "categories": [
       "www"
@@ -544,20 +530,6 @@
     "vulnerable": true
   },
   {
-    "binname": "chrome",
-    "licenses": [
-      "Freeware"
-    ],
-    "origversion": null,
-    "repo": "reactos",
-    "srcname": "chrome",
-    "status": "outdated",
-    "summary": "Google Chrome is a cross-platform web browser developed by Google, based on the open source base of Chromium.",
-    "version": "49.0.2623.112",
-    "visiblename": "Chrome 49",
-    "vulnerable": true
-  },
-  {
     "categories": [
       "www-client"
     ],
@@ -593,19 +565,6 @@
     "summary": "The web browser from Google",
     "version": "151.0.7922.137",
     "visiblename": "www-client/google-chrome",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "Networking/WWW"
-    ],
-    "origversion": "153.0.8010.47-1pclos2026",
-    "repo": "pclinuxos",
-    "srcname": "google-chrome-browser",
-    "status": "outdated",
-    "summary": "Google Chrome",
-    "version": "153.0.8010.47",
-    "visiblename": "google-chrome-browser",
     "vulnerable": true
   },
   {
@@ -701,20 +660,6 @@
     "summary": "The web browser from Google",
     "version": "149.0.7827.114",
     "visiblename": "www-client/google-chrome",
-    "vulnerable": true
-  },
-  {
-    "binname": "google-chrome",
-    "licenses": [
-      "custom:chrome"
-    ],
-    "origversion": "114.0.5735.106-1",
-    "repo": "rebornos",
-    "srcname": "google-chrome",
-    "status": "outdated",
-    "summary": "The popular and trusted web browser by Google (Stable Channel)",
-    "version": "114.0.5735.106",
-    "visiblename": "google-chrome",
     "vulnerable": true
   },
   {
@@ -949,6 +894,33 @@
     "vulnerable": true
   },
   {
+    "binname": "google-chrome-unstable-deb",
+    "maintainers": [
+      "oren@taumoda.com"
+    ],
+    "origversion": "139.0.7232.3-1",
+    "repo": "pacstall",
+    "srcname": "google-chrome-unstable-deb",
+    "status": "outdated",
+    "summary": "The web browser built by Google - Developer/Unstable channel",
+    "version": "139.0.7232.3",
+    "visiblename": "google-chrome-unstable-deb",
+    "vulnerable": true
+  },
+  {
+    "categories": [
+      "Networking/WWW"
+    ],
+    "origversion": "153.0.8010.47-1pclos2026",
+    "repo": "pclinuxos",
+    "srcname": "google-chrome-browser",
+    "status": "outdated",
+    "summary": "Google Chrome",
+    "version": "153.0.8010.47",
+    "visiblename": "google-chrome-browser",
+    "vulnerable": true
+  },
+  {
     "categories": [
       "app:gui"
     ],
@@ -983,6 +955,34 @@
     "status": "outdated",
     "summary": "Fast, secure and modern web browser with built-in privacy features",
     "version": "147.0.7727.101",
+    "visiblename": "google-chrome",
+    "vulnerable": true
+  },
+  {
+    "binname": "chrome",
+    "licenses": [
+      "Freeware"
+    ],
+    "origversion": null,
+    "repo": "reactos",
+    "srcname": "chrome",
+    "status": "outdated",
+    "summary": "Google Chrome is a cross-platform web browser developed by Google, based on the open source base of Chromium.",
+    "version": "49.0.2623.112",
+    "visiblename": "Chrome 49",
+    "vulnerable": true
+  },
+  {
+    "binname": "google-chrome",
+    "licenses": [
+      "custom:chrome"
+    ],
+    "origversion": "114.0.5735.106-1",
+    "repo": "rebornos",
+    "srcname": "google-chrome",
+    "status": "outdated",
+    "summary": "The popular and trusted web browser by Google (Stable Channel)",
+    "version": "114.0.5735.106",
     "visiblename": "google-chrome",
     "vulnerable": true
   }

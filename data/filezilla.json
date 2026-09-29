@@ -1,12 +1,34 @@
 [
   {
-    "binname": "filezilla",
+    "binnames": [
+      "filezilla",
+      "filezilla-common"
+    ],
+    "categories": [
+      "net"
+    ],
+    "maintainers": [
+      "michael@micl.dev"
+    ],
+    "origversion": "3.71.0-1",
+    "repo": "kali_rolling",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "3.71.0",
+    "visiblename": "filezilla"
+  },
+  {
+    "licenses": [
+      "GPL-2"
+    ],
     "origversion": null,
-    "repo": "chocolatey",
-    "status": "newest",
-    "summary": "FileZilla \u2013 The free FTP solution",
-    "version": "3.71.1",
-    "visiblename": "FileZilla"
+    "repo": "chromebrew",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "summary": "FileZilla Client is a free FTP solution.",
+    "version": "3.69.0",
+    "visiblename": "filezilla"
   },
   {
     "binname": "filezilla",
@@ -337,17 +359,6 @@
     "visiblename": "filezilla"
   },
   {
-    "binname": "filezilla",
-    "origversion": null,
-    "repo": "hpux_11_31",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "ia64_32",
-    "version": "3.0.4",
-    "visiblename": "filezilla",
-    "vulnerable": true
-  },
-  {
     "binnames": [
       "filezilla",
       "filezilla-debuginfo"
@@ -400,22 +411,6 @@
     "visiblename": "filezilla"
   },
   {
-    "binname": "filezilla-svn",
-    "licenses": [
-      "GPL"
-    ],
-    "maintainers": [
-      "pmattern@aur"
-    ],
-    "origversion": "11020-1",
-    "repo": "aur",
-    "srcname": "filezilla-svn",
-    "status": "rolling",
-    "summary": "Free, open source FTP, FTPS and SFTP client",
-    "version": "11020",
-    "visiblename": "filezilla-svn"
-  },
-  {
     "binname": "mingw-w64-filezilla-svn",
     "licenses": [
       "GPL"
@@ -432,6 +427,22 @@
     "visiblename": "mingw-w64-filezilla-svn"
   },
   {
+    "binname": "filezilla-svn",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "pmattern@aur"
+    ],
+    "origversion": "11020-1",
+    "repo": "aur",
+    "srcname": "filezilla-svn",
+    "status": "rolling",
+    "summary": "Free, open source FTP, FTPS and SFTP client",
+    "version": "11020",
+    "visiblename": "filezilla-svn"
+  },
+  {
     "binname": "filezilla",
     "licenses": [
       "GPL-3.0-or-later"
@@ -446,16 +457,13 @@
     "visiblename": "filezilla"
   },
   {
-    "licenses": [
-      "GPL-2"
-    ],
+    "binname": "filezilla",
     "origversion": null,
-    "repo": "chromebrew",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "summary": "FileZilla Client is a free FTP solution.",
-    "version": "3.69.0",
-    "visiblename": "filezilla"
+    "repo": "chocolatey",
+    "status": "newest",
+    "summary": "FileZilla \u2013 The free FTP solution",
+    "version": "3.71.1",
+    "visiblename": "FileZilla"
   },
   {
     "binnames": [
@@ -530,25 +538,6 @@
     "srcname": "filezilla",
     "status": "outdated",
     "subrepo": "unstable/main",
-    "version": "3.71.0",
-    "visiblename": "filezilla"
-  },
-  {
-    "binnames": [
-      "filezilla",
-      "filezilla-common"
-    ],
-    "categories": [
-      "net"
-    ],
-    "maintainers": [
-      "michael@micl.dev"
-    ],
-    "origversion": "3.71.0-1",
-    "repo": "kali_rolling",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "main",
     "version": "3.71.0",
     "visiblename": "filezilla"
   },
@@ -716,13 +705,13 @@
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "origversion": "3.69.5-2.fc43",
+    "origversion": "3.69.3-1.fc43",
     "repo": "fedora_43",
     "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "updates",
+    "status": "legacy",
+    "subrepo": "release",
     "summary": "FTP, FTPS and SFTP client",
-    "version": "3.69.5",
+    "version": "3.69.3",
     "visiblename": "filezilla"
   },
   {
@@ -735,13 +724,13 @@
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "origversion": "3.69.3-1.fc43",
+    "origversion": "3.69.5-2.fc43",
     "repo": "fedora_43",
     "srcname": "filezilla",
-    "status": "legacy",
-    "subrepo": "release",
+    "status": "outdated",
+    "subrepo": "updates",
     "summary": "FTP, FTPS and SFTP client",
-    "version": "3.69.3",
+    "version": "3.69.5",
     "visiblename": "filezilla"
   },
   {
@@ -1065,22 +1054,6 @@
     "visiblename": "filezilla"
   },
   {
-    "licenses": [
-      "GPL-2.0"
-    ],
-    "maintainers": [
-      "git@ieda.me",
-      "mail@pascal-wittmann.de"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_26_05",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "summary": "Graphical FTP, FTPS and SFTP client",
-    "version": "3.69.6",
-    "visiblename": "filezilla"
-  },
-  {
     "binnames": [
       "filezilla",
       "filezilla-debuginfo",
@@ -1189,6 +1162,22 @@
     "visiblename": "mingw-w64-clang-aarch64-filezilla"
   },
   {
+    "binname": "filezilla",
+    "categories": [
+      "net"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "3.70.6nb1",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "net/filezilla",
+    "status": "outdated",
+    "summary": "FTP, FTPS, and SFTP client with intuitive GUI",
+    "version": "3.70.6",
+    "visiblename": "net/filezilla"
+  },
+  {
     "binname": "mingw-w64-ucrt-x86_64-filezilla",
     "licenses": [
       "spdx:GPL-2.0-or-later"
@@ -1262,34 +1251,19 @@
     "visiblename": "filezilla"
   },
   {
-    "binnames": [
-      "filezilla",
-      "filezilla-common"
-    ],
-    "categories": [
-      "net"
+    "licenses": [
+      "GPL-2.0"
     ],
     "maintainers": [
-      "gusnan@debian.org"
+      "git@ieda.me",
+      "mail@pascal-wittmann.de"
     ],
-    "origversion": "3.68.1-1",
-    "repo": "parrot",
+    "origversion": null,
+    "repo": "nix_stable_26_05",
     "srcname": "filezilla",
     "status": "outdated",
-    "subrepo": "parrot/main",
-    "version": "3.68.1",
-    "visiblename": "filezilla"
-  },
-  {
-    "categories": [
-      "Networking/File transfer"
-    ],
-    "origversion": "3.71.1-1pclos2026",
-    "repo": "pclinuxos",
-    "srcname": "filezilla",
-    "status": "newest",
-    "summary": "Fast and reliable FTP client",
-    "version": "3.71.1",
+    "summary": "Graphical FTP, FTPS and SFTP client",
+    "version": "3.69.6",
     "visiblename": "filezilla"
   },
   {
@@ -1486,8 +1460,39 @@
     "repo": "parrot",
     "srcname": "filezilla",
     "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "3.68.1",
+    "visiblename": "filezilla"
+  },
+  {
+    "binnames": [
+      "filezilla",
+      "filezilla-common"
+    ],
+    "categories": [
+      "net"
+    ],
+    "maintainers": [
+      "gusnan@debian.org"
+    ],
+    "origversion": "3.68.1-1",
+    "repo": "parrot",
+    "srcname": "filezilla",
+    "status": "outdated",
     "subrepo": "parrot-updates/main",
     "version": "3.68.1",
+    "visiblename": "filezilla"
+  },
+  {
+    "categories": [
+      "Networking/File transfer"
+    ],
+    "origversion": "3.71.1-1pclos2026",
+    "repo": "pclinuxos",
+    "srcname": "filezilla",
+    "status": "newest",
+    "summary": "Fast and reliable FTP client",
+    "version": "3.71.1",
     "visiblename": "filezilla"
   },
   {
@@ -1517,22 +1522,6 @@
     "maintainers": [
       "pkgsrc-users@netbsd.org"
     ],
-    "origversion": "3.70.6nb1",
-    "repo": "pkgsrc_2026_2",
-    "srcname": "net/filezilla",
-    "status": "outdated",
-    "summary": "FTP, FTPS, and SFTP client with intuitive GUI",
-    "version": "3.70.6",
-    "visiblename": "net/filezilla"
-  },
-  {
-    "binname": "filezilla",
-    "categories": [
-      "net"
-    ],
-    "maintainers": [
-      "pkgsrc-users@netbsd.org"
-    ],
     "origversion": "3.71.1nb1",
     "repo": "pkgsrc_2026_3",
     "srcname": "net/filezilla",
@@ -1549,7 +1538,7 @@
     "maintainers": [
       "pkgsrc-users@netbsd.org"
     ],
-    "origversion": "3.71.1nb1",
+    "origversion": "3.71.1nb2",
     "repo": "pkgsrc_current",
     "srcname": "net/filezilla",
     "status": "newest",
@@ -1832,21 +1821,39 @@
     "visiblename": "FileZilla"
   },
   {
-    "binname": "filezilla-lang",
+    "categories": [
+      "Unspecified"
+    ],
     "licenses": [
-      "GPL-2.0-or-later"
+      "GPLv2+"
     ],
-    "maintainers": [
-      "rnalrd@alpinelinux.org"
-    ],
-    "origversion": "3.62.1-r0",
-    "repo": "alpine_3_17",
+    "origversion": "3.55.1-1.el8",
+    "repo": "epel_8",
     "srcname": "filezilla",
     "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package filezilla",
-    "version": "3.62.1",
-    "visiblename": "filezilla-lang",
+    "summary": "FTP, FTPS and SFTP client",
+    "version": "3.55.1",
+    "visiblename": "filezilla",
+    "vulnerable": true
+  },
+  {
+    "binnames": [
+      "filezilla",
+      "filezilla-common"
+    ],
+    "categories": [
+      "universe/net"
+    ],
+    "maintainers": [
+      "adri2000@ubuntu.com"
+    ],
+    "origversion": "3.46.3-1ubuntu0.1",
+    "repo": "trisquel_10_0",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "nabia-updates/main",
+    "version": "3.46.3",
+    "visiblename": "filezilla",
     "vulnerable": true
   },
   {
@@ -1861,157 +1868,186 @@
     "vulnerable": true
   },
   {
-    "binname": "filezilla-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "rnalrd@alpinelinux.org"
-    ],
-    "origversion": "3.62.1-r0",
-    "repo": "alpine_3_17",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "FTP Client (documentation)",
-    "version": "3.62.1",
-    "visiblename": "filezilla-doc",
-    "vulnerable": true
-  },
-  {
     "binname": "filezilla",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "rnalrd@alpinelinux.org"
-    ],
-    "origversion": "3.62.1-r0",
-    "repo": "alpine_3_17",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "FTP Client",
-    "version": "3.62.1",
-    "visiblename": "filezilla",
-    "vulnerable": true
-  },
-  {
-    "binname": "filezilla",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "rnalrd@alpinelinux.org"
-    ],
-    "origversion": "3.64.0-r0",
-    "repo": "alpine_3_18",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "FTP Client",
-    "version": "3.64.0",
-    "visiblename": "filezilla",
-    "vulnerable": true
-  },
-  {
-    "binname": "filezilla-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "rnalrd@alpinelinux.org"
-    ],
-    "origversion": "3.64.0-r0",
-    "repo": "alpine_3_18",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "FTP Client (documentation)",
-    "version": "3.64.0",
-    "visiblename": "filezilla-doc",
-    "vulnerable": true
-  },
-  {
-    "binname": "filezilla-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "rnalrd@alpinelinux.org"
-    ],
-    "origversion": "3.64.0-r0",
-    "repo": "alpine_3_18",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package filezilla",
-    "version": "3.64.0",
-    "visiblename": "filezilla-lang",
-    "vulnerable": true
-  },
-  {
-    "binname": "filezilla",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "rnalrd@alpinelinux.org"
-    ],
-    "origversion": "3.66.4-r0",
-    "repo": "alpine_3_19",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "FTP Client",
-    "version": "3.66.4",
-    "visiblename": "filezilla",
-    "vulnerable": true
-  },
-  {
-    "binname": "filezilla-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "rnalrd@alpinelinux.org"
-    ],
-    "origversion": "3.66.4-r0",
-    "repo": "alpine_3_19",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "FTP Client (documentation)",
-    "version": "3.66.4",
-    "visiblename": "filezilla-doc",
-    "vulnerable": true
-  },
-  {
-    "binname": "filezilla-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "rnalrd@alpinelinux.org"
-    ],
-    "origversion": "3.66.4-r0",
-    "repo": "alpine_3_19",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package filezilla",
-    "version": "3.66.4",
-    "visiblename": "filezilla-lang",
-    "vulnerable": true
-  },
-  {
-    "binname": "filezilla.commandline",
     "origversion": null,
-    "repo": "chocolatey",
+    "repo": "hpux_11_31",
+    "srcname": "filezilla",
     "status": "outdated",
-    "summary": "FileZilla - The free FTP solution",
-    "version": "3.26.2",
-    "visiblename": "FileZilla (Portable)",
+    "subrepo": "ia64_32",
+    "version": "3.0.4",
+    "visiblename": "filezilla",
+    "vulnerable": true
+  },
+  {
+    "origversion": null,
+    "repo": "salix_14_2",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "summary": "filezilla (the free FTP solution)",
+    "version": "3.16.1",
+    "visiblename": "filezilla",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "3.62.1-r0",
+    "repo": "alpine_3_17",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "FTP Client",
+    "version": "3.62.1",
+    "visiblename": "filezilla",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "3.62.1-r0",
+    "repo": "alpine_3_17",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package filezilla",
+    "version": "3.62.1",
+    "visiblename": "filezilla-lang",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "3.62.1-r0",
+    "repo": "alpine_3_17",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "FTP Client (documentation)",
+    "version": "3.62.1",
+    "visiblename": "filezilla-doc",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "3.64.0-r0",
+    "repo": "alpine_3_18",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "FTP Client",
+    "version": "3.64.0",
+    "visiblename": "filezilla",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "3.64.0-r0",
+    "repo": "alpine_3_18",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "FTP Client (documentation)",
+    "version": "3.64.0",
+    "visiblename": "filezilla-doc",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "3.64.0-r0",
+    "repo": "alpine_3_18",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package filezilla",
+    "version": "3.64.0",
+    "visiblename": "filezilla-lang",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "3.66.4-r0",
+    "repo": "alpine_3_19",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "FTP Client",
+    "version": "3.66.4",
+    "visiblename": "filezilla",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "3.66.4-r0",
+    "repo": "alpine_3_19",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "FTP Client (documentation)",
+    "version": "3.66.4",
+    "visiblename": "filezilla-doc",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "rnalrd@alpinelinux.org"
+    ],
+    "origversion": "3.66.4-r0",
+    "repo": "alpine_3_19",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package filezilla",
+    "version": "3.66.4",
+    "visiblename": "filezilla-lang",
     "vulnerable": true
   },
   {
@@ -2029,6 +2065,16 @@
     "summary": "Graphical FTP/FTPS/SFTP client",
     "version": "3.27.0",
     "visiblename": "filezilla",
+    "vulnerable": true
+  },
+  {
+    "binname": "filezilla.commandline",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "summary": "FileZilla - The free FTP solution",
+    "version": "3.26.2",
+    "visiblename": "FileZilla (Portable)",
     "vulnerable": true
   },
   {
@@ -2198,22 +2244,6 @@
     "vulnerable": true
   },
   {
-    "categories": [
-      "Unspecified"
-    ],
-    "licenses": [
-      "GPLv2+"
-    ],
-    "origversion": "3.55.1-1.el8",
-    "repo": "epel_8",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "summary": "FTP, FTPS and SFTP client",
-    "version": "3.55.1",
-    "visiblename": "filezilla",
-    "vulnerable": true
-  },
-  {
     "binnames": [
       "filezilla",
       "filezilla-debuginfo",
@@ -2303,13 +2333,13 @@
     "licenses": [
       "GPLv2+"
     ],
-    "origversion": "3.64.0-1.mga9",
+    "origversion": "3.66.4-1.mga9",
     "repo": "mageia_9",
     "srcname": "filezilla",
     "status": "legacy",
-    "subrepo": "core/release",
+    "subrepo": "core/updates",
     "summary": "Fast and reliable FTP client",
-    "version": "3.64.0",
+    "version": "3.66.4",
     "visiblename": "filezilla",
     "vulnerable": true
   },
@@ -2325,13 +2355,13 @@
     "licenses": [
       "GPLv2+"
     ],
-    "origversion": "3.66.4-1.mga9",
+    "origversion": "3.64.0-1.mga9",
     "repo": "mageia_9",
     "srcname": "filezilla",
     "status": "legacy",
-    "subrepo": "core/updates",
+    "subrepo": "core/release",
     "summary": "Fast and reliable FTP client",
-    "version": "3.66.4",
+    "version": "3.64.0",
     "visiblename": "filezilla",
     "vulnerable": true
   },
@@ -2505,36 +2535,6 @@
     "vulnerable": true
   },
   {
-    "origversion": null,
-    "repo": "salix_14_2",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "summary": "filezilla (the free FTP solution)",
-    "version": "3.16.1",
-    "visiblename": "filezilla",
-    "vulnerable": true
-  },
-  {
-    "binnames": [
-      "filezilla",
-      "filezilla-common"
-    ],
-    "categories": [
-      "universe/net"
-    ],
-    "maintainers": [
-      "adri2000@ubuntu.com"
-    ],
-    "origversion": "3.46.3-1ubuntu0.1",
-    "repo": "trisquel_10_0",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "nabia-updates/main",
-    "version": "3.46.3",
-    "visiblename": "filezilla",
-    "vulnerable": true
-  },
-  {
     "binnames": [
       "filezilla",
       "filezilla-common"
@@ -2583,26 +2583,6 @@
       "universe/net"
     ],
     "maintainers": [
-      "philip.wyett@kathenas.org"
-    ],
-    "origversion": "3.58.0-1",
-    "repo": "trisquel_11_0",
-    "srcname": "filezilla",
-    "status": "outdated",
-    "subrepo": "aramo/main",
-    "version": "3.58.0",
-    "visiblename": "filezilla",
-    "vulnerable": true
-  },
-  {
-    "binnames": [
-      "filezilla",
-      "filezilla-common"
-    ],
-    "categories": [
-      "universe/net"
-    ],
-    "maintainers": [
       "ubuntu-devel-discuss@lists.ubuntu.com"
     ],
     "origversion": "3.58.0-1ubuntu0.1",
@@ -2630,6 +2610,26 @@
     "srcname": "filezilla",
     "status": "outdated",
     "subrepo": "aramo-security/main",
+    "version": "3.58.0",
+    "visiblename": "filezilla",
+    "vulnerable": true
+  },
+  {
+    "binnames": [
+      "filezilla",
+      "filezilla-common"
+    ],
+    "categories": [
+      "universe/net"
+    ],
+    "maintainers": [
+      "philip.wyett@kathenas.org"
+    ],
+    "origversion": "3.58.0-1",
+    "repo": "trisquel_11_0",
+    "srcname": "filezilla",
+    "status": "outdated",
+    "subrepo": "aramo/main",
     "version": "3.58.0",
     "visiblename": "filezilla",
     "vulnerable": true
@@ -2705,11 +2705,11 @@
     "maintainers": [
       "adri2000@ubuntu.com"
     ],
-    "origversion": "3.46.3-1build1",
+    "origversion": "3.46.3-1ubuntu0.1",
     "repo": "ubuntu_20_04",
     "srcname": "filezilla",
     "status": "outdated",
-    "subrepo": "focal/universe",
+    "subrepo": "focal-updates/universe",
     "version": "3.46.3",
     "visiblename": "filezilla",
     "vulnerable": true
@@ -2725,11 +2725,11 @@
     "maintainers": [
       "adri2000@ubuntu.com"
     ],
-    "origversion": "3.46.3-1ubuntu0.1",
+    "origversion": "3.46.3-1build1",
     "repo": "ubuntu_20_04",
     "srcname": "filezilla",
     "status": "outdated",
-    "subrepo": "focal-updates/universe",
+    "subrepo": "focal/universe",
     "version": "3.46.3",
     "visiblename": "filezilla",
     "vulnerable": true

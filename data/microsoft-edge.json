@@ -81,15 +81,6 @@
     "visiblename": "Microsoft Edge Insider - Dev"
   },
   {
-    "origversion": null,
-    "repo": "homebrew_casks",
-    "srcname": "microsoft-edge@canary",
-    "status": "ignored",
-    "summary": "Multi-platform web browser",
-    "version": "156.0.4301.0",
-    "visiblename": "Microsoft Edge Canary"
-  },
-  {
     "categories": [
       "www-client"
     ],
@@ -230,8 +221,17 @@
     "srcname": "microsoft-edge@beta",
     "status": "ignored",
     "summary": "Multi-platform web browser",
-    "version": "155.0.4283.18",
+    "version": "155.0.4283.24",
     "visiblename": "Microsoft Edge Beta"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "microsoft-edge@canary",
+    "status": "ignored",
+    "summary": "Multi-platform web browser",
+    "version": "156.0.4307.0",
+    "visiblename": "Microsoft Edge Canary"
   },
   {
     "origversion": null,
@@ -367,6 +367,21 @@
     "vulnerable": true
   },
   {
+    "binname": "microsoft-edge-stable-deb",
+    "maintainers": [
+      "oren@taumoda.com",
+      "jimedrand@disroot.org"
+    ],
+    "origversion": "135.0.3179.98-1-1",
+    "repo": "pacstall",
+    "srcname": "microsoft-edge-stable-deb",
+    "status": "legacy",
+    "summary": "The Chromium-based web browser from Microsoft",
+    "version": "135.0.3179.98-1",
+    "visiblename": "microsoft-edge-stable-deb",
+    "vulnerable": true
+  },
+  {
     "categories": [
       "www-client"
     ],
@@ -402,20 +417,6 @@
     "summary": "The web browser from Microsoft",
     "version": "140.0.3485.31",
     "visiblename": "www-client/microsoft-edge-beta",
-    "vulnerable": true
-  },
-  {
-    "binname": "microsoft-edge-beta-deb",
-    "maintainers": [
-      "oren@taumoda.com"
-    ],
-    "origversion": "136.0.3240.45-1",
-    "repo": "pacstall",
-    "srcname": "microsoft-edge-beta-deb",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft - Beta",
-    "version": "136.0.3240.45",
-    "visiblename": "microsoft-edge-beta-deb",
     "vulnerable": true
   },
   {
@@ -707,6 +708,20 @@
     "vulnerable": true
   },
   {
+    "binname": "microsoft-edge-beta-deb",
+    "maintainers": [
+      "oren@taumoda.com"
+    ],
+    "origversion": "136.0.3240.45-1",
+    "repo": "pacstall",
+    "srcname": "microsoft-edge-beta-deb",
+    "status": "outdated",
+    "summary": "The web browser from Microsoft - Beta",
+    "version": "136.0.3240.45",
+    "visiblename": "microsoft-edge-beta-deb",
+    "vulnerable": true
+  },
+  {
     "binname": "microsoft-edge-dev-deb",
     "maintainers": [
       "oren@taumoda.com",
@@ -719,21 +734,6 @@
     "summary": "The Chromium-based web browser from Microsoft - Developer channel",
     "version": "137.0.3282.1-1",
     "visiblename": "microsoft-edge-dev-deb",
-    "vulnerable": true
-  },
-  {
-    "binname": "microsoft-edge-stable-deb",
-    "maintainers": [
-      "oren@taumoda.com",
-      "jimedrand@disroot.org"
-    ],
-    "origversion": "135.0.3179.98-1-1",
-    "repo": "pacstall",
-    "srcname": "microsoft-edge-stable-deb",
-    "status": "legacy",
-    "summary": "The Chromium-based web browser from Microsoft",
-    "version": "135.0.3179.98-1",
-    "visiblename": "microsoft-edge-stable-deb",
     "vulnerable": true
   },
   {
