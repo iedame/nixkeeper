@@ -16,6 +16,12 @@ LOG_NAME = re.compile(r'href="(\d{4}-\d{2}-\d{2})\.log"')
 # "UPDATE_INFO: egoboo 2.7.3 -> 2.8.1 https://..."; "0 -> 1" when the
 # package's own updateScript decides the version.
 UPDATE_INFO = re.compile(r"UPDATE_INFO: \S+ (\S+) -> (\S+)")
+UPDATE_SCRIPT = "0"  # the "from" of an updateScript attempt
+# With an updateScript, what nixpkgs had shows as its name-version instead:
+# "Going to be running update for following packages:\n - wesnoth-devel-1.19.24".
+UPDATE_SCRIPT_PACKAGE = re.compile(
+    r"Going to be running update for following packages:\s*\n\s*- (\S+)"
+)
 PR = re.compile(r"api\.github\.com/repos/NixOS/nixpkgs/(?:pulls|issues)/(\d+)")
 PR_EXISTS = "There might already be an open PR"
 NO_CHANGE = (
@@ -54,11 +60,17 @@ def excerpt(log):
 
 
 def parse(log):
-    """{"outcome", "from"?, "to"?, "pr"?, "excerpt"?} for one log. outcome:
-    prOpened, prExists, noChange, failed, or other."""
+    """{"outcome", "from"?, "to"?, "was"?, "pr"?, "excerpt"?} for one log.
+    outcome: prOpened, prExists, noChange, failed, or other. was: what
+    nixpkgs had when the bot tried, as a version (2.7.3) or, with an
+    updateScript, a name-version (wesnoth-devel-1.19.24)."""
     result = {}
     if info := UPDATE_INFO.search(log):
         result["from"], result["to"] = info.groups()
+        if result["from"] != UPDATE_SCRIPT:
+            result["was"] = result["from"]
+    if "was" not in result and (package := UPDATE_SCRIPT_PACKAGE.search(log)):
+        result["was"] = package.group(1)
     prs = PR.findall(log)
     if PR_EXISTS in log:
         result["outcome"] = "prExists"
@@ -88,9 +100,14 @@ def latest_attempt(attr):
 
 
 def superseded(attempt, nix_version):
-    """A failed attempt at a version nixpkgs has since reached some other way
-    no longer matters. (Not decidable for "0 -> 1": the updateScript picks.)"""
-    return attempt.get("to") not in (None, "1") and attempt["to"] == nix_version
+    """Whether nixpkgs has moved on since the attempt (someone updated it
+    another way), so its failure no longer matters. Unknown (False) when the
+    log doesn't say what nixpkgs had then."""
+    was = attempt.get("was")
+    if not was or not nix_version:
+        return False
+    # A name-version ends in the version: wesnoth-devel-1.19.24.
+    return was != nix_version and not was.endswith(f"-{nix_version}")
 
 
 def add_attempts(rows, nixpkgs, previous, now):

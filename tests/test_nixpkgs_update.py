@@ -37,6 +37,17 @@ The diff was empty after rewrites.
 ALREADY_UPDATED = f"""{HEAD}libfilezilla 0.56.1 -> 0.57.0 https://repology.org/project/libfilezilla/versions
 Old version 0.56.1" not present in master derivation file with contents: {{
 """
+# An updateScript package: "0 -> 1", and nixpkgs' version only in the package
+# line (wesnoth-devel's failed 1.19.24 -> 1.19.28 attempt, 2026-09-22).
+UPDATE_SCRIPT_FAILED = f"""{HEAD}wesnoth-devel 0 -> 1
+attrpath: wesnoth-devel
+[updateScript] Success
+Going to be running update for following packages:
+ - wesnoth-devel-1.19.24
+
+Received ExitFailure 1 when running
+-- Configuring incomplete, errors occurred!
+"""
 
 
 def listing(*dates):
@@ -67,6 +78,7 @@ class Parse(unittest.TestCase):
             {
                 "from": "2.7.3",
                 "to": "2.8.1",
+                "was": "2.7.3",
                 "outcome": "failed",
                 # The last meaningful lines, without @nix markers or colours.
                 "excerpt": [
@@ -94,11 +106,23 @@ class Parse(unittest.TestCase):
     def test_unrecognised(self):
         self.assertEqual(nixpkgs_update.parse(f"{HEAD}x 1 -> 2\n")["outcome"], "other")
 
-    def test_superseded(self):
-        self.assertTrue(nixpkgs_update.superseded({"to": "2.8.1"}, "2.8.1"))
-        self.assertFalse(nixpkgs_update.superseded({"to": "2.8.1"}, "2.7.3"))
-        # The updateScript picks the version: can't tell.
-        self.assertFalse(nixpkgs_update.superseded({"to": "1"}, "1"))
+    def test_update_script_records_what_nixpkgs_had(self):
+        result = nixpkgs_update.parse(UPDATE_SCRIPT_FAILED)
+        self.assertEqual(result["outcome"], "failed")
+        self.assertEqual(result["was"], "wesnoth-devel-1.19.24")
+
+    def test_superseded_when_nixpkgs_moved_on(self):
+        superseded = nixpkgs_update.superseded
+        # Plain version from UPDATE_INFO.
+        self.assertFalse(superseded({"was": "2.7.3"}, "2.7.3"))  # still there
+        self.assertTrue(superseded({"was": "2.7.3"}, "2.8.1"))  # updated
+        self.assertTrue(superseded({"was": "2.7.3"}, "2.7.4"))  # past its target
+        # Name-version from an updateScript log.
+        self.assertFalse(superseded({"was": "wesnoth-devel-1.19.24"}, "1.19.24"))
+        self.assertTrue(superseded({"was": "wesnoth-devel-1.19.24"}, "1.19.28"))
+        # Not knowable: no record of what nixpkgs had, or no version now.
+        self.assertFalse(superseded({"to": "1"}, "1.19.28"))
+        self.assertFalse(superseded({"was": "2.7.3"}, None))
 
 
 class AddAttempts(unittest.TestCase):
@@ -155,6 +179,29 @@ class AddAttempts(unittest.TestCase):
         )
         self.assertEqual(rows[0]["update"]["outcome"], "superseded")
         self.assertFalse(rows[0]["updateFailure"])
+
+    def test_update_script_failure_clears_once_nixpkgs_updates(self):
+        """wesnoth-devel: the bot failed 1.19.24 -> 1.19.28, then a manual PR
+        got 1.19.28 into the channel before the bot tried again."""
+        pages = {
+            "/wesnoth-devel/": listing("2026-09-22"),
+            "/wesnoth-devel/2026-09-22.log": UPDATE_SCRIPT_FAILED,
+        }
+        for nix_version, failing in (("1.19.24", True), ("1.19.28", False)):
+            with self.subTest(nix_version=nix_version):
+                rows = [
+                    {
+                        "name": "wesnoth-devel",
+                        "attrs": ["wesnoth-devel"],
+                        "nixVersion": nix_version,
+                    }
+                ]
+                self.run_attempts(rows, pages)
+                self.assertEqual(rows[0]["updateFailure"], failing)
+                self.assertEqual(
+                    rows[0]["update"]["outcome"],
+                    "failed" if failing else "superseded",
+                )
 
     def test_versioned_sets_use_the_alias(self):
         rows = [

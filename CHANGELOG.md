@@ -9,6 +9,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Fixed
+
+- An update failure clears as soon as nixpkgs has moved on from the version
+  the bot tried to update (someone updated it another way), shown as
+  "superseded". Before, it only cleared at the bot's next attempt, up to ~10
+  days later, for packages with their own update script (`0 -> 1` in the
+  log), such as wesnoth-devel.
+
 ## [0.3.0] - 2026-09-28
 
 ### Added

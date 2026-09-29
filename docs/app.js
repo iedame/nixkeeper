@@ -440,9 +440,11 @@ const prLink = (n, text) =>
   `<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${n}" target="_blank" rel="noopener">${text}</a>`;
 const UPDATE_OUTCOME = {
   failed: { dot: 'missing', text: () => 'failed' },
+  // nixpkgs has moved on since the attempt (updated another way).
   superseded: {
     dot: 'neutral',
-    text: (u) => `failed, but nixpkgs has <span class="mono">${escapeHtml(u.to)}</span> by now`,
+    text: (_u, pkg) =>
+      `failed, but nixpkgs has moved on to <span class="mono">${escapeHtml(pkg.nixVersion)}</span> since`,
   },
   prOpened: { dot: 'ok', text: (u) => `opened ${prLink(u.pr, `PR #${u.pr} ↗`)}` },
   prExists: {
@@ -476,7 +478,7 @@ function fillUpdate(pkg, el) {
   el.innerHTML = `${stale}
     <div class="nix-line">Latest nixpkgs-update attempt${(pkg.attrs || []).length > 1 ? ` at <span class="mono">${escapeHtml(u.attr)}</span>` : ''} · ${escapeHtml(longDate(day))} (${shortAge(day)} ago)${versions}</div>
     <div class="build-list"><div class="build-line">
-      <span class="status-dot ${o.dot}"></span><span class="st ${o.dot}">${o.text(u)}</span>
+      <span class="status-dot ${o.dot}"></span><span class="st ${o.dot}">${o.text(u, pkg)}</span>
     </div></div>
     ${u.excerpt?.length ? `<pre class="log-excerpt mono">${u.excerpt.map(escapeHtml).join('\n')}</pre>` : ''}
     <div class="detail-row">
