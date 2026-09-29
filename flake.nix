@@ -97,7 +97,7 @@
           program = lib.getExe nixkeeper;
           meta.description = "Sync data/: Repology, update checks, Hydra, nixpkgs-update logs, GitHub";
         };
-        # The hourly checks (.github/workflows/hourly.yml), against data/.
+        # The hourly updates (.github/workflows/data-hourly.yml), against data/.
         frequent-check = {
           type = "app";
           program = lib.getExe' nixkeeper "nixkeeper-frequent-check";

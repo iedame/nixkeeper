@@ -30,10 +30,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
-- The hourly workflow is now `hourly.yml`, running the frequent update checks
-  (`nix run .#frequent-check`, renamed from `quick-check`, which still works)
-  and the PR check, with one commit. The frequent check no longer refreshes
-  GitHub counts: those stay daily.
+- Workflows are named for what they do: "CI: tests and lint" (`ci.yml`, was
+  `check.yml`), "Data: daily sync" (`data-daily.yml`, was `sync.yml`) and
+  "Data: hourly updates (frequent packages, update PRs)" (`data-hourly.yml`,
+  was `quick-check.yml`).
+- The hourly workflow runs the frequent update checks (`nix run
+  .#frequent-check`, renamed from `quick-check`, which still works) and the PR
+  check, with one commit. The frequent check no longer refreshes GitHub
+  counts: those stay daily.
 
 ### Fixed
 

@@ -1,4 +1,7 @@
-name: Check
+name: "CI: tests and lint"
+
+# Checks nixkeeper's own code on every push to main and every PR: builds it
+# (running its tests) and runs the formatting, lint and package-list checks.
 
 on:
   push:
@@ -6,7 +9,7 @@ on:
   pull_request:
 
 jobs:
-  check:
+  tests-and-lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

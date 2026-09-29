@@ -266,7 +266,7 @@ def count_warnings(rows):
         if row.get("openPRs") is not None and row.get("openIssues") is not None
     ]
     # A token that can't see pull requests gets issue counts back for the PR
-    # searches (see permissions in .github/workflows/sync.yml).
+    # searches (see permissions in .github/workflows/data-daily.yml).
     if (
         len(counted) >= 5
         and any(prs for prs, _ in counted)

@@ -1,12 +1,14 @@
-name: Hourly checks
+name: "Data: hourly updates (frequent packages, update PRs)"
 
-# Two small checks on top of the daily sync, against the last published data:
+# Updates part of the package data hourly, on top of the daily sync
+# (data-daily.yml), against the last published data:
 #   frequent-check: the update checks marked `frequent = true` in
 #     package-lists/update-checks.nix (nixkeeper/frequent.py)
 #   pr-check: outdated packages' update PRs, open and merged into master
 #     (nixkeeper/prcheck.py)
 # One workflow, one commit: both change little, and most hours nothing, so
 # most runs push nothing.
+
 on:
   schedule:
     - cron: '23 * * * *'   # hourly; off the hour, when GitHub's scheduler is busiest
@@ -23,11 +25,11 @@ permissions:
   contents: write
   issues: write  # the status issue (nixkeeper/notify.py)
   # The PR searches: without it they silently come back as issue searches
-  # (see sync.yml).
+  # (see data-daily.yml).
   pull-requests: read
 
 jobs:
-  hourly:
+  hourly-updates:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout main

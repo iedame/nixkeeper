@@ -45,8 +45,12 @@ just that list, to share with the people it's for.
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates)
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/` from the `data` branch
-- `.github/workflows/`: `sync.yml` (daily sync), `hourly.yml` (frequent
-  update checks and update PRs), `check.yml` (tests on push)
+- `.github/workflows/`:
+  - `ci.yml`, **CI: tests and lint**: checks nixkeeper's own code on every
+    push and PR
+  - `data-daily.yml`, **Data: daily sync**: updates all package data
+  - `data-hourly.yml`, **Data: hourly updates (frequent packages, update PRs)**:
+    the frequent update checks and outdated packages' update PRs
 
 ## Commands
 

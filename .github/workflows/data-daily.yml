@@ -1,11 +1,14 @@
-name: Sync package data
+name: "Data: daily sync"
+
+# Updates the package data the page shows (the data branch): everything, from
+# every source (nixkeeper/__main__.py). Also posts to the status issue.
 
 on:
   schedule:
     - cron: '0 6 * * *'   # daily at 06:00 UTC
   workflow_dispatch: {}    # lets you trigger a run manually from the Actions tab
 
-# The hourly checks (hourly.yml) also push to the data branch: never at
+# The hourly updates (data-hourly.yml) also push to the data branch: never at
 # the same time. A run waits for the other instead of cancelling it.
 concurrency:
   group: data-branch
