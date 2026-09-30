@@ -9,26 +9,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
-### Added
+## [0.5.0] - 2026-09-30
 
-- The page links to nixkeeper's repository ("source and how it works") and
-  to what its statuses and badges mean in its footer, and a copy of nixkeeper
-  on GitHub Pages also links to its own package lists.
-- The README explains how to set up a dashboard of your own ("Track your own
-  packages"), with screenshots of the page. How the code is laid out, the
-  commands, and how changes and releases happen moved to
-  `CONTRIBUTING.md`.
-- The README explains how nixkeeper works (with a diagram) and how to read
-  the page: every dot, badge and column state. `DATA.md` describes the data
-  files, field by field, and `CONTRIBUTING.md` maps the code.
-- Issue forms: "Track a package" and "Something looks wrong".
-- The page has a description, for search engines and link previews.
-- Ignore rules for update attempts (`package-lists/ignored-updates.nix`): a
-  version nixpkgs-update tried and failed that shouldn't count, such as one
-  upstream never really released. Its failure shows as superseded, with the
-  rule's reason; a failure at any other version still counts. The sync notes
-  when a rule no longer matches the bot's latest attempt. First one: xskat's
-  4.0-9.
+### Added
 
 - Update checks for unstable versions (`github` + `branch` in
   `package-lists/update-checks.nix`): for a package whose nixpkgs version is
@@ -39,17 +22,34 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   per package (whichever comes first; `null` turns one off). Until then, the
   details list the newer commits as not counted yet. First one: stepmania
   (its `5_1-new` branch).
-
+- Ignore rules for update attempts (`package-lists/ignored-updates.nix`): a
+  version nixpkgs-update tried and failed that shouldn't count, such as one
+  upstream never really released. Its failure shows as superseded, with the
+  rule's reason; a failure at any other version still counts. The sync notes
+  when a rule no longer matches the bot's latest attempt. First one: xskat's
+  4.0-9.
 - The build panel says which version last built on a failing platform, with
   a link to that build, next to the version that fails ("failed at 1.2.4 ·
   last succeeded at 1.2.3"). When both are the same, the version didn't break
   it; something else did (a dependency, the toolchain). Platforms that didn't
   build because of a dependency, or didn't finish, now show when they last
   succeeded too.
-- Dependabot (`.github/dependabot.yml`) proposes updates to the actions the
-  workflows use, weekly.
+- The page links to nixkeeper's repository ("source and how it works") and
+  to what its statuses and badges mean in its footer, and a copy of nixkeeper
+  on GitHub Pages also links to its own package lists.
+- The page has a description, for search engines and link previews.
+- The README explains how to set up a dashboard of your own ("Track your own
+  packages"), with screenshots of the page. How the code is laid out, the
+  commands, and how changes and releases happen moved to
+  `CONTRIBUTING.md`.
+- The README explains how nixkeeper works (with a diagram) and how to read
+  the page: every dot, badge and column state. `DATA.md` describes the data
+  files, field by field, and `CONTRIBUTING.md` maps the code.
+- Issue forms: "Track a package" and "Something looks wrong".
 - A security policy (`SECURITY.md`): report vulnerabilities privately
   through GitHub's private vulnerability reporting.
+- Dependabot (`.github/dependabot.yml`) proposes updates to the actions the
+  workflows use, weekly.
 
 ### Changed
 
@@ -294,7 +294,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.4.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/iedame/nixkeeper/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/iedame/nixkeeper/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/iedame/nixkeeper/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/iedame/nixkeeper/compare/v0.1.0...v0.2.0
