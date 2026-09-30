@@ -108,12 +108,40 @@
           program = lib.getExe' nixkeeper "nixkeeper-pr-check";
           meta.description = "Look for outdated packages' update PRs, open and merged, against data/";
         };
+        # Retakes the page's screenshots in assets/ (scripts/screenshots.sh),
+        # with the browser named by --browser: a path, or a package from this
+        # nixpkgs, fetched only then.
+        screenshots = {
+          type = "app";
+          program = lib.getExe (
+            pkgs.writeShellApplication {
+              name = "nixkeeper-screenshots";
+              runtimeInputs = with pkgs; [
+                python3
+                pngquant
+                imagemagick
+                git
+                procps
+                coreutils
+                gnused
+              ];
+              runtimeEnv.NIXPKGS = "${nixpkgs}";
+              text = builtins.readFile ./scripts/screenshots.sh;
+            }
+          );
+          meta.description = "Retake the page's screenshots in assets/ (-- --browser <name or path>)";
+        };
       in
       {
         packages.default = nixkeeper;
 
         apps = {
-          inherit sync frequent-check pr-check;
+          inherit
+            sync
+            frequent-check
+            pr-check
+            screenshots
+            ;
           fetch = sync; # old name, kept as an alias
           quick-check = frequent-check; # old name, kept as an alias
           default = sync;
@@ -133,6 +161,7 @@
             # Named explicitly: on its own actionlint looks for .git, which the
             # flake source (CI's view of the repo) doesn't include.
             actionlint .github/workflows/*.yml
+            shellcheck scripts/*.sh
             biome lint docs
             touch $out
           '';

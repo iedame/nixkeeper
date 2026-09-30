@@ -21,7 +21,10 @@ happen. For what nixkeeper does and how to set up your own, see the
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/`
   from the `data` branch
 - `assets/`: screenshots of the page, for the README (light and dark,
-  desktop and phone) and the repository's social preview
+  desktop and phone) and the repository's social preview, taken by
+  `scripts/screenshots.sh` (`nix run .#screenshots -- --browser <name or
+  path>`: any Chromium-based browser, from nixpkgs by name or installed by
+  path; the script lists them)
 - `.github/workflows/`:
   - `ci.yml`, **CI: tests and lint**: checks nixkeeper's own code on every
     push and PR
@@ -41,6 +44,7 @@ nix fmt                   # format everything (Nix, Python, the page)
 nix flake check           # tests, formatting, linters, package-list checks
 nix develop -c python3 -m unittest discover -s tests -t .   # tests, quickly
 nix eval --json -f package-lists                             # what the lists evaluate to
+nix run .#screenshots -- --browser google-chrome   # retake the screenshots in assets/
 ```
 
 New files must be `git add`ed before Nix sees them.
@@ -51,7 +55,10 @@ New files must be `git add`ed before Nix sees them.
 (`tests-and-lint`) passes, so each PR is one commit on `main`, titled after
 the PR. Direct and force pushes to `main` are blocked (repository rulesets).
 Changes that users would notice go in `CHANGELOG.md` under `## [Unreleased]`,
-in the same PR.
+in the same PR, and so do the docs that describe them: the README's "Reading
+the page" for a new or changed status, badge or column, `DATA.md` for a
+field, and the screenshots (`nix run .#screenshots -- --browser ...`) when the page looks
+noticeably different. The PR template has this as a checklist.
 
 Security problems go through the [security policy](SECURITY.md), not a
 public issue.
