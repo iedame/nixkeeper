@@ -9,7 +9,8 @@
 # With the page's current code (docs/) against the published data, so what's
 # shown is what's live.
 #
-#   nix run .#screenshots -- --browser <name or path>
+#   nix run .#screenshots -- --browser <name or path> [--open <panel>]
+#                            [--data <url>] [--port <port>]
 #
 # The browser has to be Chromium-based (the script uses Chromium's headless
 # screenshot flags), and is always named:
@@ -22,11 +23,24 @@
 # Firefox can't be used: its headless screenshots are taken as soon as the
 # page loads, before the page has fetched its data.
 #
-# Settings (environment):
-#   OPEN   the panel open in the desktop shots, <package>:<info|build|update>
-#          (default: the-legend-of-edgar:update)
-#   DATA   the data's URL (default: this repository's data branch on GitHub)
-#   PORT   the local server's port (default: 8799)
+# --open picks the panel open in the desktop shots: <row>:<panel>, or none.
+# The row is a package's name as the page shows it, or a position in the
+# page's order (1 is the first row; past the last, the last). The panel is
+# info (its details), build (its Hydra builds), update (its latest
+# nixpkgs-update attempt), or auto: update if that has something to show
+# (not just "none reported" or "not attempted"), else build likewise, else
+# info. Default: 10:auto, far enough down that the table shows above the
+# panel, whatever this copy of nixkeeper tracks. The phone shots and the
+# social preview show the plain list.
+#
+# --data is where the data is: a URL to the folder holding index.json.
+# Default: this repository's data branch on GitHub (from its origin remote).
+#
+# --port is the port of the local server that serves the page to the browser.
+# Default: 8799.
+#
+# Each can also be set in the environment (OPEN, DATA, PORT); the argument
+# wins.
 
 set -euo pipefail
 
@@ -35,7 +49,14 @@ usage() {
 	echo "  <name>: a Chromium-based browser in nixpkgs: google-chrome, chromium," >&2
 	echo "          ungoogled-chromium, brave, microsoft-edge, vivaldi" >&2
 	echo "  <path>: a Chromium-based browser's executable" >&2
-	echo "See scripts/screenshots.sh for the settings." >&2
+	echo "Options:" >&2
+	echo "  --open <row>:<info|build|update|auto>, or none: the panel open in the" >&2
+	echo "          desktop shots; the row is a package's name or a position" >&2
+	echo "          (default: 10:auto)" >&2
+	echo "  --data <url>: the data, the folder with index.json (default: this" >&2
+	echo "          repository's data branch on GitHub)" >&2
+	echo "  --port <port>: the local server's port (default: 8799)" >&2
+	echo "See scripts/screenshots.sh for more." >&2
 	exit "${1:-1}"
 }
 
@@ -48,6 +69,24 @@ while [ $# -gt 0 ]; do
 		shift 2
 		;;
 	--browser=*) browser=${1#--browser=} && shift ;;
+	--open)
+		[ $# -ge 2 ] || usage
+		OPEN=$2
+		shift 2
+		;;
+	--open=*) OPEN=${1#--open=} && shift ;;
+	--data)
+		[ $# -ge 2 ] || usage
+		DATA=$2
+		shift 2
+		;;
+	--data=*) DATA=${1#--data=} && shift ;;
+	--port)
+		[ $# -ge 2 ] || usage
+		PORT=$2
+		shift 2
+		;;
+	--port=*) PORT=${1#--port=} && shift ;;
 	-h | --help) usage 0 ;;
 	*)
 		echo "Unknown argument: $1" >&2
@@ -62,13 +101,49 @@ done
 	exit 1
 }
 
-OPEN=${OPEN:-the-legend-of-edgar:update}
+OPEN=${OPEN:-10:auto}
+[[ $OPEN == none || $OPEN =~ ^[^:]+:(info|build|update|auto)$ ]] || {
+	echo "--open: expected <row>:<info|build|update|auto>, or none (got: $OPEN)" >&2
+	exit 1
+}
 PORT=${PORT:-8799}
+[[ $PORT =~ ^[0-9]+$ ]] && [ "$PORT" -ge 1 ] && [ "$PORT" -le 65535 ] || {
+	echo "--port: expected a port number (got: $PORT)" >&2
+	exit 1
+}
 if [ -z "${DATA:-}" ]; then
 	# owner/repo from the origin remote: git@github.com:o/r.git or https://github.com/o/r
 	repo=$(git remote get-url origin | sed -E 's#^.*github\.com[:/]##; s#\.git$##')
 	DATA="https://raw.githubusercontent.com/$repo/data/data/"
 fi
+DATA=${DATA%/}/ # the folder, as the page expects it
+
+# The data has to be there, and so does the panel asked for: the package on
+# the page, and for build or update a cell that opens one (packages not in
+# nixpkgs have neither).
+python3 - "$DATA" "$OPEN" <<'EOF'
+import json, sys, urllib.request
+data, want = sys.argv[1:]
+try:
+    with urllib.request.urlopen(data + "index.json", timeout=30) as resp:
+        rows = {row["name"]: row for row in json.load(resp)["packages"]}
+except (OSError, ValueError, KeyError) as e:
+    sys.exit(f"--data: couldn't read {data}index.json ({e})")
+if not rows:
+    sys.exit(f"--data: {data}index.json has no packages")
+if want != "none":
+    name, panel = want.rsplit(":", 1)
+    if name.isdigit():
+        # A position: the page knows its order, and takes the last row past it.
+        if int(name) < 1:
+            sys.exit("--open: positions start at 1")
+    elif name not in rows:
+        sys.exit(f"--open: no package {name!r} on the page")
+    else:
+        field = {"build": "builds", "update": "update"}.get(panel)
+        if field and field not in rows[name]:
+            sys.exit(f"--open: {name} has no {panel} panel (it's not in nixpkgs)")
+EOF
 
 case $browser in
 *firefox*)
@@ -115,7 +190,7 @@ cleanup() {
 trap cleanup EXIT
 
 # The page as it is in docs/, pointed at the data, and able to open a panel
-# once its rows are there (?open=<package>:<mode>).
+# once its rows are there (?open=<row>:<panel>, as --open).
 cp docs/* "$site/"
 python3 - "$site/index.html" "$DATA" <<'EOF'
 import sys
@@ -129,14 +204,30 @@ page = page.replace(
     """<script>
 const want = new URLSearchParams(location.search).get('open');
 if (want) {
-  const [name, mode] = want.split(':');
+  const at = want.lastIndexOf(':');
+  const [name, panel] = [want.slice(0, at), want.slice(at + 1)];
+  // A cell's panel, when it has something to show: its button isn't one of
+  // the "nothing to report" ones (none reported, not attempted, ...).
+  const worth = (row, kind) => {
+    const b = row.querySelector(`.failure-btn[data-kind="${kind}"]`);
+    return b && !b.hasAttribute('data-quiet') ? b : null;
+  };
   const t = setInterval(() => {
-    const row = [...document.querySelectorAll('tr.row')].find(
-      (r) => r.querySelector('.n')?.textContent === name);
+    const rows = [...document.querySelectorAll('tr.row')];
+    if (!rows.length) return;
+    const row = /^[0-9]+$/.test(name)
+      ? rows[Math.min(+name, rows.length) - 1]
+      : rows.find((r) => r.querySelector('.n')?.textContent === name);
     if (!row) return;
     clearInterval(t);
-    if (mode === 'info') row.click();
-    else row.querySelector(`.failure-btn[data-kind="${mode}"]`)?.click();
+    const button =
+      panel === 'auto'
+        ? worth(row, 'update') || worth(row, 'build')
+        : panel === 'info'
+          ? null
+          : row.querySelector(`.failure-btn[data-kind="${panel}"]`);
+    if (button) button.click();
+    else if (panel === 'info' || panel === 'auto') row.click();
   }, 100);
 }
 </script></body>""",
@@ -182,7 +273,9 @@ shot() {
 
 echo "Taking screenshots (data: $DATA)..."
 for theme in dark light; do
-	shot "desktop-$theme" 1280 860 2 "$theme" "?open=$OPEN"
+	open=
+	[ "$OPEN" != none ] && open="?open=$OPEN"
+	shot "desktop-$theme" 1280 860 2 "$theme" "$open"
 	shot "mobile-$theme" 800 844 2 "$theme" phone.html
 	magick "$work/out/mobile-$theme.png" -gravity center -crop 780x1688+0+0 +repage \
 		"$work/out/mobile-$theme.png"

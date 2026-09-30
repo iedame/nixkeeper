@@ -129,7 +129,7 @@
               text = builtins.readFile ./scripts/screenshots.sh;
             }
           );
-          meta.description = "Retake the page's screenshots in assets/ (-- --browser <name or path>)";
+          meta.description = "Retake the page's screenshots in assets/ (-- --browser <name or path>; --help for the options)";
         };
       in
       {
