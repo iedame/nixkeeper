@@ -20,4 +20,8 @@
   # Where to look for new releases of some tracked packages, on top of
   # Repology. See the file for the format.
   updateChecks = import ./update-checks.nix;
+
+  # Versions nixpkgs-update tried and failed that don't count as its failure
+  # (never really released, say). See the file for the format.
+  ignoredUpdates = import ./ignored-updates.nix;
 }

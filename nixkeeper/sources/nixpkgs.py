@@ -13,8 +13,8 @@ from .. import config
 
 def read_lists(path=None):
     """The package lists: {"maintainers": [...], "extraPackages": [...],
-    "updateChecks": {...}}. From a JSON file as is, or from the Nix folder
-    (package-lists/) by evaluating it."""
+    "updateChecks": {...}, "ignoredUpdates": {...}}. From a JSON file as is,
+    or from the Nix folder (package-lists/) by evaluating it."""
     path = path or config.LISTS
     if path.endswith(".json"):
         with open(path) as f:
