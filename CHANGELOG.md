@@ -37,8 +37,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - The page fits narrow screens without scrolling sideways. On phones and
   windows up to 940px wide, each package is a card: its name and platforms,
   then its version and badges, then only what needs attention (build or
-  update failures, open PRs and issues). The panels wrap to fit. Up to
-  1180px, the table's version column wraps instead of widening the table.
+  update failures, open PRs and issues). The panels wrap to fit. In the
+  table, a long version wraps (before "→", never inside a version) and
+  platform tags go under the name when space is short, instead of widening
+  the table past the screen.
+- An outdated unstable version shows only the new date as its target
+  ("5.1.0-b2-unstable-2022-11-14 → 2026-08-22"); the full version is in its
+  tooltip and the details.
 
 ### Security
 

@@ -262,6 +262,9 @@ tbody tr.row td {
   display: flex;
   align-items: center;
   gap: 10px;
+  /* Short of space, the platform tags go under the name. */
+  flex-wrap: wrap;
+  row-gap: 4px;
 }
 .pkg-name .n {
   font-weight: 600;
@@ -306,8 +309,16 @@ button.plat[aria-pressed="true"] {
   cursor: pointer;
 }
 
+/* The version column wraps rather than widening the table past the screen
+   (one long version would widen it for every row): only between its parts
+   (before "→ target", before the age and badges), never inside a version. */
 .ver {
   font-size: 13px;
+}
+.ver .v,
+.ver .ref,
+.ver .age,
+.ver .badge {
   white-space: nowrap;
 }
 .ver .ref {
@@ -636,17 +647,6 @@ footer.legend span {
   }
 }
 
-/* Narrower windows: the version column wraps (its badges go under the
-   version) instead of making the table scroll sideways. */
-@media (max-width: 1180px) {
-  .ver {
-    white-space: normal;
-  }
-  .ver .badge {
-    white-space: nowrap;
-  }
-}
-
 /* Phones and narrow windows (where even the wrapped table doesn't fit):
    each package is a card instead of a table row, so nothing scrolls
    sideways. Line 1: name, platforms, chevron. Line 2: the version and its
@@ -711,10 +711,6 @@ footer.legend span {
   tbody tr.row td:has(> .failure-na),
   tbody tr.row td:has(> [data-quiet]) {
     display: none;
-  }
-  .pkg-name {
-    flex-wrap: wrap;
-    row-gap: 4px;
   }
   .pkg-name .n {
     white-space: normal;
