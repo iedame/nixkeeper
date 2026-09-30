@@ -19,6 +19,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   succeeded too.
 - Dependabot (`.github/dependabot.yml`) proposes updates to the actions the
   workflows use, weekly.
+- A security policy (`.github/SECURITY.md`): report vulnerabilities privately
+  through GitHub's private vulnerability reporting.
 
 ### Security
 
