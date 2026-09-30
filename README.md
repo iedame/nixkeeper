@@ -68,18 +68,31 @@ nix eval --json -f package-lists                             # what the lists ev
 
 New files must be `git add`ed before Nix sees them.
 
+## Changes
+
+`main` only changes through pull requests: squash-merged, once CI
+(`tests-and-lint`) passes, so each PR is one commit on `main`, titled after
+the PR. Direct and force pushes to `main` are blocked (repository rulesets).
+Changes that users would notice go in `CHANGELOG.md` under `## [Unreleased]`,
+in the same PR.
+
 ## Releasing
 
-1. Set the new `version` in `pyproject.toml` (the flake reads it from there),
-   and turn `## [Unreleased]` in `CHANGELOG.md` into `## [x.y.z] - date`
-   (with a fresh `## [Unreleased]` above it, and its compare link below).
-2. Commit and push `main`; wait for CI.
-3. Tag that commit `vx.y.z` and push the tag.
+1. In a PR titled `chore: release x.y.z`: set the new `version` in
+   `pyproject.toml` (the flake reads it from there), and turn
+   `## [Unreleased]` in `CHANGELOG.md` into `## [x.y.z] - date` (with a fresh
+   `## [Unreleased]` above it, and its compare link below).
+2. Once merged, tag the merge commit on `main` and push the tag:
+   `git switch main && git pull`, `git tag vx.y.z`, `git push origin vx.y.z`.
 
 The release workflow checks that the tag matches `pyproject.toml` and has a
 changelog section, runs the flake checks, and publishes the GitHub Release
-with that section as its notes. If a check fails, nothing is published: fix,
-move the tag (`git tag -f`, `git push -f origin vx.y.z`) and it runs again.
+with that section as its notes. If a check fails, nothing is published.
+
+Version tags can't be moved or deleted (a tag ruleset), so a published
+version never changes. If a release fails, fix it in a PR and release the next
+patch version (x.y.z+1) instead of reusing the tag; a tag whose release
+failed stays unreleased.
 
 ## Running elsewhere
 
