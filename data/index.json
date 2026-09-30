@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-30T11:59:25.868778+00:00",
+  "checkedAt": "2026-09-30T12:49:18.407698+00:00",
   "packages": [
     {
       "attrs": [
@@ -192,7 +192,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T11:59:25.868778+00:00",
+        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
@@ -945,7 +945,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T11:59:25.868778+00:00",
+        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -1076,9 +1076,9 @@
       "source": "https://github.com/NixOS/nixpkgs/blob/b4fd65b198c599cbe814fcb9f42d25d021595ec9/pkgs/by-name/hi/hitori/package.nix#L59",
       "update": {
         "attr": "hitori",
-        "date": "2026-09-20",
+        "date": "2026-09-30",
         "from": "0",
-        "log": "https://nixpkgs-update-logs.nixos.org/hitori/2026-09-20.log",
+        "log": "https://nixpkgs-update-logs.nixos.org/hitori/2026-09-30.log",
         "outcome": "other",
         "to": "1"
       },
@@ -1382,7 +1382,7 @@
       "nixVersion": "154.0.4258.37",
       "nixVulnerable": false,
       "openIssues": 1,
-      "openPRs": 2,
+      "openPRs": 1,
       "outdatedSince": "2026-09-29T22:59:45.183190+00:00",
       "platforms": {
         "darwin": true,
@@ -1406,7 +1406,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T11:59:25.868778+00:00",
+        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
@@ -2000,7 +2000,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-09-30T11:59:25.868778+00:00",
+        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "label": "stepmania/stepmania 5_1-new branch",
         "newer": true,
@@ -2362,7 +2362,7 @@
         },
         {
           "attr": "wesnoth",
-          "build": 347295542,
+          "build": 347792840,
           "name": "wesnoth-1.18.8",
           "status": "ok",
           "system": "aarch64-linux",
@@ -2425,11 +2425,11 @@
         },
         {
           "attr": "wesnoth-devel",
-          "build": 347295539,
-          "name": "wesnoth-devel-1.19.24",
+          "build": 347792847,
+          "name": "wesnoth-devel-1.19.28",
           "status": "ok",
           "system": "aarch64-linux",
-          "version": "1.19.24"
+          "version": "1.19.28"
         },
         {
           "attr": "wesnoth-devel",
@@ -2489,7 +2489,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T11:59:25.868778+00:00",
+        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
         "label": "wesnoth/wesnoth tags",
         "newer": true,
         "repo": "wesnoth/wesnoth",
@@ -2621,11 +2621,13 @@
         ],
         "from": "4.0",
         "log": "https://nixpkgs-update-logs.nixos.org/xskat/2026-02-10.log",
-        "outcome": "failed",
+        "outcome": "superseded",
+        "reason": "Never released: an upstream versioning mistake. Repology ignores it too.",
+        "supersededOn": "ignored",
         "to": "4.0-9",
         "was": "4.0"
       },
-      "updateFailure": true
+      "updateFailure": false
     }
   ]
 }
