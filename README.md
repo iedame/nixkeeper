@@ -39,6 +39,52 @@ A daily sync (GitHub Actions, or anywhere: see [Running elsewhere](#running-else
 refreshes it all and keeps a status issue up to date, commenting when something
 newly needs attention.
 
+## How it works
+
+```mermaid
+flowchart LR
+  lists["package-lists/<br>what to track"] --> sync
+  subgraph sources [Sources]
+    direction TB
+    index["nixpkgs channel<br>index, meta.broken"]
+    repology[Repology]
+    checks["release pages,<br>tags, branches"]
+    hydra[Hydra]
+    bot["nixpkgs-update<br>logs"]
+    gh["GitHub<br>PRs, issues"]
+  end
+  sources --> sync["daily sync<br>(GitHub Actions)"]
+  sources --> hourly["hourly checks"]
+  sync --> data[("data branch<br>JSON")]
+  hourly --> data
+  sync --> issue["status issue"]
+  data --> page["the page<br>(GitHub Pages)"]
+```
+
+There's no server: nixkeeper is a program that gathers data, and a static
+page that shows it.
+
+- **The daily sync** (`nix run .#sync`, run by the "Data: daily sync"
+  workflow at 06:00 UTC) works out which packages to track from
+  `package-lists/` and the nixos-unstable channel's package index, then asks
+  each source about them: Repology for versions, nixkeeper's own update
+  checks, Hydra for builds (and nixpkgs for where it marks them broken), the
+  nixpkgs-update logs for the bot's latest attempt, and GitHub for open PRs,
+  issues and update PRs. It writes everything as JSON to the `data` branch
+  ([DATA.md](DATA.md)) and rewrites the status issue, commenting when
+  something newly needs attention.
+- **The hourly checks** ("Data: hourly updates") refresh a few rows of the
+  last published data: the update checks marked `frequent` (browsers, for
+  their security fixes) and outdated packages' update PRs. They commit only
+  when something changed.
+- **The page** (`docs/`, served by GitHub Pages) is plain HTML and
+  JavaScript that reads the JSON in your browser.
+
+When a source can't be reached, the row keeps its last known result, marked
+as not refreshed, and the status issue says so; the rest of the sync goes
+on. If most Repology lookups fail, the sync stops and leaves the published
+data as it was.
+
 ## Reading the page
 
 Each row is a package; clicking it opens its details (every repository
@@ -91,7 +137,7 @@ the target shows just the new date.
 | can't update (amber) | a newer version exists, but none of the bot's ways of updating apply to this package: update it by hand, or give it an updateScript |
 | superseded | the attempt no longer matters: nixpkgs has moved past that version (in the channel, or merged on master), or a manual rule ignores it (`package-lists/ignored-updates.nix`) |
 | not attempted | the bot has never tried this package |
-| none reported | the bot opened a PR, found one open, or had nothing to update |
+| none reported | the bot opened a PR, found one open, had nothing to update, or finished without a recognisable result (the panel says which) |
 
 A `not refreshed` tag on a build or update cell means Hydra or the update
 logs couldn't be reached on the last sync, so it shows the last known result.
@@ -159,6 +205,7 @@ Elsewhere (a server, a service), these environment variables change that:
 | `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issue up to date (the workflows set it) |
 | `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issue lives |
 | `NIXKEEPER_PAGE_URL` | the GitHub Pages site | the page link in notifications |
+| `REPOLOGY_BASE_URL` | – | one Repology address to use (normally `repology.org`, falling back to its mirror `repology.amdmi3.ru`) |
 
 The status issue is only posted with a token given explicitly (the token file
 or `GITHUB_TOKEN`), never with the local `gh` login.

@@ -18,10 +18,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   packages"), with screenshots of the page. How the code is laid out, the
   commands, and how changes and releases happen moved to
   `CONTRIBUTING.md`.
-- The README explains how to read the page: every dot, badge and column
-  state. `DATA.md` describes the data files, field by field.
+- The README explains how nixkeeper works (with a diagram) and how to read
+  the page: every dot, badge and column state. `DATA.md` describes the data
+  files, field by field, and `CONTRIBUTING.md` maps the code.
 - Issue forms: "Track a package" and "Something looks wrong".
-
+- The page has a description, for search engines and link previews.
 - Ignore rules for update attempts (`package-lists/ignored-updates.nix`): a
   version nixpkgs-update tried and failed that shouldn't count, such as one
   upstream never really released. Its failure shows as superseded, with the

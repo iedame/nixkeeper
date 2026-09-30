@@ -6,14 +6,10 @@ happen. For what nixkeeper does and how to set up your own, see the
 
 ## Layout
 
-- `nixkeeper/`: the sync, as a Python package
-  - `sources/`: where the data comes from: the nixpkgs index and package
-    lists, Repology, GitHub, Hydra, the nixpkgs-update logs, and the update
-    checks
-  - `tracking.py` → `lookup.py` → `rows.py` → `history.py` → `output.py`,
-    run in that order by `__main__.py`; `frequent.py` and `prcheck.py` are
-    the hourly checks
-- `tests/`: offline tests, one file per module
+- `nixkeeper/`: the sync and the hourly checks, as a Python package (see
+  [The code](#the-code))
+- `tests/`: offline tests, one file per module (nothing reaches the
+  network: sources are faked)
 - `nix/package-lists.nix`: `nix flake check` validates the package lists
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates, malformed update checks and ignore rules)
@@ -31,6 +27,37 @@ happen. For what nixkeeper does and how to set up your own, see the
     the frequent update checks and outdated packages' update PRs
   - `release.yml`, **Release: publish from tag**: a GitHub Release for each
     version tag (see [Releasing](#releasing))
+
+## The code
+
+`nixkeeper/__main__.py` runs one sync, top to bottom:
+
+| Step | Module |
+|---|---|
+| read the package lists, the channel's package index and its revision | `sources/nixpkgs.py` |
+| work out which packages to track, and which lists each is on | `tracking.py` |
+| load the previous run's data, for lookups that fail | `history.py` |
+| look each one up on Repology (falling back to the last run) | `lookup.py`, `sources/repology.py` |
+| turn Repology's projects into the page's rows, and link nixpkgs' source | `rows.py` |
+| run nixkeeper's own update checks | `sources/upstream.py` |
+| carry "outdated since" over from the previous run | `history.py` |
+| where nixpkgs marks them broken, and Hydra's builds | `sources/nixpkgs.py`, `sources/hydra.py` |
+| the nixpkgs-update bot's latest attempts | `sources/nixpkgs_update.py` |
+| open PR and issue counts, and update PRs | `sources/github.py` |
+| write `data/` | `output.py` |
+| rewrite the status issue, commenting on what's newly wrong | `notify.py`, `changes.py` |
+
+Around that:
+
+- `config.py`: settings, and the addresses of every source
+- `versions.py`: comparing version strings
+- `sources/http.py`: GET with retries, for the sources that need no more
+- `frequent.py`, `prcheck.py`: the hourly checks, which start from the last
+  published data and publish through `partial.py` only when a row changed
+
+Each source that can fail keeps the row's previous result and records it as
+not refreshed (`history.not_refreshed`), so one unreachable service never
+blanks the page.
 
 ## Commands
 

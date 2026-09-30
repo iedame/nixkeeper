@@ -1,7 +1,8 @@
 """One sync: nixpkgs index + package lists -> tracked packages -> Repology ->
-rows -> update checks -> Hydra builds -> nixpkgs-update logs -> GitHub counts
--> data/ -> status issue. Run from the repository root (it reads package-lists/
-and writes data/ there): `nix run .#sync`."""
+rows -> update checks -> meta.broken + Hydra builds -> nixpkgs-update logs ->
+GitHub counts and update PRs -> data/ -> status issue. Run from the repository
+root (it reads package-lists/ and writes data/ there, unless the settings say
+otherwise): `nix run .#sync`."""
 
 from datetime import UTC, datetime
 

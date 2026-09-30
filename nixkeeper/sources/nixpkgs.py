@@ -1,4 +1,5 @@
-"""nixpkgs side: the package lists (Nix files) and the channel's package index."""
+"""nixpkgs side: the package lists (Nix files), the channel's package index and
+revision, and where nixpkgs marks packages broken."""
 
 import json
 import subprocess
