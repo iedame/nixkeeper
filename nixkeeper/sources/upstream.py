@@ -1,6 +1,7 @@
 """nixkeeper's own update checks (package-lists/update-checks.nix): the newest
 upstream release of a package, from its GitHub repository's tags or from a web
-page such as the vendor's release notes. A version
+page such as the vendor's release notes, or for an unstable version
+("1.0-unstable-2024-05-01"), the commits on the branch it follows. A version
 only counts as newest on Repology once repositories it trusts package it (the
 AUR alone doesn't), so without this a fresh release leaves nixpkgs looking up
 to date."""
@@ -9,6 +10,7 @@ import re
 import sys
 import urllib.error
 import urllib.parse
+from datetime import UTC, datetime, timedelta
 
 from .. import history
 from ..versions import is_newer, version_key
@@ -38,11 +40,48 @@ def latest_on_page(text, pattern):
     return highest(regex.finditer(text), regex)
 
 
+# nixpkgs' unstable versions: what they're based on, then the date (UTC) of
+# the commit they package, e.g. "5.1.0-b2-unstable-2022-11-14".
+UNSTABLE = re.compile(r"^(.*-unstable-)([0-9]{4}-[0-9]{2}-[0-9]{2})$")
+
+# When newer commits make an unstable version outdated: once one of them has
+# waited this many days, or there are this many of them (whichever comes
+# first; None: not that way). A check's outdatedAfter overrides either.
+OUTDATED_AFTER = {"days": 90, "commits": None}
+
+
+def unstable_date(nix_version):
+    """The date in an unstable version, or None if it isn't one."""
+    m = UNSTABLE.match(nix_version or "")
+    return m.group(2) if m else None
+
+
+def unstable_version(nix_version, committed):
+    """nixpkgs' unstable version, moved to the date of the commit committed
+    (GitHub's ISO time) if that's later: the version an update to that commit
+    would have. None if nix_version isn't an unstable version."""
+    m = UNSTABLE.match(nix_version or "")
+    if not m:
+        return None
+    when = datetime.fromisoformat(committed.replace("Z", "+00:00"))
+    date = when.astimezone(UTC).date().isoformat()
+    return m.group(1) + max(date, m.group(2))
+
+
+def outdated_after(check):
+    """A branch check's limits: the defaults, with its own outdatedAfter."""
+    return {**OUTDATED_AFTER, **(check.get("outdatedAfter") or {})}
+
+
 def apply(row, found):
     """Record a check's result on its row. When upstream is ahead of nixpkgs,
     it's also the version the row is compared against (unless Repology has
-    seen an even newer one)."""
-    found = {**found, "newer": is_newer(found["version"], row.get("nixVersion"))}
+    seen an even newer one). found["newer"], if given, says whether it counts
+    as ahead (a branch check's newer commits may not count yet)."""
+    newer = found.get("newer")
+    if newer is None:
+        newer = is_newer(found["version"], row.get("nixVersion"))
+    found = {**found, "newer": newer}
     row["upstream"] = found
     if found["newer"] and not is_newer(row.get("refVersion") or "", found["version"]):
         row["refVersion"] = found["version"]
@@ -80,19 +119,32 @@ def add_checks(rows, checks, previous, now):
 
     github_checks = {n: c for n, c in wanted.items() if "github" in c}
     if github_checks:
-        check_github(github_checks, keep_previous, found)
+        versions = {n: by_name[n].get("nixVersion") for n in github_checks}
+        check_github(github_checks, versions, now, keep_previous, found)
     for name, check in wanted.items():
         if "url" in check:
             check_page(name, check, keep_previous, found)
 
 
-def check_github(checks, keep_previous, found):
-    """All GitHub checks, in one request."""
+def check_github(checks, versions, now, keep_previous, found):
+    """All GitHub checks: tags in one request, branches in another.
+    versions: nixpkgs' version of each package, which a branch check compares
+    against."""
     token = github.token()
     if not token:
         for name in checks:
             keep_previous(name, "no GITHUB_TOKEN or gh login")
         return
+    tag_checks = {n: c for n, c in checks.items() if "tags" in c}
+    branch_checks = {n: c for n, c in checks.items() if "branch" in c}
+    if tag_checks:
+        check_tags(token, tag_checks, keep_previous, found)
+    if branch_checks:
+        check_branches(token, branch_checks, versions, now, keep_previous, found)
+
+
+def check_tags(token, checks, keep_previous, found):
+    """Checks against a repository's tags."""
     try:
         tags = github.latest_tags(token, sorted({c["github"] for c in checks.values()}))
     except (urllib.error.URLError, OSError, ValueError) as e:
@@ -121,6 +173,76 @@ def check_github(checks, keep_previous, found):
             repo=repo,
             label=f"{repo} tags",
             url=f"https://github.com/{repo}/tags",
+        )
+
+
+def check_branches(token, checks, versions, now, keep_previous, found):
+    """Checks for unstable versions, against the commits on the branch the
+    package follows since the one nixpkgs has: outdated once one of them has
+    waited long enough, or there are enough of them (outdated_after)."""
+    queries = {}
+    for name, check in checks.items():
+        date = unstable_date(versions.get(name))
+        if date is None:
+            keep_previous(
+                name,
+                f"nixpkgs' version {versions.get(name)} isn't an unstable version "
+                "(…-unstable-YYYY-MM-DD): use a tags or url check",
+            )
+            continue
+        # Commits from the day after nixpkgs' (its own day is the same version).
+        since = datetime.fromisoformat(date).replace(tzinfo=UTC) + timedelta(days=1)
+        # Commits old enough to count: up to `days` ago.
+        days = outdated_after(check)["days"]
+        until = None
+        if days is not None:
+            until = datetime.fromisoformat(now) - timedelta(days=days)
+            if until <= since:
+                until = None  # none can have waited that long yet
+        queries[name] = (
+            check["github"],
+            check["branch"],
+            since.strftime("%Y-%m-%dT%H:%M:%SZ"),
+            until and until.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ"),
+        )
+    if not queries:
+        return
+    try:
+        results = github.branch_commits(token, list(queries.values()))
+    except (urllib.error.URLError, OSError, ValueError) as e:
+        if isinstance(e, urllib.error.HTTPError):
+            e.close()
+        for name in queries:
+            keep_previous(name, f"GitHub request failed ({e})")
+        return
+    for (name, (repo, branch, _, until)), head in zip(
+        queries.items(), results, strict=True
+    ):
+        if head is None:
+            keep_previous(
+                name, f"couldn't read branch {branch} of {repo} (renamed or deleted?)"
+            )
+            continue
+        limits = outdated_after(checks[name])
+        behind, waited = head["since"], head["until"] if until else 0
+        found(
+            name,
+            unstable_version(versions[name], head["committedDate"]),
+            f"branch {branch} of {repo}",
+            "",
+            newer=bool(
+                behind
+                and (
+                    (limits["days"] is not None and waited > 0)
+                    or (limits["commits"] is not None and behind >= limits["commits"])
+                )
+            ),
+            behind=behind,
+            outdatedAfter=limits,
+            repo=repo,
+            label=f"{repo} {branch} branch",
+            url=f"https://github.com/{repo}/commits/{branch}",
+            commit=head["oid"],
         )
 
 
