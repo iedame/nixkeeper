@@ -71,6 +71,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   now shows as an amber "can't update", with the bot's reasons from the log:
   not a failure, but a sign the update needs doing by hand. After an
   updateScript run (`0 -> 1`), an empty diff still means nothing to update.
+- Opening a package's details no longer shifts the table's columns: the
+  panel's long list of repositories made the table redistribute its width, so
+  the rows above moved (by up to ~90px). On a phone, a repository chip with a
+  long version that can't break (`5.1.0~20221114gitd55acb1`) no longer sticks
+  out past the screen; its version wraps inside the chip.
 
 ### Security
 
