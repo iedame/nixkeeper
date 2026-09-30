@@ -1,0 +1,36 @@
+name: Something looks wrong
+description: A package shows the wrong version, status, build or update result, or the page misbehaves.
+title: "<package>: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before reporting: [Reading the page](https://github.com/iedame/nixkeeper#reading-the-page) explains every status and badge. A result can also be up to a day old: the data is refreshed daily (the time at the top right of the page says when).
+  - type: input
+    id: package
+    attributes:
+      label: Package
+      description: The row's name on the page.
+      placeholder: stepmania
+    validations:
+      required: true
+  - type: textarea
+    id: shows
+    attributes:
+      label: What the page shows
+      description: What's wrong about it. A screenshot helps.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What it should show
+      description: And how you know, e.g. a link to the release, the nixpkgs PR, or the Hydra build.
+    validations:
+      required: true
+  - type: input
+    id: page
+    attributes:
+      label: Page address
+      description: The address as you had it open (with any filters), if it's a view other than the default.

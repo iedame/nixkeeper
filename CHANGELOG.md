@@ -11,13 +11,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
-- The page links to nixkeeper's repository ("source and how it works") in
-  its footer, and a copy of nixkeeper on GitHub Pages also links to its own
-  package lists.
+- The page links to nixkeeper's repository ("source and how it works") and
+  to what its statuses and badges mean in its footer, and a copy of nixkeeper
+  on GitHub Pages also links to its own package lists.
 - The README explains how to set up a dashboard of your own ("Track your own
   packages"), with screenshots of the page. How the code is laid out, the
   commands, and how changes and releases happen moved to
   `CONTRIBUTING.md`.
+- The README explains how to read the page: every dot, badge and column
+  state. `DATA.md` describes the data files, field by field.
+- Issue forms: "Track a package" and "Something looks wrong".
 
 - Ignore rules for update attempts (`package-lists/ignored-updates.nix`): a
   version nixpkgs-update tried and failed that shouldn't count, such as one
