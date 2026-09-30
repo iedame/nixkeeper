@@ -1,0 +1,3 @@
+# docs/ is the page (GitHub Pages serves it from there), not documentation:
+# counted as code, so GitHub sees its JavaScript (language stats, CodeQL).
+docs/** linguist-documentation=false
