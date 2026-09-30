@@ -557,6 +557,10 @@ tbody tr.detail td {
 }
 .detail-inner {
   padding-left: 18px;
+  /* Takes the width the table gives it, without a say in the column widths:
+     otherwise a long panel (the details' Repology chips) makes the table
+     redistribute its columns, and the rows above shift when it opens. */
+  contain: inline-size;
 }
 .nix-line {
   font-size: 14px;
@@ -584,8 +588,12 @@ tbody tr.detail td {
   display: inline-flex;
   gap: 6px;
   align-items: baseline;
+  /* Never wider than the panel: a long version ("5.1.0~20221114gitd55acb1")
+     breaks inside the chip instead of sticking out on a phone. */
+  max-width: 100%;
 }
 .repo-chip .v {
+  overflow-wrap: anywhere;
   color: var(--ink);
 }
 .repo-chip.ahead .v {
