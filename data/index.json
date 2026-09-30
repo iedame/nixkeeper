@@ -922,7 +922,7 @@
       "name": "google-chrome",
       "nixStatus": "outdated",
       "nixVersion": "154.0.8037.57",
-      "nixVulnerable": false,
+      "nixVulnerable": true,
       "openIssues": 5,
       "openPRs": 2,
       "outdatedSince": "2026-09-29T21:11:12.205560+00:00",
@@ -947,7 +947,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
+        "checkedAt": "2026-09-30T15:57:58.361518+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -1408,7 +1408,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
+        "checkedAt": "2026-09-30T15:57:58.361518+00:00",
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
@@ -2292,6 +2292,15 @@
       "nixVersion": "4.22.1",
       "nixVulnerable": false,
       "openIssues": 0,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "4.22.1",
+        "number": 568694,
+        "title": "unciv: 4.22.1 -> 4.22.5",
+        "to": "4.22.5",
+        "url": "https://github.com/NixOS/nixpkgs/pull/568694"
+      },
       "openPRs": 1,
       "outdatedSince": "2026-09-28T03:09:58.527549+00:00",
       "platforms": {
