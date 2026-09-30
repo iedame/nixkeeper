@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-29T22:59:45.183190+00:00",
+  "checkedAt": "2026-09-30T01:36:15.112280+00:00",
   "packages": [
     {
       "attrs": [
@@ -95,21 +95,24 @@
           "build": 347087778,
           "name": "backrest-1.14.1",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "1.14.1"
         },
         {
           "attr": "backrest",
           "build": 347087772,
           "name": "backrest-1.14.1",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "1.14.1"
         },
         {
           "attr": "backrest",
           "build": 347087784,
           "name": "backrest-1.14.1",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "1.14.1"
         }
       ],
       "dataFile": "backrest.json",
@@ -183,7 +186,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-29T22:59:45.183190+00:00",
+        "checkedAt": "2026-09-30T01:36:15.112280+00:00",
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
@@ -200,14 +203,16 @@
           "build": 347089545,
           "name": "bolt-launcher-0.24.0",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "0.24.0"
         },
         {
           "attr": "bolt-launcher",
           "build": 347089785,
           "name": "bolt-launcher-0.24.0",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "0.24.0"
         }
       ],
       "dataFile": "bolt-launcher.json",
@@ -253,14 +258,16 @@
           "build": 347098091,
           "name": "d-seams-2.10.0",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "2.10.0"
         },
         {
           "attr": "d-seams",
           "build": 347098089,
           "name": "d-seams-2.10.0",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "2.10.0"
         }
       ],
       "dataFile": "d-seams.json",
@@ -306,21 +313,24 @@
           "build": 347101605,
           "name": "egoboo-2.8.1",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "2.8.1"
         },
         {
           "attr": "egoboo",
           "build": 347101603,
           "name": "egoboo-2.8.1",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "2.8.1"
         },
         {
           "attr": "egoboo",
           "build": 347101604,
           "name": "egoboo-2.8.1",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "2.8.1"
         }
       ],
       "dataFile": "egoboo.json",
@@ -410,14 +420,16 @@
           "build": 347103770,
           "name": "filezilla-3.71.1",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "3.71.1"
         },
         {
           "attr": "filezilla",
           "build": 347103783,
           "name": "filezilla-3.71.1",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "3.71.1"
         }
       ],
       "dataFile": "filezilla.json",
@@ -463,21 +475,24 @@
           "build": 347105164,
           "name": "freedink-109.6",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "109.6"
         },
         {
           "attr": "freedink",
           "build": 347105159,
           "name": "freedink-109.6",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "109.6"
         },
         {
           "attr": "freedink",
           "build": 347105163,
           "name": "freedink-109.6",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "109.6"
         }
       ],
       "dataFile": "freedink.json",
@@ -515,14 +530,16 @@
           "build": 347105606,
           "name": "fzssh-1.4.0",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "1.4.0"
         },
         {
           "attr": "fzssh",
           "build": 347105604,
           "name": "fzssh-1.4.0",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "1.4.0"
         },
         {
           "attr": "fzssh",
@@ -607,7 +624,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-29T22:59:45.183190+00:00",
+        "checkedAt": "2026-09-30T01:36:15.112280+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -625,7 +642,8 @@
           "build": 347137788,
           "name": "heroic-2.22.3",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "2.22.3"
         },
         {
           "attr": "heroic",
@@ -639,14 +657,16 @@
           "build": 347137798,
           "name": "heroic-unwrapped-2.22.3",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "2.22.3"
         },
         {
           "attr": "heroic-unwrapped",
           "build": 347137696,
           "name": "heroic-unwrapped-2.22.3",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "2.22.3"
         }
       ],
       "dataFile": "heroic-games-launcher.json",
@@ -691,22 +711,28 @@
           "build": 347147120,
           "name": "libfilezilla-0.57.0",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "0.57.0"
         },
         {
           "attr": "libfilezilla",
           "build": 347147114,
           "name": "libfilezilla-0.57.0",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "0.57.0"
         },
         {
           "attr": "libfilezilla",
           "build": 300373373,
           "lastSuccess": "2024-12-03T17:20:37+00:00",
+          "lastSuccessBuild": 281035527,
+          "lastSuccessName": "libfilezilla-0.47.0",
+          "lastSuccessVersion": "0.47.0",
           "name": "libfilezilla-0.49.0",
           "status": "broken",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "0.49.0"
         }
       ],
       "dataFile": "libfilezilla.json",
@@ -751,21 +777,24 @@
           "build": 347149936,
           "name": "lincity-1.13.1",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "1.13.1"
         },
         {
           "attr": "lincity",
           "build": 347149935,
           "name": "lincity-1.13.1",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "1.13.1"
         },
         {
           "attr": "lincity",
           "build": 347149932,
           "name": "lincity-1.13.1",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "1.13.1"
         }
       ],
       "dataFile": "lincity.json",
@@ -799,14 +828,16 @@
           "build": 347149947,
           "name": "lincity-ng-2.15.0",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "2.15.0"
         },
         {
           "attr": "lincity-ng",
           "build": 347149956,
           "name": "lincity-ng-2.15.0",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "2.15.0"
         }
       ],
       "dataFile": "lincity-ng.json",
@@ -851,14 +882,16 @@
           "build": 347150205,
           "name": "linkding-1.47.0",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "1.47.0"
         },
         {
           "attr": "linkding",
           "build": 347150148,
           "name": "linkding-1.47.0",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "1.47.0"
         }
       ],
       "dataFile": "linkding.json",
@@ -918,7 +951,7 @@
         "to": "154.0.4258.48",
         "url": "https://github.com/NixOS/nixpkgs/pull/568437"
       },
-      "openPRs": 1,
+      "openPRs": 2,
       "outdatedSince": "2026-09-29T22:59:45.183190+00:00",
       "platforms": {
         "darwin": true,
@@ -942,7 +975,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-29T22:59:45.183190+00:00",
+        "checkedAt": "2026-09-30T01:36:15.112280+00:00",
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
@@ -1034,21 +1067,24 @@
           "build": 347266277,
           "name": "ringracers-2.4",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "2.4"
         },
         {
           "attr": "ringracers",
           "build": 347266276,
           "name": "ringracers-2.4",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "2.4"
         },
         {
           "attr": "ringracers",
           "build": 347266290,
           "name": "ringracers-2.4",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "2.4"
         }
       ],
       "dataFile": "ringracers.json",
@@ -1085,14 +1121,16 @@
           "build": 347272688,
           "name": "runelite-2.8.0",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "2.8.0"
         },
         {
           "attr": "runelite",
           "build": 347272779,
           "name": "runelite-2.8.0",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "2.8.0"
         }
       ],
       "dataFile": "runelite.json",
@@ -1137,14 +1175,16 @@
           "build": 347274741,
           "name": "scanmem-0.17",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "0.17"
         },
         {
           "attr": "scanmem",
           "build": 347274740,
           "name": "scanmem-0.17",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "0.17"
         }
       ],
       "dataFile": "scanmem.json",
@@ -1181,21 +1221,24 @@
           "build": 347289794,
           "name": "typioca-3.1.0",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "3.1.0"
         },
         {
           "attr": "typioca",
           "build": 347289791,
           "name": "typioca-3.1.0",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "3.1.0"
         },
         {
           "attr": "typioca",
           "build": 347289790,
           "name": "typioca-3.1.0",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "3.1.0"
         }
       ],
       "dataFile": "typioca.json",
@@ -1232,21 +1275,24 @@
           "build": 347290270,
           "name": "unciv-4.22.1",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "4.22.1"
         },
         {
           "attr": "unciv",
           "build": 347290269,
           "name": "unciv-4.22.1",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "4.22.1"
         },
         {
           "attr": "unciv",
           "build": 347290294,
           "name": "unciv-4.22.1",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "4.22.1"
         }
       ],
       "dataFile": "unciv.json",
@@ -1293,21 +1339,24 @@
           "build": 347295536,
           "name": "wesnoth-1.18.8",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "1.18.8"
         },
         {
           "attr": "wesnoth",
           "build": 347295542,
           "name": "wesnoth-1.18.8",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "1.18.8"
         },
         {
           "attr": "wesnoth",
           "build": 347295535,
           "name": "wesnoth-1.18.8",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "1.18.8"
         }
       ],
       "dataFile": "wesnoth.json",
@@ -1352,21 +1401,24 @@
           "build": 347295540,
           "name": "wesnoth-devel-1.19.24",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "1.19.24"
         },
         {
           "attr": "wesnoth-devel",
           "build": 347295539,
           "name": "wesnoth-devel-1.19.24",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "1.19.24"
         },
         {
           "attr": "wesnoth-devel",
           "build": 347295537,
           "name": "wesnoth-devel-1.19.24",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "1.19.24"
         }
       ],
       "dataFile": "wesnoth.json",
@@ -1417,7 +1469,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-29T22:59:45.183190+00:00",
+        "checkedAt": "2026-09-30T01:36:15.112280+00:00",
         "label": "wesnoth/wesnoth tags",
         "newer": true,
         "repo": "wesnoth/wesnoth",
@@ -1435,21 +1487,24 @@
           "build": 347297570,
           "name": "xournalpp-1.3.7",
           "status": "ok",
-          "system": "x86_64-linux"
+          "system": "x86_64-linux",
+          "version": "1.3.7"
         },
         {
           "attr": "xournalpp",
           "build": 347297568,
           "name": "xournalpp-1.3.7",
           "status": "ok",
-          "system": "aarch64-linux"
+          "system": "aarch64-linux",
+          "version": "1.3.7"
         },
         {
           "attr": "xournalpp",
           "build": 347297567,
           "name": "xournalpp-1.3.7",
           "status": "ok",
-          "system": "aarch64-darwin"
+          "system": "aarch64-darwin",
+          "version": "1.3.7"
         }
       ],
       "dataFile": "xournalpp.json",
