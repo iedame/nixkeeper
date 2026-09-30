@@ -11,6 +11,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- The page links to nixkeeper's repository ("source and how it works") in
+  its footer, and a copy of nixkeeper on GitHub Pages also links to its own
+  package lists.
+- The README explains how to set up a dashboard of your own ("Track your own
+  packages"), with screenshots of the page. How the code is laid out, the
+  commands, and how changes and releases happen moved to
+  `CONTRIBUTING.md`.
+
 - Ignore rules for update attempts (`package-lists/ignored-updates.nix`): a
   version nixpkgs-update tried and failed that shouldn't count, such as one
   upstream never really released. Its failure shows as superseded, with the
@@ -36,7 +44,7 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   succeeded too.
 - Dependabot (`.github/dependabot.yml`) proposes updates to the actions the
   workflows use, weekly.
-- A security policy (`.github/SECURITY.md`): report vulnerabilities privately
+- A security policy (`SECURITY.md`): report vulnerabilities privately
   through GitHub's private vulnerability reporting.
 
 ### Changed

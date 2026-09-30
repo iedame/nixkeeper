@@ -41,6 +41,22 @@ function githubRepo(params) {
   return owner && seg ? `${owner}/${seg}` : null;
 }
 
+// The footer links to nixkeeper itself; a copy of it on GitHub Pages (its
+// own package lists) also links to those lists.
+const UPSTREAM = 'iedame/nixkeeper';
+function addListsLink() {
+  const repo = githubRepo(new URLSearchParams(location.search));
+  if (!repo || repo === UPSTREAM) return;
+  const a = document.createElement('a');
+  a.className = 'files-link';
+  a.href = `https://github.com/${repo}/tree/HEAD/package-lists`;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  a.textContent = "this page's package lists ↗";
+  document.getElementById('about')?.prepend(a);
+}
+addListsLink();
+
 let dataBase = null; // set by loadIndex
 const dataUrl = (path) => new URL(path, dataBase).href;
 const detailCache = new Map(); // name -> parsed per-package Repology JSON
