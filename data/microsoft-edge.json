@@ -1,302 +1,5 @@
 [
   {
-    "origversion": null,
-    "repo": "homebrew_casks",
-    "srcname": "microsoft-edge@beta",
-    "status": "ignored",
-    "summary": "Multi-platform web browser",
-    "version": "155.0.4283.24",
-    "visiblename": "Microsoft Edge Beta"
-  },
-  {
-    "binname": "microsoft-edge-beta-bin",
-    "licenses": [
-      "custom"
-    ],
-    "maintainers": [
-      "bittin@aur",
-      "esaupr@aur",
-      "kode54@aur"
-    ],
-    "origversion": "155.0.4283.13-1",
-    "repo": "aur",
-    "srcname": "microsoft-edge-beta-bin",
-    "status": "ignored",
-    "summary": "A browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier",
-    "version": "155.0.4283.13",
-    "visiblename": "microsoft-edge-beta-bin"
-  },
-  {
-    "binname": "microsoft-edge-dev-bin",
-    "licenses": [
-      "custom"
-    ],
-    "maintainers": [
-      "bittin@aur",
-      "josc@aur",
-      "ejiek@aur",
-      "solaraquarion@aur",
-      "kode54@aur"
-    ],
-    "origversion": "156.0.4285.0-1",
-    "repo": "aur",
-    "srcname": "microsoft-edge-dev-bin",
-    "status": "ignored",
-    "summary": "A browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier",
-    "version": "156.0.4285.0",
-    "visiblename": "microsoft-edge-dev-bin"
-  },
-  {
-    "binname": "microsoft-edge-stable-bin",
-    "licenses": [
-      "LicenseRef-custom"
-    ],
-    "maintainers": [
-      "ptr1337@aur"
-    ],
-    "origversion": "154.0.4258.37-1",
-    "repo": "aur",
-    "srcname": "microsoft-edge-stable-bin",
-    "status": "outdated",
-    "summary": "A browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier",
-    "version": "154.0.4258.37",
-    "visiblename": "microsoft-edge-stable-bin"
-  },
-  {
-    "binname": "microsoft-edge",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "outdated",
-    "summary": "Microsoft Edge browser, based on the Chromium open source browser.",
-    "version": "154.0.4258.37",
-    "visiblename": "Microsoft Edge"
-  },
-  {
-    "binname": "microsoft-edge-insider",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "untrusted",
-    "summary": "A beta version of Microsoft's New Edge browser through the Insider Channel, now based on the Chromium open source browser.",
-    "version": "155.0.4283.18",
-    "visiblename": "Microsoft Edge Insider - Beta"
-  },
-  {
-    "binname": "microsoft-edge-insider-dev",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "outdated",
-    "summary": "A dev version of Microsoft's New Edge browser through the Insider Channel, now based on the Chromium open source browser.",
-    "version": "152.0.4191.10",
-    "visiblename": "Microsoft Edge Insider - Dev"
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "gentoo",
-    "srcname": "www-client/microsoft-edge-beta",
-    "status": "ignored",
-    "summary": "The web browser from Microsoft",
-    "version": "155.0.4283.13",
-    "visiblename": "www-client/microsoft-edge-beta"
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "gentoo",
-    "srcname": "www-client/microsoft-edge-beta",
-    "status": "ignored",
-    "summary": "The web browser from Microsoft",
-    "version": "155.0.4283.18",
-    "visiblename": "www-client/microsoft-edge-beta"
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "gentoo",
-    "srcname": "www-client/microsoft-edge-beta",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "154.0.4258.32",
-    "visiblename": "www-client/microsoft-edge-beta"
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "gentoo",
-    "srcname": "www-client/microsoft-edge",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "154.0.4258.37",
-    "visiblename": "www-client/microsoft-edge"
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "gentoo",
-    "srcname": "www-client/microsoft-edge-dev",
-    "status": "ignored",
-    "summary": "The web browser from Microsoft",
-    "version": "155.0.4273.0",
-    "visiblename": "www-client/microsoft-edge-dev"
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "gentoo",
-    "srcname": "www-client/microsoft-edge-dev",
-    "status": "ignored",
-    "summary": "The web browser from Microsoft",
-    "version": "156.0.4285.0",
-    "visiblename": "www-client/microsoft-edge-dev"
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "gentoo",
-    "srcname": "www-client/microsoft-edge-dev",
-    "status": "ignored",
-    "summary": "The web browser from Microsoft",
-    "version": "155.0.4268.0",
-    "visiblename": "www-client/microsoft-edge-dev"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew_casks",
-    "srcname": "microsoft-edge",
-    "status": "newest",
-    "summary": "Multi-platform web browser",
-    "version": "154.0.4258.48",
-    "visiblename": "Microsoft Edge"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew_casks",
-    "srcname": "microsoft-edge@canary",
-    "status": "ignored",
-    "summary": "Multi-platform web browser",
-    "version": "156.0.4309.0",
-    "visiblename": "Microsoft Edge Canary"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew_casks",
-    "srcname": "microsoft-edge@dev",
-    "status": "ignored",
-    "summary": "Multi-platform web browser",
-    "version": "156.0.4301.0",
-    "visiblename": "Microsoft Edge Dev"
-  },
-  {
-    "licenses": [
-      "Unfree"
-    ],
-    "maintainers": [
-      "christoph.hollizeck@hey.com",
-      "ulrik.strid@outlook.com",
-      "maeve@oa.ke",
-      "viniciusvilela19@gmail.com",
-      "jon@jh86.org",
-      "git@ieda.me"
-    ],
-    "origversion": null,
-    "repo": "nix_unstable",
-    "srcname": "microsoft-edge",
-    "status": "outdated",
-    "summary": "Web browser from Microsoft",
-    "version": "154.0.4258.37",
-    "visiblename": "microsoft-edge"
-  },
-  {
-    "licenses": [
-      "Unfree"
-    ],
-    "maintainers": [
-      "christoph.hollizeck@hey.com",
-      "ulrik.strid@outlook.com",
-      "maeve@oa.ke",
-      "viniciusvilela19@gmail.com",
-      "jon@jh86.org",
-      "git@ieda.me"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_26_05",
-    "srcname": "microsoft-edge",
-    "status": "outdated",
-    "summary": "Web browser from Microsoft",
-    "version": "154.0.4258.37",
-    "visiblename": "microsoft-edge"
-  },
-  {
-    "categories": [
-      "network"
-    ],
-    "maintainers": [
-      "reza.talebi.73@outlook.com"
-    ],
-    "origversion": null,
-    "repo": "slackbuilds",
-    "srcname": "network/microsoft-edge",
-    "status": "outdated",
-    "version": "153.0.4234.48",
-    "visiblename": "network/microsoft-edge"
-  },
-  {
     "licenses": [
       "MIT"
     ],
@@ -402,6 +105,24 @@
     "summary": "The web browser from Microsoft",
     "version": "140.0.3485.31",
     "visiblename": "www-client/microsoft-edge-beta",
+    "vulnerable": true
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "zanculmarktum@gmail.com",
+      "kuwii.someone@gmail.com",
+      "rhys@memes.nz"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "microsoft-edge",
+    "status": "legacy",
+    "summary": "The web browser from Microsoft",
+    "version": "129.0.2792.65",
+    "visiblename": "microsoft-edge-stable",
     "vulnerable": true
   },
   {
@@ -586,24 +307,6 @@
     ],
     "origversion": null,
     "repo": "nix_stable_24_05",
-    "srcname": "microsoft-edge",
-    "status": "legacy",
-    "summary": "The web browser from Microsoft",
-    "version": "129.0.2792.65",
-    "visiblename": "microsoft-edge-stable",
-    "vulnerable": true
-  },
-  {
-    "licenses": [
-      "Unfree"
-    ],
-    "maintainers": [
-      "zanculmarktum@gmail.com",
-      "kuwii.someone@gmail.com",
-      "rhys@memes.nz"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_05",
     "srcname": "microsoft-edge-beta",
     "status": "outdated",
     "summary": "The web browser from Microsoft",
@@ -754,5 +457,302 @@
     "version": "147.0.3912.72",
     "visiblename": "Microsoft-Edge",
     "vulnerable": true
+  },
+  {
+    "binname": "microsoft-edge-beta-bin",
+    "licenses": [
+      "custom"
+    ],
+    "maintainers": [
+      "bittin@aur",
+      "esaupr@aur",
+      "kode54@aur"
+    ],
+    "origversion": "155.0.4283.13-1",
+    "repo": "aur",
+    "srcname": "microsoft-edge-beta-bin",
+    "status": "ignored",
+    "summary": "A browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier",
+    "version": "155.0.4283.13",
+    "visiblename": "microsoft-edge-beta-bin"
+  },
+  {
+    "binname": "microsoft-edge-dev-bin",
+    "licenses": [
+      "custom"
+    ],
+    "maintainers": [
+      "bittin@aur",
+      "josc@aur",
+      "ejiek@aur",
+      "solaraquarion@aur",
+      "kode54@aur"
+    ],
+    "origversion": "156.0.4285.0-1",
+    "repo": "aur",
+    "srcname": "microsoft-edge-dev-bin",
+    "status": "ignored",
+    "summary": "A browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier",
+    "version": "156.0.4285.0",
+    "visiblename": "microsoft-edge-dev-bin"
+  },
+  {
+    "binname": "microsoft-edge-stable-bin",
+    "licenses": [
+      "LicenseRef-custom"
+    ],
+    "maintainers": [
+      "ptr1337@aur"
+    ],
+    "origversion": "154.0.4258.48-1",
+    "repo": "aur",
+    "srcname": "microsoft-edge-stable-bin",
+    "status": "newest",
+    "summary": "A browser that combines a minimal design with sophisticated technology to make the web faster, safer, and easier",
+    "version": "154.0.4258.48",
+    "visiblename": "microsoft-edge-stable-bin"
+  },
+  {
+    "binname": "microsoft-edge",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "summary": "Microsoft Edge browser, based on the Chromium open source browser.",
+    "version": "154.0.4258.37",
+    "visiblename": "Microsoft Edge"
+  },
+  {
+    "binname": "microsoft-edge-insider",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "untrusted",
+    "summary": "A beta version of Microsoft's New Edge browser through the Insider Channel, now based on the Chromium open source browser.",
+    "version": "155.0.4283.18",
+    "visiblename": "Microsoft Edge Insider - Beta"
+  },
+  {
+    "binname": "microsoft-edge-insider-dev",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "summary": "A dev version of Microsoft's New Edge browser through the Insider Channel, now based on the Chromium open source browser.",
+    "version": "152.0.4191.10",
+    "visiblename": "Microsoft Edge Insider - Dev"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "www-client/microsoft-edge-beta",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
+    "version": "155.0.4283.13",
+    "visiblename": "www-client/microsoft-edge-beta"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "www-client/microsoft-edge-beta",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
+    "version": "155.0.4283.18",
+    "visiblename": "www-client/microsoft-edge-beta"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "www-client/microsoft-edge-beta",
+    "status": "outdated",
+    "summary": "The web browser from Microsoft",
+    "version": "154.0.4258.32",
+    "visiblename": "www-client/microsoft-edge-beta"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "www-client/microsoft-edge",
+    "status": "outdated",
+    "summary": "The web browser from Microsoft",
+    "version": "154.0.4258.37",
+    "visiblename": "www-client/microsoft-edge"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "www-client/microsoft-edge-dev",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
+    "version": "155.0.4273.0",
+    "visiblename": "www-client/microsoft-edge-dev"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "www-client/microsoft-edge-dev",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
+    "version": "156.0.4285.0",
+    "visiblename": "www-client/microsoft-edge-dev"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "www-client/microsoft-edge-dev",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
+    "version": "155.0.4268.0",
+    "visiblename": "www-client/microsoft-edge-dev"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "microsoft-edge",
+    "status": "newest",
+    "summary": "Multi-platform web browser",
+    "version": "154.0.4258.48",
+    "visiblename": "Microsoft Edge"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "microsoft-edge@beta",
+    "status": "ignored",
+    "summary": "Multi-platform web browser",
+    "version": "155.0.4283.24",
+    "visiblename": "Microsoft Edge Beta"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "microsoft-edge@canary",
+    "status": "ignored",
+    "summary": "Multi-platform web browser",
+    "version": "156.0.4309.0",
+    "visiblename": "Microsoft Edge Canary"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "microsoft-edge@dev",
+    "status": "ignored",
+    "summary": "Multi-platform web browser",
+    "version": "156.0.4301.0",
+    "visiblename": "Microsoft Edge Dev"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "christoph.hollizeck@hey.com",
+      "ulrik.strid@outlook.com",
+      "maeve@oa.ke",
+      "viniciusvilela19@gmail.com",
+      "jon@jh86.org",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "microsoft-edge",
+    "status": "outdated",
+    "summary": "Web browser from Microsoft",
+    "version": "154.0.4258.37",
+    "visiblename": "microsoft-edge"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "christoph.hollizeck@hey.com",
+      "ulrik.strid@outlook.com",
+      "maeve@oa.ke",
+      "viniciusvilela19@gmail.com",
+      "jon@jh86.org",
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "microsoft-edge",
+    "status": "outdated",
+    "summary": "Web browser from Microsoft",
+    "version": "154.0.4258.37",
+    "visiblename": "microsoft-edge"
+  },
+  {
+    "categories": [
+      "network"
+    ],
+    "maintainers": [
+      "reza.talebi.73@outlook.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "network/microsoft-edge",
+    "status": "outdated",
+    "version": "153.0.4234.48",
+    "visiblename": "network/microsoft-edge"
   }
 ]

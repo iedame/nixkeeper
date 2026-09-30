@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-30T12:49:18.407698+00:00",
+  "checkedAt": "2026-09-30T13:34:13.592699+00:00",
   "packages": [
     {
       "attrs": [
@@ -40,6 +40,7 @@
         "log": "https://nixpkgs-update-logs.nixos.org/_1password-gui/2026-09-23.log",
         "outcome": "superseded",
         "supersededOn": "nixos-unstable",
+        "supersededOutcome": "failed",
         "to": "1",
         "was": "1password-8.12.34"
       },
@@ -192,7 +193,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
+        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
@@ -374,6 +375,7 @@
         "log": "https://nixpkgs-update-logs.nixos.org/egoboo/2026-09-15.log",
         "outcome": "superseded",
         "supersededOn": "nixos-unstable",
+        "supersededOutcome": "failed",
         "to": "2.8.1",
         "was": "2.7.3"
       },
@@ -467,9 +469,9 @@
       "unfree": true,
       "update": {
         "attr": "fallout-ce",
-        "date": "2026-09-20",
+        "date": "2026-09-30",
         "from": "0",
-        "log": "https://nixpkgs-update-logs.nixos.org/fallout-ce/2026-09-20.log",
+        "log": "https://nixpkgs-update-logs.nixos.org/fallout-ce/2026-09-30.log",
         "outcome": "noChange",
         "to": "1",
         "was": "fallout-ce-1.1.0"
@@ -945,7 +947,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
+        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -1406,7 +1408,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
+        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
@@ -1680,9 +1682,15 @@
       "update": {
         "attr": "openttd",
         "date": "2026-04-05",
+        "excerpt": [
+          "generic version rewriter does not support multiple hashes",
+          "skipping because derivation has no updateScript"
+        ],
         "from": "15.2",
         "log": "https://nixpkgs-update-logs.nixos.org/openttd/2026-04-05.log",
-        "outcome": "noChange",
+        "outcome": "superseded",
+        "supersededOn": "nixos-unstable",
+        "supersededOutcome": "cantUpdate",
         "to": "15.3",
         "was": "15.2"
       },
@@ -1725,9 +1733,13 @@
       "update": {
         "attr": "opentyrian",
         "date": "2026-09-23",
+        "excerpt": [
+          "generic version rewriter does not support multiple hashes",
+          "skipping because derivation has no updateScript"
+        ],
         "from": "2.1.20221123",
         "log": "https://nixpkgs-update-logs.nixos.org/opentyrian/2026-09-23.log",
-        "outcome": "noChange",
+        "outcome": "cantUpdate",
         "to": "2.1.20260913",
         "was": "2.1.20221123"
       },
@@ -2000,7 +2012,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
+        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "label": "stepmania/stepmania 5_1-new branch",
         "newer": true,
@@ -2068,6 +2080,7 @@
         "log": "https://nixpkgs-update-logs.nixos.org/supertux/2026-03-15.log",
         "outcome": "superseded",
         "supersededOn": "nixos-unstable",
+        "supersededOutcome": "failed",
         "to": "0.7.0",
         "was": "0.6.3"
       },
@@ -2125,9 +2138,13 @@
       "update": {
         "attr": "the-legend-of-edgar",
         "date": "2026-09-26",
+        "excerpt": [
+          "generic version rewriter does not support multiple hashes",
+          "skipping because derivation has no updateScript"
+        ],
         "from": "1.37",
         "log": "https://nixpkgs-update-logs.nixos.org/the-legend-of-edgar/2026-09-26.log",
-        "outcome": "noChange",
+        "outcome": "cantUpdate",
         "to": "1.38",
         "was": "1.37"
       },
@@ -2484,12 +2501,13 @@
         "log": "https://nixpkgs-update-logs.nixos.org/wesnoth-devel/2026-09-22.log",
         "outcome": "superseded",
         "supersededOn": "master",
+        "supersededOutcome": "failed",
         "to": "1",
         "was": "wesnoth-devel-1.19.24"
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T12:49:18.407698+00:00",
+        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
         "label": "wesnoth/wesnoth tags",
         "newer": true,
         "repo": "wesnoth/wesnoth",
@@ -2624,6 +2642,7 @@
         "outcome": "superseded",
         "reason": "Never released: an upstream versioning mistake. Repology ignores it too.",
         "supersededOn": "ignored",
+        "supersededOutcome": "failed",
         "to": "4.0-9",
         "was": "4.0"
       },
