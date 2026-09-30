@@ -451,6 +451,10 @@ a.badge:hover {
 .build-line .since {
   color: var(--ink-soft);
 }
+.build-line .since a {
+  color: inherit;
+  text-decoration: underline dotted;
+}
 /* A source the last sync couldn't refresh: shown, not alarming. */
 .stale-note {
   font-size: 12.5px;

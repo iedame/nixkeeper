@@ -571,13 +571,26 @@ const BUILD_STATUS = {
 function buildLine(pkg, b) {
   const s = BUILD_STATUS[b.status] || BUILD_STATUS.unknown;
   const multi = (pkg.attrs || []).length > 1;
+  // The versions only when they differ: the same version means something else
+  // broke it (a dependency, the toolchain), not the update.
+  const versionsDiffer = b.version && b.lastSuccessVersion && b.version !== b.lastSuccessVersion;
+  const at = versionsDiffer && b.status === 'failed' ? ` at ${escapeHtml(b.version)}` : '';
+  let lastGood = '';
+  if (versionsDiffer) {
+    const v = escapeHtml(b.lastSuccessVersion);
+    lastGood = b.lastSuccessBuild
+      ? ` at <a href="${HYDRA}/build/${b.lastSuccessBuild}" target="_blank" rel="noopener">${v} ↗</a>,`
+      : ` at ${v},`;
+  }
   const since =
     'lastSuccess' in b
-      ? `<span class="since">${b.lastSuccess ? `last succeeded ${escapeHtml(longDate(b.lastSuccess))} (${shortAge(b.lastSuccess)} ago)` : 'never built successfully'}</span>`
+      ? `<span class="since">${b.lastSuccess ? `last succeeded${lastGood} ${escapeHtml(longDate(b.lastSuccess))} (${shortAge(b.lastSuccess)} ago)` : 'never built successfully'}</span>`
       : '';
   let links = '';
   if (b.status === 'failed') {
     links = `<a class="files-link" href="${HYDRA}/build/${b.build}/log" target="_blank" rel="noopener">log ↗</a>${since}`;
+  } else if (b.status === 'dependency' || b.status === 'unfinished') {
+    links = `<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>${since}`;
   } else if (b.status === 'broken') {
     // Where to fix it: the package's source, at the line nixpkgs points to.
     links = `${since}${pkg.source ? `<a class="files-link" href="${escapeHtml(pkg.source)}" target="_blank" rel="noopener">source ↗</a>` : ''}`;
@@ -588,7 +601,7 @@ function buildLine(pkg, b) {
     <span class="status-dot ${s.dot}"></span>
     <span class="mono sys">${escapeHtml(b.system)}</span>
     ${multi ? `<span class="mono attr">${escapeHtml(b.attr)}</span>` : ''}
-    <span class="st ${s.dot}">${s.text}</span>${links}
+    <span class="st ${s.dot}">${s.text}${at}</span>${links}
   </div>`;
 }
 

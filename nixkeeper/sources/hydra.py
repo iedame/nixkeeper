@@ -53,19 +53,32 @@ def latest_build(job):
 
 
 def last_success(job):
-    """When the job last built successfully (ISO date), or None if never."""
+    """The job's last successful build: {"lastSuccess": ISO date or None,
+    "lastSuccessBuild"?: its id, "lastSuccessName"?: what it built, e.g.
+    "libfoo-1.2.3"}. lastSuccess is None if it never succeeded."""
     build = get(f"/job/{config.HYDRA_PROJECT}/{config.HYDRA_JOBSET}/{job}/latest")
-    stoptime = (build or {}).get("stoptime")
-    return datetime.fromtimestamp(stoptime, UTC).isoformat() if stoptime else None
+    build = build or {}
+    stoptime = build.get("stoptime")
+    result = {
+        "lastSuccess": (
+            datetime.fromtimestamp(stoptime, UTC).isoformat() if stoptime else None
+        )
+    }
+    if stoptime and build.get("id"):
+        result["lastSuccessBuild"] = build["id"]
+    if stoptime and build.get("nixname"):
+        result["lastSuccessName"] = build["nixname"]
+    return result
 
 
 def check(attr, system, broken=False):
     """One job's result: {"attr", "system", "status", "build"?, "name"?,
-    "lastSuccess"?}. status is ok / failed / dependency / unfinished,
-    notBuilt when Hydra has no build of it, or broken when nixpkgs marks it
-    broken there (whatever Hydra's last build did: the failure is known). name
-    is what master built, e.g. "wesnoth-devel-1.19.28": master can be ahead of
-    the channel."""
+    "lastSuccess"?, "lastSuccessBuild"?, "lastSuccessName"?}. status is ok /
+    failed / dependency / unfinished, notBuilt when Hydra has no build of it,
+    or broken when nixpkgs marks it broken there (whatever Hydra's last build
+    did: the failure is known). name is what master built, e.g.
+    "wesnoth-devel-1.19.28": master can be ahead of the channel. Whenever the
+    latest build didn't succeed, the last one that did (see last_success)."""
     job = f"{attr}.{system}"
     result = {"attr": attr, "system": system}
     build = latest_build(job)
@@ -75,8 +88,8 @@ def check(attr, system, broken=False):
     result.update(status=status(build.get("buildstatus")), build=build["id"])
     if build.get("nixname"):
         result["name"] = build["nixname"]
-    if broken or result["status"] == "failed":
-        result["lastSuccess"] = last_success(job)
+    if broken or result["status"] != "ok":
+        result.update(last_success(job))
         time.sleep(1)
     if broken:
         result["status"] = "broken"
@@ -106,6 +119,24 @@ def systems(pkg):
     return wanted
 
 
+def version_of(name, pkg):
+    """The version in a Hydra build name ("wesnoth-devel-1.19.28"), given the
+    package's pname; None if the name doesn't start with it."""
+    prefix = f"{pkg.get('pname')}-"
+    if name and name.startswith(prefix) and len(name) > len(prefix):
+        return name[len(prefix) :]
+    return None
+
+
+def add_versions(build, pkg):
+    """The versions of build's latest and last successful builds ("version",
+    "lastSuccessVersion"), for the page, which doesn't have the pnames."""
+    for name, field in (("name", "version"), ("lastSuccessName", "lastSuccessVersion")):
+        if version := version_of(build.get(name), pkg):
+            build[field] = version
+    return build
+
+
 def master_version(row, pkgs):
     """The version master has for row, if it's newer than the channel's: Hydra
     builds master, the channel lags it by a few days (a merged update shows
@@ -115,11 +146,10 @@ def master_version(row, pkgs):
     Hydra has no build to tell (unfree packages)."""
     for attr in sorted(pkgs, key=lambda a: a != row["name"]):
         pkg = pkgs[attr]
-        prefix = f"{pkg.get('pname')}-"
         versions = [
-            b["name"][len(prefix) :]
+            v
             for b in row["builds"]
-            if b["attr"] == attr and (b.get("name") or "").startswith(prefix)
+            if b["attr"] == attr and (v := version_of(b.get("name"), pkg))
         ]
         if versions:
             newest = max(versions, key=version_key)
@@ -159,7 +189,7 @@ def add_builds(rows, nixpkgs, previous, now, broken=None):
                 try:
                     if down:
                         raise OSError("not asked: it didn't answer earlier lookups")
-                    builds.append(check(attr, system, is_broken))
+                    builds.append(add_versions(check(attr, system, is_broken), pkg))
                     consecutive = 0
                 except (urllib.error.URLError, OSError, ValueError) as e:
                     failed += 1

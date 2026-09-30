@@ -9,6 +9,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- The build panel says which version last built on a failing platform, with
+  a link to that build, next to the version that fails ("failed at 1.2.4 ·
+  last succeeded at 1.2.3"). When both are the same, the version didn't break
+  it; something else did (a dependency, the toolchain). Platforms that didn't
+  build because of a dependency, or didn't finish, now show when they last
+  succeeded too.
+
 ## [0.4.0] - 2026-09-29
 
 ### Added

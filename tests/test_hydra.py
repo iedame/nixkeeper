@@ -14,7 +14,13 @@ OK = [{"id": 345280810, "buildstatus": 0, "finished": 1, "system": "aarch64-darw
 FAILED = [
     {"id": 345227373, "buildstatus": 1, "finished": 1, "system": "aarch64-darwin"}
 ]
-LAST_SUCCESS = {"id": 1, "buildstatus": 0, "stoptime": 1710403200}  # 2024-03-14
+FAILED[0]["nixname"] = "ac-library-1.6"
+LAST_SUCCESS = {  # 2024-03-14
+    "id": 1,
+    "buildstatus": 0,
+    "stoptime": 1710403200,
+    "nixname": "ac-library-1.5",
+}
 
 
 def fake_hydra(latest, last_success=None):
@@ -72,10 +78,41 @@ class Hydra(unittest.TestCase):
         self.assertEqual(result["status"], "failed")
         self.assertEqual(result["build"], 345227373)
         self.assertEqual(result["lastSuccess"], "2024-03-14T08:00:00+00:00")
+        self.assertEqual(result["lastSuccessBuild"], 1)
+        self.assertEqual(result["lastSuccessName"], "ac-library-1.5")
 
     def test_failed_never_succeeded(self):
         result, _ = self.check({"ac-library.aarch64-darwin": FAILED})
         self.assertIsNone(result["lastSuccess"])
+        self.assertNotIn("lastSuccessBuild", result)
+        self.assertNotIn("lastSuccessName", result)
+
+    def test_dependency_and_unfinished_get_last_success(self):
+        for buildstatus, status in ((2, "dependency"), (7, "unfinished")):
+            with self.subTest(status):
+                result, calls = self.check(
+                    {
+                        "ac-library.aarch64-darwin": [
+                            {"id": 5, "buildstatus": buildstatus}
+                        ]
+                    },
+                    {"ac-library.aarch64-darwin": LAST_SUCCESS},
+                )
+                self.assertEqual(result["status"], status)
+                self.assertEqual(result["lastSuccessBuild"], 1)
+                self.assertEqual(len(calls), 2)
+
+    def test_versions(self):
+        pkg_ = {"pname": "ac-library"}
+        build = hydra.add_versions(
+            {"name": "ac-library-1.6", "lastSuccessName": "ac-library-1.5"}, pkg_
+        )
+        self.assertEqual(build["version"], "1.6")
+        self.assertEqual(build["lastSuccessVersion"], "1.5")
+        # A name that isn't the pname's (renamed package): no version guessed.
+        other = hydra.add_versions({"name": "libac-1.6"}, pkg_)
+        self.assertNotIn("version", other)
+        self.assertIsNone(hydra.version_of(None, pkg_))
 
     def test_not_on_hydra(self):
         result, _ = self.check({})
