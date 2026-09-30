@@ -640,6 +640,14 @@ footer.legend span {
   align-items: center;
   gap: 6px;
 }
+/* Where nixkeeper and this page's package lists come from, at the end. */
+footer.legend .about {
+  margin-left: auto;
+  gap: 12px;
+}
+footer.legend .about .files-link {
+  font-size: 12.5px;
+}
 
 @media (max-width: 640px) {
   input[type="search"] {
