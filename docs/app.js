@@ -174,6 +174,16 @@ function prBadge(pkg) {
   );
 }
 
+// What an update would change to, as the table shows it: for an unstable
+// version with the same base ("5.1.0-b2-unstable-2022-11-14"), just the new
+// date, which is all that differs; anything else in full.
+function versionChange(from, to) {
+  const unstable = /^(.*-unstable-)(\d{4}-\d{2}-\d{2})$/;
+  const a = unstable.exec(from || '');
+  const b = unstable.exec(to || '');
+  return a && b && a[1] === b[1] ? b[2] : to;
+}
+
 // Default order: failed, then outdated (longest outdated first), then
 // outdated but already fixed on master, then the rest; otherwise
 // alphabetical (the index arrives sorted by name and Array.sort is stable).
@@ -387,7 +397,7 @@ function render(list) {
     const verCell =
       st === 'missing'
         ? `<span class="badge missing">not packaged</span>`
-        : `${escapeHtml(pkg.nixVersion)}${st === 'warn' ? ` <span class="ref mono">→ ${escapeHtml(pkg.refVersion || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${prBadge(pkg)}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. Fix it in package-lists/update-checks.nix.">check failing</span>` : ''}`;
+        : `<span class="v">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? ` <span class="ref mono" title="${escapeHtml(pkg.refVersion || '')}">→ ${escapeHtml(versionChange(pkg.nixVersion, pkg.refVersion) || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${prBadge(pkg)}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. Fix it in package-lists/update-checks.nix.">check failing</span>` : ''}`;
 
     const tr = document.createElement('tr');
     tr.className = 'row';
