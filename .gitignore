@@ -5,3 +5,6 @@ __pycache__/
 /result
 *.egg-info/
 /build/
+
+# Brand sources, kept local while the identity is decided (see design/BRAND.md)
+/design/

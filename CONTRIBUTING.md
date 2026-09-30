@@ -16,9 +16,12 @@ happen. For what nixkeeper does and how to set up your own, see the
 - `package-lists/`: what this instance tracks (see the README)
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/`
   from the `data` branch
-- `assets/`: screenshots of the page, for the README (light and dark,
+- `assets/`: images for the README: nixkeeper's mark
+  (`nixkeeper-mark.svg`), and screenshots of the page (light and dark,
   desktop and phone) and the repository's social preview, taken by
-  `scripts/screenshots.sh` (see [Screenshots](#screenshots))
+  `scripts/screenshots.sh` (see [Screenshots](#screenshots)). The page's
+  own copy of the mark is `docs/favicon.svg`, since GitHub Pages only
+  serves `docs/`.
 - `.github/workflows/`:
   - `ci.yml`, **CI: tests and lint**: checks nixkeeper's own code on every
     push and PR

@@ -9,6 +9,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- nixkeeper's mark: a hexagonal ring of three chevrons (new releases, build
+  and update failures, vulnerabilities) around a solid centre (the package),
+  in violet turning to mauve.
+  It's the page's favicon, and it leads the page's header and the README's
+  title.
+
 ## [0.5.0] - 2026-09-30
 
 ### Added

@@ -88,14 +88,20 @@ header.top {
   align-items: baseline;
   gap: 10px;
 }
-.wordmark .dot {
-  color: var(--accent);
-}
 .wordmark h1 {
   font-size: 19px;
   font-weight: 700;
   margin: 0;
   letter-spacing: -0.01em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+/* The nixkeeper mark (docs/favicon.svg, from the brand sources). */
+.wordmark .mark {
+  display: block;
+  width: 26px;
+  height: auto;
 }
 .wordmark .tag {
   color: var(--ink-faint);
