@@ -528,6 +528,9 @@ function updateCell(pkg) {
   // The bot's last attempt failed, but nixpkgs has moved on since: not a
   // failure anymore, though the next attempt may well break the same way.
   if (pkg.update?.outcome === 'superseded') return button('neutral', 'superseded');
+  // A newer version the bot has no way to update to: not a failure, but it
+  // needs a manual update (or an updateScript).
+  if (pkg.update?.outcome === 'cantUpdate') return button('warn', "can't update");
   if (pkg.update === null) return button('neutral', 'not attempted', true);
   return button('ok', 'none reported', true);
 }
@@ -541,12 +544,21 @@ const UPDATE_OUTCOME = {
   // (package-lists/ignored-updates.nix) ignores the version it tried.
   superseded: {
     dot: 'neutral',
-    text: (u, pkg) =>
-      u.supersededOn === 'ignored'
+    text: (u, pkg) => {
+      const what = u.supersededOutcome === 'cantUpdate' ? "couldn't update it" : 'failed';
+      return u.supersededOn === 'ignored'
         ? `failed trying <span class="mono">${escapeHtml(u.to)}</span>, a version ignored by a manual rule: ${escapeHtml(u.reason)}`
         : u.supersededOn === 'master'
-          ? `failed, but master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (merged, waiting for nixos-unstable)`
-          : `failed, but nixpkgs has moved on to <span class="mono">${escapeHtml(pkg.nixVersion)}</span> since`,
+          ? `${what}, but master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (merged, waiting for nixos-unstable)`
+          : `${what}, but nixpkgs has moved on to <span class="mono">${escapeHtml(pkg.nixVersion)}</span> since`;
+    },
+  },
+  // Every way the bot has of updating a package declined (the excerpt says
+  // why): the update needs doing by hand, or an updateScript.
+  cantUpdate: {
+    dot: 'warn',
+    text: () =>
+      "couldn't update it: none of the bot's ways of updating a package apply here. Update it by hand, or give the package an updateScript so the bot can next time",
   },
   prOpened: { dot: 'ok', text: (u) => `opened ${prLink(u.pr, `PR #${u.pr} ↗`)}` },
   prExists: {

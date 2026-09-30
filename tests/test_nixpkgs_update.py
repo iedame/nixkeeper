@@ -37,6 +37,18 @@ The diff was empty after rewrites.
 ALREADY_UPDATED = f"""{HEAD}libfilezilla 0.56.1 -> 0.57.0 https://repology.org/project/libfilezilla/versions
 Old version 0.56.1" not present in master derivation file with contents: {{
 """
+# A real version, but no rewriter could update the package (the-legend-of-
+# edgar's 1.37 -> 1.38 attempt, 2026-09-26).
+CANT_UPDATE = f"""{HEAD}the-legend-of-edgar 1.37 -> 1.38 https://github.com/riksweeney/edgar/releases
+attrpath: the-legend-of-edgar
+[version]
+[version] generic version rewriter does not support multiple hashes
+[rustCrateVersion]
+[rustCrateVersion] No cargoHash found
+[updateScript]
+[updateScript] skipping because derivation has no updateScript
+The diff was empty after rewrites.
+"""
 # An updateScript package: "0 -> 1", and nixpkgs' version only in the package
 # line (wesnoth-devel's failed 1.19.24 -> 1.19.28 attempt, 2026-09-22).
 UPDATE_SCRIPT_FAILED = f"""{HEAD}wesnoth-devel 0 -> 1
@@ -89,6 +101,26 @@ class Parse(unittest.TestCase):
                 ],
             },
         )
+
+    def test_cant_update(self):
+        self.assertEqual(
+            nixpkgs_update.parse(CANT_UPDATE),
+            {
+                "outcome": "cantUpdate",
+                "from": "1.37",
+                "to": "1.38",
+                "was": "1.37",
+                # Why: the generic rewriter's and the updateScript's reasons.
+                "excerpt": [
+                    "generic version rewriter does not support multiple hashes",
+                    "skipping because derivation has no updateScript",
+                ],
+            },
+        )
+
+    def test_empty_diff_after_update_script_is_nothing_to_update(self):
+        # wesnoth's "0 -> 1": its updateScript found nothing newer.
+        self.assertEqual(nixpkgs_update.parse(NO_CHANGE)["outcome"], "noChange")
 
     def test_pr_opened(self):
         result = nixpkgs_update.parse(PR_OPENED)
@@ -153,6 +185,19 @@ class AddAttempts(unittest.TestCase):
                 rows, nixpkgs, previous or {"packages": []}, NOW, ignored
             )
         return calls
+
+    def test_cant_update_is_not_a_failure_until_nixpkgs_moves_on(self):
+        rows = [{"name": "edgar", "attrs": ["edgar"], "nixVersion": "1.37"}]
+        pages = {"/edgar/": listing("2026-09-26"), "/edgar/2026-09-26.log": CANT_UPDATE}
+        self.run_attempts(rows, pages)
+        self.assertEqual(rows[0]["update"]["outcome"], "cantUpdate")
+        self.assertFalse(rows[0]["updateFailure"])
+        # Updated by hand: the attempt no longer matters.
+        rows = [{"name": "edgar", "attrs": ["edgar"], "nixVersion": "1.38"}]
+        self.run_attempts(rows, pages)
+        update = rows[0]["update"]
+        self.assertEqual(update["outcome"], "superseded")
+        self.assertEqual(update["supersededOutcome"], "cantUpdate")
 
     def test_ignored_version_is_superseded_with_its_reason(self):
         """xskat: the bot tried a 4.0-9 upstream never released."""

@@ -52,6 +52,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   ("5.1.0-b2-unstable-2022-11-14 → 2026-08-22"); the full version is in its
   tooltip and the details.
 
+### Fixed
+
+- A nixpkgs-update attempt that found a newer version but had no way to
+  update the package ("The diff was empty after rewrites", e.g. a package
+  with several hashes and no updateScript) showed as "nothing to update". It
+  now shows as an amber "can't update", with the bot's reasons from the log:
+  not a failure, but a sign the update needs doing by hand. After an
+  updateScript run (`0 -> 1`), an empty diff still means nothing to update.
+
 ### Security
 
 - The workflows' actions are pinned to commits (`nix-installer-action` ran
