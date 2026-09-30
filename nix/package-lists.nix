@@ -80,11 +80,14 @@ let
         entry = "updateChecks.${name}";
         inherit reason;
       };
-      # A check is github + tags, or url + pattern.
+      # A check is github + tags, github + branch, or url + pattern.
       kind =
         fields: valid:
-        lib.optional (!builtins.isString (check.${builtins.elemAt fields 1} or null)) (
-          at "${builtins.elemAt fields 1} must be a regex string"
+        let
+          second = builtins.elemAt fields 1;
+        in
+        lib.optional (!builtins.isString (check.${second} or null)) (
+          at (if second == "branch" then "branch must be a string" else "${second} must be a regex string")
         )
         ++ lib.optional (!valid) (
           at (
@@ -98,17 +101,45 @@ let
         ++ map (k: at "unknown field ${k}") (
           builtins.filter (k: !builtins.elem k (fields ++ [ "frequent" ])) (builtins.attrNames check)
         );
+      # outdatedAfter = { days = 90; commits = 50; }: null turns one off, and
+      # what's left out keeps its default (days = 90, commits off).
+      limits = check.outdatedAfter or { };
+      limit =
+        field: least:
+        lib.optional (
+          limits ? ${field}
+          && !(limits.${field} == null || builtins.isInt limits.${field} && limits.${field} >= least)
+        ) (at "outdatedAfter.${field} must be a whole number of at least ${toString least}, or null");
+      outdatedAfterProblems =
+        if !(check ? outdatedAfter) then
+          [ ]
+        else if !builtins.isAttrs limits then
+          [ (at "outdatedAfter must be { days = ...; commits = ...; }") ]
+        else
+          map (k: at "outdatedAfter: unknown field ${k} (days, commits)") (
+            builtins.filter (k: k != "days" && k != "commits") (builtins.attrNames limits)
+          )
+          ++ limit "days" 0
+          ++ limit "commits" 1
+          ++ lib.optional ((limits.days or 90) == null && (limits.commits or null) == null) (
+            at "outdatedAfter turns off both days and commits: it could never be outdated"
+          );
     in
     lib.optional (!isTracked lists name) (at "not a tracked package (use its row name, the attribute)")
     ++ (
       if check ? github && check ? url then
-        [ (at "use either github (+ tags) or url (+ pattern), not both") ]
+        [ (at "use either github (+ tags or branch) or url (+ pattern), not both") ]
+      else if check ? github && check ? tags && check ? branch then
+        [ (at "use either tags or branch with github, not both") ]
+      else if check ? github && check ? branch then
+        kind [ "github" "branch" "outdatedAfter" ] (builtins.match "[^/ ]+/[^/ ]+" check.github != null)
+        ++ outdatedAfterProblems
       else if check ? github then
         kind [ "github" "tags" ] (builtins.match "[^/ ]+/[^/ ]+" check.github != null)
       else if check ? url then
         kind [ "url" "pattern" ] (builtins.match "https?://.+" check.url != null)
       else
-        [ (at "needs github + tags, or url + pattern") ]
+        [ (at "needs github + tags, github + branch, or url + pattern") ]
     );
 in
 rec {
@@ -155,7 +186,7 @@ rec {
     ++ lib.concatLists (lib.mapAttrsToList (checkProblems lists) (lists.updateChecks or { }));
 
   # A derivation that builds only if lists has no problems. The update checks'
-  # tag patterns are Python regexes, so Python compiles them.
+  # patterns are Python regexes, so Python compiles them.
   check =
     lists:
     let
@@ -173,6 +204,8 @@ rec {
           import json, re, sys
           bad = []
           for name, check in json.load(open(sys.argv[1])).items():
+              if "branch" in check:
+                  continue  # no pattern: the branch's newest commit
               field = "tags" if "github" in check else "pattern"
               try:
                   if re.compile(check[field]).groups > 1:

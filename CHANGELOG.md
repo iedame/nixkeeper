@@ -11,6 +11,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Update checks for unstable versions (`github` + `branch` in
+  `package-lists/update-checks.nix`): for a package whose nixpkgs version is
+  `…-unstable-YYYY-MM-DD`, the commits since then on the branch it follows.
+  Repology can't tell: it only tracks releases, and marks unstable versions
+  "untrusted". The package counts as outdated once one of those commits has
+  waited 90 days; `outdatedAfter = { days = …; commits = …; }` changes that
+  per package (whichever comes first; `null` turns one off). Until then, the
+  details list the newer commits as not counted yet. First one: stepmania
+  (its `5_1-new` branch).
+
 - The build panel says which version last built on a failing platform, with
   a link to that build, next to the version that fails ("failed at 1.2.4 ·
   last succeeded at 1.2.3"). When both are the same, the version didn't break

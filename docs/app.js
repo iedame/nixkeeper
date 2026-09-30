@@ -714,6 +714,18 @@ async function fillDetail(pkg, el) {
     ? ` — outdated since ${escapeHtml(longDate(pkg.outdatedSince))} (${daysText(pkg.outdatedSince)})`
     : '';
   const repologyOutdated = ['outdated', 'legacy'].includes(pkg.nixStatus);
+  // A branch check (unstable versions): how many commits nixpkgs is behind,
+  // and what makes that count as outdated ("90 days or 50 commits").
+  const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+  const behind = up?.behind ? `${plural(up.behind, 'newer commit')}` : '';
+  const limits = up?.outdatedAfter
+    ? [
+        up.outdatedAfter.days != null && `one has waited ${plural(up.outdatedAfter.days, 'day')}`,
+        up.outdatedAfter.commits != null && `there are ${up.outdatedAfter.commits}`,
+      ]
+        .filter(Boolean)
+        .join(' or ')
+    : '';
   // When the update check is what makes it outdated, say where the newer
   // version came from, and how it compares with Repology.
   const upstreamLine = () =>
@@ -722,7 +734,9 @@ async function fillDetail(pkg, el) {
         ? `; Repology's newest is <span class="mono">${escapeHtml(pkg.refVersion)}</span>`
         : repologyOutdated
           ? ''
-          : ", which Repology doesn't count as newest yet"
+          : up.commit
+            ? ` (${behind || 'newer commits'}; Repology only tracks releases, so it can't tell)`
+            : ", which Repology doesn't count as newest yet"
     }${since}`;
   // A check that can't refresh needs fixing in nixkeeper, so the details say
   // so plainly, with the last result it's still using.
@@ -746,7 +760,9 @@ async function fillDetail(pkg, el) {
               : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`
         }${
           up && !up.newer && !failing
-            ? ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
+            ? up.behind
+              ? ` nixkeeper's update check: ${behind} ${upLink} (up to <span class="mono">${escapeHtml(up.version)}</span>), not counted as outdated until ${limits}.`
+              : ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
             : ''
         }`;
 

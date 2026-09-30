@@ -227,6 +227,185 @@ class PageChecks(unittest.TestCase):
                 self.assertIn(why, self.stderr.getvalue())
 
 
+STEPMANIA = {"github": "stepmania/stepmania", "branch": "5_1-new"}
+UNSTABLE = "5.1.0-b2-unstable-2022-11-14"
+
+
+def head(since=0, until=0, date="2026-08-22T03:31:23Z"):
+    """GitHub's answer for a branch: its newest commit, and how many commits
+    since nixpkgs' version (and old enough to count)."""
+    return {
+        "oid": "825467bcd81c",
+        "committedDate": date,
+        "since": since,
+        "until": until,
+    }
+
+
+class UnstableVersions(unittest.TestCase):
+    def test_unstable_version(self):
+        self.assertEqual(
+            upstream.unstable_version(UNSTABLE, "2026-08-22T03:31:23Z"),
+            "5.1.0-b2-unstable-2026-08-22",
+        )
+        # The date is UTC's, as in nixpkgs: 20:31 in UTC-7 is the next day.
+        self.assertEqual(
+            upstream.unstable_version(UNSTABLE, "2026-08-21T20:31:23-07:00"),
+            "5.1.0-b2-unstable-2026-08-22",
+        )
+        # Never older than nixpkgs' own (another branch's commit, say).
+        self.assertEqual(
+            upstream.unstable_version(UNSTABLE, "2020-01-01T00:00:00Z"), UNSTABLE
+        )
+        self.assertIsNone(upstream.unstable_version("5.0.12", "2026-08-22T00:00:00Z"))
+        self.assertIsNone(upstream.unstable_version(None, "2026-08-22T00:00:00Z"))
+
+    def test_outdated_after(self):
+        self.assertEqual(upstream.outdated_after({}), {"days": 90, "commits": None})
+        self.assertEqual(
+            upstream.outdated_after({"outdatedAfter": {"commits": 50}}),
+            {"days": 90, "commits": 50},
+        )
+        self.assertEqual(
+            upstream.outdated_after({"outdatedAfter": {"days": None, "commits": 5}}),
+            {"days": None, "commits": 5},
+        )
+
+    def run_checks(self, check=STEPMANIA, nix=UNSTABLE, answer=None, error=None):
+        rows = [row("stepmania", nix, "untrusted", "5.0.12")]
+        kwargs = {"side_effect": error} if error else {"return_value": [answer]}
+        with (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch.object(github, "token", return_value="t"),
+            mock.patch.object(github, "latest_tags") as latest_tags,
+            mock.patch.object(github, "branch_commits", **kwargs) as branch_commits,
+        ):
+            upstream.add_checks(rows, {"stepmania": check}, {"packages": []}, NOW)
+        latest_tags.assert_not_called()  # no tag checks: no tag request
+        return rows[0], branch_commits
+
+    def test_query(self):
+        _, branch_commits = self.run_checks(answer=head())
+        # From the day after nixpkgs' commit; old enough: before 90 days ago.
+        branch_commits.assert_called_once_with(
+            "t",
+            [
+                (
+                    "stepmania/stepmania",
+                    "5_1-new",
+                    "2022-11-15T00:00:00Z",
+                    "2026-07-02T06:00:00Z",
+                )
+            ],
+        )
+
+    def test_outdated_once_a_commit_has_waited(self):
+        r, _ = self.run_checks(answer=head(since=40, until=12))
+        self.assertEqual(
+            r["upstream"],
+            {
+                "version": "5.1.0-b2-unstable-2026-08-22",
+                "newer": True,
+                "behind": 40,
+                "outdatedAfter": {"days": 90, "commits": None},
+                "repo": "stepmania/stepmania",
+                "label": "stepmania/stepmania 5_1-new branch",
+                "url": "https://github.com/stepmania/stepmania/commits/5_1-new",
+                "commit": "825467bcd81c",
+                "checkedAt": NOW,
+            },
+        )
+        self.assertEqual(r["refVersion"], "5.1.0-b2-unstable-2026-08-22")
+        self.assertTrue(is_outdated(r))  # although Repology says untrusted
+
+    def test_newer_commits_not_counted_yet(self):
+        r, _ = self.run_checks(answer=head(since=3, until=0))
+        self.assertFalse(r["upstream"]["newer"])
+        self.assertEqual(r["upstream"]["behind"], 3)
+        self.assertEqual(r["refVersion"], "5.0.12")  # untouched
+        self.assertFalse(is_outdated(r))
+
+    def test_enough_commits(self):
+        check = {**STEPMANIA, "outdatedAfter": {"commits": 50}}
+        r, _ = self.run_checks(check, answer=head(since=50, until=0))
+        self.assertTrue(r["upstream"]["newer"])
+        r, _ = self.run_checks(check, answer=head(since=49, until=0))
+        self.assertFalse(r["upstream"]["newer"])
+
+    def test_days_off(self):
+        check = {**STEPMANIA, "outdatedAfter": {"days": None, "commits": 50}}
+        r, branch_commits = self.run_checks(check, answer=head(since=10))
+        self.assertIsNone(branch_commits.call_args.args[1][0][3])  # no until
+        self.assertFalse(r["upstream"]["newer"])
+
+    def test_too_recent_to_have_waited(self):
+        # nixpkgs' version is from 10 days ago: no commit can have waited 90.
+        _, branch_commits = self.run_checks(
+            nix="5.1.0-b2-unstable-2026-09-20", answer=head()
+        )
+        self.assertIsNone(branch_commits.call_args.args[1][0][3])
+
+    def test_up_to_date(self):
+        r, _ = self.run_checks(answer=head(date="2022-11-14T10:00:00Z"))
+        self.assertEqual(r["upstream"]["version"], UNSTABLE)
+        self.assertFalse(r["upstream"]["newer"])
+
+    def test_failures(self):
+        for reason, kwargs in (
+            ("GitHub request failed", {"error": urllib.error.URLError("x")}),
+            ("renamed or deleted?", {"answer": None}),
+            ("isn't an unstable version", {"nix": "5.0.12", "answer": head()}),
+        ):
+            with self.subTest(reason=reason):
+                r, _ = self.run_checks(**kwargs)
+                self.assertNotIn("upstream", r)  # nothing to fall back on
+                self.assertIn(reason, r["notRefreshed"]["upstream"]["reason"])
+
+
+class BranchCommits(unittest.TestCase):
+    def test_query_and_answer(self):
+        target = {
+            "oid": "abc",
+            "committedDate": "2026-08-22T03:31:23Z",
+            "since": {"totalCount": 40},
+            "until": {"totalCount": 12},
+        }
+        resp = response(
+            {
+                "data": {
+                    "r0": {"ref": {"target": target}},
+                    "r1": {"ref": None},  # no such branch
+                }
+            }
+        )
+        with mock.patch("urllib.request.urlopen", return_value=resp) as urlopen:
+            results = github.branch_commits(
+                "t",
+                [
+                    ("a/one", "main", "2022-11-15T00:00:00Z", "2026-07-02T06:00:00Z"),
+                    ("b/two", "gone", "2022-11-15T00:00:00Z", None),
+                ],
+            )
+        self.assertEqual(
+            results,
+            [
+                {
+                    "oid": "abc",
+                    "committedDate": "2026-08-22T03:31:23Z",
+                    "since": 40,
+                    "until": 12,
+                },
+                None,
+            ],
+        )
+        body = json.loads(urlopen.call_args.args[0].data)
+        self.assertEqual(body["variables"]["b0"], "refs/heads/main")
+        self.assertEqual(body["variables"]["u0"], "2026-07-02T06:00:00Z")
+        self.assertNotIn("u1", body["variables"])  # no until: not asked
+        self.assertIn("history(since: $s0, until: $u0)", body["query"])
+        self.assertNotIn("$u1", body["query"])
+
+
 class LatestTags(unittest.TestCase):
     def test_query_and_answer(self):
         resp = response(

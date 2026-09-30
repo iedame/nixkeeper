@@ -168,6 +168,50 @@ def latest_tags(token, repos):
     }
 
 
+def branch_commits(token, branches):
+    """For each (owner/repo, branch, since, until) in branches: the branch's
+    newest commit and how many commits it has since `since`, and since
+    `since` up to `until` (ISO times; until may be None), in one request.
+    Returns [{"oid", "committedDate", "since", "until"} or None where GitHub
+    couldn't answer (no such repository or branch)], in order; raises if the
+    request fails."""
+    params, fields, variables = [], [], {}
+    for i, (repo, branch, since, until) in enumerate(branches):
+        params.append(f"$o{i}: String!, $n{i}: String!, $b{i}: String!")
+        params.append(f"$s{i}: GitTimestamp!")
+        counts = f"since: history(since: $s{i}) {{ totalCount }}"
+        if until:
+            params.append(f"$u{i}: GitTimestamp!")
+            counts += f" until: history(since: $s{i}, until: $u{i}) {{ totalCount }}"
+            variables[f"u{i}"] = until
+        commit = f"... on Commit {{ oid committedDate {counts} }}"
+        fields.append(
+            f"  r{i}: repository(owner: $o{i}, name: $n{i}) "
+            f"{{ ref(qualifiedName: $b{i}) {{ target {{ {commit} }} }} }}"
+        )
+        variables[f"o{i}"], variables[f"n{i}"] = repo.split("/", 1)
+        variables[f"b{i}"] = f"refs/heads/{branch}"
+        variables[f"s{i}"] = since
+    data = graphql(
+        token, f"query({', '.join(params)}) {{\n" + "\n".join(fields) + "\n}", variables
+    )
+    results = []
+    for i in range(len(branches)):
+        target = ((data.get(f"r{i}") or {}).get("ref") or {}).get("target") or {}
+        if not target.get("committedDate"):
+            results.append(None)
+            continue
+        results.append(
+            {
+                "oid": target["oid"],
+                "committedDate": target["committedDate"],
+                "since": (target.get("since") or {}).get("totalCount", 0),
+                "until": (target.get("until") or {}).get("totalCount", 0),
+            }
+        )
+    return results
+
+
 # How many pull requests to look through for update PRs: those with the
 # attribute in the title, most recently updated first.
 PR_CANDIDATES = 20
