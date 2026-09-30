@@ -1,0 +1,1242 @@
+[
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "raspbian_testing",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-5",
+    "repo": "deepin_unstable",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-7",
+    "repo": "pureos_byzantium",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "byzantium/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "pureos_landing",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "landing/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-debuginfo"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "lav@altlinux.ru"
+    ],
+    "origversion": "2.8.0.2-alt2",
+    "repo": "alt_p11",
+    "srcname": "asc",
+    "status": "incorrect",
+    "summary": "ASC - a battle isle clone",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-debuginfo"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "lav@altlinux.ru"
+    ],
+    "origversion": "2.8.0.2-alt2",
+    "repo": "altsisyphus",
+    "srcname": "asc",
+    "status": "incorrect",
+    "summary": "ASC - a battle isle clone",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binname": "asc-git",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "bhmsware@aur"
+    ],
+    "origversion": "r21.5bb57a5-1",
+    "repo": "aur",
+    "srcname": "asc-git",
+    "status": "rolling",
+    "summary": "Make a single shell script from images.",
+    "version": "r21.5bb57a5",
+    "visiblename": "asc-git"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-7",
+    "repo": "debian_11",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "bullseye/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "debian_12",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "bookworm/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "debian_13",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "trixie/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "debian_14",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "forky/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "debian_unstable",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "sid/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "deepin_25",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "community",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-7",
+    "repo": "devuan_4_0",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "chimaera/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "devuan_unstable",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-debuginfo",
+      "asc-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.8.0.2-20.fc39",
+    "repo": "fedora_39",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "release",
+    "summary": "Advanced Strategic Command",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-debuginfo",
+      "asc-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.8.0.2-23.fc40",
+    "repo": "fedora_40",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "release",
+    "summary": "Advanced Strategic Command",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.8.0.2-24.fc41",
+    "repo": "fedora_41",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "release",
+    "summary": "Advanced Strategic Command",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.8.0.2-26.fc42",
+    "repo": "fedora_42",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "release",
+    "summary": "Advanced Strategic Command",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.8.0.2-27.fc43",
+    "repo": "fedora_43",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "release",
+    "summary": "Advanced Strategic Command",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.8.0.2-29.fc44",
+    "repo": "fedora_44",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "release",
+    "summary": "Advanced Strategic Command",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.8.0.2-32.fc45",
+    "repo": "fedora_rawhide",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "development",
+    "summary": "Advanced Strategic Command",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "kali_rolling",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "2.6.1 (2015-12-06)",
+    "repo": "libregamewiki",
+    "srcname": "Advanced_Strategic_Command",
+    "status": "newest",
+    "version": "2.6.1",
+    "visiblename": "Advanced Strategic Command"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.8.0.0-6.mga10",
+    "repo": "mageia_10",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "core/release",
+    "summary": "Advanced Strategic Command - Turn-based strategy game",
+    "version": "2.8.0.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "raspbian_oldstable",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data",
+      "asc-debuginfo",
+      "asc-debugsource"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.8.0.0-5.mga9",
+    "repo": "mageia_9",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "core/release",
+    "summary": "Advanced Strategic Command - Turn-based strategy game",
+    "version": "2.8.0.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "2.8.0.0-6.mga10",
+    "repo": "mageia_cauldron",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "core/release",
+    "summary": "Advanced Strategic Command - Turn-based strategy game",
+    "version": "2.8.0.0",
+    "visiblename": "asc"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "asc",
+    "status": "incorrect",
+    "summary": "Turn based strategy game",
+    "version": "2.6.3.0",
+    "visiblename": "asc"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "asc",
+    "status": "incorrect",
+    "summary": "Turn based strategy game",
+    "version": "2.6.3.0",
+    "visiblename": "asc"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "asc",
+    "status": "incorrect",
+    "summary": "Turn based strategy game",
+    "version": "2.6.3.0",
+    "visiblename": "asc"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "asc",
+    "status": "incorrect",
+    "summary": "Turn based strategy game",
+    "version": "2.6.3.0",
+    "visiblename": "asc"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "asc",
+    "status": "incorrect",
+    "summary": "Turn based strategy game",
+    "version": "2.6.3.0",
+    "visiblename": "asc"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "asc",
+    "status": "incorrect",
+    "summary": "Turn based strategy game",
+    "version": "2.6.3.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-debuginfo",
+      "asc-debugsource",
+      "asc-music"
+    ],
+    "categories": [
+      "Amusements/Games/Strategy/Turn Based"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "2.8.1.0+git.20220116-2.117",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "asc",
+    "status": "incorrect",
+    "summary": "Advanced Strategic Command--Turn-Based Strategy Game",
+    "version": "2.8.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-7",
+    "repo": "pardus_21",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "parrot",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "parrot/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "parrot",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "parrot-updates/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binname": "asc",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "2.6.1.0nb40",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/asc",
+    "status": "newest",
+    "summary": "Turn based strategy game in the tradition of the Battle Isle series",
+    "version": "2.6.1.0",
+    "visiblename": "games/asc"
+  },
+  {
+    "binname": "asc",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "2.6.1.0nb42",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/asc",
+    "status": "newest",
+    "summary": "Turn based strategy game in the tradition of the Battle Isle series",
+    "version": "2.6.1.0",
+    "visiblename": "games/asc"
+  },
+  {
+    "binname": "asc",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "2.6.1.0nb43",
+    "repo": "pkgsrc_current",
+    "srcname": "games/asc",
+    "status": "newest",
+    "summary": "Turn based strategy game in the tradition of the Battle Isle series",
+    "version": "2.6.1.0",
+    "visiblename": "games/asc"
+  },
+  {
+    "origversion": "2.8.0.2-3",
+    "repo": "pld",
+    "srcname": "asc",
+    "status": "incorrect",
+    "version": "2.8.0.2",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-5",
+    "repo": "pureos_amber",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "amber/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9",
+    "repo": "raspbian_stable",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "a.proklov@rosalinux.ru"
+    ],
+    "origversion": "2.8.3.0-1.gitfa3bca.1",
+    "repo": "rosa_2019_1",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "contrib/release",
+    "summary": "Advanced Strategic Command",
+    "version": "2.8.3.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data",
+      "asc-debuginfo",
+      "asc-debugsource"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "2.8.3.0-1.gitfa3bca.2",
+    "repo": "rosa_13",
+    "srcname": "asc",
+    "status": "incorrect",
+    "subrepo": "contrib/release",
+    "summary": "Advanced Strategic Command",
+    "version": "2.8.3.0",
+    "visiblename": "asc"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "d.zlatanidis@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/asc",
+    "status": "newest",
+    "version": "2.6.1.0",
+    "visiblename": "games/asc"
+  },
+  {
+    "categories": [
+      "extra/game"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "rene@exactco.de"
+    ],
+    "origversion": null,
+    "repo": "t2",
+    "srcname": "asc",
+    "status": "newest",
+    "summary": "A Battle Isle (I/II) like multiplayer strategy game",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-6build4",
+    "repo": "trisquel_10_0",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "nabia/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-8build1",
+    "repo": "trisquel_11_0",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "aramo/main",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "jmm@debian.org",
+      "sho@debian.org",
+      "tolimar@debian.org"
+    ],
+    "origversion": "2.5.0.0-1ubuntu1",
+    "repo": "ubuntu_14_04",
+    "srcname": "asc",
+    "status": "outdated",
+    "subrepo": "trusty/universe",
+    "version": "2.5.0.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-1",
+    "repo": "ubuntu_16_04",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "xenial/universe",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-3",
+    "repo": "ubuntu_18_04",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "bionic/universe",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-6build4",
+    "repo": "ubuntu_20_04",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "focal/universe",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-8build1",
+    "repo": "ubuntu_22_04",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "jammy/universe",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9build5",
+    "repo": "ubuntu_24_04",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "noble/universe",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9build5",
+    "repo": "ubuntu_25_04",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "plucky/universe",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9build5",
+    "repo": "ubuntu_25_10",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "questing/universe",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9build6",
+    "repo": "ubuntu_26_04",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "resolute/universe",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "binnames": [
+      "asc",
+      "asc-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "apo@debian.org",
+      "bdefreese@debian.org",
+      "fenio@debian.org",
+      "sho@debian.org"
+    ],
+    "origversion": "2.6.1.0-9build6",
+    "repo": "ubuntu_26_10",
+    "srcname": "asc",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "2.6.1.0",
+    "visiblename": "asc"
+  },
+  {
+    "licenses": [
+      "GNU General Public License, version 2.0"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q16321470",
+    "status": "newest",
+    "summary": "1998 video game",
+    "version": "2.6.1",
+    "visiblename": "Advanced Strategic Command"
+  }
+]

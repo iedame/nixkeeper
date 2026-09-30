@@ -1,0 +1,121 @@
+[
+  {
+    "binname": "fallout1-ce-game",
+    "licenses": [
+      "custom:SUL"
+    ],
+    "maintainers": [
+      "tsynique@aur"
+    ],
+    "origversion": "1.1.0-3",
+    "repo": "aur",
+    "srcname": "fallout1-ce-game",
+    "status": "newest",
+    "summary": "Fallout for modern operating systems",
+    "version": "1.1.0",
+    "visiblename": "fallout1-ce-game"
+  },
+  {
+    "licenses": [
+      "Sustainable Use License"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie",
+      "esthromeris@riseup.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "fallout-ce",
+    "status": "newest",
+    "summary": "A fully working re-implementation of Fallout, with the same original gameplay, engine bugfixes, and some quality of life improvements",
+    "version": "1.1.0",
+    "visiblename": "fallout-ce"
+  },
+  {
+    "licenses": [
+      "Sustainable Use License"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "fallout-ce",
+    "status": "newest",
+    "summary": "Fully working re-implementation of Fallout, with the same original gameplay, engine bugfixes, and some quality of life improvements",
+    "version": "1.1.0",
+    "visiblename": "fallout-ce"
+  },
+  {
+    "licenses": [
+      "Sustainable Use License"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "fallout-ce",
+    "status": "newest",
+    "summary": "Fully working re-implementation of Fallout, with the same original gameplay, engine bugfixes, and some quality of life improvements",
+    "version": "1.1.0",
+    "visiblename": "fallout-ce"
+  },
+  {
+    "licenses": [
+      "SUL-1.0"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "fallout-ce",
+    "status": "newest",
+    "summary": "Fallout for modern operating systems",
+    "version": "1.1.0",
+    "visiblename": "fallout-ce"
+  },
+  {
+    "licenses": [
+      "SUL-1.0"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "fallout-ce",
+    "status": "newest",
+    "summary": "Fallout for modern operating systems",
+    "version": "1.1.0",
+    "visiblename": "fallout-ce"
+  },
+  {
+    "licenses": [
+      "SUL-1.0"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "fallout-ce",
+    "status": "newest",
+    "summary": "Fallout for modern operating systems",
+    "version": "1.1.0",
+    "visiblename": "fallout-ce"
+  },
+  {
+    "binname": "game/roleplaying/fallout-ce.lha",
+    "categories": [
+      "game/roleplaying"
+    ],
+    "origversion": null,
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "Fallout Community Edition port for AmigaOS4",
+    "version": "v1.0",
+    "visiblename": "fallout-ce.lha"
+  }
+]

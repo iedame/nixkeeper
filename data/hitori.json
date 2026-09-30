@@ -1,0 +1,1420 @@
+[
+  {
+    "binname": "hitori",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "44.0-5",
+    "repo": "artix",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "world",
+    "summary": "Play the eponymous puzzle game",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binname": "hitori",
+    "categories": [
+      "Games"
+    ],
+    "maintainers": [
+      "orphaned@cygwin"
+    ],
+    "origversion": "3.22.4-1",
+    "repo": "cygwin",
+    "srcname": "hitori",
+    "status": "outdated",
+    "summary": "GTK+ Hitori game",
+    "version": "3.22.4",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "gnome-games-hitori",
+      "gnome-games-hitori-debuginfo"
+    ],
+    "categories": [
+      "Games/Boards"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "aris@altlinux.org"
+    ],
+    "origversion": "44.0-alt1",
+    "repo": "alt_p11",
+    "srcname": "gnome-games-hitori",
+    "status": "newest",
+    "summary": "GTK+ application to generate and let you play games of Hitori",
+    "version": "44.0",
+    "visiblename": "gnome-games-hitori"
+  },
+  {
+    "binnames": [
+      "gnome-games-hitori",
+      "gnome-games-hitori-debuginfo"
+    ],
+    "categories": [
+      "Games/Boards"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "aris@altlinux.org"
+    ],
+    "origversion": "44.0-alt1",
+    "repo": "altsisyphus",
+    "srcname": "gnome-games-hitori",
+    "status": "newest",
+    "summary": "GTK+ application to generate and let you play games of Hitori",
+    "version": "44.0",
+    "visiblename": "gnome-games-hitori"
+  },
+  {
+    "binname": "hitori",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "44.0-5",
+    "repo": "arch",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Play the eponymous puzzle game",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.38.0-1",
+    "repo": "debian_11",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "bullseye/main",
+    "version": "3.38.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "3.38.4-2",
+    "repo": "debian_12",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "3.38.4",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "bandali@ubuntu.com",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-3",
+    "repo": "debian_13",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "trixie/main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-extras-maintainers@lists.alioth.debian.org",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-5",
+    "repo": "debian_14",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "forky/main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-extras-maintainers@lists.alioth.debian.org",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-5",
+    "repo": "debian_unstable",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "sid/main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.31.0-1",
+    "repo": "deepin_unstable",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "3.31.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.38.3-1deepin1",
+    "repo": "deepin_25",
+    "srcname": "hitori",
+    "status": "legacy",
+    "subrepo": "main",
+    "version": "3.38.3",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "bandali@ubuntu.com",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-3",
+    "repo": "deepin_25",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "community",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.38.0-1",
+    "repo": "devuan_4_0",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "3.38.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-extras-maintainers@lists.alioth.debian.org",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-5",
+    "repo": "devuan_unstable",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori",
+      "hitori-debuginfo",
+      "hitori-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-SA-3.0"
+    ],
+    "origversion": "44.0-2.fc39",
+    "repo": "fedora_39",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori",
+      "hitori-debuginfo",
+      "hitori-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-SA-3.0"
+    ],
+    "origversion": "44.0-4.fc40",
+    "repo": "fedora_40",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-SA-3.0"
+    ],
+    "origversion": "44.0-5.fc41",
+    "repo": "fedora_41",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-SA-3.0"
+    ],
+    "origversion": "44.0-6.fc42",
+    "repo": "fedora_42",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-SA-3.0"
+    ],
+    "origversion": "44.0-7.fc43",
+    "repo": "fedora_43",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-SA-3.0"
+    ],
+    "origversion": "44.0-8.fc44",
+    "repo": "fedora_44",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-SA-3.0"
+    ],
+    "origversion": "44.0-10.fc46",
+    "repo": "fedora_rawhide",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "development",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binname": "hitori",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "gnome@freebsd.org"
+    ],
+    "origversion": null,
+    "repo": "freebsd",
+    "srcname": "games/hitori",
+    "status": "newest",
+    "summary": "Hitori puzzle game",
+    "version": "44.0",
+    "visiblename": "games/hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.38.0-1",
+    "repo": "pardus_21",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "3.38.0",
+    "visiblename": "hitori"
+  },
+  {
+    "categories": [
+      "games-puzzle"
+    ],
+    "licenses": [
+      "GPL-3+",
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "gnome@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-puzzle/hitori",
+    "status": "newest",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "games-puzzle/hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-extras-maintainers@lists.alioth.debian.org",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-5",
+    "repo": "kali_rolling",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "categories": [
+      "games-puzzle"
+    ],
+    "licenses": [
+      "GPL-3+",
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "gnome@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-puzzle/hitori",
+    "status": "newest",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "games-puzzle/hitori"
+  },
+  {
+    "categories": [
+      "games-puzzle"
+    ],
+    "licenses": [
+      "GPL-3+",
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "gnome@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-puzzle/hitori",
+    "status": "newest",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "games-puzzle/hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "GPLv3+ and CC-BY-SA"
+    ],
+    "origversion": "44.0-2.mga10",
+    "repo": "mageia_10",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori",
+      "hitori-debuginfo",
+      "hitori-debugsource"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "GPLv3+ and CC-BY-SA"
+    ],
+    "origversion": "44.0-1.mga9",
+    "repo": "mageia_9",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "GPLv3+ and CC-BY-SA"
+    ],
+    "origversion": "44.0-2.mga10",
+    "repo": "mageia_cauldron",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binname": "hitori",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "44.0-5",
+    "repo": "manjaro_stable",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Play the eponymous puzzle game",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binname": "hitori",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "44.0-5",
+    "repo": "manjaro_testing",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Play the eponymous puzzle game",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binname": "hitori",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "44.0-5",
+    "repo": "manjaro_unstable",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Play the eponymous puzzle game",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "categories": [
+      "gnome"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "rjl931189261@126.com",
+      "torhedinbronner@gmail.com",
+      "jtojnar@gmail.com",
+      "daniel@serbanescu.dk"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "gnome.hitori",
+    "status": "newest",
+    "summary": "GTK application to generate and let you play games of Hitori",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "rjl931189261@126.com",
+      "torhedinbronner@gmail.com",
+      "jtojnar@gmail.com",
+      "daniel@serbanescu.dk"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "hitori",
+    "status": "newest",
+    "summary": "GTK application to generate and let you play games of Hitori",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "rjl931189261@126.com",
+      "daniel@serbanescu.dk",
+      "torhedinbronner@gmail.com",
+      "jtojnar@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "hitori",
+    "status": "newest",
+    "summary": "GTK application to generate and let you play games of Hitori",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "jtojnar@gmail.com",
+      "rjl931189261@126.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "hitori",
+    "status": "newest",
+    "summary": "GTK application to generate and let you play games of Hitori",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "rjl931189261@126.com",
+      "jtojnar@gmail.com",
+      "hey@winston.sh",
+      "hello@capypara.de",
+      "thunze@github"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "hitori",
+    "status": "newest",
+    "summary": "GTK application to generate and let you play games of Hitori",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "rjl931189261@126.com",
+      "jtojnar@gmail.com",
+      "hey@winston.sh",
+      "hello@capypara.de",
+      "thunze@github"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "hitori",
+    "status": "newest",
+    "summary": "GTK application to generate and let you play games of Hitori",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori",
+      "hitori-debuginfo",
+      "hitori-debugsource"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "GPLv3+ and CC-BY-SA"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "44.0-2",
+    "repo": "openmandriva_6_0",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "GPLv3+ and CC-BY-SA"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "44.0-4",
+    "repo": "openmandriva_rolling",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "GPLv3+ and CC-BY-SA"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "44.0-4",
+    "repo": "openmandriva_cooker",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "categories": [
+      "Amusements/Games/Logic"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "3.38.4-bp155.1.9",
+    "repo": "opensuse_leap_15_5",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "Original puzzle of Nikoli",
+    "version": "3.38.4",
+    "visiblename": "hitori"
+  },
+  {
+    "categories": [
+      "Amusements/Games/Logic"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "44.0-bp156.1.6",
+    "repo": "opensuse_leap_15_6",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "main/oss",
+    "summary": "Original puzzle of Nikoli",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori",
+      "hitori-debuginfo",
+      "hitori-debugsource",
+      "hitori-lang"
+    ],
+    "categories": [
+      "Amusements/Games/Logic"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "44.0-1.14",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "src-oss",
+    "summary": "Original puzzle of Nikoli",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "bandali@ubuntu.com",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-3",
+    "repo": "parrot",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "parrot-updates/main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binname": "hitori",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "prlw1@cam.ac.uk"
+    ],
+    "origversion": "3.38.3nb17",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/hitori",
+    "status": "outdated",
+    "summary": "Logic game similar to Sudoku",
+    "version": "3.38.3",
+    "visiblename": "games/hitori"
+  },
+  {
+    "binname": "hitori",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "prlw1@cam.ac.uk"
+    ],
+    "origversion": "44.0nb1",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/hitori",
+    "status": "newest",
+    "summary": "Logic game similar to Sudoku",
+    "version": "44.0",
+    "visiblename": "games/hitori"
+  },
+  {
+    "binname": "hitori",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "prlw1@cam.ac.uk"
+    ],
+    "origversion": "44.0nb2",
+    "repo": "pkgsrc_current",
+    "srcname": "games/hitori",
+    "status": "newest",
+    "summary": "Logic game similar to Sudoku",
+    "version": "44.0",
+    "visiblename": "games/hitori"
+  },
+  {
+    "origversion": "44.0-1",
+    "repo": "pld",
+    "srcname": "hitori",
+    "status": "newest",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.31.0-1",
+    "repo": "pureos_amber",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "amber/main",
+    "version": "3.31.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.38.0-1",
+    "repo": "pureos_byzantium",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "3.38.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "bandali@ubuntu.com",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-3",
+    "repo": "pureos_landing",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "landing/main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "3.38.4-2",
+    "repo": "raspbian_oldstable",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "3.38.4",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "bandali@ubuntu.com",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-3",
+    "repo": "raspbian_stable",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-extras-maintainers@lists.alioth.debian.org",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-5",
+    "repo": "raspbian_testing",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori",
+      "hitori-debuginfo",
+      "hitori-debugsource"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPLv3+ and CC-BY-SA"
+    ],
+    "maintainers": [
+      "m.novosyolov@rosalinux.ru"
+    ],
+    "origversion": "3.38.4-2",
+    "repo": "rosa_2019_1",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "3.38.4",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori",
+      "hitori-debuginfo",
+      "hitori-debugsource"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPLv3+ and CC-BY-SA"
+    ],
+    "maintainers": [
+      "survolog@yandex.ru"
+    ],
+    "origversion": "44.0-18",
+    "repo": "rosa_13",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "Logic puzzle game for GNOME",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.34.0-1",
+    "repo": "trisquel_10_0",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "nabia/main",
+    "version": "3.34.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.38.3-1",
+    "repo": "trisquel_11_0",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "aramo/main",
+    "version": "3.38.3",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "0.4.0-1",
+    "repo": "ubuntu_14_04",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "trusty/universe",
+    "version": "0.4.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.19.1-1",
+    "repo": "ubuntu_16_04",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "xenial/universe",
+    "version": "3.19.1",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.22.4-1",
+    "repo": "ubuntu_18_04",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "bionic/universe",
+    "version": "3.22.4",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.34.0-1",
+    "repo": "ubuntu_20_04",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "focal/universe",
+    "version": "3.34.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pdewacht@gmail.com"
+    ],
+    "origversion": "3.38.3-1",
+    "repo": "ubuntu_22_04",
+    "srcname": "hitori",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "3.38.3",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "bandali@ubuntu.com",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-2build2",
+    "repo": "ubuntu_24_04",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "noble/universe",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "bandali@ubuntu.com",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-3",
+    "repo": "ubuntu_25_04",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "plucky/universe",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "bandali@ubuntu.com",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-3",
+    "repo": "ubuntu_25_10",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "questing/universe",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-gnome-extras-maintainers@lists.alioth.debian.org",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-4",
+    "repo": "ubuntu_26_04",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "resolute/universe",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-gnome-extras-maintainers@lists.alioth.debian.org",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-5",
+    "repo": "ubuntu_26_10",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "binname": "hitori",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "orphan@voidlinux.org"
+    ],
+    "origversion": "44.0_1",
+    "repo": "void_x86_64",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "GNOME eponymous puzzle game",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "licenses": [
+      "GNU General Public License, version 3.0"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q47433109",
+    "status": "outdated",
+    "summary": "game designed for the GNOME desktop environment",
+    "version": "3.38.3",
+    "visiblename": "Hitori"
+  },
+  {
+    "binname": "hitori-debuginfo",
+    "categories": [
+      "Debug"
+    ],
+    "maintainers": [
+      "orphaned@cygwin"
+    ],
+    "origversion": "3.22.4-1",
+    "repo": "cygwin",
+    "srcname": "hitori",
+    "status": "outdated",
+    "summary": "GTK+ Hitori game",
+    "version": "3.22.4",
+    "visiblename": "hitori-debuginfo"
+  },
+  {
+    "binnames": [
+      "hitori"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-gnome-maintainers@lists.alioth.debian.org",
+      "bandali@ubuntu.com",
+      "jbicha@ubuntu.com"
+    ],
+    "origversion": "44.0-3",
+    "repo": "parrot",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "parrot/main",
+    "version": "44.0",
+    "visiblename": "hitori"
+  },
+  {
+    "categories": [
+      "Games/Other"
+    ],
+    "origversion": "0.2.3-2pclos2010",
+    "repo": "pclinuxos",
+    "srcname": "hitori",
+    "status": "outdated",
+    "summary": "Hitori game for GNOME",
+    "version": "0.2.3",
+    "visiblename": "hitori"
+  },
+  {
+    "binname": "hitori",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "44.0-5",
+    "repo": "parabola",
+    "srcname": "hitori",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Play the eponymous puzzle game",
+    "version": "44.0",
+    "visiblename": "hitori"
+  }
+]

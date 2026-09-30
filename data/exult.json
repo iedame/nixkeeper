@@ -1,0 +1,861 @@
+[
+  {
+    "origversion": null,
+    "repo": "gobolinux",
+    "srcname": "Exult",
+    "status": "outdated",
+    "version": "1.2",
+    "visiblename": "Exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.10.1-3",
+    "repo": "parrot",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "parrot/contrib",
+    "version": "1.10.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.6-3",
+    "repo": "pardus_21",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "1.6",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.10.1-3",
+    "repo": "parrot",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "parrot-updates/contrib",
+    "version": "1.10.1",
+    "visiblename": "exult"
+  },
+  {
+    "binname": "exult",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "nikkohigashi@gmail.com"
+    ],
+    "origversion": "1.6nb14",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/exult",
+    "status": "outdated",
+    "summary": "Open-source Ultima 7 engine",
+    "version": "1.6",
+    "visiblename": "games/exult"
+  },
+  {
+    "binname": "game/roleplaying/exult.lha",
+    "categories": [
+      "game/roleplaying"
+    ],
+    "origversion": null,
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "Ultima 7 rebuilt",
+    "version": "1.2",
+    "visiblename": "exult.lha"
+  },
+  {
+    "binname": "exult",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "nocifer@aur"
+    ],
+    "origversion": "1.12.1-1",
+    "repo": "aur",
+    "srcname": "exult",
+    "status": "newest",
+    "summary": "A project to recreate Ultima 7 for modern operating systems, using the game's original plot, data, and graphics files",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "binname": "exult-git",
+    "licenses": [
+      "GPL2"
+    ],
+    "maintainers": [
+      "benwbooth@aur"
+    ],
+    "origversion": "6891.176935e-2",
+    "repo": "aur",
+    "srcname": "exult-git",
+    "status": "rolling",
+    "summary": "A recreation of the Ultima 7 engine",
+    "version": "6891.176935e",
+    "visiblename": "exult-git"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.6-3",
+    "repo": "debian_11",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "bullseye/contrib",
+    "version": "1.6",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.8-1",
+    "repo": "debian_12",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "bookworm/contrib",
+    "version": "1.8",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.10.1-3",
+    "repo": "debian_13",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "trixie/contrib",
+    "version": "1.10.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.12.1-3",
+    "repo": "debian_unstable",
+    "srcname": "exult",
+    "status": "newest",
+    "subrepo": "sid/contrib",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.2-18",
+    "repo": "deepin_unstable",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "1.2",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.6-3",
+    "repo": "devuan_4_0",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "chimaera/contrib",
+    "version": "1.6",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.12.1-3",
+    "repo": "devuan_unstable",
+    "srcname": "exult",
+    "status": "newest",
+    "subrepo": "unstable/contrib",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "categories": [
+      "games-rpg"
+    ],
+    "maintainers": [
+      "fallback-mnt-exherbo@repology"
+    ],
+    "origversion": null,
+    "repo": "exherbo",
+    "srcname": "games-rpg/exult",
+    "status": "newest",
+    "subrepo": "games",
+    "summary": "A project to recreate Ultima 7 for modern operating systems using the original game data",
+    "version": "1.12.1",
+    "visiblename": "games-rpg/exult"
+  },
+  {
+    "binname": "exult",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "eduardo@freebsd.org"
+    ],
+    "origversion": "1.12.1,1",
+    "repo": "freebsd",
+    "srcname": "games/exult",
+    "status": "newest",
+    "summary": "Engine for Ultima VII (BG, FOV, SI, SS)",
+    "version": "1.12.1",
+    "visiblename": "games/exult"
+  },
+  {
+    "categories": [
+      "games-engines"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-engines/exult",
+    "status": "outdated",
+    "summary": "Ultima 7 game engine that runs on modern operating systems",
+    "version": "1.12.0",
+    "visiblename": "games-engines/exult"
+  },
+  {
+    "binname": "exult",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "exult",
+    "status": "outdated",
+    "summary": "Role-playing game engine compatible with Ultima VII",
+    "version": "1.8",
+    "visiblename": "exult"
+  },
+  {
+    "categories": [
+      "games-engines"
+    ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "games-engines/exult",
+    "status": "newest",
+    "version": "1.12.1",
+    "visiblename": "games-engines/exult"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "exult",
+    "status": "newest",
+    "summary": "Recreation of Ultima 7",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "exult",
+    "status": "rolling",
+    "summary": "Recreation of Ultima 7",
+    "version": "HEAD",
+    "visiblename": "exult"
+  },
+  {
+    "categories": [
+      "games-engines"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-engines/exult",
+    "status": "outdated",
+    "summary": "Ultima 7 game engine that runs on modern operating systems",
+    "version": "1.12.0",
+    "visiblename": "games-engines/exult"
+  },
+  {
+    "categories": [
+      "games-engines"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-engines/exult",
+    "status": "outdated",
+    "summary": "Ultima 7 game engine that runs on modern operating systems",
+    "version": "1.12.0",
+    "visiblename": "games-engines/exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "stevep@mxlinux.org"
+    ],
+    "origversion": "1.8-1~mx21+1",
+    "repo": "mx_21_testing",
+    "srcname": "exult",
+    "status": "outdated",
+    "version": "1.8",
+    "visiblename": "exult"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "azat@bahawi.net",
+      "edolstra+nixpkgs@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "exult",
+    "status": "outdated",
+    "summary": "Exult is a project to recreate Ultima VII for modern operating systems",
+    "version": "1.8",
+    "visiblename": "exult"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "azat@bahawi.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "exult",
+    "status": "outdated",
+    "summary": "Exult is a project to recreate Ultima VII for modern operating systems",
+    "version": "1.10.1",
+    "visiblename": "exult"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "exult",
+    "status": "outdated",
+    "summary": "Exult is a project to recreate Ultima VII for modern operating systems",
+    "version": "1.10.1",
+    "visiblename": "exult"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "exult",
+    "status": "outdated",
+    "summary": "Recreation of Ultima VII for modern operating systems",
+    "version": "1.12.0",
+    "visiblename": "exult"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "exult",
+    "status": "newest",
+    "summary": "Recreation of Ultima VII for modern operating systems",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "exult",
+    "status": "newest",
+    "summary": "Recreation of Ultima VII for modern operating systems",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "binname": "exult",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "thfr@openbsd.org"
+    ],
+    "origversion": null,
+    "repo": "openbsd",
+    "srcname": "games/exult",
+    "status": "newest",
+    "summary": "Ultima VII game engine for modern operating systems",
+    "version": "1.12.1",
+    "visiblename": "games/exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-debuginfo",
+      "exult-debugsource",
+      "exult-studio"
+    ],
+    "categories": [
+      "Amusements/Games/RPG"
+    ],
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "origversion": "1.12.1-1.75",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "exult",
+    "status": "newest",
+    "summary": "Open source Ultima 7 RPG game engine",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "binname": "exult",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "nikkohigashi@gmail.com"
+    ],
+    "origversion": "1.6nb16",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/exult",
+    "status": "outdated",
+    "summary": "Open-source Ultima 7 engine",
+    "version": "1.6",
+    "visiblename": "games/exult"
+  },
+  {
+    "binname": "exult",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "nikkohigashi@gmail.com"
+    ],
+    "origversion": "1.6nb17",
+    "repo": "pkgsrc_current",
+    "srcname": "games/exult",
+    "status": "outdated",
+    "summary": "Open-source Ultima 7 engine",
+    "version": "1.6",
+    "visiblename": "games/exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.8-1",
+    "repo": "raspbian_oldstable",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "1.8",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.10.1-3",
+    "repo": "raspbian_stable",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "1.10.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.12.1-3",
+    "repo": "raspbian_testing",
+    "srcname": "exult",
+    "status": "newest",
+    "subrepo": "contrib",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-tools",
+      "exult-debuginfo"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "origversion": "1.6-1",
+    "repo": "rpmsphere",
+    "srcname": "exult",
+    "status": "outdated",
+    "summary": "Ultima VII Engine",
+    "version": "1.6",
+    "visiblename": "exult"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "antonioleal@yahoo.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/exult",
+    "status": "newest",
+    "version": "1.12.1",
+    "visiblename": "games/exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "jorda@ettin.org",
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.2-15.3",
+    "repo": "ubuntu_14_04",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "trusty/multiverse",
+    "version": "1.2",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "jorda@ettin.org",
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.2-16.1",
+    "repo": "ubuntu_16_04",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "xenial/multiverse",
+    "version": "1.2",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "jorda@ettin.org",
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.2-16.2",
+    "repo": "ubuntu_18_04",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "bionic/multiverse",
+    "version": "1.2",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.2-18build1",
+    "repo": "ubuntu_20_04",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "focal/multiverse",
+    "version": "1.2",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.6-3",
+    "repo": "ubuntu_22_04",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "jammy/multiverse",
+    "version": "1.6",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "1.8-2build3",
+    "repo": "ubuntu_24_04",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "noble/multiverse",
+    "version": "1.8",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.10.1-3",
+    "repo": "ubuntu_25_04",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "plucky/multiverse",
+    "version": "1.10.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.12.0-2",
+    "repo": "ubuntu_25_10",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "questing/multiverse",
+    "version": "1.12.0",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.12.1-1",
+    "repo": "ubuntu_26_04",
+    "srcname": "exult",
+    "status": "newest",
+    "subrepo": "resolute/multiverse",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "multiverse/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.12.1-3",
+    "repo": "ubuntu_26_10",
+    "srcname": "exult",
+    "status": "newest",
+    "subrepo": "stonking/multiverse",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "binname": "exult",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "vincent.legoll@gmail.com"
+    ],
+    "origversion": "1.12.1_1",
+    "repo": "void_x86_64",
+    "srcname": "exult",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Free runtime for the Ultima 7 game series",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  }
+]

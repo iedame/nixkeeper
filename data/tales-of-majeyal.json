@@ -1,0 +1,444 @@
+[
+  {
+    "binname": "tome4",
+    "licenses": [
+      "custom",
+      "GPL3"
+    ],
+    "maintainers": [
+      "heavysink@aur",
+      "lilac@aur"
+    ],
+    "origversion": "1.7.6-1",
+    "repo": "aur",
+    "srcname": "tome4",
+    "status": "newest",
+    "summary": "An open-source, single-player, role-playing roguelike game set in the world of Eyal.",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "binname": "tome4-bin",
+    "licenses": [
+      "custom",
+      "GPL3"
+    ],
+    "maintainers": [
+      "kyndair@aur"
+    ],
+    "origversion": "1.7.6-1",
+    "repo": "aur",
+    "srcname": "tome4-bin",
+    "status": "newest",
+    "summary": "An open-source, single-player, role-playing roguelike game set in the world of Eyal.",
+    "version": "1.7.6",
+    "visiblename": "tome4-bin"
+  },
+  {
+    "binname": "tome4-git",
+    "licenses": [
+      "custom",
+      "GPL3"
+    ],
+    "maintainers": [
+      "heavysink@aur",
+      "lilac@aur"
+    ],
+    "origversion": "1.7.2.r117.g75e65d71a1-1",
+    "repo": "aur",
+    "srcname": "tome4-git",
+    "status": "rolling",
+    "summary": "An open-source, single-player, role-playing roguelike game set in the world of Eyal.",
+    "version": "1.7.2.r117.g75e65d71a1",
+    "visiblename": "tome4-git"
+  },
+  {
+    "binname": "tome4-beta",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkubaj@freebsd.org"
+    ],
+    "origversion": "1.6.0.b7_4",
+    "repo": "freebsd",
+    "srcname": "games/tome4-beta",
+    "status": "outdated",
+    "summary": "Epic tactical turn-based roguelike adventure",
+    "version": "1.6.0.b7",
+    "visiblename": "games/tome4-beta"
+  },
+  {
+    "binname": "tome4",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkubaj@freebsd.org"
+    ],
+    "origversion": "1.7.6_1",
+    "repo": "freebsd",
+    "srcname": "games/tome4",
+    "status": "newest",
+    "summary": "Epic tactical turn-based roguelike adventure",
+    "version": "1.7.6",
+    "visiblename": "games/tome4"
+  },
+  {
+    "binname": "tome4",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "tome4",
+    "status": "newest",
+    "summary": "Single-player, RPG roguelike game set in the world of Eyal",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "tales-of-majeyal",
+    "status": "newest",
+    "summary": "Topdown tactical RPG roguelike game and game engine",
+    "version": "1.7.6",
+    "visiblename": "Tales of Maj'Eyal"
+  },
+  {
+    "binnames": [
+      "t-engine4"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "1.7.6-3.mga10",
+    "repo": "mageia_10",
+    "srcname": "t-engine4",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "T-Engine4 is a graphical roguelike and tactical RPG engine",
+    "version": "1.7.6",
+    "visiblename": "t-engine4"
+  },
+  {
+    "binnames": [
+      "tome"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+ and Nonfree"
+    ],
+    "origversion": "1.7.6-2.mga10.nonfree",
+    "repo": "mageia_10",
+    "srcname": "tome",
+    "status": "newest",
+    "subrepo": "nonfree/release",
+    "summary": "An open-source, single-player, roguelike RPG with 2D tiles",
+    "version": "1.7.6",
+    "visiblename": "tome"
+  },
+  {
+    "binnames": [
+      "t-engine4",
+      "t-engine4-debuginfo",
+      "t-engine4-debugsource"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "1.7.2-2.mga9",
+    "repo": "mageia_9",
+    "srcname": "t-engine4",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "T-Engine4 is a graphical roguelike and tactical RPG engine",
+    "version": "1.7.2",
+    "visiblename": "t-engine4"
+  },
+  {
+    "binnames": [
+      "tome"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+ and Nonfree"
+    ],
+    "origversion": "1.7.2-2.mga9.nonfree",
+    "repo": "mageia_9",
+    "srcname": "tome",
+    "status": "outdated",
+    "subrepo": "nonfree/release",
+    "summary": "An open-source, single-player, roguelike RPG with 2D tiles",
+    "version": "1.7.2",
+    "visiblename": "tome"
+  },
+  {
+    "binnames": [
+      "t-engine4"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "1.7.6-3.mga10",
+    "repo": "mageia_cauldron",
+    "srcname": "t-engine4",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "T-Engine4 is a graphical roguelike and tactical RPG engine",
+    "version": "1.7.6",
+    "visiblename": "t-engine4"
+  },
+  {
+    "binnames": [
+      "tome"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPLv3+ and Nonfree"
+    ],
+    "origversion": "1.7.6-2.mga10.nonfree",
+    "repo": "mageia_cauldron",
+    "srcname": "tome",
+    "status": "newest",
+    "subrepo": "nonfree/release",
+    "summary": "An open-source, single-player, roguelike RPG with 2D tiles",
+    "version": "1.7.6",
+    "visiblename": "tome"
+  },
+  {
+    "binnames": [
+      "tales-of-majeyal",
+      "tales-of-majeyal-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "mmikeinsantarosa@mxlinux.org"
+    ],
+    "origversion": "1.7.6-1mx21+1",
+    "repo": "mx_21",
+    "srcname": "tales-of-majeyal",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "1.7.6",
+    "visiblename": "tales-of-majeyal"
+  },
+  {
+    "binnames": [
+      "tales-of-majeyal",
+      "tales-of-majeyal-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "mmikeinsantarosa@mxlinux.org"
+    ],
+    "origversion": "1.7.6-1mx23+1",
+    "repo": "mx_23",
+    "srcname": "tales-of-majeyal",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "1.7.6",
+    "visiblename": "tales-of-majeyal"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "peter@hoeg.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "tome4",
+    "status": "newest",
+    "summary": "Tales of Maj'eyal (rogue-like game)",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "peter@hoeg.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "tome4",
+    "status": "newest",
+    "summary": "Tales of Maj'eyal (rogue-like game)",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "peter@hoeg.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "tome4",
+    "status": "newest",
+    "summary": "Tales of Maj'eyal (rogue-like game)",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "peter@hoeg.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "tome4",
+    "status": "newest",
+    "summary": "Tales of Maj'eyal (rogue-like game)",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "peter@hoeg.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "tome4",
+    "status": "newest",
+    "summary": "Tales of Maj'eyal (rogue-like game)",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "peter@hoeg.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "tome4",
+    "status": "newest",
+    "summary": "Tales of Maj'eyal (rogue-like game)",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "binname": "tome4",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": "1.7.6p0",
+    "repo": "openbsd",
+    "srcname": "games/tome4",
+    "status": "newest",
+    "summary": "graphical sdl rogue-like game",
+    "version": "1.7.6",
+    "visiblename": "games/tome4"
+  },
+  {
+    "binname": "tome4",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": "1.7.6p0",
+    "repo": "openbsd",
+    "srcname": "games/tome4",
+    "status": "newest",
+    "summary": "graphical sdl rogue-like game",
+    "version": "1.7.6",
+    "visiblename": "games/tome4"
+  },
+  {
+    "binname": "tome4-data",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": "1.7.6p0",
+    "repo": "openbsd",
+    "srcname": "games/tome4",
+    "status": "newest",
+    "summary": "data for Tales of Maj'Eyal",
+    "version": "1.7.6",
+    "visiblename": "games/tome4"
+  },
+  {
+    "binnames": [
+      "tome4",
+      "tome4-debuginfo",
+      "tome4-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/RPG"
+    ],
+    "licenses": [
+      "GPL-3.0-only AND SUSE-Freeware"
+    ],
+    "origversion": "1.7.6-2.7",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "tome4",
+    "status": "newest",
+    "summary": "Roguelike turn-based RPG",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "binname": "tome4",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "games",
+    "version": "1.7.6",
+    "visiblename": "tome4"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "dslackw@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/tome",
+    "status": "newest",
+    "version": "1.7.6",
+    "visiblename": "games/tome"
+  }
+]

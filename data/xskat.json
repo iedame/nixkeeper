@@ -1,0 +1,1274 @@
+[
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "mm@dorfdsl.de"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/xskat",
+    "status": "newest",
+    "version": "4.0",
+    "visiblename": "games/xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-10",
+    "repo": "devuan_unstable",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "origversion": "4.0.0-1",
+    "repo": "aix_osp",
+    "srcname": "xskat",
+    "status": "newest",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat",
+      "xskat-debuginfo"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "XSkat"
+    ],
+    "maintainers": [
+      "viy@altlinux.org"
+    ],
+    "origversion": "4.0.0-alt2_30",
+    "repo": "alt_p11",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "The card game Skat",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat",
+      "xskat-debuginfo"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "XSkat"
+    ],
+    "maintainers": [
+      "viy@altlinux.org"
+    ],
+    "origversion": "4.0.0-alt2_38",
+    "repo": "altsisyphus",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "The card game Skat",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "debian_11",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "bullseye/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-8",
+    "repo": "debian_12",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "bookworm/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-9",
+    "repo": "debian_13",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "trixie/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-10",
+    "repo": "debian_14",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "forky/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-10",
+    "repo": "debian_unstable",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "sid/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "deepin_unstable",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-9",
+    "repo": "deepin_25",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "community",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "devuan_4_0",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "chimaera/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat",
+      "xskat-debuginfo",
+      "xskat-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "XSkat"
+    ],
+    "origversion": "4.0.0-32.fc39",
+    "repo": "fedora_39",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "The card game Skat",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat",
+      "xskat-debuginfo",
+      "xskat-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "XSkat"
+    ],
+    "origversion": "4.0.0-34.fc40",
+    "repo": "fedora_40",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "The card game Skat",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "XSkat"
+    ],
+    "origversion": "4.0.0-35.fc41",
+    "repo": "fedora_41",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "The card game Skat",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "XSkat"
+    ],
+    "origversion": "4.0.0-35.fc41",
+    "repo": "fedora_42",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "The card game Skat",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "XSkat"
+    ],
+    "origversion": "4.0.0-38.fc43",
+    "repo": "fedora_43",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "The card game Skat",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "XSkat"
+    ],
+    "origversion": "4.0.0-39.fc44",
+    "repo": "fedora_44",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "The card game Skat",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "XSkat"
+    ],
+    "origversion": "4.0.0-39.fc44",
+    "repo": "fedora_rawhide",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "development",
+    "summary": "The card game Skat",
+    "version": "4.0.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binname": "xskat",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@freebsd.org"
+    ],
+    "origversion": "4.0_3",
+    "repo": "freebsd",
+    "srcname": "games/xskat",
+    "status": "newest",
+    "summary": "Play the card game Skat",
+    "version": "4.0",
+    "visiblename": "games/xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "Games/Cards"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "a.proklov@rosa.ru"
+    ],
+    "origversion": "4.0-18",
+    "repo": "rosa_13",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "The card game Skat as defined by the official Skat Order",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "categories": [
+      "games-board"
+    ],
+    "licenses": [
+      "freedist"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "4.0-r2",
+    "repo": "gentoo",
+    "srcname": "games-board/xskat",
+    "status": "newest",
+    "summary": "Famous german card game",
+    "version": "4.0",
+    "visiblename": "games-board/xskat"
+  },
+  {
+    "binname": "xskat",
+    "origversion": null,
+    "repo": "hpux_11_31",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "hppa_32",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binname": "xskat",
+    "origversion": null,
+    "repo": "hpux_11_31",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "ia64_32",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-10",
+    "repo": "kali_rolling",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "categories": [
+      "games-board"
+    ],
+    "licenses": [
+      "freedist"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "4.0-r2",
+    "repo": "liguros_stable",
+    "srcname": "games-board/xskat",
+    "status": "newest",
+    "summary": "Famous german card game",
+    "version": "4.0",
+    "visiblename": "games-board/xskat"
+  },
+  {
+    "categories": [
+      "games-board"
+    ],
+    "licenses": [
+      "freedist"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": "4.0-r2",
+    "repo": "liguros_develop",
+    "srcname": "games-board/xskat",
+    "status": "newest",
+    "summary": "Famous german card game",
+    "version": "4.0",
+    "visiblename": "games-board/xskat"
+  },
+  {
+    "binname": "xskat",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "Permissive"
+    ],
+    "maintainers": [
+      "nomaintainer@macports.org"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "games/xskat",
+    "status": "newest",
+    "summary": "X11 graphical skat card game",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "Games/Cards"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": "4.0-22.mga10",
+    "repo": "mageia_10",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "The card game Skat as defined by the official Skat Order",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat",
+      "xskat-debuginfo",
+      "xskat-debugsource"
+    ],
+    "categories": [
+      "Games/Cards"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": "4.0-20.mga9",
+    "repo": "mageia_9",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "The card game Skat as defined by the official Skat Order",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "Games/Cards"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": "4.0-22.mga10",
+    "repo": "mageia_cauldron",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "The card game Skat as defined by the official Skat Order",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "licenses": [
+      "XSkat"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "Famous german card game",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "licenses": [
+      "XSkat"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "Famous german card game",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "licenses": [
+      "XSkat"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "Famous german card game",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "licenses": [
+      "XSkat"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "Famous german card game",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "licenses": [
+      "XSkat"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "Famous german card game",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "licenses": [
+      "XSkat"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "Famous german card game",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binname": "xskat",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": "4.0p3",
+    "repo": "openbsd",
+    "srcname": "games/xskat",
+    "status": "newest",
+    "summary": "skat card game",
+    "version": "4.0",
+    "visiblename": "games/xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-10build1",
+    "repo": "ubuntu_26_04",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "resolute/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat",
+      "xskat-debuginfo",
+      "xskat-debugsource"
+    ],
+    "categories": [
+      "Games/Cards"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "bero+massbuild@lindev.ch"
+    ],
+    "origversion": "4.0-14",
+    "repo": "openmandriva_6_0",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "The card game Skat as defined by the official Skat Order",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat",
+      "xskat-debuginfo",
+      "xskat-debugsource"
+    ],
+    "categories": [
+      "Games/Cards"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "bero+massbuild@lindev.ch"
+    ],
+    "origversion": "4.0-14",
+    "repo": "openmandriva_rolling",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "The card game Skat as defined by the official Skat Order",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat",
+      "xskat-debuginfo",
+      "xskat-debugsource"
+    ],
+    "categories": [
+      "Games/Cards"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "bero+massbuild@lindev.ch"
+    ],
+    "origversion": "4.0-14",
+    "repo": "openmandriva_cooker",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "The card game Skat as defined by the official Skat Order",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat",
+      "xskat-debuginfo",
+      "xskat-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/Board/Card"
+    ],
+    "licenses": [
+      "SUSE-BSD-Mark-Modifications"
+    ],
+    "origversion": "4.0-218.22",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "Skat, a card game",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "pardus_21",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-9",
+    "repo": "parrot",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "parrot-updates/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-9",
+    "repo": "parrot",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "parrot/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "categories": [
+      "Games/Cards"
+    ],
+    "origversion": "4.0-3pclos2017",
+    "repo": "pclinuxos",
+    "srcname": "xskat",
+    "status": "newest",
+    "summary": "The card game Skat as defined by the official Skat Order",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binname": "xskat",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/xskat",
+    "status": "newest",
+    "summary": "Play the card game Skat",
+    "version": "4.0",
+    "visiblename": "games/xskat"
+  },
+  {
+    "binname": "xskat",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/xskat",
+    "status": "newest",
+    "summary": "Play the card game Skat",
+    "version": "4.0",
+    "visiblename": "games/xskat"
+  },
+  {
+    "binname": "xskat",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_current",
+    "srcname": "games/xskat",
+    "status": "newest",
+    "summary": "Play the card game Skat",
+    "version": "4.0",
+    "visiblename": "games/xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "pureos_amber",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "amber/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "pureos_byzantium",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "byzantium/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-9",
+    "repo": "pureos_landing",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "landing/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-8",
+    "repo": "raspbian_oldstable",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-9",
+    "repo": "raspbian_stable",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-10",
+    "repo": "raspbian_testing",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "Games/Cards"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "4.0-16",
+    "repo": "rosa_2019_1",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "The card game Skat as defined by the official Skat Order",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "categories": [
+      "extra/game"
+    ],
+    "licenses": [
+      "OpenSource"
+    ],
+    "maintainers": [
+      "rene@exactco.de"
+    ],
+    "origversion": null,
+    "repo": "t2",
+    "srcname": "xskat",
+    "status": "incorrect",
+    "summary": "The Skat card game",
+    "version": "4.0-9",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "trisquel_10_0",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "nabia/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-8",
+    "repo": "trisquel_11_0",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "aramo/main",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-5",
+    "repo": "ubuntu_14_04",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "trusty/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "ubuntu_16_04",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "xenial/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "ubuntu_18_04",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "bionic/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-7",
+    "repo": "ubuntu_20_04",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "focal/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-8",
+    "repo": "ubuntu_22_04",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "jammy/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-8",
+    "repo": "ubuntu_24_04",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "noble/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-9",
+    "repo": "ubuntu_25_04",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "plucky/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-10",
+    "repo": "ubuntu_25_10",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "questing/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binnames": [
+      "xskat"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "florian@debian.org"
+    ],
+    "origversion": "4.0-10build1",
+    "repo": "ubuntu_26_10",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "binname": "xskat",
+    "licenses": [
+      "custom:xskat"
+    ],
+    "maintainers": [
+      "pulux@pf4sh.de"
+    ],
+    "origversion": "4.0_5",
+    "repo": "void_x86_64",
+    "srcname": "xskat",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "The card game Skat for Linux",
+    "version": "4.0",
+    "visiblename": "xskat"
+  },
+  {
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q2597592",
+    "status": "newest",
+    "summary": "1994 video game",
+    "version": "4.0",
+    "visiblename": "Q2597592"
+  }
+]

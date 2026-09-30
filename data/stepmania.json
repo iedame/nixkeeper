@@ -1,0 +1,433 @@
+[
+  {
+    "binname": "stepmania",
+    "licenses": [
+      "MIT AND CC-BY-NC-4.0"
+    ],
+    "maintainers": [
+      "snailman153624@aur",
+      "venhance@aur"
+    ],
+    "origversion": "5.1.0.b2.r627.d55acb1ba2-8",
+    "repo": "aur",
+    "srcname": "stepmania",
+    "status": "ignored",
+    "summary": "Advanced rhythm game. Designed for both home and arcade use.",
+    "version": "5.1.0.b2.r627.d55acb1ba2",
+    "visiblename": "stepmania"
+  },
+  {
+    "binname": "stepmania",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "stepmania",
+    "status": "ignored",
+    "summary": "Advanced rhythm game designed for both home and arcade use",
+    "version": "5.1.0-b2-1.d55acb1",
+    "visiblename": "stepmania"
+  },
+  {
+    "binnames": [
+      "stepmania",
+      "stepmania-data"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "5.1-0.b1.5.mga10",
+    "repo": "mageia_10",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "subrepo": "core/release",
+    "summary": "Dance and rhythm game with 3D graphics and dance pad support",
+    "version": "5.1",
+    "visiblename": "stepmania"
+  },
+  {
+    "binnames": [
+      "stepmania",
+      "stepmania-data",
+      "stepmania-debuginfo",
+      "stepmania-debugsource"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "5.1-0.b1.1.mga9",
+    "repo": "mageia_9",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "subrepo": "core/release",
+    "summary": "Dance and rhythm game with 3D graphics and dance pad support",
+    "version": "5.1",
+    "visiblename": "stepmania"
+  },
+  {
+    "binnames": [
+      "stepmania",
+      "stepmania-data"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "5.1-0.b1.6.mga11",
+    "repo": "mageia_cauldron",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "subrepo": "core/release",
+    "summary": "Dance and rhythm game with 3D graphics and dance pad support",
+    "version": "5.1",
+    "visiblename": "stepmania"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "h7x4@nani.wtf"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "summary": "Free dance and rhythm game for Windows, Mac, and Linux",
+    "version": "5.1.0-b2-unstable-2022-11-14",
+    "visiblename": "stepmania"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "h7x4@nani.wtf"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "summary": "Free dance and rhythm game for Windows, Mac, and Linux",
+    "version": "5.1.0-b2-unstable-2022-11-14",
+    "visiblename": "stepmania"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "h7x4@nani.wtf"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "summary": "Free dance and rhythm game for Windows, Mac, and Linux",
+    "version": "5.1.0-b2-unstable-2022-11-14",
+    "visiblename": "stepmania"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "h7x4@nani.wtf"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "summary": "Free dance and rhythm game for Windows, Mac, and Linux",
+    "version": "5.1.0-b2-unstable-2022-11-14",
+    "visiblename": "stepmania"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "h7x4@nani.wtf"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "summary": "Free dance and rhythm game for Windows, Mac, and Linux",
+    "version": "5.1.0-b2-unstable-2022-11-14",
+    "visiblename": "stepmania"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "h7x4@nani.wtf"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "summary": "Free dance and rhythm game for Windows, Mac, and Linux",
+    "version": "5.1.0-b2-unstable-2022-11-14",
+    "visiblename": "stepmania"
+  },
+  {
+    "binnames": [
+      "stepmania"
+    ],
+    "categories": [
+      "Amusements/Games"
+    ],
+    "licenses": [
+      "MIT AND CC-BY-NC-4.0"
+    ],
+    "origversion": "5.1.0~20221114gitd55acb1-6.fc42",
+    "repo": "rpmfusion_fedora_42",
+    "srcname": "stepmania",
+    "status": "ignored",
+    "subrepo": "nonfree/updates",
+    "summary": "Advanced cross-platform rhythm game",
+    "version": "5.1.0~20221114gitd55acb1",
+    "visiblename": "stepmania"
+  },
+  {
+    "binnames": [
+      "stepmania"
+    ],
+    "categories": [
+      "Amusements/Games"
+    ],
+    "licenses": [
+      "MIT AND CC-BY-NC-4.0"
+    ],
+    "origversion": "5.1.0~20221114gitd55acb1-6.fc43",
+    "repo": "rpmfusion_fedora_43",
+    "srcname": "stepmania",
+    "status": "ignored",
+    "subrepo": "nonfree/release",
+    "summary": "Advanced cross-platform rhythm game",
+    "version": "5.1.0~20221114gitd55acb1",
+    "visiblename": "stepmania"
+  },
+  {
+    "binnames": [
+      "stepmania"
+    ],
+    "categories": [
+      "Amusements/Games"
+    ],
+    "licenses": [
+      "MIT AND CC-BY-NC-4.0"
+    ],
+    "origversion": "5.1.0~20221114gitd55acb1-8.fc44",
+    "repo": "rpmfusion_fedora_44",
+    "srcname": "stepmania",
+    "status": "ignored",
+    "subrepo": "nonfree/release",
+    "summary": "Advanced cross-platform rhythm game",
+    "version": "5.1.0~20221114gitd55acb1",
+    "visiblename": "stepmania"
+  },
+  {
+    "binnames": [
+      "stepmania"
+    ],
+    "categories": [
+      "Amusements/Games"
+    ],
+    "licenses": [
+      "MIT AND CC-BY-NC-4.0"
+    ],
+    "origversion": "5.1.0~20221114gitd55acb1-15.fc44",
+    "repo": "rpmfusion_fedora_44",
+    "srcname": "stepmania",
+    "status": "ignored",
+    "subrepo": "nonfree/updates",
+    "summary": "Advanced cross-platform rhythm game",
+    "version": "5.1.0~20221114gitd55acb1",
+    "visiblename": "stepmania"
+  },
+  {
+    "binnames": [
+      "stepmania"
+    ],
+    "categories": [
+      "Amusements/Games"
+    ],
+    "licenses": [
+      "MIT AND CC-BY-NC-4.0"
+    ],
+    "origversion": "5.1.0~20221114gitd55acb1-15.fc46",
+    "repo": "rpmfusion_fedora_rawhide",
+    "srcname": "stepmania",
+    "status": "ignored",
+    "subrepo": "nonfree/release",
+    "summary": "Advanced cross-platform rhythm game",
+    "version": "5.1.0~20221114gitd55acb1",
+    "visiblename": "stepmania"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "svoges.sbo@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/stepmania",
+    "status": "untrusted",
+    "version": "20221114_d55acb1",
+    "visiblename": "games/stepmania"
+  },
+  {
+    "binname": "stepmania",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "newest",
+    "summary": "StepMania is an advanced cross-platform rhythm game for home and arcade use.",
+    "version": "5.0.12",
+    "visiblename": "StepMania",
+    "vulnerable": true
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "5.0.12 (2016-08-14)",
+    "repo": "libregamewiki",
+    "srcname": "StepMania",
+    "status": "newest",
+    "version": "5.0.12",
+    "visiblename": "StepMania",
+    "vulnerable": true
+  },
+  {
+    "binname": "stepmania",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "espie@openbsd.org"
+    ],
+    "origversion": "5.0.12p2v0",
+    "repo": "openbsd",
+    "srcname": "games/stepmania",
+    "status": "newest",
+    "summary": "dance music game",
+    "version": "5.0.12",
+    "visiblename": "games/stepmania",
+    "vulnerable": true
+  },
+  {
+    "binnames": [
+      "stepmania",
+      "stepmania-debuginfo",
+      "stepmania-debugsource",
+      "stepmania-data"
+    ],
+    "categories": [
+      "Amusements/Games/Action/Arcade"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": "5.1.0b2-4.287",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "stepmania",
+    "status": "untrusted",
+    "summary": "Music/rhythm game",
+    "version": "5.1.0b2",
+    "visiblename": "stepmania",
+    "vulnerable": true
+  },
+  {
+    "binnames": [
+      "stepmania",
+      "stepmania-data",
+      "stepmania-debuginfo",
+      "stepmania-debugsource"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "a.proklov@rosalinux.ru"
+    ],
+    "origversion": "5.0.12-3",
+    "repo": "rosa_2019_1",
+    "srcname": "stepmania",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "A dance and rhythm game",
+    "version": "5.0.12",
+    "visiblename": "stepmania",
+    "vulnerable": true
+  },
+  {
+    "binnames": [
+      "stepmania",
+      "stepmania-data"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "5.0.12-4",
+    "repo": "rosa_13",
+    "srcname": "stepmania",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "A dance and rhythm game",
+    "version": "5.0.12",
+    "visiblename": "stepmania",
+    "vulnerable": true
+  },
+  {
+    "binname": "stepmania",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "maldridge@voidlinux.org"
+    ],
+    "origversion": "5.0.12_4",
+    "repo": "void_x86_64",
+    "srcname": "stepmania",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Advanced rhythm game",
+    "version": "5.0.12",
+    "visiblename": "stepmania",
+    "vulnerable": true
+  },
+  {
+    "licenses": [
+      "Expat license",
+      "freeware"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q1750824",
+    "status": "newest",
+    "summary": "open source music video game engine",
+    "version": "5.0.12",
+    "visiblename": "StepMania",
+    "vulnerable": true
+  }
+]

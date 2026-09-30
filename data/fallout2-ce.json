@@ -1,0 +1,183 @@
+[
+  {
+    "binname": "fallout2-ce-bin",
+    "licenses": [
+      "custom:SUL"
+    ],
+    "maintainers": [
+      "luluco250@aur"
+    ],
+    "origversion": "continuous.404236c-1",
+    "repo": "aur",
+    "srcname": "fallout2-ce-bin",
+    "status": "outdated",
+    "summary": "Fallout 2 for modern operating systems",
+    "version": "continuous.404236c",
+    "visiblename": "fallout2-ce-bin"
+  },
+  {
+    "binname": "fallout2-ce-game",
+    "licenses": [
+      "custom:SUL"
+    ],
+    "maintainers": [
+      "luluco250@aur"
+    ],
+    "origversion": "1.3.0-5",
+    "repo": "aur",
+    "srcname": "fallout2-ce-game",
+    "status": "newest",
+    "summary": "Fallout 2 for modern operating systems",
+    "version": "1.3.0",
+    "visiblename": "fallout2-ce-game"
+  },
+  {
+    "binname": "fallout2-ce-git",
+    "licenses": [
+      "custom:SUL"
+    ],
+    "maintainers": [
+      "luluco250@aur"
+    ],
+    "origversion": "r1556.404236c-1",
+    "repo": "aur",
+    "srcname": "fallout2-ce-git",
+    "status": "rolling",
+    "summary": "Fallout 2 for modern operating systems",
+    "version": "r1556.404236c",
+    "visiblename": "fallout2-ce-git"
+  },
+  {
+    "licenses": [
+      "Sustainable Use License"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie",
+      "esthromeris@riseup.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "fallout2-ce",
+    "status": "newest",
+    "summary": "A fully working re-implementation of Fallout 2, with the same original gameplay, engine bugfixes, and some quality of life improvements",
+    "version": "1.3.0",
+    "visiblename": "fallout2-ce"
+  },
+  {
+    "licenses": [
+      "Sustainable Use License"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "fallout2-ce",
+    "status": "newest",
+    "summary": "Fully working re-implementation of Fallout 2, with the same original gameplay, engine bugfixes, and some quality of life improvements",
+    "version": "1.3.0",
+    "visiblename": "fallout2-ce"
+  },
+  {
+    "licenses": [
+      "Sustainable Use License"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "fallout2-ce",
+    "status": "newest",
+    "summary": "Fully working re-implementation of Fallout 2, with the same original gameplay, engine bugfixes, and some quality of life improvements",
+    "version": "1.3.0",
+    "visiblename": "fallout2-ce"
+  },
+  {
+    "licenses": [
+      "SUL-1.0"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "fallout2-ce",
+    "status": "newest",
+    "summary": "Fallout 2 for modern operating systems",
+    "version": "1.3.0",
+    "visiblename": "fallout2-ce"
+  },
+  {
+    "licenses": [
+      "SUL-1.0"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "fallout2-ce",
+    "status": "newest",
+    "summary": "Fallout 2 for modern operating systems",
+    "version": "1.3.0",
+    "visiblename": "fallout2-ce"
+  },
+  {
+    "licenses": [
+      "SUL-1.0"
+    ],
+    "maintainers": [
+      "github@hughobrien.ie"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "fallout2-ce",
+    "status": "newest",
+    "summary": "Fallout 2 for modern operating systems",
+    "version": "1.3.0",
+    "visiblename": "fallout2-ce"
+  },
+  {
+    "binname": "fallout2-ce",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "izder456@disroot.org"
+    ],
+    "origversion": null,
+    "repo": "openbsd",
+    "srcname": "games/fallout2-ce",
+    "status": "newest",
+    "summary": "fallout 2 for modern operating systems",
+    "version": "1.3.0",
+    "visiblename": "games/fallout2-ce"
+  },
+  {
+    "binname": "game/roleplaying/fallout2-ce.lha",
+    "categories": [
+      "game/roleplaying"
+    ],
+    "origversion": null,
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "Fallout2 Community Port for AmigaOS4",
+    "version": "1.2",
+    "visiblename": "fallout2-ce.lha"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "lin.ruohshoei+sbo@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/fallout2-ce",
+    "status": "newest",
+    "version": "1.3.0",
+    "visiblename": "games/fallout2-ce"
+  }
+]

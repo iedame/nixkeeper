@@ -1,0 +1,264 @@
+[
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "vvvvvv",
+    "status": "outdated",
+    "summary": "A retro-styled platform game",
+    "version": "2.4.2",
+    "visiblename": "vvvvvv"
+  },
+  {
+    "binname": "vvvvvv",
+    "licenses": [
+      "custom"
+    ],
+    "maintainers": [
+      "ejona86@aur"
+    ],
+    "origversion": "2.4.3-1",
+    "repo": "aur",
+    "srcname": "vvvvvv",
+    "status": "outdated",
+    "summary": "A retro-styled 2D platformer",
+    "version": "2.4.3",
+    "visiblename": "vvvvvv"
+  },
+  {
+    "binname": "vvvvvv-git",
+    "licenses": [
+      "custom"
+    ],
+    "maintainers": [
+      "xesxen@aur"
+    ],
+    "origversion": "20230402.c88f249f-1",
+    "repo": "aur",
+    "srcname": "vvvvvv-git",
+    "status": "rolling",
+    "summary": "A retro-styled 2D platformer",
+    "version": "20230402.c88f249f",
+    "visiblename": "vvvvvv-git"
+  },
+  {
+    "binname": "VVVVVV",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "fuz@freebsd.org"
+    ],
+    "origversion": "2.4.4_1",
+    "repo": "freebsd",
+    "srcname": "games/vvvvvv",
+    "status": "newest",
+    "summary": "2D Platformer game",
+    "version": "2.4.4",
+    "visiblename": "games/vvvvvv"
+  },
+  {
+    "categories": [
+      "games-arcade"
+    ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "games-arcade/vvvvvv",
+    "status": "outdated",
+    "version": "2.3.6",
+    "visiblename": "games-arcade/vvvvvv"
+  },
+  {
+    "binname": "VVVVVV",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "Restrictive/Distributable"
+    ],
+    "maintainers": [
+      "i0ntempest@macports",
+      "i0ntempest@github"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "games/VVVVVV",
+    "status": "newest",
+    "summary": "The indie platformer game where you reversed gravity instead of jumping",
+    "version": "2.4.4",
+    "visiblename": "VVVVVV"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "tinozzo123@tutanota.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "vvvvvv",
+    "status": "outdated",
+    "summary": "A retro-styled platform game",
+    "version": "2.4.1",
+    "visiblename": "vvvvvv"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "vvvvvv",
+    "status": "outdated",
+    "summary": "A retro-styled platform game",
+    "version": "2.4.1",
+    "visiblename": "vvvvvv"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "vvvvvv",
+    "status": "outdated",
+    "summary": "A retro-styled platform game",
+    "version": "2.4.2",
+    "visiblename": "vvvvvv"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "vvvvvv",
+    "status": "outdated",
+    "summary": "A retro-styled platform game",
+    "version": "2.4.3",
+    "visiblename": "vvvvvv"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "vvvvvv",
+    "status": "outdated",
+    "summary": "A retro-styled platform game",
+    "version": "2.4.3",
+    "visiblename": "vvvvvv"
+  },
+  {
+    "binname": "vvvvvv",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "thfr@openbsd.org"
+    ],
+    "origversion": null,
+    "repo": "openbsd",
+    "srcname": "games/vvvvvv",
+    "status": "outdated",
+    "summary": "gravity-reversing platforming game",
+    "version": "2.4.3",
+    "visiblename": "games/vvvvvv"
+  },
+  {
+    "binname": "vvvvvv",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.0.0.20200110nb10",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/vvvvvv",
+    "status": "outdated",
+    "summary": "2D puzzle platform video game with gravity reversal",
+    "version": "0.0.0.20200110",
+    "visiblename": "games/vvvvvv"
+  },
+  {
+    "binname": "vvvvvv",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.0.0.20200110nb12",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/vvvvvv",
+    "status": "outdated",
+    "summary": "2D puzzle platform video game with gravity reversal",
+    "version": "0.0.0.20200110",
+    "visiblename": "games/vvvvvv"
+  },
+  {
+    "binname": "vvvvvv",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.0.0.20200110nb13",
+    "repo": "pkgsrc_current",
+    "srcname": "games/vvvvvv",
+    "status": "outdated",
+    "summary": "2D puzzle platform video game with gravity reversal",
+    "version": "0.0.0.20200110",
+    "visiblename": "games/vvvvvv"
+  },
+  {
+    "categories": [
+      "Games"
+    ],
+    "origversion": null,
+    "repo": "serenityos",
+    "srcname": "VVVVVV",
+    "status": "newest",
+    "summary": "VVVVVV is a 2010 puzzle-platform game created by Terry Cavanagh. In the game, the player controls Captain Viridian, who must rescue their spacecrew after a teleporter malfunction caused them to be separated in Dimension VVVVVV.",
+    "version": "2.4.4",
+    "visiblename": "VVVVVV"
+  },
+  {
+    "binname": "VVVVVV",
+    "licenses": [
+      "custom:VVVVVV Source Code License v1.0"
+    ],
+    "maintainers": [
+      "luca@lucamatei.com"
+    ],
+    "origversion": "2.4.3_1",
+    "repo": "void_x86_64",
+    "srcname": "VVVVVV",
+    "status": "outdated",
+    "subrepo": "nonfree/x86_64",
+    "summary": "Platformer exploring what if you reversed gravity instead of jumping? - Make and Play edition",
+    "version": "2.4.3",
+    "visiblename": "VVVVVV"
+  }
+]

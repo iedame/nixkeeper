@@ -1,0 +1,3459 @@
+[
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.11.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.11.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "12",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "12.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "12.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "13",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "13.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "15.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "15.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "newest",
+    "version": "15.3",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "14.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "15",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.10.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.10.3",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "13.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "awilfox@adelielinux.org"
+    ],
+    "origversion": "14.1-r0",
+    "repo": "adelie_current",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Simulation game based on Transport Tycoon Deluxe",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd-dbg",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "awilfox@adelielinux.org"
+    ],
+    "origversion": "14.1-r0",
+    "repo": "adelie_current",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Simulation game based on Transport Tycoon Deluxe (debug symbols)",
+    "version": "14.1",
+    "visiblename": "openttd-dbg"
+  },
+  {
+    "binname": "openttd-doc",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "awilfox@adelielinux.org"
+    ],
+    "origversion": "14.1-r0",
+    "repo": "adelie_current",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "user",
+    "summary": "Simulation game based on Transport Tycoon Deluxe (documentation)",
+    "version": "14.1",
+    "visiblename": "openttd-doc"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "14.1-r2",
+    "repo": "alpine_3_22",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "14.1-r2",
+    "repo": "alpine_3_22",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator (documentation)",
+    "version": "14.1",
+    "visiblename": "openttd-doc"
+  },
+  {
+    "binname": "openttd-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "14.1-r2",
+    "repo": "alpine_3_22",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator (localizations)",
+    "version": "14.1",
+    "visiblename": "openttd-lang"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "14.1-r2",
+    "repo": "alpine_3_23",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "14.1-r2",
+    "repo": "alpine_3_23",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator (documentation)",
+    "version": "14.1",
+    "visiblename": "openttd-doc"
+  },
+  {
+    "binname": "openttd-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "14.1-r2",
+    "repo": "alpine_3_23",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator (localizations)",
+    "version": "14.1",
+    "visiblename": "openttd-lang"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "15.3-r0",
+    "repo": "alpine_3_24",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "15.3-r0",
+    "repo": "alpine_3_24",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator (documentation)",
+    "version": "15.3",
+    "visiblename": "openttd-doc"
+  },
+  {
+    "binname": "openttd-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "15.3-r0",
+    "repo": "alpine_3_24",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator (localizations)",
+    "version": "15.3",
+    "visiblename": "openttd-lang"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "13.2.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "15.3-r1",
+    "repo": "alpine_edge",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "15.3-r1",
+    "repo": "alpine_edge",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator (documentation)",
+    "version": "15.3",
+    "visiblename": "openttd-doc"
+  },
+  {
+    "binname": "openttd-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "15.3-r1",
+    "repo": "alpine_edge",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator (localizations)",
+    "version": "15.3",
+    "visiblename": "openttd-lang"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-debuginfo"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "rider@altlinux.org"
+    ],
+    "origversion": "15.3-alt1",
+    "repo": "alt_p11",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-debuginfo"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "rider@altlinux.org"
+    ],
+    "origversion": "15.3-alt1",
+    "repo": "altsisyphus",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "fallback-mnt-aosc@repology"
+    ],
+    "origversion": null,
+    "repo": "aosc",
+    "srcname": "app-games/openttd",
+    "status": "outdated",
+    "summary": "Open source Transport Tycoon Deluxe engine",
+    "version": "15.3+opengfx7.1+opensfx1.0.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-only",
+      "BSD-3-Clause",
+      "LGPL-2.1-or-later",
+      "MIT",
+      "Zlib"
+    ],
+    "origversion": "15.3-1",
+    "repo": "arch",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Engine for running Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd-btpro",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "heycitizen@aur"
+    ],
+    "origversion": "14.1-1",
+    "repo": "aur",
+    "srcname": "openttd-btpro",
+    "status": "outdated",
+    "summary": "OpenTTD Fork of citymania client with changes for n-ice and btpro community.",
+    "version": "14.1",
+    "visiblename": "openttd-btpro"
+  },
+  {
+    "binname": "openttd-git",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "mcmodder@aur"
+    ],
+    "origversion": "26406.c482f05616-1",
+    "repo": "aur",
+    "srcname": "openttd-git",
+    "status": "rolling",
+    "summary": "An engine for running Transport Tycoon Deluxe (latest GIT build)",
+    "version": "26406.c482f05616",
+    "visiblename": "openttd-git"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "15.3-r0",
+    "repo": "chimera",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "user",
+    "summary": "Simulation game based upon Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "15.3-r0",
+    "repo": "chimera",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "user",
+    "summary": "Simulation game based upon Transport Tycoon Deluxe (documentation)",
+    "version": "15.3",
+    "visiblename": "openttd-doc"
+  },
+  {
+    "binname": "openttd-locale",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "15.3-r0",
+    "repo": "chimera",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "user",
+    "summary": "Simulation game based upon Transport Tycoon Deluxe (locale data)",
+    "version": "15.3",
+    "visiblename": "openttd-locale"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "13.3",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "openttd-man",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "15.3-r0",
+    "repo": "chimera",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "user",
+    "summary": "Simulation game based upon Transport Tycoon Deluxe (manual pages)",
+    "version": "15.3",
+    "visiblename": "openttd-man"
+  },
+  {
+    "binname": "openttd",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "summary": "OpenTTD is a transport simulation game based upon the popular game Transport Tycoon Deluxe, written by Chris Sawyer",
+    "version": "14.1.0",
+    "visiblename": "OpenTTD"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.10.3-1",
+    "repo": "debian_11",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "bullseye/main",
+    "version": "1.10.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "13.0-2",
+    "repo": "debian_12",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "13.0",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "14.1-1",
+    "repo": "debian_13",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "15.1-1",
+    "repo": "debian_14",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "forky/main",
+    "version": "15.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "15.1-1",
+    "repo": "debian_unstable",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "sid/main",
+    "version": "15.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.8.0-2",
+    "repo": "deepin_unstable",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.8.0",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.10.3-1",
+    "repo": "devuan_4_0",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "1.10.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "15.1-1",
+    "repo": "devuan_unstable",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "unstable/main",
+    "version": "15.1",
+    "visiblename": "openttd"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "maintainers": [
+      "fallback-mnt-exherbo@repology"
+    ],
+    "origversion": null,
+    "repo": "exherbo",
+    "srcname": "games-simulation/openttd",
+    "status": "newest",
+    "subrepo": "games",
+    "summary": "An open source clone of Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs",
+      "openttd-debuginfo",
+      "openttd-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "14.1-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Transport system simulation game",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs",
+      "openttd-debuginfo",
+      "openttd-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "origversion": "13.4-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Transport system simulation game",
+    "version": "13.4",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs",
+      "openttd-debuginfo",
+      "openttd-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND Zlib AND MIT"
+    ],
+    "origversion": "13.4-6.fc40",
+    "repo": "fedora_40",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Transport system simulation game",
+    "version": "13.4",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs",
+      "openttd-debuginfo",
+      "openttd-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "14.1-1.fc40",
+    "repo": "fedora_40",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Transport system simulation game",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "14.1-2.fc41",
+    "repo": "fedora_41",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Transport system simulation game",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "15.0-0.1.beta1.fc42",
+    "repo": "fedora_42",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Transport system simulation game",
+    "version": "15.0-beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "15.3-1.fc42",
+    "repo": "fedora_42",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "updates",
+    "summary": "Transport system simulation game",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "15.3-1.fc43",
+    "repo": "fedora_43",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "updates",
+    "summary": "Transport system simulation game",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "15.0-0.4.beta2.fc43",
+    "repo": "fedora_43",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Transport system simulation game",
+    "version": "15.0-beta2",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "15.2-1.fc44",
+    "repo": "fedora_44",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Transport system simulation game",
+    "version": "15.2",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "15.3-1.fc44",
+    "repo": "fedora_44",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "updates",
+    "summary": "Transport system simulation game",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-docs"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-only AND BSD-3-Clause AND LGPL-2.1-or-later AND MIT AND Zlib"
+    ],
+    "origversion": "15.3-3.fc45",
+    "repo": "fedora_rawhide",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "development",
+    "summary": "Transport system simulation game",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "danfe@freebsd.org"
+    ],
+    "origversion": null,
+    "repo": "freebsd",
+    "srcname": "games/openttd",
+    "status": "newest",
+    "summary": "Open-source clone of Microprose Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "games/openttd"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-simulation/openttd",
+    "status": "legacy",
+    "summary": "A clone of Transport Tycoon Deluxe",
+    "version": "15.2",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-simulation/openttd",
+    "status": "rolling",
+    "summary": "A clone of Transport Tycoon Deluxe",
+    "version": "9999",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-simulation/openttd",
+    "status": "newest",
+    "summary": "A clone of Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "binname": "openttd",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "Transportation economics simulator game",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "games-simulation/openttd",
+    "status": "outdated",
+    "version": "14.1",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "Open-source transport simulation game",
+    "version": "15.3",
+    "visiblename": "OpenTTD"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "15.1-1",
+    "repo": "kali_rolling",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "15.1",
+    "visiblename": "openttd"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "15.1 (2026-01-24)",
+    "repo": "libregamewiki",
+    "srcname": "OpenTTD",
+    "status": "outdated",
+    "version": "15.1",
+    "visiblename": "OpenTTD"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-simulation/openttd",
+    "status": "outdated",
+    "summary": "A clone of Transport Tycoon Deluxe",
+    "version": "14.1",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-simulation/openttd",
+    "status": "rolling",
+    "summary": "A clone of Transport Tycoon Deluxe",
+    "version": "9999",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-simulation/openttd",
+    "status": "rolling",
+    "summary": "A clone of Transport Tycoon Deluxe",
+    "version": "9999",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-simulation/openttd",
+    "status": "legacy",
+    "summary": "A clone of Transport Tycoon Deluxe",
+    "version": "15.2",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "categories": [
+      "games-simulation"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-simulation/openttd",
+    "status": "newest",
+    "summary": "A clone of Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "games-simulation/openttd"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "13.4",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.11",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "openttd",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "GPL-2"
+    ],
+    "maintainers": [
+      "cal@macports",
+      "neverpanic@github"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "games/openttd",
+    "status": "outdated",
+    "summary": "OpenTTD is an open source simulation game based upon Transport Tycoon Deluxe",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": "15.2-2.mga10",
+    "repo": "mageia_10",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.2",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-debuginfo",
+      "openttd-debugsource"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": "13.3-1.1.mga9",
+    "repo": "mageia_9",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "core/updates",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "13.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-debuginfo",
+      "openttd-debugsource"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": "13.3-1.mga9",
+    "repo": "mageia_9",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "13.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": "15.3-2.mga11",
+    "repo": "mageia_cauldron",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-only",
+      "BSD-3-Clause",
+      "LGPL-2.1-or-later",
+      "MIT",
+      "Zlib"
+    ],
+    "origversion": "15.3-1",
+    "repo": "manjaro_stable",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Engine for running Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-only",
+      "BSD-3-Clause",
+      "LGPL-2.1-or-later",
+      "MIT",
+      "Zlib"
+    ],
+    "origversion": "15.3-1",
+    "repo": "manjaro_testing",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Engine for running Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-only",
+      "BSD-3-Clause",
+      "LGPL-2.1-or-later",
+      "MIT",
+      "Zlib"
+    ],
+    "origversion": "15.3-1",
+    "repo": "manjaro_unstable",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Engine for running Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "stevep@mxlinux.org",
+      "jordi@debian.org"
+    ],
+    "origversion": "12.2-1~mx21+1",
+    "repo": "mx_21_testing",
+    "srcname": "openttd",
+    "status": "outdated",
+    "version": "12.2",
+    "visiblename": "openttd"
+  },
+  {
+    "licenses": [
+      "GPL-2.0"
+    ],
+    "maintainers": [
+      "jack@mudshark.org",
+      "fpletz@fnordicwalking.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "openttd",
+    "status": "outdated",
+    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "jack@mudshark.org",
+      "fpletz@fnordicwalking.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "openttd",
+    "status": "outdated",
+    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "jack@mudshark.org",
+      "fpletz@fnordicwalking.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "openttd",
+    "status": "outdated",
+    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "jack@mudshark.org",
+      "fpletz@fnordicwalking.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "openttd",
+    "status": "outdated",
+    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "jack@mudshark.org",
+      "fpletz@fnordicwalking.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "14",
+    "visiblename": "Open TTD"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "jack@mudshark.org",
+      "fpletz@fnordicwalking.de"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.5.3",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.6.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.7.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.7.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.8",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.9",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.9.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.9.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.9.3",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.10",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.10.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.6.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.7.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.7.2",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.8",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.9",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.9.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.9.2",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.9.3",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.10",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.10.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.10.2",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.10.3",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.11",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.11.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.11.2",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "12",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "12.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "12.2",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "13",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "13.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "13.2",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "13.2.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "13.3",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "13.4",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "14",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "14.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "15",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "15.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "15.2",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "newest",
+    "version": "15.3",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "openttd",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "openbsd@out-of-creativity.de"
+    ],
+    "origversion": null,
+    "repo": "openbsd",
+    "srcname": "games/openttd",
+    "status": "newest",
+    "summary": "open source clone of the game Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "games/openttd"
+  },
+  {
+    "binname": "games/openttd",
+    "categories": [
+      "Applications/Games"
+    ],
+    "origversion": null,
+    "repo": "openindiana",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "hipster",
+    "summary": "OpenTTD is an open source simulation game based upon Transport Tycoon Deluxe",
+    "version": "1.9.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "games/openttd/openttd-core",
+    "categories": [
+      "Applications/Games"
+    ],
+    "origversion": null,
+    "repo": "openindiana",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "hipster",
+    "summary": "OpenTTD is an open source simulation game based upon Transport Tycoon Deluxe: core game",
+    "version": "1.9.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Graphical Desktop/Applications/Games"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "silvan@openmamba.org"
+    ],
+    "origversion": "15.3-1mamba",
+    "repo": "openmamba",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "base",
+    "summary": "An Open Source clone of Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "15.0~beta1-0",
+    "repo": "openmandriva_6_0",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "15.0~beta1-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "15.0~beta1-2",
+    "repo": "openmandriva_6_0",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "15.0~beta1-0",
+    "repo": "openmandriva_rolling",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "15.0~beta1-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "15.0~beta1-2",
+    "repo": "openmandriva_rolling",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "15.0~beta2-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta2",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "15.0~beta3-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "15.3-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "15.0~beta1-0",
+    "repo": "openmandriva_cooker",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "15.0~beta1-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "15.0~beta1-2",
+    "repo": "openmandriva_cooker",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "15.0~beta2-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta2",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "15.0~beta3-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "openttd",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0~beta3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "15.3-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "categories": [
+      "Amusements/Games/Strategy/Other"
+    ],
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "origversion": "13.0-bp155.1.5",
+    "repo": "opensuse_leap_15_5",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "A clone of Chris Sawyer's Transport Tycoon Deluxe",
+    "version": "13.0",
+    "visiblename": "openttd"
+  },
+  {
+    "categories": [
+      "Amusements/Games/Strategy/Other"
+    ],
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "origversion": "13.4-bp156.2.2",
+    "repo": "opensuse_leap_15_6",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "A clone of Chris Sawyer's Transport Tycoon Deluxe",
+    "version": "13.4",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-debuginfo",
+      "openttd-debugsource",
+      "openttd-dedicated",
+      "openttd-data"
+    ],
+    "categories": [
+      "Amusements/Games/Strategy/Other"
+    ],
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "origversion": "15.3-1.4",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "src-oss",
+    "summary": "A clone of Chris Sawyer's Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-debuginfo",
+      "openttd-debugsource",
+      "openttd-dedicated",
+      "openttd-data"
+    ],
+    "categories": [
+      "Amusements/Games/Strategy/Other"
+    ],
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "origversion": "15.3-164.36",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "A clone of Chris Sawyer's Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL"
+    ],
+    "origversion": "13.4-2.parabola1",
+    "repo": "parabola",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "libre",
+    "summary": "Engine for running Transport Tycoon Deluxe",
+    "version": "13.4",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.10.3-1",
+    "repo": "pardus_21",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.10.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "14.1-1",
+    "repo": "parrot",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "14.1-1",
+    "repo": "parrot",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "categories": [
+      "Games/Strategy"
+    ],
+    "origversion": "1.10.2-1pclos2020",
+    "repo": "pclinuxos",
+    "srcname": "openttd",
+    "status": "outdated",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "1.10.2",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "15.2nb1",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/openttd",
+    "status": "outdated",
+    "summary": "Open source clone of Transport Tycoon Deluxe",
+    "version": "15.2",
+    "visiblename": "games/openttd"
+  },
+  {
+    "binname": "openttd",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "15.2nb3",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/openttd",
+    "status": "outdated",
+    "summary": "Open source clone of Transport Tycoon Deluxe",
+    "version": "15.2",
+    "visiblename": "games/openttd"
+  },
+  {
+    "binname": "openttd",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "15.2nb4",
+    "repo": "pkgsrc_current",
+    "srcname": "games/openttd",
+    "status": "outdated",
+    "summary": "Open source clone of Transport Tycoon Deluxe",
+    "version": "15.2",
+    "visiblename": "games/openttd"
+  },
+  {
+    "origversion": "15.3-1",
+    "repo": "pld",
+    "srcname": "openttd",
+    "status": "newest",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.8.0-2",
+    "repo": "pureos_amber",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "amber/main",
+    "version": "1.8.0",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.10.3-1",
+    "repo": "pureos_byzantium",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "1.10.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "14.1-1",
+    "repo": "pureos_landing",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "13.0-2",
+    "repo": "raspbian_oldstable",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "13.0",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "14.1-1",
+    "repo": "raspbian_stable",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "15.1-1",
+    "repo": "raspbian_testing",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "15.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL v2"
+    ],
+    "origversion": null,
+    "repo": "reactos",
+    "srcname": "openttd",
+    "status": "outdated",
+    "summary": "Open Source clone of the \"Transport Tycoon Deluxe\" game engine. You may need a copy of Transport Tycoon.",
+    "version": "1.10.3",
+    "visiblename": "OpenTTD"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-debuginfo",
+      "openttd-debugsource"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "a.proklov@rosalinux.ru"
+    ],
+    "origversion": "12.2-1",
+    "repo": "rosa_2019_1",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "12.2",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-debuginfo",
+      "openttd-debugsource"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "survolog@yandex.ru"
+    ],
+    "origversion": "15.0-3",
+    "repo": "rosa_13",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
+    "version": "15.0",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "games",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "categories": [
+      "Games"
+    ],
+    "origversion": null,
+    "repo": "serenityos",
+    "srcname": "openttd",
+    "status": "outdated",
+    "summary": "Simulation game based upon Transport Tycoon Deluxe",
+    "version": "13.4",
+    "visiblename": "openttd"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "heiko.rosemann@web.de"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/openttd",
+    "status": "outdated",
+    "version": "14.1",
+    "visiblename": "games/openttd"
+  },
+  {
+    "binname": "openttd",
+    "categories": [
+      "games.strategy"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "david@davidjharder.ca"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "OpenTTD is an open source simulation game based upon Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "david@davidjharder.ca"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "Debug symbols for openttd",
+    "version": "15.3",
+    "visiblename": "openttd-dbginfo"
+  },
+  {
+    "categories": [
+      "extra/game"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "rene@exactco.de"
+    ],
+    "origversion": null,
+    "repo": "t2",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "An open source simulation game",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "maintainers": [
+      "termux@github"
+    ],
+    "origversion": null,
+    "repo": "termux",
+    "srcname": "openttd",
+    "status": "newest",
+    "summary": "An engine for running Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.9.3-1build2",
+    "repo": "trisquel_10_0",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "nabia/main",
+    "version": "1.9.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "12.1-2build1",
+    "repo": "trisquel_11_0",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "aramo/main",
+    "version": "12.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-dbg",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.3.3-1build1",
+    "repo": "ubuntu_14_04",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "trusty/universe",
+    "version": "1.3.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-dbg",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.5.3-1",
+    "repo": "ubuntu_16_04",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "xenial/universe",
+    "version": "1.5.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.7.1-1build1",
+    "repo": "ubuntu_18_04",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "bionic/universe",
+    "version": "1.7.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "1.9.3-1build2",
+    "repo": "ubuntu_20_04",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "focal/universe",
+    "version": "1.9.3",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "12.1-2build1",
+    "repo": "ubuntu_22_04",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "12.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "jordi@debian.org"
+    ],
+    "origversion": "13.4-1build3",
+    "repo": "ubuntu_24_04",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "noble/universe",
+    "version": "13.4",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "14.1-1build1",
+    "repo": "ubuntu_25_04",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "plucky/universe",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "14.1-1build1",
+    "repo": "ubuntu_25_10",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "questing/universe",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "15.1-1",
+    "repo": "ubuntu_26_04",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "resolute/universe",
+    "version": "15.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "15.1-1",
+    "repo": "ubuntu_26_10",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "stonking/universe",
+    "version": "15.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binname": "openttd",
+    "licenses": [
+      "GPL-2.0-only",
+      "Zlib"
+    ],
+    "maintainers": [
+      "emru@emru.xyz"
+    ],
+    "origversion": "15.3_1",
+    "repo": "void_x86_64",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Open Source version of Transport Tycoon Deluxe",
+    "version": "15.3",
+    "visiblename": "openttd"
+  },
+  {
+    "licenses": [
+      "GNU General Public License, version 2.0"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q725120",
+    "status": "newest",
+    "summary": "open-source urban planning and simulation game",
+    "version": "15.3",
+    "visiblename": "Q725120"
+  },
+  {
+    "licenses": [
+      "GNU Public Licence, Version 2.0"
+    ],
+    "origversion": null,
+    "repo": "gobolinux",
+    "srcname": "OpenTTD",
+    "status": "outdated",
+    "summary": "An Open Source clone of Transport Tycoon Deluxe",
+    "version": "1.2.0",
+    "visiblename": "OpenTTD",
+    "vulnerable": true
+  },
+  {
+    "binname": "game/strategy/openttd.lha",
+    "categories": [
+      "game/strategy"
+    ],
+    "origversion": null,
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "OpenTTD for AmigaOS4",
+    "version": "0.7.2",
+    "visiblename": "openttd.lha",
+    "vulnerable": true
+  }
+]
