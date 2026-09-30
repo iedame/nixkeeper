@@ -288,16 +288,6 @@
     "visiblename": "games/stepmania"
   },
   {
-    "binname": "stepmania",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "newest",
-    "summary": "StepMania is an advanced cross-platform rhythm game for home and arcade use.",
-    "version": "5.0.12",
-    "visiblename": "StepMania",
-    "vulnerable": true
-  },
-  {
     "categories": [
       "games"
     ],
@@ -305,6 +295,16 @@
     "repo": "libregamewiki",
     "srcname": "StepMania",
     "status": "newest",
+    "version": "5.0.12",
+    "visiblename": "StepMania",
+    "vulnerable": true
+  },
+  {
+    "binname": "stepmania",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "newest",
+    "summary": "StepMania is an advanced cross-platform rhythm game for home and arcade use.",
     "version": "5.0.12",
     "visiblename": "StepMania",
     "vulnerable": true

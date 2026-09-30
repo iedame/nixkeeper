@@ -1,5 +1,646 @@
 [
   {
+    "categories": [
+      "games"
+    ],
+    "origversion": "1.38 (2026-01-01)",
+    "repo": "libregamewiki",
+    "srcname": "The_Legend_of_Edgar",
+    "status": "newest",
+    "version": "1.38",
+    "visiblename": "The Legend of Edgar"
+  },
+  {
+    "binname": "edgar",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_19",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "edgar-data",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_19",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar-data"
+  },
+  {
+    "binname": "edgar-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_19",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world (documentation)",
+    "version": "1.36",
+    "visiblename": "edgar-doc"
+  },
+  {
+    "binname": "edgar-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_19",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package edgar",
+    "version": "1.36",
+    "visiblename": "edgar-lang"
+  },
+  {
+    "binname": "edgar",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_20",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "edgar-data",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_20",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar-data"
+  },
+  {
+    "binname": "edgar-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_20",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world (documentation)",
+    "version": "1.36",
+    "visiblename": "edgar-doc"
+  },
+  {
+    "binname": "edgar-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_20",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package edgar",
+    "version": "1.36",
+    "visiblename": "edgar-lang"
+  },
+  {
+    "binname": "edgar",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_21",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "edgar-data",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_21",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar-data"
+  },
+  {
+    "binname": "edgar-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_21",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world (documentation)",
+    "version": "1.36",
+    "visiblename": "edgar-doc"
+  },
+  {
+    "binname": "edgar-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_21",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package edgar",
+    "version": "1.36",
+    "visiblename": "edgar-lang"
+  },
+  {
+    "binname": "edgar",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_22",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "edgar-data",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_22",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar-data"
+  },
+  {
+    "categories": [
+      "Amusements/Games/Action/Arcade"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.36-bp155.1.5",
+    "repo": "opensuse_leap_15_5",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "edgar-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_22",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world (documentation)",
+    "version": "1.36",
+    "visiblename": "edgar-doc"
+  },
+  {
+    "binname": "edgar-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_22",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package edgar",
+    "version": "1.36",
+    "visiblename": "edgar-lang"
+  },
+  {
+    "binname": "edgar",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_23",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "edgar-data",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_23",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar-data"
+  },
+  {
+    "binname": "edgar-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_23",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world (documentation)",
+    "version": "1.36",
+    "visiblename": "edgar-doc"
+  },
+  {
+    "binname": "edgar-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_23",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package edgar",
+    "version": "1.36",
+    "visiblename": "edgar-lang"
+  },
+  {
+    "binname": "edgar",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_24",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "edgar-data",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_24",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar-data"
+  },
+  {
+    "binname": "edgar-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_24",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world (documentation)",
+    "version": "1.36",
+    "visiblename": "edgar-doc"
+  },
+  {
+    "binname": "edgar-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.36-r0",
+    "repo": "alpine_3_24",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package edgar",
+    "version": "1.36",
+    "visiblename": "edgar-lang"
+  },
+  {
+    "categories": [
+      "Amusements/Games/Action/Arcade"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.36-bp156.2.10",
+    "repo": "opensuse_leap_15_6",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.36",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "edgar",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.38-r0",
+    "repo": "alpine_edge",
+    "srcname": "edgar",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.38",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "edgar-data",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.38-r0",
+    "repo": "alpine_edge",
+    "srcname": "edgar",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world",
+    "version": "1.38",
+    "visiblename": "edgar-data"
+  },
+  {
+    "binname": "edgar-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.38-r0",
+    "repo": "alpine_edge",
+    "srcname": "edgar",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "2D platform game with a persistent world (documentation)",
+    "version": "1.38",
+    "visiblename": "edgar-doc"
+  },
+  {
+    "binname": "edgar-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "aaloytorrens@gmail.com"
+    ],
+    "origversion": "1.38-r0",
+    "repo": "alpine_edge",
+    "srcname": "edgar",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Languages for package edgar",
+    "version": "1.38",
+    "visiblename": "edgar-lang"
+  },
+  {
+    "binnames": [
+      "edgar",
+      "edgar-data",
+      "edgar-debuginfo"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "george@altlinux.org"
+    ],
+    "origversion": "1.35-alt1",
+    "repo": "alt_p11",
+    "srcname": "edgar",
+    "status": "outdated",
+    "summary": "2D Platform Game",
+    "version": "1.35",
+    "visiblename": "edgar"
+  },
+  {
+    "binnames": [
+      "edgar",
+      "edgar-data"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "shad@altlinux.org"
+    ],
+    "origversion": "1.38-alt1",
+    "repo": "altsisyphus",
+    "srcname": "edgar",
+    "status": "newest",
+    "summary": "2D Platform Game",
+    "version": "1.38",
+    "visiblename": "edgar"
+  },
+  {
+    "binname": "legendofedgar",
+    "licenses": [
+      "GPL-1.0-or-later"
+    ],
+    "maintainers": [
+      "andy5995@aur"
+    ],
+    "origversion": "1.38-1",
+    "repo": "aur",
+    "srcname": "legendofedgar",
+    "status": "newest",
+    "summary": "2D platformer: Venture across the world, battle fearsome creatures and solve puzzles to rescue your father.",
+    "version": "1.38",
+    "visiblename": "legendofedgar"
+  },
+  {
+    "binname": "edgar-git",
+    "licenses": [
+      "GPL3",
+      "LGPL3"
+    ],
+    "maintainers": [
+      "fallback-mnt-aur@repology"
+    ],
+    "origversion": "r72.250957a-1",
+    "repo": "aur",
+    "srcname": "edgar-git",
+    "status": "rolling",
+    "summary": "Load Python gadgets in Enlightenment",
+    "version": "r72.250957a",
+    "visiblename": "edgar-git"
+  },
+  {
+    "binnames": [
+      "edgar",
+      "edgar-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "guus@debian.org",
+      "jello@debian.org",
+      "matt@hazelmollusk.org"
+    ],
+    "origversion": "1.37-1",
+    "repo": "debian_13",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "1.37",
+    "visiblename": "edgar"
+  },
+  {
+    "binnames": [
+      "edgar",
+      "edgar-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "guus@debian.org",
+      "jello@debian.org",
+      "matt@hazelmollusk.org"
+    ],
+    "origversion": "1.38-1",
+    "repo": "debian_14",
+    "srcname": "edgar",
+    "status": "newest",
+    "subrepo": "forky/main",
+    "version": "1.38",
+    "visiblename": "edgar"
+  },
+  {
     "binnames": [
       "edgar",
       "edgar-data"
@@ -63,25 +704,6 @@
     "status": "newest",
     "subrepo": "unstable/main",
     "version": "1.38",
-    "visiblename": "edgar"
-  },
-  {
-    "binnames": [
-      "edgar",
-      "edgar-data"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "ubuntu-devel-discuss@lists.ubuntu.com"
-    ],
-    "origversion": "1.23-1build1",
-    "repo": "ubuntu_20_04",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "focal/universe",
-    "version": "1.23",
     "visiblename": "edgar"
   },
   {
@@ -321,17 +943,6 @@
     "visiblename": "edgar"
   },
   {
-    "categories": [
-      "games"
-    ],
-    "origversion": "1.38 (2026-01-01)",
-    "repo": "libregamewiki",
-    "srcname": "The_Legend_of_Edgar",
-    "status": "newest",
-    "version": "1.38",
-    "visiblename": "The Legend of Edgar"
-  },
-  {
     "binnames": [
       "edgar",
       "edgar-data"
@@ -454,25 +1065,6 @@
     "visiblename": "the-legend-of-edgar"
   },
   {
-    "binnames": [
-      "edgar",
-      "edgar-data"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "ubuntu-devel-discuss@lists.ubuntu.com"
-    ],
-    "origversion": "1.23-1build1",
-    "repo": "ubuntu_22_04",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "jammy/universe",
-    "version": "1.23",
-    "visiblename": "edgar"
-  },
-  {
     "licenses": [
       "GPL-1.0-or-later"
     ],
@@ -571,38 +1163,6 @@
     "subrepo": "unsupported/release",
     "summary": "2D Platform Game",
     "version": "1.38",
-    "visiblename": "edgar"
-  },
-  {
-    "categories": [
-      "Amusements/Games/Action/Arcade"
-    ],
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "1.36-bp155.1.5",
-    "repo": "opensuse_leap_15_5",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "main/oss",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar"
-  },
-  {
-    "categories": [
-      "Amusements/Games/Action/Arcade"
-    ],
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "1.36-bp156.2.10",
-    "repo": "opensuse_leap_15_6",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "main/oss",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
     "visiblename": "edgar"
   },
   {
@@ -958,6 +1518,44 @@
       "universe/misc"
     ],
     "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "1.23-1build1",
+    "repo": "ubuntu_20_04",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "focal/universe",
+    "version": "1.23",
+    "visiblename": "edgar"
+  },
+  {
+    "binnames": [
+      "edgar",
+      "edgar-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "1.23-1build1",
+    "repo": "ubuntu_22_04",
+    "srcname": "edgar",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "1.23",
+    "visiblename": "edgar"
+  },
+  {
+    "binnames": [
+      "edgar",
+      "edgar-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
       "ubuntu-devel-discuss@lists.ubuntu.com",
       "guus@debian.org",
       "jello@debian.org",
@@ -1056,604 +1654,6 @@
     "srcname": "edgar",
     "status": "newest",
     "subrepo": "stonking/universe",
-    "version": "1.38",
-    "visiblename": "edgar"
-  },
-  {
-    "binname": "edgar",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_19",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar"
-  },
-  {
-    "binname": "edgar-data",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_19",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar-data"
-  },
-  {
-    "binname": "edgar-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_19",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world (documentation)",
-    "version": "1.36",
-    "visiblename": "edgar-doc"
-  },
-  {
-    "binname": "edgar-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_19",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package edgar",
-    "version": "1.36",
-    "visiblename": "edgar-lang"
-  },
-  {
-    "binname": "edgar",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_20",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar"
-  },
-  {
-    "binname": "edgar-data",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_20",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar-data"
-  },
-  {
-    "binname": "edgar-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_20",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world (documentation)",
-    "version": "1.36",
-    "visiblename": "edgar-doc"
-  },
-  {
-    "binname": "edgar-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_20",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package edgar",
-    "version": "1.36",
-    "visiblename": "edgar-lang"
-  },
-  {
-    "binname": "edgar",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_21",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar"
-  },
-  {
-    "binname": "edgar-data",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_21",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar-data"
-  },
-  {
-    "binname": "edgar-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_21",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world (documentation)",
-    "version": "1.36",
-    "visiblename": "edgar-doc"
-  },
-  {
-    "binname": "edgar-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_21",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package edgar",
-    "version": "1.36",
-    "visiblename": "edgar-lang"
-  },
-  {
-    "binname": "edgar",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_22",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar"
-  },
-  {
-    "binname": "edgar-data",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_22",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar-data"
-  },
-  {
-    "binname": "edgar-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_22",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world (documentation)",
-    "version": "1.36",
-    "visiblename": "edgar-doc"
-  },
-  {
-    "binname": "edgar-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_22",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package edgar",
-    "version": "1.36",
-    "visiblename": "edgar-lang"
-  },
-  {
-    "binname": "edgar",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_23",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar"
-  },
-  {
-    "binname": "edgar-data",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_23",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar-data"
-  },
-  {
-    "binname": "edgar-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_23",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world (documentation)",
-    "version": "1.36",
-    "visiblename": "edgar-doc"
-  },
-  {
-    "binname": "edgar-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_23",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package edgar",
-    "version": "1.36",
-    "visiblename": "edgar-lang"
-  },
-  {
-    "binname": "edgar",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_24",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar"
-  },
-  {
-    "binname": "edgar-data",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_24",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.36",
-    "visiblename": "edgar-data"
-  },
-  {
-    "binname": "edgar-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_24",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world (documentation)",
-    "version": "1.36",
-    "visiblename": "edgar-doc"
-  },
-  {
-    "binname": "edgar-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.36-r0",
-    "repo": "alpine_3_24",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package edgar",
-    "version": "1.36",
-    "visiblename": "edgar-lang"
-  },
-  {
-    "binname": "edgar",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.38-r0",
-    "repo": "alpine_edge",
-    "srcname": "edgar",
-    "status": "newest",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.38",
-    "visiblename": "edgar"
-  },
-  {
-    "binname": "edgar-data",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.38-r0",
-    "repo": "alpine_edge",
-    "srcname": "edgar",
-    "status": "newest",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world",
-    "version": "1.38",
-    "visiblename": "edgar-data"
-  },
-  {
-    "binname": "edgar-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.38-r0",
-    "repo": "alpine_edge",
-    "srcname": "edgar",
-    "status": "newest",
-    "subrepo": "community",
-    "summary": "2D platform game with a persistent world (documentation)",
-    "version": "1.38",
-    "visiblename": "edgar-doc"
-  },
-  {
-    "binname": "edgar-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "aaloytorrens@gmail.com"
-    ],
-    "origversion": "1.38-r0",
-    "repo": "alpine_edge",
-    "srcname": "edgar",
-    "status": "newest",
-    "subrepo": "community",
-    "summary": "Languages for package edgar",
-    "version": "1.38",
-    "visiblename": "edgar-lang"
-  },
-  {
-    "binnames": [
-      "edgar",
-      "edgar-data",
-      "edgar-debuginfo"
-    ],
-    "categories": [
-      "Games/Arcade"
-    ],
-    "licenses": [
-      "GPLv2+"
-    ],
-    "maintainers": [
-      "george@altlinux.org"
-    ],
-    "origversion": "1.35-alt1",
-    "repo": "alt_p11",
-    "srcname": "edgar",
-    "status": "outdated",
-    "summary": "2D Platform Game",
-    "version": "1.35",
-    "visiblename": "edgar"
-  },
-  {
-    "binnames": [
-      "edgar",
-      "edgar-data"
-    ],
-    "categories": [
-      "Games/Arcade"
-    ],
-    "licenses": [
-      "GPLv2+"
-    ],
-    "maintainers": [
-      "shad@altlinux.org"
-    ],
-    "origversion": "1.38-alt1",
-    "repo": "altsisyphus",
-    "srcname": "edgar",
-    "status": "newest",
-    "summary": "2D Platform Game",
-    "version": "1.38",
-    "visiblename": "edgar"
-  },
-  {
-    "binname": "legendofedgar",
-    "licenses": [
-      "GPL-1.0-or-later"
-    ],
-    "maintainers": [
-      "andy5995@aur"
-    ],
-    "origversion": "1.38-1",
-    "repo": "aur",
-    "srcname": "legendofedgar",
-    "status": "newest",
-    "summary": "2D platformer: Venture across the world, battle fearsome creatures and solve puzzles to rescue your father.",
-    "version": "1.38",
-    "visiblename": "legendofedgar"
-  },
-  {
-    "binname": "edgar-git",
-    "licenses": [
-      "GPL3",
-      "LGPL3"
-    ],
-    "maintainers": [
-      "fallback-mnt-aur@repology"
-    ],
-    "origversion": "r72.250957a-1",
-    "repo": "aur",
-    "srcname": "edgar-git",
-    "status": "rolling",
-    "summary": "Load Python gadgets in Enlightenment",
-    "version": "r72.250957a",
-    "visiblename": "edgar-git"
-  },
-  {
-    "binnames": [
-      "edgar",
-      "edgar-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "guus@debian.org",
-      "jello@debian.org",
-      "matt@hazelmollusk.org"
-    ],
-    "origversion": "1.37-1",
-    "repo": "debian_13",
-    "srcname": "edgar",
-    "status": "outdated",
-    "subrepo": "trixie/main",
-    "version": "1.37",
-    "visiblename": "edgar"
-  },
-  {
-    "binnames": [
-      "edgar",
-      "edgar-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "guus@debian.org",
-      "jello@debian.org",
-      "matt@hazelmollusk.org"
-    ],
-    "origversion": "1.38-1",
-    "repo": "debian_14",
-    "srcname": "edgar",
-    "status": "newest",
-    "subrepo": "forky/main",
     "version": "1.38",
     "visiblename": "edgar"
   }

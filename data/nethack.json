@@ -7,7 +7,7 @@
       "ab@fmap.me"
     ],
     "origversion": null,
-    "repo": "nix_stable_25_05",
+    "repo": "nix_stable_24_05",
     "srcname": "nethack",
     "status": "outdated",
     "summary": "Rogue-like game",
@@ -22,7 +22,7 @@
       "ab@fmap.me"
     ],
     "origversion": null,
-    "repo": "nix_stable_25_05",
+    "repo": "nix_stable_24_05",
     "srcname": "nethack-qt",
     "status": "outdated",
     "summary": "Rogue-like game",
@@ -37,7 +37,7 @@
       "ab@fmap.me"
     ],
     "origversion": null,
-    "repo": "nix_stable_25_05",
+    "repo": "nix_stable_24_05",
     "srcname": "nethack-x11",
     "status": "outdated",
     "summary": "Rogue-like game",
@@ -49,57 +49,13 @@
       "NGPL"
     ],
     "maintainers": [
-      "fallback-mnt-nix@repology"
+      "n@ngill.net"
     ],
     "origversion": null,
-    "repo": "nix_stable_25_11",
-    "srcname": "nethack",
-    "status": "outdated",
-    "summary": "Rogue-like game",
-    "version": "3.6.7",
-    "visiblename": "nethack"
-  },
-  {
-    "licenses": [
-      "NGPL"
-    ],
-    "maintainers": [
-      "fallback-mnt-nix@repology"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_11",
-    "srcname": "nethack-qt",
-    "status": "outdated",
-    "summary": "Rogue-like game",
-    "version": "3.6.7",
-    "visiblename": "nethack-qt"
-  },
-  {
-    "licenses": [
-      "NGPL"
-    ],
-    "maintainers": [
-      "fallback-mnt-nix@repology"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_11",
-    "srcname": "nethack-x11",
-    "status": "outdated",
-    "summary": "Rogue-like game",
-    "version": "3.6.7",
-    "visiblename": "nethack-x11"
-  },
-  {
-    "binname": "nethack",
-    "licenses": [
-      "NGPL"
-    ],
-    "origversion": "5.0.0-1",
-    "repo": "manjaro_unstable",
+    "repo": "nix_unstable",
     "srcname": "nethack",
     "status": "newest",
-    "subrepo": "extra",
-    "summary": "A single player dungeon exploration game",
+    "summary": "Rogue-like game",
     "version": "5.0.0",
     "visiblename": "nethack"
   },
@@ -111,7 +67,7 @@
       "ab@fmap.me"
     ],
     "origversion": null,
-    "repo": "nix_stable_24_05",
+    "repo": "nix_stable_24_11",
     "srcname": "nethack",
     "status": "outdated",
     "summary": "Rogue-like game",
@@ -119,48 +75,19 @@
     "visiblename": "nethack"
   },
   {
-    "licenses": [
-      "nethack"
-    ],
-    "maintainers": [
-      "ab@fmap.me"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_05",
-    "srcname": "nethack-qt",
-    "status": "outdated",
-    "summary": "Rogue-like game",
-    "version": "3.6.7",
-    "visiblename": "nethack-qt"
-  },
-  {
-    "binname": "nethack",
     "licenses": [
       "NGPL"
     ],
-    "origversion": "5.0.0-1",
-    "repo": "manjaro_testing",
-    "srcname": "nethack",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A single player dungeon exploration game",
-    "version": "5.0.0",
-    "visiblename": "nethack"
-  },
-  {
-    "licenses": [
-      "nethack"
-    ],
     "maintainers": [
-      "ab@fmap.me"
+      "n@ngill.net"
     ],
     "origversion": null,
-    "repo": "nix_stable_24_05",
-    "srcname": "nethack-x11",
-    "status": "outdated",
+    "repo": "nix_unstable",
+    "srcname": "nethack-qt",
+    "status": "newest",
     "summary": "Rogue-like game",
-    "version": "3.6.7",
-    "visiblename": "nethack-x11"
+    "version": "5.0.0",
+    "visiblename": "nethack-qt"
   },
   {
     "binname": "nethack",
@@ -244,21 +171,6 @@
     "status": "outdated",
     "subrepo": "community",
     "summary": "A single player dungeon exploration game",
-    "version": "3.6.7",
-    "visiblename": "nethack"
-  },
-  {
-    "licenses": [
-      "nethack"
-    ],
-    "maintainers": [
-      "ab@fmap.me"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_11",
-    "srcname": "nethack",
-    "status": "outdated",
-    "summary": "Rogue-like game",
     "version": "3.6.7",
     "visiblename": "nethack"
   },
@@ -987,6 +899,21 @@
     "visiblename": "nethack"
   },
   {
+    "binname": "bin/net/hack",
+    "categories": [
+      "bin"
+    ],
+    "maintainers": [
+      "anton@samokhvalov.xyz"
+    ],
+    "origversion": null,
+    "repo": "stalix_dev",
+    "srcname": "bin/net/hack",
+    "status": "newest",
+    "version": "5.0.0",
+    "visiblename": "bin/net/hack"
+  },
+  {
     "origversion": null,
     "repo": "homebrew",
     "srcname": "nethack",
@@ -1240,6 +1167,20 @@
     "visiblename": "nethack"
   },
   {
+    "binname": "nethack",
+    "licenses": [
+      "NGPL"
+    ],
+    "origversion": "5.0.0-1",
+    "repo": "manjaro_testing",
+    "srcname": "nethack",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A single player dungeon exploration game",
+    "version": "5.0.0",
+    "visiblename": "nethack"
+  },
+  {
     "licenses": [
       "NGPL"
     ],
@@ -1282,51 +1223,6 @@
     "status": "outdated",
     "summary": "Rogue-like game",
     "version": "3.6.7",
-    "visiblename": "nethack-x11"
-  },
-  {
-    "licenses": [
-      "NGPL"
-    ],
-    "maintainers": [
-      "n@ngill.net"
-    ],
-    "origversion": null,
-    "repo": "nix_unstable",
-    "srcname": "nethack",
-    "status": "newest",
-    "summary": "Rogue-like game",
-    "version": "5.0.0",
-    "visiblename": "nethack"
-  },
-  {
-    "licenses": [
-      "NGPL"
-    ],
-    "maintainers": [
-      "n@ngill.net"
-    ],
-    "origversion": null,
-    "repo": "nix_unstable",
-    "srcname": "nethack-qt",
-    "status": "newest",
-    "summary": "Rogue-like game",
-    "version": "5.0.0",
-    "visiblename": "nethack-qt"
-  },
-  {
-    "licenses": [
-      "NGPL"
-    ],
-    "maintainers": [
-      "n@ngill.net"
-    ],
-    "origversion": null,
-    "repo": "nix_unstable",
-    "srcname": "nethack-x11",
-    "status": "newest",
-    "summary": "Rogue-like game",
-    "version": "5.0.0",
     "visiblename": "nethack-x11"
   },
   {
@@ -1547,7 +1443,7 @@
     "repo": "parrot",
     "srcname": "nethack",
     "status": "outdated",
-    "subrepo": "parrot/main",
+    "subrepo": "parrot-updates/main",
     "version": "3.6.7",
     "visiblename": "nethack"
   },
@@ -1570,7 +1466,7 @@
     "repo": "parrot",
     "srcname": "nethack",
     "status": "outdated",
-    "subrepo": "parrot-updates/main",
+    "subrepo": "parrot/main",
     "version": "3.6.7",
     "visiblename": "nethack"
   },
@@ -1924,21 +1820,6 @@
     "visiblename": "bin/net/hack"
   },
   {
-    "binname": "bin/net/hack",
-    "categories": [
-      "bin"
-    ],
-    "maintainers": [
-      "anton@samokhvalov.xyz"
-    ],
-    "origversion": null,
-    "repo": "stalix_dev",
-    "srcname": "bin/net/hack",
-    "status": "newest",
-    "version": "5.0.0",
-    "visiblename": "bin/net/hack"
-  },
-  {
     "categories": [
       "extra/game"
     ],
@@ -2112,6 +1993,142 @@
     "summary": "classical roguelike ASCII graphics computer game released in 1987",
     "version": "5.0.0",
     "visiblename": "Q856904"
+  },
+  {
+    "licenses": [
+      "nethack"
+    ],
+    "maintainers": [
+      "ab@fmap.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "nethack",
+    "status": "outdated",
+    "summary": "Rogue-like game",
+    "version": "3.6.7",
+    "visiblename": "nethack"
+  },
+  {
+    "licenses": [
+      "nethack"
+    ],
+    "maintainers": [
+      "ab@fmap.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "nethack-qt",
+    "status": "outdated",
+    "summary": "Rogue-like game",
+    "version": "3.6.7",
+    "visiblename": "nethack-qt"
+  },
+  {
+    "licenses": [
+      "nethack"
+    ],
+    "maintainers": [
+      "ab@fmap.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "nethack-x11",
+    "status": "outdated",
+    "summary": "Rogue-like game",
+    "version": "3.6.7",
+    "visiblename": "nethack-x11"
+  },
+  {
+    "licenses": [
+      "NGPL"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "nethack",
+    "status": "outdated",
+    "summary": "Rogue-like game",
+    "version": "3.6.7",
+    "visiblename": "nethack"
+  },
+  {
+    "licenses": [
+      "NGPL"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "nethack-qt",
+    "status": "outdated",
+    "summary": "Rogue-like game",
+    "version": "3.6.7",
+    "visiblename": "nethack-qt"
+  },
+  {
+    "licenses": [
+      "NGPL"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "nethack-x11",
+    "status": "outdated",
+    "summary": "Rogue-like game",
+    "version": "3.6.7",
+    "visiblename": "nethack-x11"
+  },
+  {
+    "licenses": [
+      "NGPL"
+    ],
+    "maintainers": [
+      "n@ngill.net"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "nethack-x11",
+    "status": "newest",
+    "summary": "Rogue-like game",
+    "version": "5.0.0",
+    "visiblename": "nethack-x11"
+  },
+  {
+    "binname": "nethack",
+    "licenses": [
+      "NGPL"
+    ],
+    "origversion": "5.0.0-1",
+    "repo": "manjaro_unstable",
+    "srcname": "nethack",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A single player dungeon exploration game",
+    "version": "5.0.0",
+    "visiblename": "nethack"
+  },
+  {
+    "binname": "nethack",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "espie@openbsd.org"
+    ],
+    "origversion": "3.4.3p18",
+    "repo": "openbsd",
+    "srcname": "games/nethack/3.4",
+    "status": "legacy",
+    "summary": "dungeon explorin', hackin', game.  Piece of cake",
+    "version": "3.4.3",
+    "visiblename": "games/nethack/3.4",
+    "vulnerable": true
   },
   {
     "binname": "nethack-doc",
@@ -2477,23 +2494,6 @@
     "summary": "Classic dungeon adventure game (previous version).",
     "version": "3.4.3",
     "visiblename": "nethack343",
-    "vulnerable": true
-  },
-  {
-    "binname": "nethack",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "espie@openbsd.org"
-    ],
-    "origversion": "3.4.3p18",
-    "repo": "openbsd",
-    "srcname": "games/nethack/3.4",
-    "status": "legacy",
-    "summary": "dungeon explorin', hackin', game.  Piece of cake",
-    "version": "3.4.3",
-    "visiblename": "games/nethack/3.4",
     "vulnerable": true
   },
   {

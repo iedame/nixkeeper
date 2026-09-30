@@ -1,17 +1,5 @@
 [
   {
-    "categories": [
-      "Networking/WWW"
-    ],
-    "origversion": "154.0.8037.57-1pclos2026",
-    "repo": "pclinuxos",
-    "srcname": "google-chrome-browser",
-    "status": "outdated",
-    "summary": "Google Chrome",
-    "version": "154.0.8037.57",
-    "visiblename": "google-chrome-browser"
-  },
-  {
     "binname": "google-chrome",
     "categories": [
       "non-free/web"
@@ -241,7 +229,7 @@
     "srcname": "google-chrome@canary",
     "status": "ignored",
     "summary": "Web browser",
-    "version": "156.0.8078.3",
+    "version": "157.0.8079.0",
     "visiblename": "Google Chrome Canary"
   },
   {
@@ -350,6 +338,18 @@
     "visiblename": "Chrome 64 bit"
   },
   {
+    "categories": [
+      "Networking/WWW"
+    ],
+    "origversion": "154.0.8037.57-1pclos2026",
+    "repo": "pclinuxos",
+    "srcname": "google-chrome-browser",
+    "status": "outdated",
+    "summary": "Google Chrome",
+    "version": "154.0.8037.57",
+    "visiblename": "google-chrome-browser"
+  },
+  {
     "binname": "googlechrome",
     "licenses": [
       "Freeware"
@@ -422,33 +422,21 @@
     "visiblename": "Google Chrome"
   },
   {
-    "binname": "google-chrome-unstable-deb",
-    "maintainers": [
-      "oren@taumoda.com"
-    ],
-    "origversion": "139.0.7232.3-1",
-    "repo": "pacstall",
-    "srcname": "google-chrome-unstable-deb",
+    "binname": "google-chrome-x64",
+    "origversion": null,
+    "repo": "chocolatey",
     "status": "outdated",
-    "summary": "The web browser built by Google - Developer/Unstable channel",
-    "version": "139.0.7232.3",
-    "visiblename": "google-chrome-unstable-deb",
+    "version": "47.0.2526.81",
+    "visiblename": "Google Chrome (64-bit only) [deprecated]",
     "vulnerable": true
   },
   {
-    "licenses": [
-      "Unfree"
-    ],
-    "maintainers": [
-      "jon@sgrs.uk",
-      "masumrezarock100@gmail.com"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_05",
+    "binname": "google-chrome",
+    "origversion": "86.0.4240.111-1-18",
+    "repo": "distri",
     "srcname": "google-chrome",
     "status": "outdated",
-    "summary": "Freeware web browser developed by Google",
-    "version": "131.0.6778.139",
+    "version": "86.0.4240.111-1",
     "visiblename": "google-chrome",
     "vulnerable": true
   },
@@ -470,15 +458,6 @@
     "summary": "Google Chrome",
     "version": "120.0.6099.225",
     "visiblename": "[Deprecated] Google Chrome All Users",
-    "vulnerable": true
-  },
-  {
-    "binname": "google-chrome-x64",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "outdated",
-    "version": "47.0.2526.81",
-    "visiblename": "Google Chrome (64-bit only) [deprecated]",
     "vulnerable": true
   },
   {
@@ -505,16 +484,6 @@
     "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Dev Channel)",
     "version": "129.0.6628.3-1",
     "visiblename": "google_chrome_unstable",
-    "vulnerable": true
-  },
-  {
-    "binname": "google-chrome",
-    "origversion": "86.0.4240.111-1-18",
-    "repo": "distri",
-    "srcname": "google-chrome",
-    "status": "outdated",
-    "version": "86.0.4240.111-1",
-    "visiblename": "google-chrome",
     "vulnerable": true
   },
   {
@@ -608,6 +577,25 @@
     "summary": "The web browser from Google",
     "version": "151.0.7922.137",
     "visiblename": "www-client/google-chrome",
+    "vulnerable": true
+  },
+  {
+    "categories": [
+      "app:gui"
+    ],
+    "licenses": [
+      "EULA"
+    ],
+    "maintainers": [
+      "admins@pisilinux.org"
+    ],
+    "origversion": null,
+    "repo": "pisi_contrib",
+    "srcname": "network/browser/google-chrome-dev",
+    "status": "outdated",
+    "summary": "Google Chrome for Linux",
+    "version": "88.0.4292.2",
+    "visiblename": "google-chrome-dev",
     "vulnerable": true
   },
   {
@@ -847,6 +835,23 @@
       "masumrezarock100@gmail.com"
     ],
     "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "google-chrome",
+    "status": "outdated",
+    "summary": "Freeware web browser developed by Google",
+    "version": "131.0.6778.139",
+    "visiblename": "google-chrome",
+    "vulnerable": true
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "jon@sgrs.uk",
+      "masumrezarock100@gmail.com"
+    ],
+    "origversion": null,
     "repo": "nix_stable_24_11",
     "srcname": "google-chrome",
     "status": "outdated",
@@ -920,22 +925,17 @@
     "vulnerable": true
   },
   {
-    "categories": [
-      "app:gui"
-    ],
-    "licenses": [
-      "EULA"
-    ],
+    "binname": "google-chrome-unstable-deb",
     "maintainers": [
-      "admins@pisilinux.org"
+      "oren@taumoda.com"
     ],
-    "origversion": null,
-    "repo": "pisi_contrib",
-    "srcname": "network/browser/google-chrome-dev",
+    "origversion": "139.0.7232.3-1",
+    "repo": "pacstall",
+    "srcname": "google-chrome-unstable-deb",
     "status": "outdated",
-    "summary": "Google Chrome for Linux",
-    "version": "88.0.4292.2",
-    "visiblename": "google-chrome-dev",
+    "summary": "The web browser built by Google - Developer/Unstable channel",
+    "version": "139.0.7232.3",
+    "visiblename": "google-chrome-unstable-deb",
     "vulnerable": true
   },
   {

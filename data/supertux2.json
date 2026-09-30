@@ -68,6 +68,22 @@
     "visiblename": "supertux"
   },
   {
+    "binname": "supertux-git",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "retcinder@aur"
+    ],
+    "origversion": "0.7.0.rev.1.r59.gc9939efa1-1",
+    "repo": "aur",
+    "srcname": "supertux-git",
+    "status": "rolling",
+    "summary": "A classic 2D jump'n run sidescroller game in a style similar to the original SuperMario game",
+    "version": "0.7.0.rev.1.r59.gc9939efa1",
+    "visiblename": "supertux-git"
+  },
+  {
     "binname": "supertux-data",
     "licenses": [
       "GPL-3.0-or-later"
@@ -236,6 +252,20 @@
     "summary": "Open-source classic 2D jump'n run sidescroller game (data files)",
     "version": "0.6.3",
     "visiblename": "supertux-data"
+  },
+  {
+    "binname": "supertux2",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "0.7.0-r1",
+    "repo": "chimera",
+    "srcname": "supertux2",
+    "status": "newest",
+    "subrepo": "user",
+    "summary": "Classic 2D jump'n run sidescroller game",
+    "version": "0.7.0",
+    "visiblename": "supertux2"
   },
   {
     "binname": "supertux-doc",
@@ -610,36 +640,6 @@
     "summary": "A classic 2D jump'n'run sidescroller game in a style similar to the original SuperMario games",
     "version": "0.7.0",
     "visiblename": "supertux"
-  },
-  {
-    "binname": "supertux-git",
-    "licenses": [
-      "GPL-3.0-only"
-    ],
-    "maintainers": [
-      "retcinder@aur"
-    ],
-    "origversion": "0.7.0.rev.1.r59.gc9939efa1-1",
-    "repo": "aur",
-    "srcname": "supertux-git",
-    "status": "rolling",
-    "summary": "A classic 2D jump'n run sidescroller game in a style similar to the original SuperMario game",
-    "version": "0.7.0.rev.1.r59.gc9939efa1",
-    "visiblename": "supertux-git"
-  },
-  {
-    "binname": "supertux2",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "origversion": "0.7.0-r1",
-    "repo": "chimera",
-    "srcname": "supertux2",
-    "status": "newest",
-    "subrepo": "user",
-    "summary": "Classic 2D jump'n run sidescroller game",
-    "version": "0.7.0",
-    "visiblename": "supertux2"
   },
   {
     "binname": "supertux2-doc",
@@ -1118,6 +1118,19 @@
     "visiblename": "SuperTux"
   },
   {
+    "binname": "supertux",
+    "licenses": [
+      "GPL"
+    ],
+    "origversion": null,
+    "repo": "reactos",
+    "srcname": "supertux",
+    "status": "outdated",
+    "summary": "A free, open-source two-dimensional platform game.",
+    "version": "0.5.1",
+    "visiblename": "SuperTux"
+  },
+  {
     "categories": [
       "games-arcade"
     ],
@@ -1185,21 +1198,6 @@
     "summary": "A run 'n jump platforming game featuring Tux the penguin",
     "version": "0.7.0",
     "visiblename": "games-arcade/supertux"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "mail@pascal-wittmann.de"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_26_05",
-    "srcname": "supertux",
-    "status": "newest",
-    "summary": "Classic 2D jump'n run sidescroller game",
-    "version": "0.7.0",
-    "visiblename": "supertux"
   },
   {
     "binname": "supertux",
@@ -1452,6 +1450,21 @@
       "mail@pascal-wittmann.de"
     ],
     "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "supertux",
+    "status": "newest",
+    "summary": "Classic 2D jump'n run sidescroller game",
+    "version": "0.7.0",
+    "visiblename": "supertux"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "mail@pascal-wittmann.de"
+    ],
+    "origversion": null,
     "repo": "nix_unstable",
     "srcname": "supertux",
     "status": "newest",
@@ -1692,7 +1705,7 @@
     "repo": "parrot",
     "srcname": "supertux",
     "status": "outdated",
-    "subrepo": "parrot-updates/main",
+    "subrepo": "parrot/main",
     "version": "0.6.3",
     "visiblename": "supertux"
   },
@@ -1713,7 +1726,7 @@
     "repo": "parrot",
     "srcname": "supertux",
     "status": "outdated",
-    "subrepo": "parrot/main",
+    "subrepo": "parrot-updates/main",
     "version": "0.6.3",
     "visiblename": "supertux"
   },
@@ -1910,19 +1923,6 @@
     "subrepo": "main",
     "version": "0.6.3",
     "visiblename": "supertux"
-  },
-  {
-    "binname": "supertux",
-    "licenses": [
-      "GPL"
-    ],
-    "origversion": null,
-    "repo": "reactos",
-    "srcname": "supertux",
-    "status": "outdated",
-    "summary": "A free, open-source two-dimensional platform game.",
-    "version": "0.5.1",
-    "visiblename": "SuperTux"
   },
   {
     "binnames": [

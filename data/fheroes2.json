@@ -1,18 +1,24 @@
 [
   {
-    "binname": "bin/fheroes2",
+    "binnames": [
+      "fheroes2"
+    ],
     "categories": [
-      "bin"
+      "contrib/misc"
     ],
     "maintainers": [
-      "anton@samokhvalov.xyz"
+      "pkg-games-devel@lists.alioth.debian.org",
+      "csm.sub21@gmail.com",
+      "onlyjob@debian.org",
+      "tchet@debian.org"
     ],
-    "origversion": null,
-    "repo": "stalix_dev",
-    "srcname": "bin/fheroes2",
-    "status": "outdated",
-    "version": "1.1.12",
-    "visiblename": "bin/fheroes2"
+    "origversion": "1.1.17+dfsg-1",
+    "repo": "kali_rolling",
+    "srcname": "fheroes2",
+    "status": "newest",
+    "subrepo": "contrib",
+    "version": "1.1.17",
+    "visiblename": "fheroes2"
   },
   {
     "binname": "fheroes2",
@@ -47,6 +53,20 @@
     "summary": "Languages for package fheroes2",
     "version": "1.1.17",
     "visiblename": "fheroes2-lang"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "lin.ruohshoei+sbo@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/fheroes2",
+    "status": "newest",
+    "version": "1.1.17",
+    "visiblename": "games/fheroes2"
   },
   {
     "binnames": [
@@ -284,6 +304,21 @@
     "visiblename": "fheroes2"
   },
   {
+    "binname": "bin/fheroes2",
+    "categories": [
+      "bin"
+    ],
+    "maintainers": [
+      "anton@samokhvalov.xyz"
+    ],
+    "origversion": null,
+    "repo": "stalix",
+    "srcname": "bin/fheroes2",
+    "status": "outdated",
+    "version": "1.1.12",
+    "visiblename": "bin/fheroes2"
+  },
+  {
     "binnames": [
       "fheroes2"
     ],
@@ -312,13 +347,13 @@
     "licenses": [
       "GPL-2.0-or-later AND LGPL-2.1-or-later"
     ],
-    "origversion": "1.1.11-1.fc43",
+    "origversion": "1.1.17-2.fc43",
     "repo": "fedora_43",
     "srcname": "fheroes2",
-    "status": "legacy",
-    "subrepo": "release",
+    "status": "newest",
+    "subrepo": "updates",
     "summary": "Free implementation of the popular game engine",
-    "version": "1.1.11",
+    "version": "1.1.17",
     "visiblename": "fheroes2"
   },
   {
@@ -331,13 +366,13 @@
     "licenses": [
       "GPL-2.0-or-later AND LGPL-2.1-or-later"
     ],
-    "origversion": "1.1.17-2.fc43",
+    "origversion": "1.1.11-1.fc43",
     "repo": "fedora_43",
     "srcname": "fheroes2",
-    "status": "newest",
-    "subrepo": "updates",
+    "status": "legacy",
+    "subrepo": "release",
     "summary": "Free implementation of the popular game engine",
-    "version": "1.1.17",
+    "version": "1.1.11",
     "visiblename": "fheroes2"
   },
   {
@@ -470,27 +505,6 @@
     "status": "rolling",
     "summary": "Recreation of the Heroes of Might and Magic II game engine",
     "version": "HEAD",
-    "visiblename": "fheroes2"
-  },
-  {
-    "binnames": [
-      "fheroes2"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "csm.sub21@gmail.com",
-      "onlyjob@debian.org",
-      "tchet@debian.org"
-    ],
-    "origversion": "1.1.17+dfsg-1",
-    "repo": "kali_rolling",
-    "srcname": "fheroes2",
-    "status": "newest",
-    "subrepo": "contrib",
-    "version": "1.1.17",
     "visiblename": "fheroes2"
   },
   {
@@ -697,6 +711,18 @@
     "visiblename": "games/fheroes2"
   },
   {
+    "binname": "fheroes2",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "games",
+    "version": "1.1.17",
+    "visiblename": "fheroes2"
+  },
+  {
     "binnames": [
       "fheroes2"
     ],
@@ -811,7 +837,7 @@
     "repo": "parrot",
     "srcname": "fheroes2",
     "status": "outdated",
-    "subrepo": "parrot-updates/contrib",
+    "subrepo": "parrot/contrib",
     "version": "1.1.8",
     "visiblename": "fheroes2"
   },
@@ -832,7 +858,7 @@
     "repo": "parrot",
     "srcname": "fheroes2",
     "status": "outdated",
-    "subrepo": "parrot/contrib",
+    "subrepo": "parrot-updates/contrib",
     "version": "1.1.8",
     "visiblename": "fheroes2"
   },
@@ -987,32 +1013,6 @@
     "visiblename": "fheroes2"
   },
   {
-    "binname": "fheroes2",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "origversion": null,
-    "repo": "scoop",
-    "status": "newest",
-    "subrepo": "games",
-    "version": "1.1.17",
-    "visiblename": "fheroes2"
-  },
-  {
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "lin.ruohshoei+sbo@gmail.com"
-    ],
-    "origversion": null,
-    "repo": "slackbuilds",
-    "srcname": "games/fheroes2",
-    "status": "newest",
-    "version": "1.1.17",
-    "visiblename": "games/fheroes2"
-  },
-  {
     "binname": "bin/fheroes2",
     "categories": [
       "bin"
@@ -1021,7 +1021,7 @@
       "anton@samokhvalov.xyz"
     ],
     "origversion": null,
-    "repo": "stalix",
+    "repo": "stalix_dev",
     "srcname": "bin/fheroes2",
     "status": "outdated",
     "version": "1.1.12",

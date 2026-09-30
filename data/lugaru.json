@@ -11,104 +11,33 @@
       "pkg-games-devel@lists.alioth.debian.org",
       "vivi@debian.org"
     ],
-    "origversion": "1.2-7.1",
-    "repo": "devuan_unstable",
+    "origversion": "1.2-7",
+    "repo": "parrot",
     "srcname": "lugaru",
     "status": "newest",
-    "subrepo": "unstable/main",
+    "subrepo": "parrot/main",
     "version": "1.2",
     "visiblename": "lugaru"
   },
   {
+    "binnames": [
+      "lugaru",
+      "lugaru-data",
+      "lugaru-debuginfo",
+      "lugaru-debugsource"
+    ],
     "categories": [
-      "Amusements/Games"
+      "Unspecified"
     ],
     "licenses": [
       "GPLv2+"
     ],
-    "origversion": "1.2-2.el7",
-    "repo": "epel_7",
+    "origversion": "1.2-21.fc40",
+    "repo": "fedora_40",
     "srcname": "lugaru",
     "status": "newest",
+    "subrepo": "release",
     "summary": "Ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "openlugaru"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "martinerikwerner@gmail.com"
-    ],
-    "origversion": "0~20110520.1+hge4354+dfsg-5",
-    "repo": "raspbian_stable",
-    "srcname": "openlugaru",
-    "status": "legacy",
-    "subrepo": "contrib",
-    "version": "0~20110520.1+hge4354",
-    "visiblename": "openlugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7",
-    "repo": "raspbian_stable",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "main",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "openlugaru"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "martinerikwerner@gmail.com"
-    ],
-    "origversion": "0~20110520.1+hge4354+dfsg-5",
-    "repo": "raspbian_testing",
-    "srcname": "openlugaru",
-    "status": "legacy",
-    "subrepo": "contrib",
-    "version": "0~20110520.1+hge4354",
-    "visiblename": "openlugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7.1",
-    "repo": "raspbian_testing",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "main",
     "version": "1.2",
     "visiblename": "lugaru"
   },
@@ -257,31 +186,6 @@
   {
     "binnames": [
       "lugaru",
-      "lugaru-data",
-      "lugaru-debuginfo",
-      "lugaru-debugsource"
-    ],
-    "categories": [
-      "Games/Other"
-    ],
-    "licenses": [
-      "GPLv2+"
-    ],
-    "maintainers": [
-      "survolog@yandex.ru"
-    ],
-    "origversion": "1.2-3",
-    "repo": "rosa_2019_1",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "contrib/release",
-    "summary": "Ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
       "lugaru-data"
     ],
     "categories": [
@@ -341,21 +245,34 @@
   {
     "binnames": [
       "lugaru",
-      "lugaru-data",
-      "lugaru-debuginfo",
-      "lugaru-debugsource"
+      "lugaru-data"
     ],
     "categories": [
-      "Unspecified"
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7.1",
+    "repo": "devuan_unstable",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "categories": [
+      "Amusements/Games"
     ],
     "licenses": [
       "GPLv2+"
     ],
-    "origversion": "1.2-19.fc39",
-    "repo": "fedora_39",
+    "origversion": "1.2-2.el7",
+    "repo": "epel_7",
     "srcname": "lugaru",
     "status": "newest",
-    "subrepo": "release",
     "summary": "Ninja rabbit fighting game",
     "version": "1.2",
     "visiblename": "lugaru"
@@ -373,8 +290,8 @@
     "licenses": [
       "GPLv2+"
     ],
-    "origversion": "1.2-21.fc40",
-    "repo": "fedora_40",
+    "origversion": "1.2-19.fc39",
+    "repo": "fedora_39",
     "srcname": "lugaru",
     "status": "newest",
     "subrepo": "release",
@@ -910,26 +827,6 @@
     "repo": "parrot",
     "srcname": "lugaru",
     "status": "newest",
-    "subrepo": "parrot/main",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7",
-    "repo": "parrot",
-    "srcname": "lugaru",
-    "status": "newest",
     "subrepo": "parrot-updates/main",
     "version": "1.2",
     "visiblename": "lugaru"
@@ -1089,6 +986,109 @@
       "lugaru-data"
     ],
     "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7",
+    "repo": "raspbian_stable",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "openlugaru"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "martinerikwerner@gmail.com"
+    ],
+    "origversion": "0~20110520.1+hge4354+dfsg-5",
+    "repo": "raspbian_stable",
+    "srcname": "openlugaru",
+    "status": "legacy",
+    "subrepo": "contrib",
+    "version": "0~20110520.1+hge4354",
+    "visiblename": "openlugaru"
+  },
+  {
+    "binnames": [
+      "openlugaru"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "martinerikwerner@gmail.com"
+    ],
+    "origversion": "0~20110520.1+hge4354+dfsg-5",
+    "repo": "raspbian_testing",
+    "srcname": "openlugaru",
+    "status": "legacy",
+    "subrepo": "contrib",
+    "version": "0~20110520.1+hge4354",
+    "visiblename": "openlugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7.1",
+    "repo": "raspbian_testing",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data",
+      "lugaru-debuginfo",
+      "lugaru-debugsource"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "survolog@yandex.ru"
+    ],
+    "origversion": "1.2-3",
+    "repo": "rosa_2019_1",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "Ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
       "Games/Other"
     ],
     "licenses": [
@@ -1147,6 +1147,26 @@
     "summary": "Debug symbols for lugaru",
     "version": "1.2",
     "visiblename": "lugaru-dbginfo"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7.1",
+    "repo": "ubuntu_26_10",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "1.2",
+    "visiblename": "lugaru"
   },
   {
     "binname": "lugaru",
@@ -1383,26 +1403,6 @@
     "srcname": "lugaru",
     "status": "newest",
     "subrepo": "resolute/universe",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7.1",
-    "repo": "ubuntu_26_10",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "stonking/universe",
     "version": "1.2",
     "visiblename": "lugaru"
   },
