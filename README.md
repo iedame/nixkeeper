@@ -3,9 +3,21 @@
 [![CI: tests and lint](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml)
 [![Data: daily sync](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml/badge.svg)](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml)
 [![Latest release](https://img.shields.io/github/v/release/iedame/nixkeeper)](https://github.com/iedame/nixkeeper/releases/latest)
+[![Dashboard](https://img.shields.io/badge/dashboard-live-8250df)](https://iedame.github.io/nixkeeper/)
 
 Health dashboard for the nixpkgs packages you maintain: new releases, build
 and update failures, and vulnerabilities, in one place.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/desktop-dark.png">
+    <img src="assets/desktop-light.png" width="70%" alt="The nixkeeper dashboard on a desktop: a table of packages with their nixpkgs version, open PRs and issues, build and update failures, and one package's update panel open">
+  </picture>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/mobile-dark.png">
+    <img src="assets/mobile-light.png" width="22%" alt="The same dashboard on a phone: each package as a card">
+  </picture>
+</p>
 
 For each package it tracks, nixkeeper shows on one static page (`docs/`):
 
@@ -50,6 +62,8 @@ just that list, to share with the people it's for.
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates)
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/` from the `data` branch
+- `assets/`: screenshots of the page, for this README (light and dark,
+  desktop and phone) and the repository's social preview
 - `.github/workflows/`:
   - `ci.yml`, **CI: tests and lint**: checks nixkeeper's own code on every
     push and PR
