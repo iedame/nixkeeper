@@ -27,6 +27,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - Hourly PR check (`nix run .#pr-check`): the update PRs of every outdated
   package, open and merged into master, so those badges show within the hour.
   One GitHub request; it commits only when a badge changes.
+- Release workflow ("Release: publish from tag", `release.yml`): pushing a
+  version tag publishes a GitHub Release with that version's changelog
+  section as notes, after checking the tag against `pyproject.toml` and the
+  changelog and running the flake checks.
 
 ### Changed
 

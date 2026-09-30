@@ -1,0 +1,55 @@
+name: "Release: publish from tag"
+
+# Publishes a GitHub Release when a version tag (v0.4.0) is pushed, with that
+# version's CHANGELOG.md section as its notes. First checks that the tag
+# matches pyproject.toml's version and has a changelog section, and that the
+# flake checks pass on the tagged commit: otherwise nothing is published.
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write  # create the release
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Check the tag against pyproject.toml and CHANGELOG.md
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          version="${TAG#v}"
+          declared=$(sed -n 's/^version = "\(.*\)"$/\1/p' pyproject.toml)
+          if [ "$declared" != "$version" ]; then
+            echo "::error::Tag $TAG, but pyproject.toml's version is $declared: bump it (or tag v$declared)"
+            exit 1
+          fi
+          # The section's body: from its "## [x.y.z] - date" heading to the
+          # next version's heading, or to the link definitions at the end.
+          awk -v v="$version" '
+            index($0, "## [" v "]") == 1 { found = 1; next }
+            found && (/^## \[/ || /^\[[^]]*\]: /) { exit }
+            found { print }
+          ' CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          if ! grep -q '[^[:space:]]' "$RUNNER_TEMP/notes.md"; then
+            echo "::error::CHANGELOG.md has no section for $version (\"## [$version] - date\") or it's empty"
+            exit 1
+          fi
+          echo "Release notes:"
+          cat "$RUNNER_TEMP/notes.md"
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Run flake checks on the tagged commit
+        run: nix flake check
+
+      - name: Publish the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md"

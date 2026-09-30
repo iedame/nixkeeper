@@ -51,6 +51,8 @@ just that list, to share with the people it's for.
   - `data-daily.yml`, **Data: daily sync**: updates all package data
   - `data-hourly.yml`, **Data: hourly updates (frequent packages, update PRs)**:
     the frequent update checks and outdated packages' update PRs
+  - `release.yml`, **Release: publish from tag**: a GitHub Release for each
+    version tag (see [Releasing](#releasing))
 
 ## Commands
 
@@ -65,6 +67,19 @@ nix eval --json -f package-lists                             # what the lists ev
 ```
 
 New files must be `git add`ed before Nix sees them.
+
+## Releasing
+
+1. Set the new `version` in `pyproject.toml` (the flake reads it from there),
+   and turn `## [Unreleased]` in `CHANGELOG.md` into `## [x.y.z] - date`
+   (with a fresh `## [Unreleased]` above it, and its compare link below).
+2. Commit and push `main`; wait for CI.
+3. Tag that commit `vx.y.z` and push the tag.
+
+The release workflow checks that the tag matches `pyproject.toml` and has a
+changelog section, runs the flake checks, and publishes the GitHub Release
+with that section as its notes. If a check fails, nothing is published: fix,
+move the tag (`git tag -f`, `git push -f origin vx.y.z`) and it runs again.
 
 ## Running elsewhere
 
