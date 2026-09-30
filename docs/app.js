@@ -393,12 +393,12 @@ function render(list) {
     tr.className = 'row';
     tr.tabIndex = 0;
     tr.innerHTML = `
-      <td><div class="pkg-name"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}"${waitingForChannel(pkg) ? ' title="Update merged: on master, waiting for nixos-unstable"' : ''}></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
-      <td class="ver mono">${verCell}</td>
-      <td>${githubLinks(pkg)}</td>
-      <td>${buildCell(pkg)}</td>
-      <td>${updateCell(pkg)}</td>
-      <td><span class="chev">▸</span></td>
+      <td class="c-name"><div class="pkg-name"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}"${waitingForChannel(pkg) ? ' title="Update merged: on master, waiting for nixos-unstable"' : ''}></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
+      <td class="c-ver ver mono">${verCell}</td>
+      <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
+      <td class="c-build">${buildCell(pkg)}</td>
+      <td class="c-update">${updateCell(pkg)}</td>
+      <td class="c-chev"><span class="chev">▸</span></td>
     `;
 
     const detail = document.createElement('tr');
@@ -467,9 +467,10 @@ const staleText = (info, what) =>
 const staleNote = (info, what, after) =>
   info ? `<div class="stale-note">⚠ ${escapeHtml(staleText(info, what))}. ${after}</div>` : '';
 
-function failureButton(kind, dot, text, extra = '', stale = null) {
-  return `<button class="failure-btn${dot === 'missing' ? ' failing' : ''}" type="button" data-kind="${kind}" ${extra}>
-    <span class="status-dot ${dot}"></span>${text}${
+// quiet: nothing that needs attention, so the phone layout leaves it out.
+function failureButton(kind, dot, text, extra = '', stale = null, quiet = false) {
+  return `<button class="failure-btn${dot === 'missing' ? ' failing' : ''}" type="button" data-kind="${kind}"${quiet && !stale ? ' data-quiet' : ''} ${extra}>
+    <span class="status-dot ${dot}"></span><span class="cell-label">${kind}:</span>${text}${
       stale
         ? ` <span class="stale-tag" title="${escapeHtml(staleText(stale, 'Not refreshed'))}">not refreshed</span>`
         : ''
@@ -484,39 +485,41 @@ function hydraBuildsIt(pkg) {
 
 function buildCell(pkg) {
   if (!pkg.builds) return '<span class="failure-na" title="Not in nixpkgs">—</span>';
-  const button = (dot, text) =>
+  const button = (dot, text, quiet = false) =>
     failureButton(
       'build',
       dot,
       text,
       'aria-expanded="false" title="Show Hydra builds"',
       notRefreshed(pkg, 'builds'),
+      quiet,
     );
   if (failedBuilds(pkg).length) return button('missing', 'failure reported');
   // Known failures: shown, but not counted as failed.
   if (buildsWith(pkg, 'broken').length) return button('warn', 'marked broken');
-  if (!hydraBuildsIt(pkg)) return button('neutral', 'not built by Hydra');
-  return button('ok', 'none reported');
+  if (!hydraBuildsIt(pkg)) return button('neutral', 'not built by Hydra', true);
+  return button('ok', 'none reported', true);
 }
 
 // nixpkgs-update's latest attempt. `update` is null when the bot never tried
 // and missing for packages not in nixpkgs.
 function updateCell(pkg) {
   if (pkg.update === undefined) return '<span class="failure-na" title="Not in nixpkgs">—</span>';
-  const button = (dot, text) =>
+  const button = (dot, text, quiet = false) =>
     failureButton(
       'update',
       dot,
       text,
       'aria-expanded="false" title="Show the latest nixpkgs-update attempt"',
       notRefreshed(pkg, 'update'),
+      quiet,
     );
   if (pkg.updateFailure) return button('missing', 'failure reported');
   // The bot's last attempt failed, but nixpkgs has moved on since: not a
   // failure anymore, though the next attempt may well break the same way.
   if (pkg.update?.outcome === 'superseded') return button('neutral', 'superseded');
-  if (pkg.update === null) return button('neutral', 'not attempted');
-  return button('ok', 'none reported');
+  if (pkg.update === null) return button('neutral', 'not attempted', true);
+  return button('ok', 'none reported', true);
 }
 
 const prLink = (n, text) =>

@@ -22,6 +22,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - A security policy (`.github/SECURITY.md`): report vulnerabilities privately
   through GitHub's private vulnerability reporting.
 
+### Changed
+
+- The page fits narrow screens without scrolling sideways. On phones and
+  windows up to 940px wide, each package is a card: its name and platforms,
+  then its version and badges, then only what needs attention (build or
+  update failures, open PRs and issues). The panels wrap to fit. Up to
+  1180px, the table's version column wraps instead of widening the table.
+
 ### Security
 
 - The workflows' actions are pinned to commits (`nix-installer-action` ran
