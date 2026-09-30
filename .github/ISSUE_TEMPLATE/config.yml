@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security problem
+    url: https://github.com/iedame/nixkeeper/security/advisories/new
+    about: Privately, as the security policy (SECURITY.md) asks; not in a public issue.
+  - name: How to read the page
+    url: https://github.com/iedame/nixkeeper#reading-the-page
+    about: What each status, badge and column means.
