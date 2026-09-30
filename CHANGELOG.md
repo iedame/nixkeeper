@@ -11,6 +11,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Ignore rules for update attempts (`package-lists/ignored-updates.nix`): a
+  version nixpkgs-update tried and failed that shouldn't count, such as one
+  upstream never really released. Its failure shows as superseded, with the
+  rule's reason; a failure at any other version still counts. The sync notes
+  when a rule no longer matches the bot's latest attempt. First one: xskat's
+  4.0-9.
+
 - Update checks for unstable versions (`github` + `branch` in
   `package-lists/update-checks.nix`): for a package whose nixpkgs version is
   `…-unstable-YYYY-MM-DD`, the commits since then on the branch it follows.

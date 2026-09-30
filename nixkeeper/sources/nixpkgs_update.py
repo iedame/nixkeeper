@@ -135,11 +135,24 @@ def recheck_superseded(rows):
             row["updateFailure"] = False
 
 
-def add_attempts(rows, nixpkgs, previous, now):
+def ignored(attempt, rules):
+    """The reason a manual rule gives for ignoring the version a failed
+    attempt tried to update to, or None. rules: {version: reason}, the row's
+    entry in package-lists/ignored-updates.nix."""
+    if attempt.get("outcome") != "failed":
+        return None
+    return (rules or {}).get(attempt.get("to"))
+
+
+def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None):
     """Give every row in nixpkgs the bot's latest attempt ("update", None if
     it never tried) and whether that failed ("updateFailure"). With several
     attrs, the most recently attempted one counts. A row whose lookup fails
-    keeps the previous run's result and is marked as not refreshed."""
+    keeps the previous run's result and is marked as not refreshed.
+    ignored_updates: {row name: {version: reason}}, versions whose failed
+    attempts count as superseded (a version that was never really released,
+    say)."""
+    ignored_updates = ignored_updates or {}
     print("Checking nixpkgs-update logs...", file=sys.stderr)
     before = {row["name"]: row for row in previous["packages"]}
     failed = consecutive = 0
@@ -174,6 +187,15 @@ def add_attempts(rows, nixpkgs, previous, now):
         )
         if where:
             attempt.update(outcome="superseded", supersededOn=where)
+        elif attempt and (reason := ignored(attempt, ignored_updates.get(row["name"]))):
+            attempt.update(outcome="superseded", supersededOn="ignored", reason=reason)
+        for version in ignored_updates.get(row["name"]) or {}:
+            if not attempt or attempt.get("to") != version:
+                print(
+                    f"::notice::ignoredUpdates.{row['name']}: the bot's latest "
+                    f"attempt isn't at {version} anymore; the rule can go",
+                    file=sys.stderr,
+                )
         row["update"] = attempt
         row["updateFailure"] = bool(attempt and attempt["outcome"] == "failed")
     if failed:

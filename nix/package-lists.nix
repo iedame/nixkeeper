@@ -141,6 +141,25 @@ let
       else
         [ (at "needs github + tags, github + branch, or url + pattern") ]
     );
+
+  # ignoredUpdates.<name> = { "<version>" = "why"; }.
+  ignoredProblems =
+    lists: name: rules:
+    let
+      at = reason: {
+        entry = "ignoredUpdates.${name}";
+        inherit reason;
+      };
+    in
+    lib.optional (!isTracked lists name) (at "not a tracked package (use its row name, the attribute)")
+    ++ (
+      if !builtins.isAttrs rules || rules == { } then
+        [ (at ''must be { "<version>" = "why it's ignored"; }'') ]
+      else
+        map (v: at ''"${v}" needs a reason: a non-empty string'') (
+          builtins.filter (v: !(builtins.isString rules.${v} && rules.${v} != "")) (builtins.attrNames rules)
+        )
+    );
 in
 rec {
   # [ { entry, reason } ] for everything the sync would get wrong.
@@ -183,7 +202,8 @@ rec {
       entry = e;
       reason = reason e;
     }) unknown
-    ++ lib.concatLists (lib.mapAttrsToList (checkProblems lists) (lists.updateChecks or { }));
+    ++ lib.concatLists (lib.mapAttrsToList (checkProblems lists) (lists.updateChecks or { }))
+    ++ lib.concatLists (lib.mapAttrsToList (ignoredProblems lists) (lists.ignoredUpdates or { }));
 
   # A derivation that builds only if lists has no problems. The update checks'
   # patterns are Python regexes, so Python compiles them.

@@ -537,13 +537,16 @@ const prLink = (n, text) =>
 const UPDATE_OUTCOME = {
   failed: { dot: 'missing', text: () => 'failed' },
   // nixpkgs has moved on since the attempt (updated another way): in the
-  // channel, or merged on master and not in the channel yet.
+  // channel, or merged on master and not in the channel yet. Or a manual rule
+  // (package-lists/ignored-updates.nix) ignores the version it tried.
   superseded: {
     dot: 'neutral',
     text: (u, pkg) =>
-      u.supersededOn === 'master'
-        ? `failed, but master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (merged, waiting for nixos-unstable)`
-        : `failed, but nixpkgs has moved on to <span class="mono">${escapeHtml(pkg.nixVersion)}</span> since`,
+      u.supersededOn === 'ignored'
+        ? `failed trying <span class="mono">${escapeHtml(u.to)}</span>, a version ignored by a manual rule: ${escapeHtml(u.reason)}`
+        : u.supersededOn === 'master'
+          ? `failed, but master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (merged, waiting for nixos-unstable)`
+          : `failed, but nixpkgs has moved on to <span class="mono">${escapeHtml(pkg.nixVersion)}</span> since`,
   },
   prOpened: { dot: 'ok', text: (u) => `opened ${prLink(u.pr, `PR #${u.pr} ↗`)}` },
   prExists: {

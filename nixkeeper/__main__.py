@@ -28,7 +28,9 @@ def main():
     in_nixpkgs = {a for row in index_rows for a in row["attrs"] if a in nixpkgs}
     broken = nixpkgs_source.broken(in_nixpkgs, revision)
     hydra.add_builds(index_rows, nixpkgs, previous, now, broken)
-    nixpkgs_update.add_attempts(index_rows, nixpkgs, previous, now)
+    nixpkgs_update.add_attempts(
+        index_rows, nixpkgs, previous, now, lists.get("ignoredUpdates") or {}
+    )
     github.add_counts(index_rows)  # and open update PRs
     outdated = [row for row in index_rows if is_outdated(row)]
     github.add_update_prs(outdated, open_prs=False)  # merged into master

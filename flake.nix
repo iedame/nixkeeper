@@ -177,6 +177,12 @@
                       pattern = "([0-9.]+)";
                     };
                   };
+                  ignoredUpdates = {
+                    opentyrian."2.1.1" = "never released"; # fine
+                    hello."1.0" = "not tracked";
+                    wesnoth."1.18.9" = "";
+                    lincity = { };
+                  };
                 }
               );
               expected = [
@@ -190,6 +196,9 @@
                 "updateChecks.hello" # no tags
                 "updateChecks.hello" # unknown field "tag"
                 "updateChecks.lincity" # url isn't http(s); tracked via iedame
+                "ignoredUpdates.hello" # not tracked
+                "ignoredUpdates.lincity" # no versions
+                "ignoredUpdates.wesnoth" # empty reason
               ];
               # Named lists: on two lists is fine, twice in one isn't, and
               # "maintained" is taken.
