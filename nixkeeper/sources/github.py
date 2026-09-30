@@ -1,5 +1,6 @@
 """GitHub: open nixpkgs PR / issue counts and the update PRs among them, via
-batched GraphQL searches; the status issue; tags for update checks."""
+batched GraphQL searches; the status issue; tags and branch commits for the
+update checks."""
 
 import json
 import os
