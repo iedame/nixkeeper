@@ -16,7 +16,9 @@ jobs:
   release:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false  # never pushes; gh gets its own token
 
       - name: Check the tag against pyproject.toml and CHANGELOG.md
         env:
@@ -43,7 +45,7 @@ jobs:
           cat "$RUNNER_TEMP/notes.md"
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
       - name: Run flake checks on the tagged commit
         run: nix flake check

@@ -17,6 +17,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   it; something else did (a dependency, the toolchain). Platforms that didn't
   build because of a dependency, or didn't finish, now show when they last
   succeeded too.
+- Dependabot (`.github/dependabot.yml`) proposes updates to the actions the
+  workflows use, weekly.
+
+### Security
+
+- The workflows' actions are pinned to commits (`nix-installer-action` ran
+  from its `main` branch), so a change upstream can't run with the workflows'
+  write access unreviewed. CI only gets read access, and CI and the release
+  workflow don't keep the token in the checkout.
+- Links on the page from data (homepages, update-check pages, logs, PRs,
+  sources) are shown only if they're web addresses (`https:` or `http:`): a
+  `javascript:` link, which escaping doesn't stop, isn't linked.
 
 ## [0.4.0] - 2026-09-29
 

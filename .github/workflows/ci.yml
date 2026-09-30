@@ -8,14 +8,19 @@ on:
     branches: [main]  # not data: the daily sync pushes there
   pull_request:
 
+permissions:
+  contents: read  # only reads the code, whatever the repository's default
+
 jobs:
   tests-and-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false  # never pushes
 
       - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@main
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
       - name: Run flake checks (builds nixkeeper, which runs its tests)
         run: nix flake check

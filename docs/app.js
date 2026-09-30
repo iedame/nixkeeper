@@ -149,7 +149,7 @@ function waitingForChannel(pkg) {
 function prBadge(pkg) {
   const badge = (cls, text, title, pr) =>
     pr
-      ? ` <a class="badge ${cls}" href="${escapeHtml(pr.url)}" target="_blank" rel="noopener" title="${escapeHtml(title)}">${text}</a>`
+      ? ` <a class="badge ${cls}" href="${href(pr.url)}" target="_blank" rel="noopener" title="${escapeHtml(title)}">${text}</a>`
       : ` <span class="badge ${cls}" title="${escapeHtml(title)}">${text}</span>`;
   if (waitingForChannel(pkg)) {
     const pr = pkg.masterPR;
@@ -340,6 +340,22 @@ function renderLists() {
         <b>${count}</b> ${escapeHtml(name)}</button>`;
     })
     .join('')}`;
+}
+
+// A link from data, only if it's a web address: escaping stops markup, but
+// not a javascript: link, which would run when clicked. '' otherwise.
+function safeUrl(url) {
+  try {
+    const { protocol } = new URL(url);
+    return protocol === 'https:' || protocol === 'http:' ? url : '';
+  } catch {
+    return '';
+  }
+}
+
+// safeUrl, ready for an href.
+function href(url) {
+  return escapeHtml(safeUrl(url));
 }
 
 function escapeHtml(s) {
@@ -552,8 +568,8 @@ function fillUpdate(pkg, el) {
     </div></div>
     ${u.excerpt?.length ? `<pre class="log-excerpt mono">${u.excerpt.map(escapeHtml).join('\n')}</pre>` : ''}
     <div class="detail-row">
-      <a class="files-link" href="${escapeHtml(u.log)}" target="_blank" rel="noopener">log ↗</a>
-      <a class="files-link" href="${escapeHtml(dir)}" target="_blank" rel="noopener">all attempts ↗</a>
+      <a class="files-link" href="${href(u.log)}" target="_blank" rel="noopener">log ↗</a>
+      <a class="files-link" href="${href(dir)}" target="_blank" rel="noopener">all attempts ↗</a>
     </div>`;
 }
 
@@ -593,7 +609,7 @@ function buildLine(pkg, b) {
     links = `<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>${since}`;
   } else if (b.status === 'broken') {
     // Where to fix it: the package's source, at the line nixpkgs points to.
-    links = `${since}${pkg.source ? `<a class="files-link" href="${escapeHtml(pkg.source)}" target="_blank" rel="noopener">source ↗</a>` : ''}`;
+    links = `${since}${safeUrl(pkg.source) ? `<a class="files-link" href="${href(pkg.source)}" target="_blank" rel="noopener">source ↗</a>` : ''}`;
   } else if (b.build) {
     links = `<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>`;
   }
@@ -682,13 +698,14 @@ async function fillDetail(pkg, el) {
   }
 
   const others = entries.filter((e) => e.repo !== NIX_REPO);
-  const homepage = pkg.homepage;
+  const homepage = safeUrl(pkg.homepage);
 
   const st = computeStatus(pkg);
   const up = pkg.upstream;
   // "in the wesnoth/wesnoth tags" or "on www.barebones.com".
+  const upLabel = up ? escapeHtml(up.label || `${up.repo} tags`) : '';
   const upLink = up
-    ? `${up.repo ? 'in the' : 'on'} <a class="files-link" href="${escapeHtml(up.url)}" target="_blank" rel="noopener">${escapeHtml(up.label || `${up.repo} tags`)} ↗</a>`
+    ? `${up.repo ? 'in the' : 'on'} ${safeUrl(up.url) ? `<a class="files-link" href="${href(up.url)}" target="_blank" rel="noopener">${upLabel} ↗</a>` : upLabel}`
     : '';
   const since = pkg.outdatedSince
     ? ` — outdated since ${escapeHtml(longDate(pkg.outdatedSince))} (${daysText(pkg.outdatedSince)})`
@@ -735,7 +752,7 @@ async function fillDetail(pkg, el) {
       onMaster(pkg)
         ? `<div class="master-note">master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (${[
             pkg.masterPR &&
-              `merged in <a class="files-link" href="${escapeHtml(pkg.masterPR.url)}" target="_blank" rel="noopener">#${pkg.masterPR.number} ↗</a>`,
+              `merged in <a class="files-link" href="${href(pkg.masterPR.url)}" target="_blank" rel="noopener">#${pkg.masterPR.number} ↗</a>`,
             pkg.master ? 'built by Hydra' : 'not built by Hydra yet',
           ]
             .filter(Boolean)
@@ -762,8 +779,8 @@ async function fillDetail(pkg, el) {
         : ''
     }
     <div class="detail-row">
-      ${homepage ? `<a class="files-link" href="${escapeHtml(homepage)}" target="_blank" rel="noopener">Homepage →</a>` : ''}
-      ${pkg.source ? `<a class="files-link" href="${escapeHtml(pkg.source)}" target="_blank" rel="noopener" title="Where nixpkgs defines this package">${escapeHtml(sourceFileName(pkg.source))} ↗</a>` : ''}
+      ${homepage ? `<a class="files-link" href="${href(homepage)}" target="_blank" rel="noopener">Homepage →</a>` : ''}
+      ${safeUrl(pkg.source) ? `<a class="files-link" href="${href(pkg.source)}" target="_blank" rel="noopener" title="Where nixpkgs defines this package">${escapeHtml(sourceFileName(pkg.source))} ↗</a>` : ''}
       ${pkg.project ? `<a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>` : ''}
     </div>
   `;
