@@ -1,388 +1,101 @@
 [
   {
+    "binname": "freeciv-gtk3",
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
+    "origversion": "3.2.6-1",
+    "repo": "manjaro_testing",
     "srcname": "freeciv",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.1.5",
-    "visiblename": "freeciv"
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK3 client)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-gtk3"
   },
   {
+    "binname": "freeciv-qt",
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
-    "srcname": "freeciv_qt",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.1.5",
-    "visiblename": "freeciv"
-  },
-  {
-    "binname": "freeciv-server",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
+    "origversion": "3.2.6-1",
+    "repo": "manjaro_testing",
     "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (server)",
-    "version": "3.0.4",
-    "visiblename": "freeciv-server"
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (Qt client)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-qt"
   },
   {
-    "binname": "freeciv",
+    "binname": "freeciv-gtk4",
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
+    "origversion": "3.2.6-1",
+    "repo": "manjaro_testing",
     "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (meta package)",
-    "version": "3.0.4",
-    "visiblename": "freeciv"
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK4 client)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-gtk4"
   },
   {
-    "binname": "freeciv-doc",
+    "binname": "freeciv-qt",
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
+    "origversion": "3.2.6-1",
+    "repo": "manjaro_unstable",
     "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (documentation) (documentation)",
-    "version": "3.0.4",
-    "visiblename": "freeciv-doc"
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (Qt client)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-qt"
   },
   {
-    "binname": "freeciv-common-client",
+    "binname": "freeciv-common",
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
+    "origversion": "3.2.6-1",
+    "repo": "manjaro_unstable",
     "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (common files for every clients)",
-    "version": "3.0.4",
-    "visiblename": "freeciv-common-client"
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (common files)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-common"
   },
   {
-    "binname": "freeciv-data",
+    "binname": "freeciv-gtk4",
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
+    "origversion": "3.2.6-1",
+    "repo": "manjaro_unstable",
     "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (data files for client and server)",
-    "version": "3.0.4",
-    "visiblename": "freeciv-data"
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK4 client)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-gtk4"
   },
   {
-    "binname": "freeciv-client-sdl2",
+    "binname": "freeciv-gtk3",
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
+    "origversion": "3.2.6-1",
+    "repo": "manjaro_unstable",
     "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (sdl2 client)",
-    "version": "3.0.4",
-    "visiblename": "freeciv-client-sdl2"
-  },
-  {
-    "binname": "freeciv-client-qt",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (qt client)",
-    "version": "3.0.4",
-    "visiblename": "freeciv-client-qt"
-  },
-  {
-    "binname": "freeciv-client-gtk3",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (gtk3.22 client)",
-    "version": "3.0.4",
-    "visiblename": "freeciv-client-gtk3"
-  },
-  {
-    "binname": "freeciv-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package freeciv",
-    "version": "3.0.4",
-    "visiblename": "freeciv-lang"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
-    "srcname": "freeciv_sdl2",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.1.5",
-    "visiblename": "freeciv"
-  },
-  {
-    "binname": "libfreeciv-static",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.4-r1",
-    "repo": "alpine_3_17",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (static libs for ai modules)",
-    "version": "3.0.4",
-    "visiblename": "libfreeciv-static"
-  },
-  {
-    "binname": "freeciv",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (meta package)",
-    "version": "3.0.7",
-    "visiblename": "freeciv"
-  },
-  {
-    "binname": "freeciv-client-gtk3",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (gtk3.22 client)",
-    "version": "3.0.7",
-    "visiblename": "freeciv-client-gtk3"
-  },
-  {
-    "binname": "freeciv-client-qt",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (qt client)",
-    "version": "3.0.7",
-    "visiblename": "freeciv-client-qt"
-  },
-  {
-    "binname": "freeciv-client-sdl2",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (sdl2 client)",
-    "version": "3.0.7",
-    "visiblename": "freeciv-client-sdl2"
-  },
-  {
-    "binname": "freeciv-common-client",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (common files for every clients)",
-    "version": "3.0.7",
-    "visiblename": "freeciv-common-client"
-  },
-  {
-    "binname": "freeciv-data",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (data files for client and server)",
-    "version": "3.0.7",
-    "visiblename": "freeciv-data"
-  },
-  {
-    "binname": "freeciv-doc",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (documentation) (documentation)",
-    "version": "3.0.7",
-    "visiblename": "freeciv-doc"
-  },
-  {
-    "binname": "freeciv-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Languages for package freeciv",
-    "version": "3.0.7",
-    "visiblename": "freeciv-lang"
-  },
-  {
-    "binname": "freeciv-server",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (server)",
-    "version": "3.0.7",
-    "visiblename": "freeciv-server"
-  },
-  {
-    "binname": "libfreeciv-static",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.0.7-r0",
-    "repo": "alpine_3_18",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (static libs for ai modules)",
-    "version": "3.0.7",
-    "visiblename": "libfreeciv-static"
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK3 client)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-gtk3"
   },
   {
     "binname": "freeciv-common",
@@ -399,6 +112,485 @@
     "visiblename": "freeciv-common"
   },
   {
+    "binname": "freeciv-gtk3",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "3.2.6-1",
+    "repo": "parabola",
+    "srcname": "freeciv",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK3 client)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-gtk3"
+  },
+  {
+    "binname": "freeciv-qt",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "3.2.6-1",
+    "repo": "parabola",
+    "srcname": "freeciv",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (Qt client)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-qt"
+  },
+  {
+    "licenses": [
+      "GPL-2.0"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.1.1",
+    "visiblename": "freeciv"
+  },
+  {
+    "licenses": [
+      "GPL-2.0"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "freeciv_qt",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.1.1",
+    "visiblename": "freeciv"
+  },
+  {
+    "licenses": [
+      "GPL-2.0"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "freeciv_sdl2",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.1.1",
+    "visiblename": "freeciv"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.1.3",
+    "visiblename": "freeciv"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "freeciv_qt",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.1.3",
+    "visiblename": "freeciv"
+  },
+  {
+    "binname": "freeciv-server",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (server)",
+    "version": "3.0.4",
+    "visiblename": "freeciv-server"
+  },
+  {
+    "binname": "freeciv",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (meta package)",
+    "version": "3.0.4",
+    "visiblename": "freeciv"
+  },
+  {
+    "binname": "freeciv-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (documentation) (documentation)",
+    "version": "3.0.4",
+    "visiblename": "freeciv-doc"
+  },
+  {
+    "binname": "freeciv-common-client",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (common files for every clients)",
+    "version": "3.0.4",
+    "visiblename": "freeciv-common-client"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "freeciv_sdl2",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.1.3",
+    "visiblename": "freeciv"
+  },
+  {
+    "binname": "freeciv-data",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (data files for client and server)",
+    "version": "3.0.4",
+    "visiblename": "freeciv-data"
+  },
+  {
+    "binname": "freeciv-client-sdl2",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (sdl2 client)",
+    "version": "3.0.4",
+    "visiblename": "freeciv-client-sdl2"
+  },
+  {
+    "binname": "freeciv-client-qt",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (qt client)",
+    "version": "3.0.4",
+    "visiblename": "freeciv-client-qt"
+  },
+  {
+    "binname": "freeciv-client-gtk3",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (gtk3.22 client)",
+    "version": "3.0.4",
+    "visiblename": "freeciv-client-gtk3"
+  },
+  {
+    "binname": "freeciv-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package freeciv",
+    "version": "3.0.4",
+    "visiblename": "freeciv-lang"
+  },
+  {
+    "binname": "libfreeciv-static",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.4-r1",
+    "repo": "alpine_3_17",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (static libs for ai modules)",
+    "version": "3.0.4",
+    "visiblename": "libfreeciv-static"
+  },
+  {
+    "binname": "freeciv",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (meta package)",
+    "version": "3.0.7",
+    "visiblename": "freeciv"
+  },
+  {
+    "binname": "freeciv-client-gtk3",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (gtk3.22 client)",
+    "version": "3.0.7",
+    "visiblename": "freeciv-client-gtk3"
+  },
+  {
+    "binname": "freeciv-client-qt",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (qt client)",
+    "version": "3.0.7",
+    "visiblename": "freeciv-client-qt"
+  },
+  {
+    "binname": "freeciv-client-sdl2",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (sdl2 client)",
+    "version": "3.0.7",
+    "visiblename": "freeciv-client-sdl2"
+  },
+  {
+    "binname": "freeciv-common-client",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (common files for every clients)",
+    "version": "3.0.7",
+    "visiblename": "freeciv-common-client"
+  },
+  {
+    "binnames": [
+      "freeciv-common",
+      "freeciv-gtk",
+      "freeciv-qt"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "3.1.2-2.fc41",
+    "repo": "fedora_41",
+    "srcname": "freeciv",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "A multi-player strategy game",
+    "version": "3.1.2",
+    "visiblename": "freeciv"
+  },
+  {
+    "binname": "freeciv-data",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (data files for client and server)",
+    "version": "3.0.7",
+    "visiblename": "freeciv-data"
+  },
+  {
+    "binname": "freeciv-doc",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (documentation) (documentation)",
+    "version": "3.0.7",
+    "visiblename": "freeciv-doc"
+  },
+  {
+    "binname": "freeciv-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Languages for package freeciv",
+    "version": "3.0.7",
+    "visiblename": "freeciv-lang"
+  },
+  {
+    "binname": "freeciv-server",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (server)",
+    "version": "3.0.7",
+    "visiblename": "freeciv-server"
+  },
+  {
+    "binname": "libfreeciv-static",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.0.7-r0",
+    "repo": "alpine_3_18",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (static libs for ai modules)",
+    "version": "3.0.7",
+    "visiblename": "libfreeciv-static"
+  },
+  {
     "binname": "freeciv",
     "licenses": [
       "GPL-2.0-or-later"
@@ -482,6 +674,21 @@
     "summary": "Free and Open Source empire-building strategy game (common files for every clients)",
     "version": "3.0.9",
     "visiblename": "freeciv-common-client"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.1.5",
+    "visiblename": "freeciv"
   },
   {
     "binname": "freeciv-data",
@@ -1062,23 +1269,6 @@
     "visiblename": "freeciv-data"
   },
   {
-    "binname": "freeciv-client-sdl2",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "3.2.4-r0",
-    "repo": "alpine_edge",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Free and Open Source empire-building strategy game (sdl2 client)",
-    "version": "3.2.4",
-    "visiblename": "freeciv-client-sdl2"
-  },
-  {
     "binname": "freeciv-doc",
     "licenses": [
       "GPL-2.0-or-later"
@@ -1589,6 +1779,23 @@
     "visiblename": "freeciv-client-qt"
   },
   {
+    "binname": "freeciv-client-sdl2",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "3.2.4-r0",
+    "repo": "alpine_edge",
+    "srcname": "freeciv",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Free and Open Source empire-building strategy game (sdl2 client)",
+    "version": "3.2.4",
+    "visiblename": "freeciv-client-sdl2"
+  },
+  {
     "binname": "freeciv-common-client",
     "licenses": [
       "GPL-2.0-or-later"
@@ -1672,6 +1879,21 @@
     "summary": "Free and Open Source empire-building strategy game (server)",
     "version": "3.2.4",
     "visiblename": "freeciv-server"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "freeciv_qt",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.1.5",
+    "visiblename": "freeciv"
   },
   {
     "binname": "libfreeciv-static",
@@ -1707,7 +1929,7 @@
     "visiblename": "freeciv"
   },
   {
-    "binname": "freeciv-gtk3",
+    "binname": "freeciv-common",
     "licenses": [
       "GPL-2.0-or-later"
     ],
@@ -1716,9 +1938,9 @@
     "srcname": "freeciv",
     "status": "newest",
     "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK3 client)",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (common files)",
     "version": "3.2.6",
-    "visiblename": "freeciv-gtk3"
+    "visiblename": "freeciv-common"
   },
   {
     "binname": "freeciv-qt",
@@ -1735,20 +1957,6 @@
     "visiblename": "freeciv-qt"
   },
   {
-    "binname": "freeciv-common",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "arch",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (common files)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-common"
-  },
-  {
     "binname": "freeciv-gtk4",
     "licenses": [
       "GPL-2.0-or-later"
@@ -1761,6 +1969,20 @@
     "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK4 client)",
     "version": "3.2.6",
     "visiblename": "freeciv-gtk4"
+  },
+  {
+    "binname": "freeciv-gtk3",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "3.2.6-1",
+    "repo": "arch",
+    "srcname": "freeciv",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK3 client)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-gtk3"
   },
   {
     "binname": "freeciv",
@@ -1815,29 +2037,6 @@
   },
   {
     "binnames": [
-      "freeciv-common",
-      "freeciv-gtk",
-      "freeciv-qt",
-      "freeciv-debuginfo",
-      "freeciv-debugsource"
-    ],
-    "categories": [
-      "Unspecified"
-    ],
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.0.10-1.fc39",
-    "repo": "fedora_39",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "updates",
-    "summary": "A multi-player strategy game",
-    "version": "3.0.10",
-    "visiblename": "freeciv"
-  },
-  {
-    "binnames": [
       "freeciv",
       "freeciv-client-extras",
       "freeciv-client-gtk",
@@ -1864,6 +2063,27 @@
     "status": "outdated",
     "subrepo": "bookworm/main",
     "version": "3.0.6",
+    "visiblename": "freeciv"
+  },
+  {
+    "binnames": [
+      "freeciv-common",
+      "freeciv-gtk",
+      "freeciv-qt"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "3.1.4-2.fc42",
+    "repo": "fedora_42",
+    "srcname": "freeciv",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "A multi-player strategy game",
+    "version": "3.1.4",
     "visiblename": "freeciv"
   },
   {
@@ -1954,27 +2174,6 @@
     "status": "outdated",
     "subrepo": "trixie/main",
     "version": "3.1.4",
-    "visiblename": "freeciv"
-  },
-  {
-    "binnames": [
-      "freeciv-common",
-      "freeciv-gtk",
-      "freeciv-qt"
-    ],
-    "categories": [
-      "Unspecified"
-    ],
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.1-1.fc41",
-    "repo": "fedora_41",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "subrepo": "updates",
-    "summary": "A multi-player strategy game",
-    "version": "3.2.1",
     "visiblename": "freeciv"
   },
   {
@@ -2131,12 +2330,26 @@
     "visiblename": "freeciv"
   },
   {
-    "origversion": null,
-    "repo": "homebrew",
+    "binnames": [
+      "freeciv-common",
+      "freeciv-gtk",
+      "freeciv-qt",
+      "freeciv-debuginfo",
+      "freeciv-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "3.0.10-1.fc39",
+    "repo": "fedora_39",
     "srcname": "freeciv",
-    "status": "rolling",
-    "summary": "Free and Open Source empire-building strategy game",
-    "version": "HEAD",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "A multi-player strategy game",
+    "version": "3.0.10",
     "visiblename": "freeciv"
   },
   {
@@ -2197,34 +2410,13 @@
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "origversion": "3.1.2-2.fc41",
+    "origversion": "3.2.1-1.fc41",
     "repo": "fedora_41",
     "srcname": "freeciv",
-    "status": "legacy",
-    "subrepo": "release",
+    "status": "outdated",
+    "subrepo": "updates",
     "summary": "A multi-player strategy game",
-    "version": "3.1.2",
-    "visiblename": "freeciv"
-  },
-  {
-    "binnames": [
-      "freeciv-common",
-      "freeciv-gtk",
-      "freeciv-qt"
-    ],
-    "categories": [
-      "Unspecified"
-    ],
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.1.4-2.fc42",
-    "repo": "fedora_42",
-    "srcname": "freeciv",
-    "status": "legacy",
-    "subrepo": "release",
-    "summary": "A multi-player strategy game",
-    "version": "3.1.4",
+    "version": "3.2.1",
     "visiblename": "freeciv"
   },
   {
@@ -2288,6 +2480,21 @@
     "subrepo": "release",
     "summary": "A multi-player strategy game",
     "version": "3.2.0",
+    "visiblename": "freeciv"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "freeciv_sdl2",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.1.5",
     "visiblename": "freeciv"
   },
   {
@@ -2462,6 +2669,25 @@
     "visiblename": "games-strategy/freeciv"
   },
   {
+    "categories": [
+      "games-strategy"
+    ],
+    "licenses": [
+      "GPL-2+"
+    ],
+    "maintainers": [
+      "games@gentoo.org",
+      "kangie@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-strategy/freeciv",
+    "status": "rolling",
+    "summary": "Multiplayer strategy game (Civilization Clone)",
+    "version": "9999",
+    "visiblename": "games-strategy/freeciv"
+  },
+  {
     "binname": "freeciv",
     "origversion": null,
     "repo": "gnuguix",
@@ -2489,6 +2715,15 @@
     "status": "newest",
     "summary": "Free and Open Source empire-building strategy game",
     "version": "3.2.6",
+    "visiblename": "freeciv"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "freeciv",
+    "status": "rolling",
+    "summary": "Free and Open Source empire-building strategy game",
+    "version": "HEAD",
     "visiblename": "freeciv"
   },
   {
@@ -2529,6 +2764,21 @@
     "status": "outdated",
     "version": "3.2.0",
     "visiblename": "Freeciv"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "nixos@nbp.name"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "freeciv_gtk",
+    "status": "outdated",
+    "summary": "Multiplayer (or single player), turn-based strategy game",
+    "version": "3.2.2",
+    "visiblename": "freeciv"
   },
   {
     "categories": [
@@ -2607,23 +2857,18 @@
     "visiblename": "games-strategy/freeciv"
   },
   {
-    "categories": [
-      "games-strategy"
-    ],
+    "binname": "freeciv-common",
     "licenses": [
-      "GPL-2+"
+      "GPL-2.0-or-later"
     ],
-    "maintainers": [
-      "games@gentoo.org",
-      "kangie@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "games-strategy/freeciv",
-    "status": "rolling",
-    "summary": "Multiplayer strategy game (Civilization Clone)",
-    "version": "9999",
-    "visiblename": "games-strategy/freeciv"
+    "origversion": "3.2.6-1",
+    "repo": "manjaro_testing",
+    "srcname": "freeciv",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A multiuser clone of the famous Microprose game of Civilization (common files)",
+    "version": "3.2.6",
+    "visiblename": "freeciv-common"
   },
   {
     "categories": [
@@ -2705,21 +2950,6 @@
     "subrepo": "core/release",
     "summary": "CIVilization clone",
     "version": "3.0.7",
-    "visiblename": "freeciv"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_11",
-    "srcname": "freeciv_sdl2",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.1.3",
     "visiblename": "freeciv"
   },
   {
@@ -2846,193 +3076,6 @@
     "visiblename": "freeciv-gtk3"
   },
   {
-    "binname": "freeciv-common",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "manjaro_testing",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (common files)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-common"
-  },
-  {
-    "binname": "freeciv-gtk3",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "manjaro_testing",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK3 client)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-gtk3"
-  },
-  {
-    "binname": "freeciv-qt",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "manjaro_testing",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (Qt client)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-qt"
-  },
-  {
-    "binname": "freeciv-gtk4",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "manjaro_testing",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK4 client)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-gtk4"
-  },
-  {
-    "binname": "freeciv-qt",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "manjaro_unstable",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (Qt client)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-qt"
-  },
-  {
-    "binname": "freeciv-common",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "manjaro_unstable",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (common files)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-common"
-  },
-  {
-    "binname": "freeciv-gtk4",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "manjaro_unstable",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK4 client)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-gtk4"
-  },
-  {
-    "binname": "freeciv-gtk3",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "manjaro_unstable",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK3 client)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-gtk3"
-  },
-  {
-    "licenses": [
-      "GPL-2.0"
-    ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_05",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.1.1",
-    "visiblename": "freeciv"
-  },
-  {
-    "licenses": [
-      "GPL-2.0"
-    ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_05",
-    "srcname": "freeciv_qt",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.1.1",
-    "visiblename": "freeciv"
-  },
-  {
-    "licenses": [
-      "GPL-2.0"
-    ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_05",
-    "srcname": "freeciv_sdl2",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.1.1",
-    "visiblename": "freeciv"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_11",
-    "srcname": "freeciv",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.1.3",
-    "visiblename": "freeciv"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_11",
-    "srcname": "freeciv_qt",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.1.3",
-    "visiblename": "freeciv"
-  },
-  {
     "licenses": [
       "GPL-2.0-or-later"
     ],
@@ -3087,21 +3130,6 @@
     "origversion": null,
     "repo": "nix_stable_26_05",
     "srcname": "freeciv",
-    "status": "outdated",
-    "summary": "Multiplayer (or single player), turn-based strategy game",
-    "version": "3.2.2",
-    "visiblename": "freeciv"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "nixos@nbp.name"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_26_05",
-    "srcname": "freeciv_gtk",
     "status": "outdated",
     "summary": "Multiplayer (or single player), turn-based strategy game",
     "version": "3.2.2",
@@ -3521,34 +3549,6 @@
     "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK4 client)",
     "version": "3.2.6",
     "visiblename": "freeciv-gtk4"
-  },
-  {
-    "binname": "freeciv-gtk3",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "parabola",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (GTK3 client)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-gtk3"
-  },
-  {
-    "binname": "freeciv-qt",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "3.2.6-1",
-    "repo": "parabola",
-    "srcname": "freeciv",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A multiuser clone of the famous Microprose game of Civilization (Qt client)",
-    "version": "3.2.6",
-    "visiblename": "freeciv-qt"
   },
   {
     "binnames": [
@@ -4539,7 +4539,7 @@
     "maintainers": [
       "pkgsrc-users@netbsd.org"
     ],
-    "origversion": "2.6.5nb36",
+    "origversion": "2.6.5nb37",
     "repo": "pkgsrc_current",
     "srcname": "games/freeciv-client",
     "status": "outdated",

@@ -10,12 +10,31 @@
     "maintainers": [
       "mbanck@debian.org"
     ],
-    "origversion": "1.6-3",
-    "repo": "devuan_4_0",
+    "origversion": "1.8-1",
+    "repo": "raspbian_oldstable",
     "srcname": "exult",
     "status": "outdated",
-    "subrepo": "chimaera/contrib",
-    "version": "1.6",
+    "subrepo": "contrib",
+    "version": "1.8",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.10.1-3",
+    "repo": "raspbian_stable",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "1.10.1",
     "visiblename": "exult"
   },
   {
@@ -30,11 +49,30 @@
       "mbanck@debian.org"
     ],
     "origversion": "1.12.1-3",
-    "repo": "devuan_unstable",
+    "repo": "raspbian_testing",
     "srcname": "exult",
     "status": "newest",
-    "subrepo": "unstable/contrib",
+    "subrepo": "contrib",
     "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.6-3",
+    "repo": "devuan_4_0",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "chimaera/contrib",
+    "version": "1.6",
     "visiblename": "exult"
   },
   {
@@ -162,6 +200,25 @@
     "visiblename": "exult"
   },
   {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.12.1-3",
+    "repo": "devuan_unstable",
+    "srcname": "exult",
+    "status": "newest",
+    "subrepo": "unstable/contrib",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
     "categories": [
       "games-rpg"
     ],
@@ -257,6 +314,22 @@
     "summary": "Recreation of Ultima 7",
     "version": "HEAD",
     "visiblename": "exult"
+  },
+  {
+    "binname": "exult",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "nikkohigashi@gmail.com"
+    ],
+    "origversion": "1.6nb18",
+    "repo": "pkgsrc_current",
+    "srcname": "games/exult",
+    "status": "outdated",
+    "summary": "Open-source Ultima 7 engine",
+    "version": "1.6",
+    "visiblename": "games/exult"
   },
   {
     "categories": [
@@ -540,79 +613,6 @@
     "summary": "Open-source Ultima 7 engine",
     "version": "1.6",
     "visiblename": "games/exult"
-  },
-  {
-    "binname": "exult",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "nikkohigashi@gmail.com"
-    ],
-    "origversion": "1.6nb17",
-    "repo": "pkgsrc_current",
-    "srcname": "games/exult",
-    "status": "outdated",
-    "summary": "Open-source Ultima 7 engine",
-    "version": "1.6",
-    "visiblename": "games/exult"
-  },
-  {
-    "binnames": [
-      "exult",
-      "exult-studio"
-    ],
-    "categories": [
-      "contrib/games"
-    ],
-    "maintainers": [
-      "mbanck@debian.org"
-    ],
-    "origversion": "1.8-1",
-    "repo": "raspbian_oldstable",
-    "srcname": "exult",
-    "status": "outdated",
-    "subrepo": "contrib",
-    "version": "1.8",
-    "visiblename": "exult"
-  },
-  {
-    "binnames": [
-      "exult",
-      "exult-studio"
-    ],
-    "categories": [
-      "contrib/games"
-    ],
-    "maintainers": [
-      "mbanck@debian.org"
-    ],
-    "origversion": "1.10.1-3",
-    "repo": "raspbian_stable",
-    "srcname": "exult",
-    "status": "outdated",
-    "subrepo": "contrib",
-    "version": "1.10.1",
-    "visiblename": "exult"
-  },
-  {
-    "binnames": [
-      "exult",
-      "exult-studio"
-    ],
-    "categories": [
-      "contrib/games"
-    ],
-    "maintainers": [
-      "mbanck@debian.org"
-    ],
-    "origversion": "1.12.1-3",
-    "repo": "raspbian_testing",
-    "srcname": "exult",
-    "status": "newest",
-    "subrepo": "contrib",
-    "version": "1.12.1",
-    "visiblename": "exult"
   },
   {
     "binnames": [

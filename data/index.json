@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-09-30T13:34:13.592699+00:00",
+  "checkedAt": "2026-09-30T20:39:16.246907+00:00",
   "packages": [
     {
       "attrs": [
@@ -193,7 +193,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
+        "checkedAt": "2026-09-30T20:39:16.246907+00:00",
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
@@ -947,7 +947,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T15:57:58.361518+00:00",
+        "checkedAt": "2026-09-30T20:39:16.246907+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -1408,7 +1408,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T15:57:58.361518+00:00",
+        "checkedAt": "2026-09-30T20:39:16.246907+00:00",
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
@@ -2012,7 +2012,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
+        "checkedAt": "2026-09-30T20:39:16.246907+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "label": "stepmania/stepmania 5_1-new branch",
         "newer": true,
@@ -2287,12 +2287,7 @@
         "maintained",
         "gaming-team"
       ],
-      "name": "unciv",
-      "nixStatus": "outdated",
-      "nixVersion": "4.22.1",
-      "nixVulnerable": false,
-      "openIssues": 0,
-      "openPR": {
+      "masterPR": {
         "base": "master",
         "draft": false,
         "from": "4.22.1",
@@ -2301,6 +2296,11 @@
         "to": "4.22.5",
         "url": "https://github.com/NixOS/nixpkgs/pull/568694"
       },
+      "name": "unciv",
+      "nixStatus": "outdated",
+      "nixVersion": "4.22.1",
+      "nixVulnerable": false,
+      "openIssues": 0,
       "openPRs": 1,
       "outdatedSince": "2026-09-28T03:09:58.527549+00:00",
       "platforms": {
@@ -2314,13 +2314,13 @@
       "source": "https://github.com/NixOS/nixpkgs/blob/b4fd65b198c599cbe814fcb9f42d25d021595ec9/pkgs/by-name/un/unciv/package.nix#L73",
       "update": {
         "attr": "unciv",
-        "date": "2026-09-20",
-        "from": "4.21.19",
-        "log": "https://nixpkgs-update-logs.nixos.org/unciv/2026-09-20.log",
+        "date": "2026-09-30",
+        "from": "4.22.1",
+        "log": "https://nixpkgs-update-logs.nixos.org/unciv/2026-09-30.log",
         "outcome": "prOpened",
-        "pr": 565255,
-        "to": "4.22.1",
-        "was": "4.21.19"
+        "pr": 568694,
+        "to": "4.22.5",
+        "was": "4.22.1"
       },
       "updateFailure": false
     },
@@ -2516,7 +2516,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-09-30T13:34:13.592699+00:00",
+        "checkedAt": "2026-09-30T20:39:16.246907+00:00",
         "label": "wesnoth/wesnoth tags",
         "newer": true,
         "repo": "wesnoth/wesnoth",

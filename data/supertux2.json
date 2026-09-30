@@ -2,6 +2,28 @@
   {
     "binname": "supertux",
     "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "0.7.0-1",
+    "repo": "archpower_powerpc64le",
+    "srcname": "supertux",
+    "status": "newest",
+    "summary": "A classic 2D jump'n'run sidescroller game in a style similar to the original SuperMario games",
+    "version": "0.7.0",
+    "visiblename": "supertux"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "supertux",
+    "status": "newest",
+    "summary": "Classic 2D jump'n run sidescroller game",
+    "version": "0.7.0",
+    "visiblename": "supertux"
+  },
+  {
+    "binname": "supertux",
+    "licenses": [
       "GPL-3.0+"
     ],
     "maintainers": [
@@ -51,6 +73,27 @@
     "visiblename": "supertux-doc"
   },
   {
+    "binnames": [
+      "supertux",
+      "supertux-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "fenio@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "0.6.3-5",
+    "repo": "kali_rolling",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.6.3",
+    "visiblename": "supertux"
+  },
+  {
     "binname": "supertux",
     "licenses": [
       "GPL-3.0-or-later"
@@ -68,204 +111,188 @@
     "visiblename": "supertux"
   },
   {
-    "binname": "supertux-git",
+    "binname": "supertux-data",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r4",
+    "repo": "alpine_3_17",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game (data files)",
+    "version": "0.6.3",
+    "visiblename": "supertux-data"
+  },
+  {
+    "binname": "supertux-doc",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r4",
+    "repo": "alpine_3_17",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game (documentation)",
+    "version": "0.6.3",
+    "visiblename": "supertux-doc"
+  },
+  {
+    "binname": "supertux",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r6",
+    "repo": "alpine_3_18",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game",
+    "version": "0.6.3",
+    "visiblename": "supertux"
+  },
+  {
+    "binname": "supertux-data",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r6",
+    "repo": "alpine_3_18",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game (data files)",
+    "version": "0.6.3",
+    "visiblename": "supertux-data"
+  },
+  {
+    "binname": "supertux-doc",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r6",
+    "repo": "alpine_3_18",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game (documentation)",
+    "version": "0.6.3",
+    "visiblename": "supertux-doc"
+  },
+  {
+    "binname": "supertux",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r6",
+    "repo": "alpine_3_19",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game",
+    "version": "0.6.3",
+    "visiblename": "supertux"
+  },
+  {
+    "binname": "supertux-data",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r6",
+    "repo": "alpine_3_19",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game (data files)",
+    "version": "0.6.3",
+    "visiblename": "supertux-data"
+  },
+  {
+    "binname": "supertux-doc",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r6",
+    "repo": "alpine_3_19",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game (documentation)",
+    "version": "0.6.3",
+    "visiblename": "supertux-doc"
+  },
+  {
+    "binname": "supertux",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r7",
+    "repo": "alpine_3_20",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game",
+    "version": "0.6.3",
+    "visiblename": "supertux"
+  },
+  {
+    "binname": "supertux",
     "licenses": [
       "GPL-3.0-only"
     ],
-    "maintainers": [
-      "retcinder@aur"
-    ],
-    "origversion": "0.7.0.rev.1.r59.gc9939efa1-1",
-    "repo": "aur",
-    "srcname": "supertux-git",
-    "status": "rolling",
-    "summary": "A classic 2D jump'n run sidescroller game in a style similar to the original SuperMario game",
-    "version": "0.7.0.rev.1.r59.gc9939efa1",
-    "visiblename": "supertux-git"
-  },
-  {
-    "binname": "supertux-data",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r4",
-    "repo": "alpine_3_17",
+    "origversion": "0.7.0-1",
+    "repo": "arch",
     "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game (data files)",
-    "version": "0.6.3",
-    "visiblename": "supertux-data"
-  },
-  {
-    "binname": "supertux-doc",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r4",
-    "repo": "alpine_3_17",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game (documentation)",
-    "version": "0.6.3",
-    "visiblename": "supertux-doc"
-  },
-  {
-    "binname": "supertux",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r6",
-    "repo": "alpine_3_18",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game",
-    "version": "0.6.3",
-    "visiblename": "supertux"
-  },
-  {
-    "binname": "supertux-data",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r6",
-    "repo": "alpine_3_18",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game (data files)",
-    "version": "0.6.3",
-    "visiblename": "supertux-data"
-  },
-  {
-    "binname": "supertux-doc",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r6",
-    "repo": "alpine_3_18",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game (documentation)",
-    "version": "0.6.3",
-    "visiblename": "supertux-doc"
-  },
-  {
-    "binname": "supertux",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r6",
-    "repo": "alpine_3_19",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game",
-    "version": "0.6.3",
-    "visiblename": "supertux"
-  },
-  {
-    "binname": "supertux-data",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r6",
-    "repo": "alpine_3_19",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game (data files)",
-    "version": "0.6.3",
-    "visiblename": "supertux-data"
-  },
-  {
-    "binname": "supertux-doc",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r6",
-    "repo": "alpine_3_19",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game (documentation)",
-    "version": "0.6.3",
-    "visiblename": "supertux-doc"
-  },
-  {
-    "binname": "supertux",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r7",
-    "repo": "alpine_3_20",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game",
-    "version": "0.6.3",
-    "visiblename": "supertux"
-  },
-  {
-    "binname": "supertux-data",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "alpterry@protonmail.com"
-    ],
-    "origversion": "0.6.3-r7",
-    "repo": "alpine_3_20",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "Open-source classic 2D jump'n run sidescroller game (data files)",
-    "version": "0.6.3",
-    "visiblename": "supertux-data"
-  },
-  {
-    "binname": "supertux2",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "origversion": "0.7.0-r1",
-    "repo": "chimera",
-    "srcname": "supertux2",
     "status": "newest",
-    "subrepo": "user",
-    "summary": "Classic 2D jump'n run sidescroller game",
+    "subrepo": "extra",
+    "summary": "A classic 2D jump'n'run sidescroller game in a style similar to the original SuperMario games",
     "version": "0.7.0",
-    "visiblename": "supertux2"
+    "visiblename": "supertux"
+  },
+  {
+    "binname": "supertux-data",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "alpterry@protonmail.com"
+    ],
+    "origversion": "0.6.3-r7",
+    "repo": "alpine_3_20",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "Open-source classic 2D jump'n run sidescroller game (data files)",
+    "version": "0.6.3",
+    "visiblename": "supertux-data"
   },
   {
     "binname": "supertux-doc",
@@ -607,20 +634,6 @@
       "GPL-3.0-only"
     ],
     "origversion": "0.7.0-1",
-    "repo": "arch",
-    "srcname": "supertux",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "A classic 2D jump'n'run sidescroller game in a style similar to the original SuperMario games",
-    "version": "0.7.0",
-    "visiblename": "supertux"
-  },
-  {
-    "binname": "supertux",
-    "licenses": [
-      "GPL-3.0-only"
-    ],
-    "origversion": "0.7.0-1",
     "repo": "archpower_powerpc",
     "srcname": "supertux",
     "status": "newest",
@@ -629,17 +642,34 @@
     "visiblename": "supertux"
   },
   {
-    "binname": "supertux",
+    "binname": "supertux-git",
     "licenses": [
       "GPL-3.0-only"
     ],
-    "origversion": "0.7.0-1",
-    "repo": "archpower_powerpc64le",
-    "srcname": "supertux",
+    "maintainers": [
+      "retcinder@aur"
+    ],
+    "origversion": "0.7.0.rev.1.r59.gc9939efa1-1",
+    "repo": "aur",
+    "srcname": "supertux-git",
+    "status": "rolling",
+    "summary": "A classic 2D jump'n run sidescroller game in a style similar to the original SuperMario game",
+    "version": "0.7.0.rev.1.r59.gc9939efa1",
+    "visiblename": "supertux-git"
+  },
+  {
+    "binname": "supertux2",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "0.7.0-r1",
+    "repo": "chimera",
+    "srcname": "supertux2",
     "status": "newest",
-    "summary": "A classic 2D jump'n'run sidescroller game in a style similar to the original SuperMario games",
+    "subrepo": "user",
+    "summary": "Classic 2D jump'n run sidescroller game",
     "version": "0.7.0",
-    "visiblename": "supertux"
+    "visiblename": "supertux2"
   },
   {
     "binname": "supertux2-doc",
@@ -878,6 +908,17 @@
     "visiblename": "supertux"
   },
   {
+    "categories": [
+      "games"
+    ],
+    "origversion": "0.7.0 (2026-03-14)",
+    "repo": "libregamewiki",
+    "srcname": "SuperTux",
+    "status": "newest",
+    "version": "0.7.0",
+    "visiblename": "SuperTux"
+  },
+  {
     "binnames": [
       "supertux",
       "supertux-debuginfo",
@@ -1075,47 +1116,6 @@
     "status": "newest",
     "version": "0.7.0",
     "visiblename": "games-arcade/supertux"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew",
-    "srcname": "supertux",
-    "status": "newest",
-    "summary": "Classic 2D jump'n run sidescroller game",
-    "version": "0.7.0",
-    "visiblename": "supertux"
-  },
-  {
-    "binnames": [
-      "supertux",
-      "supertux-data"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "fenio@debian.org",
-      "vcheng@debian.org"
-    ],
-    "origversion": "0.6.3-5",
-    "repo": "kali_rolling",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "0.6.3",
-    "visiblename": "supertux"
-  },
-  {
-    "categories": [
-      "games"
-    ],
-    "origversion": "0.7.0 (2026-03-14)",
-    "repo": "libregamewiki",
-    "srcname": "SuperTux",
-    "status": "newest",
-    "version": "0.7.0",
-    "visiblename": "SuperTux"
   },
   {
     "binname": "supertux",
@@ -1782,7 +1782,7 @@
     "maintainers": [
       "hernani@vecirex.net"
     ],
-    "origversion": "0.7.0nb6",
+    "origversion": "0.7.0nb7",
     "repo": "pkgsrc_current",
     "srcname": "games/supertux",
     "status": "newest",

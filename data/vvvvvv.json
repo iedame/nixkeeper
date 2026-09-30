@@ -7,7 +7,7 @@
       "fallback-mnt-nix@repology"
     ],
     "origversion": null,
-    "repo": "nix_stable_25_05",
+    "repo": "nix_stable_25_11",
     "srcname": "vvvvvv",
     "status": "outdated",
     "summary": "A retro-styled platform game",
@@ -131,7 +131,7 @@
       "fallback-mnt-nix@repology"
     ],
     "origversion": null,
-    "repo": "nix_stable_25_11",
+    "repo": "nix_stable_25_05",
     "srcname": "vvvvvv",
     "status": "outdated",
     "summary": "A retro-styled platform game",
@@ -224,7 +224,7 @@
     "maintainers": [
       "pkgsrc-users@netbsd.org"
     ],
-    "origversion": "0.0.0.20200110nb13",
+    "origversion": "0.0.0.20200110nb14",
     "repo": "pkgsrc_current",
     "srcname": "games/vvvvvv",
     "status": "outdated",

@@ -1,71 +1,19 @@
 [
   {
-    "categories": [
-      "games-engines"
-    ],
-    "origversion": null,
-    "repo": "haikuports_master",
-    "srcname": "games-engines/openmw",
-    "status": "newest",
-    "version": "0.51.0",
-    "visiblename": "games-engines/openmw"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew_casks",
-    "srcname": "openmw",
-    "status": "newest",
-    "summary": "Open-source open-world RPG game engine that supports playing Morrowind",
-    "version": "0.51.0",
-    "visiblename": "OpenMW"
-  },
-  {
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "ab@fmap.me",
-      "mariusdavid@laposte.net"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_05",
-    "srcname": "openmw",
-    "status": "outdated",
-    "summary": "An unofficial open source engine reimplementation of the game Morrowind",
-    "version": "0.48.0",
-    "visiblename": "openmw"
-  },
-  {
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "maintainers": [
-      "ab@fmap.me",
-      "mariusdavid@laposte.net"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_11",
-    "srcname": "openmw",
-    "status": "outdated",
-    "summary": "Unofficial open source engine reimplementation of the game Morrowind",
-    "version": "0.48.0",
-    "visiblename": "openmw"
-  },
-  {
     "binname": "openmw",
-    "licenses": [
-      "GPL-3.0-or-later",
-      "OFL-1.1",
-      "LicenseRef-DejaVuLGCSansMono"
+    "categories": [
+      "games"
     ],
-    "origversion": "0.51.0-3",
-    "repo": "manjaro_unstable",
-    "srcname": "openmw",
-    "status": "newest",
-    "subrepo": "extra",
-    "summary": "Open-source engine reimplementation for the role-playing game Morrowind",
-    "version": "0.51.0",
-    "visiblename": "openmw"
+    "maintainers": [
+      "nia@netbsd.org"
+    ],
+    "origversion": "0.47.0nb76",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/openmw",
+    "status": "outdated",
+    "summary": "Recreation of The Elder Scrolls III: Morrowind game engine",
+    "version": "0.47.0",
+    "visiblename": "games/openmw"
   },
   {
     "binname": "openmw",
@@ -254,7 +202,7 @@
     "maintainers": [
       "fallback-mnt-aosc@repology"
     ],
-    "origversion": null,
+    "origversion": "0.51.0-1",
     "repo": "aosc",
     "srcname": "app-games/openmw",
     "status": "newest",
@@ -460,11 +408,11 @@
     "maintainers": [
       "psi29a@gmail.com"
     ],
-    "origversion": "0.45.0-2+rb2",
+    "origversion": "0.45.0-2",
     "repo": "deepin_unstable",
     "srcname": "openmw",
     "status": "outdated",
-    "subrepo": "main",
+    "subrepo": "contrib",
     "version": "0.45.0",
     "visiblename": "openmw"
   },
@@ -478,11 +426,11 @@
     "maintainers": [
       "psi29a@gmail.com"
     ],
-    "origversion": "0.45.0-2",
+    "origversion": "0.45.0-2+rb2",
     "repo": "deepin_unstable",
     "srcname": "openmw",
     "status": "outdated",
-    "subrepo": "contrib",
+    "subrepo": "main",
     "version": "0.45.0",
     "visiblename": "openmw"
   },
@@ -710,6 +658,25 @@
     "visiblename": "games/openmw"
   },
   {
+    "binnames": [
+      "openmw"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "origversion": "0.50.0-1.mga10",
+    "repo": "mageia_10",
+    "srcname": "openmw",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Unofficial open source engine re-implementation of the game Morrowind",
+    "version": "0.50.0",
+    "visiblename": "openmw"
+  },
+  {
     "categories": [
       "games-engines"
     ],
@@ -764,6 +731,26 @@
     "summary": "Re-implementation of the RPG Morrowind engine",
     "version": "0.51.0",
     "visiblename": "openmw"
+  },
+  {
+    "categories": [
+      "games-engines"
+    ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "games-engines/openmw",
+    "status": "newest",
+    "version": "0.51.0",
+    "visiblename": "games-engines/openmw"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "openmw",
+    "status": "newest",
+    "summary": "Open-source open-world RPG game engine that supports playing Morrowind",
+    "version": "0.51.0",
+    "visiblename": "OpenMW"
   },
   {
     "binnames": [
@@ -881,25 +868,6 @@
   },
   {
     "binnames": [
-      "openmw"
-    ],
-    "categories": [
-      "Games/Other"
-    ],
-    "licenses": [
-      "GPLv3"
-    ],
-    "origversion": "0.50.0-1.mga10",
-    "repo": "mageia_10",
-    "srcname": "openmw",
-    "status": "outdated",
-    "subrepo": "core/release",
-    "summary": "Unofficial open source engine re-implementation of the game Morrowind",
-    "version": "0.50.0",
-    "visiblename": "openmw"
-  },
-  {
-    "binnames": [
       "openmw",
       "openmw-debuginfo",
       "openmw-debugsource"
@@ -968,6 +936,54 @@
     "subrepo": "extra",
     "summary": "Open-source engine reimplementation for the role-playing game Morrowind",
     "version": "0.51.0",
+    "visiblename": "openmw"
+  },
+  {
+    "binname": "openmw",
+    "licenses": [
+      "GPL-3.0-or-later",
+      "OFL-1.1",
+      "LicenseRef-DejaVuLGCSansMono"
+    ],
+    "origversion": "0.51.0-3",
+    "repo": "manjaro_unstable",
+    "srcname": "openmw",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "Open-source engine reimplementation for the role-playing game Morrowind",
+    "version": "0.51.0",
+    "visiblename": "openmw"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "ab@fmap.me",
+      "mariusdavid@laposte.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "openmw",
+    "status": "outdated",
+    "summary": "An unofficial open source engine reimplementation of the game Morrowind",
+    "version": "0.48.0",
+    "visiblename": "openmw"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "ab@fmap.me",
+      "mariusdavid@laposte.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "openmw",
+    "status": "outdated",
+    "summary": "Unofficial open source engine reimplementation of the game Morrowind",
+    "version": "0.48.0",
     "visiblename": "openmw"
   },
   {
@@ -1223,22 +1239,6 @@
     "maintainers": [
       "nia@netbsd.org"
     ],
-    "origversion": "0.47.0nb76",
-    "repo": "pkgsrc_2026_2",
-    "srcname": "games/openmw",
-    "status": "outdated",
-    "summary": "Recreation of The Elder Scrolls III: Morrowind game engine",
-    "version": "0.47.0",
-    "visiblename": "games/openmw"
-  },
-  {
-    "binname": "openmw",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "nia@netbsd.org"
-    ],
     "origversion": "0.47.0nb82",
     "repo": "pkgsrc_2026_3",
     "srcname": "games/openmw",
@@ -1255,7 +1255,7 @@
     "maintainers": [
       "nia@netbsd.org"
     ],
-    "origversion": "0.47.0nb84",
+    "origversion": "0.47.0nb85",
     "repo": "pkgsrc_current",
     "srcname": "games/openmw",
     "status": "outdated",

@@ -1,24 +1,18 @@
 [
   {
-    "binnames": [
-      "fheroes2"
-    ],
+    "binname": "bin/fheroes2",
     "categories": [
-      "contrib/misc"
+      "bin"
     ],
     "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "csm.sub21@gmail.com",
-      "onlyjob@debian.org",
-      "tchet@debian.org"
+      "anton@samokhvalov.xyz"
     ],
-    "origversion": "1.1.17+dfsg-1",
-    "repo": "kali_rolling",
-    "srcname": "fheroes2",
-    "status": "newest",
-    "subrepo": "contrib",
-    "version": "1.1.17",
-    "visiblename": "fheroes2"
+    "origversion": null,
+    "repo": "stalix_dev",
+    "srcname": "bin/fheroes2",
+    "status": "outdated",
+    "version": "1.1.12",
+    "visiblename": "bin/fheroes2"
   },
   {
     "binname": "fheroes2",
@@ -55,18 +49,16 @@
     "visiblename": "fheroes2-lang"
   },
   {
+    "binname": "game/strategy/fheroes2.lha",
     "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "lin.ruohshoei+sbo@gmail.com"
+      "game/strategy"
     ],
     "origversion": null,
-    "repo": "slackbuilds",
-    "srcname": "games/fheroes2",
-    "status": "newest",
-    "version": "1.1.17",
-    "visiblename": "games/fheroes2"
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "Engine Heroes of Might and Magic II game",
+    "version": "v1.0",
+    "visiblename": "fheroes2.lha"
   },
   {
     "binnames": [
@@ -304,21 +296,6 @@
     "visiblename": "fheroes2"
   },
   {
-    "binname": "bin/fheroes2",
-    "categories": [
-      "bin"
-    ],
-    "maintainers": [
-      "anton@samokhvalov.xyz"
-    ],
-    "origversion": null,
-    "repo": "stalix",
-    "srcname": "bin/fheroes2",
-    "status": "outdated",
-    "version": "1.1.12",
-    "visiblename": "bin/fheroes2"
-  },
-  {
     "binnames": [
       "fheroes2"
     ],
@@ -505,6 +482,27 @@
     "status": "rolling",
     "summary": "Recreation of the Heroes of Might and Magic II game engine",
     "version": "HEAD",
+    "visiblename": "fheroes2"
+  },
+  {
+    "binnames": [
+      "fheroes2"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "csm.sub21@gmail.com",
+      "onlyjob@debian.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "1.1.17+dfsg-1",
+    "repo": "kali_rolling",
+    "srcname": "fheroes2",
+    "status": "newest",
+    "subrepo": "contrib",
+    "version": "1.1.17",
     "visiblename": "fheroes2"
   },
   {
@@ -711,18 +709,6 @@
     "visiblename": "games/fheroes2"
   },
   {
-    "binname": "fheroes2",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "origversion": null,
-    "repo": "scoop",
-    "status": "newest",
-    "subrepo": "games",
-    "version": "1.1.17",
-    "visiblename": "fheroes2"
-  },
-  {
     "binnames": [
       "fheroes2"
     ],
@@ -809,18 +795,6 @@
     "visiblename": "fheroes2"
   },
   {
-    "binname": "game/strategy/fheroes2.lha",
-    "categories": [
-      "game/strategy"
-    ],
-    "origversion": null,
-    "repo": "os4depot",
-    "status": "outdated",
-    "summary": "Engine Heroes of Might and Magic II game",
-    "version": "v1.0",
-    "visiblename": "fheroes2.lha"
-  },
-  {
     "binnames": [
       "fheroes2"
     ],
@@ -902,7 +876,7 @@
     "maintainers": [
       "pkgsrc-users@netbsd.org"
     ],
-    "origversion": "1.1.17nb2",
+    "origversion": "1.1.17nb3",
     "repo": "pkgsrc_current",
     "srcname": "games/fheroes2",
     "status": "newest",
@@ -1013,6 +987,32 @@
     "visiblename": "fheroes2"
   },
   {
+    "binname": "fheroes2",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "games",
+    "version": "1.1.17",
+    "visiblename": "fheroes2"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "lin.ruohshoei+sbo@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/fheroes2",
+    "status": "newest",
+    "version": "1.1.17",
+    "visiblename": "games/fheroes2"
+  },
+  {
     "binname": "bin/fheroes2",
     "categories": [
       "bin"
@@ -1021,7 +1021,7 @@
       "anton@samokhvalov.xyz"
     ],
     "origversion": null,
-    "repo": "stalix_dev",
+    "repo": "stalix",
     "srcname": "bin/fheroes2",
     "status": "outdated",
     "version": "1.1.12",

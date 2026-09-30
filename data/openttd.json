@@ -1,315 +1,5 @@
 [
   {
-    "binnames": [
-      "openttd",
-      "openttd-data"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "matthijs@stdin.nl",
-      "jordi@debian.org"
-    ],
-    "origversion": "14.1-1",
-    "repo": "raspbian_stable",
-    "srcname": "openttd",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "14.1",
-    "visiblename": "openttd"
-  },
-  {
-    "binnames": [
-      "openttd",
-      "openttd-data"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "matthijs@stdin.nl",
-      "jordi@debian.org"
-    ],
-    "origversion": "15.1-1",
-    "repo": "raspbian_testing",
-    "srcname": "openttd",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "15.1",
-    "visiblename": "openttd"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.9.1",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.9.2",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.9.3",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.10",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.10.1",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.10.2",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.10.3",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.11",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.11.1",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "1.11.2",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "12",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "12.1",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "12.2",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "14.1",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "15",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "15.1",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "15.2",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "newest",
-    "version": "15.3",
-    "visiblename": "Open TTD"
-  },
-  {
     "binname": "open-ttd64",
     "categories": [
       "Games"
@@ -321,22 +11,7 @@
     "repo": "npackd_stable64",
     "srcname": "open-ttd64",
     "status": "legacy",
-    "version": "14",
-    "visiblename": "Open TTD 64 bit"
-  },
-  {
-    "binname": "open-ttd64",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable64",
-    "srcname": "open-ttd64",
-    "status": "legacy",
-    "version": "1.6.1",
+    "version": "13.1",
     "visiblename": "Open TTD 64 bit"
   },
   {
@@ -621,8 +296,129 @@
     "repo": "npackd_stable64",
     "srcname": "open-ttd64",
     "status": "legacy",
-    "version": "13.1",
+    "version": "13.2",
     "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "13.2.1",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "13.3",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "14",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "14.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "15",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "15.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "15.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "jack@mudshark.org",
+      "fpletz@fnordicwalking.de"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "openttd",
+    "status": "outdated",
+    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "14.1",
+    "visiblename": "openttd"
   },
   {
     "binname": "open-ttd",
@@ -640,21 +436,6 @@
     "visiblename": "Open TTD"
   },
   {
-    "binname": "open-ttd64",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable64",
-    "srcname": "open-ttd64",
-    "status": "legacy",
-    "version": "13.2",
-    "visiblename": "Open TTD 64 bit"
-  },
-  {
     "binname": "open-ttd",
     "categories": [
       "Games"
@@ -683,161 +464,6 @@
     "status": "legacy",
     "version": "13.2",
     "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "13.2.1",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "13.3",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "13.4",
-    "visiblename": "Open TTD"
-  },
-  {
-    "binname": "open-ttd64",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable64",
-    "srcname": "open-ttd64",
-    "status": "legacy",
-    "version": "13.2.1",
-    "visiblename": "Open TTD 64 bit"
-  },
-  {
-    "binname": "open-ttd64",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable64",
-    "srcname": "open-ttd64",
-    "status": "legacy",
-    "version": "13.3",
-    "visiblename": "Open TTD 64 bit"
-  },
-  {
-    "binname": "openttd-btpro",
-    "licenses": [
-      "GPL"
-    ],
-    "maintainers": [
-      "heycitizen@aur"
-    ],
-    "origversion": "14.1-1",
-    "repo": "aur",
-    "srcname": "openttd-btpro",
-    "status": "outdated",
-    "summary": "OpenTTD Fork of citymania client with changes for n-ice and btpro community.",
-    "version": "14.1",
-    "visiblename": "openttd-btpro"
-  },
-  {
-    "binname": "open-ttd64",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable64",
-    "srcname": "open-ttd64",
-    "status": "legacy",
-    "version": "13.4",
-    "visiblename": "Open TTD 64 bit"
-  },
-  {
-    "binname": "openttd-git",
-    "licenses": [
-      "GPL"
-    ],
-    "maintainers": [
-      "mcmodder@aur"
-    ],
-    "origversion": "26406.c482f05616-1",
-    "repo": "aur",
-    "srcname": "openttd-git",
-    "status": "rolling",
-    "summary": "An engine for running Transport Tycoon Deluxe (latest GIT build)",
-    "version": "26406.c482f05616",
-    "visiblename": "openttd-git"
-  },
-  {
-    "binname": "openttd-lang",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "kommander@laposte.net"
-    ],
-    "origversion": "15.3-r0",
-    "repo": "alpine_3_24",
-    "srcname": "openttd",
-    "status": "newest",
-    "subrepo": "community",
-    "summary": "Open source version of the Transport Tycoon Deluxe simulator (localizations)",
-    "version": "15.3",
-    "visiblename": "openttd-lang"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "jack@mudshark.org",
-      "fpletz@fnordicwalking.de"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
-    "srcname": "openttd",
-    "status": "outdated",
-    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
-    "version": "14.1",
-    "visiblename": "openttd"
   },
   {
     "binname": "openttd",
@@ -1027,6 +653,23 @@
     "visiblename": "openttd-doc"
   },
   {
+    "binname": "openttd-lang",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "15.3-r0",
+    "repo": "alpine_3_24",
+    "srcname": "openttd",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Open source version of the Transport Tycoon Deluxe simulator (localizations)",
+    "version": "15.3",
+    "visiblename": "openttd-lang"
+  },
+  {
     "binname": "openttd",
     "licenses": [
       "GPL-2.0-or-later"
@@ -1156,6 +799,38 @@
     "visiblename": "openttd"
   },
   {
+    "binname": "openttd-btpro",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "heycitizen@aur"
+    ],
+    "origversion": "14.1-1",
+    "repo": "aur",
+    "srcname": "openttd-btpro",
+    "status": "outdated",
+    "summary": "OpenTTD Fork of citymania client with changes for n-ice and btpro community.",
+    "version": "14.1",
+    "visiblename": "openttd-btpro"
+  },
+  {
+    "binname": "openttd-git",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "mcmodder@aur"
+    ],
+    "origversion": "26406.c482f05616-1",
+    "repo": "aur",
+    "srcname": "openttd-git",
+    "status": "rolling",
+    "summary": "An engine for running Transport Tycoon Deluxe (latest GIT build)",
+    "version": "26406.c482f05616",
+    "visiblename": "openttd-git"
+  },
+  {
     "binname": "openttd",
     "licenses": [
       "GPL-2.0-or-later"
@@ -1168,6 +843,21 @@
     "summary": "Simulation game based upon Transport Tycoon Deluxe",
     "version": "15.3",
     "visiblename": "openttd"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "12.2",
+    "visiblename": "Open TTD"
   },
   {
     "binname": "openttd-doc",
@@ -1394,21 +1084,6 @@
     "visiblename": "games-simulation/openttd"
   },
   {
-    "binname": "open-ttd",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "open-ttd",
-    "status": "legacy",
-    "version": "14",
-    "visiblename": "Open TTD"
-  },
-  {
     "binnames": [
       "openttd",
       "openttd-docs",
@@ -1429,6 +1104,21 @@
     "summary": "Transport system simulation game",
     "version": "13.4",
     "visiblename": "openttd"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "13.2.1",
+    "visiblename": "Open TTD"
   },
   {
     "binnames": [
@@ -1577,6 +1267,21 @@
     "visiblename": "openttd"
   },
   {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "newest",
+    "version": "15.3",
+    "visiblename": "Open TTD"
+  },
+  {
     "binnames": [
       "openttd",
       "openttd-docs"
@@ -1637,22 +1342,6 @@
     "visiblename": "openttd"
   },
   {
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "jack@mudshark.org",
-      "fpletz@fnordicwalking.de"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_11",
-    "srcname": "openttd",
-    "status": "outdated",
-    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
-    "version": "14.1",
-    "visiblename": "openttd"
-  },
-  {
     "binnames": [
       "openttd",
       "openttd-docs"
@@ -1671,6 +1360,21 @@
     "summary": "Transport system simulation game",
     "version": "15.3",
     "visiblename": "openttd"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "13.3",
+    "visiblename": "Open TTD"
   },
   {
     "binname": "openttd",
@@ -1840,26 +1544,6 @@
     "visiblename": "games-simulation/openttd"
   },
   {
-    "binnames": [
-      "openttd",
-      "openttd-data"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "matthijs@stdin.nl",
-      "jordi@debian.org"
-    ],
-    "origversion": "13.0-2",
-    "repo": "raspbian_oldstable",
-    "srcname": "openttd",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "13.0",
-    "visiblename": "openttd"
-  },
-  {
     "categories": [
       "games-simulation"
     ],
@@ -1876,6 +1560,21 @@
     "summary": "A clone of Transport Tycoon Deluxe",
     "version": "9999",
     "visiblename": "games-simulation/openttd"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "13.4",
+    "visiblename": "Open TTD"
   },
   {
     "categories": [
@@ -1951,6 +1650,21 @@
     "summary": "An open source clone of the Microprose game \"Transport Tycoon Deluxe\" game",
     "version": "15.2",
     "visiblename": "openttd"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "1.6.1",
+    "visiblename": "Open TTD 64 bit"
   },
   {
     "binnames": [
@@ -2127,6 +1841,22 @@
       "fpletz@fnordicwalking.de"
     ],
     "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "openttd",
+    "status": "outdated",
+    "summary": "Open source clone of the Microprose game \"Transport Tycoon Deluxe\"",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "jack@mudshark.org",
+      "fpletz@fnordicwalking.de"
+    ],
+    "origversion": null,
     "repo": "nix_stable_26_05",
     "srcname": "openttd",
     "status": "newest",
@@ -2239,6 +1969,216 @@
     "status": "legacy",
     "version": "1.9",
     "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.9.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.9.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.9.3",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.10",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.10.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.10.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.10.3",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.11",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.11.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "1.11.2",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "12",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "open-ttd",
+    "status": "legacy",
+    "version": "12.1",
+    "visiblename": "Open TTD"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "13.4",
+    "visiblename": "Open TTD 64 bit"
+  },
+  {
+    "binname": "open-ttd64",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "open-ttd64",
+    "status": "legacy",
+    "version": "14",
+    "visiblename": "Open TTD 64 bit"
   },
   {
     "binname": "open-ttd64",
@@ -2914,7 +2854,7 @@
     "maintainers": [
       "pkgsrc-users@netbsd.org"
     ],
-    "origversion": "15.2nb4",
+    "origversion": "15.2nb5",
     "repo": "pkgsrc_current",
     "srcname": "games/openttd",
     "status": "outdated",
@@ -2988,6 +2928,66 @@
     "status": "outdated",
     "subrepo": "landing/main",
     "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "13.0-2",
+    "repo": "raspbian_oldstable",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "13.0",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "14.1-1",
+    "repo": "raspbian_stable",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "14.1",
+    "visiblename": "openttd"
+  },
+  {
+    "binnames": [
+      "openttd",
+      "openttd-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "matthijs@stdin.nl",
+      "jordi@debian.org"
+    ],
+    "origversion": "15.1-1",
+    "repo": "raspbian_testing",
+    "srcname": "openttd",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "15.1",
     "visiblename": "openttd"
   },
   {
@@ -3431,19 +3431,6 @@
     "visiblename": "Q725120"
   },
   {
-    "binname": "game/strategy/openttd.lha",
-    "categories": [
-      "game/strategy"
-    ],
-    "origversion": null,
-    "repo": "os4depot",
-    "status": "outdated",
-    "summary": "OpenTTD for AmigaOS4",
-    "version": "0.7.2",
-    "visiblename": "openttd.lha",
-    "vulnerable": true
-  },
-  {
     "licenses": [
       "GNU Public Licence, Version 2.0"
     ],
@@ -3454,6 +3441,19 @@
     "summary": "An Open Source clone of Transport Tycoon Deluxe",
     "version": "1.2.0",
     "visiblename": "OpenTTD",
+    "vulnerable": true
+  },
+  {
+    "binname": "game/strategy/openttd.lha",
+    "categories": [
+      "game/strategy"
+    ],
+    "origversion": null,
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "OpenTTD for AmigaOS4",
+    "version": "0.7.2",
+    "visiblename": "openttd.lha",
     "vulnerable": true
   }
 ]
