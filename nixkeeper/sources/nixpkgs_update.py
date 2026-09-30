@@ -25,8 +25,15 @@ UPDATE_SCRIPT_PACKAGE = re.compile(
 )
 PR = re.compile(r"api\.github\.com/repos/NixOS/nixpkgs/(?:pulls|issues)/(\d+)")
 PR_EXISTS = "There might already be an open PR"
+# Every rewriter left the package as it was. After an updateScript attempt
+# ("0 -> 1") that means there was nothing to update; after a real version
+# ("1.37 -> 1.38"), that the bot has no way to update this package.
+EMPTY_DIFF = "The diff was empty after rewrites"
+# Why the rewriters that could have applied didn't: "[version] generic
+# version rewriter does not support multiple hashes".
+REWRITER = re.compile(r"^\[(?:version|updateScript)\] (\S.*)$", re.MULTILINE)
 NO_CHANGE = (
-    "The diff was empty after rewrites",
+    EMPTY_DIFF,
     "Package version did not change",
     # Someone updated it before the bot got to it.
     "not present in master derivation file",
@@ -62,7 +69,9 @@ def excerpt(log):
 
 def parse(log):
     """{"outcome", "from"?, "to"?, "was"?, "pr"?, "excerpt"?} for one log.
-    outcome: prOpened, prExists, noChange, failed, or other. was: what
+    outcome: prOpened, prExists, cantUpdate (a newer version, but no way for
+    the bot to update the package: excerpt says why), noChange, failed, or
+    other. was: what
     nixpkgs had when the bot tried, as a version (2.7.3) or, with an
     updateScript, a name-version (wesnoth-devel-1.19.24)."""
     result = {}
@@ -77,6 +86,8 @@ def parse(log):
         result["outcome"] = "prExists"
     elif prs:
         result["outcome"] = "prOpened"
+    elif EMPTY_DIFF in log and result.get("from") not in (None, UPDATE_SCRIPT):
+        result.update(outcome="cantUpdate", excerpt=REWRITER.findall(log))
     elif any(text in log for text in NO_CHANGE):
         result["outcome"] = "noChange"
     elif FAILED.search(log):
@@ -121,17 +132,30 @@ def superseded(attempt, nix_version, master=None):
     return None
 
 
+# Outcomes that stop mattering once nixpkgs has moved past the version the
+# bot tried.
+SUPERSEDABLE = ("failed", "cantUpdate")
+
+
+def supersede(attempt, where):
+    """Mark attempt superseded, keeping what it was ("superseded" says
+    "failed" or "couldn't update")."""
+    attempt.update(
+        supersededOutcome=attempt["outcome"], outcome="superseded", supersededOn=where
+    )
+
+
 def recheck_superseded(rows):
     """Mark failures superseded that are, now that more is known about master
     (an update PR merged there, found after the logs were read): so a row
     waiting for the channel doesn't also show as failed."""
     for row in rows:
         attempt = row.get("update")
-        if not attempt or attempt.get("outcome") != "failed":
+        if not attempt or attempt.get("outcome") not in SUPERSEDABLE:
             continue
         where = superseded(attempt, row.get("nixVersion"), on_master(row))
         if where:
-            attempt.update(outcome="superseded", supersededOn=where)
+            supersede(attempt, where)
             row["updateFailure"] = False
 
 
@@ -182,13 +206,14 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None):
         # "master" comes from Hydra, read before this.
         where = (
             attempt
-            and attempt["outcome"] == "failed"
+            and attempt["outcome"] in SUPERSEDABLE
             and superseded(attempt, row.get("nixVersion"), row.get("master"))
         )
         if where:
-            attempt.update(outcome="superseded", supersededOn=where)
+            supersede(attempt, where)
         elif attempt and (reason := ignored(attempt, ignored_updates.get(row["name"]))):
-            attempt.update(outcome="superseded", supersededOn="ignored", reason=reason)
+            supersede(attempt, "ignored")
+            attempt["reason"] = reason
         for version in ignored_updates.get(row["name"]) or {}:
             if not attempt or attempt.get("to") != version:
                 print(
