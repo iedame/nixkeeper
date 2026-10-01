@@ -19,6 +19,24 @@ and update failures, and vulnerabilities, in one place.
   </picture>
 </p>
 
+<details>
+<summary>The same in Catppuccin (Latte when light, Mocha when dark)</summary>
+<br>
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/screenshots/desktop-dark-catppuccin.png">
+    <img src="assets/screenshots/desktop-light-catppuccin.png" width="70%" alt="The nixkeeper dashboard on a desktop in the Catppuccin palette">
+  </picture>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/screenshots/mobile-dark-catppuccin.png">
+    <img src="assets/screenshots/mobile-light-catppuccin.png" width="22%" alt="The same dashboard on a phone, in the Catppuccin palette">
+  </picture>
+</p>
+
+Pick it in the page's Theme menu, or make it your page's default with
+`page.theme = "catppuccin";` in your package lists.
+</details>
+
 For each package it tracks, nixkeeper shows on one static page (`page/`):
 
 - **New releases**: whether nixpkgs unstable is behind, per

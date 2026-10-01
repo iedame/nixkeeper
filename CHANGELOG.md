@@ -11,6 +11,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Link previews for the page: shared on Discourse, Matrix, Mastodon and
+  the like, a link to a nixkeeper page shows nixkeeper's card (the social
+  preview). Releases' notes start with the card too.
+- Screenshots in both palettes (`assets/screenshots/*-catppuccin.png`); the
+  README shows the Catppuccin ones in a collapsible section.
 - A Theme menu on the page: Classic or [Catppuccin](https://catppuccin.com)
   colours (Latte when light, Mocha when dark), and light, dark or Auto (the
   system's setting). The choice is kept in the visitor's browser and applied

@@ -2,10 +2,12 @@
 # Retakes the page's screenshots in assets/screenshots/ (the README's and the social
 # preview), from the live data: nix run .#screenshots, from the repository.
 #
-# Takes: desktop-{dark,light}.png (1280px wide, at 2x, with a panel open),
-# mobile-{dark,light}.png (390px, at 2x) and social-preview.png (a 1280x640
-# card at 2x, scripts/social-preview.html, around the dark desktop shot), then
-# compresses them.
+# Takes, in each of the page's palettes: desktop-{dark,light}.png (1280px
+# wide, at 2x, with a panel open), mobile-{dark,light}.png (390px, at 2x) and
+# social-preview.png (a 1280x640 card at 2x, scripts/social-preview.html,
+# around the dark desktop shot), then compresses them. Classic's have those
+# names; Catppuccin's (Latte when light, Mocha when dark) end in -catppuccin:
+# desktop-dark-catppuccin.png, ..., social-preview-catppuccin.png.
 #
 # With the page's current code (page/) against the published data, so what's
 # shown is what's live.
@@ -190,15 +192,21 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# The page as it is in page/, pointed at the data, and able to open a panel
-# once its rows are there (?open=<row>:<panel>, as --open).
+# The page as it is in page/, pointed at the data, in the palette asked for
+# (?palette=<name>, saved as a visitor's choice before the page draws), and
+# able to open a panel once its rows are there (?open=<row>:<panel>, as
+# --open).
 cp page/* "$site/"
 python3 - "$site/index.html" "$DATA" <<'EOF'
 import sys
 path, data = sys.argv[1:]
 page = open(path).read()
 page = page.replace(
-    "<head>", f'<head><meta name="nixkeeper-data" content="{data}">', 1
+    "<head>",
+    f'''<head><meta name="nixkeeper-data" content="{data}">
+<script>localStorage.setItem('nixkeeper-palette',
+  new URLSearchParams(location.search).get('palette') || 'classic');</script>''',
+    1,
 )
 page = page.replace(
     "</body>",
@@ -238,10 +246,12 @@ open(path, "w").write(page)
 EOF
 # Chrome won't make a window narrower than about 500px, so the phone shots
 # are of the page in a 390px frame, centred in a wider window, then cropped.
+# The frame passes its own ?palette= on.
 cat >"$site/phone.html" <<'EOF'
 <!doctype html><meta charset="utf-8">
 <style>html,body{margin:0}iframe{border:0;width:390px;height:844px;display:block;margin:0 auto}</style>
-<iframe src="index.html"></iframe>
+<iframe></iframe>
+<script>document.querySelector('iframe').src = 'index.html' + location.search;</script>
 EOF
 
 python3 -m http.server "$PORT" --bind 127.0.0.1 --directory "$site" >/dev/null 2>&1 &
@@ -273,19 +283,23 @@ shot() {
 }
 
 echo "Taking screenshots (data: $DATA)..."
-for theme in dark light; do
-	open=
-	[ "$OPEN" != none ] && open="?open=$OPEN"
-	shot "desktop-$theme" 1280 860 2 "$theme" "$open"
-	shot "mobile-$theme" 800 844 2 "$theme" phone.html
-	magick "$work/out/mobile-$theme.png" -gravity center -crop 780x1688+0+0 +repage \
-		"$work/out/mobile-$theme.png"
-done
-# The social preview: a card (scripts/social-preview.html) with the lockup,
-# what nixkeeper watches, and the dark desktop shot, at 2x.
-cp "$work/out/desktop-dark.png" "$site/shot.png"
 cp scripts/social-preview.html "$site/"
-shot social-preview 1280 640 2 dark social-preview.html
+for palette in classic catppuccin; do
+	suffix=
+	[ "$palette" = classic ] || suffix=-$palette
+	for theme in dark light; do
+		query="?palette=$palette"
+		[ "$OPEN" != none ] && query="$query&open=$OPEN"
+		shot "desktop-$theme$suffix" 1280 860 2 "$theme" "$query"
+		shot "mobile-$theme$suffix" 800 844 2 "$theme" "phone.html?palette=$palette"
+		magick "$work/out/mobile-$theme$suffix.png" -gravity center -crop 780x1688+0+0 +repage \
+			"$work/out/mobile-$theme$suffix.png"
+	done
+	# The social preview: a card (scripts/social-preview.html) with the
+	# lockup, what nixkeeper watches, and the dark desktop shot, at 2x.
+	cp "$work/out/desktop-dark$suffix.png" "$site/shot.png"
+	shot "social-preview$suffix" 1280 640 2 dark social-preview.html
+done
 
 echo "Compressing into assets/screenshots/..."
 mkdir -p assets/screenshots
@@ -293,4 +307,5 @@ for f in "$work"/out/*.png; do
 	pngquant --quality=80-95 --strip --speed 1 --force --output "assets/screenshots/$(basename "$f")" "$f"
 done
 du -ch assets/screenshots/*.png | tail -1
-echo "Done. The social preview is uploaded by hand: Settings → General → Social preview."
+echo "Done. The social preview is uploaded by hand: Settings → General → Social preview"
+echo "(social-preview.png, or social-preview-catppuccin.png)."
