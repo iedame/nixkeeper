@@ -217,7 +217,18 @@ nixkeeper page <dir>      # write the page and the data into a folder, to host a
 ```
 
 Without installing it, `nix run github:iedame/nixkeeper -- <command>` runs
-the same. The old names (`nixkeeper-sync`, ...) still work until 1.0.
+the same. To install it, from this repository's flake:
+
+```bash
+nix profile install github:iedame/nixkeeper
+```
+
+or in a NixOS or home-manager configuration, with the flake as an input
+(`inputs.nixkeeper.url = "github:iedame/nixkeeper";`), add
+`inputs.nixkeeper.packages.${pkgs.stdenv.hostPlatform.system}.default` to
+your packages. It needs `nix` on the `PATH` (it evaluates your lists with
+it); `gh` is optional. The old names (`nixkeeper-sync`, ...) still work
+until 1.0.
 
 On its own, it keeps your lists in `~/.config/nixkeeper/package-lists/`
 (`nixkeeper init` starts them) and the data in

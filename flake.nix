@@ -22,13 +22,12 @@
       let
         pkgs = import nixpkgs { inherit system; };
         inherit (pkgs) lib;
-        py = pkgs.python3Packages;
 
-        nixkeeper = py.buildPythonApplication {
-          pname = "nixkeeper";
+        # nixkeeper's package (nix/package.nix, in nixpkgs' style), built from
+        # this checkout.
+        nixkeeper = pkgs.callPackage ./nix/package.nix {
           # One version for both: bump it in pyproject.toml.
           inherit ((lib.importTOML ./pyproject.toml).project) version;
-          pyproject = true;
           src = lib.fileset.toSource {
             root = ./.;
             fileset = lib.fileset.unions [
@@ -38,34 +37,6 @@
               ./tests
               ./page # the page, shipped with the package
             ];
-          };
-          build-system = [ py.setuptools ];
-          dependencies = [ py.brotli ];
-          # The page goes in the Python package (nixkeeper page, nixkeeper
-          # serve find it there), and in share/ for anything else that wants it.
-          preBuild = ''
-            cp -r page nixkeeper/page
-          '';
-          postInstall = ''
-            mkdir -p $out/share/nixkeeper
-            ln -s $out/${py.python.sitePackages}/nixkeeper/page $out/share/nixkeeper/www
-          '';
-          # The offline tests run as part of every build.
-          nativeCheckInputs = [ py.unittestCheckHook ];
-          # nixkeeper serve's tests talk to it on 127.0.0.1, which macOS's
-          # build sandbox blocks unless asked.
-          __darwinAllowLocalNetworking = true;
-          unittestFlagsArray = [
-            "-s"
-            "tests"
-            "-t"
-            "."
-            "-v"
-          ];
-          meta = {
-            description = "Health dashboard for the nixpkgs packages you maintain";
-            mainProgram = "nixkeeper";
-            license = lib.licenses.mit;
           };
         };
 
