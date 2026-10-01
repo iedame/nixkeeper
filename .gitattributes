@@ -1,3 +1,15 @@
 # docs/ is the page (GitHub Pages serves it from there), not documentation:
 # counted as code, so GitHub sees its JavaScript (language stats, CodeQL).
 docs/** linguist-documentation=false
+
+# Kept for reference, not code: the pages the wordmark was chosen from.
+assets/brand/explorations/** linguist-documentation
+
+# Written by `nix run .#brand`: left out of the language stats, and collapsed
+# in pull request diffs (edit scripts/brand/ instead).
+assets/brand/identity.html linguist-generated
+assets/brand/tokens.css linguist-generated
+assets/brand/tokens.json linguist-generated
+assets/brand/*.svg linguist-generated
+docs/favicon*.svg linguist-generated
+docs/tokens.css linguist-generated
