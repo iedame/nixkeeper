@@ -83,7 +83,7 @@ def mark(spec, ox=0, oy=0, scale=1.0, ids="m", centre=None):
 
 def svg(width, height, body, defs, bg=None):
     """A standalone SVG, titled for screen readers (the page's linter requires
-    a title in docs/)."""
+    a title in page/)."""
     rect = f'<rect width="100%" height="100%" fill="{bg}"/>' if bg else ""
     return (
         '<svg xmlns="http://www.w3.org/2000/svg" '

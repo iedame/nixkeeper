@@ -1,4 +1,4 @@
-// The page's rules (docs/logic.js). Run: node --test tests/js/
+// The page's rules (page/logic.js). Run: node --test tests/js/
 // (part of `nix flake check`, as checks.page).
 
 import assert from 'node:assert/strict';
@@ -23,7 +23,7 @@ import {
   versionChange,
   waitingForChannel,
   withSlash,
-} from '../../docs/logic.js';
+} from '../../page/logic.js';
 
 const NOW = Date.parse('2026-10-01T12:00:00Z');
 const daysAgo = (n) => new Date(NOW - n * 86400e3).toISOString();

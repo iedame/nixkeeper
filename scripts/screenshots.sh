@@ -7,7 +7,7 @@
 # card at 2x, scripts/social-preview.html, around the dark desktop shot), then
 # compresses them.
 #
-# With the page's current code (docs/) against the published data, so what's
+# With the page's current code (page/) against the published data, so what's
 # shown is what's live.
 #
 #   nix run .#screenshots -- --browser <name or path> [--open <panel>]
@@ -97,7 +97,7 @@ while [ $# -gt 0 ]; do
 done
 [ -n "$browser" ] || usage
 
-[ -f flake.nix ] && [ -d docs ] || {
+[ -f flake.nix ] && [ -d page ] || {
 	echo "Run this from the repository's root." >&2
 	exit 1
 }
@@ -190,9 +190,9 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# The page as it is in docs/, pointed at the data, and able to open a panel
+# The page as it is in page/, pointed at the data, and able to open a panel
 # once its rows are there (?open=<row>:<panel>, as --open).
-cp docs/* "$site/"
+cp page/* "$site/"
 python3 - "$site/index.html" "$DATA" <<'EOF'
 import sys
 path, data = sys.argv[1:]

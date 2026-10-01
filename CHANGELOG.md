@@ -32,6 +32,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- The page's folder is `page/` instead of `docs/`: it's the page, not
+  documentation, and the workflow that publishes it can take any folder.
 - The `nixkeeper` command works from anywhere: by default it keeps the lists
   in `~/.config/nixkeeper/package-lists/` (or `lists.json` there) and the
   data in `~/.local/state/nixkeeper/data/`, following the XDG variables.
@@ -42,7 +44,7 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - Missing package lists, lists that don't evaluate, and a missing `nix` stop
   the sync with a message saying what to do, not a traceback.
 - Tests for the page: its rules (statuses, version order, "on master",
-  ages, safe links, the tab icon's signals) moved into `docs/logic.js`, which
+  ages, safe links, the tab icon's signals) moved into `page/logic.js`, which
   `tests/js/` tests with Node's test runner as part of `nix flake check`. The
   lint check now also catches undeclared variables in the page's code.
 

@@ -1,4 +1,4 @@
-"""The page (docs/), shipped with nixkeeper: `nixkeeper page <dir>` writes it
+"""The page (page/), shipped with nixkeeper: `nixkeeper page <dir>` writes it
 with the data into a folder ready for any static host, `nixkeeper serve`
 shows it on this computer. The page finds the data by itself as data/ next to
 it."""
@@ -13,14 +13,14 @@ from importlib import resources
 
 from . import config
 
-# Where the package carries the page (copied in from docs/ when it's built),
+# Where the package carries the page (copied in from page/ when it's built),
 # and where a checkout has it.
 _PACKAGED = resources.files("nixkeeper") / "page"
-_CHECKOUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "docs")
+_CHECKOUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "page")
 
 
 def page_dir():
-    """The page's folder: the package's copy, or a checkout's docs/."""
+    """The page's folder: the package's copy, or a checkout's page/."""
     if _PACKAGED.is_dir():
         return str(_PACKAGED)
     if os.path.exists(os.path.join(_CHECKOUT, "index.html")):
