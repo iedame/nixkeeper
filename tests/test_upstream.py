@@ -99,7 +99,9 @@ class AddChecks(unittest.TestCase):
             },
         )
         self.assertNotIn("upstream", rows[1])  # no check for it
-        self.assertIn("not-tracked: not a tracked package", self.stderr.getvalue())
+        # A check for a package that isn't tracked doesn't run (listcheck.py
+        # reports it with the lists).
+        self.assertNotIn("not-tracked", self.stderr.getvalue())
 
     def test_failure_keeps_previous_result_and_says_so(self):
         old = {"version": "1.19.26", "repo": "wesnoth/wesnoth", "newer": True}

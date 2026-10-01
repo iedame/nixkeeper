@@ -24,6 +24,8 @@ export function computeStatus(pkg) {
   if (pkg.nixStatus === 'outdated' || pkg.nixStatus === 'legacy') return 'warn';
   // nixkeeper's own update check found a release Repology hasn't seen.
   if (pkg.upstream?.newer) return 'warn';
+  // Or master already has a newer version than the channel.
+  if (aheadOnMaster(pkg)) return 'warn';
   if (pkg.nixStatus === 'newest' || pkg.nixStatus === 'unique' || pkg.nixStatus === 'devel')
     return 'ok';
   return 'neutral';
@@ -74,8 +76,32 @@ export function waitingForChannel(pkg) {
   return (
     computeStatus(pkg) === 'warn' &&
     Boolean(onMaster(pkg)) &&
-    compareVersions(pkg.refVersion || '', onMaster(pkg)) <= 0
+    compareVersions(targetVersion(pkg) || '', onMaster(pkg)) <= 0
   );
+}
+
+// Hydra's build of master is newer than the channel's version: there's a
+// newer release, whatever Repology and the update checks know
+// (ahead_on_master in nixkeeper/changes.py).
+export function aheadOnMaster(pkg) {
+  return Boolean(pkg.master && pkg.nixVersion) && compareVersions(pkg.master, pkg.nixVersion) > 0;
+}
+
+// Whether the version to update to is master's, newer than anything
+// Repology or an update check knows (count_master in nixkeeper/changes.py;
+// data from before that rule only has master, not refFromMaster).
+export function fromMaster(pkg) {
+  return (
+    aheadOnMaster(pkg) &&
+    (Boolean(pkg.refFromMaster) ||
+      !pkg.refVersion ||
+      compareVersions(pkg.master, pkg.refVersion) > 0)
+  );
+}
+
+// The version an update would bring.
+export function targetVersion(pkg) {
+  return fromMaster(pkg) ? pkg.master : pkg.refVersion;
 }
 
 // What an update would change to, as the table shows it: for an unstable

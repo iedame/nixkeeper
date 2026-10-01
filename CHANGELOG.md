@@ -30,11 +30,23 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   second run waits for the first, saying so.
 - `nixkeeper sync --if-older HOURS`: only sync when there's no data yet or
   the last sync is older than that.
+- Every sync checks the package lists for mistakes that would otherwise go
+  unnoticed: a maintainer handle no nixpkgs package lists (a typo would track
+  nothing), an extra package nixpkgs doesn't have, and an update check or
+  ignore rule for a package that isn't tracked. They're in the sync's log and
+  the data (`listProblems`), and the page shows them above the table, so
+  lists set in a NixOS or nix-darwin configuration, or by `nixkeeper init`,
+  get the same safety net as the repository's `nix flake check`.
 
 ### Changed
 
 - `nixkeeper serve` starts before the first sync: the page says it has no
   data yet, and shows it once a sync has written it.
+- A package whose master already has a newer version than the channel
+  (Hydra's build) counts as outdated, with that version as the one to update
+  to, and shows "on master": waiting for the channel, nothing to do. Before,
+  it only did when Repology or an update check knew of the new release too
+  (wesnoth-devel's 1.19.28 showed as up to date without its update check).
 
 ## [0.7.0] - 2026-10-01
 

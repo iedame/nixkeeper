@@ -124,6 +124,23 @@ class FrequentCheck(unittest.TestCase):
         notified.assert_not_called()
         self.assertIn("Nothing changed", self.stderr.getvalue())
 
+    def test_master_ahead_survives_the_repology_refresh(self):
+        """Master has a version Repology and the check haven't seen: the
+        refresh puts Repology's refVersion back, then master counts again."""
+        self.publish(
+            chrome_row(
+                master="154.0.8040.12",
+                refVersion="154.0.8040.12",
+                refFromMaster=True,
+                outdatedSince="2026-09-30T07:23:00+00:00",
+            )
+        )
+        index, _, _ = self.run_frequent(api("154.0.8037.57"))
+        chrome = index["packages"][0]
+        self.assertEqual(chrome["refVersion"], "154.0.8040.12")
+        self.assertTrue(chrome["refFromMaster"])
+        self.assertEqual(chrome["outdatedSince"], "2026-09-30T07:23:00+00:00")
+
     def test_nixpkgs_catching_up_clears_outdated(self):
         up = {"version": "154.0.8040.12", "url": "x", "newer": True}
         self.publish(

@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import { describe, test } from 'node:test';
 
 import {
+  aheadOnMaster,
   attentionRank,
   buildsWith,
   compareVersions,
@@ -12,6 +13,7 @@ import {
   daysText,
   escapeHtml,
   faviconKey,
+  fromMaster,
   githubRepo,
   hasFailure,
   href,
@@ -19,6 +21,7 @@ import {
   onPlatform,
   safeUrl,
   shortAge,
+  targetVersion,
   timeAgo,
   versionChange,
   waitingForChannel,
@@ -93,6 +96,47 @@ describe('onMaster and waitingForChannel', () => {
   });
   test('only outdated packages wait', () => {
     assert.equal(waitingForChannel(pkg({ master: '9.9' })), false);
+  });
+});
+
+describe('master ahead of the channel', () => {
+  // wesnoth-devel: Repology knows 1.19.24 (the channel's), master has 1.19.28.
+  const wesnoth = (fields = {}) =>
+    pkg({
+      nixStatus: 'devel',
+      nixVersion: '1.19.24',
+      refVersion: '1.19.24',
+      master: '1.19.28',
+      ...fields,
+    });
+
+  test('counts as outdated, and waits for the channel', () => {
+    assert.equal(aheadOnMaster(wesnoth()), true);
+    assert.equal(computeStatus(wesnoth()), 'warn');
+    assert.equal(waitingForChannel(wesnoth()), true);
+  });
+  test("master's version is the one to update to", () => {
+    // As the sync now writes it, and as older data has it.
+    const synced = wesnoth({ refVersion: '1.19.28', refFromMaster: true });
+    for (const p of [synced, wesnoth()]) {
+      assert.equal(fromMaster(p), true);
+      assert.equal(targetVersion(p), '1.19.28');
+    }
+  });
+  test('a newer known release stays the target, still to do', () => {
+    // unciv: master has 4.22.5, but 4.22.6 is out.
+    const unciv = outdated({ nixVersion: '4.22.1', refVersion: '4.22.6', master: '4.22.5' });
+    assert.equal(fromMaster(unciv), false);
+    assert.equal(targetVersion(unciv), '4.22.6');
+    assert.equal(waitingForChannel(unciv), false);
+  });
+  test('not when master matches the channel, or there is no master', () => {
+    assert.equal(aheadOnMaster(wesnoth({ master: '1.19.24' })), false);
+    assert.equal(computeStatus(wesnoth({ master: '1.19.24' })), 'ok');
+    assert.equal(aheadOnMaster(pkg({ nixVersion: '1.0' })), false);
+  });
+  test("isn't a new release to act on in the tab icon", () => {
+    assert.equal(faviconKey([wesnoth()]), 'ok');
   });
 });
 

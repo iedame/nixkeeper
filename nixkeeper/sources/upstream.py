@@ -93,11 +93,7 @@ def add_checks(rows, checks, previous, now):
     row as not refreshed: usually the check itself needs fixing (a moved page,
     a changed tag scheme)."""
     by_name = {row["name"]: row for row in rows}
-    for name in sorted(set(checks) - set(by_name)):
-        print(
-            f"::warning::update check for {name}: not a tracked package",
-            file=sys.stderr,
-        )
+    # Checks for untracked packages: reported with the lists (listcheck.py).
     wanted = {name: check for name, check in checks.items() if name in by_name}
     if not wanted:
         return

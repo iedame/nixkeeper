@@ -10,6 +10,7 @@ import urllib.error
 from datetime import UTC, datetime
 
 from . import history, partial, rows
+from .changes import count_master
 from .sources import nixpkgs as nixpkgs_source
 from .sources import repology, upstream
 
@@ -83,6 +84,9 @@ def main():
             if entries is not None:
                 data_files[row["dataFile"]] = entries
     upstream.add_checks(selected, checks, previous, now)
+    # Repology's refVersion is fresh again: count master (as the sync does).
+    for row in selected:
+        count_master(row)
     history.add_outdated_since(selected, previous, now)
     partial.publish(previous, packages, now, data_files)
 

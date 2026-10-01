@@ -1,6 +1,13 @@
 import unittest
 
-from nixkeeper.changes import diff, failures, should_notify, waiting_for_channel
+from nixkeeper.changes import (
+    count_master,
+    diff,
+    failures,
+    is_outdated,
+    should_notify,
+    waiting_for_channel,
+)
 
 
 def row(name, status="newest", **extra):
@@ -148,6 +155,40 @@ class Diff(unittest.TestCase):
         self.assertFalse(should_notify(c))
 
 
+class MasterAhead(unittest.TestCase):
+    """Hydra's master build newer than the channel: a newer release exists,
+    whatever Repology and the update checks know."""
+
+    def test_counts_as_outdated(self):
+        self.assertTrue(is_outdated(row("x", master="2")))
+        self.assertFalse(is_outdated(row("x", master="1")))  # same as the channel
+        self.assertFalse(is_outdated(row("x", master="0.9")))
+        self.assertFalse(is_outdated(row("x")))
+
+    def test_master_becomes_the_version_to_update_to(self):
+        r = row("wesnoth-devel", "devel", nixVersion="1.19.24", refVersion="1.19.24")
+        r["master"] = "1.19.28"
+        count_master(r)
+        self.assertEqual(r["refVersion"], "1.19.28")
+        self.assertTrue(r["refFromMaster"])
+        self.assertTrue(waiting_for_channel(r))
+
+    def test_a_newer_known_release_stays(self):
+        # unciv: master has 4.22.5, but 4.22.6 is out: still to do.
+        r = row("unciv", "outdated", nixVersion="4.22.1", refVersion="4.22.6")
+        r["master"] = "4.22.5"
+        count_master(r)
+        self.assertEqual(r["refVersion"], "4.22.6")
+        self.assertNotIn("refFromMaster", r)
+        self.assertFalse(waiting_for_channel(r))
+
+    def test_once_the_channel_catches_up(self):
+        r = row("x", nixVersion="2", refVersion="2", master="2", refFromMaster=True)
+        count_master(r)
+        self.assertNotIn("refFromMaster", r)
+        self.assertFalse(is_outdated(r))
+
+
 class WaitingForChannel(unittest.TestCase):
     """Outdated with the update already on master: merged, waiting for
     nixos-unstable."""
@@ -161,7 +202,15 @@ class WaitingForChannel(unittest.TestCase):
         # master ahead of the channel, but not yet at the newest: still to do.
         self.assertFalse(waiting_for_channel(self.outdated(master="1.19.26")))
         self.assertFalse(waiting_for_channel(self.outdated()))
-        self.assertFalse(waiting_for_channel(row("x", master="2")))  # not outdated
+        self.assertFalse(waiting_for_channel(row("x")))  # not outdated
+        # Master ahead of a channel Repology calls newest: outdated, merged.
+        self.assertTrue(waiting_for_channel(row("x", master="2")))
+
+    def test_master_ahead_is_not_newly_outdated_news(self):
+        before = {"packages": [row("wesnoth-devel", "devel", refVersion="1")]}
+        now = row("wesnoth-devel", "devel", refVersion="1", master="1.1")
+        count_master(now)
+        self.assertEqual(diff(before, [now])["outdated"], [])
 
     def test_not_newly_outdated_news(self):
         before = {"packages": [row("wesnoth-devel")]}
