@@ -26,7 +26,8 @@ CONTRIBUTING.md): edit the scripts, not these files.
   rainbow).
 - `nixkeeper-status-*.svg`: the status versions (see "Status icon").
 - `nixkeeper-lockup*.svg`: the mark with the name (outlined), for light and
-  dark backgrounds.
+  dark backgrounds. The `-tight` ones have no clearspace: the page's header
+  (copied to `docs/`).
 - `tokens.css`, `tokens.json`: colours and fonts. Use these rather than
   hard-coding hex values.
 - `identity.html`: the identity sheet; open it in a browser.

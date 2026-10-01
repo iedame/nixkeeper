@@ -13,8 +13,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 - The lockups carry the wordmark as outlines, in Oxanium Bold (lowercase
   "nixkeeper"), so they look the same everywhere without the font, on
-  transparent backgrounds for light and dark. The README's title is now the
-  lockup. `nix run .#brand` fetches the font (one pinned file) and outlines
+  transparent backgrounds for light and dark. The README's title and the
+  page's header are now the lockup. `nix run .#brand` fetches the font (one pinned file) and outlines
   it with HarfBuzz. The pages the wordmark was chosen from are kept in
   `assets/brand/explorations/`.
 - The page's tab icon shows what needs attention: the mark's chevrons light
