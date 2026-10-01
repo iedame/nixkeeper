@@ -108,21 +108,30 @@
           program = lib.getExe' nixkeeper "nixkeeper-pr-check";
           meta.description = "Look for outdated packages' update PRs, open and merged, against data/";
         };
+        # The wordmark's typeface, Oxanium (SIL Open Font License), from the
+        # google/fonts commit this nixpkgs' google-fonts uses: just the one file,
+        # not the whole collection.
+        oxanium = pkgs.fetchurl {
+          name = "oxanium.ttf";
+          url = "https://raw.githubusercontent.com/google/fonts/5174b3333331c966c38f4355d50b03ca1c1df2f9/ofl/oxanium/Oxanium%5Bwght%5D.ttf";
+          hash = "sha256-LOAdlG4eH/yNfuz/+9qGI77dY+r4EaIEiMS2mvRbq7A=";
+        };
         # Regenerates the brand assets in assets/brand/ (scripts/brand/): the
-        # mark's SVGs, the colour tokens, the identity sheet, and the page's
-        # copies of the favicon and the tokens (GitHub Pages only serves docs/).
+        # mark's SVGs, the lockups with the wordmark outlined, the colour
+        # tokens, the identity sheet, and the page's copies of the favicon and
+        # the tokens (GitHub Pages only serves docs/).
         brand = {
           type = "app";
           program = lib.getExe (
             pkgs.writeShellApplication {
               name = "nixkeeper-brand";
-              runtimeInputs = [ pkgs.python3 ];
+              runtimeInputs = [ (pkgs.python3.withPackages (ps: [ ps.uharfbuzz ])) ];
               text = ''
                 [ -f flake.nix ] && [ -d assets/brand ] || {
                   echo "Run this from the repository's root." >&2
                   exit 1
                 }
-                python3 scripts/brand/generate.py assets/brand
+                python3 scripts/brand/generate.py assets/brand ${oxanium}
                 python3 scripts/brand/tokens.py assets/brand
                 python3 scripts/brand/identity.py assets/brand
                 cp assets/brand/favicon*.svg docs/

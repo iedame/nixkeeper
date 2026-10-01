@@ -79,8 +79,9 @@ h2 { font-size: 16px; margin-top: 32px; }
 .marks { display: flex; gap: 20px; flex-wrap: wrap; }
 .marks figure { margin: 0; text-align: center; font-size: 12px; color: #555; }
 .marks img { height: 110px; display: block; margin-bottom: 4px; }
-.lockups { display: flex; gap: 20px; }
-.lockups img { height: 90px; }
+.lockups { display: flex; gap: 20px; flex-wrap: wrap; }
+.lockups img { height: 90px; padding: 8px; border-radius: 8px; }
+.lockups img + img { background: #16181c; }
 .ramps { display: grid; grid-template-columns: 90px repeat(9, 1fr); gap: 3px; }
 .name { font-size: 12px; align-self: center; }
 .sw { height: 46px; font: 10px/1.3 var(--mono); padding: 4px;
@@ -110,7 +111,7 @@ Violet {brand["violet"]} → mauve {brand["mauve"]}; the page's colours are the
 NixOS guide's accents, with the page's meanings.</p>
 <h2>The mark, its status versions and variants</h2>
 <div class="marks">{figures}</div>
-<h2>Lockups (live text: outline before use)</h2>
+<h2>Lockups (the wordmark in Oxanium Bold, outlined)</h2>
 <div class="lockups">
 <img src="nixkeeper-lockup.svg" alt="">
 <img src="nixkeeper-lockup-dark.svg" alt="">
