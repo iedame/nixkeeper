@@ -112,14 +112,17 @@ export function targetVersion(pkg) {
   return fromMaster(pkg) ? pkg.master : pkg.refVersion;
 }
 
-// What an update would change to, as the table shows it: for an unstable
-// version with the same base ("5.1.0-b2-unstable-2022-11-14"), just the new
-// date, which is all that differs; anything else in full.
-export function versionChange(from, to) {
-  const unstable = /^(.*-unstable-)(\d{4}-\d{2}-\d{2})$/;
-  const a = unstable.exec(from || '');
-  const b = unstable.exec(to || '');
-  return a && b && a[1] === b[1] ? b[2] : to;
+// What changed between two versions, compared by whole parts (split at
+// . - _ + ~, so 1.19.24 -> 1.19.28 changes "24", not just the "4"): the
+// start they share, the rest of each. The page shows the newest version
+// under nixpkgs', the shared start faded and the rest in colour.
+//   versionDiff('1.19.24', '1.19.28') -> { same: '1.19.', from: '24', to: '28' }
+export function versionDiff(from, to) {
+  const parts = (v) => (v || '').match(/[^.\-_+~]+|[.\-_+~]/g) || [];
+  const [a, b] = [parts(from), parts(to)];
+  let i = 0;
+  while (i < a.length && i < b.length && a[i] === b[i]) i++;
+  return { same: a.slice(0, i).join(''), from: a.slice(i).join(''), to: b.slice(i).join('') };
 }
 
 // Default order: failed, then outdated (longest outdated first), then
@@ -218,4 +221,35 @@ export function themeFor(chosen = {}, siteDefault = null) {
   const palette = [chosen.palette, siteDefault].find((p) => PALETTES.includes(p)) || 'classic';
   const mode = MODES.includes(chosen.mode) ? chosen.mode : 'auto';
   return { palette, mode };
+}
+
+// The repositories a package's panel compares nixpkgs with: one entry per
+// repository (Repology lists one per subpackage: alpine has xournalpp,
+// xournalpp-doc, ...), its newest version, then newest version first (ties
+// by name). Repology's statuses for versions that don't compare (rolling,
+// ignored, incorrect, noscheme, untrusted) go last, so a "9999" doesn't top
+// the list.
+const UNCOMPARABLE = new Set(['rolling', 'ignored', 'incorrect', 'noscheme', 'untrusted']);
+const newer = (a, b) =>
+  UNCOMPARABLE.has(a.status) - UNCOMPARABLE.has(b.status) ||
+  compareVersions(b.version || '', a.version || '');
+export function comparedRepos(entries) {
+  const best = new Map();
+  for (const e of entries) {
+    const kept = best.get(e.repo);
+    if (!kept || newer(e, kept) < 0) best.set(e.repo, e);
+  }
+  return [...best.values()].sort(
+    (a, b) => newer(a, b) || (a.repo || '').localeCompare(b.repo || ''),
+  );
+}
+
+// An update's title as nixpkgs writes it, for commits and PRs:
+// "unciv: 4.22.1 -> 4.22.6". Only for an outdated package with a known
+// newest version; null otherwise.
+export function updateTitle(pkg) {
+  const target = targetVersion(pkg);
+  return computeStatus(pkg) === 'warn' && pkg.nixVersion && target
+    ? `${pkg.name}: ${pkg.nixVersion} -> ${target}`
+    : null;
 }

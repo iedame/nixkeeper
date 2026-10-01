@@ -17,17 +17,25 @@
 <body>
 <div class="shell">
 
+  <div class="sticky-top" id="stickyTop">
   <header class="top">
     <div class="wordmark">
       <h1><img class="lockup on-light" src="nixkeeper-lockup-tight.svg" alt="nixkeeper" width="143" height="28"><img class="lockup on-dark" src="nixkeeper-lockup-tight-dark.svg" alt="nixkeeper" width="143" height="28"></h1>
       <span class="tag">your nixpkgs packages, at a glance</span>
     </div>
     <div class="actions">
-      <input type="search" id="search" placeholder="Filter packages…" aria-label="Filter packages" disabled>
-      <button type="button" class="btn" id="sortBtn" aria-pressed="false" title="Sort alphabetically instead of by what needs attention">A–Z</button>
-      <button type="button" class="btn" id="refreshBtn">Refresh</button>
+      <label class="search">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" id="search" placeholder="Filter pkgs" aria-label="Filter packages" disabled>
+        <kbd title="Press / to filter">/</kbd>
+      </label>
+      <button type="button" class="btn icon-btn" id="sortBtn" aria-pressed="false" aria-label="Sort A–Z" title="Sort alphabetically instead of by what needs attention">
+        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 16 4 4 4-4"/><path d="M7 20V4"/><path d="M15 10V6.5a2.5 2.5 0 0 1 5 0V10"/><path d="M15 8h5"/><path d="M15 14h5l-5 6h5"/></svg>
+      </button>
       <div class="theme">
-        <button type="button" class="btn" id="themeBtn" aria-expanded="false" aria-controls="themePanel">Theme</button>
+        <button type="button" class="btn icon-btn" id="themeBtn" aria-expanded="false" aria-controls="themePanel" aria-label="Theme" title="Theme">
+          <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="13.5" cy="6.5" r="1" fill="currentColor"/><circle cx="17.5" cy="10.5" r="1" fill="currentColor"/><circle cx="8.5" cy="7.5" r="1" fill="currentColor"/><circle cx="6.5" cy="12.5" r="1" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.93 0 1.65-.75 1.65-1.69 0-.44-.18-.84-.44-1.13-.29-.29-.44-.65-.44-1.13a1.64 1.64 0 0 1 1.67-1.67h2c3.05 0 5.55-2.5 5.55-5.55C21.97 6.01 17.46 2 12 2z"/></svg>
+        </button>
         <div class="theme-panel" id="themePanel" hidden>
           <fieldset>
             <legend>Colours</legend>
@@ -49,8 +57,15 @@
     </div>
   </header>
 
-  <div class="stats" id="stats"></div>
-  <div class="stats lists" id="lists"></div>
+  <div class="stick-mark" id="stickMark"></div>
+  <div class="filterbar" id="filterbar">
+    <div class="filters">
+      <div class="chips" id="stats"></div>
+      <div class="chips lists" id="lists"></div>
+    </div>
+    <span class="checked" id="checked"></span>
+  </div>
+  </div>
   <div class="list-problems" id="listProblems" hidden></div>
   <div id="content">
     <div class="loading">Loading package data…</div>
@@ -69,6 +84,7 @@
 
 </div>
 
+<div id="announce" class="sr-only" aria-live="polite"></div>
 <script type="module" src="app.js"></script>
 </body>
 </html>

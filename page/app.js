@@ -1,6 +1,7 @@
 import {
   buildsWith as buildsOn,
   communityCheck,
+  comparedRepos,
   compareVersions,
   computeStatus,
   daysText,
@@ -18,7 +19,8 @@ import {
   targetVersion,
   themeFor,
   timeAgo,
-  versionChange,
+  updateTitle,
+  versionDiff,
   waitingForChannel,
   withSlash,
 } from './logic.js';
@@ -156,6 +158,70 @@ function prBadge(pkg) {
     `${pr.draft ? 'Draft update PR' : 'Update PR waiting for review'}: ${pr.title}${behind}`,
     pr,
   );
+}
+
+// The version column: the versions on the left, badges on the right (so
+// they line up from row to row). Up to date: nixpkgs' version, and what's
+// said about it (devel, vulnerable, ...) at the right. Outdated, two lines:
+// nixpkgs' version, and under it the newest, in full, with the start they
+// share faded so the part that changes stands out ("→" hangs to its left).
+// At the right, the update's PR or master badge on top; the rest below. Screen readers get the two versions in a
+// sentence instead. Both versions are one button: it copies the update's
+// title as nixpkgs writes it ("unciv: 4.22.1 -> 4.22.6").
+function versionCell(pkg, st) {
+  if (st === 'missing') return `<span class="badge missing">not packaged</span>`;
+  const now = escapeHtml(pkg.nixVersion);
+  const failing = notRefreshed(pkg, 'upstream')
+    ? `<span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
+    : '';
+  const about = `${st === 'neutral' ? `<span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? `<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? '<span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? `<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}`;
+  if (st !== 'warn')
+    return `<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
+  const target = targetVersion(pkg);
+  const d = versionDiff(pkg.nixVersion, target);
+  const merged = waitingForChannel(pkg);
+  const title = updateTitle(pkg);
+  return `<div class="vcell">
+    <button type="button" class="vcopy" data-copy="${escapeHtml(title || '')}" title="Copy “${escapeHtml(title || '')}”">
+    <span class="v-now"><span class="v" aria-hidden="true">${now}</span><span class="sr-only">${now}, newest ${escapeHtml(target || 'unknown')}</span></span>
+    <span class="v-next" aria-hidden="true" title="${escapeHtml(target || '')}"><span class="arrow">→</span><span class="same">${escapeHtml(d.same)}</span><span class="ref${merged ? ' merged' : ''}">${escapeHtml(d.to || '?')}</span></span>
+    </button>
+    <span class="v-tags top">${prBadge(pkg)}</span>
+    <span class="v-tags bottom">${about}${failing}</span>
+  </div>`;
+}
+
+// How long an outdated package has been outdated, after its name: orange,
+// or violet when the update is merged and waiting for the channel.
+function ageTag(pkg, st) {
+  if (st !== 'warn' || !pkg.outdatedSince) return '';
+  return `<span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">${shortAge(pkg.outdatedSince)}</span>`;
+}
+
+// Copies an update's title, and says so on the button for a moment. The
+// clipboard API needs a secure page (https, or localhost); elsewhere (a
+// self-hosted page over plain http) the older way.
+async function copyTitle(btn) {
+  const text = btn.dataset.copy;
+  if (!text) return;
+  let ok = false;
+  try {
+    await navigator.clipboard.writeText(text);
+    ok = true;
+  } catch {
+    const area = Object.assign(document.createElement('textarea'), { value: text });
+    area.setAttribute('readonly', '');
+    area.style.position = 'fixed';
+    area.style.opacity = '0';
+    document.body.append(area);
+    area.select();
+    ok = document.execCommand('copy');
+    area.remove();
+  }
+  btn.dataset.copied = ok ? 'Copied' : "Couldn't copy";
+  document.getElementById('announce').textContent = ok ? `Copied ${text}` : "Couldn't copy";
+  clearTimeout(btn.copiedTimer);
+  btn.copiedTimer = setTimeout(() => delete btn.dataset.copied, 1500);
 }
 
 // Filter, search and sort live in the page address, so a view survives a
@@ -316,14 +382,18 @@ function renderStats() {
   const platformChip = platformFilter
     ? `<button class="plat-filter" title="Show all platforms">${PLATFORMS[platformFilter].label} only ✕</button>`
     : '';
-  document.getElementById('stats').innerHTML =
-    `${buttons}${platformChip}<span class="checked${stale ? ' stale' : ''}"
-    ${stale ? 'title="The daily sync hasn\'t updated the data in over 2 days. Check where it runs (on GitHub: the Actions tab)."' : ''}>
-    checked ${timeAgo(checkedAt)}${stale ? ' — sync may be failing' : ''}</span>`;
+  document.getElementById('stats').innerHTML = `${buttons}${platformChip}`;
+  const checked = document.getElementById('checked');
+  checked.classList.toggle('stale', stale);
+  checked.title = stale
+    ? "The daily sync hasn't updated the data in over 2 days. Check where it runs (on GitHub: the Actions tab)."
+    : '';
+  checked.textContent = `checked ${timeAgo(checkedAt)}${stale ? ' — sync may be failing' : ''}`;
 }
 
-// The lists from package-lists/, as a second row of filters. Hidden when
-// there's only one (or data from before lists existed).
+// The lists from package-lists/, as more filters after the counts (a
+// divider between). Hidden when there's only one (or data from before lists
+// existed).
 function renderLists() {
   const el = document.getElementById('lists');
   const names = allLists();
@@ -361,21 +431,18 @@ function render(list) {
   const rowsEl = document.getElementById('rows');
   list.forEach((pkg) => {
     const st = computeStatus(pkg);
-    const verCell =
-      st === 'missing'
-        ? `<span class="badge missing">not packaged</span>`
-        : `<span class="v">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? ` <span class="ref mono" title="${escapeHtml(targetVersion(pkg) || '')}">→ ${escapeHtml(versionChange(pkg.nixVersion, targetVersion(pkg)) || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${prBadge(pkg)}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>` : ''}`;
+    const verCell = versionCell(pkg, st);
 
     const tr = document.createElement('tr');
     tr.className = 'row';
     tr.tabIndex = 0;
     tr.innerHTML = `
-      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}"${waitingForChannel(pkg) ? ' title="Update merged: on master, waiting for nixos-unstable"' : ''}></span><span class="n">${escapeHtml(pkg.name)}</span></span>${platformTags(pkg)}</div></td>
+      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}"${waitingForChannel(pkg) ? ' title="Update merged: on master, waiting for nixos-unstable"' : ''}></span><span class="n">${escapeHtml(pkg.name)}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
       <td class="c-ver ver mono">${verCell}</td>
       <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
       <td class="c-build">${buildCell(pkg)}</td>
       <td class="c-update">${updateCell(pkg)}</td>
-      <td class="c-chev"><span class="chev">▸</span></td>
+      <td class="c-chev"><span class="chev" aria-hidden="true"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></td>
     `;
 
     const detail = document.createElement('tr');
@@ -413,6 +480,10 @@ function render(list) {
     for (const a of tr.querySelectorAll('.gh-btn, a.badge')) {
       a.addEventListener('click', (e) => e.stopPropagation()); // open the link, not the row
     }
+    tr.querySelector('.vcopy')?.addEventListener('click', (e) => {
+      e.stopPropagation(); // copy, don't expand the row
+      copyTitle(e.currentTarget);
+    });
     for (const btn of tr.querySelectorAll('button.plat')) {
       btn.addEventListener('click', (e) => {
         e.stopPropagation(); // don't expand the row
@@ -444,10 +515,14 @@ const staleText = (info, what) =>
 const staleNote = (info, what, after) =>
   info ? `<div class="stale-note">⚠ ${escapeHtml(staleText(info, what))}. ${after}</div>` : '';
 
-// quiet: nothing that needs attention, so the phone layout leaves it out.
+// quiet: nothing that needs attention, so it's drawn muted, without a dot
+// ("none reported" as a dash), and the phone layout leaves it out. Only
+// what needs a look keeps its colour.
 function failureButton(kind, dot, text, extra = '', stale = null, quiet = false) {
-  return `<button class="failure-btn${dot === 'missing' ? ' failing' : ''}" type="button" data-kind="${kind}"${quiet && !stale ? ' data-quiet' : ''} ${extra}>
-    <span class="status-dot ${dot}"></span><span class="cell-label">${kind}:</span>${text}${
+  const calm = quiet && !stale;
+  const shown = calm && text === 'none reported' ? '<span aria-hidden="true">—</span>' : text;
+  return `<button class="failure-btn${dot === 'missing' ? ' failing' : ''}${calm ? ' calm' : ''}" type="button" data-kind="${kind}"${calm ? ` data-quiet aria-label="${kind}: ${text}"` : ''} ${extra}>
+    <span class="status-dot ${dot}"></span><span class="cell-label">${kind}:</span>${shown}${
       stale
         ? ` <span class="stale-tag" title="${escapeHtml(staleText(stale, 'Not refreshed'))}">not refreshed</span>`
         : ''
@@ -494,7 +569,7 @@ function updateCell(pkg) {
   if (pkg.updateFailure) return button('missing', 'failure reported');
   // The bot's last attempt failed, but nixpkgs has moved on since: not a
   // failure anymore, though the next attempt may well break the same way.
-  if (pkg.update?.outcome === 'superseded') return button('neutral', 'superseded');
+  if (pkg.update?.outcome === 'superseded') return button('neutral', 'superseded', true);
   // A newer version the bot has no way to update to: not a failure, but it
   // needs a manual update (or an updateScript).
   if (pkg.update?.outcome === 'cantUpdate') return button('caution', "can't update");
@@ -650,8 +725,8 @@ function platformTags(pkg) {
   const pl = pkg.platforms;
   if (pl === undefined) return '';
   if (pl === null)
-    return `<span class="plat any" title="nixpkgs doesn't restrict its platforms">any platform</span>`;
-  return Object.entries(PLATFORMS)
+    return `<span class="plats"><span class="plat any" title="nixpkgs doesn't restrict its platforms">any platform</span></span>`;
+  const tags = Object.entries(PLATFORMS)
     .filter(([key]) => pl[key])
     .map(
       ([key, p]) =>
@@ -659,6 +734,8 @@ function platformTags(pkg) {
       title="${platformFilter === key ? 'Show all platforms' : `Show only packages available on ${p.label}`}">${p.label}</button>`,
     )
     .join('');
+  // Together, so they wrap as one.
+  return tags && `<span class="plats">${tags}</span>`;
 }
 
 // Open nixpkgs PRs / issues with the package's attribute name in the title. Counts come from
@@ -668,7 +745,7 @@ function githubLinks(pkg) {
   const link = (kind, path, label, count) => {
     const q = encodeURIComponent(`is:${kind} state:open in:title ${term}`);
     return `<a class="gh-btn" href="https://github.com/NixOS/nixpkgs/${path}?q=${q}" target="_blank" rel="noopener"
-      title="Open nixpkgs ${label} with ${escapeHtml(term)} in the title">${label}${count != null ? ` <b>${count}</b>` : ''}</a>`;
+      title="Open nixpkgs ${label} with ${escapeHtml(term)} in the title"${count === 0 ? ' data-zero' : ''}>${label}${count != null ? ` <b>${count}</b>` : ''}</a>`;
   };
   return `<span class="gh-links">${link('pr', 'pulls', 'PRs', pkg.openPRs)}${link('issue', 'issues', 'issues', pkg.openIssues)}</span>`;
 }
@@ -693,7 +770,7 @@ async function fillDetail(pkg, el) {
     }
   }
 
-  const others = entries.filter((e) => e.repo !== NIX_REPO);
+  const others = comparedRepos(entries.filter((e) => e.repo !== NIX_REPO));
   const homepage = safeUrl(pkg.homepage);
 
   const st = computeStatus(pkg);
@@ -793,7 +870,11 @@ async function fillDetail(pkg, el) {
     ${
       others.length
         ? `<div class="other-label">Compared against</div><div class="repo-chips">
-      ${others.map((e) => `<span class="repo-chip ${e.status === 'newest' && e.version !== pkg.nixVersion ? 'ahead' : ''}">${escapeHtml(e.repo)} <span class="v mono">${escapeHtml(e.version || '?')}</span></span>`).join('')}
+      ${others.map((e, i) => `<span class="repo-chip ${e.status === 'newest' && e.version !== pkg.nixVersion ? 'ahead' : ''}"${i >= COMPARED_SHOWN ? ' hidden' : ''}>${escapeHtml(e.repo)} <span class="v mono">${escapeHtml(e.version || '?')}</span></span>`).join('')}${
+        others.length > COMPARED_SHOWN
+          ? `<button type="button" class="more-btn" aria-expanded="false">Show all ${others.length}</button>`
+          : ''
+      }
     </div>`
         : ''
     }
@@ -803,7 +884,19 @@ async function fillDetail(pkg, el) {
       ${pkg.project ? `<a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>` : ''}
     </div>
   `;
+  el.querySelector('.more-btn')?.addEventListener('click', (e) => {
+    const btn = e.currentTarget;
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    el.querySelectorAll('.repo-chip').forEach((chip, i) => {
+      chip.hidden = !open && i >= COMPARED_SHOWN;
+    });
+    btn.setAttribute('aria-expanded', open);
+    btn.textContent = open ? 'Show fewer' : `Show all ${others.length}`;
+  });
 }
+
+// How many repositories a panel shows before "Show all".
+const COMPARED_SHOWN = 8;
 
 function currentFiltered() {
   writeViewToUrl();
@@ -855,10 +948,16 @@ document.getElementById('sortBtn').addEventListener('click', (e) => {
   if (packages.length) render(currentFiltered());
   else writeViewToUrl();
 });
-document.getElementById('refreshBtn').addEventListener('click', () => {
-  detailCache.clear();
-  document.getElementById('content').innerHTML = `<div class="loading">Loading package data…</div>`;
-  loadIndex();
+// "/" jumps to the filter, as on GitHub; Escape in it clears it.
+document.addEventListener('keydown', (e) => {
+  const search = document.getElementById('search');
+  if (e.key === '/' && !e.target.closest('input, textarea') && !search.disabled) {
+    e.preventDefault();
+    search.focus();
+  } else if (e.key === 'Escape' && e.target === search && search.value) {
+    search.value = '';
+    render(currentFiltered());
+  }
 });
 
 document
@@ -880,6 +979,27 @@ document.addEventListener('keydown', (e) => {
   showThemePanel(false);
   document.getElementById('themeBtn').focus();
 });
+
+// The sticky header's height, for the column headings to stick under it.
+new ResizeObserver(([entry]) =>
+  document.documentElement.style.setProperty(
+    '--sticky-h',
+    `${Math.round(entry.borderBoxSize[0].blockSize)}px`,
+  ),
+).observe(document.getElementById('stickyTop'));
+
+// Phones and tablets: once the filters are stuck at the top, "checked ..."
+// hides (stuck), and comes back at the top of the page. The bar keeps its
+// place in the page (a margin for the hidden line), so the list doesn't jump.
+const narrow = matchMedia('(max-width: 1080px)');
+new IntersectionObserver(([entry]) => {
+  const bar = document.getElementById('filterbar');
+  const stuck = narrow.matches && !entry.isIntersecting && entry.boundingClientRect.top < 0;
+  if (stuck === bar.classList.contains('stuck')) return;
+  const before = bar.offsetHeight;
+  bar.classList.toggle('stuck', stuck);
+  bar.style.marginBottom = stuck ? `${before - bar.offsetHeight}px` : '';
+}).observe(document.getElementById('stickMark'));
 
 applyTheme();
 readViewFromUrl();
