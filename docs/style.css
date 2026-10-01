@@ -6,7 +6,9 @@
   --ink-faint: #90959b;
   --hairline: #e3e5e8;
   --hairline-strong: #d2d5d9;
-  --accent: #3654c9;
+  /* Links and key UI: the brand violet (tokens.css, from assets/brand/), which
+     switches to its dark-theme value by itself. */
+  --accent: var(--nk-link-text);
   --ok: #1f8a5f;
   --ok-soft: #e7f4ee;
   --ok-devel: #135c3e;
@@ -37,7 +39,6 @@
     --ink-faint: #6c7178;
     --hairline: #2b2f35;
     --hairline-strong: #383d44;
-    --accent: #7b8cef;
     --ok: #4fc793;
     --ok-soft: #1b2e27;
     --warn: #e0a344;

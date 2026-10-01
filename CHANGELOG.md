@@ -21,6 +21,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   It's the page's favicon, and it leads the page's header and the README's
   title.
 
+### Changed
+
+- Links and key UI on the page (focus outlines, active filters) are in
+  nixkeeper's violet, from the brand's colour tokens, which the page now
+  loads (`docs/tokens.css`).
+
 ## [0.5.0] - 2026-09-30
 
 ### Added
