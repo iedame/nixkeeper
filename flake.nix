@@ -80,6 +80,7 @@
           settings.formatter.biome.includes = [
             "docs/*.js"
             "docs/*.css"
+            "tests/js/*.mjs"
           ];
         };
 
@@ -197,7 +198,13 @@
             # flake source (CI's view of the repo) doesn't include.
             actionlint .github/workflows/*.yml
             shellcheck scripts/*.sh
-            biome lint docs
+            biome lint docs tests/js
+            touch $out
+          '';
+          # The page's rules (docs/logic.js), with Node's own test runner.
+          page = pkgs.runCommand "nixkeeper-page-tests" { nativeBuildInputs = [ pkgs.nodejs-slim ]; } ''
+            cd ${self}
+            node --test 'tests/js/*.test.mjs'
             touch $out
           '';
           package-lists = listsChecker.check (import ./package-lists);
@@ -295,6 +302,7 @@
         devShells.default = pkgs.mkShell {
           packages = [
             (pkgs.python3.withPackages (ps: [ ps.brotli ]))
+            pkgs.nodejs-slim # the page's tests (tests/js/)
             treefmt.config.build.wrapper
           ]
           ++ linters;

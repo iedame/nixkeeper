@@ -1,4 +1,27 @@
+import {
+  buildsWith as buildsOn,
+  compareVersions,
+  computeStatus,
+  daysText,
+  escapeHtml,
+  hasFailure as failureOn,
+  faviconKey,
+  href,
+  onMaster,
+  onPlatform,
+  attentionRank as rankOn,
+  githubRepo as repoFrom,
+  safeUrl,
+  shortAge,
+  timeAgo,
+  versionChange,
+  waitingForChannel,
+  withSlash,
+} from './logic.js';
+
 const NIX_REPO = 'nix_unstable';
+
+const githubRepo = (params) => repoFrom(params, location);
 
 // Where the data (index.json and the per-project files) lives, as a URL
 // ending in "/". First of:
@@ -28,19 +51,6 @@ async function findDataBase() {
   return repo ? `https://raw.githubusercontent.com/${repo}/data/data/` : null;
 }
 
-const withSlash = (url) => (url.endsWith('/') ? url : `${url}/`);
-
-// "owner/repo" from ?owner=&repo=, or from a GitHub Pages project site's
-// address.
-function githubRepo(params) {
-  if (params.get('owner') && params.get('repo'))
-    return `${params.get('owner')}/${params.get('repo')}`;
-  const host = location.hostname;
-  const owner = host.endsWith('.github.io') ? host.split('.')[0] : null;
-  const seg = location.pathname.split('/').filter(Boolean)[0] || null;
-  return owner && seg ? `${owner}/${seg}` : null;
-}
-
 // The footer links to nixkeeper itself; a copy of it on GitHub Pages (its
 // own package lists) also links to those lists.
 const UPSTREAM = 'iedame/nixkeeper';
@@ -65,6 +75,11 @@ let checkedAt = null;
 let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
 let sortAZ = false; // default order puts what needs attention first
 let platformFilter = null; // null | 'linux' | 'darwin', combined with activeFilter
+// The rules that follow the platform filter (logic.js), on the selected one.
+const hasFailure = (pkg) => failureOn(pkg, platformFilter);
+const buildsWith = (pkg, status) => buildsOn(pkg, status, platformFilter);
+const failedBuilds = (pkg) => buildsWith(pkg, 'failed');
+const attentionRank = (pkg) => rankOn(pkg, platformFilter);
 // null, or a list from package-lists/ ("maintained", "gaming-team", ...):
 // ?list=gaming-team is a page of just that list's packages, to share.
 let listFilter = null;
@@ -78,14 +93,11 @@ function allLists() {
   );
 }
 
-// "any platform" (no restriction in nixpkgs) counts as both.
+// The platform filter's choices ("any platform" counts as both: onPlatform).
 const PLATFORMS = {
   linux: { label: 'Linux', param: 'linux' },
   darwin: { label: 'macOS', param: 'macos' },
 };
-function onPlatform(pkg, key) {
-  return pkg.platforms === null || Boolean(pkg.platforms?.[key]);
-}
 function inPlatform(pkg) {
   return !platformFilter || onPlatform(pkg, platformFilter);
 }
@@ -110,54 +122,6 @@ const FILTERS = {
     test: (p) => p.nixVulnerable,
   },
 };
-
-// Everything shown in red: not found in nixpkgs, or a build or update
-// failure reported.
-function hasFailure(pkg) {
-  return (
-    computeStatus(pkg) === 'missing' || failedBuilds(pkg).length > 0 || Boolean(pkg.updateFailure)
-  );
-}
-
-// Hydra builds with a status, on the selected platform only while one is.
-function buildsWith(pkg, status) {
-  return (pkg.builds || []).filter(
-    (b) => b.status === status && (!platformFilter || b.system.endsWith(`-${platformFilter}`)),
-  );
-}
-const failedBuilds = (pkg) => buildsWith(pkg, 'failed');
-
-// Version order as the sync compares them (nixkeeper/versions.py): numbers
-// as numbers, a letter part before a number (1.0rc1 < 1.0.1).
-function compareVersions(a, b) {
-  const parts = (v) =>
-    (v.match(/\d+|[A-Za-z]+/g) || []).map((p) => (/^\d/.test(p) ? [1, +p, ''] : [0, 0, p]));
-  const [pa, pb] = [parts(a), parts(b)];
-  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    if (!pa[i] || !pb[i]) return pa[i] ? 1 : -1;
-    for (let j = 0; j < 3; j++) if (pa[i][j] !== pb[i][j]) return pa[i][j] < pb[i][j] ? -1 : 1;
-  }
-  return 0;
-}
-
-// The version master has, when ahead of the channel: Hydra's build there, or
-// what an update PR merged into master brings (before Hydra has built it),
-// whichever is higher (on_master in nixkeeper/changes.py).
-function onMaster(pkg) {
-  const versions = [pkg.master, pkg.masterPR?.to].filter(Boolean);
-  return versions.sort(compareVersions).pop() || null;
-}
-
-// Outdated, but master already has the target version (or newer): the update
-// is merged and waits for nixos-unstable, usually a few days (see
-// waiting_for_channel in nixkeeper/changes.py).
-function waitingForChannel(pkg) {
-  return (
-    computeStatus(pkg) === 'warn' &&
-    Boolean(onMaster(pkg)) &&
-    compareVersions(pkg.refVersion || '', onMaster(pkg)) <= 0
-  );
-}
 
 // Where the package's update stands on GitHub, in GitHub's own colors:
 // "on master" (merged, purple) while waiting for the channel, else an open
@@ -188,26 +152,6 @@ function prBadge(pkg) {
     `${pr.draft ? 'Draft update PR' : 'Update PR waiting for review'}: ${pr.title}${behind}`,
     pr,
   );
-}
-
-// What an update would change to, as the table shows it: for an unstable
-// version with the same base ("5.1.0-b2-unstable-2022-11-14"), just the new
-// date, which is all that differs; anything else in full.
-function versionChange(from, to) {
-  const unstable = /^(.*-unstable-)(\d{4}-\d{2}-\d{2})$/;
-  const a = unstable.exec(from || '');
-  const b = unstable.exec(to || '');
-  return a && b && a[1] === b[1] ? b[2] : to;
-}
-
-// Default order: failed, then outdated (longest outdated first), then
-// outdated but already fixed on master, then the rest; otherwise
-// alphabetical (the index arrives sorted by name and Array.sort is stable).
-function attentionRank(pkg) {
-  if (hasFailure(pkg)) return 0;
-  if (waitingForChannel(pkg)) return 1.5;
-  if (computeStatus(pkg) === 'warn') return 1;
-  return 2;
 }
 
 // Filter, search and sort live in the page address, so a view survives a
@@ -270,36 +214,6 @@ async function loadIndex() {
   }
 }
 
-// Follows Repology's statuses. "legacy" means outdated while the same repo
-// carries a newer version in another package (e.g. a beta overtaken by the
-// stable release), so it counts as outdated. Whether a row is a devel variant
-// comes separately from pkg.devel and only shades its "devel" badge.
-function computeStatus(pkg) {
-  if (pkg.nixStatus === 'missing') return 'missing';
-  if (pkg.nixStatus === 'outdated' || pkg.nixStatus === 'legacy') return 'warn';
-  // nixkeeper's own update check found a release Repology hasn't seen.
-  if (pkg.upstream?.newer) return 'warn';
-  if (pkg.nixStatus === 'newest' || pkg.nixStatus === 'unique' || pkg.nixStatus === 'devel')
-    return 'ok';
-  return 'neutral';
-}
-
-// How long a package has been outdated, one letter per unit: <1 d, 3 d, 2 w,
-// 5 m (months), 2 y.
-function shortAge(iso) {
-  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400e3);
-  if (days < 1) return '<1 d';
-  if (days < 7) return `${days} d`;
-  if (days < 30) return `${Math.floor(days / 7)} w`;
-  if (days < 365) return `${Math.min(11, Math.floor(days / 30))} m`; // 360-364 days: not "12 m" before "1 y"
-  return `${Math.floor(days / 365)} y`;
-}
-
-function daysText(iso) {
-  const days = Math.floor((Date.now() - new Date(iso).getTime()) / 86400e3);
-  return days < 1 ? 'today' : days === 1 ? '1 day' : `${days} days`;
-}
-
 function longDate(iso) {
   return new Date(iso).toLocaleDateString(undefined, {
     day: 'numeric',
@@ -308,28 +222,9 @@ function longDate(iso) {
   });
 }
 
-function timeAgo(iso) {
-  if (!iso) return 'never';
-  const diff = Date.now() - new Date(iso).getTime();
-  const m = Math.floor(diff / 60000);
-  if (m < 1) return 'just now';
-  if (m < 60) return `${m}m ago`;
-  const h = Math.floor(m / 60);
-  if (h < 24) return `${h}h ago`;
-  return `${Math.floor(h / 24)}d ago`;
-}
-
-// The tab's icon shows what needs attention among packages: each signal
-// turns its own chevron of the mark (assets/brand/BRAND.md, "Status icon"):
-// r, a new release nothing has been done about yet (not already on master);
-// f, a failure; v, a vulnerability. With none, the "all good" icon.
+// The tab's icon shows what needs attention among packages (faviconKey).
 function setFavicon(base) {
-  const signals = {
-    r: base.some((p) => computeStatus(p) === 'warn' && !waitingForChannel(p)),
-    f: base.some(hasFailure),
-    v: base.some((p) => p.nixVulnerable),
-  };
-  const key = ['r', 'f', 'v'].filter((s) => signals[s]).join('') || 'ok';
+  const key = faviconKey(base, platformFilter);
   const link = document.getElementById('favicon');
   if (link && !link.href.endsWith(`favicon-${key}.svg`)) link.href = `favicon-${key}.svg`;
 }
@@ -382,31 +277,6 @@ function renderLists() {
         <b>${count}</b> ${escapeHtml(name)}</button>`;
     })
     .join('')}`;
-}
-
-// A link from data, only if it's a web address: escaping stops markup, but
-// not a javascript: link, which would run when clicked. '' otherwise.
-function safeUrl(url) {
-  try {
-    const { protocol } = new URL(url);
-    return protocol === 'https:' || protocol === 'http:' ? url : '';
-  } catch {
-    return '';
-  }
-}
-
-// safeUrl, ready for an href.
-function href(url) {
-  return escapeHtml(safeUrl(url));
-}
-
-function escapeHtml(s) {
-  return (s || '')
-    .toString()
-    .replace(
-      /[&<>"']/g,
-      (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
-    );
 }
 
 function render(list) {
