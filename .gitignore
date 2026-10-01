@@ -10,3 +10,4 @@ __pycache__/
 
 # The page, copied into the package by its build (flake.nix)
 /nixkeeper/page/
+/nixkeeper/community/

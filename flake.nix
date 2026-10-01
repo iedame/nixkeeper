@@ -47,6 +47,7 @@
               ./nixkeeper
               ./tests
               ./page # the page, shipped with the package
+              ./community # the community update checks, too
             ];
           };
         };

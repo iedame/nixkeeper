@@ -47,6 +47,15 @@ rec {
               default = { };
               description = "nixpkgs-update attempts that don't count, as in package-lists/ignored-updates.nix.";
             };
+            communityChecks = mkOption {
+              type = types.bool;
+              default = false;
+              description = ''
+                Also use the community update checks (community/update-checks.nix,
+                shipped with nixkeeper) for the packages you track. Your own
+                updateChecks win for the same package.
+              '';
+            };
           };
         }
       );
@@ -126,13 +135,17 @@ rec {
     else
       cfg.listsPath;
 
-  # Whether reading the lists needs Nix: a folder of Nix files, not JSON.
+  # Whether the jobs need Nix: to read lists in a folder of Nix files, or the
+  # community update checks (lists from listsPath may opt in to them too).
   listsNeedNix =
     cfg:
     let
       file = listsFile cfg;
     in
-    file == null || !(lib.hasSuffix ".json" (toString file));
+    file == null
+    || !(lib.hasSuffix ".json" (toString file))
+    || cfg.listsPath != null
+    || (cfg.lists != null && cfg.lists.communityChecks);
 
   # The jobs' NIXKEEPER_* variables. token: where they find the token file.
   environment =

@@ -1,5 +1,6 @@
 import {
   buildsWith as buildsOn,
+  communityCheck,
   compareVersions,
   computeStatus,
   daysText,
@@ -314,7 +315,7 @@ function render(list) {
     const verCell =
       st === 'missing'
         ? `<span class="badge missing">not packaged</span>`
-        : `<span class="v">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? ` <span class="ref mono" title="${escapeHtml(targetVersion(pkg) || '')}">→ ${escapeHtml(versionChange(pkg.nixVersion, targetVersion(pkg)) || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${prBadge(pkg)}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. Fix it in package-lists/update-checks.nix.">check failing</span>` : ''}`;
+        : `<span class="v">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? ` <span class="ref mono" title="${escapeHtml(targetVersion(pkg) || '')}">→ ${escapeHtml(versionChange(pkg.nixVersion, targetVersion(pkg)) || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${prBadge(pkg)}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>` : ''}`;
 
     const tr = document.createElement('tr');
     tr.className = 'row';
@@ -671,7 +672,7 @@ async function fillDetail(pkg, el) {
   // When the update check is what makes it outdated, say where the newer
   // version came from, and how it compares with Repology.
   const upstreamLine = () =>
-    `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>; nixkeeper's update check found <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span> ${upLink}${
+    `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>; ${communityCheck(pkg) ? 'a community update check' : "nixkeeper's update check"} found <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span> ${upLink}${
       pkg.refVersion !== up.version
         ? `; Repology's newest is <span class="mono">${escapeHtml(pkg.refVersion)}</span>`
         : repologyOutdated
@@ -688,7 +689,11 @@ async function fillDetail(pkg, el) {
         up
           ? ` Still using its last result: <span class="mono">${escapeHtml(up.version)}</span>${up.checkedAt ? ` (${escapeHtml(longDate(up.checkedAt))})` : ''}.`
           : ' It has no result yet.'
-      } Fix it in <span class="mono">package-lists/update-checks.nix</span>.</div>`
+      } ${
+        communityCheck(pkg)
+          ? `It's a community rule (<span class="mono">community/update-checks.nix</span> in nixkeeper): report it there, or give this package a rule of your own in your update checks.`
+          : 'Fix it in <span class="mono">package-lists/update-checks.nix</span>.'
+      }</div>`
     : '';
   const nixLine =
     up?.newer && !fromMaster(pkg)

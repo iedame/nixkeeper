@@ -5,7 +5,7 @@ GitHub counts and update PRs -> data/ -> status issue. `nixkeeper sync`
 
 from datetime import UTC, datetime
 
-from . import history, listcheck, lookup, notify, output, rows, tracking
+from . import community, history, listcheck, lookup, notify, output, rows, tracking
 from .changes import count_master, is_outdated
 from .sources import github, hydra, nixpkgs_update, upstream
 from .sources import nixpkgs as nixpkgs_source
@@ -24,7 +24,8 @@ def main():
     listcheck.report(problems)
     revision = nixpkgs_source.channel_revision()
     rows.add_source_links(index_rows, nixpkgs, revision)
-    upstream.add_checks(index_rows, lists.get("updateChecks") or {}, previous, now)
+    checks, from_community = community.merge(lists, [row["name"] for row in index_rows])
+    upstream.add_checks(index_rows, checks, previous, now, from_community)
     in_nixpkgs = {a for row in index_rows for a in row["attrs"] if a in nixpkgs}
     broken = nixpkgs_source.broken(in_nixpkgs, revision)
     hydra.add_builds(index_rows, nixpkgs, previous, now, broken)

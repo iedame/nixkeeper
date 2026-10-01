@@ -109,6 +109,7 @@ See [nixkeeper on NixOS](docs/nixos.md) or
 - [A dashboard of your own](docs/your-own-instance.md): your own copy on GitHub
 - [The nixkeeper command](docs/command.md): installing, settings, pinning a version
 - [nixkeeper on NixOS](docs/nixos.md) and [on macOS](docs/darwin.md): the modules
+- [Community update checks](docs/community-checks.md): shared update checks, opt-in
 - [The data](docs/data.md): every field in the JSON, for building on it
 - [Troubleshooting](docs/troubleshooting.md): checking that it all runs
 

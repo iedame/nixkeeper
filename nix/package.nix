@@ -32,9 +32,12 @@ python3Packages.buildPythonApplication (finalAttrs: {
   dependencies = [ python3Packages.brotli ];
 
   # The page goes in the Python package (nixkeeper page and nixkeeper serve
-  # find it there), and in share/ for anything else that wants it.
+  # find it there), and in share/ for anything else that wants it. So do the
+  # community update checks (communityChecks = true in the lists).
   preBuild = ''
     cp -r page nixkeeper/page
+    mkdir -p nixkeeper/community
+    cp community/update-checks.nix nixkeeper/community/
   '';
 
   postInstall = ''

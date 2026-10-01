@@ -105,7 +105,9 @@ class FrequentCheck(unittest.TestCase):
         self.assertIn("outdatedSince", chrome)
         self.assertEqual(index["packages"][1], before["packages"][1])  # untouched
         self.assertEqual(index["checkedAt"], before["checkedAt"])  # the full sync's
-        get.assert_called_once_with(CHECKS["google-chrome"]["url"])  # not bbedit's
+        get.assert_called_once_with(
+            CHECKS["google-chrome"]["url"], safe=False
+        )  # not bbedit's
         notified.assert_called_once()
         self.assertEqual(notified.call_args.args[0], before)  # compared with before
         self.assertTrue(os.path.exists("data/google-chrome.json"))

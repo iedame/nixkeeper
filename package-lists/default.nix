@@ -21,6 +21,11 @@
   # Repology. See the file for the format.
   updateChecks = import ./update-checks.nix;
 
+  # Also use the community update checks, rules anyone can contribute to
+  # nixkeeper (community/update-checks.nix in its repository), for the
+  # packages tracked here; the ones above win for the same package.
+  # communityChecks = true;
+
   # Versions nixpkgs-update tried and failed that don't count as its failure
   # (never really released, say). See the file for the format.
   ignoredUpdates = import ./ignored-updates.nix;
