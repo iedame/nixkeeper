@@ -11,6 +11,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- A workflow publishes the page to GitHub Pages ("Pages: publish the page")
+  whenever it changes on `main`, instead of Pages deploying the `/docs`
+  folder from the branch itself. Forks set Settings → Pages → Source to
+  "GitHub Actions" (see the README's setup steps).
 - One `nixkeeper` command, with a subcommand for each job: `nixkeeper sync`,
   `nixkeeper frequent-check` and `nixkeeper pr-check`, plus `nixkeeper paths`
   (where the lists and data are, and which setting says so) and

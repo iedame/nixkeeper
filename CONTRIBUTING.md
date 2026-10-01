@@ -37,6 +37,8 @@ happen. For what nixkeeper does and how to set up your own, see the
   - `ci.yml`, **CI: tests and lint**: checks nixkeeper's own code on every
     push and PR
   - `data-daily.yml`, **Data: daily sync**: updates all package data
+  - `pages.yml`, **Pages: publish the page**: publishes `docs/` to GitHub
+    Pages whenever it changes on `main` (Pages' source is "GitHub Actions")
   - `data-hourly.yml`, **Data: hourly updates (frequent packages, update PRs)**:
     the frequent update checks and outdated packages' update PRs. Scheduled
     hourly, but GitHub may delay or skip scheduled runs under load, so gaps of
