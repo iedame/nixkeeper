@@ -210,6 +210,8 @@ nixkeeper sync            # one full sync
 nixkeeper frequent-check  # only the update checks marked frequent
 nixkeeper pr-check        # outdated packages' update PRs
 nixkeeper paths           # where the lists and data are, and which setting says so
+nixkeeper serve           # show the page on this computer (http://127.0.0.1:8000/)
+nixkeeper page <dir>      # write the page and the data into a folder, to host anywhere
 ```
 
 Without installing it, `nix run github:iedame/nixkeeper -- <command>` runs
@@ -237,6 +239,14 @@ The status issue is only posted with a token given explicitly (the token file
 or `GITHUB_TOKEN`), never with the local `gh` login. Reading from GitHub (PR
 and issue counts, update PRs) does use the `gh` login when there's no other
 token.
+
+The page ships with the command (and in the package's
+`share/nixkeeper/www/`). `nixkeeper serve` shows it with the data as it is,
+so a new sync appears on the next reload; it listens on this computer only
+unless `--bind` says otherwise. `nixkeeper page <dir>` writes a folder for
+any static host, with the data copied in as `data/`; run it again after
+each sync. It only writes into a new or empty folder, or one it wrote
+before.
 
 The page finds its data by itself when `data/` is served next to it. Otherwise
 it reads the repository's `data` branch on a GitHub Pages site, or wherever
