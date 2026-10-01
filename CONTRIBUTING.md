@@ -26,7 +26,8 @@ happen. For what nixkeeper does and how to set up your own, see the
 - `package-lists/`: what this instance tracks (see
   [how it works](docs/how-it-works.md#what-gets-tracked))
 - `community/update-checks.nix`: the community update checks, rules anyone
-  can add by PR ([docs/community-checks.md](docs/community-checks.md))
+  can add by PR, and `community/ignored-updates.nix`, the community ignore
+  rules ([docs/community.md](docs/community.md))
 - `docs/`: the documentation, one page per topic ([docs/README.md](docs/README.md)
   lists them); `README.md`, `CONTRIBUTING.md`, `SECURITY.md`,
   `CHANGELOG.md` and `LICENSE` stay at the root, where GitHub looks for them
@@ -53,11 +54,11 @@ happen. For what nixkeeper does and how to set up your own, see the
     push and PR
   - `data-daily.yml`, **Data: daily sync**: updates all package data
   - `community-checks.yml`, **Community: update checks still work**: runs
-    every community update check for real weekly, keeping the "Community
-    update checks status" issue up to date (`nixkeeper community-check
+    every community rule for real weekly, keeping the "Community rules
+    status" issue up to date (`nixkeeper community-check
     --report-issue`), and on PRs that change `community/`, the rules they add
     or change (`--changed-from`), failing if one finds nothing (see
-    [docs/community-checks.md](docs/community-checks.md))
+    [docs/community.md](docs/community.md))
   - `pages.yml`, **Pages: publish the page**: publishes `page/` to GitHub
     Pages whenever it changes on `main` (Pages' source is "GitHub Actions")
   - `data-hourly.yml`, **Data: hourly updates (frequent packages, update PRs)**:

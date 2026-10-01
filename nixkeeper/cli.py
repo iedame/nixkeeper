@@ -109,11 +109,12 @@ def parser():
     )
     check = sub.add_parser(
         "community-check",
-        help="run community update checks for real, to test one (all, or those named)",
+        help="try the community rules for real (all, or those named)",
         description="Run the community update checks (community/update-checks.nix) "
-        "for real, against nixpkgs' current versions: every rule, or those named. "
-        "Says what each found, and fails if any didn't. GitHub rules need a token "
-        "(GITHUB_TOKEN, or a gh login).",
+        "for real, against nixpkgs' current versions, and say which community "
+        "ignore rules (community/ignored-updates.nix) no longer do anything: every "
+        "rule, or those named. Fails if an update check finds nothing. GitHub "
+        "rules need a token (GITHUB_TOKEN, or a gh login).",
         parents=[common],
     )
     check.add_argument("names", metavar="NAME", nargs="*", help="a package's rule")
@@ -122,9 +123,10 @@ def parser():
     )
     check.add_argument(
         "--changed-from",
-        metavar="PATH",
-        help="only the rules added or changed since this version of the file "
-        "(for a pull request)",
+        metavar="DIR",
+        help="only the rules added or changed since this version of community/ "
+        "(for a pull request); a new ignore rule must match the bot's latest "
+        "failed attempt",
     )
     check.add_argument(
         "--report-issue",
@@ -226,18 +228,25 @@ def main(argv=None):
         )
         return
     if args.command == "community-check":
-        names = args.names
+        checks = ignored = args.names or None
         if args.changed_from:
-            names = community.changed(args.changed_from)
-            if not names:
+            checks, ignored = community.changed(args.changed_from)
+            if not checks and not ignored:
                 print("No community rules added or changed.", file=sys.stderr)
                 return
-        results = community.run(names, args.file)
-        failed = community.report(results)
+        results = community.run(checks, args.file)
+        stale = community.stale_ignores(ignored) if ignored != [] else {}
+        failed = community.report(results, stale)
+        if ignored and not stale:
+            print(f"  ignore rules for {', '.join(ignored)}: still apply")
         if args.report_issue:
-            community.publish(results)
-        elif failed:
-            sys.exit(f"{failed} community update check(s) failed.")
+            community.publish(results, stale)
+            return
+        # A pull request's ignore rule has to do something when it's added.
+        if args.changed_from and stale:
+            failed += sum(map(len, stale.values()))
+        if failed:
+            sys.exit(f"{failed} community rule(s) don't work.")
         return
     if args.command == "page":
         with lock.held():  # not mid-sync: the data is swapped in whole

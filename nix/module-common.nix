@@ -47,14 +47,27 @@ rec {
               default = { };
               description = "nixpkgs-update attempts that don't count, as in package-lists/ignored-updates.nix.";
             };
-            communityChecks = mkOption {
-              type = types.bool;
-              default = false;
-              description = ''
-                Also use the community update checks (community/update-checks.nix,
-                shipped with nixkeeper) for the packages you track. Your own
-                updateChecks win for the same package.
-              '';
+            community = {
+              updateChecks = mkOption {
+                type = types.bool;
+                default = false;
+                description = ''
+                  Also use the community update checks
+                  (community/update-checks.nix, shipped with nixkeeper) for the
+                  packages you track. Your own updateChecks win for the same
+                  package.
+                '';
+              };
+              ignoredUpdates = mkOption {
+                type = types.bool;
+                default = false;
+                description = ''
+                  Also use the community ignore rules
+                  (community/ignored-updates.nix, shipped with nixkeeper) for
+                  the packages you track. Your own ignoredUpdates win for the
+                  same version.
+                '';
+              };
             };
           };
         }
@@ -136,7 +149,7 @@ rec {
       cfg.listsPath;
 
   # Whether the jobs need Nix: to read lists in a folder of Nix files, or the
-  # community update checks (lists from listsPath may opt in to them too).
+  # community rules (lists from listsPath may opt in to them too).
   listsNeedNix =
     cfg:
     let
@@ -145,7 +158,7 @@ rec {
     file == null
     || !(lib.hasSuffix ".json" (toString file))
     || cfg.listsPath != null
-    || (cfg.lists != null && cfg.lists.communityChecks);
+    || (cfg.lists != null && (cfg.lists.community.updateChecks || cfg.lists.community.ignoredUpdates));
 
   # The jobs' NIXKEEPER_* variables. token: where they find the token file.
   environment =

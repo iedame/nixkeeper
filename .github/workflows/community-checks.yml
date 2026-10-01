@@ -1,15 +1,17 @@
 name: "Community: update checks still work"
 
-# Runs the community update checks (community/update-checks.nix) for real,
-# against nixpkgs' current versions. Their format and limits are checked by
-# CI (nix flake check) already; this is whether they still find versions.
+# Tries the community rules (community/) for real: the update checks against
+# nixpkgs' current versions, and the ignore rules against the bot's latest
+# attempts. Their format and limits are checked by CI (nix flake check)
+# already; this is whether they still do something.
 #
 #   weekly (and by hand), in iedame/nixkeeper only: every rule, kept in the
-#     "Community update checks status" issue: which are broken and since
-#     when, with a comment when one breaks or works again. Broken rules
-#     don't fail the run.
-#   on pull requests changing the file: only the rules it adds or changes,
-#     failing if one finds nothing, so it's fixed before it's merged.
+#     "Community rules status" issue: which update checks are broken and
+#     since when (with a comment when one breaks or works again), and which
+#     ignore rules can go. Neither fails the run.
+#   on pull requests changing community/: only the rules they add or change,
+#     failing if an update check finds nothing, or an ignore rule doesn't
+#     match the bot's latest failed attempt.
 
 on:
   schedule:
@@ -30,7 +32,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      issues: write  # the community checks status issue
+      issues: write  # the community rules status issue
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -39,7 +41,7 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
-      - name: Run every community update check, and update the status issue
+      - name: Try every community rule, and update the status issue
         run: nix run .#community-check -- --report-issue
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub rules, and the issue
@@ -52,18 +54,21 @@ jobs:
         with:
           persist-credentials: false  # never pushes
 
-      - name: Get main's community file, to compare with
+      - name: Get main's community rules, to compare with
         env:
           BASE: ${{ github.base_ref }}
         run: |
           git fetch --depth=1 origin "$BASE"
-          git show "FETCH_HEAD:community/update-checks.nix" > "$RUNNER_TEMP/base.nix" \
-            || echo '{ }' > "$RUNNER_TEMP/base.nix"
+          mkdir -p "$RUNNER_TEMP/base"
+          for file in update-checks.nix ignored-updates.nix; do
+            git show "FETCH_HEAD:community/$file" > "$RUNNER_TEMP/base/$file" \
+              || echo '{ }' > "$RUNNER_TEMP/base/$file"
+          done
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
-      - name: Run the rules this pull request adds or changes
-        run: nix run .#community-check -- --changed-from "$RUNNER_TEMP/base.nix"
+      - name: Try the rules this pull request adds or changes
+        run: nix run .#community-check -- --changed-from "$RUNNER_TEMP/base"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub rules

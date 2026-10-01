@@ -34,8 +34,11 @@ def main():
     for row in index_rows:
         count_master(row)
     history.add_outdated_since(index_rows, previous, now)
+    ignored, ignored_by_community = community.merge_ignores(
+        lists, [row["name"] for row in index_rows]
+    )
     nixpkgs_update.add_attempts(
-        index_rows, nixpkgs, previous, now, lists.get("ignoredUpdates") or {}
+        index_rows, nixpkgs, previous, now, ignored, ignored_by_community
     )
     github.add_counts(index_rows)  # and open update PRs
     outdated = [row for row in index_rows if is_outdated(row)]

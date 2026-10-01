@@ -177,12 +177,12 @@ class AddAttempts(unittest.TestCase):
             patcher.start()
             self.addCleanup(patcher.stop)
 
-    def run_attempts(self, rows, pages, previous=None, ignored=None):
+    def run_attempts(self, rows, pages, previous=None, ignored=None, community=()):
         nixpkgs = {a: pkg(a) for row in rows for a in row["attrs"]}
         urlopen, calls = fake_site(pages)
         with mock.patch("urllib.request.urlopen", side_effect=urlopen):
             nixpkgs_update.add_attempts(
-                rows, nixpkgs, previous or {"packages": []}, NOW, ignored
+                rows, nixpkgs, previous or {"packages": []}, NOW, ignored, community
             )
         return calls
 
@@ -223,6 +223,16 @@ class AddAttempts(unittest.TestCase):
             "2.8.0 anymore; the rule can go",
             self.stderr.getvalue(),
         )
+
+    def test_a_community_rule_says_so(self):
+        rows = [{"name": "egoboo", "attrs": ["egoboo"], "nixVersion": "2.7.3"}]
+        pages = {"/egoboo/": listing("2026-09-15"), "/egoboo/2026-09-15.log": FAILED}
+        rules = {"egoboo": {"2.8.1": "Never released.", "2.8.0": "Old."}}
+        community = {("egoboo", "2.8.1"), ("egoboo", "2.8.0")}
+        self.run_attempts(rows, pages, ignored=rules, community=community)
+        self.assertTrue(rows[0]["update"]["community"])
+        # Stale community rules are listed by community-check, not here.
+        self.assertNotIn("the rule can go", self.stderr.getvalue())
 
     def test_only_failures_are_ignored(self):
         attempt = {"outcome": "prOpened", "to": "2.8.1"}
