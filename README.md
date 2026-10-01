@@ -1,4 +1,4 @@
-# <img src="assets/nixkeeper-mark.svg" alt="" height="30"> nixkeeper
+# <img src="assets/brand/favicon.svg" alt="" height="30"> nixkeeper
 
 [![CI: tests and lint](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml)
 [![Data: daily sync](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml/badge.svg)](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml)
@@ -10,12 +10,12 @@ and update failures, and vulnerabilities, in one place.
 
 <p align="center">
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/desktop-dark.png">
-    <img src="assets/desktop-light.png" width="70%" alt="The nixkeeper dashboard on a desktop: a table of packages with their nixpkgs version, open PRs and issues, build and update failures, and one package's update panel open">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/screenshots/desktop-dark.png">
+    <img src="assets/screenshots/desktop-light.png" width="70%" alt="The nixkeeper dashboard on a desktop: a table of packages with their nixpkgs version, open PRs and issues, build and update failures, and one package's update panel open">
   </picture>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="assets/mobile-dark.png">
-    <img src="assets/mobile-light.png" width="22%" alt="The same dashboard on a phone: each package as a card">
+    <source media="(prefers-color-scheme: dark)" srcset="assets/screenshots/mobile-dark.png">
+    <img src="assets/screenshots/mobile-light.png" width="22%" alt="The same dashboard on a phone: each package as a card">
   </picture>
 </p>
 
@@ -230,7 +230,8 @@ are in [CONTRIBUTING.md](CONTRIBUTING.md). Security problems:
 
 ## License
 
-nixkeeper's code is released under the [MIT License](LICENSE).
+nixkeeper's code and its brand assets (`assets/brand/`) are released under
+the [MIT License](LICENSE).
 
 The published data (the `data` branch) is collected from other projects and
 remains subject to their terms: [Repology](https://repology.org), nixpkgs'
