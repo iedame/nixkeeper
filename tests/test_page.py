@@ -118,6 +118,19 @@ class Serve(unittest.TestCase):
         _, body = self.get("/data/index.json")
         self.assertEqual(json.loads(body)["packages"][0]["name"], "new")
 
+    def test_before_the_first_sync(self):
+        empty = os.path.join(self.dir.name, "no-data-yet")
+        httpd = page.server(0, "127.0.0.1", data=empty)
+        threading.Thread(target=httpd.serve_forever, daemon=True).start()
+        self.addCleanup(httpd.server_close)
+        self.addCleanup(httpd.shutdown)
+        base = f"http://127.0.0.1:{httpd.server_address[1]}"
+        with urllib.request.urlopen(base + "/", timeout=5) as resp:
+            self.assertIn("<title>nixkeeper", resp.read().decode())
+        with self.assertRaises(urllib.error.HTTPError) as e:
+            urllib.request.urlopen(base + "/data/index.json", timeout=5)
+        self.assertEqual(e.exception.code, 404)
+
     def test_nothing_outside_the_page_and_the_data(self):
         for path in (
             "/data/../secret.txt",

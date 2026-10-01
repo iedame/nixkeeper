@@ -8,6 +8,11 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Only for checking the darwin module (checks.darwin-module-eval).
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -16,10 +21,12 @@
       nixpkgs,
       flake-utils,
       treefmt-nix,
+      nix-darwin,
     }:
     {
-      # services.nixkeeper (nix/module.nix).
+      # services.nixkeeper (nix/module.nix, nix/darwin-module.nix).
       nixosModules.default = import ./nix/module.nix self;
+      darwinModules.default = import ./nix/darwin-module.nix self;
     }
     // flake-utils.lib.eachDefaultSystem (
       system:
@@ -185,6 +192,33 @@
 
         checks = {
           inherit nixkeeper; # building it runs the tests
+          # The darwin module, evaluated in a whole nix-darwin configuration
+          # (on any system, as module-eval below): the agents' launchd plists.
+          darwin-module-eval =
+            let
+              darwin = nix-darwin.lib.darwinSystem {
+                system = "aarch64-darwin";
+                modules = [
+                  self.darwinModules.default
+                  {
+                    system.stateVersion = 6;
+                    system.primaryUser = "someone";
+                    services.nixkeeper = {
+                      enable = true;
+                      lists.maintainers = [ "iedame" ];
+                      githubTokenFile = "/Users/someone/.config/nixkeeper/github-token";
+                      serve.enable = true;
+                    };
+                  }
+                ];
+              };
+              plists = lib.mapAttrs (_: agent: agent.serviceConfig) (
+                lib.filterAttrs (name: _: lib.hasPrefix "nixkeeper-" name) darwin.config.launchd.user.agents
+              );
+            in
+            pkgs.writeText "nixkeeper-darwin-module-eval" (
+              builtins.unsafeDiscardStringContext (builtins.seq darwin.system.drvPath (builtins.toJSON plists))
+            );
           # The NixOS module, evaluated in a whole NixOS configuration (on any
           # system: nothing is built, so this runs on macOS too).
           module-eval =

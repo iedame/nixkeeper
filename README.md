@@ -299,7 +299,7 @@ and optionally the page on nginx.
 
 | Option | Default | What it sets |
 |---|---|---|
-| `lists` | `{ }` | what to track, as `package-lists/` has it (`maintainers`, `extraPackages`, `updateChecks`, `ignoredUpdates`) |
+| `lists` | – (this or `listsPath`) | what to track, as `package-lists/` has it (`maintainers`, `extraPackages`, `updateChecks`, `ignoredUpdates`) |
 | `listsPath` | – | a `package-lists/` folder or JSON file instead (a folder is evaluated with the system's Nix) |
 | `syncAt` | `"06:00"` | when the sync runs (systemd `OnCalendar`); a missed one runs at boot |
 | `frequentChecks.enable`, `.at` | `true`, `"hourly"` | the frequent update checks and the update PR check |
@@ -312,6 +312,50 @@ The jobs run as their own `nixkeeper` user, hardened (read-only system, no
 home, no privileges). Like any nixkeeper commands on the same data, they run
 one at a time: each holds a lock (`data.lock`, next to the data) and the next
 waits for it.
+
+### On macOS, with nix-darwin
+
+The flake's darwin module runs the same jobs as launchd agents of your user
+(`system.primaryUser`), on the same folders the command uses, so
+`nixkeeper serve` or `nixkeeper paths` by hand see the same data:
+
+```nix
+{
+  inputs.nixkeeper.url = "github:iedame/nixkeeper";
+
+  outputs = { nix-darwin, nixkeeper, ... }: {
+    darwinConfigurations.mac = nix-darwin.lib.darwinSystem {
+      modules = [
+        ./configuration.nix # your Mac's own configuration
+        nixkeeper.darwinModules.default
+        {
+          services.nixkeeper = {
+            enable = true;
+            # Or leave lists out, and keep the ones `nixkeeper init` wrote in
+            # ~/.config/nixkeeper/package-lists/.
+            lists.maintainers = [ "your-github-handle" ];
+            serve.enable = true; # the page at http://127.0.0.1:8000/
+          };
+        }
+      ];
+    };
+  };
+}
+```
+
+It takes the same `lists`, `listsPath`, `githubTokenFile` (a file only you
+can read; without one, a `gh` login is used for reading, as the command
+does), `notify`, `githubRepo` and `pageUrl` as the NixOS module, and:
+
+| Option | Default | What it sets |
+|---|---|---|
+| `syncAt` | `{ Hour = 6; Minute = 0; }` | when the sync runs (launchd `StartCalendarInterval`); a run missed while the Mac slept happens when it wakes |
+| `frequentChecks.enable`, `.at` | `true`, `{ Minute = 23; }` | the frequent update checks and the update PR check, hourly |
+| `serve.enable`, `.port` | `false`, `8000` | keep `nixkeeper serve` running, on 127.0.0.1 |
+| `dataDir` | `~/.local/state/nixkeeper/data` | where the data goes |
+
+The jobs' output is in `~/Library/Logs/nixkeeper/` (Console.app shows it).
+The module also installs the `nixkeeper` command.
 
 The page finds its data by itself when `data/` is served next to it. Otherwise
 it reads the repository's `data` branch on a GitHub Pages site, or wherever
