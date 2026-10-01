@@ -11,5 +11,9 @@
 | [The data](data.md) | every field in the JSON the sync writes, for building on it |
 | [Troubleshooting](troubleshooting.md) | checking that it all runs, wherever it runs, and what the page's warnings mean |
 
-Contributing to nixkeeper itself: [CONTRIBUTING.md](../CONTRIBUTING.md).
-What changed in each version: [CHANGELOG.md](../CHANGELOG.md).
+Also:
+
+- Contributing to nixkeeper itself: [CONTRIBUTING.md](../CONTRIBUTING.md)
+- What changed in each version: [CHANGELOG.md](../CHANGELOG.md)
+- nixkeeper's identity (the mark, colours, wordmark and how to use them):
+  [assets/brand/BRAND.md](../assets/brand/BRAND.md)
