@@ -9,6 +9,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.9.0] - 2026-10-01
+
 ### Added
 
 - A link to nixkeeper's repository on the page: a GitHub button in the
@@ -531,7 +533,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.8.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.9.0...HEAD
+[0.9.0]: https://github.com/iedame/nixkeeper/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/iedame/nixkeeper/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/iedame/nixkeeper/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/iedame/nixkeeper/compare/v0.5.0...v0.6.0

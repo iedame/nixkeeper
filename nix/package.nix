@@ -11,6 +11,9 @@
 #     hash = "sha256-...";
 #   };
 #
+# (For the hash: start with `hash = lib.fakeHash;`, build, and copy the real
+# one from the error.)
+#
 # nix comes from the user's PATH, not from here: the package lists evaluate
 # with the user's own Nix and its settings. gh is optional (a GitHub token
 # from the local login, when there's no other).
