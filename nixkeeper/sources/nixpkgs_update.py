@@ -168,14 +168,15 @@ def ignored(attempt, rules):
     return (rules or {}).get(attempt.get("to"))
 
 
-def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None):
+def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=()):
     """Give every row in nixpkgs the bot's latest attempt ("update", None if
     it never tried) and whether that failed ("updateFailure"). With several
     attrs, the most recently attempted one counts. A row whose lookup fails
     keeps the previous run's result and is marked as not refreshed.
     ignored_updates: {row name: {version: reason}}, versions whose failed
     attempts count as superseded (a version that was never really released,
-    say)."""
+    say). community: the (row name, version) of those that are community
+    rules (community.py), marked so on the attempt."""
     ignored_updates = ignored_updates or {}
     print("Checking nixpkgs-update logs...", file=sys.stderr)
     before = {row["name"]: row for row in previous["packages"]}
@@ -214,7 +215,12 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None):
         elif attempt and (reason := ignored(attempt, ignored_updates.get(row["name"]))):
             supersede(attempt, "ignored")
             attempt["reason"] = reason
+            if (row["name"], attempt.get("to")) in community:
+                attempt["community"] = True
         for version in ignored_updates.get(row["name"]) or {}:
+            # The community's own tidy-up lists those (community-check).
+            if (row["name"], version) in community:
+                continue
             if not attempt or attempt.get("to") != version:
                 print(
                     f"::notice::ignoredUpdates.{row['name']}: the bot's latest "

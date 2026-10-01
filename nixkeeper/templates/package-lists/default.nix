@@ -17,10 +17,13 @@
   # Repology. See the file for the format.
   updateChecks = import ./update-checks.nix;
 
-  # Also use the community update checks, rules anyone can contribute to
-  # nixkeeper (community/update-checks.nix in its repository), for the
-  # packages tracked here; the ones above win for the same package.
-  # communityChecks = true;
+  # Also use the community's rules, which anyone can contribute to nixkeeper
+  # (community/ in its repository), for the packages tracked here; the ones
+  # above win over them.
+  # community = {
+  #   updateChecks = true;   # where to look for new releases
+  #   ignoredUpdates = true; # bot failures that don't count
+  # };
 
   # Versions nixpkgs-update tried and failed that don't count as its failure
   # (never really released, say). See the file for the format.

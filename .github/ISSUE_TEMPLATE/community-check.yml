@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Community update checks find a package's new releases before Repology counts them, for every nixkeeper that opts in ([how they work](https://github.com/iedame/nixkeeper/blob/main/docs/community-checks.md)). You can also open a pull request adding the rule to `community/update-checks.nix` directly; this form is for when you'd rather describe it.
+        Community update checks find a package's new releases before Repology counts them, for every nixkeeper that opts in ([how they work](https://github.com/iedame/nixkeeper/blob/main/docs/community.md)). You can also open a pull request adding the rule to `community/update-checks.nix` directly; this form is for when you'd rather describe it.
   - type: input
     id: attribute
     attributes:

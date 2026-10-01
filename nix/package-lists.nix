@@ -188,6 +188,30 @@ rec {
       ) rules
     );
 
+  # [ { entry, reason } ] for the community ignore rules
+  # (community/ignored-updates.nix), checked like communityProblems.
+  communityIgnoreProblems =
+    rules:
+    lib.concatLists (
+      lib.mapAttrsToList (
+        name: versions:
+        if !isAttribute name then
+          [
+            {
+              entry = name;
+              reason = "not a nixpkgs attribute (rules are keyed by the package's attribute)";
+            }
+          ]
+        else
+          map (p: p // { entry = name; }) (
+            ignoredProblems {
+              maintainers = [ ];
+              extraPackages = [ name ];
+            } name versions
+          )
+      ) rules
+    );
+
   # [ { entry, reason } ] for everything the sync would get wrong.
   problems =
     lists:

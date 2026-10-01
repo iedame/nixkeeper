@@ -2,10 +2,10 @@
 # nixpkgs package, so every nixkeeper that opts in gets quicker, more precise
 # new-release checks than Repology alone gives. Opt in with
 #
-#   communityChecks = true;
+#   community.updateChecks = true;
 #
-# in your package lists (package-lists/default.nix, or lists.communityChecks
-# in the NixOS or nix-darwin module). Each sync then uses the rules here for
+# in your package lists (package-lists/default.nix, or lists.community in the
+# NixOS or nix-darwin module). Each sync then uses the rules here for
 # the packages it tracks, and only those: nothing is fetched for the rest.
 # Your own update checks win over these for the same package. The rules come
 # with nixkeeper, so they change only when you update it.

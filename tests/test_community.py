@@ -33,26 +33,115 @@ class Merge(unittest.TestCase):
         own = {"unciv": {"github": "yairm210/Unciv", "tags": "^(.+)$"}}
         for lists in (
             {"updateChecks": own},
-            {"updateChecks": own, "communityChecks": "yes"},
+            {"updateChecks": own, "community": {"updateChecks": "yes"}},
+            {"updateChecks": own, "community": {"ignoredUpdates": True}},
         ):
             with self.subTest(lists=lists):
                 self.assertEqual(self.merge(lists), (own, set()))
 
     def test_only_for_tracked_packages(self):
-        checks, names = self.merge({"communityChecks": True})
+        checks, names = self.merge({"community": {"updateChecks": True}})
         self.assertEqual(set(checks), {"google-chrome", "wesnoth-devel"})
         self.assertEqual(names, {"google-chrome", "wesnoth-devel"})
 
     def test_your_own_rule_wins(self):
         mine = {"github": "wesnoth/wesnoth", "tags": r"^(1\.20\.[0-9]+)$"}
         checks, names = self.merge(
-            {"communityChecks": True, "updateChecks": {"wesnoth-devel": mine}}
+            {
+                "community": {"updateChecks": True},
+                "updateChecks": {"wesnoth-devel": mine},
+            }
         )
         self.assertEqual(checks["wesnoth-devel"], mine)
         self.assertEqual(names, {"google-chrome"})
 
     def test_the_shipped_file_is_found(self):
         self.assertTrue(os.path.exists(community.path()))
+
+
+class MergeIgnores(unittest.TestCase):
+    COMMUNITY = {"xskat": {"4.0-9": "never released"}, "egoboo": {"2.8.1": "tag only"}}
+
+    def merge(self, lists, tracked=("xskat", "unciv")):
+        with mock.patch.object(community, "ignores", return_value=self.COMMUNITY):
+            return community.merge_ignores(lists, list(tracked))
+
+    def test_off_unless_opted_in(self):
+        own = {"unciv": {"4.0": "mine"}}
+        for lists in (
+            {"ignoredUpdates": own},
+            {"ignoredUpdates": own, "community": {"updateChecks": True}},
+        ):
+            with self.subTest(lists=lists):
+                self.assertEqual(self.merge(lists), (own, set()))
+
+    def test_for_tracked_packages_your_reason_winning(self):
+        lists = {
+            "community": {"ignoredUpdates": True},
+            "ignoredUpdates": {
+                "xskat": {"4.0-9": "my reason"},
+                "unciv": {"4.0": "mine"},
+            },
+        }
+        merged, from_community = self.merge(lists)
+        self.assertEqual(merged["xskat"], {"4.0-9": "my reason"})
+        self.assertNotIn("egoboo", merged)  # not tracked
+        self.assertEqual(from_community, set())
+
+    def test_community_versions_added(self):
+        lists = {"community": {"ignoredUpdates": True}}
+        merged, from_community = self.merge(lists)
+        self.assertEqual(merged, {"xskat": {"4.0-9": "never released"}})
+        self.assertEqual(from_community, {("xskat", "4.0-9")})
+
+
+class StaleIgnores(unittest.TestCase):
+    RULES = {"xskat": {"4.0-9": "never released"}, "egoboo": {"2.8.1": "tag only"}}
+
+    def stale(self, attempts, names=None):
+        with (
+            mock.patch.object(community, "ignores", return_value=self.RULES),
+            mock.patch(
+                "nixkeeper.sources.nixpkgs_update.latest_attempt",
+                side_effect=lambda name: attempts[name],
+            ),
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            return community.stale_ignores(names)
+
+    def test_a_rule_that_still_applies(self):
+        found = self.stale(
+            {
+                "xskat": {"to": "4.0-9", "outcome": "failed"},
+                "egoboo": {"to": "2.8.1", "outcome": "failed"},
+            }
+        )
+        self.assertEqual(found, {})
+
+    def test_rules_that_can_go(self):
+        found = self.stale(
+            {"xskat": {"to": "4.1", "outcome": "failed"}, "egoboo": None}
+        )
+        self.assertEqual(
+            found,
+            {
+                "xskat": [("4.0-9", "the bot's latest attempt is at 4.1")],
+                "egoboo": [("2.8.1", "the bot has never tried this package")],
+            },
+        )
+
+    def test_a_log_that_cant_be_read_isnt_called_stale(self):
+        def down(name):
+            raise OSError("down")
+
+        with (
+            mock.patch.object(community, "ignores", return_value=self.RULES),
+            mock.patch(
+                "nixkeeper.sources.nixpkgs_update.latest_attempt", side_effect=down
+            ),
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            self.assertEqual(community.stale_ignores(), {})
 
 
 class Limits(unittest.TestCase):
@@ -215,7 +304,7 @@ class StatusIssue(unittest.TestCase):
             ) as update,
             mock.patch("sys.stderr", io.StringIO()),
         ):
-            community.publish(results, self.NOW)
+            community.publish(results, now=self.NOW)
         repo, token, title, new_body, comment = update.call_args.args
         self.assertEqual(update.call_args.kwargs["label"], community.ISSUE_LABEL)
         return new_body, comment
@@ -223,7 +312,23 @@ class StatusIssue(unittest.TestCase):
     def test_all_working(self):
         body, comment = self.publish({"a": ("1.0", None), "b": ("2.0", None)})
         self.assertIn("All 2 work", body)
+        self.assertIn("All still apply", body)
         self.assertIsNone(comment)
+
+    def test_ignore_rules_that_can_go(self):
+        stale = {"xskat": [("4.0-9", "the bot's latest attempt is at 4.1")]}
+        env = {"GITHUB_TOKEN": "t", "GITHUB_REPOSITORY": "iedame/nixkeeper"}
+        with (
+            mock.patch.dict(os.environ, env, clear=True),
+            mock.patch("nixkeeper.sources.github.status_issue_body", return_value=None),
+            mock.patch(
+                "nixkeeper.sources.github.update_status_issue", return_value=7
+            ) as update,
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            community.publish({"a": ("1.0", None)}, stale, now=self.NOW)
+        body = update.call_args.args[3]
+        self.assertIn("| `xskat` | 4.0-9 | the bot's latest attempt is at 4.1 |", body)
 
     def test_a_rule_breaks_then_stays_broken_then_recovers(self):
         body, comment = self.publish({"a": ("1.0", None), "b": (None, "moved")})
@@ -246,7 +351,7 @@ class StatusIssue(unittest.TestCase):
             mock.patch("nixkeeper.sources.github.token", return_value=None),
             self.assertRaises(SystemExit),
         ):
-            community.publish({}, self.NOW)
+            community.publish({}, now=self.NOW)
 
     def test_track_only_counts_rules_that_ran(self):
         previous = {"gone": {"since": "x", "reason": "y"}}
@@ -258,16 +363,29 @@ class StatusIssue(unittest.TestCase):
 
 class ChangedInAPullRequest(unittest.TestCase):
     def test_only_added_or_changed_rules(self):
-        base = {"google-chrome": CHROME, "wesnoth-devel": WESNOTH}
-        head = {
+        base_checks = {"google-chrome": CHROME, "wesnoth-devel": WESNOTH}
+        head_checks = {
             "google-chrome": CHROME,
             "wesnoth-devel": {**WESNOTH, "tags": "^(1\\.20\\..+)$"},
             "new": CHROME,
         }
-        with mock.patch.object(
-            community, "rules", side_effect=lambda f=None: base if f else head
+        base_ignores = {"xskat": {"4.0-9": "never released"}}
+        head_ignores = {**base_ignores, "foo": {"1.2": "tagged by mistake"}}
+
+        def read(file=None):
+            if file is None:
+                return head_checks
+            if file.endswith(community.IGNORES):
+                return base_ignores if file.startswith("main") else head_ignores
+            return base_checks
+
+        with (
+            mock.patch.object(community, "rules", side_effect=read),
+            mock.patch("os.path.exists", return_value=True),
         ):
-            self.assertEqual(community.changed("main.nix"), ["new", "wesnoth-devel"])
+            checks, ignored = community.changed("main")
+        self.assertEqual(checks, ["new", "wesnoth-devel"])
+        self.assertEqual(ignored, ["foo"])
 
 
 class InTheChecks(unittest.TestCase):

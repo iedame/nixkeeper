@@ -11,29 +11,33 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
-- Keeping the community update checks healthy: CI checks
-  `community/update-checks.nix` on every pull request (each rule well formed,
-  for a package in nixpkgs, within the limits, its patterns valid). The
-  "Community: update checks still work" workflow runs every rule for real
-  weekly and keeps a "Community update checks status" issue up to date (which
-  rules are broken, why and since when, commenting when one breaks or works
-  again), and on pull requests runs the rules they add or change, failing if
-  one finds nothing. `nixkeeper community-check [NAME...]`
-  (`nix run .#community-check` from a checkout) does the same by hand, to try
-  a rule before proposing it; there's also an issue form for proposing one.
-
-### Added
-
-- Community update checks (`community/update-checks.nix`): update checks
-  anyone can add by pull request, for any nixpkgs package. Opt in with
-  `communityChecks = true;` in your package lists (or
-  `lists.communityChecks` in the modules): each sync then uses them for the
-  packages you track, and only those, with your own update checks winning
-  for the same package. They come with nixkeeper, so they change only when
-  you update it. Because they run on every subscriber's machine, they're held
-  to limits: web pages over https to public hosts only (redirects too), at
-  most 2 MB; short patterns without the shapes that can take forever. A rule
-  beyond them is refused, never fetched. See `docs/community-checks.md`.
+- Community rules (`community/`): rules anyone can add by pull request, for
+  any nixpkgs package, in the format of your own lists: update checks
+  (`community/update-checks.nix`, where to look for new releases) and ignore
+  rules (`community/ignored-updates.nix`, failed nixpkgs-update attempts that
+  don't count). Opt in to each in your package lists,
+  `community = { updateChecks = true; ignoredUpdates = true; };` (or
+  `lists.community` in the modules): each sync then uses them for the
+  packages you track, and only those, your own rules winning (an update
+  check per package, an ignore rule per version). They come with nixkeeper,
+  so they change only when you update it, and the page says when a result
+  comes from one. Because community update checks run on every subscriber's
+  machine, they're held to limits: web pages over https to public hosts only
+  (redirects too), at most 2 MB; short patterns without the shapes that can
+  take forever. One beyond them is refused, never fetched. See
+  `docs/community.md`.
+- Keeping the community rules healthy: CI checks `community/` on every pull
+  request (each rule well formed, for a package in nixpkgs; update checks
+  within the limits, their patterns valid). The "Community: update checks
+  still work" workflow tries every rule for real weekly and keeps a
+  "Community rules status" issue up to date: which update checks are broken,
+  why and since when (commenting when one breaks or works again), and which
+  ignore rules can go, the bot having moved on. On pull requests it tries the
+  rules they add or change, failing if an update check finds nothing or an
+  ignore rule doesn't match the bot's latest failed attempt.
+  `nixkeeper community-check [NAME...]` (`nix run .#community-check` from a
+  checkout) does the same by hand, to try a rule before proposing it; there's
+  also an issue form for proposing an update check.
 - `docs/troubleshooting.md`: how to check that nixkeeper runs as it should on
   GitHub, as the command, and with the NixOS and nix-darwin modules (the
   jobs, their schedules, logs and data), and what the page's warnings mean.
