@@ -204,7 +204,9 @@ To run it somewhere other than GitHub Actions, see
 
 ## Running elsewhere
 
-nixkeeper is one command, `nixkeeper`, with a subcommand for each job:
+nixkeeper is one command, `nixkeeper`, with a subcommand for each job (when
+something doesn't run as expected, see
+[TROUBLESHOOTING.md](TROUBLESHOOTING.md)):
 
 ```bash
 nixkeeper init --maintainer <your GitHub handle>   # start your package lists
@@ -369,7 +371,9 @@ does), `notify`, `githubRepo` and `pageUrl` as the NixOS module, and:
 | `serve.enable`, `.port` | `false`, `8000` | keep `nixkeeper serve` running, on 127.0.0.1 |
 | `dataDir` | `~/.local/state/nixkeeper/data` | where the data goes |
 
-The jobs' output is in `~/Library/Logs/nixkeeper/` (Console.app shows it).
+The jobs' output is in `~/Library/Logs/nixkeeper/` (Console.app shows it),
+each run between dated lines with the job's name and how it ended
+(`── 2026-10-01 11:23:04 -03 checks finished (exit 0) ──`).
 The module also installs the `nixkeeper` command, and when `lists`,
 `listsPath` or `dataDir` is set, exports them to your shell
 (`NIXKEEPER_LISTS`, `NIXKEEPER_DATA_DIR`, through nix-darwin's
@@ -433,8 +437,9 @@ something else on it.
 ## Contributing
 
 How the code is laid out, the commands, and how changes and releases happen
-are in [CONTRIBUTING.md](CONTRIBUTING.md). Security problems:
-[SECURITY.md](SECURITY.md).
+are in [CONTRIBUTING.md](CONTRIBUTING.md). When something doesn't run or
+the page looks wrong: [TROUBLESHOOTING.md](TROUBLESHOOTING.md). Security
+problems: [SECURITY.md](SECURITY.md).
 
 ## License
 

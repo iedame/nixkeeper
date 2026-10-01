@@ -37,13 +37,18 @@ let
     common.environment cfg (toString cfg.githubTokenFile)
     // lib.optionalAttrs (cfg.dataDir != null) { NIXKEEPER_DATA_DIR = cfg.dataDir; };
 
-  # A job's output goes to ~/Library/Logs/nixkeeper/<name>.log (Console.app
-  # shows it). launchd won't create the folder, so the job does.
-  agent = name: commands: {
+  # A job's output goes to ~/Library/Logs/nixkeeper/<log>.log (Console.app
+  # shows it), between dated lines naming the job, the last with how it
+  # ended: "── 2026-10-01 11:23:04 -03 checks ──". launchd won't create the
+  # folder, so the job does.
+  agent = log: job: commands: {
     inherit path environment;
     script = ''
       mkdir -p "$HOME/Library/Logs/nixkeeper"
-      exec >>"$HOME/Library/Logs/nixkeeper/${name}.log" 2>&1
+      exec >>"$HOME/Library/Logs/nixkeeper/${log}.log" 2>&1
+      stamp() { date '+%Y-%m-%d %H:%M:%S %Z'; }
+      echo "── $(stamp) ${job} ──"
+      trap 'echo "── $(stamp) ${job} finished (exit $?) ──"' EXIT
       ${commands}
     '';
     serviceConfig.ProcessType = "Background";
@@ -128,19 +133,19 @@ in
       // lib.optionalAttrs (cfg.dataDir != null) { NIXKEEPER_DATA_DIR = cfg.dataDir; };
 
     launchd.user.agents = {
-      nixkeeper-sync = lib.recursiveUpdate (agent "sync" (run "sync")) {
+      nixkeeper-sync = lib.recursiveUpdate (agent "sync" "sync" (run "sync")) {
         serviceConfig.StartCalendarInterval = [ cfg.syncAt ];
       };
 
       # At login (and when a rebuild loads the agents): the first sync, or one
       # missed while the Mac was off or logged out (launchd only catches up
       # after sleep). Skipped while the last sync is under 20 hours old.
-      nixkeeper-catch-up = lib.recursiveUpdate (agent "sync" (run "sync --if-older 20")) {
+      nixkeeper-catch-up = lib.recursiveUpdate (agent "sync" "catch-up" (run "sync --if-older 20")) {
         serviceConfig.RunAtLoad = true;
       };
 
       nixkeeper-checks = lib.mkIf cfg.frequentChecks.enable (
-        lib.recursiveUpdate (agent "checks" ''
+        lib.recursiveUpdate (agent "checks" "checks" ''
           # Nothing to check against before the first sync.
           data="''${NIXKEEPER_DATA_DIR:-$HOME/.local/state/nixkeeper/data}"
           [ -e "$data/index.json" ] || exit 0
@@ -152,12 +157,13 @@ in
       );
 
       nixkeeper-serve = lib.mkIf cfg.serve.enable (
-        lib.recursiveUpdate (agent "serve" "exec ${run "serve --port ${toString cfg.serve.port}"}") {
-          serviceConfig = {
-            RunAtLoad = true;
-            KeepAlive = true; # restarted if it stops
-          };
-        }
+        lib.recursiveUpdate (agent "serve" "serve" "exec ${run "serve --port ${toString cfg.serve.port}"}")
+          {
+            serviceConfig = {
+              RunAtLoad = true;
+              KeepAlive = true; # restarted if it stops
+            };
+          }
       );
     };
   };
