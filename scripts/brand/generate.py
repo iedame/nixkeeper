@@ -1,15 +1,17 @@
-"""Writes every SVG of the mark into a folder (default: assets/brand/).
+"""Writes every SVG of the mark and the lockups into a folder (assets/brand/).
 
-    python3 scripts/brand/generate.py [folder]
+    python3 scripts/brand/generate.py <folder> <font>
 
-Run through `nix run .#brand`, which also refreshes the tokens, the identity
-sheet and the page's favicon.
+<font> is the wordmark's font file (Oxanium's variable TTF). Run through
+`nix run .#brand`, which provides it and HarfBuzz, and also refreshes the
+tokens, the identity sheet and the page's favicon.
 """
 
 import math
 import os
 import sys
 
+import wordmark
 from geometry import DARK, DARK0, LIGHT, PIECES, RC, oklch_hex
 
 S = 1000  # the mark's width in SVG units
@@ -96,7 +98,7 @@ def write(folder, name, content):
         f.write(content)
 
 
-def main(folder):
+def main(folder, font):
     os.makedirs(folder, exist_ok=True)
     clear = MH / 4  # clearspace: a quarter of the mark's height on each side
     oy = clear - (S - MH) / 2
@@ -133,36 +135,25 @@ def main(folder):
         defs, body = mark(spec, 0, -(S - MH) / 2, ids=f"fav-{key}")
         write(folder, f"favicon-{key}", svg(S, MH, body, defs))
 
-    # The lockups: the wordmark's cap height is half the mark's height, and the
-    # gap between them is 3/8 of the cap height.
-    name = "nixkeeper"
-    for fill, file, bg in (
-        ("#000000", "nixkeeper-lockup", None),
-        ("#ffffff", "nixkeeper-lockup-dark", "#000000"),
+    # The lockups, on transparent backgrounds: the wordmark's x-height is 0.42
+    # of the mark's height, and the gap between them is 3/8 of the x-height.
+    for ink, file in (
+        (oklch_hex(0.15, 0, 0), "nixkeeper-lockup"),  # for light backgrounds
+        (oklch_hex(0.95, 0, 0), "nixkeeper-lockup-dark"),  # for dark backgrounds
     ):
         scale = 0.5
         mark_h = MH * scale
         pad = mark_h / 2
-        cap_h = mark_h / 2
+        x_height = mark_h * 0.42
         defs, body = mark("gradient", pad, pad - (S - MH) / 2 * scale, scale, ids=file)
-        x = pad + S * scale + cap_h * 3 / 8
-        base = pad + mark_h / 2 + cap_h / 2
-        size = cap_h / 0.70
-        # The page's typeface, not Route 159 (the NixOS logotype's): live text
-        # for now, to be converted to outlines before the lockup is used.
-        body.append(
-            f'<text x="{x:.1f}" y="{base:.1f}" '
-            "font-family=\"'Instrument Sans', system-ui, sans-serif\" "
-            f'font-weight="700" font-size="{size:.1f}" fill="{fill}">{name}</text>'
-        )
-        width = x + size * 0.55 * len(name) + pad
-        write(folder, file, svg(width, mark_h + 2 * pad, body, defs, bg))
+        x = pad + S * scale + x_height * 3 / 8
+        baseline = pad + mark_h / 2 + x_height / 2
+        d, end = wordmark.outline(font, x, baseline, x_height)
+        body.append(f'<path d="{d}" fill="{ink}"/>')
+        write(folder, file, svg(end + pad, mark_h + 2 * pad, body, defs))
 
 
 if __name__ == "__main__":
-    here = os.path.dirname(os.path.abspath(__file__))
-    main(
-        sys.argv[1]
-        if len(sys.argv) > 1
-        else os.path.join(here, "..", "..", "assets", "brand")
-    )
+    if len(sys.argv) != 3:
+        sys.exit(__doc__)
+    main(sys.argv[1], sys.argv[2])
