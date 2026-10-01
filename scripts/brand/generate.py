@@ -137,20 +137,26 @@ def main(folder, font):
 
     # The lockups, on transparent backgrounds: the wordmark's x-height is 0.42
     # of the mark's height, and the gap between them is 3/8 of the x-height.
+    # The tight ones have no clearspace, for the page's header.
     for ink, file in (
         (oklch_hex(0.15, 0, 0), "nixkeeper-lockup"),  # for light backgrounds
         (oklch_hex(0.95, 0, 0), "nixkeeper-lockup-dark"),  # for dark backgrounds
     ):
         scale = 0.5
         mark_h = MH * scale
-        pad = mark_h / 2
         x_height = mark_h * 0.42
-        defs, body = mark("gradient", pad, pad - (S - MH) / 2 * scale, scale, ids=file)
-        x = pad + S * scale + x_height * 3 / 8
-        baseline = pad + mark_h / 2 + x_height / 2
-        d, end = wordmark.outline(font, x, baseline, x_height)
-        body.append(f'<path d="{d}" fill="{ink}"/>')
-        write(folder, file, svg(end + pad, mark_h + 2 * pad, body, defs))
+        for pad, name in (
+            (mark_h / 2, file),
+            (0, file.replace("lockup", "lockup-tight")),
+        ):
+            defs, body = mark(
+                "gradient", pad, pad - (S - MH) / 2 * scale, scale, ids=name
+            )
+            x = pad + S * scale + x_height * 3 / 8
+            baseline = pad + mark_h / 2 + x_height / 2
+            d, end = wordmark.outline(font, x, baseline, x_height)
+            body.append(f'<path d="{d}" fill="{ink}"/>')
+            write(folder, name, svg(end + pad, mark_h + 2 * pad, body, defs))
 
 
 if __name__ == "__main__":

@@ -16,7 +16,8 @@ happen. For what nixkeeper does and how to set up your own, see the
 - `package-lists/`: what this instance tracks (see the README)
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/`
   from the `data` branch. `favicon*.svg` (the mark, and the live status
-  icons the page switches between) and `tokens.css` are copies from
+  icons the page switches between), `nixkeeper-lockup-tight*.svg` (the
+  header) and `tokens.css` are copies from
   `assets/brand/`, written by `nix run .#brand`
 - `assets/`:
   - `brand/`: nixkeeper's identity: the guide (`BRAND.md`), the mark and
@@ -144,7 +145,7 @@ nix run .#brand
 ```
 
 runs all three in order (fetching the wordmark's font first) and copies the
-favicons and the tokens to `docs/`, for the page. Commit the regenerated files with the change to the scripts.
+favicons, the header's lockups and the tokens to `docs/`, for the page. Commit the regenerated files with the change to the scripts.
 
 The page's own colours (`docs/style.css`) are variables that point at the
 tokens' roles, e.g. `--accent: var(--nk-link-text)`, so a change to the

@@ -118,8 +118,8 @@
         };
         # Regenerates the brand assets in assets/brand/ (scripts/brand/): the
         # mark's SVGs, the lockups with the wordmark outlined, the colour
-        # tokens, the identity sheet, and the page's copies of the favicon and
-        # the tokens (GitHub Pages only serves docs/).
+        # tokens, the identity sheet, and the page's copies of the favicons,
+        # the header's lockups and the tokens (GitHub Pages only serves docs/).
         brand = {
           type = "app";
           program = lib.getExe (
@@ -135,6 +135,7 @@
                 python3 scripts/brand/tokens.py assets/brand
                 python3 scripts/brand/identity.py assets/brand
                 cp assets/brand/favicon*.svg docs/
+                cp assets/brand/nixkeeper-lockup-tight*.svg docs/
                 cp assets/brand/tokens.css docs/tokens.css
               '';
             }
