@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before reporting: [Reading the page](https://github.com/iedame/nixkeeper#reading-the-page) explains every status and badge. A result can also be up to a day old: the data is refreshed daily (the time at the top right of the page says when).
+        Before reporting: [Reading the page](https://github.com/iedame/nixkeeper/blob/main/docs/reading-the-page.md) explains every status and badge. A result can also be up to a day old: the data is refreshed daily (the time at the top right of the page says when).
   - type: input
     id: package
     attributes:

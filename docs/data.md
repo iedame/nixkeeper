@@ -15,7 +15,7 @@ Fields are only present when they have something to say: a field missing
 from a row means none (no open update PR, never outdated, ...). Dates are ISO
 8601 in UTC (`2026-09-30T06:00:00+00:00`), or a plain day (`2026-09-26`) where
 the source only has that. New fields may be added; existing ones change only
-with a note in the [changelog](CHANGELOG.md).
+with a note in the [changelog](../CHANGELOG.md).
 
 ## `index.json`
 
