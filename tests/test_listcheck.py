@@ -54,9 +54,28 @@ class Problems(unittest.TestCase):
             ],
         )
 
+    def test_an_unknown_page_theme(self):
+        self.assertEqual(self.check(lists(page={"theme": "catppuccin"})), [])
+        self.assertEqual(
+            self.check(lists(page={"theme": "mocha"})),
+            ["page.theme: mocha isn't one of the page's themes (classic, catppuccin)"],
+        )
+
     def test_a_plain_extra_list(self):
         found = self.check(lists(extraPackages=["nosuchpkg"]))
         self.assertIn("extraPackages.extra: nosuchpkg", found[0])
+
+
+class PageSettings(unittest.TestCase):
+    def test_the_theme_when_known(self):
+        self.assertEqual(
+            listcheck.page_settings(lists(page={"theme": "catppuccin"})),
+            {"theme": "catppuccin"},
+        )
+
+    def test_nothing_otherwise(self):
+        self.assertEqual(listcheck.page_settings(lists()), {})
+        self.assertEqual(listcheck.page_settings(lists(page={"theme": "mocha"})), {})
 
 
 if __name__ == "__main__":

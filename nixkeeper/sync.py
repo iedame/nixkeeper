@@ -47,5 +47,7 @@ def main():
     index = {"checkedAt": now, "packages": index_rows}
     if problems:
         index["listProblems"] = problems
+    if page := listcheck.page_settings(lists):
+        index["page"] = page  # the page's default theme
     output.write(projects, index)
     notify.notify(previous, index_rows, now)

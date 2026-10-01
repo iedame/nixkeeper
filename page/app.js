@@ -16,6 +16,7 @@ import {
   safeUrl,
   shortAge,
   targetVersion,
+  themeFor,
   timeAgo,
   versionChange,
   waitingForChannel,
@@ -189,6 +190,53 @@ function writeViewToUrl() {
   history.replaceState(null, '', location.pathname + (query ? `?${query}` : '') + location.hash);
 }
 
+// The Theme menu. theme.js applied the saved choice before the page drew;
+// this keeps it, and the page's default from the data, in the browser
+// (localStorage: nothing is sent anywhere) and applies changes.
+const SITE_PALETTE = `nixkeeper-site-palette:${location.pathname}`;
+const stored = (key) => {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null; // storage blocked: nothing is remembered
+  }
+};
+const store = (key, value) => {
+  try {
+    if (value) localStorage.setItem(key, value);
+    else localStorage.removeItem(key);
+  } catch {
+    // storage blocked: it lasts until the page is left
+  }
+};
+
+function applyTheme() {
+  const { palette, mode } = themeFor(
+    { palette: stored('nixkeeper-palette'), mode: stored('nixkeeper-mode') },
+    stored(SITE_PALETTE),
+  );
+  const root = document.documentElement;
+  root.dataset.palette = palette;
+  if (mode === 'auto') delete root.dataset.mode;
+  else root.dataset.mode = mode;
+  for (const input of document.querySelectorAll('#themePanel input')) {
+    input.checked = input.value === (input.name === 'palette' ? palette : mode);
+  }
+}
+
+// The default the page's owner set (page.theme in the package lists), kept
+// so the next visit starts with it before the data loads.
+function setSitePalette(palette) {
+  if (palette === stored(SITE_PALETTE)) return;
+  store(SITE_PALETTE, palette);
+  applyTheme();
+}
+
+function showThemePanel(open) {
+  document.getElementById('themePanel').hidden = !open;
+  document.getElementById('themeBtn').setAttribute('aria-expanded', open);
+}
+
 // Mistakes the sync found in the package lists (nixkeeper/listcheck.py): a
 // maintainer handle no package lists tracks nothing, so it's said up front.
 function showListProblems(problems) {
@@ -220,6 +268,7 @@ async function loadIndex() {
     packages = data.packages || [];
     checkedAt = data.checkedAt || null;
     showListProblems(data.listProblems || []);
+    setSitePalette(data.page?.theme || null);
     document.getElementById('search').disabled = false;
     render(currentFiltered());
   } catch {
@@ -812,5 +861,26 @@ document.getElementById('refreshBtn').addEventListener('click', () => {
   loadIndex();
 });
 
+document
+  .getElementById('themeBtn')
+  .addEventListener('click', () => showThemePanel(document.getElementById('themePanel').hidden));
+document.getElementById('themePanel').addEventListener('change', (e) => {
+  const { name, value } = e.target;
+  if (name === 'palette') store('nixkeeper-palette', value);
+  // Auto is no choice: the system's setting.
+  if (name === 'mode') store('nixkeeper-mode', value === 'auto' ? null : value);
+  applyTheme();
+});
+// Closes on a click elsewhere, or Escape (back to the button).
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.theme')) showThemePanel(false);
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape' || document.getElementById('themePanel').hidden) return;
+  showThemePanel(false);
+  document.getElementById('themeBtn').focus();
+});
+
+applyTheme();
 readViewFromUrl();
 loadIndex();

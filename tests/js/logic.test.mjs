@@ -23,6 +23,7 @@ import {
   safeUrl,
   shortAge,
   targetVersion,
+  themeFor,
   timeAgo,
   versionChange,
   waitingForChannel,
@@ -340,5 +341,31 @@ describe('where the data is', () => {
   test('withSlash', () => {
     assert.equal(withSlash('https://x/data'), 'https://x/data/');
     assert.equal(withSlash('https://x/data/'), 'https://x/data/');
+  });
+});
+
+describe('themeFor', () => {
+  test('nothing chosen: classic, following the system', () => {
+    assert.deepEqual(themeFor(), { palette: 'classic', mode: 'auto' });
+    assert.deepEqual(themeFor({ palette: null, mode: null }, null), {
+      palette: 'classic',
+      mode: 'auto',
+    });
+  });
+  test("the page's default, when the visitor hasn't chosen", () => {
+    assert.deepEqual(themeFor({}, 'catppuccin'), { palette: 'catppuccin', mode: 'auto' });
+  });
+  test("the visitor's choice wins over the page's default", () => {
+    assert.deepEqual(themeFor({ palette: 'classic', mode: 'dark' }, 'catppuccin'), {
+      palette: 'classic',
+      mode: 'dark',
+    });
+  });
+  test('unknown values count as not set', () => {
+    assert.deepEqual(themeFor({ palette: 'solarized', mode: 'dim' }, 'catppuccin'), {
+      palette: 'catppuccin',
+      mode: 'auto',
+    });
+    assert.deepEqual(themeFor({}, 'nord'), { palette: 'classic', mode: 'auto' });
   });
 });

@@ -88,6 +88,20 @@ text uses L45, and white text needs a badge at L55 or darker in either theme
 apart on the page, and on the mark, which chevron turns. Never rely on colour
 alone for a status: pair it with a label or an icon.
 
+Light or dark follows the system unless the page's Theme menu sets one
+(`data-mode` on `<html>`), so `tokens.css` has its dark values under both.
+
+### Catppuccin
+
+The page also offers [Catppuccin](https://catppuccin.com)'s palette
+(`page/catppuccin.css`): Latte when light, Mocha when dark. Same roles, its
+colours: `ok` green, `outdated` peach, `failed` red, `warn` yellow, `merged`
+mauve, `link` blue. In Latte, `text` and `badge` are the colour darkened just
+enough for 4.5:1 (its green, peach and yellow are too light as text); Mocha's
+read as they are, with dark text (crust) on its badges. The mark, the lockup
+and the tab's icon keep the brand's colours in either palette: they're the
+brand, not the theme.
+
 ## Status icon
 
 The mark doubles as a status indicator (favicon, tab icon): when a signal is

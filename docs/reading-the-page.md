@@ -62,3 +62,10 @@ glance: each of the mark's three chevrons lights up for its own signal, the
 top right orange for a new release (not counting updates already on master),
 the left pink for a failure, the bottom pink for a vulnerability. With none,
 the top right is green: all good. It follows the list filter, like the counts.
+
+**The Theme menu** (top right) picks the page's colours, Classic or
+[Catppuccin](https://catppuccin.com) (Latte when light, Mocha when dark), and
+light, dark, or Auto (your system's setting). Your choice is kept in your
+browser (its local storage, nothing is sent anywhere) and wins over the
+page's default, which its owner sets with `page.theme` in the package lists.
+The colours keep their meanings in either palette.

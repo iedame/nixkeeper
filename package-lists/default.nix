@@ -32,4 +32,8 @@
   # Versions nixpkgs-update tried and failed that don't count as its failure
   # (never really released, say). See the file for the format.
   ignoredUpdates = import ./ignored-updates.nix;
+
+  # The page's colours for visitors who haven't picked any in its Theme menu:
+  # "classic" or "catppuccin" (Latte when light, Mocha when dark).
+  # page.theme = "catppuccin";
 }

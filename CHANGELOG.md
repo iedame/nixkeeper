@@ -11,6 +11,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- A Theme menu on the page: Classic or [Catppuccin](https://catppuccin.com)
+  colours (Latte when light, Mocha when dark), and light, dark or Auto (the
+  system's setting). The choice is kept in the visitor's browser and applied
+  before the page draws. The page's owner sets the default palette with
+  `page.theme = "catppuccin";` in the package lists (`lists.page.theme` in
+  the modules); the sync checks it and writes it to the data.
 - Community rules (`community/`): rules anyone can add by pull request, for
   any nixpkgs package, in the format of your own lists: update checks
   (`community/update-checks.nix`, where to look for new releases) and ignore

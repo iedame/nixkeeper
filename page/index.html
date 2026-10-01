@@ -9,21 +9,43 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="icon" id="favicon" href="favicon.svg" type="image/svg+xml">
+<script src="theme.js"></script>
 <link rel="stylesheet" href="tokens.css">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="catppuccin.css">
 </head>
 <body>
 <div class="shell">
 
   <header class="top">
     <div class="wordmark">
-      <h1><picture><source media="(prefers-color-scheme: dark)" srcset="nixkeeper-lockup-tight-dark.svg"><img class="lockup" src="nixkeeper-lockup-tight.svg" alt="nixkeeper" width="143" height="28"></picture></h1>
+      <h1><img class="lockup on-light" src="nixkeeper-lockup-tight.svg" alt="nixkeeper" width="143" height="28"><img class="lockup on-dark" src="nixkeeper-lockup-tight-dark.svg" alt="nixkeeper" width="143" height="28"></h1>
       <span class="tag">your nixpkgs packages, at a glance</span>
     </div>
     <div class="actions">
       <input type="search" id="search" placeholder="Filter packages…" aria-label="Filter packages" disabled>
       <button type="button" class="btn" id="sortBtn" aria-pressed="false" title="Sort alphabetically instead of by what needs attention">A–Z</button>
       <button type="button" class="btn" id="refreshBtn">Refresh</button>
+      <div class="theme">
+        <button type="button" class="btn" id="themeBtn" aria-expanded="false" aria-controls="themePanel">Theme</button>
+        <div class="theme-panel" id="themePanel" hidden>
+          <fieldset>
+            <legend>Colours</legend>
+            <div class="choices">
+              <label><input type="radio" name="palette" value="classic">Classic</label>
+              <label><input type="radio" name="palette" value="catppuccin">Catppuccin</label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Light or dark</legend>
+            <div class="choices">
+              <label><input type="radio" name="mode" value="auto">Auto</label>
+              <label><input type="radio" name="mode" value="light">Light</label>
+              <label><input type="radio" name="mode" value="dark">Dark</label>
+            </div>
+          </fieldset>
+        </div>
+      </div>
     </div>
   </header>
 

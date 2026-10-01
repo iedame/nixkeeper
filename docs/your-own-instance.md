@@ -25,7 +25,9 @@ gaming team's. To get a dashboard of your own:
    and [ignore rules](../package-lists/ignored-updates.nix), each documented in
    its file, or opt in to the [community rules](community.md)
    (`community = { updateChecks = true; ignoredUpdates = true; };` in
-   `default.nix`), and update the README's badges to point at your instance.
+   `default.nix`), pick the page's default colours (`page.theme =
+   "catppuccin";`; visitors can still pick their own), and update the
+   README's badges to point at your instance.
    Retake the screenshots of your own page with
    `nix run .#screenshots -- --browser google-chrome` (see
    [CONTRIBUTING.md](../CONTRIBUTING.md#screenshots) for the options).
