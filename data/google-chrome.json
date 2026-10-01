@@ -1,11 +1,35 @@
 [
   {
-    "binname": "GoogleChrome",
+    "binname": "google-chrome",
+    "categories": [
+      "non-free/web"
+    ],
+    "maintainers": [
+      "fallback-mnt-aosc@repology"
+    ],
     "origversion": null,
-    "repo": "chocolatey",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Google Chrome"
+    "repo": "aosc",
+    "srcname": "app-web/google-chrome",
+    "status": "newest",
+    "summary": "A Chromium-based web browser from Google",
+    "version": "154.0.8037.92",
+    "visiblename": "google-chrome"
+  },
+  {
+    "binname": "google-chrome",
+    "licenses": [
+      "custom:chrome"
+    ],
+    "maintainers": [
+      "gromit@aur"
+    ],
+    "origversion": "154.0.8037.92-1",
+    "repo": "aur",
+    "srcname": "google-chrome",
+    "status": "newest",
+    "summary": "The popular web browser by Google (Stable Channel)",
+    "version": "154.0.8037.92",
+    "visiblename": "google-chrome"
   },
   {
     "binname": "google-chrome-beta",
@@ -31,12 +55,12 @@
     "maintainers": [
       "navarroaxel@aur"
     ],
-    "origversion": "157.0.8079.0-1",
+    "origversion": "157.0.8081.0-1",
     "repo": "aur",
     "srcname": "google-chrome-canary",
     "status": "ignored",
     "summary": "The popular web browser by Google (Canary Channel)",
-    "version": "157.0.8079.0",
+    "version": "157.0.8081.0",
     "visiblename": "google-chrome-canary"
   },
   {
@@ -56,20 +80,12 @@
     "visiblename": "google-chrome-dev"
   },
   {
-    "binname": "google-chrome",
-    "licenses": [
-      "custom:chrome"
-    ],
-    "maintainers": [
-      "gromit@aur"
-    ],
-    "origversion": "154.0.8037.92-1",
-    "repo": "aur",
-    "srcname": "google-chrome",
-    "status": "newest",
-    "summary": "The popular web browser by Google (Stable Channel)",
-    "version": "154.0.8037.92",
-    "visiblename": "google-chrome"
+    "binname": "GoogleChrome",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Google Chrome"
   },
   {
     "categories": [
@@ -122,15 +138,6 @@
     "summary": "The web browser from Google",
     "version": "156.0.8078.4",
     "visiblename": "www-client/google-chrome-beta"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew_casks",
-    "srcname": "google-chrome@dev",
-    "status": "outdated",
-    "summary": "Web browser",
-    "version": "156.0.8072.0",
-    "visiblename": "Google Chrome Dev"
   },
   {
     "categories": [
@@ -232,21 +239,13 @@
     "visiblename": "Google Chrome Canary"
   },
   {
-    "binname": "widevine",
-    "licenses": [
-      "custom:chrome"
-    ],
-    "maintainers": [
-      "demm@kaosx.us"
-    ],
-    "origversion": "156.0.8072.0-1",
-    "repo": "kaos",
-    "srcname": "google-chrome",
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "google-chrome@dev",
     "status": "outdated",
-    "subrepo": "apps",
-    "summary": "Google Chrome's plugin for viewing premium video content",
+    "summary": "Web browser",
     "version": "156.0.8072.0",
-    "visiblename": "widevine"
+    "visiblename": "Google Chrome Dev"
   },
   {
     "binname": "google-chrome",
@@ -264,6 +263,131 @@
     "summary": "Google Chrome Browser, developer preview channel for Linux",
     "version": "156.0.8072.0",
     "visiblename": "google-chrome"
+  },
+  {
+    "binname": "widevine",
+    "licenses": [
+      "custom:chrome"
+    ],
+    "maintainers": [
+      "demm@kaosx.us"
+    ],
+    "origversion": "156.0.8072.0-1",
+    "repo": "kaos",
+    "srcname": "google-chrome",
+    "status": "outdated",
+    "subrepo": "apps",
+    "summary": "Google Chrome's plugin for viewing premium video content",
+    "version": "156.0.8072.0",
+    "visiblename": "widevine"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "google-chrome"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/google-chrome",
+    "status": "newest",
+    "summary": "The web browser from Google",
+    "version": "154.0.8037.92",
+    "visiblename": "www-client/google-chrome"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "google-chrome"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/google-chrome-unstable",
+    "status": "outdated",
+    "summary": "The web browser from Google",
+    "version": "155.0.8040.2",
+    "visiblename": "www-client/google-chrome-unstable"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "google-chrome"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/google-chrome-unstable",
+    "status": "outdated",
+    "summary": "The web browser from Google",
+    "version": "156.0.8063.3",
+    "visiblename": "www-client/google-chrome-unstable"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "google-chrome"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/google-chrome-unstable",
+    "status": "outdated",
+    "summary": "The web browser from Google",
+    "version": "156.0.8072.0",
+    "visiblename": "www-client/google-chrome-unstable"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "google-chrome"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/google-chrome-beta",
+    "status": "outdated",
+    "summary": "The web browser from Google",
+    "version": "155.0.8059.12",
+    "visiblename": "www-client/google-chrome-beta"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "google-chrome"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/google-chrome-beta",
+    "status": "devel",
+    "summary": "The web browser from Google",
+    "version": "156.0.8078.4",
+    "visiblename": "www-client/google-chrome-beta"
   },
   {
     "licenses": [
@@ -356,7 +480,7 @@
     "repo": "scoop",
     "status": "ignored",
     "subrepo": "versions",
-    "version": "157.0.8080.0",
+    "version": "157.0.8081.0",
     "visiblename": "googlechrome-canary"
   },
   {
@@ -384,12 +508,26 @@
     "visiblename": "Google Chrome"
   },
   {
-    "binname": "google-chrome-x64",
+    "licenses": [
+      "google-chrome"
+    ],
     "origversion": null,
-    "repo": "chocolatey",
+    "repo": "chromebrew",
+    "srcname": "google_chrome_unstable",
     "status": "outdated",
-    "version": "47.0.2526.81",
-    "visiblename": "Google Chrome (64-bit only) [deprecated]",
+    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Dev Channel)",
+    "version": "129.0.6628.3-1",
+    "visiblename": "google_chrome_unstable",
+    "vulnerable": true
+  },
+  {
+    "binname": "google-chrome",
+    "origversion": "86.0.4240.111-1-18",
+    "repo": "distri",
+    "srcname": "google-chrome",
+    "status": "outdated",
+    "version": "86.0.4240.111-1",
+    "visiblename": "google-chrome",
     "vulnerable": true
   },
   {
@@ -413,6 +551,15 @@
     "vulnerable": true
   },
   {
+    "binname": "google-chrome-x64",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "version": "47.0.2526.81",
+    "visiblename": "Google Chrome (64-bit only) [deprecated]",
+    "vulnerable": true
+  },
+  {
     "licenses": [
       "google-chrome"
     ],
@@ -426,37 +573,18 @@
     "vulnerable": true
   },
   {
-    "categories": [
-      "www-client"
-    ],
     "licenses": [
-      "google-chrome"
+      "Unfree"
     ],
     "maintainers": [
-      "chromium@gentoo.org"
+      "git@ieda.me",
+      "nix@mdaniels.me"
     ],
     "origversion": null,
-    "repo": "gentoo",
-    "srcname": "www-client/google-chrome",
-    "status": "legacy",
-    "summary": "The web browser from Google",
-    "version": "151.0.7922.137",
-    "visiblename": "www-client/google-chrome",
-    "vulnerable": true
-  },
-  {
-    "binname": "google-chrome",
-    "categories": [
-      "non-free/web"
-    ],
-    "maintainers": [
-      "fallback-mnt-aosc@repology"
-    ],
-    "origversion": null,
-    "repo": "aosc",
-    "srcname": "app-web/google-chrome",
+    "repo": "nix_unstable",
+    "srcname": "google-chrome",
     "status": "outdated",
-    "summary": "A Chromium-based web browser from Google",
+    "summary": "Freeware web browser developed by Google",
     "version": "154.0.8037.57",
     "visiblename": "google-chrome",
     "vulnerable": true
@@ -472,29 +600,6 @@
     "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Beta Channel)",
     "version": "128.0.6613.18-1",
     "visiblename": "google_chrome_beta",
-    "vulnerable": true
-  },
-  {
-    "licenses": [
-      "google-chrome"
-    ],
-    "origversion": null,
-    "repo": "chromebrew",
-    "srcname": "google_chrome_unstable",
-    "status": "outdated",
-    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Dev Channel)",
-    "version": "129.0.6628.3-1",
-    "visiblename": "google_chrome_unstable",
-    "vulnerable": true
-  },
-  {
-    "binname": "google-chrome",
-    "origversion": "86.0.4240.111-1-18",
-    "repo": "distri",
-    "srcname": "google-chrome",
-    "status": "outdated",
-    "version": "86.0.4240.111-1",
-    "visiblename": "google-chrome",
     "vulnerable": true
   },
   {
@@ -549,6 +654,25 @@
     "status": "legacy",
     "summary": "The web browser from Google",
     "version": "154.0.8037.57",
+    "visiblename": "www-client/google-chrome",
+    "vulnerable": true
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "google-chrome"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "www-client/google-chrome",
+    "status": "legacy",
+    "summary": "The web browser from Google",
+    "version": "151.0.7922.137",
     "visiblename": "www-client/google-chrome",
     "vulnerable": true
   },
@@ -624,7 +748,7 @@
     "srcname": "www-client/google-chrome",
     "status": "legacy",
     "summary": "The web browser from Google",
-    "version": "148.0.7778.215",
+    "version": "151.0.7922.137",
     "visiblename": "www-client/google-chrome",
     "vulnerable": true
   },
@@ -643,7 +767,7 @@
     "srcname": "www-client/google-chrome",
     "status": "legacy",
     "summary": "The web browser from Google",
-    "version": "149.0.7827.114",
+    "version": "154.0.8037.57",
     "visiblename": "www-client/google-chrome",
     "vulnerable": true
   },
@@ -659,124 +783,10 @@
     ],
     "origversion": null,
     "repo": "liguros_develop",
-    "srcname": "www-client/google-chrome",
-    "status": "legacy",
-    "summary": "The web browser from Google",
-    "version": "149.0.7827.155",
-    "visiblename": "www-client/google-chrome",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "google-chrome"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/google-chrome-unstable",
-    "status": "outdated",
-    "summary": "The web browser from Google",
-    "version": "150.0.7846.4",
-    "visiblename": "www-client/google-chrome-unstable",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "google-chrome"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/google-chrome-unstable",
-    "status": "outdated",
-    "summary": "The web browser from Google",
-    "version": "151.0.7886.2",
-    "visiblename": "www-client/google-chrome-unstable",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "google-chrome"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/google-chrome-unstable",
-    "status": "outdated",
-    "summary": "The web browser from Google",
-    "version": "151.0.7872.0",
-    "visiblename": "www-client/google-chrome-unstable",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "google-chrome"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
     "srcname": "www-client/google-chrome-beta",
     "status": "outdated",
     "summary": "The web browser from Google",
-    "version": "150.0.7871.13",
-    "visiblename": "www-client/google-chrome-beta",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "google-chrome"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/google-chrome-beta",
-    "status": "outdated",
-    "summary": "The web browser from Google",
-    "version": "150.0.7871.24",
-    "visiblename": "www-client/google-chrome-beta",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "google-chrome"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/google-chrome-beta",
-    "status": "outdated",
-    "summary": "The web browser from Google",
-    "version": "149.0.7827.53",
+    "version": "152.0.7977.30",
     "visiblename": "www-client/google-chrome-beta",
     "vulnerable": true
   },
@@ -845,23 +855,6 @@
     "status": "outdated",
     "summary": "Freeware web browser developed by Google",
     "version": "149.0.7827.200",
-    "visiblename": "google-chrome",
-    "vulnerable": true
-  },
-  {
-    "licenses": [
-      "Unfree"
-    ],
-    "maintainers": [
-      "git@ieda.me",
-      "nix@mdaniels.me"
-    ],
-    "origversion": null,
-    "repo": "nix_unstable",
-    "srcname": "google-chrome",
-    "status": "outdated",
-    "summary": "Freeware web browser developed by Google",
-    "version": "154.0.8037.57",
     "visiblename": "google-chrome",
     "vulnerable": true
   },

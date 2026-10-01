@@ -1,5 +1,35 @@
 [
   {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "info+nix@chmist.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "fheroes2",
+    "status": "outdated",
+    "summary": "Free implementation of Heroes of Might and Magic II game engine",
+    "version": "1.1.2",
+    "visiblename": "fheroes2"
+  },
+  {
+    "binname": "bin/fheroes2",
+    "categories": [
+      "bin"
+    ],
+    "maintainers": [
+      "anton@samokhvalov.xyz"
+    ],
+    "origversion": null,
+    "repo": "stalix",
+    "srcname": "bin/fheroes2",
+    "status": "outdated",
+    "version": "1.1.12",
+    "visiblename": "bin/fheroes2"
+  },
+  {
     "binname": "bin/fheroes2",
     "categories": [
       "bin"
@@ -47,18 +77,6 @@
     "summary": "Languages for package fheroes2",
     "version": "1.1.17",
     "visiblename": "fheroes2-lang"
-  },
-  {
-    "binname": "game/strategy/fheroes2.lha",
-    "categories": [
-      "game/strategy"
-    ],
-    "origversion": null,
-    "repo": "os4depot",
-    "status": "outdated",
-    "summary": "Engine Heroes of Might and Magic II game",
-    "version": "v1.0",
-    "visiblename": "fheroes2.lha"
   },
   {
     "binnames": [
@@ -540,9 +558,9 @@
     "origversion": null,
     "repo": "liguros_develop",
     "srcname": "games-engines/fheroes2",
-    "status": "outdated",
+    "status": "newest",
     "summary": "Recreation of HoMM2 game engine",
-    "version": "1.1.16",
+    "version": "1.1.17",
     "visiblename": "games-engines/fheroes2"
   },
   {
@@ -615,21 +633,6 @@
     "status": "outdated",
     "summary": "Free implementation of Heroes of Might and Magic II game engine",
     "version": "1.0.13",
-    "visiblename": "fheroes2"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "info+nix@chmist.com"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_11",
-    "srcname": "fheroes2",
-    "status": "outdated",
-    "summary": "Free implementation of Heroes of Might and Magic II game engine",
-    "version": "1.1.2",
     "visiblename": "fheroes2"
   },
   {
@@ -795,6 +798,18 @@
     "visiblename": "fheroes2"
   },
   {
+    "binname": "game/strategy/fheroes2.lha",
+    "categories": [
+      "game/strategy"
+    ],
+    "origversion": null,
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "Engine Heroes of Might and Magic II game",
+    "version": "v1.0",
+    "visiblename": "fheroes2.lha"
+  },
+  {
     "binnames": [
       "fheroes2"
     ],
@@ -811,7 +826,7 @@
     "repo": "parrot",
     "srcname": "fheroes2",
     "status": "outdated",
-    "subrepo": "parrot/contrib",
+    "subrepo": "parrot-updates/contrib",
     "version": "1.1.8",
     "visiblename": "fheroes2"
   },
@@ -832,7 +847,7 @@
     "repo": "parrot",
     "srcname": "fheroes2",
     "status": "outdated",
-    "subrepo": "parrot-updates/contrib",
+    "subrepo": "parrot/contrib",
     "version": "1.1.8",
     "visiblename": "fheroes2"
   },
@@ -1011,21 +1026,6 @@
     "status": "newest",
     "version": "1.1.17",
     "visiblename": "games/fheroes2"
-  },
-  {
-    "binname": "bin/fheroes2",
-    "categories": [
-      "bin"
-    ],
-    "maintainers": [
-      "anton@samokhvalov.xyz"
-    ],
-    "origversion": null,
-    "repo": "stalix",
-    "srcname": "bin/fheroes2",
-    "status": "outdated",
-    "version": "1.1.12",
-    "visiblename": "bin/fheroes2"
   },
   {
     "binnames": [

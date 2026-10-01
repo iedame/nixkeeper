@@ -99,6 +99,15 @@
     "visiblename": "www-client/microsoft-edge-beta"
   },
   {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "microsoft-edge@dev",
+    "status": "ignored",
+    "summary": "Multi-platform web browser",
+    "version": "156.0.4301.0",
+    "visiblename": "Microsoft Edge Dev"
+  },
+  {
     "categories": [
       "www-client"
     ],
@@ -234,13 +243,130 @@
     "visiblename": "Microsoft Edge Canary"
   },
   {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
     "origversion": null,
-    "repo": "homebrew_casks",
-    "srcname": "microsoft-edge@dev",
+    "repo": "liguros_develop",
+    "srcname": "www-client/microsoft-edge",
+    "status": "newest",
+    "summary": "The web browser from Microsoft",
+    "version": "154.0.4258.48",
+    "visiblename": "www-client/microsoft-edge"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/microsoft-edge-beta",
     "status": "ignored",
-    "summary": "Multi-platform web browser",
+    "summary": "The web browser from Microsoft",
+    "version": "155.0.4283.18",
+    "visiblename": "www-client/microsoft-edge-beta"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/microsoft-edge-beta",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
+    "version": "155.0.4283.24",
+    "visiblename": "www-client/microsoft-edge-beta"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/microsoft-edge-beta",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
+    "version": "155.0.4283.13",
+    "visiblename": "www-client/microsoft-edge-beta"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/microsoft-edge-dev",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
     "version": "156.0.4301.0",
-    "visiblename": "Microsoft Edge Dev"
+    "visiblename": "www-client/microsoft-edge-dev"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/microsoft-edge-dev",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
+    "version": "155.0.4273.0",
+    "visiblename": "www-client/microsoft-edge-dev"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "www-client/microsoft-edge-dev",
+    "status": "ignored",
+    "summary": "The web browser from Microsoft",
+    "version": "156.0.4285.0",
+    "visiblename": "www-client/microsoft-edge-dev"
   },
   {
     "licenses": [
@@ -297,6 +423,25 @@
     "visiblename": "network/microsoft-edge"
   },
   {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "www-client/microsoft-edge-dev",
+    "status": "outdated",
+    "summary": "The web browser from Microsoft",
+    "version": "140.0.3485.6",
+    "visiblename": "www-client/microsoft-edge-dev",
+    "vulnerable": true
+  },
+  {
     "licenses": [
       "MIT"
     ],
@@ -345,40 +490,6 @@
     "summary": "The web browser from Microsoft",
     "version": "141.0.3500.1",
     "visiblename": "www-client/microsoft-edge-dev",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_stable",
-    "srcname": "www-client/microsoft-edge-dev",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "140.0.3485.6",
-    "visiblename": "www-client/microsoft-edge-dev",
-    "vulnerable": true
-  },
-  {
-    "binname": "microsoft-edge-stable-deb",
-    "maintainers": [
-      "oren@taumoda.com",
-      "jimedrand@disroot.org"
-    ],
-    "origversion": "135.0.3179.98-1-1",
-    "repo": "pacstall",
-    "srcname": "microsoft-edge-stable-deb",
-    "status": "legacy",
-    "summary": "The Chromium-based web browser from Microsoft",
-    "version": "135.0.3179.98-1",
-    "visiblename": "microsoft-edge-stable-deb",
     "vulnerable": true
   },
   {
@@ -455,139 +566,6 @@
     "summary": "The web browser from Microsoft",
     "version": "140.0.3485.40",
     "visiblename": "www-client/microsoft-edge-beta",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/microsoft-edge",
-    "status": "legacy",
-    "summary": "The web browser from Microsoft",
-    "version": "149.0.4022.69",
-    "visiblename": "www-client/microsoft-edge",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/microsoft-edge-beta",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "150.0.4078.13",
-    "visiblename": "www-client/microsoft-edge-beta",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/microsoft-edge-beta",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "150.0.4078.5",
-    "visiblename": "www-client/microsoft-edge-beta",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/microsoft-edge-dev",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "150.0.4078.5",
-    "visiblename": "www-client/microsoft-edge-dev",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/microsoft-edge-beta",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "149.0.4022.62",
-    "visiblename": "www-client/microsoft-edge-beta",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/microsoft-edge-dev",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "151.0.4091.0",
-    "visiblename": "www-client/microsoft-edge-dev",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "www-client/microsoft-edge-dev",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "150.0.4078.1",
-    "visiblename": "www-client/microsoft-edge-dev",
     "vulnerable": true
   },
   {
@@ -734,6 +712,21 @@
     "summary": "The Chromium-based web browser from Microsoft - Developer channel",
     "version": "137.0.3282.1-1",
     "visiblename": "microsoft-edge-dev-deb",
+    "vulnerable": true
+  },
+  {
+    "binname": "microsoft-edge-stable-deb",
+    "maintainers": [
+      "oren@taumoda.com",
+      "jimedrand@disroot.org"
+    ],
+    "origversion": "135.0.3179.98-1-1",
+    "repo": "pacstall",
+    "srcname": "microsoft-edge-stable-deb",
+    "status": "legacy",
+    "summary": "The Chromium-based web browser from Microsoft",
+    "version": "135.0.3179.98-1",
+    "visiblename": "microsoft-edge-stable-deb",
     "vulnerable": true
   },
   {

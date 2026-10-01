@@ -1,5 +1,19 @@
 [
   {
+    "binname": "heroic-games-launcher",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "2.22.1-2",
+    "repo": "manjaro_stable",
+    "srcname": "heroic-games-launcher",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "Native GOG, Epic Games and Amazon games launcher for Linux",
+    "version": "2.22.1",
+    "visiblename": "heroic-games-launcher"
+  },
+  {
     "licenses": [
       "GPL-3.0-or-later"
     ],
@@ -239,29 +253,9 @@
     "origversion": null,
     "repo": "liguros_develop",
     "srcname": "games-util/heroic-bin",
-    "status": "legacy",
+    "status": "newest",
     "summary": "GOG and Epic Games Launcher for Linux",
-    "version": "2.21.0",
-    "visiblename": "games-util/heroic-bin"
-  },
-  {
-    "categories": [
-      "games-util"
-    ],
-    "licenses": [
-      "GPL-3+"
-    ],
-    "maintainers": [
-      "voyageur@gentoo.org",
-      "gonegrier.duarte@gmail.com",
-      "proxy-maint@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_develop",
-    "srcname": "games-util/heroic-bin",
-    "status": "outdated",
-    "summary": "GOG and Epic Games Launcher for Linux",
-    "version": "2.22.0",
+    "version": "2.22.3",
     "visiblename": "games-util/heroic-bin"
   },
   {
@@ -281,22 +275,8 @@
     "srcname": "games-util/heroic-bin",
     "status": "legacy",
     "summary": "GOG and Epic Games Launcher for Linux",
-    "version": "2.20.1",
-    "visiblename": "games-util/heroic-bin"
-  },
-  {
-    "binname": "heroic-games-launcher",
-    "licenses": [
-      "GPL-3.0-only"
-    ],
-    "origversion": "2.22.1-2",
-    "repo": "manjaro_stable",
-    "srcname": "heroic-games-launcher",
-    "status": "outdated",
-    "subrepo": "extra",
-    "summary": "Native GOG, Epic Games and Amazon games launcher for Linux",
     "version": "2.22.1",
-    "visiblename": "heroic-games-launcher"
+    "visiblename": "games-util/heroic-bin"
   },
   {
     "binname": "heroic-games-launcher",
