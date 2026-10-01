@@ -30,9 +30,8 @@ let
       pkgs.writeText "nixkeeper-lists.json" (builtins.toJSON cfg.lists);
   listsNeedNix = cfg.listsPath != null && !(lib.hasSuffix ".json" (toString cfg.listsPath));
 
-  # One job at a time on the data: the sync and the checks both write it.
-  run =
-    args: "${lib.getExe' pkgs.util-linux "flock"} ${stateDir}/.lock ${lib.getExe cfg.package} ${args}";
+  # nixkeeper itself runs one job at a time on the data (data.lock).
+  run = args: "${lib.getExe cfg.package} ${args}";
 
   service = description: script: {
     inherit description;

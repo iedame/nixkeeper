@@ -135,6 +135,7 @@ class Serve(unittest.TestCase):
 class Commands(unittest.TestCase):
     def test_page_and_serve(self):
         with (
+            mock.patch("nixkeeper.lock.held"),
             mock.patch.multiple(config, LISTS=config.LISTS, OUT_DIR=config.OUT_DIR),
             mock.patch.object(page, "write", return_value="/x") as write,
             mock.patch.object(page, "serve") as serve,

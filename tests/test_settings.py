@@ -7,10 +7,11 @@ import json
 import os
 import subprocess
 import tempfile
+import threading
 import unittest
 from unittest import mock
 
-from nixkeeper import config, history, notify, output
+from nixkeeper import config, history, lock, notify, output
 from nixkeeper.sources import github
 from nixkeeper.sources import nixpkgs as nixpkgs_source
 
@@ -108,6 +109,40 @@ class Defaults(unittest.TestCase):
             os.makedirs(f"{home}/nixkeeper/package-lists")
             found = self.defaults({"XDG_CONFIG_HOME": home})
             self.assertEqual(found["LISTS"], f"{home}/nixkeeper/package-lists")
+
+
+class Lock(unittest.TestCase):
+    """One run at a time on a data folder."""
+
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.dir.cleanup)
+        self.data = os.path.join(self.dir.name, "state", "data")
+
+    def test_next_to_the_data(self):
+        with lock.held(self.data):
+            self.assertTrue(os.path.exists(self.data + ".lock"))
+        self.assertFalse(os.path.exists(self.data))  # only the lock, not the folder
+
+    def test_a_second_run_waits_for_the_first(self):
+        order = []
+        first = lock.held(self.data)
+        first.__enter__()
+        stderr = io.StringIO()
+
+        def second():
+            with mock.patch("sys.stderr", stderr), lock.held(self.data):
+                order.append("second")
+
+        thread = threading.Thread(target=second)
+        thread.start()
+        thread.join(0.3)
+        self.assertTrue(thread.is_alive())  # still waiting
+        self.assertIn("Waiting for another nixkeeper run", stderr.getvalue())
+        order.append("first done")
+        first.__exit__(None, None, None)
+        thread.join(5)
+        self.assertEqual(order, ["first done", "second"])
 
 
 class Token(unittest.TestCase):

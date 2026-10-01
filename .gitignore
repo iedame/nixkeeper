@@ -1,6 +1,7 @@
 /data/
 .DS_Store
 /data.tmp/
+/data.lock
 __pycache__/
 /result
 *.egg-info/

@@ -21,6 +21,13 @@ class Command(unittest.TestCase):
         env = mock.patch.dict(os.environ, {}, clear=True)
         env.start()
         self.addCleanup(env.stop)
+        # The data lock, next to a data folder that isn't the user's.
+        self.lock_dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.lock_dir.cleanup)
+        self.patch(
+            "nixkeeper.lock.path",
+            lambda out_dir=None: f"{self.lock_dir.name}/data.lock",
+        )
         self.stdout = self.patch("sys.stdout", io.StringIO())
         self.stderr = self.patch("sys.stderr", io.StringIO())
 
@@ -36,6 +43,12 @@ class Command(unittest.TestCase):
         with mock.patch("importlib.import_module", side_effect=modules.__getitem__):
             cli.main(list(argv))
         return mains
+
+    def test_commands_hold_the_data_lock(self):
+        with mock.patch("nixkeeper.lock.held") as held:
+            self.run_command("sync")
+        held.assert_called_once_with()
+        held.return_value.__enter__.assert_called_once()
 
     def test_each_command_runs_its_module(self):
         for command, (_, module) in cli.COMMANDS.items():

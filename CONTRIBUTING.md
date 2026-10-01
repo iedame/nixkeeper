@@ -78,6 +78,8 @@ Around that:
   addresses of every source
 - `init.py` and `templates/package-lists/`: `nixkeeper init`'s starter lists
   (`nix flake check` validates them like the real ones)
+- `lock.py`: one run at a time on a data folder (`<data dir>.lock`), for
+  every command that writes or copies the data
 - `page.py`: `nixkeeper page` and `nixkeeper serve`. The package carries the
   page: its build copies `page/` into `nixkeeper/page/` (and links it as
   `share/nixkeeper/www/`); from a checkout, `page/` itself

@@ -309,7 +309,9 @@ and optionally the page on nginx.
 | `package` | this flake's | the nixkeeper package to run |
 
 The jobs run as their own `nixkeeper` user, hardened (read-only system, no
-home, no privileges), one at a time.
+home, no privileges). Like any nixkeeper commands on the same data, they run
+one at a time: each holds a lock (`data.lock`, next to the data) and the next
+waits for it.
 
 The page finds its data by itself when `data/` is served next to it. Otherwise
 it reads the repository's `data` branch on a GitHub Pages site, or wherever
