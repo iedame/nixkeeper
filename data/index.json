@@ -947,7 +947,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-01T17:27:07.074340+00:00",
+        "checkedAt": "2026-10-01T23:58:13.153579+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -1391,7 +1391,7 @@
         "linux": true
       },
       "project": "microsoft-edge",
-      "refVersion": "154.0.4258.48",
+      "refVersion": "154.0.4258.53",
       "repoCount": 44,
       "searchTerm": "microsoft-edge",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/mi/microsoft-edge/package.nix#L345",
@@ -1408,11 +1408,11 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-01T17:27:07.074340+00:00",
+        "checkedAt": "2026-10-01T23:58:13.153579+00:00",
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
-        "version": "154.0.4258.48"
+        "version": "154.0.4258.53"
       }
     },
     {
