@@ -5,7 +5,17 @@ GitHub counts and update PRs -> data/ -> status issue. `nixkeeper sync`
 
 from datetime import UTC, datetime
 
-from . import community, history, listcheck, lookup, notify, output, rows, tracking
+from . import (
+    community,
+    history,
+    listcheck,
+    lookup,
+    notify,
+    output,
+    rows,
+    tracking,
+    version,
+)
 from .changes import count_master, is_outdated
 from .sources import github, hydra, nixpkgs_update, upstream
 from .sources import nixpkgs as nixpkgs_source
@@ -44,7 +54,8 @@ def main():
     outdated = [row for row in index_rows if is_outdated(row)]
     github.add_update_prs(outdated, open_prs=False)  # merged into master
     nixpkgs_update.recheck_superseded(outdated)
-    index = {"checkedAt": now, "packages": index_rows}
+    # version: the nixkeeper that made this data, for the page's footer.
+    index = {"checkedAt": now, "packages": index_rows, "version": version()}
     if problems:
         index["listProblems"] = problems
     if page := listcheck.page_settings(lists):

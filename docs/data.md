@@ -20,11 +20,13 @@ with a note in the [changelog](../CHANGELOG.md).
 ## `index.json`
 
 ```json
-{ "checkedAt": "2026-09-30T06:00:00+00:00", "packages": [ ... ] }
+{ "checkedAt": "2026-09-30T06:00:00+00:00", "version": "0.9.0", "packages": [ ... ] }
 ```
 
-`checkedAt` is when the last full sync ran (the hourly checks update single
-rows without changing it). `packages` are the rows, sorted by name.
+`version` is the nixkeeper that ran the last full sync (the page shows it
+at the bottom). `checkedAt` is when the last full sync ran (the hourly
+checks update single rows without changing it). `packages` are the rows,
+sorted by name.
 `listProblems`, only when there are any, lists mistakes the sync found in the
 package lists, as sentences: a maintainer handle no package lists, an extra
 package nixpkgs doesn't have, an update check or ignore rule for a package
