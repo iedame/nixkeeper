@@ -47,9 +47,10 @@ pkgs.testers.runNixOSTest {
 
     with subtest("the frequent checks run against it"):
         machine.succeed("systemctl start nixkeeper-checks.service")
-        log = machine.succeed("journalctl -u nixkeeper-checks.service")
-        assert "No frequent update checks" in log, log
-        assert "Nothing outdated" in log, log
+        # Not "log": the test driver's own logger is called that.
+        journal = machine.succeed("journalctl -u nixkeeper-checks.service")
+        assert "No frequent update checks" in journal, journal
+        assert "Nothing outdated" in journal, journal
 
     with subtest("nginx serves the page and the data next to it"):
         machine.wait_for_unit("nginx.service")
