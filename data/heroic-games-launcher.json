@@ -185,21 +185,6 @@
     "visiblename": "Heroic Games Launcher"
   },
   {
-    "licenses": [
-      "GPL-3.0-only"
-    ],
-    "maintainers": [
-      "aidalgol+nixpkgs@fastmail.net"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
-    "srcname": "heroic",
-    "status": "outdated",
-    "summary": "Native GOG, Epic, and Amazon Games Launcher for Linux, Windows and Mac",
-    "version": "2.17.2",
-    "visiblename": "heroic"
-  },
-  {
     "categories": [
       "games-util"
     ],
@@ -370,6 +355,21 @@
     "summary": "Native GOG, Epic, and Amazon Games Launcher for Linux, Windows and Mac",
     "version": "2.16.1",
     "visiblename": "heroic-unwrapped"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "aidalgol+nixpkgs@fastmail.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "heroic",
+    "status": "outdated",
+    "summary": "Native GOG, Epic, and Amazon Games Launcher for Linux, Windows and Mac",
+    "version": "2.17.2",
+    "visiblename": "heroic"
   },
   {
     "licenses": [
@@ -669,7 +669,7 @@
     "maintainers": [
       "roachy@fyralabs.com"
     ],
-    "origversion": "2.22.3-1.fcrawhide",
+    "origversion": "2.22.3-2.fcrawhide",
     "repo": "terra_rawhide",
     "srcname": "heroic-games-launcher",
     "status": "newest",
@@ -688,7 +688,7 @@
     "maintainers": [
       "roachy@fyralabs.com"
     ],
-    "origversion": "2.22.3-1.fcrawhide",
+    "origversion": "2.22.3-2.fcrawhide",
     "repo": "terra_rawhide",
     "srcname": "heroic-games-launcher",
     "status": "newest",
