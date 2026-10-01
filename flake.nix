@@ -17,7 +17,11 @@
       flake-utils,
       treefmt-nix,
     }:
-    flake-utils.lib.eachDefaultSystem (
+    {
+      # services.nixkeeper (nix/module.nix).
+      nixosModules.default = import ./nix/module.nix self;
+    }
+    // flake-utils.lib.eachDefaultSystem (
       system:
       let
         pkgs = import nixpkgs { inherit system; };
@@ -181,6 +185,34 @@
 
         checks = {
           inherit nixkeeper; # building it runs the tests
+          # The NixOS module, evaluated in a whole NixOS configuration (on any
+          # system: nothing is built, so this runs on macOS too).
+          module-eval =
+            let
+              nixos = nixpkgs.lib.nixosSystem {
+                system = "x86_64-linux";
+                modules = [
+                  self.nixosModules.default
+                  {
+                    boot.isContainer = true;
+                    system.stateVersion = lib.trivial.release;
+                    services.nixkeeper = {
+                      enable = true;
+                      lists.maintainers = [ "iedame" ];
+                      githubTokenFile = "/run/secrets/github-token";
+                      notify = "github-issue";
+                      githubRepo = "iedame/nixkeeper";
+                      nginx.virtualHost = "nixkeeper.example.org";
+                    };
+                  }
+                ];
+              };
+              unit = nixos.config.systemd.units."nixkeeper-sync.service".text;
+            in
+            # The text only: its store paths are Linux builds, not this system's.
+            pkgs.writeText "nixkeeper-module-eval" (
+              builtins.unsafeDiscardStringContext (builtins.seq nixos.config.system.build.toplevel.drvPath unit)
+            );
           formatting = treefmt.config.build.check self;
           lint = pkgs.runCommand "nixkeeper-lint" { nativeBuildInputs = linters; } ''
             cd ${self}
@@ -293,6 +325,10 @@
               foundNamed == expectedNamed
             ) "package-lists checker found ${builtins.toJSON foundNamed} (named lists)";
             pkgs.runCommand "package-lists-checker-ok" { } "touch $out";
+        }
+        // lib.optionalAttrs pkgs.stdenv.hostPlatform.isLinux {
+          # The module in a NixOS VM (needs KVM: CI has it).
+          module = import ./nix/module-test.nix { inherit pkgs self; };
         };
 
         devShells.default = pkgs.mkShell {

@@ -9,6 +9,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- A NixOS module (`nixosModules.default`, `services.nixkeeper`): the sync
+  daily and the frequent and update PR checks hourly on systemd timers, as
+  their own hardened user, with the lists in the configuration, a GitHub
+  token as a systemd credential, and optionally the page and its data on
+  nginx. Tested in a NixOS VM in CI.
+
 ## [0.7.0] - 2026-10-01
 
 nixkeeper as a program you can install and run yourself: one `nixkeeper`
