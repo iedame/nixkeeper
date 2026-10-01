@@ -13,6 +13,9 @@ happen. For what nixkeeper does and how to set up your own, see the
   (`page/logic.js`) with Node's own test runner
 - `nix/package.nix`: nixkeeper's package, in nixpkgs' by-name style (the
   flake builds it from the checkout; see [Releasing](#releasing))
+- `nix/module.nix`: the NixOS module (`nixosModules.default`).
+  `nix flake check` evaluates it in a NixOS configuration on any system,
+  and on Linux boots it in a VM (`nix/module-test.nix`; CI runs it)
 - `nix/package-lists.nix`: `nix flake check` validates the package lists
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates, malformed update checks and ignore rules)
@@ -75,6 +78,8 @@ Around that:
   addresses of every source
 - `init.py` and `templates/package-lists/`: `nixkeeper init`'s starter lists
   (`nix flake check` validates them like the real ones)
+- `lock.py`: one run at a time on a data folder (`<data dir>.lock`), for
+  every command that writes or copies the data
 - `page.py`: `nixkeeper page` and `nixkeeper serve`. The package carries the
   page: its build copies `page/` into `nixkeeper/page/` (and links it as
   `share/nixkeeper/www/`); from a checkout, `page/` itself

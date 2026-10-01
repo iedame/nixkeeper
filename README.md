@@ -261,6 +261,58 @@ any static host, with the data copied in as `data/`; run it again after
 each sync. It only writes into a new or empty folder, or one it wrote
 before.
 
+### As a NixOS service
+
+The flake's NixOS module runs it all on a server: the sync daily, the
+frequent and update PR checks hourly, the data in `/var/lib/nixkeeper/data`,
+and optionally the page on nginx.
+
+```nix
+{
+  inputs.nixkeeper.url = "github:iedame/nixkeeper";
+
+  outputs = { nixpkgs, nixkeeper, ... }: {
+    nixosConfigurations.server = nixpkgs.lib.nixosSystem {
+      modules = [
+        ./configuration.nix # your server's own configuration
+        nixkeeper.nixosModules.default
+        {
+          services.nixkeeper = {
+            enable = true;
+            lists.maintainers = [ "your-github-handle" ];
+            lists.extraPackages.extra = [ "firefox" ];
+            # A token file, read only; never a path inside the Nix store.
+            githubTokenFile = "/run/secrets/nixkeeper-github-token";
+            nginx.virtualHost = "nixkeeper.example.org";
+          };
+          # TLS and the rest as for any nginx host:
+          services.nginx.virtualHosts."nixkeeper.example.org" = {
+            enableACME = true;
+            forceSSL = true;
+          };
+        }
+      ];
+    };
+  };
+}
+```
+
+| Option | Default | What it sets |
+|---|---|---|
+| `lists` | `{ }` | what to track, as `package-lists/` has it (`maintainers`, `extraPackages`, `updateChecks`, `ignoredUpdates`) |
+| `listsPath` | – | a `package-lists/` folder or JSON file instead (a folder is evaluated with the system's Nix) |
+| `syncAt` | `"06:00"` | when the sync runs (systemd `OnCalendar`); a missed one runs at boot |
+| `frequentChecks.enable`, `.at` | `true`, `"hourly"` | the frequent update checks and the update PR check |
+| `githubTokenFile` | – | a GitHub token, passed as a systemd credential; without it, PR and issue counts and update PRs are skipped |
+| `notify`, `githubRepo`, `pageUrl` | `"none"` | `"github-issue"` keeps a status issue in `githubRepo` up to date |
+| `nginx.virtualHost` | – | serve the page and the data on this nginx host |
+| `package` | this flake's | the nixkeeper package to run |
+
+The jobs run as their own `nixkeeper` user, hardened (read-only system, no
+home, no privileges). Like any nixkeeper commands on the same data, they run
+one at a time: each holds a lock (`data.lock`, next to the data) and the next
+waits for it.
+
 The page finds its data by itself when `data/` is served next to it. Otherwise
 it reads the repository's `data` branch on a GitHub Pages site, or wherever
 `<meta name="nixkeeper-data" content="…">` in `page/index.html` points.

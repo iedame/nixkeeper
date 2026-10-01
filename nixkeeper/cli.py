@@ -19,7 +19,7 @@ import os
 import sys
 from importlib import metadata
 
-from . import config, init, notify, page
+from . import config, init, lock, notify, page
 
 # name: (what it does, the module whose main() runs it)
 COMMANDS = {
@@ -192,13 +192,15 @@ def main(argv=None):
         )
         return
     if args.command == "page":
-        folder = page.write(args.dir)
+        with lock.held():  # not mid-sync: the data is swapped in whole
+            folder = page.write(args.dir)
         print(f"Wrote the page and the data to {folder}: host that folder as is.")
         return
     if args.command == "serve":
         page.serve(args.port, args.bind)
         return
-    importlib.import_module(COMMANDS[args.command][1]).main()
+    with lock.held():
+        importlib.import_module(COMMANDS[args.command][1]).main()
 
 
 def _alias(command):
