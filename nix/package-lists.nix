@@ -162,6 +162,32 @@ let
     );
 in
 rec {
+  # [ { entry, reason } ] for the community update checks
+  # (community/update-checks.nix): each a well-formed check, as your own are,
+  # for a package that exists in nixpkgs (row names are attributes). Checked
+  # as if the package were tracked: community rules are for anyone's lists.
+  communityProblems =
+    rules:
+    lib.concatLists (
+      lib.mapAttrsToList (
+        name: check:
+        if !isAttribute name then
+          [
+            {
+              entry = name;
+              reason = "not a nixpkgs attribute (rules are keyed by the package's attribute)";
+            }
+          ]
+        else
+          map (p: p // { entry = name; }) (
+            checkProblems {
+              maintainers = [ ];
+              extraPackages = [ name ];
+            } name check
+          )
+      ) rules
+    );
+
   # [ { entry, reason } ] for everything the sync would get wrong.
   problems =
     lists:

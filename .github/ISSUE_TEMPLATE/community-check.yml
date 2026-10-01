@@ -1,0 +1,41 @@
+name: Propose a community update check
+description: Suggest where nixkeeper should look for a package's new releases, for everyone who uses the community update checks.
+title: "Community update check: <attribute>"
+labels: ["community-checks"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Community update checks find a package's new releases before Repology counts them, for every nixkeeper that opts in ([how they work](https://github.com/iedame/nixkeeper/blob/main/docs/community-checks.md)). You can also open a pull request adding the rule to `community/update-checks.nix` directly; this form is for when you'd rather describe it.
+  - type: input
+    id: attribute
+    attributes:
+      label: nixpkgs attribute
+      description: The package, as in nixpkgs, e.g. `wesnoth-devel`.
+      placeholder: wesnoth-devel
+    validations:
+      required: true
+  - type: textarea
+    id: where
+    attributes:
+      label: Where new versions appear
+      description: A GitHub repository's tags (and which ones count), the branch an unstable version follows, or a release page (https) and how a version shows on it.
+      placeholder: The 1.19.x tags of wesnoth/wesnoth.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why Repology isn't enough
+      description: For example, it only counts a release once some repositories package it, or it doesn't know the series nixpkgs follows.
+  - type: textarea
+    id: rule
+    attributes:
+      label: The rule, if you have it
+      description: In the format of `community/update-checks.nix`.
+      render: nix
+      placeholder: |
+        wesnoth-devel = {
+          github = "wesnoth/wesnoth";
+          tags = "^(1\\.19\\.[0-9]+)$";
+        };

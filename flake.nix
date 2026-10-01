@@ -108,6 +108,8 @@
         sync = command "sync" "Sync data/: Repology, update checks, Hydra, nixpkgs-update logs, GitHub";
         # The hourly updates (.github/workflows/data-hourly.yml), against data/.
         frequent-check = command "frequent-check" "Run the frequent update checks (frequent = true) against data/";
+        # Runs the community update checks for real (-- NAME... for some).
+        community-check = command "community-check" "Run the community update checks for real (-- NAME ... to test some)";
         pr-check = command "pr-check" "Look for outdated packages' update PRs, open and merged, against data/";
         # The wordmark's typeface, Oxanium (SIL Open Font License), from the
         # google/fonts commit this nixpkgs' google-fonts uses: just the one file,
@@ -175,6 +177,7 @@
             sync
             frequent-check
             pr-check
+            community-check
             screenshots
             brand
             ;
@@ -277,6 +280,36 @@
             touch $out
           '';
           package-lists = listsChecker.check (import ./package-lists);
+          # The community update checks (community/update-checks.nix): well
+          # formed, for packages in nixpkgs, within the limits community rules
+          # are held to, with patterns Python compiles (nixkeeper/community.py).
+          community =
+            let
+              rules = import ./community/update-checks.nix;
+              found = listsChecker.communityProblems rules;
+            in
+            if found != [ ] then
+              throw (
+                "community/update-checks.nix has problems:\n"
+                + lib.concatMapStrings (p: "  - ${p.entry}: ${p.reason}\n") found
+              )
+            else
+              pkgs.runCommand "nixkeeper-community-ok"
+                {
+                  nativeBuildInputs = [ pkgs.python3 ];
+                  rules = builtins.toJSON rules;
+                  passAsFile = [ "rules" ];
+                }
+                ''
+                  PYTHONPATH=${nixkeeper}/${pkgs.python3.sitePackages} python3 - "$rulesPath" <<'EOF'
+                  import json, sys
+                  from nixkeeper import community
+                  found = community.problems(json.load(open(sys.argv[1])))
+                  if found:
+                      sys.exit("community/update-checks.nix has problems:\n  - " + "\n  - ".join(found))
+                  EOF
+                  touch $out
+                '';
           # nixkeeper init's starter lists: valid, and what the sync can read.
           init-template = listsChecker.check (import ./nixkeeper/templates/package-lists);
           # The checker itself, against lists with known problems.

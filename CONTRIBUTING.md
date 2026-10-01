@@ -52,6 +52,12 @@ happen. For what nixkeeper does and how to set up your own, see the
   - `ci.yml`, **CI: tests and lint**: checks nixkeeper's own code on every
     push and PR
   - `data-daily.yml`, **Data: daily sync**: updates all package data
+  - `community-checks.yml`, **Community: update checks still work**: runs
+    every community update check for real weekly, keeping the "Community
+    update checks status" issue up to date (`nixkeeper community-check
+    --report-issue`), and on PRs that change `community/`, the rules they add
+    or change (`--changed-from`), failing if one finds nothing (see
+    [docs/community-checks.md](docs/community-checks.md))
   - `pages.yml`, **Pages: publish the page**: publishes `page/` to GitHub
     Pages whenever it changes on `main` (Pages' source is "GitHub Actions")
   - `data-hourly.yml`, **Data: hourly updates (frequent packages, update PRs)**:
@@ -119,6 +125,7 @@ nix fmt                   # format everything (Nix, Python, the page)
 nix flake check           # tests, formatting, linters, package-list checks
 nix develop -c python3 -m unittest discover -s tests -t .   # tests, quickly
 nix develop -c node --test 'tests/js/*.test.mjs'            # the page's tests
+nix run .#community-check -- <attribute>   # try a community update check for real
 nix eval --json -f package-lists                             # what the lists evaluate to
 nix run .#screenshots -- --browser google-chrome   # retake the screenshots in assets/screenshots/
 nix run .#brand           # regenerate assets/brand/ and the page's favicon
