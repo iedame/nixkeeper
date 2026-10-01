@@ -2,8 +2,8 @@
 review) and the one merged into master (waiting for the channel), hourly, so
 those badges don't wait for the daily sync. A merged PR shows "on master" as
 soon as it's merged, before Hydra has built it. Changes rarely: only when an
-update PR opens, becomes ready or is merged. Run from the repository root:
-`nix run .#pr-check`."""
+update PR opens, becomes ready or is merged. `nixkeeper pr-check`; from a
+checkout, `nix run .#pr-check`."""
 
 import sys
 from datetime import UTC, datetime

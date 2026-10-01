@@ -46,7 +46,8 @@ happen. For what nixkeeper does and how to set up your own, see the
 
 ## The code
 
-`nixkeeper/__main__.py` runs one sync, top to bottom:
+`nixkeeper/cli.py` is the `nixkeeper` command: it reads the flags and runs
+the subcommand's module. `nixkeeper/sync.py` runs one sync, top to bottom:
 
 | Step | Module |
 |---|---|
@@ -65,7 +66,8 @@ happen. For what nixkeeper does and how to set up your own, see the
 
 Around that:
 
-- `config.py`: settings, and the addresses of every source
+- `config.py`: settings (the command's flags set them, over their
+  environment variables), and the addresses of every source
 - `versions.py`: comparing version strings
 - `sources/http.py`: GET with retries, for the sources that need no more
 - `frequent.py`, `prcheck.py`: the hourly checks, which start from the last
@@ -78,9 +80,10 @@ blanks the page.
 ## Commands
 
 ```bash
-nix run .#sync            # sync into data/ (alias: nix run .#fetch)
+nix run .#sync            # nixkeeper sync, into data/ (alias: nix run .#fetch)
 nix run .#frequent-check  # only the frequent update checks, against data/ (hourly in CI)
 nix run .#pr-check        # outdated packages' update PRs, against data/ (hourly in CI)
+nix run .#sync -- --help  # the command's flags (each app passes its arguments on)
 nix fmt                   # format everything (Nix, Python, the page)
 nix flake check           # tests, formatting, linters, package-list checks
 nix develop -c python3 -m unittest discover -s tests -t .   # tests, quickly

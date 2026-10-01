@@ -51,7 +51,7 @@
           ];
           meta = {
             description = "Health dashboard for the nixpkgs packages you maintain";
-            mainProgram = "nixkeeper-sync";
+            mainProgram = "nixkeeper";
             license = lib.licenses.mit;
           };
         };
@@ -93,22 +93,20 @@
           biome
         ];
 
-        sync = {
+        # `nix run .#<command>`: `nixkeeper <command>`, from the checkout.
+        command = name: description: {
           type = "app";
-          program = lib.getExe nixkeeper;
-          meta.description = "Sync data/: Repology, update checks, Hydra, nixpkgs-update logs, GitHub";
+          program = lib.getExe (
+            pkgs.writeShellScriptBin "nixkeeper-${name}" ''
+              exec ${lib.getExe nixkeeper} ${name} "$@"
+            ''
+          );
+          meta = { inherit description; };
         };
+        sync = command "sync" "Sync data/: Repology, update checks, Hydra, nixpkgs-update logs, GitHub";
         # The hourly updates (.github/workflows/data-hourly.yml), against data/.
-        frequent-check = {
-          type = "app";
-          program = lib.getExe' nixkeeper "nixkeeper-frequent-check";
-          meta.description = "Run the frequent update checks (frequent = true) against data/";
-        };
-        pr-check = {
-          type = "app";
-          program = lib.getExe' nixkeeper "nixkeeper-pr-check";
-          meta.description = "Look for outdated packages' update PRs, open and merged, against data/";
-        };
+        frequent-check = command "frequent-check" "Run the frequent update checks (frequent = true) against data/";
+        pr-check = command "pr-check" "Look for outdated packages' update PRs, open and merged, against data/";
         # The wordmark's typeface, Oxanium (SIL Open Font License), from the
         # google/fonts commit this nixpkgs' google-fonts uses: just the one file,
         # not the whole collection.

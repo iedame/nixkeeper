@@ -1,7 +1,7 @@
 name: "Data: daily sync"
 
 # Updates the package data the page shows (the data branch): everything, from
-# every source (nixkeeper/__main__.py). Also posts to the status issue.
+# every source (nixkeeper/sync.py). Also posts to the status issue.
 
 on:
   schedule:
