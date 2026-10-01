@@ -133,3 +133,171 @@ def safety(rule):
         if NESTED_REPEAT.search(pattern) or re.search(r"\\[1-9]", pattern):
             return f"{field} repeats a repeat or refers back to a group: too slow"
     return None
+
+
+def problems(rules):
+    """What's wrong with community rules beyond their format (which
+    nix/package-lists.nix checks): the limits, and the patterns as Python
+    compiles them. For CI: ["name: why", ...]."""
+    found = []
+    for name, rule in sorted(rules.items()):
+        if why := safety(rule):
+            found.append(f"{name}: {why}")
+            continue
+        for field in ("tags", "pattern"):
+            if field in rule:
+                try:
+                    if re.compile(rule[field]).groups > 1:
+                        found.append(f"{name}: {field} has more than one capture group")
+                except re.error as e:
+                    found.append(f"{name}: {field} is not a valid regex ({e})")
+    return found
+
+
+def run(names=None, file=None):
+    """Run community rules for real, as a sync would (`nixkeeper
+    community-check`): every rule, or those named, against nixpkgs'
+    current versions. Returns {name: (version found or None, why not)}."""
+    from datetime import UTC, datetime
+
+    from .sources import nixpkgs as nixpkgs_source
+    from .sources import upstream
+
+    all_rules = rules(file)
+    unknown = sorted(set(names or ()) - set(all_rules))
+    chosen = {n: r for n, r in all_rules.items() if not names or n in names}
+    index = nixpkgs_source.load_index()
+    results = {n: (None, "no community rule of that name") for n in unknown}
+    rows = []
+    for name in chosen:
+        if name not in index:
+            results[name] = (None, "not in nixpkgs' channel index")
+            continue
+        version = index[name].get("version")
+        rows.append({"name": name, "nixVersion": version, "refVersion": version})
+    now = datetime.now(UTC).isoformat()
+    upstream.add_checks(rows, chosen, {"packages": []}, now, set(chosen))
+    for row in rows:
+        failing = (row.get("notRefreshed") or {}).get("upstream")
+        if failing:
+            results[row["name"]] = (None, failing["reason"])
+        else:
+            results[row["name"]] = (row["upstream"]["version"], None)
+    return results
+
+
+def report(results):
+    """Print run()'s results, and as a GitHub Actions job summary when there
+    is one. Returns how many failed."""
+    lines = ["| Package | Found | Problem |", "|---|---|---|"]
+    failed = 0
+    for name, (version, why) in sorted(results.items()):
+        print(f"  {name}: {version or 'FAILED'}{f' ({why})' if why else ''}")
+        lines.append(f"| {name} | {version or '–'} | {why or ''} |")
+        failed += why is not None
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary:
+        with open(summary, "a") as f:
+            f.write("## Community update checks\n\n" + "\n".join(lines) + "\n")
+    return failed
+
+
+def changed(base_file):
+    """The rules added or changed since base_file (main's community file, for
+    a pull request): only those are tried there, so a PR isn't failed by a
+    rule it didn't touch."""
+    base = rules(base_file)
+    return sorted(name for name, rule in rules().items() if base.get(name) != rule)
+
+
+# The community checks' own status issue: which rules are broken, since when.
+ISSUE_LABEL = "nixkeeper-community-status"
+ISSUE_TITLE = "Community update checks status"
+# The record of broken rules, kept in the issue's body between runs.
+STATE = re.compile(r"<!-- nixkeeper-community-state (\{.*?\}) -->", re.S)
+
+
+def track(results, previous, now):
+    """The new record of broken rules ({name: {"since", "reason"}}) from a
+    run's results and the previous record, and what changed: (record, newly
+    broken names, recovered names)."""
+    broken = {}
+    for name, (_, why) in results.items():
+        if why is not None:
+            since = (previous.get(name) or {}).get("since") or now
+            broken[name] = {"since": since, "reason": why}
+    newly = sorted(set(broken) - set(previous))
+    recovered = sorted(n for n in set(previous) - set(broken) if n in results)
+    return broken, newly, recovered
+
+
+def issue_body(results, broken, now):
+    total = len(results)
+    lines = [
+        "The community update checks (`community/update-checks.nix`), run weekly by "
+        'the "Community: update checks still work" workflow. Rewritten by each run.',
+        "",
+    ]
+    if broken:
+        lines += [
+            f"**{len(broken)} of {total} broken:**",
+            "",
+            "| Rule | Broken since | Why |",
+            "|---|---|---|",
+        ]
+        lines += [
+            f"| `{name}` | {info['since'][:10]} | {info['reason'].replace('|', '/')} |"
+            for name, info in sorted(broken.items())
+        ]
+        lines += [
+            "",
+            "Fix or remove them in `community/update-checks.nix`; until then, each "
+            'shows as "check failing" on that package\'s row for subscribers.',
+        ]
+    else:
+        lines.append(f"**All {total} work.**")
+    record = json.dumps(broken, sort_keys=True)
+    lines += ["", f"_Last run: {now[:16].replace('T', ' ')} UTC._", ""]
+    lines.append(f"<!-- nixkeeper-community-state {record} -->")
+    return "\n".join(lines)
+
+
+def publish(results, now=None):
+    """Update the community checks' status issue with a run's results (in the
+    repository NIXKEEPER_GITHUB_REPO or the workflow's own), commenting when a
+    rule newly breaks or recovers. Needs a token given explicitly, never the
+    local gh login."""
+    from datetime import UTC, datetime
+
+    from .sources import github
+
+    now = now or datetime.now(UTC).isoformat()
+    repo = os.environ.get("NIXKEEPER_GITHUB_REPO") or os.environ.get(
+        "GITHUB_REPOSITORY"
+    )
+    token = github.token(use_gh=False)
+    if not repo or not token:
+        sys.exit(
+            "--report-issue needs a repository (NIXKEEPER_GITHUB_REPO) and a token "
+            "(NIXKEEPER_GITHUB_TOKEN_FILE or GITHUB_TOKEN)"
+        )
+    body = github.status_issue_body(repo, token, ISSUE_LABEL) or ""
+    match = STATE.search(body)
+    previous = json.loads(match.group(1)) if match else {}
+    broken, newly, recovered = track(results, previous, now)
+    comment = None
+    if newly or recovered:
+        comment = "\n".join(
+            [f"**Broke:** `{n}`: {broken[n]['reason']}" for n in newly]
+            + [f"**Works again:** `{n}`" for n in recovered]
+        )
+    number = github.update_status_issue(
+        repo,
+        token,
+        ISSUE_TITLE,
+        issue_body(results, broken, now),
+        comment,
+        label=ISSUE_LABEL,
+        about="The community update checks' status, kept up to date by nixkeeper",
+    )
+    print(f"Updated issue #{number}", file=sys.stderr)

@@ -346,28 +346,38 @@ def api(method, path, token, body=None):
     return json.loads(data) if data else None
 
 
-def update_status_issue(repo, token, title, body, comment=None):
-    """Rewrite the open issue labelled STATUS_LABEL (opening it if there's
-    none), then post comment if given. Returns the issue number."""
+def status_issue_body(repo, token, label=STATUS_LABEL):
+    """The body of the open issue labelled label, or None if there's none."""
+    issues = api(
+        "GET", f"/repos/{repo}/issues?labels={label}&state=open&per_page=1", token
+    )
+    return issues[0].get("body") or "" if issues else None
+
+
+def update_status_issue(
+    repo,
+    token,
+    title,
+    body,
+    comment=None,
+    label=STATUS_LABEL,
+    about="The issue nixkeeper keeps up to date",
+):
+    """Rewrite the open issue labelled label (opening it if there's none),
+    then post comment if given. Returns the issue number."""
     try:
         api(
             "POST",
             f"/repos/{repo}/labels",
             token,
-            {
-                "name": STATUS_LABEL,
-                "color": "5319e7",
-                "description": "The issue nixkeeper keeps up to date",
-            },
+            {"name": label, "color": "5319e7", "description": about},
         )
     except urllib.error.HTTPError as e:
         if e.code != 422:  # 422: the label already exists
             raise
         e.close()
     issues = api(
-        "GET",
-        f"/repos/{repo}/issues?labels={STATUS_LABEL}&state=open&per_page=1",
-        token,
+        "GET", f"/repos/{repo}/issues?labels={label}&state=open&per_page=1", token
     )
     if issues:
         number = issues[0]["number"]
@@ -377,7 +387,7 @@ def update_status_issue(repo, token, title, body, comment=None):
             "POST",
             f"/repos/{repo}/issues",
             token,
-            {"title": title, "body": body, "labels": [STATUS_LABEL]},
+            {"title": title, "body": body, "labels": [label]},
         )["number"]
     if comment:
         api("POST", f"/repos/{repo}/issues/{number}/comments", token, {"body": comment})

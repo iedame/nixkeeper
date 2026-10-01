@@ -56,12 +56,38 @@ network is fine there.
 
 ## Adding a rule
 
-Open a pull request adding it to
-[`community/update-checks.nix`](../community/update-checks.nix), in the same
-format as your own update checks (the file's header shows it), keyed by the
-package's nixpkgs attribute. A good rule follows what nixpkgs packages (the
-stable series it tracks, the page its source comes from), and says in a
-comment where the version comes from.
+1. **Add it** to [`community/update-checks.nix`](../community/update-checks.nix),
+   in the same format as your own update checks (the file's header shows
+   it), keyed by the package's nixpkgs attribute. A good rule follows what
+   nixpkgs packages (the stable series it tracks, the page its source comes
+   from), and says in a comment where the version comes from.
+2. **Try it**, from your checkout:
+
+   ```bash
+   nix run .#community-check -- <attribute>
+   ```
+
+   It runs the rule for real against nixpkgs' current version, and says what
+   it found, or why it found nothing. GitHub rules need a token
+   (`GITHUB_TOKEN`, or a `gh` login).
+3. **Open a pull request.** CI checks the file (`nix flake check`): every rule
+   well formed, for a package in nixpkgs, within the limits above, its
+   patterns valid. The "Community: update checks still work" workflow runs
+   the rules your pull request adds or changes for real, shows what each
+   found, and fails if one finds nothing.
+
+Rather describe it than write it? Use the
+["Propose a community update check"](https://github.com/iedame/nixkeeper/issues/new?template=community-check.yml)
+issue form.
+
+## Keeping them working
+
+The same workflow runs every rule weekly and keeps the **"Community update
+checks status"** issue up to date: which rules are broken (a moved page, a
+renamed repository), why, and since when, with a comment when one breaks or
+works again. Broken rules don't fail the workflow; the issue is where they
+show. A broken rule only affects its own package: that row shows "check
+failing" for subscribers, and keeps its last result.
 
 When a community rule is wrong or stops working, open an issue, or a pull
 request fixing it; meanwhile, a rule of your own for that package replaces

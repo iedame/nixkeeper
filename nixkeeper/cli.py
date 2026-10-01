@@ -20,7 +20,7 @@ import sys
 from datetime import UTC, datetime
 from importlib import metadata
 
-from . import config, history, init, lock, notify, page
+from . import community, config, history, init, lock, notify, page
 
 # name: (what it does, the module whose main() runs it)
 COMMANDS = {
@@ -106,6 +106,31 @@ def parser():
         help="where the lists and data are, and which setting says so",
         description="Where the lists and data are, and which setting says so.",
         parents=[common],
+    )
+    check = sub.add_parser(
+        "community-check",
+        help="run community update checks for real, to test one (all, or those named)",
+        description="Run the community update checks (community/update-checks.nix) "
+        "for real, against nixpkgs' current versions: every rule, or those named. "
+        "Says what each found, and fails if any didn't. GitHub rules need a token "
+        "(GITHUB_TOKEN, or a gh login).",
+        parents=[common],
+    )
+    check.add_argument("names", metavar="NAME", nargs="*", help="a package's rule")
+    check.add_argument(
+        "--file", metavar="PATH", help="another community file (default: nixkeeper's)"
+    )
+    check.add_argument(
+        "--changed-from",
+        metavar="PATH",
+        help="only the rules added or changed since this version of the file "
+        "(for a pull request)",
+    )
+    check.add_argument(
+        "--report-issue",
+        action="store_true",
+        help="keep the repository's community checks status issue up to date "
+        "instead of failing on broken rules (needs a token: GITHUB_TOKEN)",
     )
     init = sub.add_parser(
         "init",
@@ -199,6 +224,20 @@ def main(argv=None):
             "Next: `nixkeeper sync` writes the data to "
             f"{os.path.abspath(found['data_dir'][0])}."
         )
+        return
+    if args.command == "community-check":
+        names = args.names
+        if args.changed_from:
+            names = community.changed(args.changed_from)
+            if not names:
+                print("No community rules added or changed.", file=sys.stderr)
+                return
+        results = community.run(names, args.file)
+        failed = community.report(results)
+        if args.report_issue:
+            community.publish(results)
+        elif failed:
+            sys.exit(f"{failed} community update check(s) failed.")
         return
     if args.command == "page":
         with lock.held():  # not mid-sync: the data is swapped in whole

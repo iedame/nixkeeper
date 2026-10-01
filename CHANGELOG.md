@@ -11,6 +11,19 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Keeping the community update checks healthy: CI checks
+  `community/update-checks.nix` on every pull request (each rule well formed,
+  for a package in nixpkgs, within the limits, its patterns valid). The
+  "Community: update checks still work" workflow runs every rule for real
+  weekly and keeps a "Community update checks status" issue up to date (which
+  rules are broken, why and since when, commenting when one breaks or works
+  again), and on pull requests runs the rules they add or change, failing if
+  one finds nothing. `nixkeeper community-check [NAME...]`
+  (`nix run .#community-check` from a checkout) does the same by hand, to try
+  a rule before proposing it; there's also an issue form for proposing one.
+
+### Added
+
 - Community update checks (`community/update-checks.nix`): update checks
   anyone can add by pull request, for any nixpkgs package. Opt in with
   `communityChecks = true;` in your package lists (or

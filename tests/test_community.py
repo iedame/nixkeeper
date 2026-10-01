@@ -142,6 +142,134 @@ class SafeFetch(unittest.TestCase):
         sleep.assert_not_called()
 
 
+class ForCI(unittest.TestCase):
+    def test_problems(self):
+        found = community.problems(
+            {
+                "fine": WESNOTH,
+                "unsafe": {"url": "http://example.org/", "pattern": "x"},
+                "broken": {"github": "a/b", "tags": "(unclosed"},
+                "two-groups": {"github": "a/b", "tags": "(a)(b)"},
+            }
+        )
+        self.assertEqual(len(found), 3)
+        self.assertTrue(found[0].startswith("broken: tags is not a valid regex"))
+        self.assertIn("two-groups: tags has more than one capture group", found)
+        self.assertIn("unsafe: url must be https://", found)
+
+
+class RunForReal(unittest.TestCase):
+    """community-check: every rule, or some, against nixpkgs' versions."""
+
+    def run_rules(self, names=None, page='{"version": "154.0.2"}'):
+        index = {"google-chrome": {"version": "154.0.1"}}
+        rules = {"google-chrome": CHROME, "not-in-nixpkgs": CHROME}
+        with (
+            mock.patch.object(community, "rules", return_value=rules),
+            mock.patch("nixkeeper.sources.nixpkgs.load_index", return_value=index),
+            mock.patch.object(http, "get", return_value=page),
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            return community.run(names)
+
+    def test_every_rule(self):
+        results = self.run_rules()
+        self.assertEqual(results["google-chrome"], ("154.0.2", None))
+        self.assertEqual(
+            results["not-in-nixpkgs"], (None, "not in nixpkgs' channel index")
+        )
+
+    def test_some_rules(self):
+        results = self.run_rules(["google-chrome", "typo"])
+        self.assertEqual(set(results), {"google-chrome", "typo"})
+        self.assertEqual(results["typo"], (None, "no community rule of that name"))
+
+    def test_a_rule_that_finds_nothing(self):
+        version, why = self.run_rules(["google-chrome"], page="nothing here")[
+            "google-chrome"
+        ]
+        self.assertIsNone(version)
+        self.assertIn("nothing in", why)
+
+    def test_report_counts_failures(self):
+        with (
+            mock.patch("sys.stdout", io.StringIO()),
+            mock.patch.dict(os.environ, {}, clear=True),
+        ):
+            failed = community.report({"a": ("1.0", None), "b": (None, "moved")})
+        self.assertEqual(failed, 1)
+
+
+class StatusIssue(unittest.TestCase):
+    """The weekly run's issue: which rules are broken, and since when."""
+
+    NOW = "2026-10-05T07:41:00+00:00"
+
+    def publish(self, results, body=None):
+        env = {"GITHUB_TOKEN": "t", "GITHUB_REPOSITORY": "iedame/nixkeeper"}
+        with (
+            mock.patch.dict(os.environ, env, clear=True),
+            mock.patch("nixkeeper.sources.github.status_issue_body", return_value=body),
+            mock.patch(
+                "nixkeeper.sources.github.update_status_issue", return_value=7
+            ) as update,
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            community.publish(results, self.NOW)
+        repo, token, title, new_body, comment = update.call_args.args
+        self.assertEqual(update.call_args.kwargs["label"], community.ISSUE_LABEL)
+        return new_body, comment
+
+    def test_all_working(self):
+        body, comment = self.publish({"a": ("1.0", None), "b": ("2.0", None)})
+        self.assertIn("All 2 work", body)
+        self.assertIsNone(comment)
+
+    def test_a_rule_breaks_then_stays_broken_then_recovers(self):
+        body, comment = self.publish({"a": ("1.0", None), "b": (None, "moved")})
+        self.assertIn("1 of 2 broken", body)
+        self.assertIn("| `b` | 2026-10-05 | moved |", body)
+        self.assertIn("**Broke:** `b`: moved", comment)
+        # A week later, still broken: its date stays, and no new comment.
+        self.NOW = "2026-10-12T07:41:00+00:00"
+        body, comment = self.publish({"a": ("1.0", None), "b": (None, "moved")}, body)
+        self.assertIn("| `b` | 2026-10-05 | moved |", body)
+        self.assertIsNone(comment)
+        # Then fixed.
+        body, comment = self.publish({"a": ("1.0", None), "b": ("2.1", None)}, body)
+        self.assertIn("All 2 work", body)
+        self.assertEqual(comment, "**Works again:** `b`")
+
+    def test_needs_an_explicit_token(self):
+        with (
+            mock.patch.dict(os.environ, {"GITHUB_REPOSITORY": "o/r"}, clear=True),
+            mock.patch("nixkeeper.sources.github.token", return_value=None),
+            self.assertRaises(SystemExit),
+        ):
+            community.publish({}, self.NOW)
+
+    def test_track_only_counts_rules_that_ran(self):
+        previous = {"gone": {"since": "x", "reason": "y"}}
+        broken, newly, recovered = community.track(
+            {"a": ("1.0", None)}, previous, self.NOW
+        )
+        self.assertEqual((broken, newly, recovered), ({}, [], []))
+
+
+class ChangedInAPullRequest(unittest.TestCase):
+    def test_only_added_or_changed_rules(self):
+        base = {"google-chrome": CHROME, "wesnoth-devel": WESNOTH}
+        head = {
+            "google-chrome": CHROME,
+            "wesnoth-devel": {**WESNOTH, "tags": "^(1\\.20\\..+)$"},
+            "new": CHROME,
+        }
+        with mock.patch.object(
+            community, "rules", side_effect=lambda f=None: base if f else head
+        ):
+            self.assertEqual(community.changed("main.nix"), ["new", "wesnoth-devel"])
+
+
 class InTheChecks(unittest.TestCase):
     def setUp(self):
         out = mock.patch("sys.stderr", io.StringIO())

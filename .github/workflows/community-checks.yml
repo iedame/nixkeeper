@@ -1,0 +1,69 @@
+name: "Community: update checks still work"
+
+# Runs the community update checks (community/update-checks.nix) for real,
+# against nixpkgs' current versions. Their format and limits are checked by
+# CI (nix flake check) already; this is whether they still find versions.
+#
+#   weekly (and by hand), in iedame/nixkeeper only: every rule, kept in the
+#     "Community update checks status" issue: which are broken and since
+#     when, with a comment when one breaks or works again. Broken rules
+#     don't fail the run.
+#   on pull requests changing the file: only the rules it adds or changes,
+#     failing if one finds nothing, so it's fixed before it's merged.
+
+on:
+  schedule:
+    - cron: '41 7 * * 1'   # Mondays, 07:41 UTC
+  pull_request:
+    paths:
+      - 'community/**'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read  # reads the code; GitHub rules query public repositories
+
+jobs:
+  report:
+    # Only where the community file is maintained: a copy of the repository
+    # for someone's own dashboard doesn't look after it.
+    if: github.event_name != 'pull_request' && github.repository == 'iedame/nixkeeper'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write  # the community checks status issue
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false  # never pushes
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+
+      - name: Run every community update check, and update the status issue
+        run: nix run .#community-check -- --report-issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub rules, and the issue
+
+  pull-request:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false  # never pushes
+
+      - name: Get main's community file, to compare with
+        env:
+          BASE: ${{ github.base_ref }}
+        run: |
+          git fetch --depth=1 origin "$BASE"
+          git show "FETCH_HEAD:community/update-checks.nix" > "$RUNNER_TEMP/base.nix" \
+            || echo '{ }' > "$RUNNER_TEMP/base.nix"
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
+
+      - name: Run the rules this pull request adds or changes
+        run: nix run .#community-check -- --changed-from "$RUNNER_TEMP/base.nix"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub rules
