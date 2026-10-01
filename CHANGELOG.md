@@ -9,6 +9,19 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- `TROUBLESHOOTING.md`: how to check that nixkeeper runs as it should on
+  GitHub, as the command, and with the NixOS and nix-darwin modules (the
+  jobs, their schedules, logs and data), and what the page's warnings mean.
+
+### Changed
+
+- The nix-darwin module's logs (`~/Library/Logs/nixkeeper/`) date each run:
+  a line with the time and the job's name before its output, and one with
+  how it ended after it, so a run can be told from the next (and the
+  catch-up from the daily sync, which share `sync.log`).
+
 ## [0.8.0] - 2026-10-01
 
 nixkeeper as a service: modules for NixOS and nix-darwin that run the sync
