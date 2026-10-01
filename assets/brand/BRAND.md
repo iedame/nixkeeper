@@ -76,11 +76,12 @@ L15):
 |---|---|---|
 | `fill`: dots, icons | L65 | L75 |
 | `text`: labels, counts | L45 | L75 |
-| `badge`: badge backgrounds (white text) | L55 | L65 |
+| `badge`: badge backgrounds (white text) | L55 | L55 |
 | `bg`: tinted backgrounds | L95 | L25 |
 
 The L75 accents aren't readable as text on white, which is why light-theme
-text uses L45. Failures and vulnerabilities share the pink: labels tell them
+text uses L45, and white text needs a badge at L55 or darker in either theme
+(L65 falls below the 4.5:1 contrast minimum). Failures and vulnerabilities share the pink: labels tell them
 apart on the page, and on the mark, which chevron turns. Never rely on colour
 alone for a status: pair it with a label or an icon.
 

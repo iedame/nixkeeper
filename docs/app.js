@@ -419,7 +419,7 @@ function render(list) {
     tr.className = 'row';
     tr.tabIndex = 0;
     tr.innerHTML = `
-      <td class="c-name"><div class="pkg-name"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}"${waitingForChannel(pkg) ? ' title="Update merged: on master, waiting for nixos-unstable"' : ''}></span><span class="n">${escapeHtml(pkg.name)}</span>${platformTags(pkg)}</div></td>
+      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}"${waitingForChannel(pkg) ? ' title="Update merged: on master, waiting for nixos-unstable"' : ''}></span><span class="n">${escapeHtml(pkg.name)}</span></span>${platformTags(pkg)}</div></td>
       <td class="c-ver ver mono">${verCell}</td>
       <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
       <td class="c-build">${buildCell(pkg)}</td>
@@ -522,7 +522,7 @@ function buildCell(pkg) {
     );
   if (failedBuilds(pkg).length) return button('missing', 'failure reported');
   // Known failures: shown, but not counted as failed.
-  if (buildsWith(pkg, 'broken').length) return button('warn', 'marked broken');
+  if (buildsWith(pkg, 'broken').length) return button('caution', 'marked broken');
   if (!hydraBuildsIt(pkg)) return button('neutral', 'not built by Hydra', true);
   return button('ok', 'none reported', true);
 }
@@ -546,7 +546,7 @@ function updateCell(pkg) {
   if (pkg.update?.outcome === 'superseded') return button('neutral', 'superseded');
   // A newer version the bot has no way to update to: not a failure, but it
   // needs a manual update (or an updateScript).
-  if (pkg.update?.outcome === 'cantUpdate') return button('warn', "can't update");
+  if (pkg.update?.outcome === 'cantUpdate') return button('caution', "can't update");
   if (pkg.update === null) return button('neutral', 'not attempted', true);
   return button('ok', 'none reported', true);
 }
@@ -572,7 +572,7 @@ const UPDATE_OUTCOME = {
   // Every way the bot has of updating a package declined (the excerpt says
   // why): the update needs doing by hand, or an updateScript.
   cantUpdate: {
-    dot: 'warn',
+    dot: 'caution',
     text: () =>
       "couldn't update it: none of the bot's ways of updating a package apply here. Update it by hand, or give the package an updateScript so the bot can next time",
   },
@@ -621,9 +621,9 @@ const HYDRA = 'https://hydra.nixos.org';
 const BUILD_STATUS = {
   ok: { dot: 'ok', text: 'built OK' },
   failed: { dot: 'missing', text: 'failed' },
-  broken: { dot: 'warn', text: 'marked broken in nixpkgs' },
-  dependency: { dot: 'warn', text: "didn't build: a dependency failed" },
-  unfinished: { dot: 'warn', text: "didn't finish (timed out or aborted)" },
+  broken: { dot: 'caution', text: 'marked broken in nixpkgs' },
+  dependency: { dot: 'caution', text: "didn't build: a dependency failed" },
+  unfinished: { dot: 'caution', text: "didn't finish (timed out or aborted)" },
   notBuilt: { dot: 'neutral', text: 'not built by Hydra on this platform' },
   unknown: { dot: 'neutral', text: "couldn't check Hydra on the last run" },
 };
