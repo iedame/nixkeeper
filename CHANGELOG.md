@@ -25,6 +25,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   with a hint.
 - `nixkeeper init --maintainer <handle>` starts your package lists: a folder
   of Nix files with your handle and commented examples, to edit.
+- `nix/package.nix`: nixkeeper's package in nixpkgs' style (the same file,
+  with a release as its source, can go to nixpkgs), with a version check and
+  the package's metadata. `nix profile install github:iedame/nixkeeper`
+  installs it.
 - The page ships with nixkeeper (also as `share/nixkeeper/www/` in the
   package). `nixkeeper serve` shows it on this computer with the data as it
   is; `nixkeeper page <dir>` writes it with a copy of the data into a folder

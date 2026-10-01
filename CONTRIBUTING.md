@@ -11,6 +11,8 @@ happen. For what nixkeeper does and how to set up your own, see the
 - `tests/`: offline tests, one file per module (nothing reaches the
   network: sources are faked). `tests/js/` tests the page's rules
   (`page/logic.js`) with Node's own test runner
+- `nix/package.nix`: nixkeeper's package, in nixpkgs' by-name style (the
+  flake builds it from the checkout; see [Releasing](#releasing))
 - `nix/package-lists.nix`: `nix flake check` validates the package lists
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates, malformed update checks and ignore rules)
@@ -184,6 +186,13 @@ palette reaches the page through `nix run .#brand`.
 The release workflow checks that the tag matches `pyproject.toml` and has a
 changelog section, runs the flake checks, and publishes the GitHub Release
 with that section as its notes. If a check fails, nothing is published.
+
+`nix/package.nix` is also what nixpkgs packages, as
+`pkgs/by-name/ni/nixkeeper/package.nix`: the same file with `src` and
+`version` replaced by the release (its header comment shows how). Once
+nixkeeper is in nixpkgs, the nixpkgs-update bot proposes each new release
+there by itself; changes to `nix/package.nix` itself (a new dependency, say)
+go to nixpkgs by hand, with that release's update.
 
 Version tags can't be moved or deleted (a tag ruleset), so a published
 version never changes. If a release fails, fix it in a PR and release the next
