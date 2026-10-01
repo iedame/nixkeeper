@@ -26,6 +26,21 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - Links and key UI on the page (focus outlines, active filters) are in
   nixkeeper's violet, from the brand's colour tokens, which the page now
   loads (`docs/tokens.css`).
+- The page's statuses use the identity's colours: up to date in Zambian
+  Green, outdated in Persian Orange, failed and vulnerable in Norwegian Pink.
+  Dots use the brighter tint, text a darker one, which is easier to read than
+  before on both themes. Can't update, marked broken and a failed or
+  unfinished build have their own Indian Gold instead of sharing outdated's
+  colour. "On master" is in nixkeeper's violet instead of GitHub's purple,
+  and open update PRs in the identity's green.
+
+### Fixed
+
+- On narrow tables, a package's status dot could end up on a line of its
+  own, above the name; it now stays beside the name, and only the platform
+  tags wrap.
+- The identity's dark-theme badge tint (L65) was too light for white text;
+  badges use L55 in both themes.
 
 ## [0.5.0] - 2026-09-30
 

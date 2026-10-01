@@ -72,7 +72,9 @@ def role(r):
             "badge": r["l55"],
             "bg": r["l95"],
         },
-        "dark": {"fill": r["l75"], "text": r["l75"], "badge": r["l65"], "bg": r["l25"]},
+        # Badges keep L55 in both themes: white text on L65 falls below the
+        # 4.5:1 contrast minimum.
+        "dark": {"fill": r["l75"], "text": r["l75"], "badge": r["l55"], "bg": r["l25"]},
     }
 
 

@@ -32,7 +32,7 @@ For each package it tracks, nixkeeper shows on one static page (`docs/`):
   [nixpkgs-update](https://nixpkgs-update-logs.nixos.org) bot (r-ryantm)
 - **Vulnerabilities**: versions Repology flags, with their known CVEs
 - **Open PRs and issues** in nixpkgs that name the package, with the update
-  PR one click away: open (GitHub's green), or merged and on master (purple)
+  PR one click away: open (green), or merged and on master (violet)
   while it waits for the channel
 
 A daily sync (GitHub Actions, or anywhere: see [Running elsewhere](#running-elsewhere))
@@ -100,8 +100,8 @@ stay in the address, so a view can be shared.
 |---|---|
 | green | up to date: nixpkgs has the newest version (for a devel package, the newest devel one), or is the only one packaging it |
 | orange | outdated: Repology or nixkeeper's own update check knows a newer version |
-| purple | outdated, but the update is already merged on master, waiting for nixos-unstable (usually a few days) |
-| red | not in nixpkgs unstable (counted as failed) |
+| violet | outdated, but the update is already merged on master, waiting for nixos-unstable (usually a few days) |
+| pink | not in nixpkgs unstable (counted as failed) |
 | grey | Repology can't compare the version: `untrusted`, `rolling`, `noscheme`, `incorrect` (shown as a badge) |
 
 **The version**: nixpkgs unstable's, then for an outdated package `→` the
@@ -113,7 +113,7 @@ the target shows just the new date.
 | Badge | Means |
 |---|---|
 | `PR #123` (green) | an open update PR in nixpkgs; grey while it's a draft |
-| `on master` (purple) | the update is merged into master; links to its PR |
+| `on master` (violet) | the update is merged into master; links to its PR |
 | `devel` | a development release, compared against other devel versions |
 | `vulnerable` | Repology flags this version; the details link its known CVEs |
 | `untrusted`, `rolling`, ... | Repology's status for a version it can't compare |
@@ -124,8 +124,8 @@ the target shows just the new date.
 
 | Shows | Means |
 |---|---|
-| failure reported (red) | its latest build failed on a platform: the panel links the log and says when it last built, and at which version |
-| marked broken | nixpkgs marks it broken on a platform (known, so not counted as failed) |
+| failure reported (pink) | its latest build failed on a platform: the panel links the log and says when it last built, and at which version |
+| marked broken (gold) | nixpkgs marks it broken on a platform (known, so not counted as failed) |
 | not built by Hydra | unfree, or kept off Hydra by nixpkgs |
 | none reported | no failure of its own; a failed dependency or an unfinished build shows only in the panel |
 
@@ -133,15 +133,15 @@ the target shows just the new date.
 
 | Shows | Means |
 |---|---|
-| failure reported (red) | the bot's update failed: the panel shows the end of its log |
-| can't update (amber) | a newer version exists, but none of the bot's ways of updating apply to this package: update it by hand, or give it an updateScript |
+| failure reported (pink) | the bot's update failed: the panel shows the end of its log |
+| can't update (gold) | a newer version exists, but none of the bot's ways of updating apply to this package: update it by hand, or give it an updateScript |
 | superseded | the attempt no longer matters: nixpkgs has moved past that version (in the channel, or merged on master), or a manual rule ignores it (`package-lists/ignored-updates.nix`) |
 | not attempted | the bot has never tried this package |
 | none reported | the bot opened a PR, found one open, had nothing to update, or finished without a recognisable result (the panel says which) |
 
 A `not refreshed` tag on a build or update cell means Hydra or the update
 logs couldn't be reached on the last sync, so it shows the last known result.
-The time at the top right is the last sync; it turns red when that was over
+The time at the top right is the last sync; it turns pink when that was over
 two days ago.
 
 ## What gets tracked

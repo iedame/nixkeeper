@@ -9,25 +9,35 @@
   /* Links and key UI: the brand violet (tokens.css, from assets/brand/), which
      switches to its dark-theme value by itself. */
   --accent: var(--nk-link-text);
-  --ok: #1f8a5f;
-  --ok-soft: #e7f4ee;
-  --ok-devel: #135c3e;
-  --warn: #b8730a;
-  --warn-soft: #fbf1e1;
-  --warn-devel: #7d4e05;
+  /* Statuses: the brand tokens' roles (tokens.css), which switch to their
+     dark-theme values by themselves. Dots use the brighter fill; text uses
+     the darker text value, readable on the page's backgrounds. Outdated and
+     the amber states (can't update, marked broken) still share --warn. */
+  --ok: var(--nk-ok-fill);
+  --ok-soft: var(--nk-ok-bg);
+  --ok-devel: var(--nk-ok-text);
+  --warn: var(--nk-outdated-text);
+  --warn-dot: var(--nk-outdated-fill);
+  --warn-soft: var(--nk-outdated-bg);
+  --warn-devel: var(--nk-outdated-text);
   --stale: #8b8f94;
   --stale-soft: #eeeeef;
-  --danger: #c4433a;
-  --danger-soft: #fbe9e7;
-  /* GitHub's merged-PR purple (Primer "done"), for "on master": the update
-     is merged. fgColor-done, bgColor-done-emphasis, bgColor-done-muted. */
-  --merged: #8250df;
-  --merged-emphasis: #8250df;
-  --merged-soft: #fbefff;
-  /* GitHub's open and draft PR labels (Primer bgColor-success-emphasis,
-     bgColor-neutral-emphasis). */
-  --pr-open: #1f883d;
-  --pr-draft: #59636e;
+  /* Can't update, marked broken, a failed dependency: known problems that
+     need a hand, not failures. */
+  --caution: var(--nk-warn-text);
+  --caution-dot: var(--nk-warn-fill);
+  --danger: var(--nk-failed-text);
+  --danger-dot: var(--nk-failed-fill);
+  --danger-soft: var(--nk-failed-bg);
+  /* "On master" (the update is merged, waiting for the channel): the brand
+     violet. */
+  --merged: var(--nk-merged-text);
+  --merged-dot: var(--nk-merged-fill);
+  --merged-emphasis: var(--nk-merged-badge);
+  --merged-soft: var(--nk-merged-bg);
+  /* Update PR badges: open in the up-to-date green, draft in grey. */
+  --pr-open: var(--nk-ok-badge);
+  --pr-draft: var(--nk-neutral-l55);
   --radius: 8px;
 }
 @media (prefers-color-scheme: dark) {
@@ -39,21 +49,8 @@
     --ink-faint: #6c7178;
     --hairline: #2b2f35;
     --hairline-strong: #383d44;
-    --ok: #4fc793;
-    --ok-soft: #1b2e27;
-    --warn: #e0a344;
-    --warn-soft: #332714;
-    --ok-devel: #2e9466;
-    --warn-devel: #a8762b;
     --stale: #82868c;
     --stale-soft: #24262a;
-    --danger: #e0776e;
-    --danger-soft: #33201e;
-    --merged: #ab7df8;
-    --merged-emphasis: #8957e5;
-    --merged-soft: #ab7df826;
-    --pr-open: #238636;
-    --pr-draft: #656c76;
   }
 }
 * {
@@ -253,13 +250,16 @@ tbody tr.row td {
   background: var(--ok);
 }
 .status-dot.warn {
-  background: var(--warn);
+  background: var(--warn-dot);
 }
 .status-dot.merged {
-  background: var(--merged);
+  background: var(--merged-dot);
+}
+.status-dot.caution {
+  background: var(--caution-dot);
 }
 .status-dot.missing {
-  background: var(--danger);
+  background: var(--danger-dot);
 }
 .status-dot.neutral {
   background: var(--ink-faint);
@@ -272,6 +272,12 @@ tbody tr.row td {
   /* Short of space, the platform tags go under the name. */
   flex-wrap: wrap;
   row-gap: 4px;
+}
+/* The dot and the name stay together: only the tags wrap. */
+.pkg-name .who {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 .pkg-name .n {
   font-weight: 600;
@@ -336,7 +342,7 @@ button.plat[aria-pressed="true"] {
   font-family: "Instrument Sans", system-ui, sans-serif;
   font-size: 12px;
 }
-/* Waiting for the channel: the merged purple, like its dot. */
+/* Waiting for the channel: the merged violet, like its dot. */
 .ver .age.merged {
   color: var(--merged);
 }
@@ -368,8 +374,8 @@ button.plat[aria-pressed="true"] {
   background: var(--danger-soft);
   color: var(--danger);
 }
-/* Outdated, but the update is already on master: GitHub's "Merged" label,
-   solid purple with white text. */
+/* Outdated, but the update is already on master: a solid violet label with
+   white text, like GitHub's "Merged". */
 .badge.onmaster {
   background: var(--merged-emphasis);
   color: #ffffff;
@@ -467,6 +473,9 @@ a.badge:hover {
 }
 .build-line .st.warn {
   color: var(--warn);
+}
+.build-line .st.caution {
+  color: var(--caution);
 }
 .build-line .st.neutral {
   color: var(--ink-faint);
