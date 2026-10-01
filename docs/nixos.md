@@ -39,6 +39,7 @@ and optionally the page on nginx.
 | `lists` | – (this or `listsPath`) | what to track, as `package-lists/` has it (`maintainers`, `extraPackages`, `updateChecks`, `ignoredUpdates`) |
 | `listsPath` | – | a `package-lists/` folder or JSON file instead (a folder is evaluated with the system's Nix) |
 | `lists.community.updateChecks`, `.ignoredUpdates` | `false`, `false` | also use the [community rules](community.md) for the packages you track |
+| `lists.page.theme` | `"classic"` | the page's colours for visitors who haven't picked any: `"classic"` or `"catppuccin"` |
 | `syncAt` | `"06:00"` | when the sync runs (systemd `OnCalendar`) |
 | `frequentChecks.enable`, `.at` | `true`, `"hourly"` | the frequent update checks and the update PR check |
 | `githubTokenFile` | – | a GitHub token, passed as a systemd credential; without it, PR and issue counts and update PRs are skipped |

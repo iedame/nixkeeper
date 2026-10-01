@@ -206,3 +206,16 @@ export function githubRepo(params, { hostname, pathname }) {
   const seg = pathname.split('/').filter(Boolean)[0] || null;
   return owner && seg ? `${owner}/${seg}` : null;
 }
+
+// The page's look: a palette and light or dark. The visitor's choice (the
+// Theme menu, kept in their browser) wins, then the page's default (the
+// lists' page.theme, from the data), then classic; light or dark follows the
+// system ('auto') unless chosen. Unknown values count as not set.
+export const PALETTES = ['classic', 'catppuccin'];
+export const MODES = ['auto', 'light', 'dark'];
+
+export function themeFor(chosen = {}, siteDefault = null) {
+  const palette = [chosen.palette, siteDefault].find((p) => PALETTES.includes(p)) || 'classic';
+  const mode = MODES.includes(chosen.mode) ? chosen.mode : 'auto';
+  return { palette, mode };
+}

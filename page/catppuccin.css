@@ -1,0 +1,128 @@
+/* The Catppuccin palette (https://catppuccin.com, MIT): Latte when light,
+   Mocha when dark. Picked in the Theme menu, or as a page's default with
+   page.theme = "catppuccin" in the package lists; it sets data-palette on
+   <html>. The same variables as tokens.css and style.css's classic ones.
+
+   Roles: up to date green, outdated peach, failed red, can't update or
+   broken yellow, on master mauve, links blue. Dots use the palette's colour
+   as is. In Latte, text and solid badges use it darkened just enough to
+   read (4.5:1, against the soft backgrounds and against white): Latte's
+   green, peach and yellow are too light for text on a light page. Mocha's
+   colours read as they are, with dark text on its badges. */
+
+:root[data-palette="catppuccin"] {
+  --bg: #e6e9ef; /* mantle */
+  --surface: #eff1f5; /* base */
+  --ink: #4c4f69; /* text */
+  --ink-soft: #5c5f77; /* subtext1 */
+  --ink-faint: #8c8fa1; /* overlay1 */
+  --hairline: #ccd0da; /* surface0 */
+  --hairline-strong: #bcc0cc; /* surface1 */
+  --stale: #8c8fa1; /* overlay1 */
+  --stale-soft: #dce0e8; /* crust */
+  --pr-draft: #717486; /* overlay2, darkened */
+  --on-badge: #ffffff;
+  --nk-ok-fill: #40a02b;
+  --nk-ok-text: #2d721f;
+  --nk-ok-badge: #2d721f;
+  --nk-ok-bg: #dae7dd;
+  --nk-outdated-fill: #fe640b;
+  --nk-outdated-text: #aa4307;
+  --nk-outdated-badge: #aa4307;
+  --nk-outdated-bg: #f1e0d9;
+  --nk-failed-fill: #d20f39;
+  --nk-failed-text: #bd0e33;
+  --nk-failed-badge: #bd0e33;
+  --nk-failed-bg: #ecd6de;
+  --nk-warn-fill: #df8e1d;
+  --nk-warn-text: #8c5912;
+  --nk-warn-badge: #8c5912;
+  --nk-warn-bg: #ede5db;
+  --nk-merged-fill: #8839ef;
+  --nk-merged-text: #7d34dc;
+  --nk-merged-badge: #7d34dc;
+  --nk-merged-bg: #e3dbf4;
+  --nk-link-fill: #1e66f5;
+  --nk-link-text: #1a59d5;
+  --nk-link-badge: #1a59d5;
+  --nk-link-bg: #d6e0f5;
+}
+
+/* Mocha: by the system's setting unless set to light, or when set to dark;
+   the two blocks are the same. */
+@media (prefers-color-scheme: dark) {
+  :root[data-palette="catppuccin"]:not([data-mode="light"]) {
+    --bg: #181825; /* mantle */
+    --surface: #1e1e2e; /* base */
+    --ink: #cdd6f4; /* text */
+    --ink-soft: #a6adc8; /* subtext0 */
+    --ink-faint: #7f849c; /* overlay1 */
+    --hairline: #313244; /* surface0 */
+    --hairline-strong: #45475a; /* surface1 */
+    --stale: #7f849c; /* overlay1 */
+    --stale-soft: #313244; /* surface0 */
+    --pr-draft: #7f849c; /* overlay1 */
+    --on-badge: #11111b; /* crust */
+    --nk-ok-fill: #a6e3a1;
+    --nk-ok-text: #a6e3a1;
+    --nk-ok-badge: #a6e3a1;
+    --nk-ok-bg: #313a3e;
+    --nk-outdated-fill: #fab387;
+    --nk-outdated-text: #fab387;
+    --nk-outdated-badge: #fab387;
+    --nk-outdated-bg: #3d333a;
+    --nk-failed-fill: #f38ba8;
+    --nk-failed-text: #f38ba8;
+    --nk-failed-badge: #f38ba8;
+    --nk-failed-bg: #3c2d3f;
+    --nk-warn-fill: #f9e2af;
+    --nk-warn-text: #f9e2af;
+    --nk-warn-badge: #f9e2af;
+    --nk-warn-bg: #3d3940;
+    --nk-merged-fill: #cba6f7;
+    --nk-merged-text: #cba6f7;
+    --nk-merged-badge: #cba6f7;
+    --nk-merged-bg: #36314a;
+    --nk-link-fill: #89b4fa;
+    --nk-link-text: #89b4fa;
+    --nk-link-badge: #89b4fa;
+    --nk-link-bg: #2d334b;
+  }
+}
+:root[data-palette="catppuccin"][data-mode="dark"] {
+  --bg: #181825;
+  --surface: #1e1e2e;
+  --ink: #cdd6f4;
+  --ink-soft: #a6adc8;
+  --ink-faint: #7f849c;
+  --hairline: #313244;
+  --hairline-strong: #45475a;
+  --stale: #7f849c;
+  --stale-soft: #313244;
+  --pr-draft: #7f849c;
+  --on-badge: #11111b;
+  --nk-ok-fill: #a6e3a1;
+  --nk-ok-text: #a6e3a1;
+  --nk-ok-badge: #a6e3a1;
+  --nk-ok-bg: #313a3e;
+  --nk-outdated-fill: #fab387;
+  --nk-outdated-text: #fab387;
+  --nk-outdated-badge: #fab387;
+  --nk-outdated-bg: #3d333a;
+  --nk-failed-fill: #f38ba8;
+  --nk-failed-text: #f38ba8;
+  --nk-failed-badge: #f38ba8;
+  --nk-failed-bg: #3c2d3f;
+  --nk-warn-fill: #f9e2af;
+  --nk-warn-text: #f9e2af;
+  --nk-warn-badge: #f9e2af;
+  --nk-warn-bg: #3d3940;
+  --nk-merged-fill: #cba6f7;
+  --nk-merged-text: #cba6f7;
+  --nk-merged-badge: #cba6f7;
+  --nk-merged-bg: #36314a;
+  --nk-link-fill: #89b4fa;
+  --nk-link-text: #89b4fa;
+  --nk-link-badge: #89b4fa;
+  --nk-link-bg: #2d334b;
+}

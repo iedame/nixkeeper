@@ -1,9 +1,10 @@
 """Mistakes in the package lists that would otherwise go unnoticed: a
 maintainer handle no package lists (a typo tracks nothing, silently), an
 extra package nixpkgs doesn't have, an update check or ignore rule for a
-package that isn't tracked. Checked at every sync, against the channel's
-package index it has loaded anyway; the repository's `nix flake check` does
-the same before anything runs (nix/package-lists.nix).
+package that isn't tracked, a page theme the page doesn't have. Checked at
+every sync, against the channel's package index it has loaded anyway; the
+repository's `nix flake check` does the same before anything runs
+(nix/package-lists.nix).
 
 The sync prints them and writes them to the data ("listProblems"), and the
 page shows them above the table."""
@@ -11,6 +12,16 @@ page shows them above the table."""
 import sys
 
 from .tracking import by_pname, extra_attrs, extra_lists
+
+# The page's palettes (page/logic.js PALETTES), for page.theme.
+THEMES = ("classic", "catppuccin")
+
+
+def page_settings(lists):
+    """What the lists set for the page, for the data: {"theme": ...}, with
+    only known values (problems() reports the others)."""
+    theme = (lists.get("page") or {}).get("theme")
+    return {"theme": theme} if theme in THEMES else {}
 
 
 def problems(lists, nixpkgs, tracked):
@@ -43,6 +54,11 @@ def problems(lists, nixpkgs, tracked):
     ):
         for name in sorted(set(entries) - set(tracked)):
             found.append(f"{what}: {name} isn't a tracked package")
+    theme = (lists.get("page") or {}).get("theme")
+    if theme is not None and theme not in THEMES:
+        found.append(
+            f"page.theme: {theme} isn't one of the page's themes ({', '.join(THEMES)})"
+        )
     return found
 
 

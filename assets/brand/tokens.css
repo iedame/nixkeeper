@@ -94,7 +94,7 @@
   --nk-font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-mode="light"]) {
     --nk-ok-fill: #6fc488;
     --nk-ok-text: #6fc488;
     --nk-ok-badge: #378450;
@@ -120,4 +120,30 @@
     --nk-link-badge: #6f66ae;
     --nk-link-bg: #211d38;
   }
+}
+:root[data-mode="dark"] {
+  --nk-ok-fill: #6fc488;
+  --nk-ok-text: #6fc488;
+  --nk-ok-badge: #378450;
+  --nk-ok-bg: #0c2815;
+  --nk-outdated-fill: #e99861;
+  --nk-outdated-text: #e99861;
+  --nk-outdated-badge: #a25e2c;
+  --nk-outdated-bg: #341a08;
+  --nk-failed-fill: #f08d94;
+  --nk-failed-text: #f08d94;
+  --nk-failed-badge: #a8545b;
+  --nk-failed-bg: #361719;
+  --nk-warn-fill: #cbaa4b;
+  --nk-warn-text: #cbaa4b;
+  --nk-warn-badge: #8a6e08;
+  --nk-warn-bg: #2b2001;
+  --nk-merged-fill: #aaa1f6;
+  --nk-merged-text: #aaa1f6;
+  --nk-merged-badge: #6f66ae;
+  --nk-merged-bg: #211d38;
+  --nk-link-fill: #aaa1f6;
+  --nk-link-text: #aaa1f6;
+  --nk-link-badge: #6f66ae;
+  --nk-link-bg: #211d38;
 }

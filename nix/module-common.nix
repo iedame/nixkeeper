@@ -69,6 +69,18 @@ rec {
                 '';
               };
             };
+            page.theme = mkOption {
+              type = types.enum [
+                "classic"
+                "catppuccin"
+              ];
+              default = "classic";
+              description = ''
+                The page's colours for visitors who haven't picked any in its
+                Theme menu: classic, or catppuccin (Latte when light, Mocha
+                when dark). Light or dark follows each visitor's system.
+              '';
+            };
           };
         }
       );

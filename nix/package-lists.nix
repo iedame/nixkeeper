@@ -55,6 +55,12 @@ let
       extra = lists.extraPackages or [ ];
     in
     if builtins.isList extra then { inherit extra; } else extra;
+  # The page's palettes (page/logic.js PALETTES), for page.theme.
+  themes = [
+    "classic"
+    "catppuccin"
+  ];
+
   allEntries = lists: lib.concatLists (builtins.attrValues (extraLists lists));
 
   isTracked =
@@ -253,7 +259,11 @@ rec {
       reason = reason e;
     }) unknown
     ++ lib.concatLists (lib.mapAttrsToList (checkProblems lists) (lists.updateChecks or { }))
-    ++ lib.concatLists (lib.mapAttrsToList (ignoredProblems lists) (lists.ignoredUpdates or { }));
+    ++ lib.concatLists (lib.mapAttrsToList (ignoredProblems lists) (lists.ignoredUpdates or { }))
+    ++ lib.optional (!(builtins.elem ((lists.page or { }).theme or "classic") themes)) {
+      entry = "page.theme";
+      reason = "not one of the page's themes (${lib.concatStringsSep ", " themes})";
+    };
 
   # A derivation that builds only if lists has no problems. The update checks'
   # patterns are Python regexes, so Python compiles them.

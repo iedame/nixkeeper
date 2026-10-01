@@ -98,10 +98,17 @@ for name, r in ramps.items():
 for name, themes in roles.items():
     css += [f"  --nk-{name}-{k}: {v};" for k, v in themes["light"].items()]
 css += [f"  --nk-font-{k}: {v};" for k, v in fonts.items()]
-css += ["}", "@media (prefers-color-scheme: dark) {", "  :root {"]
-for name, themes in roles.items():
-    css += [f"    --nk-{name}-{k}: {v};" for k, v in themes["dark"].items()]
-css += ["  }", "}"]
+css += ["}"]
+# Dark: by the system's setting, unless the page is set to light
+# (data-mode="light"), or when it's set to dark (data-mode="dark").
+dark = [
+    f"--nk-{name}-{k}: {v};" for name, t in roles.items() for k, v in t["dark"].items()
+]
+css += ["@media (prefers-color-scheme: dark) {", '  :root:not([data-mode="light"]) {']
+css += [f"    {line}" for line in dark]
+css += ["  }", "}", ':root[data-mode="dark"] {']
+css += [f"  {line}" for line in dark]
+css += ["}"]
 with open(os.path.join(OUT, "tokens.css"), "w") as f:
     f.write("\n".join(css) + "\n")
 
