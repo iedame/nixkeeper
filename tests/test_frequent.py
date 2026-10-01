@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from nixkeeper import frequent, notify
+from nixkeeper import config, frequent, notify
 from nixkeeper.sources import github, http, repology
 from nixkeeper.sources import nixpkgs as nixpkgs_source
 from tests.helpers import nix, other
@@ -60,6 +60,10 @@ class FrequentCheck(unittest.TestCase):
         os.chdir(self.dir.name)
         self.addCleanup(os.chdir, cwd)
         os.mkdir("data")
+        # The checkout's data/, as the flake's apps pass it.
+        data = mock.patch.object(config, "OUT_DIR", "data")
+        data.start()
+        self.addCleanup(data.stop)
         self.stderr = io.StringIO()
         patcher = mock.patch("sys.stderr", self.stderr)
         patcher.start()

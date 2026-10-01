@@ -2,6 +2,7 @@
 revision, and where nixpkgs marks packages broken."""
 
 import json
+import os
 import subprocess
 import sys
 import urllib.error
@@ -17,23 +18,37 @@ def read_lists(path=None):
     "updateChecks": {...}, "ignoredUpdates": {...}}. From a JSON file as is,
     or from the Nix folder (package-lists/) by evaluating it."""
     path = path or config.LISTS
+    if not os.path.exists(path):
+        sys.exit(
+            f"No package lists at {path}. Start some with `nixkeeper init "
+            "--maintainer <your GitHub handle>`, or point --lists (or "
+            "NIXKEEPER_LISTS) at yours."
+        )
     if path.endswith(".json"):
         with open(path) as f:
             return json.load(f)
-    result = subprocess.run(
-        [
-            "nix",
-            "eval",
-            "--extra-experimental-features",
-            "nix-command flakes",
-            "--json",
-            "-f",
-            path,
-        ],
-        capture_output=True,
-        text=True,
-        check=True,
-    )
+    try:
+        result = subprocess.run(
+            [
+                "nix",
+                "eval",
+                "--extra-experimental-features",
+                "nix-command flakes",
+                "--json",
+                "-f",
+                path,
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+    except FileNotFoundError:
+        sys.exit(
+            "nixkeeper needs nix on the PATH to read the package lists (or give "
+            "it a JSON file of them with --lists)."
+        )
+    except subprocess.CalledProcessError as e:
+        sys.exit(f"The package lists at {path} didn't evaluate:\n{e.stderr.strip()}")
     return json.loads(result.stdout)
 
 

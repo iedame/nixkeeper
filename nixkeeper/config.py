@@ -4,18 +4,48 @@ time, so tests can patch them."""
 import os
 import re
 
-# Where things live, and how to notify. The defaults suit running from a
-# checkout (and the GitHub workflows); a service sets these instead. The
-# `nixkeeper` command (cli.py) sets them from its flags, which win over these
-# environment variables.
+# Where things live, and how to notify. The `nixkeeper` command (cli.py) sets
+# these from its flags, which win over these environment variables, which win
+# over the defaults: the user's own folders (XDG), so the installed command
+# works from anywhere. From a checkout, the flake's apps (nix run .#sync)
+# pass --lists package-lists --data-dir data instead.
 #
 # NIXKEEPER_DATA_DIR (--data-dir): the published data (the page's data/), also
-#   where the next run finds the previous one.
+#   where the next run finds the previous one. Default:
+#   ~/.local/state/nixkeeper/data ($XDG_STATE_HOME).
 # NIXKEEPER_LISTS (--lists): the package lists, as the Nix folder
 #   (package-lists/, evaluated with nix) or as a JSON file of what it
-#   evaluates to.
+#   evaluates to. Default: ~/.config/nixkeeper/package-lists, or lists.json
+#   there if that's what exists ($XDG_CONFIG_HOME).
 # NIXKEEPER_NOTIFY (--notify): how to report what changed (notify.py).
-DEFAULTS = {"OUT_DIR": "data", "LISTS": "package-lists", "NOTIFY": "none"}
+
+
+def _xdg(variable, fallback):
+    """An XDG base folder: the variable if it's an absolute path (the spec
+    ignores relative ones), else ~/fallback."""
+    value = os.environ.get(variable, "")
+    return value if os.path.isabs(value) else os.path.expanduser(f"~/{fallback}")
+
+
+CONFIG_DIR = os.path.join(_xdg("XDG_CONFIG_HOME", ".config"), "nixkeeper")
+STATE_DIR = os.path.join(_xdg("XDG_STATE_HOME", ".local/state"), "nixkeeper")
+
+
+def _default_lists():
+    folder = os.path.join(CONFIG_DIR, "package-lists")
+    json_file = os.path.join(CONFIG_DIR, "lists.json")
+    return (
+        json_file
+        if not os.path.exists(folder) and os.path.exists(json_file)
+        else folder
+    )
+
+
+DEFAULTS = {
+    "OUT_DIR": os.path.join(STATE_DIR, "data"),
+    "LISTS": _default_lists(),
+    "NOTIFY": "none",
+}
 OUT_DIR = os.environ.get("NIXKEEPER_DATA_DIR") or DEFAULTS["OUT_DIR"]
 LISTS = os.environ.get("NIXKEEPER_LISTS") or DEFAULTS["LISTS"]
 NOTIFY = None  # set by the command; otherwise NIXKEEPER_NOTIFY, read when used

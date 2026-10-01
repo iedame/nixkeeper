@@ -1,9 +1,11 @@
 """The settings that let nixkeeper run somewhere other than a checkout on
 GitHub: where data and lists live, the token, and how to notify."""
 
+import importlib
 import io
 import json
 import os
+import subprocess
 import tempfile
 import unittest
 from unittest import mock
@@ -42,10 +44,70 @@ class Paths(unittest.TestCase):
         run.assert_not_called()  # no nix needed
 
     def test_lists_from_nix_folder(self):
+        folder = os.path.join(self.dir.name, "package-lists")
+        os.mkdir(folder)
         with mock.patch("subprocess.run") as run:
             run.return_value.stdout = '{"maintainers": []}'
-            nixpkgs_source.read_lists("somewhere/package-lists")
-        self.assertIn("somewhere/package-lists", run.call_args.args[0])
+            nixpkgs_source.read_lists(folder)
+        self.assertIn(folder, run.call_args.args[0])
+
+    def test_missing_lists_say_how_to_start(self):
+        with self.assertRaises(SystemExit) as exit:
+            nixpkgs_source.read_lists(os.path.join(self.dir.name, "nowhere"))
+        self.assertIn("nixkeeper init", str(exit.exception.code))
+
+    def test_lists_that_dont_evaluate(self):
+        error = subprocess.CalledProcessError(1, "nix", stderr="error: syntax error\n")
+        with (
+            mock.patch("subprocess.run", side_effect=error),
+            self.assertRaises(SystemExit) as exit,
+        ):
+            nixpkgs_source.read_lists(self.dir.name)
+        self.assertIn("didn't evaluate", str(exit.exception.code))
+        self.assertIn("syntax error", str(exit.exception.code))
+
+    def test_lists_without_nix(self):
+        with (
+            mock.patch("subprocess.run", side_effect=FileNotFoundError),
+            self.assertRaises(SystemExit) as exit,
+        ):
+            nixpkgs_source.read_lists(self.dir.name)
+        self.assertIn("needs nix", str(exit.exception.code))
+
+
+class Defaults(unittest.TestCase):
+    """The installed command's defaults: the user's own folders (XDG)."""
+
+    def defaults(self, env):
+        with mock.patch.dict(os.environ, env, clear=True):
+            importlib.reload(config)
+        self.addCleanup(importlib.reload, config)
+        return config.DEFAULTS
+
+    def test_xdg_folders(self):
+        with tempfile.TemporaryDirectory() as home:
+            found = self.defaults(
+                {"XDG_CONFIG_HOME": f"{home}/c", "XDG_STATE_HOME": f"{home}/s"}
+            )
+        self.assertEqual(found["LISTS"], f"{home}/c/nixkeeper/package-lists")
+        self.assertEqual(found["OUT_DIR"], f"{home}/s/nixkeeper/data")
+
+    def test_home_without_xdg_variables(self):
+        found = self.defaults({"HOME": "/home/someone", "XDG_CONFIG_HOME": "relative"})
+        self.assertEqual(
+            found["LISTS"], "/home/someone/.config/nixkeeper/package-lists"
+        )
+        self.assertEqual(found["OUT_DIR"], "/home/someone/.local/state/nixkeeper/data")
+
+    def test_lists_json_when_theres_no_folder(self):
+        with tempfile.TemporaryDirectory() as home:
+            os.makedirs(f"{home}/nixkeeper")
+            open(f"{home}/nixkeeper/lists.json", "w").close()
+            found = self.defaults({"XDG_CONFIG_HOME": home})
+            self.assertEqual(found["LISTS"], f"{home}/nixkeeper/lists.json")
+            os.makedirs(f"{home}/nixkeeper/package-lists")
+            found = self.defaults({"XDG_CONFIG_HOME": home})
+            self.assertEqual(found["LISTS"], f"{home}/nixkeeper/package-lists")
 
 
 class Token(unittest.TestCase):

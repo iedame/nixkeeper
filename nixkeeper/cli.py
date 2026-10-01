@@ -3,10 +3,12 @@ checks, with the settings as flags.
 
     nixkeeper sync | frequent-check | pr-check | paths [--lists PATH]
               [--data-dir DIR] [--notify METHOD]
+    nixkeeper init [--maintainer HANDLE ...] [--lists PATH]
     nixkeeper --version
 
 Each flag wins over its environment variable (NIXKEEPER_LISTS,
-NIXKEEPER_DATA_DIR, NIXKEEPER_NOTIFY), which wins over the default. The old
+NIXKEEPER_DATA_DIR, NIXKEEPER_NOTIFY), which wins over the default: the
+user's own folders (config.py). The old
 commands (nixkeeper-sync, nixkeeper-frequent-check, nixkeeper-pr-check) still
 work until 1.0, as aliases."""
 
@@ -16,7 +18,7 @@ import os
 import sys
 from importlib import metadata
 
-from . import config, notify
+from . import config, init, notify
 
 # name: (what it does, the module whose main() runs it)
 COMMANDS = {
@@ -95,6 +97,20 @@ def parser():
         description="Where the lists and data are, and which setting says so.",
         parents=[common],
     )
+    init = sub.add_parser(
+        "init",
+        help="start your package lists (where --lists says, else the default)",
+        description="Start your package lists: a folder of Nix files to edit, "
+        "where --lists (or NIXKEEPER_LISTS) says, else the default.",
+        parents=[common],
+    )
+    init.add_argument(
+        "--maintainer",
+        metavar="HANDLE",
+        action="append",
+        default=[],
+        help="a GitHub handle whose nixpkgs packages to track (repeatable)",
+    )
     return p
 
 
@@ -133,6 +149,17 @@ def main(argv=None):
         setattr(config, name, found[flag][0])
     if args.command == "paths":
         paths(found)
+        return
+    if args.command == "init":
+        folder = os.path.abspath(found["lists"][0])
+        init.write(folder, args.maintainer)
+        print(f"Wrote your package lists to {folder}.")
+        if not args.maintainer:
+            print("Add your GitHub handle to maintainers in default.nix.")
+        print(
+            "Next: `nixkeeper sync` writes the data to "
+            f"{os.path.abspath(found['data_dir'][0])}."
+        )
         return
     importlib.import_module(COMMANDS[args.command][1]).main()
 

@@ -93,12 +93,18 @@
           biome
         ];
 
-        # `nix run .#<command>`: `nixkeeper <command>`, from the checkout.
+        # `nix run .#<command>`: `nixkeeper <command>` on the checkout's
+        # package-lists/ and data/ (the installed command's defaults are the
+        # user's own folders). NIXKEEPER_LISTS / NIXKEEPER_DATA_DIR, or flags
+        # after `--`, still choose others.
         command = name: description: {
           type = "app";
           program = lib.getExe (
             pkgs.writeShellScriptBin "nixkeeper-${name}" ''
-              exec ${lib.getExe nixkeeper} ${name} "$@"
+              checkout=()
+              [ -n "''${NIXKEEPER_LISTS:-}" ] || checkout+=(--lists package-lists)
+              [ -n "''${NIXKEEPER_DATA_DIR:-}" ] || checkout+=(--data-dir data)
+              exec ${lib.getExe nixkeeper} ${name} "''${checkout[@]}" "$@"
             ''
           );
           meta = { inherit description; };
@@ -178,7 +184,13 @@
             ;
           fetch = sync; # old name, kept as an alias
           quick-check = frequent-check; # old name, kept as an alias
-          default = sync;
+          # `nix run github:iedame/nixkeeper -- <command>`: the command as
+          # installed, on your own folders.
+          default = {
+            type = "app";
+            program = lib.getExe nixkeeper;
+            meta.description = "The nixkeeper command (sync, init, paths, ...), on your own folders";
+          };
         };
 
         formatter = treefmt.config.build.wrapper;
@@ -206,6 +218,8 @@
             touch $out
           '';
           package-lists = listsChecker.check (import ./package-lists);
+          # nixkeeper init's starter lists: valid, and what the sync can read.
+          init-template = listsChecker.check (import ./nixkeeper/templates/package-lists);
           # The checker itself, against lists with known problems.
           package-lists-checker =
             let

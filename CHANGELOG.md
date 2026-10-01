@@ -19,6 +19,20 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   other apps run the new command; the old names (`nixkeeper-sync`,
   `nixkeeper-frequent-check`, `nixkeeper-pr-check`) still work until 1.0,
   with a hint.
+- `nixkeeper init --maintainer <handle>` starts your package lists: a folder
+  of Nix files with your handle and commented examples, to edit.
+
+### Changed
+
+- The `nixkeeper` command works from anywhere: by default it keeps the lists
+  in `~/.config/nixkeeper/package-lists/` (or `lists.json` there) and the
+  data in `~/.local/state/nixkeeper/data/`, following the XDG variables.
+  `nix run .#sync` and the other apps still use the checkout's
+  `package-lists/` and `data/`, so the workflows and local runs from a
+  checkout are unchanged; `nix run .` (and `nix run github:iedame/nixkeeper`)
+  is now the command itself, on your own folders, rather than a sync.
+- Missing package lists, lists that don't evaluate, and a missing `nix` stop
+  the sync with a message saying what to do, not a traceback.
 - Tests for the page: its rules (statuses, version order, "on master",
   ages, safe links, the tab icon's signals) moved into `docs/logic.js`, which
   `tests/js/` tests with Node's test runner as part of `nix flake check`. The
