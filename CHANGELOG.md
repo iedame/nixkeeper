@@ -9,6 +9,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- Tests for the page: its rules (statuses, version order, "on master",
+  ages, safe links, the tab icon's signals) moved into `docs/logic.js`, which
+  `tests/js/` tests with Node's test runner as part of `nix flake check`. The
+  lint check now also catches undeclared variables in the page's code.
+
 ## [0.6.0] - 2026-10-01
 
 nixkeeper's own visual identity: a mark, a wordmark and colours, on the page,

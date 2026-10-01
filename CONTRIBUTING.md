@@ -9,13 +9,16 @@ happen. For what nixkeeper does and how to set up your own, see the
 - `nixkeeper/`: the sync and the hourly checks, as a Python package (see
   [The code](#the-code))
 - `tests/`: offline tests, one file per module (nothing reaches the
-  network: sources are faked)
+  network: sources are faked). `tests/js/` tests the page's rules
+  (`docs/logic.js`) with Node's own test runner
 - `nix/package-lists.nix`: `nix flake check` validates the package lists
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates, malformed update checks and ignore rules)
 - `package-lists/`: what this instance tracks (see the README)
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/`
-  from the `data` branch. `favicon*.svg` (the mark, and the live status
+  from the `data` branch. `logic.js` holds its rules (statuses, versions,
+  ages, safe links, the tab icon's signals) without the page, so they can be
+  tested; `app.js` imports it and draws the page. `favicon*.svg` (the mark, and the live status
   icons the page switches between), `nixkeeper-lockup-tight*.svg` (the
   header) and `tokens.css` are copies from
   `assets/brand/`, written by `nix run .#brand`
@@ -81,6 +84,7 @@ nix run .#pr-check        # outdated packages' update PRs, against data/ (hourly
 nix fmt                   # format everything (Nix, Python, the page)
 nix flake check           # tests, formatting, linters, package-list checks
 nix develop -c python3 -m unittest discover -s tests -t .   # tests, quickly
+nix develop -c node --test 'tests/js/*.test.mjs'            # the page's tests
 nix eval --json -f package-lists                             # what the lists evaluate to
 nix run .#screenshots -- --browser google-chrome   # retake the screenshots in assets/screenshots/
 nix run .#brand           # regenerate assets/brand/ and the page's favicon
