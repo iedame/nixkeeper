@@ -119,6 +119,20 @@ def main(folder):
     defs, body = mark("gradient", 0, -(S - MH) / 2, ids="fav")
     write(folder, "favicon", svg(S, MH, body, defs))
 
+    # The page's live status favicons, cropped tight like the favicon: one per
+    # combination of active signals, each turning its own chevron (r: a new
+    # release, f: a failure, v: a vulnerability), and "ok" when none is.
+    for key in ("ok", "r", "f", "v", "rf", "rv", "fv", "rfv"):
+        spec = [BRAND, BRAND, BRAND]
+        if key == "ok":
+            spec[0] = accent(STATUSES["ok"][0])
+        for letter, status in (("r", "release"), ("f", "failure"), ("v", "vuln")):
+            if letter in key:
+                hue, chevron = STATUSES[status]
+                spec[chevron] = accent(hue)
+        defs, body = mark(spec, 0, -(S - MH) / 2, ids=f"fav-{key}")
+        write(folder, f"favicon-{key}", svg(S, MH, body, defs))
+
     # The lockups: the wordmark's cap height is half the mark's height, and the
     # gap between them is 3/8 of the cap height.
     name = "nixkeeper"

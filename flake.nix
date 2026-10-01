@@ -125,7 +125,7 @@
                 python3 scripts/brand/generate.py assets/brand
                 python3 scripts/brand/tokens.py assets/brand
                 python3 scripts/brand/identity.py assets/brand
-                cp assets/brand/favicon.svg docs/favicon.svg
+                cp assets/brand/favicon*.svg docs/
                 cp assets/brand/tokens.css docs/tokens.css
               '';
             }
