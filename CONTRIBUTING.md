@@ -47,7 +47,8 @@ happen. For what nixkeeper does and how to set up your own, see the
     copy of the favicon is `page/favicon.svg`, since only `page/` is
     published.
   - `screenshots/`: the page, for the README (light and dark, desktop and
-    phone) and the repository's social preview, taken by
+    phone, in the Classic and Catppuccin palettes) and the repository's
+    social preview, taken by
     `scripts/screenshots.sh` (see [Screenshots](#screenshots))
 - `.github/workflows/`:
   - `ci.yml`, **CI: tests and lint**: checks nixkeeper's own code on every
@@ -157,12 +158,14 @@ the published data, taken in a headless browser:
 nix run .#screenshots -- --browser google-chrome
 ```
 
-That writes all five, compressed: `desktop-{dark,light}.png` (1280px wide,
-at 2x, with a panel open), `mobile-{dark,light}.png` (390px, at 2x) and
-`social-preview.png` (a 1280×640 card at 2x: the lockup, what nixkeeper
-watches, and the dark desktop shot; its layout is
-`scripts/social-preview.html`). The social preview is then uploaded by hand:
-Settings → General → Social preview.
+That writes ten, compressed, five in each of the page's palettes:
+`desktop-{dark,light}.png` (1280px wide, at 2x, with a panel open),
+`mobile-{dark,light}.png` (390px, at 2x) and `social-preview.png` (a
+1280×640 card at 2x: the lockup, what nixkeeper watches, and the dark
+desktop shot; its layout is `scripts/social-preview.html`). Those are
+Classic; Catppuccin's (Latte when light, Mocha when dark) end in
+`-catppuccin`, e.g. `desktop-dark-catppuccin.png`. The social preview is
+then uploaded by hand: Settings → General → Social preview.
 
 | Option | What it sets |
 |---|---|

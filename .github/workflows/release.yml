@@ -1,9 +1,10 @@
 name: "Release: publish from tag"
 
 # Publishes a GitHub Release when a version tag (v0.4.0) is pushed, with that
-# version's CHANGELOG.md section as its notes. First checks that the tag
-# matches pyproject.toml's version and has a changelog section, and that the
-# flake checks pass on the tagged commit: otherwise nothing is published.
+# version's CHANGELOG.md section as its notes, under nixkeeper's card (the
+# social preview, as it is at the tag). First checks that the tag matches
+# pyproject.toml's version and has a changelog section, and that the flake
+# checks pass on the tagged commit: otherwise nothing is published.
 
 on:
   push:
@@ -54,4 +55,14 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_name }}
-        run: gh release create "$TAG" --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/notes.md"
+          REPO: ${{ github.repository }}
+        run: |
+          # The card first, from this repository at the tag (so an old
+          # release keeps its own); then the changelog section.
+          card="https://raw.githubusercontent.com/$REPO/$TAG/assets/screenshots/social-preview.png"
+          {
+            echo "![nixkeeper: new releases, build and update failures, and vulnerabilities of your nixpkgs packages]($card)"
+            echo
+            cat "$RUNNER_TEMP/notes.md"
+          } > "$RUNNER_TEMP/release.md"
+          gh release create "$TAG" --verify-tag --title "$TAG" --notes-file "$RUNNER_TEMP/release.md"
