@@ -9,6 +9,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.8.0] - 2026-10-01
+
+nixkeeper as a service: modules for NixOS and nix-darwin that run the sync
+and the frequent checks on their own, catch up after the machine was off,
+and serve the page. Also: master's newer version counts as "on master" by
+itself, and every sync checks the package lists for mistakes.
+
 ### Added
 
 - A NixOS module (`nixosModules.default`, `services.nixkeeper`): the sync
@@ -432,7 +439,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.7.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.8.0...HEAD
+[0.8.0]: https://github.com/iedame/nixkeeper/compare/v0.7.0...v0.8.0
 [0.7.0]: https://github.com/iedame/nixkeeper/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/iedame/nixkeeper/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/iedame/nixkeeper/compare/v0.4.0...v0.5.0
