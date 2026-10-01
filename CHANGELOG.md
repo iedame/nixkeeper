@@ -14,9 +14,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - The lockups carry the wordmark as outlines, in Oxanium Bold (lowercase
   "nixkeeper"), so they look the same everywhere without the font, on
   transparent backgrounds for light and dark. The README's title and the
-  page's header are now the lockup. `nix run .#brand` fetches the font (one pinned file) and outlines
-  it with HarfBuzz. The pages the wordmark was chosen from are kept in
-  `assets/brand/explorations/`.
+  page's header are now the lockup. `nix run .#brand` fetches the font (one
+  pinned file) and outlines it with HarfBuzz. The pages the wordmark was
+  chosen from are kept in `assets/brand/explorations/`.
+- The social preview is a card: the lockup, what nixkeeper watches, and the
+  page (`scripts/social-preview.html`, rendered by `nix run .#screenshots`).
 - The page's tab icon shows what needs attention: the mark's chevrons light
   up for a new release (orange), a failure or a vulnerability (pink), and the
   releases chevron turns green when all is well. It follows the list filter,
