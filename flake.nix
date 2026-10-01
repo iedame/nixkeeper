@@ -193,7 +193,8 @@
         checks = {
           inherit nixkeeper; # building it runs the tests
           # The darwin module, evaluated in a whole nix-darwin configuration
-          # (on any system, as module-eval below): the agents' launchd plists.
+          # (on any system, as module-eval below): the agents' launchd plists and
+          # the shell environment.
           darwin-module-eval =
             let
               darwin = nix-darwin.lib.darwinSystem {
@@ -212,12 +213,19 @@
                   }
                 ];
               };
-              plists = lib.mapAttrs (_: agent: agent.serviceConfig) (
+              agents = lib.mapAttrs (_: agent: agent.serviceConfig) (
                 lib.filterAttrs (name: _: lib.hasPrefix "nixkeeper-" name) darwin.config.launchd.user.agents
               );
+              # What shells get, so commands typed by hand use the same lists.
+              shell = lib.filterAttrs (
+                name: _: lib.hasPrefix "NIXKEEPER_" name
+              ) darwin.config.environment.variables;
             in
+            assert shell ? NIXKEEPER_LISTS;
             pkgs.writeText "nixkeeper-darwin-module-eval" (
-              builtins.unsafeDiscardStringContext (builtins.seq darwin.system.drvPath (builtins.toJSON plists))
+              builtins.unsafeDiscardStringContext (
+                builtins.seq darwin.system.drvPath (builtins.toJSON { inherit agents shell; })
+              )
             );
           # The NixOS module, evaluated in a whole NixOS configuration (on any
           # system: nothing is built, so this runs on macOS too).

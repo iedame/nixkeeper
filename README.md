@@ -355,7 +355,12 @@ does), `notify`, `githubRepo` and `pageUrl` as the NixOS module, and:
 | `dataDir` | `~/.local/state/nixkeeper/data` | where the data goes |
 
 The jobs' output is in `~/Library/Logs/nixkeeper/` (Console.app shows it).
-The module also installs the `nixkeeper` command.
+The module also installs the `nixkeeper` command, and when `lists`,
+`listsPath` or `dataDir` is set, exports them to your shell
+(`NIXKEEPER_LISTS`, `NIXKEEPER_DATA_DIR`, through nix-darwin's
+`environment.variables`), so commands you type use the same lists and data
+as the jobs. Shells nix-darwin sets up (zsh, bash, fish) get them; others,
+like Nushell, need them passed on.
 
 The page finds its data by itself when `data/` is served next to it. Otherwise
 it reads the repository's `data` branch on a GitHub Pages site, or wherever

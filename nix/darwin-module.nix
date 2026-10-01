@@ -118,6 +118,14 @@ in
 
     environment.systemPackages = [ cfg.package ];
 
+    # The same lists (and data) for commands typed in a shell as for the jobs,
+    # so `nixkeeper sync` or `nixkeeper paths` by hand agree with them.
+    environment.variables =
+      lib.optionalAttrs (common.listsFile cfg != null) {
+        NIXKEEPER_LISTS = toString (common.listsFile cfg);
+      }
+      // lib.optionalAttrs (cfg.dataDir != null) { NIXKEEPER_DATA_DIR = cfg.dataDir; };
+
     launchd.user.agents = {
       nixkeeper-sync = lib.recursiveUpdate (agent "sync" (run "sync")) {
         serviceConfig.StartCalendarInterval = [ cfg.syncAt ];
