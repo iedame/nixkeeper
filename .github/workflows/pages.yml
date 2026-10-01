@@ -1,6 +1,6 @@
 name: "Pages: publish the page"
 
-# Publishes the page (docs/) to GitHub Pages whenever it changes on main.
+# Publishes the page (page/) to GitHub Pages whenever it changes on main.
 # Needs Settings → Pages → Source: "GitHub Actions". main only changes
 # through pull requests that passed CI, so what's published has been checked.
 # The data isn't part of it: the page reads that from the data branch.
@@ -9,7 +9,7 @@ on:
   push:
     branches: [main]
     paths:
-      - 'docs/**'
+      - 'page/**'
       - '.github/workflows/pages.yml'
   workflow_dispatch: {}  # to publish by hand, e.g. right after switching the source
 
@@ -40,7 +40,7 @@ jobs:
       - name: Package the page
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: docs
+          path: page
 
       - name: Publish it
         id: deploy

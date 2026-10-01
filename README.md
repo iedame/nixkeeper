@@ -19,7 +19,7 @@ and update failures, and vulnerabilities, in one place.
   </picture>
 </p>
 
-For each package it tracks, nixkeeper shows on one static page (`docs/`):
+For each package it tracks, nixkeeper shows on one static page (`page/`):
 
 - **New releases**: whether nixpkgs unstable is behind, per
   [Repology](https://repology.org) and nixkeeper's own update checks (a
@@ -79,7 +79,7 @@ page that shows it.
   when something changed. GitHub runs scheduled workflows on a best-effort
   basis, so "hourly" can stretch to a few hours when Actions is busy; the
   daily sync still covers everything.
-- **The page** (`docs/`, published to GitHub Pages by a workflow) is plain
+- **The page** (`page/`, published to GitHub Pages by a workflow) is plain
   HTML and JavaScript that reads the JSON in your browser.
 
 When a source can't be reached, the row keeps its last known result, marked
@@ -252,7 +252,7 @@ before.
 
 The page finds its data by itself when `data/` is served next to it. Otherwise
 it reads the repository's `data` branch on a GitHub Pages site, or wherever
-`<meta name="nixkeeper-data" content="…">` in `docs/index.html` points.
+`<meta name="nixkeeper-data" content="…">` in `page/index.html` points.
 `?data=<url>` (same site only) overrides it for testing.
 
 ## The data

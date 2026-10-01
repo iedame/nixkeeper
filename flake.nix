@@ -36,7 +36,7 @@
               ./pyproject.toml
               ./nixkeeper
               ./tests
-              ./docs # the page, shipped with the package
+              ./page # the page, shipped with the package
             ];
           };
           build-system = [ py.setuptools ];
@@ -44,7 +44,7 @@
           # The page goes in the Python package (nixkeeper page, nixkeeper
           # serve find it there), and in share/ for anything else that wants it.
           preBuild = ''
-            cp -r docs nixkeeper/page
+            cp -r page nixkeeper/page
           '';
           postInstall = ''
             mkdir -p $out/share/nixkeeper
@@ -91,8 +91,8 @@
             };
           };
           settings.formatter.biome.includes = [
-            "docs/*.js"
-            "docs/*.css"
+            "page/*.js"
+            "page/*.css"
             "tests/js/*.mjs"
           ];
         };
@@ -137,7 +137,7 @@
         # Regenerates the brand assets in assets/brand/ (scripts/brand/): the
         # mark's SVGs, the lockups with the wordmark outlined, the colour
         # tokens, the identity sheet, and the page's copies of the favicons,
-        # the header's lockups and the tokens (GitHub Pages only serves docs/).
+        # the header's lockups and the tokens (only page/ is published).
         brand = {
           type = "app";
           program = lib.getExe (
@@ -152,9 +152,9 @@
                 python3 scripts/brand/generate.py assets/brand ${oxanium}
                 python3 scripts/brand/tokens.py assets/brand
                 python3 scripts/brand/identity.py assets/brand
-                cp assets/brand/favicon*.svg docs/
-                cp assets/brand/nixkeeper-lockup-tight*.svg docs/
-                cp assets/brand/tokens.css docs/tokens.css
+                cp assets/brand/favicon*.svg page/
+                cp assets/brand/nixkeeper-lockup-tight*.svg page/
+                cp assets/brand/tokens.css page/tokens.css
               '';
             }
           );
@@ -221,10 +221,10 @@
             # flake source (CI's view of the repo) doesn't include.
             actionlint .github/workflows/*.yml
             shellcheck scripts/*.sh
-            biome lint docs tests/js
+            biome lint page tests/js
             touch $out
           '';
-          # The page's rules (docs/logic.js), with Node's own test runner.
+          # The page's rules (page/logic.js), with Node's own test runner.
           page = pkgs.runCommand "nixkeeper-page-tests" { nativeBuildInputs = [ pkgs.nodejs-slim ]; } ''
             cd ${self}
             node --test 'tests/js/*.test.mjs'

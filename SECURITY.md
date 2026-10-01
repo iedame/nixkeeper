@@ -19,7 +19,7 @@ Say what's affected and how to reproduce it, if you can.
   validation (`nix/`)
 - its GitHub Actions workflows: for example, anything that could misuse their
   token or write to the `data` branch unintentionally
-- the page (`docs/`): for example, script injection through the data it shows
+- the page (`page/`): for example, script injection through the data it shows
 
 ## What's not
 
