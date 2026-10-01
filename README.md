@@ -397,6 +397,27 @@ tail -f ~/Library/Logs/nixkeeper/sync.log
 `launchctl list | grep nixkeeper` shows the jobs: the first column is a
 running job's process, the second the last exit status (0: fine).
 
+### Pinning a version
+
+A flake input stays on the commit in your `flake.lock`: rebuilding never
+changes it, only `nix flake update` does. With the URLs above, that update
+takes whatever is on `main` then. Every change there has passed CI (the
+tests, both modules evaluated, the NixOS module booted in a VM), but to move
+only from release to release, name a version tag:
+
+```nix
+inputs.nixkeeper.url = "github:iedame/nixkeeper/v0.8.0";
+```
+
+`nix flake update` then leaves it alone; you upgrade by changing the tag,
+after reading that release's notes in [CHANGELOG.md](CHANGELOG.md). Version
+tags never move, so a tag always means the same code. The same works for
+`nix profile install github:iedame/nixkeeper/v0.8.0`.
+
+With `inputs.nixkeeper.inputs.nixpkgs.follows = "nixpkgs";` (one nixpkgs in
+your lock), nixkeeper builds against your nixpkgs rather than the one its CI
+tested with; leave it out to build against nixkeeper's own.
+
 The page finds its data by itself when `data/` is served next to it. Otherwise
 it reads the repository's `data` branch on a GitHub Pages site, or wherever
 `<meta name="nixkeeper-data" content="…">` in `page/index.html` points.
