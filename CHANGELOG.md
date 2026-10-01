@@ -9,12 +9,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.7.0] - 2026-10-01
+
+nixkeeper as a program you can install and run yourself: one `nixkeeper`
+command that works from anywhere, `nixkeeper init` to start your lists, and
+the page shipped with it (`nixkeeper serve`, `nixkeeper page`). Forks: set
+Settings → Pages → Source to "GitHub Actions" after updating (see Changed).
+
 ### Added
 
-- A workflow publishes the page to GitHub Pages ("Pages: publish the page")
-  whenever it changes on `main`, instead of Pages deploying the `/docs`
-  folder from the branch itself. Forks set Settings → Pages → Source to
-  "GitHub Actions" (see the README's setup steps).
 - One `nixkeeper` command, with a subcommand for each job: `nixkeeper sync`,
   `nixkeeper frequent-check` and `nixkeeper pr-check`, plus `nixkeeper paths`
   (where the lists and data are, and which setting says so) and
@@ -25,19 +28,21 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   with a hint.
 - `nixkeeper init --maintainer <handle>` starts your package lists: a folder
   of Nix files with your handle and commented examples, to edit.
-- `nix/package.nix`: nixkeeper's package in nixpkgs' style (the same file,
-  with a release as its source, can later go to nixpkgs), with a version
-  check and the package's metadata. `nix profile install github:iedame/nixkeeper`
-  installs it.
 - The page ships with nixkeeper (also as `share/nixkeeper/www/` in the
   package). `nixkeeper serve` shows it on this computer with the data as it
   is; `nixkeeper page <dir>` writes it with a copy of the data into a folder
   for any static host.
+- `nix/package.nix`: nixkeeper's package in nixpkgs' style (the same file,
+  with a release as its source, can later go to nixpkgs), with a version
+  check and the package's metadata. It installs with
+  `nix profile install github:iedame/nixkeeper`.
+- Tests for the page: its rules (statuses, version order, "on master",
+  ages, safe links, the tab icon's signals) moved into `page/logic.js`, which
+  `tests/js/` tests with Node's test runner as part of `nix flake check`. The
+  lint check now also catches undeclared variables in the page's code.
 
 ### Changed
 
-- The page's folder is `page/` instead of `docs/`: it's the page, not
-  documentation, and the workflow that publishes it can take any folder.
 - The `nixkeeper` command works from anywhere: by default it keeps the lists
   in `~/.config/nixkeeper/package-lists/` (or `lists.json` there) and the
   data in `~/.local/state/nixkeeper/data/`, following the XDG variables.
@@ -45,12 +50,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   `package-lists/` and `data/`, so the workflows and local runs from a
   checkout are unchanged; `nix run .` (and `nix run github:iedame/nixkeeper`)
   is now the command itself, on your own folders, rather than a sync.
+- A workflow publishes the page to GitHub Pages ("Pages: publish the page")
+  whenever it changes on `main`, instead of Pages deploying a folder from
+  the branch. Forks set Settings → Pages → Source to "GitHub Actions", then
+  run the workflow once (see the README's setup steps).
+- The page's folder is `page/` instead of `docs/`: it's the page, not
+  documentation, and the workflow that publishes it can take any folder.
 - Missing package lists, lists that don't evaluate, and a missing `nix` stop
   the sync with a message saying what to do, not a traceback.
-- Tests for the page: its rules (statuses, version order, "on master",
-  ages, safe links, the tab icon's signals) moved into `page/logic.js`, which
-  `tests/js/` tests with Node's test runner as part of `nix flake check`. The
-  lint check now also catches undeclared variables in the page's code.
 
 ## [0.6.0] - 2026-10-01
 
@@ -386,7 +393,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.6.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.7.0...HEAD
+[0.7.0]: https://github.com/iedame/nixkeeper/compare/v0.6.0...v0.7.0
 [0.6.0]: https://github.com/iedame/nixkeeper/compare/v0.5.0...v0.6.0
 [0.5.0]: https://github.com/iedame/nixkeeper/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/iedame/nixkeeper/compare/v0.3.0...v0.4.0
