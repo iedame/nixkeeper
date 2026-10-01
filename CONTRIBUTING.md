@@ -189,7 +189,8 @@ palette reaches the page through `nix run .#brand`.
 1. In a PR titled `chore: release x.y.z`: set the new `version` in
    `pyproject.toml` (the flake reads it from there), and turn
    `## [Unreleased]` in `CHANGELOG.md` into `## [x.y.z] - date` (with a fresh
-   `## [Unreleased]` above it, and its compare link below).
+   `## [Unreleased]` above it, and its compare link below), and move the
+   README's pinning example ("Pinning a version") to the new tag.
 2. Once merged, tag the merge commit on `main` and push the tag:
    `git switch main && git pull`, `git tag vx.y.z`, `git push origin vx.y.z`.
 

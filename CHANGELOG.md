@@ -44,6 +44,8 @@ itself, and every sync checks the package lists for mistakes.
   the data (`listProblems`), and the page shows them above the table, so
   lists set in a NixOS or nix-darwin configuration, or by `nixkeeper init`,
   get the same safety net as the repository's `nix flake check`.
+- The README says how to pin nixkeeper to a release, a version tag in the
+  flake input's URL, instead of following `main`.
 
 ### Changed
 
