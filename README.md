@@ -24,7 +24,7 @@ For each package it tracks, nixkeeper shows on one static page (`docs/`):
 - **New releases**: whether nixpkgs unstable is behind, per
   [Repology](https://repology.org) and nixkeeper's own update checks (a
   project's tags or release page, or for unstable versions its branch;
-  hourly for the ones marked frequent)
+  about hourly for the ones marked frequent)
 - **Build failures**: [Hydra](https://hydra.nixos.org)'s latest builds on
   x86_64-linux, aarch64-linux and aarch64-darwin, and where nixpkgs marks it
   broken
@@ -76,7 +76,9 @@ page that shows it.
 - **The hourly checks** ("Data: hourly updates") refresh a few rows of the
   last published data: the update checks marked `frequent` (browsers, for
   their security fixes) and outdated packages' update PRs. They commit only
-  when something changed.
+  when something changed. GitHub runs scheduled workflows on a best-effort
+  basis, so "hourly" can stretch to a few hours when Actions is busy; the
+  daily sync still covers everything.
 - **The page** (`docs/`, served by GitHub Pages) is plain HTML and
   JavaScript that reads the JSON in your browser.
 

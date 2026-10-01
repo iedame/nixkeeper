@@ -35,7 +35,9 @@ happen. For what nixkeeper does and how to set up your own, see the
     push and PR
   - `data-daily.yml`, **Data: daily sync**: updates all package data
   - `data-hourly.yml`, **Data: hourly updates (frequent packages, update PRs)**:
-    the frequent update checks and outdated packages' update PRs
+    the frequent update checks and outdated packages' update PRs. Scheduled
+    hourly, but GitHub may delay or skip scheduled runs under load, so gaps of
+    a few hours between runs are normal
   - `release.yml`, **Release: publish from tag**: a GitHub Release for each
     version tag (see [Releasing](#releasing))
 

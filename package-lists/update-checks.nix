@@ -25,9 +25,10 @@
 # version. The highest version found counts; if it's newer than nixpkgs', the
 # package shows as outdated (for a branch, once outdatedAfter says so).
 #
-# Any kind can add `frequent = true;` to be checked every hour, not just in
+# Any kind can add `frequent = true;` to be checked about hourly, not just in
 # the daily sync (.github/workflows/data-hourly.yml): for packages whose new
-# releases matter within the hour, like browsers' security fixes.
+# releases matter within hours, like browsers' security fixes. (GitHub may
+# delay or skip scheduled runs, so expect gaps of a few hours at times.)
 {
   wesnoth-devel = {
     github = "wesnoth/wesnoth";

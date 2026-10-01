@@ -11,7 +11,10 @@ name: "Data: hourly updates (frequent packages, update PRs)"
 
 on:
   schedule:
-    - cron: '23 * * * *'   # hourly; off the hour, when GitHub's scheduler is busiest
+    # Hourly, at :23 to stay clear of the top of the hour, when GitHub's
+    # scheduler is busiest. Scheduled runs are best-effort: under load GitHub
+    # delays or skips them, so gaps of a few hours happen.
+    - cron: '23 * * * *'
   workflow_dispatch: {}
 
 # The daily sync pushes to the data branch too: never at the same time. (Only
