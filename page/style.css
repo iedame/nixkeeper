@@ -207,6 +207,24 @@ a:focus-visible {
   color: var(--danger);
 }
 
+/* Mistakes in the package lists (a maintainer handle no package lists, ...). */
+.list-problems {
+  font-size: 13px;
+  color: var(--ink-soft);
+  background: var(--danger-soft);
+  border-left: 3px solid var(--danger-dot);
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin: 0 0 14px;
+}
+.list-problems ul {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
+.list-problems li {
+  color: var(--ink);
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

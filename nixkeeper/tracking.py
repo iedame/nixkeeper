@@ -1,8 +1,6 @@
 """Which packages to track, from the package lists and the nixpkgs index, and
 which list each is on."""
 
-import sys
-
 # The list of packages tracked through meta.maintainers; the other lists are
 # named in package-lists/default.nix.
 MAINTAINED = "maintained"
@@ -57,12 +55,8 @@ def tracked_packages(lists, nixpkgs):
     entries = {e for es in extra_lists(lists).values() for e in es}
     for name in sorted(entries):
         attrs = extra_attrs(name, nixpkgs, pnames)
-        if not attrs:
-            print(
-                f"  {name} is neither a nixpkgs attribute nor a top-level pname "
-                "(aliases like python3Packages need their versioned name)",
-                file=sys.stderr,
-            )
+        # Not in nixpkgs: tracked anyway, as a "not in nixpkgs" row, and
+        # reported with the lists (listcheck.py).
         wanted.setdefault(name, (attrs, name))
     return wanted
 

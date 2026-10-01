@@ -30,6 +30,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   second run waits for the first, saying so.
 - `nixkeeper sync --if-older HOURS`: only sync when there's no data yet or
   the last sync is older than that.
+- Every sync checks the package lists for mistakes that would otherwise go
+  unnoticed: a maintainer handle no nixpkgs package lists (a typo would track
+  nothing), an extra package nixpkgs doesn't have, and an update check or
+  ignore rule for a package that isn't tracked. They're in the sync's log and
+  the data (`listProblems`), and the page shows them above the table, so
+  lists set in a NixOS or nix-darwin configuration, or by `nixkeeper init`,
+  get the same safety net as the repository's `nix flake check`.
 
 ### Changed
 

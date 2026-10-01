@@ -188,6 +188,18 @@ function writeViewToUrl() {
   history.replaceState(null, '', location.pathname + (query ? `?${query}` : '') + location.hash);
 }
 
+// Mistakes the sync found in the package lists (nixkeeper/listcheck.py): a
+// maintainer handle no package lists tracks nothing, so it's said up front.
+function showListProblems(problems) {
+  const el = document.getElementById('listProblems');
+  if (!el) return;
+  el.hidden = problems.length === 0;
+  el.innerHTML = problems.length
+    ? `⚠ ${problems.length === 1 ? 'A problem' : `${problems.length} problems`} in the package lists, found by the last sync:
+      <ul>${problems.map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ul>`
+    : '';
+}
+
 async function loadIndex() {
   const content = document.getElementById('content');
   dataBase = dataBase || (await findDataBase());
@@ -206,6 +218,7 @@ async function loadIndex() {
     const data = await res.json();
     packages = data.packages || [];
     checkedAt = data.checkedAt || null;
+    showListProblems(data.listProblems || []);
     document.getElementById('search').disabled = false;
     render(currentFiltered());
   } catch {

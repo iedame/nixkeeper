@@ -64,6 +64,7 @@ the subcommand's module. `nixkeeper/sync.py` runs one sync, top to bottom:
 |---|---|
 | read the package lists, the channel's package index and its revision | `sources/nixpkgs.py` |
 | work out which packages to track, and which lists each is on | `tracking.py` |
+| check the lists for mistakes (a handle no package lists, ...) | `listcheck.py` |
 | load the previous run's data, for lookups that fail | `history.py` |
 | look each one up on Repology (falling back to the last run) | `lookup.py`, `sources/repology.py` |
 | turn Repology's projects into the page's rows, and link nixpkgs' source | `rows.py` |
