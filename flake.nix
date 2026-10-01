@@ -108,7 +108,30 @@
           program = lib.getExe' nixkeeper "nixkeeper-pr-check";
           meta.description = "Look for outdated packages' update PRs, open and merged, against data/";
         };
-        # Retakes the page's screenshots in assets/ (scripts/screenshots.sh),
+        # Regenerates the brand assets in assets/brand/ (scripts/brand/): the
+        # mark's SVGs, the colour tokens, the identity sheet, and the page's
+        # copy of the favicon (GitHub Pages only serves docs/).
+        brand = {
+          type = "app";
+          program = lib.getExe (
+            pkgs.writeShellApplication {
+              name = "nixkeeper-brand";
+              runtimeInputs = [ pkgs.python3 ];
+              text = ''
+                [ -f flake.nix ] && [ -d assets/brand ] || {
+                  echo "Run this from the repository's root." >&2
+                  exit 1
+                }
+                python3 scripts/brand/generate.py assets/brand
+                python3 scripts/brand/tokens.py assets/brand
+                python3 scripts/brand/identity.py assets/brand
+                cp assets/brand/favicon.svg docs/favicon.svg
+              '';
+            }
+          );
+          meta.description = "Regenerate the brand assets in assets/brand/ and the page's favicon";
+        };
+        # Retakes the page's screenshots in assets/screenshots/ (scripts/screenshots.sh),
         # with the browser named by --browser: a path, or a package from this
         # nixpkgs, fetched only then.
         screenshots = {
@@ -129,7 +152,7 @@
               text = builtins.readFile ./scripts/screenshots.sh;
             }
           );
-          meta.description = "Retake the page's screenshots in assets/ (-- --browser <name or path>; --help for the options)";
+          meta.description = "Retake the page's screenshots in assets/screenshots/ (-- --browser <name or path>; --help for the options)";
         };
       in
       {
@@ -141,6 +164,7 @@
             frequent-check
             pr-check
             screenshots
+            brand
             ;
           fetch = sync; # old name, kept as an alias
           quick-check = frequent-check; # old name, kept as an alias

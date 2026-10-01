@@ -1,5 +1,5 @@
 # shellcheck shell=bash
-# Retakes the page's screenshots in assets/ (the README's and the social
+# Retakes the page's screenshots in assets/screenshots/ (the README's and the social
 # preview), from the live data: nix run .#screenshots, from the repository.
 #
 # Takes: desktop-{dark,light}.png (1280px wide, at 2x, with a panel open),
@@ -282,10 +282,10 @@ for theme in dark light; do
 done
 shot social-preview 1280 640 1 dark ""
 
-echo "Compressing into assets/..."
-mkdir -p assets
+echo "Compressing into assets/screenshots/..."
+mkdir -p assets/screenshots
 for f in "$work"/out/*.png; do
-	pngquant --quality=80-95 --strip --speed 1 --force --output "assets/$(basename "$f")" "$f"
+	pngquant --quality=80-95 --strip --speed 1 --force --output "assets/screenshots/$(basename "$f")" "$f"
 done
-du -ch assets/*.png | tail -1
+du -ch assets/screenshots/*.png | tail -1
 echo "Done. The social preview is uploaded by hand: Settings → General → Social preview."
