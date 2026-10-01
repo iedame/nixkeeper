@@ -1,7 +1,7 @@
 """The status issue: one GitHub issue in this repo showing what needs attention,
 rewritten every sync, plus a comment (which is what notifies) when something
-changed for the worse. Only runs that set NIXKEEPER_NOTIFY post (the workflows
-do); see notify() for the methods."""
+changed for the worse. Only runs that set --notify or NIXKEEPER_NOTIFY post
+(the workflows do); see notify() for the methods."""
 
 import os
 import sys
@@ -208,17 +208,18 @@ def notify(previous, rows, now):
     """Send what changed the way NIXKEEPER_NOTIFY says (unset or "none": not
     at all, as in local runs). Never fails the sync: a problem here is
     reported as a workflow warning."""
-    method = os.environ.get("NIXKEEPER_NOTIFY") or "none"
+    method = config.NOTIFY or os.environ.get("NIXKEEPER_NOTIFY") or "none"
     method = ALIASES.get(method, method)
     if method == "none":
         print(
-            "Not notifying (NIXKEEPER_NOTIFY isn't set; the workflows set it).",
+            "Not notifying (--notify or NIXKEEPER_NOTIFY isn't set; the "
+            "workflows set it).",
             file=sys.stderr,
         )
         return
     if method not in SENDERS:
         print(
-            f"::warning::NIXKEEPER_NOTIFY={method} isn't a notification method "
+            f"::warning::{method} isn't a notification method "
             f"({', '.join(['none', *SENDERS])})",
             file=sys.stderr,
         )

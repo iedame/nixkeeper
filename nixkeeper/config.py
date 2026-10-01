@@ -4,15 +4,21 @@ time, so tests can patch them."""
 import os
 import re
 
-# Where things live. The defaults suit running from a checkout (and the GitHub
-# workflows); a service sets these instead.
+# Where things live, and how to notify. The defaults suit running from a
+# checkout (and the GitHub workflows); a service sets these instead. The
+# `nixkeeper` command (cli.py) sets them from its flags, which win over these
+# environment variables.
 #
-# NIXKEEPER_DATA_DIR: the published data (the page's data/), also where the
-#   next run finds the previous one.
-# NIXKEEPER_LISTS: the package lists, as the Nix folder (package-lists/,
-#   evaluated with nix) or as a JSON file of what it evaluates to.
-OUT_DIR = os.environ.get("NIXKEEPER_DATA_DIR") or "data"
-LISTS = os.environ.get("NIXKEEPER_LISTS") or "package-lists"
+# NIXKEEPER_DATA_DIR (--data-dir): the published data (the page's data/), also
+#   where the next run finds the previous one.
+# NIXKEEPER_LISTS (--lists): the package lists, as the Nix folder
+#   (package-lists/, evaluated with nix) or as a JSON file of what it
+#   evaluates to.
+# NIXKEEPER_NOTIFY (--notify): how to report what changed (notify.py).
+DEFAULTS = {"OUT_DIR": "data", "LISTS": "package-lists", "NOTIFY": "none"}
+OUT_DIR = os.environ.get("NIXKEEPER_DATA_DIR") or DEFAULTS["OUT_DIR"]
+LISTS = os.environ.get("NIXKEEPER_LISTS") or DEFAULTS["LISTS"]
+NOTIFY = None  # set by the command; otherwise NIXKEEPER_NOTIFY, read when used
 NIX_REPO = "nix_unstable"
 USER_AGENT = "nixkeeper/1.0 (personal package tracker)"
 

@@ -12,9 +12,11 @@ requires-python = ">=3.11"
 dependencies = ["brotli"]
 
 [project.scripts]
-nixkeeper-sync = "nixkeeper.__main__:main"
-nixkeeper-frequent-check = "nixkeeper.frequent:main"
-nixkeeper-pr-check = "nixkeeper.prcheck:main"
+nixkeeper = "nixkeeper.cli:main"
+# The old commands, until 1.0: `nixkeeper sync` etc. with a hint.
+nixkeeper-sync = "nixkeeper.cli:sync_alias"
+nixkeeper-frequent-check = "nixkeeper.cli:frequent_check_alias"
+nixkeeper-pr-check = "nixkeeper.cli:pr_check_alias"
 
 [tool.setuptools.packages.find]
 include = ["nixkeeper*"]

@@ -2,8 +2,8 @@
 package-lists/update-checks.nix, run about hourly for packages where a new
 release matters within hours (browsers, for their security fixes). Touches only
 those packages: their Repology data (so the comparison uses nixpkgs' current
-version) and their update check. Run from the repository root:
-`nix run .#frequent-check`."""
+version) and their update check. `nixkeeper frequent-check`; from a
+checkout, `nix run .#frequent-check`."""
 
 import sys
 import urllib.error

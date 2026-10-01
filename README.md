@@ -202,18 +202,32 @@ To run it somewhere other than GitHub Actions, see
 
 ## Running elsewhere
 
-Everything defaults to running from a checkout with the GitHub workflows.
-Elsewhere (a server, a service), these environment variables change that:
+nixkeeper is one command, `nixkeeper`, with a subcommand for each job:
 
-| Variable | Default | What it sets |
-|---|---|---|
-| `NIXKEEPER_DATA_DIR` | `data` | where the data is written, and the previous run read from |
-| `NIXKEEPER_LISTS` | `package-lists` | the package lists: that Nix folder, or a JSON file of what it evaluates to |
-| `NIXKEEPER_GITHUB_TOKEN_FILE` | – | a file holding a GitHub token (else `GITHUB_TOKEN`, else the local `gh` login) |
-| `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issue up to date (the workflows set it) |
-| `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issue lives |
-| `NIXKEEPER_PAGE_URL` | the GitHub Pages site | the page link in notifications |
-| `REPOLOGY_BASE_URL` | – | one Repology address to use (normally `repology.org`, falling back to its mirror `repology.amdmi3.ru`) |
+```bash
+nixkeeper sync            # one full sync
+nixkeeper frequent-check  # only the update checks marked frequent
+nixkeeper pr-check        # outdated packages' update PRs
+nixkeeper paths           # where the lists and data are, and which setting says so
+```
+
+From a checkout, `nix run .#sync` (and `.#frequent-check`, `.#pr-check`) run
+the same commands. The old names (`nixkeeper-sync`, ...) still work until
+1.0.
+
+Everything defaults to running from a checkout with the GitHub workflows.
+Elsewhere (a server, a service), flags or environment variables change that;
+a flag wins over its variable:
+
+| Flag | Variable | Default | What it sets |
+|---|---|---|---|
+| `--data-dir` | `NIXKEEPER_DATA_DIR` | `data` | where the data is written, and the previous run read from |
+| `--lists` | `NIXKEEPER_LISTS` | `package-lists` | the package lists: that Nix folder, or a JSON file of what it evaluates to |
+| | `NIXKEEPER_GITHUB_TOKEN_FILE` | – | a file holding a GitHub token (else `GITHUB_TOKEN`, else the local `gh` login) |
+| `--notify` | `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issue up to date (the workflows set it) |
+| | `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issue lives |
+| | `NIXKEEPER_PAGE_URL` | the GitHub Pages site | the page link in notifications |
+| | `REPOLOGY_BASE_URL` | – | one Repology address to use (normally `repology.org`, falling back to its mirror `repology.amdmi3.ru`) |
 
 The status issue is only posted with a token given explicitly (the token file
 or `GITHUB_TOKEN`), never with the local `gh` login.

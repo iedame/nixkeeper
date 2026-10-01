@@ -5,7 +5,7 @@ changed. Most hours nothing does, so nothing is written, committed or posted."""
 import copy
 import sys
 
-from . import history, notify, output
+from . import config, history, notify, output
 
 
 def load():
@@ -13,7 +13,10 @@ def load():
     there's none: the daily sync has to have run once."""
     previous = history.load_previous_run()
     if not previous["packages"]:
-        sys.exit("No previous run in data/: run the full sync first (nix run .#sync).")
+        sys.exit(
+            f"No previous run in {config.OUT_DIR}: run the full sync first "
+            "(nixkeeper sync; from a checkout, nix run .#sync)."
+        )
     return previous, copy.deepcopy(previous["packages"])
 
 

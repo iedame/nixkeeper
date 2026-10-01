@@ -11,6 +11,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- One `nixkeeper` command, with a subcommand for each job: `nixkeeper sync`,
+  `nixkeeper frequent-check` and `nixkeeper pr-check`, plus `nixkeeper paths`
+  (where the lists and data are, and which setting says so) and
+  `nixkeeper --version`. Flags (`--lists`, `--data-dir`, `--notify`) set what
+  the `NIXKEEPER_*` variables do, and win over them. `nix run .#sync` and the
+  other apps run the new command; the old names (`nixkeeper-sync`,
+  `nixkeeper-frequent-check`, `nixkeeper-pr-check`) still work until 1.0,
+  with a hint.
 - Tests for the page: its rules (statuses, version order, "on master",
   ages, safe links, the tab icon's signals) moved into `docs/logic.js`, which
   `tests/js/` tests with Node's test runner as part of `nix flake check`. The
