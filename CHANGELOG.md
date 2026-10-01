@@ -50,6 +50,29 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- The page, refreshed:
+  - The toolbar: a search field with an icon and a `/` shortcut, and icon
+    buttons for A–Z and the Theme menu. The Refresh button is gone
+    (reloading does the same).
+  - The counts and the lists are one bar of filter chips. On phones and
+    tablets it's one row that swipes sideways and stays at the top while
+    scrolling. On desktop, the header, the filters and the table's column
+    headings stay at the top.
+  - Versions: the newest version sits under nixpkgs', with the part that
+    changes in colour. Click them to copy the update's title as nixpkgs
+    writes it (`unciv: 4.22.1 -> 4.22.6`). The update's badge (PR, on
+    master) and the rest line up at the right of the versions. How long a
+    package has been outdated shows after its name.
+  - Quieter rows: "none reported", "not built by Hydra", "not attempted"
+    and "superseded" are muted, and zero PR or issue counts are faint, so
+    what needs a look stands out.
+  - The platforms are one small label under the package's name. Rows open
+    with a clearer chevron, and the open row and its panel read as one.
+  - A package's panel compares nixpkgs with one entry per repository,
+    newest first: the first 8, then "Show all".
+  - Touch screens get larger targets, and animations stop when the system
+    asks for reduced motion.
+  - The card layout now starts below 1080px (was 940px).
 - The documentation lives in `docs/`, one page per topic: reading the page,
   how it works, a dashboard of your own, the command, the NixOS and
   nix-darwin modules, the data (was `DATA.md`) and troubleshooting. The

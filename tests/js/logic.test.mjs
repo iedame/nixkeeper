@@ -9,6 +9,7 @@ import {
   attentionRank,
   buildsWith,
   communityCheck,
+  comparedRepos,
   compareVersions,
   computeStatus,
   daysText,
@@ -25,7 +26,8 @@ import {
   targetVersion,
   themeFor,
   timeAgo,
-  versionChange,
+  updateTitle,
+  versionDiff,
   waitingForChannel,
   withSlash,
 } from '../../page/logic.js';
@@ -158,24 +160,29 @@ describe('communityCheck', () => {
   });
 });
 
-describe('versionChange', () => {
-  test('an unstable version with the same base: just the new date', () => {
-    assert.equal(
-      versionChange('5.1.0-b2-unstable-2022-11-14', '5.1.0-b2-unstable-2026-08-22'),
-      '2026-08-22',
-    );
+describe('versionDiff', () => {
+  test('by whole parts', () => {
+    assert.deepEqual(versionDiff('1.19.24', '1.19.28'), { same: '1.19.', from: '24', to: '28' });
+    assert.deepEqual(versionDiff('1.9', '1.10'), { same: '1.', from: '9', to: '10' });
+    assert.deepEqual(versionDiff('154.0.8037.57', '154.0.8037.92'), {
+      same: '154.0.8037.',
+      from: '57',
+      to: '92',
+    });
   });
-  test('anything else in full', () => {
-    assert.equal(versionChange('1.3.7', '1.3.8'), '1.3.8');
-    assert.equal(
-      versionChange('1.0-unstable-2022-11-14', '2.0-unstable-2026-08-22'),
-      '2.0-unstable-2026-08-22',
-    );
-    assert.equal(versionChange('1.0', '1.0-unstable-2026-08-22'), '1.0-unstable-2026-08-22');
+  test('an unstable version: the date', () => {
+    assert.deepEqual(versionDiff('5.1.0-b2-unstable-2022-11-14', '5.1.0-b2-unstable-2026-08-22'), {
+      same: '5.1.0-b2-unstable-',
+      from: '2022-11-14',
+      to: '2026-08-22',
+    });
   });
-  test('a missing target stays missing', () => {
-    assert.equal(versionChange('1.0', undefined), undefined);
-    assert.equal(versionChange(null, '1.1'), '1.1');
+  test('nothing shared, or only something added', () => {
+    assert.deepEqual(versionDiff('2.8', '3.0'), { same: '', from: '2.8', to: '3.0' });
+    assert.deepEqual(versionDiff('1.2', '1.2.1'), { same: '1.2', from: '', to: '.1' });
+  });
+  test('a missing version', () => {
+    assert.deepEqual(versionDiff('1.0', undefined), { same: '', from: '1.0', to: '' });
   });
 });
 
@@ -367,5 +374,57 @@ describe('themeFor', () => {
       mode: 'auto',
     });
     assert.deepEqual(themeFor({}, 'nord'), { palette: 'classic', mode: 'auto' });
+  });
+});
+
+describe('comparedRepos', () => {
+  const e = (repo, version, status = 'outdated') => ({ repo, version, status });
+  test('newest version first, ties by repository', () => {
+    const sorted = comparedRepos([
+      e('debian', '1.3.5'),
+      e('homebrew', '1.3.8', 'newest'),
+      e('aur', '1.3.8', 'newest'),
+      e('fedora', '1.3.10'),
+    ]);
+    assert.deepEqual(
+      sorted.map((x) => x.repo),
+      ['fedora', 'aur', 'homebrew', 'debian'],
+    );
+  });
+  test('one entry per repository, its newest', () => {
+    const sorted = comparedRepos([
+      e('alpine_edge', '1.3.7'),
+      e('alpine_edge', '1.3.8', 'newest'),
+      e('debian', '1.3.5'),
+    ]);
+    assert.deepEqual(
+      sorted.map((x) => `${x.repo} ${x.version}`),
+      ['alpine_edge 1.3.8', 'debian 1.3.5'],
+    );
+  });
+  test("versions that don't compare go last", () => {
+    const sorted = comparedRepos([e('gentoo', '9999', 'rolling'), e('aur', '1.0', 'newest')]);
+    assert.deepEqual(
+      sorted.map((x) => x.repo),
+      ['aur', 'gentoo'],
+    );
+  });
+  test("doesn't change its input", () => {
+    const entries = [e('a', '1'), e('b', '2')];
+    comparedRepos(entries);
+    assert.equal(entries[0].repo, 'a');
+  });
+});
+
+describe('updateTitle', () => {
+  test("an outdated package: nixpkgs' title for the update", () => {
+    assert.equal(
+      updateTitle(outdated({ name: 'unciv', nixVersion: '4.22.1', refVersion: '4.22.6' })),
+      'unciv: 4.22.1 -> 4.22.6',
+    );
+  });
+  test('none when up to date, or without a newest version', () => {
+    assert.equal(updateTitle(pkg({ nixVersion: '1.0' })), null);
+    assert.equal(updateTitle(outdated({ refVersion: undefined })), null);
   });
 });

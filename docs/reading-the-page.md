@@ -17,11 +17,26 @@ stay in the address, so a view can be shared.
 | pink | not in nixpkgs unstable (counted as failed) |
 | grey | Repology can't compare the version: `untrusted`, `rolling`, `noscheme`, `incorrect` (shown as a badge) |
 
-**The version**: nixpkgs unstable's, then for an outdated package `→` the
-newer one and how long it's been outdated (`· 3d`). For an unstable version,
-the target shows just the new date.
+**The version**: nixpkgs unstable's. For an outdated package, the newest
+version is under it, after a `→`, with the start they share faded, so the
+part that changes stands out (orange; violet when the update is already on
+master):
 
-**Badges** after the version:
+```
+  1.19.24
+→ 1.19.28          ("1.19." faded, "28" in colour)
+```
+
+Versions are compared by whole parts (split at `.`, `-`, `_`, `+`, `~`), so
+`1.19.24 → 1.19.28` colours `28`, and an unstable version only its new date.
+Click the versions to copy the update's title as nixpkgs writes it, for a
+commit or a PR: `unciv: 4.22.1 -> 4.22.6`.
+
+How long a package has been outdated shows after its name (`3 d`; violet
+when the update is merged and waiting for the channel).
+
+**At the right of the version**: the update's badge on top (`PR #123`, `on
+master`); below it, the badges about nixpkgs' version:
 
 | Badge | Means |
 |---|---|
