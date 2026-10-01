@@ -212,8 +212,7 @@ def notify(previous, rows, now):
     method = ALIASES.get(method, method)
     if method == "none":
         print(
-            "Not notifying (--notify or NIXKEEPER_NOTIFY isn't set; the "
-            "workflows set it).",
+            "Not notifying (notify: none; the GitHub workflows use github-issue).",
             file=sys.stderr,
         )
         return

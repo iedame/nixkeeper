@@ -20,7 +20,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   same jobs as launchd agents of your user, on the command's own folders
   (or the lists in the configuration), with their output in
   `~/Library/Logs/nixkeeper/`, and optionally `nixkeeper serve` kept running
-  for the page on this Mac.
+  for the page on this Mac. Lists or a data folder set in the configuration
+  are also exported to your shell, so commands you type agree with the jobs.
 - Runs on the same data take turns: `sync`, `frequent-check`, `pr-check`
   and `page` hold a lock next to the data folder (`<data dir>.lock`), and a
   second run waits for the first, saying so.
