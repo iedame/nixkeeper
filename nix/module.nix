@@ -83,7 +83,10 @@ in
     syncAt = mkOption {
       type = types.str;
       default = "06:00";
-      description = "When the full sync runs (systemd OnCalendar).";
+      description = ''
+        When the full sync runs (systemd OnCalendar). At boot, a sync also runs
+        if there's no data yet or the last one is over 20 hours old.
+      '';
     };
 
     frequentChecks = {
@@ -139,6 +142,14 @@ in
     systemd = {
       services = {
         nixkeeper-sync = service "nixkeeper: sync the package data" (run "sync");
+
+        # At boot (and when the module is first enabled): the first sync, or
+        # one missed while the machine was down. Skipped while the last sync
+        # is under 20 hours old. (Persistent alone only catches up once the
+        # timer has fired at least once.)
+        nixkeeper-catch-up = lib.recursiveUpdate (service "nixkeeper: catch up on a missed sync" (
+          run "sync --if-older 20"
+        )) { wantedBy = [ "multi-user.target" ]; };
 
         nixkeeper-checks = lib.mkIf cfg.frequentChecks.enable (
           lib.recursiveUpdate

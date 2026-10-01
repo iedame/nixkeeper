@@ -82,7 +82,8 @@ in
       };
       description = ''
         When the full sync runs (launchd StartCalendarInterval). A run missed
-        while the Mac slept happens when it wakes.
+        while the Mac slept happens when it wakes; at login, a sync also runs
+        if there's no data yet or the last one is over 20 hours old.
       '';
     };
 
@@ -129,6 +130,13 @@ in
     launchd.user.agents = {
       nixkeeper-sync = lib.recursiveUpdate (agent "sync" (run "sync")) {
         serviceConfig.StartCalendarInterval = [ cfg.syncAt ];
+      };
+
+      # At login (and when a rebuild loads the agents): the first sync, or one
+      # missed while the Mac was off or logged out (launchd only catches up
+      # after sleep). Skipped while the last sync is under 20 hours old.
+      nixkeeper-catch-up = lib.recursiveUpdate (agent "sync" (run "sync --if-older 20")) {
+        serviceConfig.RunAtLoad = true;
       };
 
       nixkeeper-checks = lib.mkIf cfg.frequentChecks.enable (

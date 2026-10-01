@@ -301,7 +301,7 @@ and optionally the page on nginx.
 |---|---|---|
 | `lists` | – (this or `listsPath`) | what to track, as `package-lists/` has it (`maintainers`, `extraPackages`, `updateChecks`, `ignoredUpdates`) |
 | `listsPath` | – | a `package-lists/` folder or JSON file instead (a folder is evaluated with the system's Nix) |
-| `syncAt` | `"06:00"` | when the sync runs (systemd `OnCalendar`); a missed one runs at boot |
+| `syncAt` | `"06:00"` | when the sync runs (systemd `OnCalendar`) |
 | `frequentChecks.enable`, `.at` | `true`, `"hourly"` | the frequent update checks and the update PR check |
 | `githubTokenFile` | – | a GitHub token, passed as a systemd credential; without it, PR and issue counts and update PRs are skipped |
 | `notify`, `githubRepo`, `pageUrl` | `"none"` | `"github-issue"` keeps a status issue in `githubRepo` up to date |
@@ -312,6 +312,21 @@ The jobs run as their own `nixkeeper` user, hardened (read-only system, no
 home, no privileges). Like any nixkeeper commands on the same data, they run
 one at a time: each holds a lock (`data.lock`, next to the data) and the next
 waits for it.
+
+**The first sync** runs within a few minutes of enabling the module: at
+boot, and when the module is first switched on, a catch-up job
+(`nixkeeper-catch-up`) syncs if there's no data yet or the last sync is over
+20 hours old, which also makes up for a day missed while the machine was
+down. After that, the daily sync and the hourly checks run on their own. To
+sync right away, or just in case one didn't run:
+
+```bash
+sudo systemctl start nixkeeper-sync
+```
+
+```bash
+journalctl -u nixkeeper-sync -u nixkeeper-catch-up -f
+```
 
 ### On macOS, with nix-darwin
 
@@ -349,7 +364,7 @@ does), `notify`, `githubRepo` and `pageUrl` as the NixOS module, and:
 
 | Option | Default | What it sets |
 |---|---|---|
-| `syncAt` | `{ Hour = 6; Minute = 0; }` | when the sync runs (launchd `StartCalendarInterval`); a run missed while the Mac slept happens when it wakes |
+| `syncAt` | `{ Hour = 6; Minute = 0; }` | when the sync runs (launchd `StartCalendarInterval`) |
 | `frequentChecks.enable`, `.at` | `true`, `{ Minute = 23; }` | the frequent update checks and the update PR check, hourly |
 | `serve.enable`, `.port` | `false`, `8000` | keep `nixkeeper serve` running, on 127.0.0.1 |
 | `dataDir` | `~/.local/state/nixkeeper/data` | where the data goes |
@@ -361,6 +376,26 @@ The module also installs the `nixkeeper` command, and when `lists`,
 `environment.variables`), so commands you type use the same lists and data
 as the jobs. Shells nix-darwin sets up (zsh, bash, fish) get them; others,
 like Nushell, need them passed on.
+
+**The first sync** runs when the jobs are loaded, at the rebuild that adds
+the module, and at every login: a catch-up job (`nixkeeper-catch-up`) syncs
+if there's no data yet or the last sync is over 20 hours old. That also
+makes up for a day missed while the Mac was off or logged out (launchd only
+catches up on a run missed during sleep). After that, the daily sync and the
+hourly checks run on their own. To sync right away, `nixkeeper sync` in a
+terminal does it with the same lists and data. Or, just in case the job
+didn't run, start it through launchd:
+
+```bash
+launchctl kickstart gui/$(id -u)/org.nixos.nixkeeper-sync
+```
+
+```bash
+tail -f ~/Library/Logs/nixkeeper/sync.log
+```
+
+`launchctl list | grep nixkeeper` shows the jobs: the first column is a
+running job's process, the second the last exit status (0: fine).
 
 The page finds its data by itself when `data/` is served next to it. Otherwise
 it reads the repository's `data` branch on a GitHub Pages site, or wherever

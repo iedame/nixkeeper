@@ -17,9 +17,10 @@ import argparse
 import importlib
 import os
 import sys
+from datetime import UTC, datetime
 from importlib import metadata
 
-from . import config, init, lock, notify, page
+from . import config, history, init, lock, notify, page
 
 # name: (what it does, the module whose main() runs it)
 COMMANDS = {
@@ -86,12 +87,20 @@ def parser():
     p.add_argument("--version", action="version", version=f"nixkeeper {version()}")
     sub = p.add_subparsers(dest="command", metavar="COMMAND")
     for name, (what, _) in COMMANDS.items():
-        sub.add_parser(
+        command = sub.add_parser(
             name,
             help=what,
             description=f"{what[0].upper()}{what[1:]}.",
             parents=[common],
         )
+        if name == "sync":
+            command.add_argument(
+                "--if-older",
+                metavar="HOURS",
+                type=float,
+                help="only if the last sync is older than this (or there's none): "
+                "for catching up at login or boot without syncing again",
+            )
     sub.add_parser(
         "paths",
         help="where the lists and data are, and which setting says so",
@@ -200,7 +209,24 @@ def main(argv=None):
         page.serve(args.port, args.bind)
         return
     with lock.held():
+        if getattr(args, "if_older", None) is not None:
+            age = last_sync_age()
+            if age is not None and age < args.if_older:
+                print(
+                    f"The last sync was {age:.1f} hours ago (under {args.if_older:g}): "
+                    "nothing to do.",
+                    file=sys.stderr,
+                )
+                return
         importlib.import_module(COMMANDS[args.command][1]).main()
+
+
+def last_sync_age():
+    """Hours since the last sync finished, or None if there's been none."""
+    checked = history.load_previous_run().get("checkedAt")
+    if not checked:
+        return None
+    return (datetime.now(UTC) - datetime.fromisoformat(checked)).total_seconds() / 3600
 
 
 def _alias(command):

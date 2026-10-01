@@ -2,9 +2,11 @@
 each setting comes from (flag, then environment, then default)."""
 
 import io
+import json
 import os
 import tempfile
 import unittest
+from datetime import UTC, datetime, timedelta
 from unittest import mock
 
 from nixkeeper import cli, config
@@ -49,6 +51,34 @@ class Command(unittest.TestCase):
             self.run_command("sync")
         held.assert_called_once_with()
         held.return_value.__enter__.assert_called_once()
+
+    def last_sync(self, hours_ago):
+        data = os.path.join(self.lock_dir.name, "data")
+        os.makedirs(data, exist_ok=True)
+        when = datetime.now(UTC) - timedelta(hours=hours_ago)
+        with open(os.path.join(data, "index.json"), "w") as f:
+            json.dump({"checkedAt": when.isoformat(), "packages": []}, f)
+        return data
+
+    def test_if_older_skips_a_recent_sync(self):
+        data = self.last_sync(hours_ago=3)
+        mains = self.run_command("sync", "--data-dir", data, "--if-older", "20")
+        mains["nixkeeper.sync"].assert_not_called()
+        self.assertIn("3.0 hours ago (under 20)", self.stderr.getvalue())
+
+    def test_if_older_runs_after_that(self):
+        data = self.last_sync(hours_ago=25)
+        mains = self.run_command("sync", "--data-dir", data, "--if-older", "20")
+        mains["nixkeeper.sync"].assert_called_once_with()
+
+    def test_if_older_runs_the_first_sync(self):
+        data = os.path.join(self.lock_dir.name, "none-yet")
+        mains = self.run_command("sync", "--data-dir", data, "--if-older", "20")
+        mains["nixkeeper.sync"].assert_called_once_with()
+
+    def test_only_sync_takes_if_older(self):
+        with self.assertRaises(SystemExit):
+            self.run_command("pr-check", "--if-older", "20")
 
     def test_each_command_runs_its_module(self):
         for command, (_, module) in cli.COMMANDS.items():
