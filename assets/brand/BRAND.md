@@ -59,8 +59,8 @@ black, and rainbow (pride). Black and white are always flat.
 
 ## The page's colours
 
-The dashboard's colours keep the meanings the page already has (see "Reading
-the page" in the README); each is one of the guide's accents.
+The dashboard's colours keep the meanings the page already has (see
+[Reading the page](../../docs/reading-the-page.md)); each is one of the guide's accents.
 
 | Meaning | Role (tokens) | Colour |
 |---|---|---|

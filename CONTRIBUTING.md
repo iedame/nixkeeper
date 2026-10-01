@@ -2,7 +2,7 @@
 
 How the code is laid out, how to work on it, and how changes and releases
 happen. For what nixkeeper does and how to set up your own, see the
-[README](README.md).
+[README](README.md) and the [documentation](docs/README.md).
 
 ## Layout
 
@@ -23,7 +23,11 @@ happen. For what nixkeeper does and how to set up your own, see the
 - `nix/package-lists.nix`: `nix flake check` validates the package lists
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates, malformed update checks and ignore rules)
-- `package-lists/`: what this instance tracks (see the README)
+- `package-lists/`: what this instance tracks (see
+  [how it works](docs/how-it-works.md#what-gets-tracked))
+- `docs/`: the documentation, one page per topic ([docs/README.md](docs/README.md)
+  lists them); `README.md`, `CONTRIBUTING.md`, `SECURITY.md`,
+  `CHANGELOG.md` and `LICENSE` stay at the root, where GitHub looks for them
 - `page/`: the page (`index.html`, `app.js`, `style.css`), reading `data/`
   from the `data` branch. `logic.js` holds its rules (statuses, versions,
   ages, safe links, the tab icon's signals) without the page, so they can be
@@ -122,9 +126,9 @@ New files must be `git add`ed before Nix sees them.
 (`tests-and-lint`) passes, so each PR is one commit on `main`, titled after
 the PR. Direct and force pushes to `main` are blocked (repository rulesets).
 Changes that users would notice go in `CHANGELOG.md` under `## [Unreleased]`,
-in the same PR, and so do the docs that describe them: the README's "Reading
-the page" for a new or changed status, badge or column, `DATA.md` for a
-field, and the [screenshots](#screenshots) when the page looks noticeably
+in the same PR, and so do the docs that describe them:
+`docs/reading-the-page.md` for a new or changed status, badge or column,
+`docs/data.md` for a field, and the [screenshots](#screenshots) when the page looks noticeably
 different. The PR template has this as a checklist.
 
 Security problems go through the [security policy](SECURITY.md), not a
@@ -190,7 +194,8 @@ palette reaches the page through `nix run .#brand`.
    `pyproject.toml` (the flake reads it from there), and turn
    `## [Unreleased]` in `CHANGELOG.md` into `## [x.y.z] - date` (with a fresh
    `## [Unreleased]` above it, and its compare link below), and move the
-   README's pinning example ("Pinning a version") to the new tag.
+   pinning example in `docs/command.md` ("Pinning a version") to the new
+   tag.
 2. Once merged, tag the merge commit on `main` and push the tag:
    `git switch main && git pull`, `git tag vx.y.z`, `git push origin vx.y.z`.
 

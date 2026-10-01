@@ -11,12 +11,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
-- `TROUBLESHOOTING.md`: how to check that nixkeeper runs as it should on
+- `docs/troubleshooting.md`: how to check that nixkeeper runs as it should on
   GitHub, as the command, and with the NixOS and nix-darwin modules (the
   jobs, their schedules, logs and data), and what the page's warnings mean.
 
 ### Changed
 
+- The documentation lives in `docs/`, one page per topic: reading the page,
+  how it works, a dashboard of your own, the command, the NixOS and
+  nix-darwin modules, the data (was `DATA.md`) and troubleshooting. The
+  README is now a short introduction with the three ways to start, and
+  links to them; the page's "what these mean" link goes to
+  `docs/reading-the-page.md`.
 - The nix-darwin module's logs (`~/Library/Logs/nixkeeper/`) date each run:
   a line with the time and the job's name before its output, and one with
   how it ended after it, so a run can be told from the next (and the

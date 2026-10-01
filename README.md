@@ -35,9 +35,8 @@ For each package it tracks, nixkeeper shows on one static page (`page/`):
   PR one click away: open (green), or merged and on master (violet)
   while it waits for the channel
 
-A daily sync (GitHub Actions, or anywhere: see [Running elsewhere](#running-elsewhere))
-refreshes it all and keeps a status issue up to date, commenting when something
-newly needs attention.
+A daily sync refreshes it all and keeps a status issue up to date,
+commenting when something newly needs attention.
 
 ## How it works
 
@@ -62,384 +61,62 @@ flowchart LR
 ```
 
 There's no server: nixkeeper is a program that gathers data, and a static
-page that shows it.
+page that shows it. [How it works](docs/how-it-works.md) explains each part;
+[Reading the page](docs/reading-the-page.md) explains every dot and badge.
 
-- **The daily sync** (`nix run .#sync`, run by the "Data: daily sync"
-  workflow at 06:00 UTC) works out which packages to track from
-  `package-lists/` and the nixos-unstable channel's package index, then asks
-  each source about them: Repology for versions, nixkeeper's own update
-  checks, Hydra for builds (and nixpkgs for where it marks them broken), the
-  nixpkgs-update logs for the bot's latest attempt, and GitHub for open PRs,
-  issues and update PRs. It writes everything as JSON to the `data` branch
-  ([DATA.md](DATA.md)) and rewrites the status issue, commenting when
-  something newly needs attention.
-- **The hourly checks** ("Data: hourly updates") refresh a few rows of the
-  last published data: the update checks marked `frequent` (browsers, for
-  their security fixes) and outdated packages' update PRs. They commit only
-  when something changed. GitHub runs scheduled workflows on a best-effort
-  basis, so "hourly" can stretch to a few hours when Actions is busy; the
-  daily sync still covers everything.
-- **The page** (`page/`, published to GitHub Pages by a workflow) is plain
-  HTML and JavaScript that reads the JSON in your browser.
+## Get started
 
-When a source can't be reached, the row keeps its last known result, marked
-as not refreshed, and the status issue says so; the rest of the sync goes
-on. If most Repology lookups fail, the sync stops and leaves the published
-data as it was.
+**A dashboard of your own on GitHub.** Copy this repository, list your
+GitHub handle and any other packages in `package-lists/`, and turn on
+GitHub Pages: GitHub Actions syncs it daily, with nothing to host. See
+[a dashboard of your own](docs/your-own-instance.md).
 
-## Reading the page
-
-Each row is a package; clicking it opens its details (every repository
-Repology compares it with, links to its homepage and nixpkgs source), and
-clicking its build or update cell opens that instead. The counts at the top
-(tracked, outdated, failed, and flagged vulnerable when any are) filter the
-list, as do the list names under them and a row's platform tags; the filters
-stay in the address, so a view can be shared.
-
-**The dot** in front of each package:
-
-| Dot | Means |
-|---|---|
-| green | up to date: nixpkgs has the newest version (for a devel package, the newest devel one), or is the only one packaging it |
-| orange | outdated: Repology or nixkeeper's own update check knows a newer version |
-| violet | outdated, but the update is already merged on master, waiting for nixos-unstable (usually a few days). Master having a newer version than the channel counts too, even before Repology or an update check knows of it |
-| pink | not in nixpkgs unstable (counted as failed) |
-| grey | Repology can't compare the version: `untrusted`, `rolling`, `noscheme`, `incorrect` (shown as a badge) |
-
-**The version**: nixpkgs unstable's, then for an outdated package `→` the
-newer one and how long it's been outdated (`· 3d`). For an unstable version,
-the target shows just the new date.
-
-**Badges** after the version:
-
-| Badge | Means |
-|---|---|
-| `PR #123` (green) | an open update PR in nixpkgs; grey while it's a draft |
-| `on master` (violet) | the update is merged into master; links to its PR |
-| `devel` | a development release, compared against other devel versions |
-| `vulnerable` | Repology flags this version; the details link its known CVEs |
-| `untrusted`, `rolling`, ... | Repology's status for a version it can't compare |
-| `not refreshed` | Repology couldn't be reached on the last sync: older data |
-| `check failing` | nixkeeper's own update check for it isn't working: fix it in `package-lists/update-checks.nix` |
-
-**Build failures** (Hydra, which builds nixpkgs master):
-
-| Shows | Means |
-|---|---|
-| failure reported (pink) | its latest build failed on a platform: the panel links the log and says when it last built, and at which version |
-| marked broken (gold) | nixpkgs marks it broken on a platform (known, so not counted as failed) |
-| not built by Hydra | unfree, or kept off Hydra by nixpkgs |
-| none reported | no failure of its own; a failed dependency or an unfinished build shows only in the panel |
-
-**Update failures** (the nixpkgs-update bot, r-ryantm; its latest attempt):
-
-| Shows | Means |
-|---|---|
-| failure reported (pink) | the bot's update failed: the panel shows the end of its log |
-| can't update (gold) | a newer version exists, but none of the bot's ways of updating apply to this package: update it by hand, or give it an updateScript |
-| superseded | the attempt no longer matters: nixpkgs has moved past that version (in the channel, or merged on master), or a manual rule ignores it (`package-lists/ignored-updates.nix`) |
-| not attempted | the bot has never tried this package |
-| none reported | the bot opened a PR, found one open, had nothing to update, or finished without a recognisable result (the panel says which) |
-
-A `not refreshed` tag on a build or update cell means Hydra or the update
-logs couldn't be reached on the last sync, so it shows the last known result.
-The time at the top right is the last sync; it turns pink when that was over
-two days ago.
-
-**The tab's icon** shows what needs attention, so a pinned tab tells you at a
-glance: each of the mark's three chevrons lights up for its own signal, the
-top right orange for a new release (not counting updates already on master),
-the left pink for a failure, the bottom pink for a vulnerability. With none,
-the top right is green: all good. It follows the list filter, like the counts.
-
-## What gets tracked
-
-`package-lists/default.nix` lists GitHub handles under `maintainers` (every
-nixpkgs package they maintain is tracked) and imports further named lists
-under `extraPackages` (`extra`, `gaming-team`, ...) of nixpkgs attribute names
-(exactly that package, e.g. `haskellPackages.pandoc`) or pnames (every
-top-level package with that pname).
-
-Each list is a filter on the page, next to `maintained` for the packages
-found through `maintainers`. `?list=gaming-team` in the address is a page of
-just that list, to share with the people it's for.
-
-## Track your own packages
-
-This repository is one instance, tracking iedame's packages and the NixOS
-gaming team's. To get a dashboard of your own:
-
-1. **Copy the repository**: "Use this template" on GitHub gives you a clean
-   copy (none of this instance's history or data), or fork it (a fork starts
-   with its workflows off: turn them on in its Actions tab).
-2. **Say what to track** in `package-lists/`:
-   - `default.nix`: your GitHub handle under `maintainers`, and your own
-     named lists under `extraPackages` (or none);
-   - `update-checks.nix` and `ignored-updates.nix`: empty them (`{ }`) or
-     replace the entries. They name this instance's packages, and
-     `nix flake check` fails on entries for packages you don't track.
-3. **Turn on GitHub Pages**: Settings → Pages → Source: **GitHub Actions**.
-   Then Actions → "Pages: publish the page" → Run workflow (after that, it
-   publishes by itself whenever the page changes). The page is then at
-   `https://<you>.github.io/<repo>/`.
-4. **Run the first sync**: Actions → "Data: daily sync" → Run workflow. It
-   takes a few minutes, creates the `data` branch, and opens the status issue
-   (labelled `nixkeeper-status`) that the syncs keep up to date. The page
-   finds the data by itself; from then on the sync runs daily at 06:00 UTC,
-   and the hourly workflow looks for update PRs.
-5. **Optionally**, add your own [update checks](package-lists/update-checks.nix)
-   and [ignore rules](package-lists/ignored-updates.nix), each documented in
-   its file, and update this README's badges to point at your instance.
-   Retake the screenshots of your own page with
-   `nix run .#screenshots -- --browser google-chrome` (see
-   [CONTRIBUTING.md](CONTRIBUTING.md#screenshots) for the options).
-
-The workflows need no secrets: they use the token GitHub gives each run, with
-the permissions each workflow declares. GitHub pauses scheduled workflows in
-public repositories without activity for 60 days; if the data stops
-updating, re-enable the workflow in the Actions tab.
-
-To run it somewhere other than GitHub Actions, see
-[Running elsewhere](#running-elsewhere).
-
-## Running elsewhere
-
-nixkeeper is one command, `nixkeeper`, with a subcommand for each job (when
-something doesn't run as expected, see
-[TROUBLESHOOTING.md](TROUBLESHOOTING.md)):
+**The command, on your computer.**
 
 ```bash
-nixkeeper init --maintainer <your GitHub handle>   # start your package lists
-nixkeeper sync            # one full sync
-nixkeeper frequent-check  # only the update checks marked frequent
-nixkeeper pr-check        # outdated packages' update PRs
-nixkeeper paths           # where the lists and data are, and which setting says so
-nixkeeper serve           # show the page on this computer (http://127.0.0.1:8000/)
-nixkeeper page <dir>      # write the page and the data into a folder, to host anywhere
+nix run github:iedame/nixkeeper -- init --maintainer <your GitHub handle>
 ```
-
-Without installing it, `nix run github:iedame/nixkeeper -- <command>` runs
-the same. To install it, from this repository's flake:
 
 ```bash
-nix profile install github:iedame/nixkeeper
+nix run github:iedame/nixkeeper -- sync
 ```
 
-or in a NixOS or home-manager configuration, with the flake as an input
-(`inputs.nixkeeper.url = "github:iedame/nixkeeper";`), add
-`inputs.nixkeeper.packages.${pkgs.stdenv.hostPlatform.system}.default` to
-your packages. It needs `nix` on the `PATH` (it evaluates your lists with
-it); `gh` is optional. The old names (`nixkeeper-sync`, ...) still work
-until 1.0.
+```bash
+nix run github:iedame/nixkeeper -- serve
+```
 
-On its own, it keeps your lists in `~/.config/nixkeeper/package-lists/`
-(`nixkeeper init` starts them) and the data in
-`~/.local/state/nixkeeper/data/` (following `$XDG_CONFIG_HOME` and
-`$XDG_STATE_HOME`). From a checkout, `nix run .#sync` (and
-`.#frequent-check`, `.#pr-check`) use the checkout's `package-lists/` and
-`data/` instead, as the GitHub workflows do. Flags or environment variables
-choose others; a flag wins over its variable:
+That starts your lists, syncs, and shows the page at http://127.0.0.1:8000/.
+Installing it, its settings, and pinning a version:
+[the nixkeeper command](docs/command.md).
 
-| Flag | Variable | Default | What it sets |
-|---|---|---|---|
-| `--data-dir` | `NIXKEEPER_DATA_DIR` | `~/.local/state/nixkeeper/data` | where the data is written, and the previous run read from |
-| `--lists` | `NIXKEEPER_LISTS` | `~/.config/nixkeeper/package-lists` (or `lists.json` there) | the package lists: that Nix folder, or a JSON file of what it evaluates to |
-| | `NIXKEEPER_GITHUB_TOKEN_FILE` | – | a file holding a GitHub token (else `GITHUB_TOKEN`, else the local `gh` login) |
-| `--notify` | `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issue up to date (the workflows set it) |
-| | `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issue lives |
-| | `NIXKEEPER_PAGE_URL` | the GitHub Pages site | the page link in notifications |
-| | `REPOLOGY_BASE_URL` | – | one Repology address to use (normally `repology.org`, falling back to its mirror `repology.amdmi3.ru`) |
-
-The status issue is only posted with a token given explicitly (the token file
-or `GITHUB_TOKEN`), never with the local `gh` login. Reading from GitHub (PR
-and issue counts, update PRs) does use the `gh` login when there's no other
-token.
-
-The page ships with the command (and in the package's
-`share/nixkeeper/www/`). `nixkeeper serve` shows it with the data as it is,
-so a new sync appears on the next reload; it listens on this computer only
-unless `--bind` says otherwise. `nixkeeper page <dir>` writes a folder for
-any static host, with the data copied in as `data/`; run it again after
-each sync. It only writes into a new or empty folder, or one it wrote
-before.
-
-### As a NixOS service
-
-The flake's NixOS module runs it all on a server: the sync daily, the
-frequent and update PR checks hourly, the data in `/var/lib/nixkeeper/data`,
-and optionally the page on nginx.
+**As a service.** The flake's modules run the sync and the checks on their
+own, catch up after the machine was off, and serve the page:
 
 ```nix
-{
-  inputs.nixkeeper.url = "github:iedame/nixkeeper";
-
-  outputs = { nixpkgs, nixkeeper, ... }: {
-    nixosConfigurations.server = nixpkgs.lib.nixosSystem {
-      modules = [
-        ./configuration.nix # your server's own configuration
-        nixkeeper.nixosModules.default
-        {
-          services.nixkeeper = {
-            enable = true;
-            lists.maintainers = [ "your-github-handle" ];
-            lists.extraPackages.extra = [ "firefox" ];
-            # A token file, read only; never a path inside the Nix store.
-            githubTokenFile = "/run/secrets/nixkeeper-github-token";
-            nginx.virtualHost = "nixkeeper.example.org";
-          };
-          # TLS and the rest as for any nginx host:
-          services.nginx.virtualHosts."nixkeeper.example.org" = {
-            enableACME = true;
-            forceSSL = true;
-          };
-        }
-      ];
-    };
-  };
-}
+services.nixkeeper = {
+  enable = true;
+  lists.maintainers = [ "your-github-handle" ];
+};
 ```
 
-| Option | Default | What it sets |
-|---|---|---|
-| `lists` | – (this or `listsPath`) | what to track, as `package-lists/` has it (`maintainers`, `extraPackages`, `updateChecks`, `ignoredUpdates`) |
-| `listsPath` | – | a `package-lists/` folder or JSON file instead (a folder is evaluated with the system's Nix) |
-| `syncAt` | `"06:00"` | when the sync runs (systemd `OnCalendar`) |
-| `frequentChecks.enable`, `.at` | `true`, `"hourly"` | the frequent update checks and the update PR check |
-| `githubTokenFile` | – | a GitHub token, passed as a systemd credential; without it, PR and issue counts and update PRs are skipped |
-| `notify`, `githubRepo`, `pageUrl` | `"none"` | `"github-issue"` keeps a status issue in `githubRepo` up to date |
-| `nginx.virtualHost` | – | serve the page and the data on this nginx host |
-| `package` | this flake's | the nixkeeper package to run |
+See [nixkeeper on NixOS](docs/nixos.md) or
+[nixkeeper on macOS](docs/darwin.md).
 
-The jobs run as their own `nixkeeper` user, hardened (read-only system, no
-home, no privileges). Like any nixkeeper commands on the same data, they run
-one at a time: each holds a lock (`data.lock`, next to the data) and the next
-waits for it.
+## Documentation
 
-**The first sync** runs within a few minutes of enabling the module: at
-boot, and when the module is first switched on, a catch-up job
-(`nixkeeper-catch-up`) syncs if there's no data yet or the last sync is over
-20 hours old, which also makes up for a day missed while the machine was
-down. After that, the daily sync and the hourly checks run on their own. To
-sync right away, or just in case one didn't run:
-
-```bash
-sudo systemctl start nixkeeper-sync
-```
-
-```bash
-journalctl -u nixkeeper-sync -u nixkeeper-catch-up -f
-```
-
-### On macOS, with nix-darwin
-
-The flake's darwin module runs the same jobs as launchd agents of your user
-(`system.primaryUser`), on the same folders the command uses, so
-`nixkeeper serve` or `nixkeeper paths` by hand see the same data:
-
-```nix
-{
-  inputs.nixkeeper.url = "github:iedame/nixkeeper";
-
-  outputs = { nix-darwin, nixkeeper, ... }: {
-    darwinConfigurations.mac = nix-darwin.lib.darwinSystem {
-      modules = [
-        ./configuration.nix # your Mac's own configuration
-        nixkeeper.darwinModules.default
-        {
-          services.nixkeeper = {
-            enable = true;
-            # Or leave lists out, and keep the ones `nixkeeper init` wrote in
-            # ~/.config/nixkeeper/package-lists/.
-            lists.maintainers = [ "your-github-handle" ];
-            serve.enable = true; # the page at http://127.0.0.1:8000/
-          };
-        }
-      ];
-    };
-  };
-}
-```
-
-It takes the same `lists`, `listsPath`, `githubTokenFile` (a file only you
-can read; without one, a `gh` login is used for reading, as the command
-does), `notify`, `githubRepo` and `pageUrl` as the NixOS module, and:
-
-| Option | Default | What it sets |
-|---|---|---|
-| `syncAt` | `{ Hour = 6; Minute = 0; }` | when the sync runs (launchd `StartCalendarInterval`) |
-| `frequentChecks.enable`, `.at` | `true`, `{ Minute = 23; }` | the frequent update checks and the update PR check, hourly |
-| `serve.enable`, `.port` | `false`, `8000` | keep `nixkeeper serve` running, on 127.0.0.1 |
-| `dataDir` | `~/.local/state/nixkeeper/data` | where the data goes |
-
-The jobs' output is in `~/Library/Logs/nixkeeper/` (Console.app shows it),
-each run between dated lines with the job's name and how it ended
-(`── 2026-10-01 11:23:04 -03 checks finished (exit 0) ──`).
-The module also installs the `nixkeeper` command, and when `lists`,
-`listsPath` or `dataDir` is set, exports them to your shell
-(`NIXKEEPER_LISTS`, `NIXKEEPER_DATA_DIR`, through nix-darwin's
-`environment.variables`), so commands you type use the same lists and data
-as the jobs. Shells nix-darwin sets up (zsh, bash, fish) get them; others,
-like Nushell, need them passed on.
-
-**The first sync** runs when the jobs are loaded, at the rebuild that adds
-the module, and at every login: a catch-up job (`nixkeeper-catch-up`) syncs
-if there's no data yet or the last sync is over 20 hours old. That also
-makes up for a day missed while the Mac was off or logged out (launchd only
-catches up on a run missed during sleep). After that, the daily sync and the
-hourly checks run on their own. To sync right away, `nixkeeper sync` in a
-terminal does it with the same lists and data. Or, just in case the job
-didn't run, start it through launchd:
-
-```bash
-launchctl kickstart gui/$(id -u)/org.nixos.nixkeeper-sync
-```
-
-```bash
-tail -f ~/Library/Logs/nixkeeper/sync.log
-```
-
-`launchctl list | grep nixkeeper` shows the jobs: the first column is a
-running job's process, the second the last exit status (0: fine).
-
-### Pinning a version
-
-A flake input stays on the commit in your `flake.lock`: rebuilding never
-changes it, only `nix flake update` does. With the URLs above, that update
-takes whatever is on `main` then. Every change there has passed CI (the
-tests, both modules evaluated, the NixOS module booted in a VM), but to move
-only from release to release, name a version tag:
-
-```nix
-inputs.nixkeeper.url = "github:iedame/nixkeeper/v0.8.0";
-```
-
-`nix flake update` then leaves it alone; you upgrade by changing the tag,
-after reading that release's notes in [CHANGELOG.md](CHANGELOG.md). Version
-tags never move, so a tag always means the same code. The same works for
-`nix profile install github:iedame/nixkeeper/v0.8.0`.
-
-With `inputs.nixkeeper.inputs.nixpkgs.follows = "nixpkgs";` (one nixpkgs in
-your lock), nixkeeper builds against your nixpkgs rather than the one its CI
-tested with; leave it out to build against nixkeeper's own.
-
-The page finds its data by itself when `data/` is served next to it. Otherwise
-it reads the repository's `data` branch on a GitHub Pages site, or wherever
-`<meta name="nixkeeper-data" content="…">` in `page/index.html` points.
-`?data=<url>` (same site only) overrides it for testing.
-
-## The data
-
-Everything the page shows is plain JSON on the `data` branch, updated by each
-sync: `data/index.json`, one row per package, plus each project's raw
-Repology data. [DATA.md](DATA.md) describes every field, for building
-something else on it.
+- [Reading the page](docs/reading-the-page.md): the dots, badges, panels and tab icon
+- [How it works](docs/how-it-works.md): the sync, the sources, what gets tracked
+- [A dashboard of your own](docs/your-own-instance.md): your own copy on GitHub
+- [The nixkeeper command](docs/command.md): installing, settings, pinning a version
+- [nixkeeper on NixOS](docs/nixos.md) and [on macOS](docs/darwin.md): the modules
+- [The data](docs/data.md): every field in the JSON, for building on it
+- [Troubleshooting](docs/troubleshooting.md): checking that it all runs
 
 ## Contributing
 
 How the code is laid out, the commands, and how changes and releases happen
-are in [CONTRIBUTING.md](CONTRIBUTING.md). When something doesn't run or
-the page looks wrong: [TROUBLESHOOTING.md](TROUBLESHOOTING.md). Security
-problems: [SECURITY.md](SECURITY.md).
+are in [CONTRIBUTING.md](CONTRIBUTING.md); what changed in each version, in
+[CHANGELOG.md](CHANGELOG.md). Security problems: [SECURITY.md](SECURITY.md).
 
 ## License
 

@@ -6,7 +6,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        This dashboard tracks packages its maintainers look after. To track your own packages, you can [set up a dashboard of your own](https://github.com/iedame/nixkeeper#track-your-own-packages) instead.
+        This dashboard tracks packages its maintainers look after. To track your own packages, you can [set up a dashboard of your own](https://github.com/iedame/nixkeeper/blob/main/docs/your-own-instance.md) instead.
   - type: input
     id: attribute
     attributes:
