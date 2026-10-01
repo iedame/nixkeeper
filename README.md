@@ -205,24 +205,28 @@ To run it somewhere other than GitHub Actions, see
 nixkeeper is one command, `nixkeeper`, with a subcommand for each job:
 
 ```bash
+nixkeeper init --maintainer <your GitHub handle>   # start your package lists
 nixkeeper sync            # one full sync
 nixkeeper frequent-check  # only the update checks marked frequent
 nixkeeper pr-check        # outdated packages' update PRs
 nixkeeper paths           # where the lists and data are, and which setting says so
 ```
 
-From a checkout, `nix run .#sync` (and `.#frequent-check`, `.#pr-check`) run
-the same commands. The old names (`nixkeeper-sync`, ...) still work until
-1.0.
+Without installing it, `nix run github:iedame/nixkeeper -- <command>` runs
+the same. The old names (`nixkeeper-sync`, ...) still work until 1.0.
 
-Everything defaults to running from a checkout with the GitHub workflows.
-Elsewhere (a server, a service), flags or environment variables change that;
-a flag wins over its variable:
+On its own, it keeps your lists in `~/.config/nixkeeper/package-lists/`
+(`nixkeeper init` starts them) and the data in
+`~/.local/state/nixkeeper/data/` (following `$XDG_CONFIG_HOME` and
+`$XDG_STATE_HOME`). From a checkout, `nix run .#sync` (and
+`.#frequent-check`, `.#pr-check`) use the checkout's `package-lists/` and
+`data/` instead, as the GitHub workflows do. Flags or environment variables
+choose others; a flag wins over its variable:
 
 | Flag | Variable | Default | What it sets |
 |---|---|---|---|
-| `--data-dir` | `NIXKEEPER_DATA_DIR` | `data` | where the data is written, and the previous run read from |
-| `--lists` | `NIXKEEPER_LISTS` | `package-lists` | the package lists: that Nix folder, or a JSON file of what it evaluates to |
+| `--data-dir` | `NIXKEEPER_DATA_DIR` | `~/.local/state/nixkeeper/data` | where the data is written, and the previous run read from |
+| `--lists` | `NIXKEEPER_LISTS` | `~/.config/nixkeeper/package-lists` (or `lists.json` there) | the package lists: that Nix folder, or a JSON file of what it evaluates to |
 | | `NIXKEEPER_GITHUB_TOKEN_FILE` | – | a file holding a GitHub token (else `GITHUB_TOKEN`, else the local `gh` login) |
 | `--notify` | `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issue up to date (the workflows set it) |
 | | `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issue lives |
@@ -230,7 +234,9 @@ a flag wins over its variable:
 | | `REPOLOGY_BASE_URL` | – | one Repology address to use (normally `repology.org`, falling back to its mirror `repology.amdmi3.ru`) |
 
 The status issue is only posted with a token given explicitly (the token file
-or `GITHUB_TOKEN`), never with the local `gh` login.
+or `GITHUB_TOKEN`), never with the local `gh` login. Reading from GitHub (PR
+and issue counts, update PRs) does use the `gh` login when there's no other
+token.
 
 The page finds its data by itself when `data/` is served next to it. Otherwise
 it reads the repository's `data` branch on a GitHub Pages site, or wherever

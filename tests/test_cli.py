@@ -115,5 +115,77 @@ class Command(unittest.TestCase):
             self.assertIn(f"`nixkeeper {command}`", self.stderr.getvalue())
 
 
+class Init(unittest.TestCase):
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.dir.cleanup)
+        self.folder = os.path.join(self.dir.name, "package-lists")
+        patcher = mock.patch.multiple(
+            config, LISTS=config.LISTS, OUT_DIR=config.OUT_DIR, NOTIFY=None
+        )
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        env = mock.patch.dict(os.environ, {}, clear=True)
+        env.start()
+        self.addCleanup(env.stop)
+        out = mock.patch("sys.stdout", io.StringIO())
+        self.stdout = out.start()
+        self.addCleanup(out.stop)
+
+    def read(self, name):
+        with open(os.path.join(self.folder, name)) as f:
+            return f.read()
+
+    def test_writes_the_starter_lists(self):
+        cli.main(["init", "--lists", self.folder, "--maintainer", "iedame"])
+        self.assertEqual(
+            sorted(os.listdir(self.folder)),
+            [
+                "default.nix",
+                "extra-packages.nix",
+                "ignored-updates.nix",
+                "update-checks.nix",
+            ],
+        )
+        self.assertIn('maintainers = [\n    "iedame"\n  ];', self.read("default.nix"))
+        self.assertIn("nixkeeper sync", self.stdout.getvalue())
+        # Writable, even when the package's copy is read-only (the Nix store).
+        with open(os.path.join(self.folder, "extra-packages.nix"), "a") as f:
+            f.write("")
+
+    def test_several_maintainers(self):
+        cli.main(
+            ["init", "--lists", self.folder, "--maintainer", "a", "--maintainer", "b-c"]
+        )
+        self.assertIn('    "a"\n    "b-c"\n', self.read("default.nix"))
+
+    def test_without_maintainers_says_where_to_add_them(self):
+        cli.main(["init", "--lists", self.folder])
+        self.assertIn("maintainers = [ ];", self.read("default.nix"))
+        self.assertIn("Add your GitHub handle", self.stdout.getvalue())
+
+    def test_to_the_environments_folder(self):
+        os.environ["NIXKEEPER_LISTS"] = self.folder
+        cli.main(["init"])
+        self.assertTrue(os.path.exists(os.path.join(self.folder, "default.nix")))
+
+    def test_never_overwrites(self):
+        os.mkdir(self.folder)
+        with self.assertRaises(SystemExit) as exit:
+            cli.main(["init", "--lists", self.folder])
+        self.assertIn("already exists", str(exit.exception.code))
+        self.assertEqual(os.listdir(self.folder), [])
+
+    def test_refuses_a_json_target(self):
+        with self.assertRaises(SystemExit):
+            cli.main(["init", "--lists", self.folder + ".json"])
+
+    def test_only_github_handles(self):
+        for handle in ('x"; evil = "', "-leading", "trailing-", "a--b", "x" * 40):
+            with self.subTest(handle=handle), self.assertRaises(SystemExit):
+                cli.main(["init", "--lists", self.folder, "--maintainer", handle])
+            self.assertFalse(os.path.exists(self.folder))
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from nixkeeper import notify, prcheck
+from nixkeeper import config, notify, prcheck
 from nixkeeper.sources import github
 
 URL = "https://github.com/NixOS/nixpkgs/pull/"
@@ -41,6 +41,10 @@ class PRCheck(unittest.TestCase):
         os.chdir(self.dir.name)
         self.addCleanup(os.chdir, cwd)
         os.mkdir("data")
+        # The checkout's data/, as the flake's apps pass it.
+        data = mock.patch.object(config, "OUT_DIR", "data")
+        data.start()
+        self.addCleanup(data.stop)
         self.stderr = io.StringIO()
         patcher = mock.patch("sys.stderr", self.stderr)
         patcher.start()

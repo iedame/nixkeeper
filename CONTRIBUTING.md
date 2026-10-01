@@ -67,7 +67,10 @@ the subcommand's module. `nixkeeper/sync.py` runs one sync, top to bottom:
 Around that:
 
 - `config.py`: settings (the command's flags set them, over their
-  environment variables), and the addresses of every source
+  environment variables, over the defaults: the user's XDG folders), and the
+  addresses of every source
+- `init.py` and `templates/package-lists/`: `nixkeeper init`'s starter lists
+  (`nix flake check` validates them like the real ones)
 - `versions.py`: comparing version strings
 - `sources/http.py`: GET with retries, for the sources that need no more
 - `frequent.py`, `prcheck.py`: the hourly checks, which start from the last
@@ -84,6 +87,7 @@ nix run .#sync            # nixkeeper sync, into data/ (alias: nix run .#fetch)
 nix run .#frequent-check  # only the frequent update checks, against data/ (hourly in CI)
 nix run .#pr-check        # outdated packages' update PRs, against data/ (hourly in CI)
 nix run .#sync -- --help  # the command's flags (each app passes its arguments on)
+nix run . -- paths        # the command as installed: your own folders, not the checkout's
 nix fmt                   # format everything (Nix, Python, the page)
 nix flake check           # tests, formatting, linters, package-list checks
 nix develop -c python3 -m unittest discover -s tests -t .   # tests, quickly

@@ -21,6 +21,9 @@ nixkeeper-pr-check = "nixkeeper.cli:pr_check_alias"
 [tool.setuptools.packages.find]
 include = ["nixkeeper*"]
 
+[tool.setuptools.package-data]
+nixkeeper = ["templates/package-lists/*.nix"]  # nixkeeper init's starter lists
+
 [tool.ruff]
 line-length = 88  # Python's standard (Black / ruff default)
 
