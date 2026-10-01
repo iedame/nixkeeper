@@ -71,6 +71,9 @@ Around that:
   addresses of every source
 - `init.py` and `templates/package-lists/`: `nixkeeper init`'s starter lists
   (`nix flake check` validates them like the real ones)
+- `page.py`: `nixkeeper page` and `nixkeeper serve`. The package carries the
+  page: its build copies `docs/` into `nixkeeper/page/` (and links it as
+  `share/nixkeeper/www/`); from a checkout, `docs/` itself
 - `versions.py`: comparing version strings
 - `sources/http.py`: GET with retries, for the sources that need no more
 - `frequent.py`, `prcheck.py`: the hourly checks, which start from the last

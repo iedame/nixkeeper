@@ -4,6 +4,7 @@ checks, with the settings as flags.
     nixkeeper sync | frequent-check | pr-check | paths [--lists PATH]
               [--data-dir DIR] [--notify METHOD]
     nixkeeper init [--maintainer HANDLE ...] [--lists PATH]
+    nixkeeper page DIR | serve [--port PORT] [--bind ADDRESS]  [--data-dir DIR]
     nixkeeper --version
 
 Each flag wins over its environment variable (NIXKEEPER_LISTS,
@@ -18,7 +19,7 @@ import os
 import sys
 from importlib import metadata
 
-from . import config, init, notify
+from . import config, init, notify, page
 
 # name: (what it does, the module whose main() runs it)
 COMMANDS = {
@@ -111,6 +112,31 @@ def parser():
         default=[],
         help="a GitHub handle whose nixpkgs packages to track (repeatable)",
     )
+    write = sub.add_parser(
+        "page",
+        help="write the page and the data into a folder, ready for any static host",
+        description="Write the page and a copy of the data into DIR (created "
+        "if needed; only an empty folder or an earlier page), ready for any "
+        "static host. Run it again after a sync.",
+        parents=[common],
+    )
+    write.add_argument("dir", metavar="DIR", help="the folder to write")
+    serve = sub.add_parser(
+        "serve",
+        help="show the page on this computer, with the data as it is",
+        description="Serve the page and the data, as they are (a new sync "
+        "shows on the next reload), until Ctrl+C.",
+        parents=[common],
+    )
+    serve.add_argument(
+        "--port", type=int, default=8000, help="the port to listen on (default: 8000)"
+    )
+    serve.add_argument(
+        "--bind",
+        metavar="ADDRESS",
+        default="127.0.0.1",
+        help="the address to listen on (default: 127.0.0.1, this computer only)",
+    )
     return p
 
 
@@ -137,6 +163,10 @@ def paths(found):
         where = os.path.abspath(value)
         missing = "" if os.path.exists(where) else ", missing"
         print(f"{label + ':':7} {where}  ({source}{missing})")
+    try:
+        print(f"{'page:':7} {page.page_dir()}  (shipped with nixkeeper)")
+    except SystemExit:
+        print(f"{'page:':7} not included in this copy of nixkeeper")
 
 
 def main(argv=None):
@@ -160,6 +190,13 @@ def main(argv=None):
             "Next: `nixkeeper sync` writes the data to "
             f"{os.path.abspath(found['data_dir'][0])}."
         )
+        return
+    if args.command == "page":
+        folder = page.write(args.dir)
+        print(f"Wrote the page and the data to {folder}: host that folder as is.")
+        return
+    if args.command == "serve":
+        page.serve(args.port, args.bind)
         return
     importlib.import_module(COMMANDS[args.command][1]).main()
 
