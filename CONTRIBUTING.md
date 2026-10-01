@@ -15,7 +15,8 @@ happen. For what nixkeeper does and how to set up your own, see the
   handles, duplicates, malformed update checks and ignore rules)
 - `package-lists/`: what this instance tracks (see the README)
 - `docs/`: the page (`index.html`, `app.js`, `style.css`), reading `data/`
-  from the `data` branch. `favicon.svg` and `tokens.css` are copies from
+  from the `data` branch. `favicon*.svg` (the mark, and the live status
+  icons the page switches between) and `tokens.css` are copies from
   `assets/brand/`, written by `nix run .#brand`
 - `assets/`:
   - `brand/`: nixkeeper's identity: the guide (`BRAND.md`), the mark and
@@ -140,7 +141,7 @@ generated, so edit the scripts in `scripts/brand/`, not the files:
 nix run .#brand
 ```
 
-runs all three in order and copies the favicon and the tokens to `docs/`, for
+runs all three in order and copies the favicons and the tokens to `docs/`, for
 the page. Commit the regenerated files with the change to the scripts.
 
 The page's own colours (`docs/style.css`) are variables that point at the

@@ -319,10 +319,26 @@ function timeAgo(iso) {
   return `${Math.floor(h / 24)}d ago`;
 }
 
+// The tab's icon shows what needs attention among packages: each signal
+// turns its own chevron of the mark (assets/brand/BRAND.md, "Status icon"):
+// r, a new release nothing has been done about yet (not already on master);
+// f, a failure; v, a vulnerability. With none, the "all good" icon.
+function setFavicon(base) {
+  const signals = {
+    r: base.some((p) => computeStatus(p) === 'warn' && !waitingForChannel(p)),
+    f: base.some(hasFailure),
+    v: base.some((p) => p.nixVulnerable),
+  };
+  const key = ['r', 'f', 'v'].filter((s) => signals[s]).join('') || 'ok';
+  const link = document.getElementById('favicon');
+  if (link && !link.href.endsWith(`favicon-${key}.svg`)) link.href = `favicon-${key}.svg`;
+}
+
 function renderStats() {
   // Counts follow the platform and list filters, so "outdated" means
   // outdated on macOS, or on the gaming-team list, while that's selected.
   const base = packages.filter((p) => inPlatform(p) && inList(p));
+  setFavicon(base);
   renderLists();
   const buttons = Object.entries(FILTERS)
     .map(([key, f]) => {

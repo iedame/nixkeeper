@@ -144,6 +144,12 @@ logs couldn't be reached on the last sync, so it shows the last known result.
 The time at the top right is the last sync; it turns pink when that was over
 two days ago.
 
+**The tab's icon** shows what needs attention, so a pinned tab tells you at a
+glance: each of the mark's three chevrons lights up for its own signal, the
+top right orange for a new release (not counting updates already on master),
+the left pink for a failure, the bottom pink for a vulnerability. With none,
+the top right is green: all good. It follows the list filter, like the counts.
+
 ## What gets tracked
 
 `package-lists/default.nix` lists GitHub handles under `maintainers` (every

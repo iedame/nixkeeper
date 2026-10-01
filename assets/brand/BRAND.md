@@ -103,6 +103,12 @@ like the page's green.
 Use the status versions only where the mark shows state (the favicon); use
 the plain mark everywhere else.
 
+The page's tab icon is live: it lights each chevron whose signal is active,
+so several can show at once. `favicon-<signals>.svg` are those icons, cropped
+tight like `favicon.svg`, one per combination: `favicon-ok.svg` (all good),
+then `r` (a new release), `f` (a failure), `v` (a vulnerability) and their
+combinations, e.g. `favicon-rf.svg`. Inactive chevrons stay violet.
+
 ## Typography
 
 - The page and the wordmark: Instrument Sans (the wordmark in Bold, always
