@@ -187,12 +187,14 @@ The release workflow checks that the tag matches `pyproject.toml` and has a
 changelog section, runs the flake checks, and publishes the GitHub Release
 with that section as its notes. If a check fails, nothing is published.
 
-`nix/package.nix` is also what nixpkgs packages, as
-`pkgs/by-name/ni/nixkeeper/package.nix`: the same file with `src` and
-`version` replaced by the release (its header comment shows how). Once
-nixkeeper is in nixpkgs, the nixpkgs-update bot proposes each new release
-there by itself; changes to `nix/package.nix` itself (a new dependency, say)
-go to nixpkgs by hand, with that release's update.
+`nix/package.nix` is ready for nixpkgs, for when nixkeeper has users beyond
+its author (nixpkgs prefers packages proposed and merged by others): as
+`pkgs/by-name/ni/nixkeeper/package.nix`, it's the same file with `src` and
+`version` replaced by the release (its header comment shows how). Until then,
+the flake is how nixkeeper is installed. Once it's in nixpkgs, the
+nixpkgs-update bot proposes each new release there by itself; changes to
+`nix/package.nix` itself (a new dependency, say) go to nixpkgs by hand, with
+that release's update.
 
 Version tags can't be moved or deleted (a tag ruleset), so a published
 version never changes. If a release fails, fix it in a PR and release the next
