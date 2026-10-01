@@ -16,9 +16,19 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   their own hardened user, with the lists in the configuration, a GitHub
   token as a systemd credential, and optionally the page and its data on
   nginx. Tested in a NixOS VM in CI.
+- A nix-darwin module (`darwinModules.default`, `services.nixkeeper`): the
+  same jobs as launchd agents of your user, on the command's own folders
+  (or the lists in the configuration), with their output in
+  `~/Library/Logs/nixkeeper/`, and optionally `nixkeeper serve` kept running
+  for the page on this Mac.
 - Runs on the same data take turns: `sync`, `frequent-check`, `pr-check`
   and `page` hold a lock next to the data folder (`<data dir>.lock`), and a
   second run waits for the first, saying so.
+
+### Changed
+
+- `nixkeeper serve` starts before the first sync: the page says it has no
+  data yet, and shows it once a sync has written it.
 
 ## [0.7.0] - 2026-10-01
 

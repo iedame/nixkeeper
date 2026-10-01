@@ -18,17 +18,10 @@ self:
 let
   cfg = config.services.nixkeeper;
   inherit (lib) mkOption types;
+  common = import ./module-common.nix { inherit self lib pkgs; };
 
   stateDir = "/var/lib/nixkeeper";
   dataDir = "${stateDir}/data";
-
-  # The lists as the sync reads them: a JSON file needs no Nix at run time.
-  listsPath =
-    if cfg.listsPath != null then
-      cfg.listsPath
-    else
-      pkgs.writeText "nixkeeper-lists.json" (builtins.toJSON cfg.lists);
-  listsNeedNix = cfg.listsPath != null && !(lib.hasSuffix ".json" (toString cfg.listsPath));
 
   # nixkeeper itself runs one job at a time on the data (data.lock).
   run = args: "${lib.getExe cfg.package} ${args}";
@@ -37,19 +30,12 @@ let
     inherit description;
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
-    path = lib.optional listsNeedNix config.nix.package;
-    environment = {
-      NIXKEEPER_LISTS = toString listsPath;
+    path = lib.optional (common.listsNeedNix cfg) config.nix.package;
+    environment = common.environment cfg "%d/github-token" // {
       NIXKEEPER_DATA_DIR = dataDir;
-      NIXKEEPER_NOTIFY = cfg.notify;
       # nix eval's cache, when the lists are a Nix folder.
       XDG_CACHE_HOME = "/var/cache/nixkeeper";
-    }
-    // lib.optionalAttrs (cfg.githubTokenFile != null) {
-      NIXKEEPER_GITHUB_TOKEN_FILE = "%d/github-token";
-    }
-    // lib.optionalAttrs (cfg.githubRepo != null) { NIXKEEPER_GITHUB_REPO = cfg.githubRepo; }
-    // lib.optionalAttrs (cfg.pageUrl != null) { NIXKEEPER_PAGE_URL = cfg.pageUrl; };
+    };
     serviceConfig = {
       Type = "oneshot";
       User = "nixkeeper";
@@ -92,57 +78,7 @@ in
   options.services.nixkeeper = {
     enable = lib.mkEnableOption "nixkeeper, a health dashboard for the nixpkgs packages you maintain";
 
-    package = mkOption {
-      type = types.package;
-      default = self.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      defaultText = lib.literalExpression "nixkeeper.packages.\${pkgs.stdenv.hostPlatform.system}.default";
-      description = "The nixkeeper package to use.";
-    };
-
-    lists = mkOption {
-      type = types.submodule {
-        freeformType = (pkgs.formats.json { }).type;
-        options = {
-          maintainers = mkOption {
-            type = types.listOf types.str;
-            default = [ ];
-            example = [ "iedame" ];
-            description = "GitHub handles: every nixpkgs package listing one in meta.maintainers is tracked.";
-          };
-          extraPackages = mkOption {
-            type = types.attrsOf (types.listOf types.str);
-            default = { };
-            example = {
-              extra = [ "firefox" ];
-            };
-            description = "More packages to track, as named lists (each a filter on the page).";
-          };
-          updateChecks = mkOption {
-            type = types.attrsOf (pkgs.formats.json { }).type;
-            default = { };
-            description = "nixkeeper's own update checks, as in package-lists/update-checks.nix.";
-          };
-          ignoredUpdates = mkOption {
-            type = types.attrsOf (types.attrsOf types.str);
-            default = { };
-            description = "nixpkgs-update attempts that don't count, as in package-lists/ignored-updates.nix.";
-          };
-        };
-      };
-      default = { };
-      description = "What to track, as package-lists/ has it. Ignored when listsPath is set.";
-    };
-
-    listsPath = mkOption {
-      type = types.nullOr types.path;
-      default = null;
-      example = "/etc/nixkeeper/package-lists";
-      description = ''
-        Package lists elsewhere instead of `lists`: a Nix folder like
-        package-lists/ (evaluated with the system's Nix at each run) or a JSON
-        file of what it evaluates to.
-      '';
-    };
+    inherit (common.options) lists listsPath;
 
     syncAt = mkOption {
       type = types.str;
@@ -163,46 +99,13 @@ in
       };
     };
 
-    githubTokenFile = mkOption {
-      # A path string, never copied into the (world-readable) Nix store.
-      type = types.nullOr (
-        types.pathWith {
-          inStore = false;
-          absolute = true;
-        }
-      );
-      default = null;
-      example = "/run/secrets/nixkeeper-github-token";
-      description = ''
-        A file holding a GitHub token, passed as a systemd credential: for the
-        open PR and issue counts, update PRs and GitHub update checks (read
-        only, no scopes needed), and the status issue if `notify` says so.
-        Without it those are skipped.
-      '';
-    };
-
-    notify = mkOption {
-      type = types.enum [
-        "none"
-        "github-issue"
-      ];
-      default = "none";
-      description = "How to report what changed: github-issue keeps a status issue in `githubRepo` up to date.";
-    };
-
-    githubRepo = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      example = "you/nixkeeper";
-      description = "The repository for the status issue (notify = github-issue).";
-    };
-
-    pageUrl = mkOption {
-      type = types.nullOr types.str;
-      default = null;
-      example = "https://nixkeeper.example.org/";
-      description = "Where the page is, for links in notifications.";
-    };
+    inherit (common.options)
+      package
+      githubTokenFile
+      notify
+      githubRepo
+      pageUrl
+      ;
 
     nginx.virtualHost = mkOption {
       type = types.nullOr types.str;
@@ -216,10 +119,11 @@ in
   };
 
   config = lib.mkIf cfg.enable {
-    assertions = [
+    assertions = common.assertions cfg ++ [
       {
-        assertion = cfg.notify != "github-issue" || (cfg.githubTokenFile != null && cfg.githubRepo != null);
-        message = "services.nixkeeper.notify = \"github-issue\" needs githubTokenFile and githubRepo.";
+        # A system service has no home: its lists come from the configuration.
+        assertion = cfg.lists != null || cfg.listsPath != null;
+        message = "services.nixkeeper needs lists (or listsPath): what to track.";
       }
     ];
 

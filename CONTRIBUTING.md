@@ -16,6 +16,10 @@ happen. For what nixkeeper does and how to set up your own, see the
 - `nix/module.nix`: the NixOS module (`nixosModules.default`).
   `nix flake check` evaluates it in a NixOS configuration on any system,
   and on Linux boots it in a VM (`nix/module-test.nix`; CI runs it)
+- `nix/darwin-module.nix`: the nix-darwin module (`darwinModules.default`),
+  evaluated in a nix-darwin configuration by `nix flake check` (nix-darwin
+  is a flake input for that only). `nix/module-common.nix` holds what both
+  modules share: the options for the lists, the token and notifications
 - `nix/package-lists.nix`: `nix flake check` validates the package lists
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
   handles, duplicates, malformed update checks and ignore rules)

@@ -95,12 +95,20 @@ class _Handler(http.server.SimpleHTTPRequestHandler):
 def server(port, bind, page=None, data=None):
     """An HTTP server for the page and data (not yet serving)."""
     handler = functools.partial(
-        _Handler, page=page or page_dir(), data=os.path.abspath(data or _data_dir())
+        _Handler, page=page or page_dir(), data=os.path.abspath(data or config.OUT_DIR)
     )
     return http.server.ThreadingHTTPServer((bind, port), handler)
 
 
 def serve(port, bind):
+    """Serve until stopped. Without data yet, the page says it can't find
+    any until a sync writes it (so it can be started before the first one)."""
+    if not os.path.exists(os.path.join(config.OUT_DIR, "index.json")):
+        print(
+            f"No data in {config.OUT_DIR} yet: the page shows it once "
+            "`nixkeeper sync` has run.",
+            file=sys.stderr,
+        )
     httpd = server(port, bind)
     host, port = httpd.server_address[:2]
     print(f"nixkeeper's page: http://{host}:{port}/  (Ctrl+C to stop)", file=sys.stderr)
