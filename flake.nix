@@ -110,7 +110,7 @@
         };
         # Regenerates the brand assets in assets/brand/ (scripts/brand/): the
         # mark's SVGs, the colour tokens, the identity sheet, and the page's
-        # copy of the favicon (GitHub Pages only serves docs/).
+        # copies of the favicon and the tokens (GitHub Pages only serves docs/).
         brand = {
           type = "app";
           program = lib.getExe (
@@ -126,10 +126,11 @@
                 python3 scripts/brand/tokens.py assets/brand
                 python3 scripts/brand/identity.py assets/brand
                 cp assets/brand/favicon.svg docs/favicon.svg
+                cp assets/brand/tokens.css docs/tokens.css
               '';
             }
           );
-          meta.description = "Regenerate the brand assets in assets/brand/ and the page's favicon";
+          meta.description = "Regenerate the brand assets in assets/brand/, and the page's favicon and colour tokens";
         };
         # Retakes the page's screenshots in assets/screenshots/ (scripts/screenshots.sh),
         # with the browser named by --browser: a path, or a package from this
