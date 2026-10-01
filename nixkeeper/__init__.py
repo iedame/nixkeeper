@@ -7,3 +7,14 @@ them, and writes data/ for the page in page/. The frequent checks
 (`nixkeeper frequent-check`, `nixkeeper pr-check`) refresh a few rows of the
 last published data. nixkeeper/cli.py is the command. CONTRIBUTING.md maps the modules.
 """
+
+from importlib import metadata
+
+
+def version():
+    """nixkeeper's version (pyproject.toml's), or "unknown" run from a source
+    tree that isn't installed."""
+    try:
+        return metadata.version("nixkeeper")
+    except metadata.PackageNotFoundError:
+        return "unknown"

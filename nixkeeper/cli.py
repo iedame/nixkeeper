@@ -18,9 +18,8 @@ import importlib
 import os
 import sys
 from datetime import UTC, datetime
-from importlib import metadata
 
-from . import community, config, history, init, lock, notify, page
+from . import community, config, history, init, lock, notify, page, version
 
 # name: (what it does, the module whose main() runs it)
 COMMANDS = {
@@ -45,13 +44,6 @@ SETTINGS = {
     "data_dir": ("OUT_DIR", "NIXKEEPER_DATA_DIR"),
     "notify": ("NOTIFY", "NIXKEEPER_NOTIFY"),
 }
-
-
-def version():
-    try:
-        return metadata.version("nixkeeper")
-    except metadata.PackageNotFoundError:  # run from a source tree
-        return "unknown"
 
 
 def parser():

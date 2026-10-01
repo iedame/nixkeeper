@@ -11,6 +11,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- A link to nixkeeper's repository on the page: a GitHub button in the
+  toolbar, and a quiet last line with the version that made the data
+  ("nixkeeper 0.9.0 on GitHub"). The sync writes that version into
+  `index.json` (`version`).
 - Link previews for the page: shared on Discourse, Matrix, Mastodon and
   the like, a link to a nixkeeper page shows nixkeeper's card (the social
   preview). Releases' notes start with the card too.
@@ -75,6 +79,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
     with a clearer chevron, and the open row and its panel read as one.
   - A package's panel compares nixpkgs with one entry per repository,
     newest first: the first 8, then "Show all".
+  - The legend is a `?` beside "checked …" that opens what each dot means
+    (on master's violet included), and each row's dot says so on hover.
+    Hovering "checked …" shows the exact time of the last sync.
+  - A package's panel: rounded repository chips under a small heading, and
+    "compared with N other repositories" counting them the way it shows
+    them.
   - Touch screens get larger targets, and animations stop when the system
     asks for reduced motion.
   - The card layout now starts below 1080px (was 940px).

@@ -4,10 +4,11 @@ Each row is a package; clicking it opens its details (every repository
 Repology compares it with, links to its homepage and nixpkgs source), and
 clicking its build or update cell opens that instead. The counts at the top
 (tracked, outdated, failed, and flagged vulnerable when any are) filter the
-list, as do the list names under them and a row's platform tags; the filters
+list, as do the list names beside them and a row's platform tags; the filters
 stay in the address, so a view can be shared.
 
-**The dot** in front of each package:
+**The dot** in front of each package (hover it for what it means, or open
+the `?` next to "checked" at the top for all of them):
 
 | Dot | Means |
 |---|---|
@@ -35,8 +36,9 @@ commit or a PR: `unciv: 4.22.1 -> 4.22.6`.
 How long a package has been outdated shows after its name (`3 d`; violet
 when the update is merged and waiting for the channel).
 
-**At the right of the version**: the update's badge on top (`PR #123`, `on
-master`); below it, the badges about nixpkgs' version:
+**At the right of the versions**: beside nixpkgs' version, the badges
+about it (`devel`, `vulnerable`, ...); beside the newest, the update's
+(`PR #123`, `on master`, `check failing`):
 
 | Badge | Means |
 |---|---|

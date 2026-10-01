@@ -165,7 +165,9 @@ function prBadge(pkg) {
 // said about it (devel, vulnerable, ...) at the right. Outdated, two lines:
 // nixpkgs' version, and under it the newest, in full, with the start they
 // share faded so the part that changes stands out ("→" hangs to its left).
-// At the right, the update's PR or master badge on top; the rest below. Screen readers get the two versions in a
+// At the right, each line's badges: what's said about nixpkgs' version
+// (devel, vulnerable, ...) beside it; the update's (its PR, on master, a
+// failing check) beside the newest. Screen readers get the two versions in a
 // sentence instead. Both versions are one button: it copies the update's
 // title as nixpkgs writes it ("unciv: 4.22.1 -> 4.22.6").
 function versionCell(pkg, st) {
@@ -186,8 +188,8 @@ function versionCell(pkg, st) {
     <span class="v-now"><span class="v" aria-hidden="true">${now}</span><span class="sr-only">${now}, newest ${escapeHtml(target || 'unknown')}</span></span>
     <span class="v-next" aria-hidden="true" title="${escapeHtml(target || '')}"><span class="arrow">→</span><span class="same">${escapeHtml(d.same)}</span><span class="ref${merged ? ' merged' : ''}">${escapeHtml(d.to || '?')}</span></span>
     </button>
-    <span class="v-tags top">${prBadge(pkg)}</span>
-    <span class="v-tags bottom">${about}${failing}</span>
+    <span class="v-tags top">${about}</span>
+    <span class="v-tags bottom">${prBadge(pkg)}${failing}</span>
   </div>`;
 }
 
@@ -298,6 +300,20 @@ function setSitePalette(palette) {
   applyTheme();
 }
 
+// The row's dot, on hover (the legend popover lists them all).
+const DOT_TITLE = {
+  ok: 'Up to date: nixpkgs has the newest version',
+  warn: 'Outdated: a newer release is out',
+  merged: 'On master: the update is merged, waiting for nixos-unstable',
+  missing: 'Not packaged: not in nixpkgs unstable',
+  neutral: "Can't compare: a rolling or unusual version scheme",
+};
+
+function showLegend(open) {
+  document.getElementById('legendPanel').hidden = !open;
+  document.getElementById('legendBtn').setAttribute('aria-expanded', open);
+}
+
 function showThemePanel(open) {
   document.getElementById('themePanel').hidden = !open;
   document.getElementById('themeBtn').setAttribute('aria-expanded', open);
@@ -333,6 +349,9 @@ async function loadIndex() {
     const data = await res.json();
     packages = data.packages || [];
     checkedAt = data.checkedAt || null;
+    // The nixkeeper that made the data, in the footer (older data has none).
+    document.getElementById('version').textContent =
+      data.version && data.version !== 'unknown' ? ` ${data.version}` : '';
     showListProblems(data.listProblems || []);
     setSitePalette(data.page?.theme || null);
     document.getElementById('search').disabled = false;
@@ -385,9 +404,20 @@ function renderStats() {
   document.getElementById('stats').innerHTML = `${buttons}${platformChip}`;
   const checked = document.getElementById('checked');
   checked.classList.toggle('stale', stale);
+  // The exact time on hover: "checked 4h ago" is friendly, but vague.
+  const exact = checkedAt
+    ? `Last full sync: ${new Date(checkedAt).toLocaleString(undefined, {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZoneName: 'short',
+      })}.`
+    : 'No full sync yet.';
   checked.title = stale
-    ? "The daily sync hasn't updated the data in over 2 days. Check where it runs (on GitHub: the Actions tab)."
-    : '';
+    ? `${exact} The daily sync hasn't updated the data in over 2 days. Check where it runs (on GitHub: the Actions tab).`
+    : exact;
   checked.textContent = `checked ${timeAgo(checkedAt)}${stale ? ' — sync may be failing' : ''}`;
 }
 
@@ -423,7 +453,7 @@ function render(list) {
   }
   content.innerHTML = `<div class="wrap"><table>
     <thead><tr>
-      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>open on GitHub</th><th>build failures</th><th>update failures</th><th aria-hidden="true"></th>
+      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>Open on GitHub</th><th>Build failures</th><th>Update failures</th><th aria-hidden="true"></th>
     </tr></thead>
     <tbody id="rows"></tbody>
   </table></div>`;
@@ -437,7 +467,7 @@ function render(list) {
     tr.className = 'row';
     tr.tabIndex = 0;
     tr.innerHTML = `
-      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}"${waitingForChannel(pkg) ? ' title="Update merged: on master, waiting for nixos-unstable"' : ''}></span><span class="n">${escapeHtml(pkg.name)}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
+      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${escapeHtml(pkg.name)}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
       <td class="c-ver ver mono">${verCell}</td>
       <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
       <td class="c-build">${buildCell(pkg)}</td>
@@ -834,7 +864,7 @@ async function fillDetail(pkg, el) {
                 ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${since}`
                 : st === 'neutral'
                   ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
-                  : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`
+                  : ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${others.length} other ${others.length === 1 ? 'repository' : 'repositories'}.`
           }${
             up && !up.newer && !failing
               ? up.behind
@@ -879,7 +909,7 @@ async function fillDetail(pkg, el) {
         : ''
     }
     <div class="detail-row">
-      ${homepage ? `<a class="files-link" href="${href(homepage)}" target="_blank" rel="noopener">Homepage →</a>` : ''}
+      ${homepage ? `<a class="files-link" href="${href(homepage)}" target="_blank" rel="noopener">Homepage ↗</a>` : ''}
       ${safeUrl(pkg.source) ? `<a class="files-link" href="${href(pkg.source)}" target="_blank" rel="noopener" title="Where nixpkgs defines this package">${escapeHtml(sourceFileName(pkg.source))} ↗</a>` : ''}
       ${pkg.project ? `<a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>` : ''}
     </div>
@@ -970,14 +1000,25 @@ document.getElementById('themePanel').addEventListener('change', (e) => {
   if (name === 'mode') store('nixkeeper-mode', value === 'auto' ? null : value);
   applyTheme();
 });
-// Closes on a click elsewhere, or Escape (back to the button).
+document
+  .getElementById('legendBtn')
+  .addEventListener('click', () => showLegend(document.getElementById('legendPanel').hidden));
+// The Theme menu and the legend close on a click elsewhere, or Escape (back
+// to their button).
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.theme')) showThemePanel(false);
+  if (!e.target.closest('.legend')) showLegend(false);
 });
 document.addEventListener('keydown', (e) => {
-  if (e.key !== 'Escape' || document.getElementById('themePanel').hidden) return;
-  showThemePanel(false);
-  document.getElementById('themeBtn').focus();
+  if (e.key !== 'Escape') return;
+  for (const [panel, btn, show] of [
+    ['themePanel', 'themeBtn', showThemePanel],
+    ['legendPanel', 'legendBtn', showLegend],
+  ]) {
+    if (document.getElementById(panel).hidden) continue;
+    show(false);
+    document.getElementById(btn).focus();
+  }
 });
 
 // The sticky header's height, for the column headings to stick under it.

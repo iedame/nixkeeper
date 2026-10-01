@@ -199,6 +199,7 @@ header.top {
   display: none;
 }
 .btn {
+  text-decoration: none;
   display: inline-grid;
   place-items: center;
   height: 34px;
@@ -379,10 +380,91 @@ a:focus-visible {
   font-size: 12px;
   margin-right: 2px;
 }
-.filterbar .checked {
+/* When the data was checked, and the legend's "?". */
+.filterbar .meta {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.filterbar .checked {
   color: var(--ink-faint);
   font-size: 13px;
+}
+/* The legend: a "?" that opens what the dots mean (a popover, like the
+   Theme menu). */
+.legend {
+  position: relative;
+}
+.help-btn {
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 999px;
+  border: 1px solid var(--hairline-strong);
+  background: var(--surface);
+  color: var(--ink-faint);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.help-btn:hover,
+.help-btn[aria-expanded="true"] {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--hairline-strong));
+}
+.help-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.legend-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  z-index: 10;
+  width: max-content;
+  max-width: min(340px, calc(100vw - 40px));
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--hairline-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.16);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.legend-panel[hidden] {
+  display: none;
+}
+.legend-panel .pop-title {
+  margin: 0 0 8px;
+  color: var(--ink-faint);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.legend-panel ul {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  align-items: center;
+  gap: 7px 8px;
+}
+.legend-panel li {
+  display: contents;
+}
+.legend-panel b {
+  color: var(--ink);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.legend-panel > a {
+  font-size: 12.5px;
 }
 .filterbar .checked.stale {
   color: var(--danger);
@@ -406,9 +488,13 @@ a:focus-visible {
   color: var(--ink);
 }
 
+/* Separate borders (none apart): with collapsed ones, Chrome paints the
+   rows' lines over the sticky headings as they scroll under them. So the
+   lines are on the cells, which stay under the headings. */
 table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 thead th {
   text-align: left;
@@ -444,6 +530,8 @@ thead th {
 }
 tbody tr.row {
   cursor: pointer;
+}
+tbody tr.row td {
   border-bottom: 1px solid var(--hairline);
 }
 tbody tr.row:hover {
@@ -935,12 +1023,12 @@ tbody tr.row.open,
 tbody tr.detail.open {
   background: var(--surface);
 }
-tbody tr.row.open {
-  border-bottom-color: transparent;
-}
 tbody tr.detail td {
   padding: 4px 10px 18px 10px;
   border-bottom: 1px solid var(--hairline);
+}
+tbody tr.row.open td {
+  border-bottom-color: transparent;
 }
 .detail-inner {
   padding-left: 18px;
@@ -953,10 +1041,14 @@ tbody tr.detail td {
   font-size: 14px;
   margin-bottom: 10px;
 }
+/* A panel's small headings ("Compared against"): like the popovers'. */
 .other-label {
-  font-size: 11.5px;
+  margin: 10px 0 8px;
   color: var(--ink-faint);
-  margin: 2px 0 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 .repo-chips {
   display: flex;
@@ -967,8 +1059,8 @@ tbody tr.detail td {
 }
 .repo-chip {
   font-size: 12.5px;
-  padding: 4px 9px;
-  border-radius: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
   background: var(--bg);
   border: 1px solid var(--hairline);
   color: var(--ink-soft);
@@ -985,8 +1077,8 @@ tbody tr.detail td {
 .more-btn {
   font: inherit;
   font-size: 12.5px;
-  padding: 4px 10px;
-  border-radius: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
   border: 1px dashed var(--hairline-strong);
   background: none;
   color: var(--accent);
@@ -1037,28 +1129,27 @@ tbody tr.detail td {
   font-size: 12px;
 }
 
-footer.legend {
+/* The last line: nixkeeper (and its version) on GitHub, and on a copy, its
+   package lists. Quiet, centred. */
+.colophon {
   display: flex;
-  gap: 16px;
-  padding-top: 20px;
-  margin-top: 8px;
-  border-top: 1px solid var(--hairline);
-  font-size: 12.5px;
-  color: var(--ink-faint);
+  justify-content: center;
   flex-wrap: wrap;
+  gap: 6px 18px;
+  margin: 24px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--hairline);
+  font-size: 12px;
+  color: var(--ink-faint);
 }
-footer.legend span {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+.colophon .files-link {
+  color: var(--ink-faint);
+  text-decoration: none;
 }
-/* Where nixkeeper and this page's package lists come from, at the end. */
-footer.legend .about {
-  margin-left: auto;
-  gap: 12px;
-}
-footer.legend .about .files-link {
-  font-size: 12.5px;
+.colophon .files-link:hover {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 @media (max-width: 640px) {
@@ -1113,10 +1204,11 @@ footer.legend .about .files-link {
   .lists-label {
     flex: none;
   }
-  .filterbar .checked {
-    display: block;
+  .filterbar .meta {
+    justify-content: flex-end;
     margin-top: 8px;
-    text-align: right;
+  }
+  .filterbar .checked {
     font-size: 12px;
   }
   /* Only the filters stay at the top: the whole header, stacked, would
@@ -1136,7 +1228,7 @@ footer.legend .about .files-link {
   }
   /* Once stuck at the top (scrolled past), just the chips: "checked ..."
      comes back at the top of the page, like the logo. */
-  .filterbar.stuck .checked {
+  .filterbar.stuck .meta {
     display: none;
   }
   table,
@@ -1153,10 +1245,15 @@ footer.legend .about .files-link {
     align-items: center;
     gap: 4px 6px;
     padding: 12px 6px;
+    border-bottom: 1px solid var(--hairline);
+  }
+  tbody tr.row.open {
+    border-bottom-color: transparent;
   }
   tbody tr.row td {
     display: block;
     padding: 0;
+    border-bottom: 0;
   }
   tbody tr.row td.c-name {
     order: 0;
