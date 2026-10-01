@@ -42,22 +42,16 @@ commenting when something newly needs attention.
 
 ```mermaid
 flowchart LR
-  lists["package-lists/<br>what to track"] --> sync
-  subgraph sources [Sources]
-    direction TB
-    index["nixpkgs channel<br>index, meta.broken"]
-    repology[Repology]
-    checks["release pages,<br>tags, branches"]
-    hydra[Hydra]
-    bot["nixpkgs-update<br>logs"]
-    gh["GitHub<br>PRs, issues"]
+  lists["package-lists/<br>what to track"] --> track
+  index["nixpkgs channel<br>package index"] --> track
+  subgraph sync ["daily sync (GitHub Actions)"]
+    track["which packages<br>to track"] --> ask["look each one up"]
   end
-  sources --> sync["daily sync<br>(GitHub Actions)"]
-  sources --> hourly["hourly checks"]
-  sync --> data[("data branch<br>JSON")]
-  hourly --> data
-  sync --> issue["status issue"]
+  sources["<b>Sources</b><br>Repology<br>release pages, tags, branches<br>Hydra, nixpkgs' meta.broken<br>nixpkgs-update logs<br>GitHub PRs, issues"] --> ask
+  ask --> data[("data branch<br>JSON")]
+  ask --> issue["status issue"]
   data --> page["the page<br>(GitHub Pages)"]
+  data <-->|"a few rows,<br>looked up again"| hourly["hourly checks"]
 ```
 
 There's no server: nixkeeper is a program that gathers data, and a static
