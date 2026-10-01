@@ -79,8 +79,8 @@ page that shows it.
   when something changed. GitHub runs scheduled workflows on a best-effort
   basis, so "hourly" can stretch to a few hours when Actions is busy; the
   daily sync still covers everything.
-- **The page** (`docs/`, served by GitHub Pages) is plain HTML and
-  JavaScript that reads the JSON in your browser.
+- **The page** (`docs/`, published to GitHub Pages by a workflow) is plain
+  HTML and JavaScript that reads the JSON in your browser.
 
 When a source can't be reached, the row keeps its last known result, marked
 as not refreshed, and the status issue says so; the rest of the sync goes
@@ -178,8 +178,10 @@ gaming team's. To get a dashboard of your own:
    - `update-checks.nix` and `ignored-updates.nix`: empty them (`{ }`) or
      replace the entries. They name this instance's packages, and
      `nix flake check` fails on entries for packages you don't track.
-3. **Turn on GitHub Pages**: Settings → Pages → Deploy from a branch: `main`,
-   folder `/docs`. The page is then at `https://<you>.github.io/<repo>/`.
+3. **Turn on GitHub Pages**: Settings → Pages → Source: **GitHub Actions**.
+   Then Actions → "Pages: publish the page" → Run workflow (after that, it
+   publishes by itself whenever the page changes). The page is then at
+   `https://<you>.github.io/<repo>/`.
 4. **Run the first sync**: Actions → "Data: daily sync" → Run workflow. It
    takes a few minutes, creates the `data` branch, and opens the status issue
    (labelled `nixkeeper-status`) that the syncs keep up to date. The page
