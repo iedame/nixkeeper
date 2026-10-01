@@ -255,7 +255,7 @@
       "git@ieda.me"
     ],
     "origversion": null,
-    "repo": "nix_unstable",
+    "repo": "nix_stable_26_05",
     "srcname": "microsoft-edge",
     "status": "outdated",
     "summary": "Web browser from Microsoft",
@@ -275,7 +275,7 @@
       "git@ieda.me"
     ],
     "origversion": null,
-    "repo": "nix_stable_26_05",
+    "repo": "nix_unstable",
     "srcname": "microsoft-edge",
     "status": "outdated",
     "summary": "Web browser from Microsoft",
@@ -295,6 +295,25 @@
     "status": "outdated",
     "version": "153.0.4234.48",
     "visiblename": "network/microsoft-edge"
+  },
+  {
+    "categories": [
+      "www-client"
+    ],
+    "licenses": [
+      "microsoft-edge"
+    ],
+    "maintainers": [
+      "chromium@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "www-client/microsoft-edge-dev",
+    "status": "outdated",
+    "summary": "The web browser from Microsoft",
+    "version": "141.0.3500.1",
+    "visiblename": "www-client/microsoft-edge-dev",
+    "vulnerable": true
   },
   {
     "licenses": [
@@ -325,25 +344,6 @@
     "status": "outdated",
     "summary": "The web browser from Microsoft",
     "version": "141.0.3514.0",
-    "visiblename": "www-client/microsoft-edge-dev",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "www-client"
-    ],
-    "licenses": [
-      "microsoft-edge"
-    ],
-    "maintainers": [
-      "chromium@gentoo.org"
-    ],
-    "origversion": null,
-    "repo": "liguros_stable",
-    "srcname": "www-client/microsoft-edge-dev",
-    "status": "outdated",
-    "summary": "The web browser from Microsoft",
-    "version": "141.0.3500.1",
     "visiblename": "www-client/microsoft-edge-dev",
     "vulnerable": true
   },

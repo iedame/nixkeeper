@@ -4,18 +4,37 @@
       "xournalpp"
     ],
     "categories": [
-      "x11"
+      "misc"
     ],
     "maintainers": [
       "bap@debian.org",
       "sunweaver@debian.org"
     ],
-    "origversion": "1.3.1-1+rpi1",
-    "repo": "raspbian_testing",
+    "origversion": "1.2.6-1",
+    "repo": "parrot",
     "srcname": "xournalpp",
     "status": "outdated",
-    "subrepo": "main",
-    "version": "1.3.1",
+    "subrepo": "parrot/main",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.6-1",
+    "repo": "parrot",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "1.2.6",
     "visiblename": "xournalpp"
   },
   {
@@ -84,6 +103,18 @@
     "subrepo": "community",
     "summary": "Xournal++ is a handwriting notetaking software with PDF annotation support",
     "version": "1.1.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "categories": [
+      "Office"
+    ],
+    "origversion": "1.1.2-1pclos2022",
+    "repo": "pclinuxos",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "summary": "Note taking software designed around a tablet",
+    "version": "1.1.2",
     "visiblename": "xournalpp"
   },
   {
@@ -405,6 +436,25 @@
     "summary": "Languages for package xournalpp",
     "version": "1.2.7",
     "visiblename": "xournalpp-lang"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.1.3-1",
+    "repo": "debian_12",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "1.1.3",
+    "visiblename": "xournalpp"
   },
   {
     "binname": "xournalpp",
@@ -757,25 +807,6 @@
       "bap@debian.org",
       "sunweaver@debian.org"
     ],
-    "origversion": "1.1.3-1",
-    "repo": "debian_12",
-    "srcname": "xournalpp",
-    "status": "outdated",
-    "subrepo": "bookworm/main",
-    "version": "1.1.3",
-    "visiblename": "xournalpp"
-  },
-  {
-    "binnames": [
-      "xournalpp"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "bap@debian.org",
-      "sunweaver@debian.org"
-    ],
     "origversion": "1.2.6-1",
     "repo": "debian_13",
     "srcname": "xournalpp",
@@ -820,25 +851,6 @@
     "srcname": "xournalpp",
     "status": "outdated",
     "subrepo": "forky/main",
-    "version": "1.3.7",
-    "visiblename": "xournalpp"
-  },
-  {
-    "binnames": [
-      "xournalpp"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "bap@debian.org",
-      "sunweaver@debian.org"
-    ],
-    "origversion": "1.3.7-1",
-    "repo": "debian_unstable",
-    "srcname": "xournalpp",
-    "status": "legacy",
-    "subrepo": "sid/main",
     "version": "1.3.7",
     "visiblename": "xournalpp"
   },
@@ -1589,44 +1601,6 @@
     "visiblename": "xournalpp"
   },
   {
-    "binnames": [
-      "xournalpp"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "bap@debian.org",
-      "sunweaver@debian.org"
-    ],
-    "origversion": "1.1.3-1",
-    "repo": "raspbian_oldstable",
-    "srcname": "xournalpp",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "1.1.3",
-    "visiblename": "xournalpp"
-  },
-  {
-    "binnames": [
-      "xournalpp"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "bap@debian.org",
-      "sunweaver@debian.org"
-    ],
-    "origversion": "1.2.6-1",
-    "repo": "raspbian_stable",
-    "srcname": "xournalpp",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "1.2.6",
-    "visiblename": "xournalpp"
-  },
-  {
     "binname": "mingw-w64-clang-x86_64-xournalpp",
     "licenses": [
       "spdx:GPL-2.0-or-later"
@@ -1638,6 +1612,25 @@
     "summary": "Handwriting notetaking software with PDF annotation support (mingw-w64)",
     "version": "1.3.8",
     "visiblename": "mingw-w64-clang-x86_64-xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.7-1",
+    "repo": "ubuntu_26_10",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "stonking/universe",
+    "version": "1.3.7",
+    "visiblename": "xournalpp"
   },
   {
     "binname": "mingw-w64-clang-aarch64-xournalpp",
@@ -1981,56 +1974,6 @@
     "visiblename": "xournalpp"
   },
   {
-    "binnames": [
-      "xournalpp"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "bap@debian.org",
-      "sunweaver@debian.org"
-    ],
-    "origversion": "1.2.6-1",
-    "repo": "parrot",
-    "srcname": "xournalpp",
-    "status": "outdated",
-    "subrepo": "parrot/main",
-    "version": "1.2.6",
-    "visiblename": "xournalpp"
-  },
-  {
-    "binnames": [
-      "xournalpp"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "bap@debian.org",
-      "sunweaver@debian.org"
-    ],
-    "origversion": "1.2.6-1",
-    "repo": "parrot",
-    "srcname": "xournalpp",
-    "status": "outdated",
-    "subrepo": "parrot-updates/main",
-    "version": "1.2.6",
-    "visiblename": "xournalpp"
-  },
-  {
-    "categories": [
-      "Office"
-    ],
-    "origversion": "1.1.2-1pclos2022",
-    "repo": "pclinuxos",
-    "srcname": "xournalpp",
-    "status": "outdated",
-    "summary": "Note taking software designed around a tablet",
-    "version": "1.1.2",
-    "visiblename": "xournalpp"
-  },
-  {
     "categories": [
       "app:gui"
     ],
@@ -2114,6 +2057,63 @@
     "status": "outdated",
     "subrepo": "landing/main",
     "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.1.3-1",
+    "repo": "raspbian_oldstable",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.1.3",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.2.6-1",
+    "repo": "raspbian_stable",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.2.6",
+    "visiblename": "xournalpp"
+  },
+  {
+    "binnames": [
+      "xournalpp"
+    ],
+    "categories": [
+      "x11"
+    ],
+    "maintainers": [
+      "bap@debian.org",
+      "sunweaver@debian.org"
+    ],
+    "origversion": "1.3.1-1+rpi1",
+    "repo": "raspbian_testing",
+    "srcname": "xournalpp",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.3.1",
     "visiblename": "xournalpp"
   },
   {
@@ -2359,25 +2359,6 @@
     "status": "outdated",
     "subrepo": "resolute/universe",
     "version": "1.3.3",
-    "visiblename": "xournalpp"
-  },
-  {
-    "binnames": [
-      "xournalpp"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "bap@debian.org",
-      "sunweaver@debian.org"
-    ],
-    "origversion": "1.3.7-1",
-    "repo": "ubuntu_26_10",
-    "srcname": "xournalpp",
-    "status": "outdated",
-    "subrepo": "stonking/universe",
-    "version": "1.3.7",
     "visiblename": "xournalpp"
   },
   {
