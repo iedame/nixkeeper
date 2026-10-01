@@ -113,8 +113,10 @@ nix run .#screenshots -- --browser google-chrome
 
 That writes all five, compressed: `desktop-{dark,light}.png` (1280px wide,
 at 2x, with a panel open), `mobile-{dark,light}.png` (390px, at 2x) and
-`social-preview.png` (1280×640, dark). The social preview is then uploaded
-by hand: Settings → General → Social preview.
+`social-preview.png` (a 1280×640 card at 2x: the lockup, what nixkeeper
+watches, and the dark desktop shot; its layout is
+`scripts/social-preview.html`). The social preview is then uploaded by hand:
+Settings → General → Social preview.
 
 | Option | What it sets |
 |---|---|

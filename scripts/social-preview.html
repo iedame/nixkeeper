@@ -1,0 +1,84 @@
+<!doctype html>
+<!-- The repository's social preview (1280x640), rendered by
+     scripts/screenshots.sh next to the page's files: the header's lockup and
+     status icons, the tokens, and shot.png, the dark desktop screenshot. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>nixkeeper social preview</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&display=block">
+<link rel="stylesheet" href="tokens.css">
+<style>
+html, body { margin: 0; }
+body {
+  width: 1280px;
+  height: 640px;
+  overflow: hidden;
+  position: relative;
+  color: #edeff2;
+  font-family: "Instrument Sans", system-ui, sans-serif;
+  background:
+    radial-gradient(circle at 0% 0%, var(--nk-violet-l25), transparent 60%),
+    #16181c;
+}
+.text {
+  position: absolute;
+  left: 72px;
+  top: 0;
+  bottom: 0;
+  width: 470px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.lockup { display: block; height: 64px; width: auto; align-self: flex-start; }
+h1 {
+  margin: 44px 0 36px;
+  font-size: 38px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+ul { list-style: none; margin: 0; padding: 0; }
+li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 22px;
+  color: #a3a8b0;
+  margin-bottom: 14px;
+}
+li img { width: 30px; height: auto; }
+/* The page, cut off by the card's right and bottom edges, header skipped. */
+.shot {
+  position: absolute;
+  left: 600px;
+  top: 72px;
+  width: 760px;
+  height: 640px;
+  overflow: hidden;
+  border: 1px solid #383d44;
+  border-radius: 14px 0 0 0;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  background: #16181c;
+}
+.shot img {
+  display: block;
+  width: 960px;
+  margin-top: -66px;
+}
+</style>
+</head>
+<body>
+<div class="text">
+  <img class="lockup" src="nixkeeper-lockup-tight-dark.svg" alt="nixkeeper">
+  <h1>Health dashboard for the nixpkgs packages you maintain</h1>
+  <ul>
+    <li><img src="favicon-r.svg" alt="">New releases</li>
+    <li><img src="favicon-f.svg" alt="">Build and update failures</li>
+    <li><img src="favicon-v.svg" alt="">Vulnerabilities</li>
+  </ul>
+</div>
+<div class="shot"><img src="shot.png" alt=""></div>
+</body>
+</html>

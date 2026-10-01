@@ -3,8 +3,9 @@
 # preview), from the live data: nix run .#screenshots, from the repository.
 #
 # Takes: desktop-{dark,light}.png (1280px wide, at 2x, with a panel open),
-# mobile-{dark,light}.png (390px, at 2x) and social-preview.png (1280x640,
-# dark), then compresses them.
+# mobile-{dark,light}.png (390px, at 2x) and social-preview.png (a 1280x640
+# card at 2x, scripts/social-preview.html, around the dark desktop shot), then
+# compresses them.
 #
 # With the page's current code (docs/) against the published data, so what's
 # shown is what's live.
@@ -30,8 +31,8 @@
 # nixpkgs-update attempt), or auto: update if that has something to show
 # (not just "none reported" or "not attempted"), else build likewise, else
 # info. Default: 10:auto, far enough down that the table shows above the
-# panel, whatever this copy of nixkeeper tracks. The phone shots and the
-# social preview show the plain list.
+# panel, whatever this copy of nixkeeper tracks. The phone shots show the
+# plain list; the social preview reuses the dark desktop shot.
 #
 # --data is where the data is: a URL to the folder holding index.json.
 # Default: this repository's data branch on GitHub (from its origin remote).
@@ -280,7 +281,11 @@ for theme in dark light; do
 	magick "$work/out/mobile-$theme.png" -gravity center -crop 780x1688+0+0 +repage \
 		"$work/out/mobile-$theme.png"
 done
-shot social-preview 1280 640 1 dark ""
+# The social preview: a card (scripts/social-preview.html) with the lockup,
+# what nixkeeper watches, and the dark desktop shot, at 2x.
+cp "$work/out/desktop-dark.png" "$site/shot.png"
+cp scripts/social-preview.html "$site/"
+shot social-preview 1280 640 2 dark social-preview.html
 
 echo "Compressing into assets/screenshots/..."
 mkdir -p assets/screenshots
