@@ -11,6 +11,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Community update checks (`community/update-checks.nix`): update checks
+  anyone can add by pull request, for any nixpkgs package. Opt in with
+  `communityChecks = true;` in your package lists (or
+  `lists.communityChecks` in the modules): each sync then uses them for the
+  packages you track, and only those, with your own update checks winning
+  for the same package. They come with nixkeeper, so they change only when
+  you update it. Because they run on every subscriber's machine, they're held
+  to limits: web pages over https to public hosts only (redirects too), at
+  most 2 MB; short patterns without the shapes that can take forever. A rule
+  beyond them is refused, never fetched. See `docs/community-checks.md`.
 - `docs/troubleshooting.md`: how to check that nixkeeper runs as it should on
   GitHub, as the command, and with the NixOS and nix-darwin modules (the
   jobs, their schedules, logs and data), and what the page's warnings mean.

@@ -99,6 +99,14 @@ export function fromMaster(pkg) {
   );
 }
 
+// Whether the package's update check is a community rule
+// (community/update-checks.nix): its result says so, or its failure does.
+export function communityCheck(pkg) {
+  return Boolean(
+    pkg.upstream?.community || pkg.notRefreshed?.upstream?.reason?.startsWith('community rule'),
+  );
+}
+
 // The version an update would bring.
 export function targetVersion(pkg) {
   return fromMaster(pkg) ? pkg.master : pkg.refVersion;

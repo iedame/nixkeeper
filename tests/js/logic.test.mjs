@@ -8,6 +8,7 @@ import {
   aheadOnMaster,
   attentionRank,
   buildsWith,
+  communityCheck,
   compareVersions,
   computeStatus,
   daysText,
@@ -137,6 +138,22 @@ describe('master ahead of the channel', () => {
   });
   test("isn't a new release to act on in the tab icon", () => {
     assert.equal(faviconKey([wesnoth()]), 'ok');
+  });
+});
+
+describe('communityCheck', () => {
+  test("a community rule's result, or its failure", () => {
+    assert.equal(communityCheck(pkg({ upstream: { version: '2', community: true } })), true);
+    const failing = {
+      upstream: { since: 'x', reason: 'community rule refused: url must be https://' },
+    };
+    assert.equal(communityCheck(pkg({ notRefreshed: failing })), true);
+  });
+  test('your own rule', () => {
+    assert.equal(communityCheck(pkg({ upstream: { version: '2' } })), false);
+    const failing = { upstream: { since: 'x', reason: 'nothing matches' } };
+    assert.equal(communityCheck(pkg({ notRefreshed: failing })), false);
+    assert.equal(communityCheck(pkg()), false);
   });
 });
 

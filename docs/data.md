@@ -74,6 +74,7 @@ A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
 | `repo` | the GitHub repository, for GitHub checks |
 | `commit`, `behind`, `outdatedAfter` | branch checks: the newest commit, how many commits since nixpkgs' version, and the limits (`{ "days", "commits" }`) |
 | `checkedAt` | when it was last checked |
+| `community` | `true` when the check is a [community rule](community-checks.md) |
 
 ### Master and update PRs
 

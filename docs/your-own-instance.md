@@ -23,7 +23,8 @@ gaming team's. To get a dashboard of your own:
    and the hourly workflow looks for update PRs.
 5. **Optionally**, add your own [update checks](../package-lists/update-checks.nix)
    and [ignore rules](../package-lists/ignored-updates.nix), each documented in
-   its file, and update the README's badges to point at your instance.
+   its file, or opt in to the [community update checks](community-checks.md)
+   (`communityChecks = true;` in `default.nix`), and update the README's badges to point at your instance.
    Retake the screenshots of your own page with
    `nix run .#screenshots -- --browser google-chrome` (see
    [CONTRIBUTING.md](../CONTRIBUTING.md#screenshots) for the options).

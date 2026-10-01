@@ -9,7 +9,7 @@ import sys
 import urllib.error
 from datetime import UTC, datetime
 
-from . import history, partial, rows
+from . import community, history, partial, rows
 from .changes import count_master
 from .sources import nixpkgs as nixpkgs_source
 from .sources import repology, upstream
@@ -55,13 +55,11 @@ def refresh_repology(row, previous, now):
 def main():
     now = datetime.now(UTC).isoformat()
     previous, packages = partial.load()
-    checks = {
-        name: check
-        for name, check in (
-            nixpkgs_source.read_lists().get("updateChecks") or {}
-        ).items()
-        if check.get("frequent")
-    }
+    # Your own checks and, if the lists opt in, the community's (community.py).
+    merged, from_community = community.merge(
+        nixpkgs_source.read_lists(), [row["name"] for row in packages]
+    )
+    checks = {name: check for name, check in merged.items() if check.get("frequent")}
     by_name = {row["name"]: row for row in packages}
     selected = [by_name[name] for name in checks if name in by_name]
     if not selected:
@@ -83,7 +81,7 @@ def main():
             entries = refresh_repology(row, previous, now)
             if entries is not None:
                 data_files[row["dataFile"]] = entries
-    upstream.add_checks(selected, checks, previous, now)
+    upstream.add_checks(selected, checks, previous, now, from_community)
     # Repology's refVersion is fresh again: count master (as the sync does).
     for row in selected:
         count_master(row)

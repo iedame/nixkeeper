@@ -41,6 +41,11 @@ Each list is a filter on the page, next to `maintained` for the packages
 found through `maintainers`. `?list=gaming-team` in the address is a page of
 just that list, to share with the people it's for.
 
+Update checks (`package-lists/update-checks.nix`) look for new releases
+Repology doesn't count yet. With `communityChecks = true;`, the lists also use
+the [community update checks](community-checks.md), rules anyone can add,
+for the packages they track.
+
 To set the lists up for a dashboard of your own, see
 [your own instance](your-own-instance.md); the data each sync writes is
 described in [data.md](data.md).

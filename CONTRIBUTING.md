@@ -25,6 +25,8 @@ happen. For what nixkeeper does and how to set up your own, see the
   handles, duplicates, malformed update checks and ignore rules)
 - `package-lists/`: what this instance tracks (see
   [how it works](docs/how-it-works.md#what-gets-tracked))
+- `community/update-checks.nix`: the community update checks, rules anyone
+  can add by PR ([docs/community-checks.md](docs/community-checks.md))
 - `docs/`: the documentation, one page per topic ([docs/README.md](docs/README.md)
   lists them); `README.md`, `CONTRIBUTING.md`, `SECURITY.md`,
   `CHANGELOG.md` and `LICENSE` stay at the root, where GitHub looks for them
@@ -87,6 +89,10 @@ Around that:
   addresses of every source
 - `init.py` and `templates/package-lists/`: `nixkeeper init`'s starter lists
   (`nix flake check` validates them like the real ones)
+- `community.py`: the community update checks (`community/update-checks.nix`,
+  shipped in the package like the page): opting in, merging with the lists'
+  own, and the limits community rules are held to (with `sources/http.py`'s
+  safe mode)
 - `lock.py`: one run at a time on a data folder (`<data dir>.lock`), for
   every command that writes or copies the data
 - `page.py`: `nixkeeper page` and `nixkeeper serve`. The package carries the

@@ -12,6 +12,7 @@ import urllib.error
 import urllib.parse
 from datetime import UTC, datetime, timedelta
 
+from .. import community as community_rules
 from .. import history
 from ..versions import is_newer, version_key
 from . import github, http
@@ -87,11 +88,12 @@ def apply(row, found):
         row["refVersion"] = found["version"]
 
 
-def add_checks(rows, checks, previous, now):
+def add_checks(rows, checks, previous, now, community=frozenset()):
     """Run the update checks for rows that have one. A check that can't run,
     GitHub or web page alike, keeps the previous run's result and marks the
     row as not refreshed: usually the check itself needs fixing (a moved page,
-    a changed tag scheme)."""
+    a changed tag scheme). community: the names whose check is a community
+    rule (community.py), held to its limits and fetched in safe mode."""
     by_name = {row["name"]: row for row in rows}
     # Checks for untracked packages: reported with the lists (listcheck.py).
     wanted = {name: check for name, check in checks.items() if name in by_name}
@@ -101,6 +103,9 @@ def add_checks(rows, checks, previous, now):
     before = {row["name"]: row for row in previous["packages"]}
 
     def keep_previous(name, why):
+        # Said so, for the page: a community rule is fixed in nixkeeper.
+        if name in community and not why.startswith("community rule"):
+            why = f"community rule: {why}"
         print(f"::warning::update check for {name}: {why}", file=sys.stderr)
         old = before.get(name) or {}
         if old.get("upstream"):
@@ -111,7 +116,15 @@ def add_checks(rows, checks, previous, now):
         if version is None:
             keep_previous(name, f"nothing in {where} matches {what}")
         else:
+            if name in community:
+                extra["community"] = True
             apply(by_name[name], {"version": version, "checkedAt": now, **extra})
+
+    # A community rule beyond its limits is refused, never run.
+    for name in sorted(set(wanted) & set(community)):
+        if why := community_rules.safety(wanted[name]):
+            keep_previous(name, f"community rule refused: {why}")
+            del wanted[name]
 
     github_checks = {n: c for n, c in wanted.items() if "github" in c}
     if github_checks:
@@ -119,7 +132,7 @@ def add_checks(rows, checks, previous, now):
         check_github(github_checks, versions, now, keep_previous, found)
     for name, check in wanted.items():
         if "url" in check:
-            check_page(name, check, keep_previous, found)
+            check_page(name, check, keep_previous, found, safe=name in community)
 
 
 def check_github(checks, versions, now, keep_previous, found):
@@ -242,15 +255,19 @@ def check_branches(token, checks, versions, now, keep_previous, found):
         )
 
 
-def check_page(name, check, keep_previous, found):
-    """A check against a web page, e.g. a vendor's release notes."""
+def check_page(name, check, keep_previous, found, safe=False):
+    """A check against a web page, e.g. a vendor's release notes. safe: a
+    community rule's page (http.get's safe mode)."""
     url = check["url"]
     try:
-        text = http.get(url)
+        text = http.get(url, safe=safe)
         if text is None:
             keep_previous(name, f"{url} answered 404 (moved?)")
             return
         version = latest_on_page(text, check["pattern"])
+    except http.UnsafeURL as e:
+        keep_previous(name, f"community rule refused: {e.reason}")
+        return
     except (urllib.error.URLError, OSError) as e:
         keep_previous(name, f"couldn't fetch {url} ({e})")
         return

@@ -25,6 +25,7 @@ include = ["nixkeeper*"]
 nixkeeper = [
   "templates/package-lists/*.nix",  # nixkeeper init's starter lists
   "page/*",  # the page, copied in from page/ when the package is built
+  "community/*.nix",  # the community update checks, likewise
 ]
 
 [tool.ruff]
