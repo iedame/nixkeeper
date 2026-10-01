@@ -1,6 +1,6 @@
 """The frequent check: the update checks marked `frequent = true` in
-package-lists/update-checks.nix, run hourly for packages where a new release
-matters within the hour (browsers, for their security fixes). Touches only
+package-lists/update-checks.nix, run about hourly for packages where a new
+release matters within hours (browsers, for their security fixes). Touches only
 those packages: their Repology data (so the comparison uses nixpkgs' current
 version) and their update check. Run from the repository root:
 `nix run .#frequent-check`."""
