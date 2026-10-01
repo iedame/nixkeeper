@@ -6,6 +6,7 @@ import {
   escapeHtml,
   hasFailure as failureOn,
   faviconKey,
+  fromMaster,
   href,
   onMaster,
   onPlatform,
@@ -13,6 +14,7 @@ import {
   githubRepo as repoFrom,
   safeUrl,
   shortAge,
+  targetVersion,
   timeAgo,
   versionChange,
   waitingForChannel,
@@ -143,8 +145,8 @@ function prBadge(pkg) {
   const pr = pkg.openPR;
   if (!pr) return '';
   const behind =
-    pkg.refVersion && compareVersions(pr.to, pkg.refVersion) < 0
-      ? ` (the newest is ${pkg.refVersion})`
+    targetVersion(pkg) && compareVersions(pr.to, targetVersion(pkg)) < 0
+      ? ` (the newest is ${targetVersion(pkg)})`
       : '';
   return badge(
     pr.draft ? 'prdraft' : 'propen',
@@ -299,7 +301,7 @@ function render(list) {
     const verCell =
       st === 'missing'
         ? `<span class="badge missing">not packaged</span>`
-        : `<span class="v">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? ` <span class="ref mono" title="${escapeHtml(pkg.refVersion || '')}">→ ${escapeHtml(versionChange(pkg.nixVersion, pkg.refVersion) || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${prBadge(pkg)}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. Fix it in package-lists/update-checks.nix.">check failing</span>` : ''}`;
+        : `<span class="v">${escapeHtml(pkg.nixVersion)}</span>${st === 'warn' ? ` <span class="ref mono" title="${escapeHtml(targetVersion(pkg) || '')}">→ ${escapeHtml(versionChange(pkg.nixVersion, targetVersion(pkg)) || '?')}</span>` : ''}${st === 'warn' && pkg.outdatedSince ? ` <span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">· ${shortAge(pkg.outdatedSince)}</span>` : ''}${prBadge(pkg)}${st === 'neutral' ? ` <span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? ` <span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? ' <span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? ` <span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}${notRefreshed(pkg, 'upstream') ? ` <span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. Fix it in package-lists/update-checks.nix.">check failing</span>` : ''}`;
 
     const tr = document.createElement('tr');
     tr.className = 'row';
@@ -675,23 +677,26 @@ async function fillDetail(pkg, el) {
           : ' It has no result yet.'
       } Fix it in <span class="mono">package-lists/update-checks.nix</span>.</div>`
     : '';
-  const nixLine = up?.newer
-    ? upstreamLine()
-    : st === 'missing'
-      ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
-      : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${
-          st === 'warn'
-            ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${since}`
-            : st === 'neutral'
-              ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
-              : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`
-        }${
-          up && !up.newer && !failing
-            ? up.behind
-              ? ` nixkeeper's update check: ${behind} ${upLink} (up to <span class="mono">${escapeHtml(up.version)}</span>), not counted as outdated until ${limits}.`
-              : ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
-            : ''
-        }`;
+  const nixLine =
+    up?.newer && !fromMaster(pkg)
+      ? upstreamLine()
+      : st === 'missing'
+        ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
+        : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${
+            st === 'warn' && fromMaster(pkg)
+              ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
+              : st === 'warn'
+                ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${since}`
+                : st === 'neutral'
+                  ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
+                  : ` — matches the newest ${pkg.devel ? 'devel ' : ''}version seen vs. ${pkg.repoCount} other ${pkg.repoCount === 1 ? 'repo' : 'repos'}.`
+          }${
+            up && !up.newer && !failing
+              ? up.behind
+                ? ` nixkeeper's update check: ${behind} ${upLink} (up to <span class="mono">${escapeHtml(up.version)}</span>), not counted as outdated until ${limits}.`
+                : ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
+              : ''
+          }`;
 
   el.innerHTML = `
     <div class="nix-line">${nixLine}</div>${

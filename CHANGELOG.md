@@ -35,6 +35,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 - `nixkeeper serve` starts before the first sync: the page says it has no
   data yet, and shows it once a sync has written it.
+- A package whose master already has a newer version than the channel
+  (Hydra's build) counts as outdated, with that version as the one to update
+  to, and shows "on master": waiting for the channel, nothing to do. Before,
+  it only did when Repology or an update check knew of the new release too
+  (wesnoth-devel's 1.19.28 showed as up to date without its update check).
 
 ## [0.7.0] - 2026-10-01
 

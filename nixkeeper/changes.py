@@ -5,11 +5,33 @@ from .versions import is_newer, version_key
 
 
 def is_outdated(row):
-    """Outdated per Repology, or per nixkeeper's own update check (a release
-    Repology hasn't seen yet)."""
-    return row.get("nixStatus") in config.OUTDATED_STATUSES or bool(
-        (row.get("upstream") or {}).get("newer")
+    """Outdated per Repology, per nixkeeper's own update check (a release
+    Repology hasn't seen yet), or because master already has a newer version."""
+    return (
+        row.get("nixStatus") in config.OUTDATED_STATUSES
+        or bool((row.get("upstream") or {}).get("newer"))
+        or ahead_on_master(row)
     )
+
+
+def ahead_on_master(row):
+    """Hydra's build of master is newer than the channel's version: someone
+    has packaged a newer release, so there is one, whether or not Repology or
+    an update check has seen it yet."""
+    return is_newer(row.get("master") or "", row.get("nixVersion"))
+
+
+def count_master(row):
+    """When master is ahead of what Repology and the update checks know
+    (refVersion), make its version the one to update to. The row then reads
+    as outdated and, master already having it, as waiting for the channel.
+    refFromMaster says where the version came from, for the page."""
+    row.pop("refFromMaster", None)
+    if ahead_on_master(row) and (
+        not row.get("refVersion") or is_newer(row["master"], row["refVersion"])
+    ):
+        row["refVersion"] = row["master"]
+        row["refFromMaster"] = True
 
 
 def on_master(row):

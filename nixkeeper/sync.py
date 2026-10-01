@@ -6,7 +6,7 @@ GitHub counts and update PRs -> data/ -> status issue. `nixkeeper sync`
 from datetime import UTC, datetime
 
 from . import history, lookup, notify, output, rows, tracking
-from .changes import is_outdated
+from .changes import count_master, is_outdated
 from .sources import github, hydra, nixpkgs_update, upstream
 from .sources import nixpkgs as nixpkgs_source
 
@@ -22,12 +22,15 @@ def main():
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
     revision = nixpkgs_source.channel_revision()
     rows.add_source_links(index_rows, nixpkgs, revision)
-    # Before outdated-since: a check can make a row outdated.
     upstream.add_checks(index_rows, lists.get("updateChecks") or {}, previous, now)
-    history.add_outdated_since(index_rows, previous, now)
     in_nixpkgs = {a for row in index_rows for a in row["attrs"] if a in nixpkgs}
     broken = nixpkgs_source.broken(in_nixpkgs, revision)
     hydra.add_builds(index_rows, nixpkgs, previous, now, broken)
+    # After the update checks and Hydra, before outdated-since: each can make
+    # a row outdated (master, by having a newer version than the channel).
+    for row in index_rows:
+        count_master(row)
+    history.add_outdated_since(index_rows, previous, now)
     nixpkgs_update.add_attempts(
         index_rows, nixpkgs, previous, now, lists.get("ignoredUpdates") or {}
     )

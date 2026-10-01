@@ -48,7 +48,8 @@ rows without changing it). `packages` are the rows, sorted by name.
 |---|---|
 | `nixVersion` | the version in nixos-unstable |
 | `nixStatus` | Repology's status for it: `newest`, `outdated`, `devel`, `unique`, `legacy`, `untrusted`, `rolling`, `noscheme`, `incorrect`, ..., or `missing` when nixpkgs doesn't have it |
-| `refVersion` | the newest version seen elsewhere (for a devel row, the newest devel one), or what nixkeeper's update check found, if that's newer |
+| `refVersion` | the newest version seen elsewhere (for a devel row, the newest devel one), or what nixkeeper's update check found, or what master has (`master`), whichever is newest |
+| `refFromMaster` | `true` when `refVersion` is master's: newer than anything Repology or an update check knows of |
 | `repoCount` | how many other repositories Repology compares it with |
 | `devel` | a development variant of a split project (`wesnoth-devel`), or a version Repology calls devel |
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
@@ -74,7 +75,7 @@ A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
 
 | Field | Meaning |
 |---|---|
-| `master` | the version Hydra built from master, when it's newer than the channel's |
+| `master` | the version Hydra built from master, when it's newer than the channel's. That makes the row outdated, waiting for the channel |
 | `openPR` | an open update PR in nixpkgs (below) |
 | `masterPR` | an update PR merged into master that the channel doesn't have yet |
 | `openPRs`, `openIssues` | how many open nixpkgs PRs and issues have `searchTerm` in their title |
