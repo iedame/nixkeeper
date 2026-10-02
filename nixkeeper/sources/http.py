@@ -52,7 +52,7 @@ def get(url, accept=None, safe=False):
     None on 404; raises once every attempt has failed. safe (community
     update checks): https to public addresses only, redirects included, and
     at most MAX_BYTES; UnsafeURL is raised at once, not retried."""
-    headers = {"User-Agent": config.USER_AGENT}
+    headers = {"User-Agent": config.user_agent()}
     if accept:
         headers["Accept"] = accept
     host = urllib.parse.urlsplit(url).netloc

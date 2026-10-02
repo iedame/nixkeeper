@@ -57,7 +57,7 @@ def channel_revision():
     branch name if it can't be fetched: links then still work, their line
     numbers just may have drifted."""
     req = urllib.request.Request(
-        config.NIXPKGS_REVISION_URL, headers={"User-Agent": config.USER_AGENT}
+        config.NIXPKGS_REVISION_URL, headers={"User-Agent": config.user_agent()}
     )
     try:
         with urllib.request.urlopen(req, timeout=30) as resp:
@@ -122,7 +122,7 @@ def load_index():
     """attribute -> package (pname, version, meta) for all of nixos-unstable."""
     print("Downloading nixpkgs package index...", file=sys.stderr)
     req = urllib.request.Request(
-        config.NIXPKGS_INDEX_URL, headers={"User-Agent": config.USER_AGENT}
+        config.NIXPKGS_INDEX_URL, headers={"User-Agent": config.user_agent()}
     )
     with urllib.request.urlopen(req, timeout=120) as resp:
         # Includes nested sets (haskellPackages.foo), but not aliases such as

@@ -18,6 +18,8 @@ import re
 #   evaluates to. Default: ~/.config/nixkeeper/package-lists, or lists.json
 #   there if that's what exists ($XDG_CONFIG_HOME).
 # NIXKEEPER_NOTIFY (--notify): how to report what changed (notify.py).
+# NIXKEEPER_CONTACT: how the people who run this copy can be reached (an
+#   email or a URL), added to the User-Agent; see user_agent().
 
 
 def _xdg(variable, fallback):
@@ -50,7 +52,43 @@ OUT_DIR = os.environ.get("NIXKEEPER_DATA_DIR") or DEFAULTS["OUT_DIR"]
 LISTS = os.environ.get("NIXKEEPER_LISTS") or DEFAULTS["LISTS"]
 NOTIFY = None  # set by the command; otherwise NIXKEEPER_NOTIFY, read when used
 NIX_REPO = "nix_unstable"
-USER_AGENT = "nixkeeper/1.0 (personal package tracker)"
+UPSTREAM_URL = "https://github.com/iedame/nixkeeper"
+CONTACT_MAX = 100  # characters of NIXKEEPER_CONTACT kept in the User-Agent
+
+
+def user_agent():
+    """How nixkeeper introduces itself to every source, as API etiquette asks:
+    the software, its version and where it lives (the same for every copy:
+    a fix belongs there), then who runs this copy, where that's public or
+    chosen: the repository running it on GitHub Actions (public anyway), and
+    NIXKEEPER_CONTACT. A personal machine adds nothing unless asked.
+
+      nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper; someone/nixkeeper)
+    """
+    from . import version  # here: nixkeeper/__init__.py imports nothing back
+
+    who = []
+    repo = os.environ.get("GITHUB_REPOSITORY", "")
+    if (
+        os.environ.get("GITHUB_ACTIONS") == "true"
+        and repo
+        and not UPSTREAM_URL.endswith(f"/{repo}")
+    ):
+        who.append(repo)
+    contact = _comment_safe(os.environ.get("NIXKEEPER_CONTACT", ""))
+    if contact:
+        who.append(contact)
+    return f"nixkeeper/{version()} ({'; '.join([f'+{UPSTREAM_URL}', *who])})"
+
+
+def _comment_safe(text):
+    """text fit for the User-Agent's comment: printable ASCII only (no line
+    breaks: they'd start a new header), no parentheses or semicolons (they'd
+    end the comment or a part of it), spaces collapsed, at most CONTACT_MAX
+    characters."""
+    text = re.sub(r"[^\x20-\x7e]|[();]", " ", text)
+    return " ".join(text.split())[:CONTACT_MAX].strip()
+
 
 # Every package in nixos-unstable with its meta (maintainers, platforms, ...).
 # Same channel Repology's nix_unstable tracks, and far cheaper than evaluating
