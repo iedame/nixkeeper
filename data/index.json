@@ -930,26 +930,17 @@
       "masterPR": {
         "base": "master",
         "draft": false,
-        "from": "154.0.8037.57",
-        "number": 568387,
-        "title": "google-chrome: 154.0.8037.57 -> 154.0.8037.92",
-        "to": "154.0.8037.92",
-        "url": "https://github.com/NixOS/nixpkgs/pull/568387"
-      },
-      "name": "google-chrome",
-      "nixStatus": "outdated",
-      "nixVersion": "154.0.8037.57",
-      "nixVulnerable": true,
-      "openIssues": 5,
-      "openPR": {
-        "base": "master",
-        "draft": false,
         "from": "154.0.8037.92",
         "number": 569374,
         "title": "google-chrome: 154.0.8037.92 -> 154.0.8037.97",
         "to": "154.0.8037.97",
         "url": "https://github.com/NixOS/nixpkgs/pull/569374"
       },
+      "name": "google-chrome",
+      "nixStatus": "outdated",
+      "nixVersion": "154.0.8037.92",
+      "nixVulnerable": true,
+      "openIssues": 5,
       "openPRs": 3,
       "outdatedSince": "2026-09-29T21:11:12.205560+00:00",
       "platforms": {
@@ -974,7 +965,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "checkedAt": "2026-10-02T18:29:15.773049+00:00",
         "community": true,
         "label": "versionhistory.googleapis.com",
         "newer": true,
@@ -1406,26 +1397,17 @@
       "masterPR": {
         "base": "master",
         "draft": false,
-        "from": "154.0.4258.37",
-        "number": 568437,
-        "title": "microsoft-edge: 154.0.4258.37 -> 154.0.4258.48",
-        "to": "154.0.4258.48",
-        "url": "https://github.com/NixOS/nixpkgs/pull/568437"
-      },
-      "name": "microsoft-edge",
-      "nixStatus": "outdated",
-      "nixVersion": "154.0.4258.37",
-      "nixVulnerable": false,
-      "openIssues": 1,
-      "openPR": {
-        "base": "master",
-        "draft": false,
         "from": "154.0.4258.48",
         "number": 569248,
         "title": "microsoft-edge: 154.0.4258.48 -> 154.0.4258.53",
         "to": "154.0.4258.53",
         "url": "https://github.com/NixOS/nixpkgs/pull/569248"
       },
+      "name": "microsoft-edge",
+      "nixStatus": "outdated",
+      "nixVersion": "154.0.4258.37",
+      "nixVulnerable": false,
+      "openIssues": 1,
       "openPRs": 2,
       "outdatedSince": "2026-09-29T22:59:45.183190+00:00",
       "platforms": {
@@ -1451,7 +1433,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "checkedAt": "2026-10-02T18:29:15.773049+00:00",
         "community": true,
         "label": "packages.microsoft.com",
         "newer": true,
@@ -1473,26 +1455,17 @@
       "masterPR": {
         "base": "master",
         "draft": false,
-        "from": "154.0.4258.37",
-        "number": 568437,
-        "title": "microsoft-edge: 154.0.4258.37 -> 154.0.4258.48",
-        "to": "154.0.4258.48",
-        "url": "https://github.com/NixOS/nixpkgs/pull/568437"
-      },
-      "name": "msedgedriver",
-      "nixStatus": "outdated",
-      "nixVersion": "154.0.4258.37",
-      "nixVulnerable": false,
-      "openIssues": 0,
-      "openPR": {
-        "base": "master",
-        "draft": false,
         "from": "154.0.4258.48",
         "number": 569248,
         "title": "microsoft-edge: 154.0.4258.48 -> 154.0.4258.53",
         "to": "154.0.4258.53",
         "url": "https://github.com/NixOS/nixpkgs/pull/569248"
       },
+      "name": "msedgedriver",
+      "nixStatus": "outdated",
+      "nixVersion": "154.0.4258.37",
+      "nixVulnerable": false,
+      "openIssues": 0,
       "openPRs": 0,
       "outdatedSince": "2026-10-02T11:57:39.088379+00:00",
       "platforms": {
@@ -1508,7 +1481,7 @@
       "update": null,
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "checkedAt": "2026-10-02T18:29:15.773049+00:00",
         "community": true,
         "follows": "microsoft-edge",
         "newer": true,
