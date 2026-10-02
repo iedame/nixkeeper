@@ -1404,6 +1404,15 @@
       "nixVersion": "4.5",
       "nixVulnerable": false,
       "openIssues": 0,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "4.5",
+        "number": 569610,
+        "title": "greed: 4.5 -> 5.2",
+        "to": "5.2",
+        "url": "https://github.com/NixOS/nixpkgs/pull/569610"
+      },
       "openPRs": 0,
       "outdatedSince": "2026-10-02T21:12:02.420637+00:00",
       "platforms": {
