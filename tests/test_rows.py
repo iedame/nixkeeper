@@ -224,3 +224,33 @@ class SourceLinks(unittest.TestCase):
         )
         self.assertNotIn("source", rows[2])
         self.assertNotIn("source", rows[3])
+
+
+class NewestVersion(unittest.TestCase):
+    """refVersion: the newest version elsewhere."""
+
+    def ref(self, entries):
+        (row,) = build_rows(
+            {"p": project("p", ["p"], [nix("p", "1.0", "outdated"), *entries], "p")}, {}
+        )
+        return row["refVersion"]
+
+    def test_only_nix_packages_it(self):
+        """msedgedriver: a stable branch got the update first (a backport);
+        Repology marks it unique, not newest, as no other family has it."""
+        entries = [
+            other("nix_stable_26_05", "1.2", "unique"),
+            other("nix_stable_25_11", "0.9", "outdated"),
+        ]
+        self.assertEqual(self.ref(entries), "1.2")
+
+    def test_unique_only_when_none_is_newest(self):
+        entries = [other("debian", "1.1", "newest"), other("odd", "9.9", "unique")]
+        self.assertEqual(self.ref(entries), "1.1")
+
+    def test_the_highest_not_the_first(self):
+        entries = [other("a", "1.9", "newest"), other("b", "1.10", "newest")]
+        self.assertEqual(self.ref(entries), "1.10")
+
+    def test_none_known(self):
+        self.assertIsNone(self.ref([other("a", "0.9", "outdated")]))

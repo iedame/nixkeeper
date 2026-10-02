@@ -46,6 +46,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   Clicking the versions then copies the next update's title, from master's
   version.
 
+### Fixed
+
+- A package only Nix packages (msedgedriver) showed its update as `→ ?`:
+  Repology marks no repository "newest" then, but the one ahead (a stable
+  branch with a backport) "unique", which now counts. The newest version is
+  also the highest of those Repology marks, not the first listed. Should no
+  newer version be known, the page says "newer version unknown".
+
+
 ## [0.9.0] - 2026-10-01
 
 ### Added

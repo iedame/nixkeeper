@@ -194,7 +194,11 @@ function versionCell(pkg, st) {
   // the rest in colour, "→" hanging to its left.
   const step = (cls, from, to, colour) => {
     const d = versionDiff(from, to);
-    return `<span class="${cls}" aria-hidden="true" title="${escapeHtml(to || '')}"><span class="arrow">→</span><span class="same">${escapeHtml(d.same)}</span><span class="ref${colour}">${escapeHtml(d.to || '?')}</span></span>`;
+    // Outdated, but no newer version known (Repology says outdated without
+    // one): say so, rather than a bare "?".
+    if (!to)
+      return `<span class="${cls}" aria-hidden="true"><span class="arrow">→</span><span class="unknown">newer version unknown</span></span>`;
+    return `<span class="${cls}" aria-hidden="true" title="${escapeHtml(to)}"><span class="arrow">→</span><span class="same">${escapeHtml(d.same)}</span><span class="ref${colour}">${escapeHtml(d.to)}</span></span>`;
   };
   // Master partway there: its own line, with its badge, between the two.
   const mid = midway(pkg);
