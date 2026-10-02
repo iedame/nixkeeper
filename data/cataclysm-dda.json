@@ -1,0 +1,1917 @@
+[
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_testing",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A post-apocalyptic roguelike",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_unstable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A post-apocalyptic roguelike",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_unstable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A graphical post-apocalyptic roguelike.",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-curses",
+      "cataclysm-dda-data",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.E-3-1",
+    "repo": "pureos_byzantium",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "0.E-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-curses",
+      "cataclysm-dda-data",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.H-1",
+    "repo": "pureos_landing",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "joshuamurphy@posteo.net"
+    ],
+    "origversion": "0i-r0",
+    "repo": "alpine_edge",
+    "srcname": "cataclysm-dda",
+    "status": "incorrect",
+    "subrepo": "testing",
+    "summary": "A post-apocalyptic roguelike (common files)",
+    "version": "0i",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-curses",
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "joshuamurphy@posteo.net"
+    ],
+    "origversion": "0i-r0",
+    "repo": "alpine_edge",
+    "srcname": "cataclysm-dda",
+    "status": "incorrect",
+    "subrepo": "testing",
+    "summary": "A post-apocalyptic roguelike (curses)",
+    "version": "0i",
+    "visiblename": "cataclysm-dda-curses"
+  },
+  {
+    "binname": "cataclysm-dda-doc",
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "joshuamurphy@posteo.net"
+    ],
+    "origversion": "0i-r0",
+    "repo": "alpine_edge",
+    "srcname": "cataclysm-dda",
+    "status": "incorrect",
+    "subrepo": "testing",
+    "summary": "A post-apocalyptic roguelike (documentation)",
+    "version": "0i",
+    "visiblename": "cataclysm-dda-doc"
+  },
+  {
+    "binname": "cataclysm-dda-lang",
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "joshuamurphy@posteo.net"
+    ],
+    "origversion": "0i-r0",
+    "repo": "alpine_edge",
+    "srcname": "cataclysm-dda",
+    "status": "incorrect",
+    "subrepo": "testing",
+    "summary": "Languages for package cataclysm-dda",
+    "version": "0i",
+    "visiblename": "cataclysm-dda-lang"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "joshuamurphy@posteo.net"
+    ],
+    "origversion": "0i-r0",
+    "repo": "alpine_edge",
+    "srcname": "cataclysm-dda",
+    "status": "incorrect",
+    "subrepo": "testing",
+    "summary": "A post-apocalyptic roguelike (tiles)",
+    "version": "0i",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-ncurses",
+      "cataclysm-dda-ncurses-debuginfo",
+      "cataclysm-dda-sdl",
+      "cataclysm-dda-sdl-data",
+      "cataclysm-dda-sdl-debuginfo"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 and GPLv2+ and OFL-1.1 and BSL-1.0 and Zlib and MIT and BSD-3-Clause"
+    ],
+    "maintainers": [
+      "sem@altlinux.org"
+    ],
+    "origversion": "0.H-alt1",
+    "repo": "alt_p11",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-ncurses",
+      "cataclysm-dda-ncurses-debuginfo",
+      "cataclysm-dda-sdl",
+      "cataclysm-dda-sdl-data",
+      "cataclysm-dda-sdl-debuginfo"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 and GPLv2+ and OFL-1.1 and BSL-1.0 and Zlib and MIT and BSD-3-Clause"
+    ],
+    "maintainers": [
+      "sem@altlinux.org"
+    ],
+    "origversion": "0.I.1-alt1",
+    "repo": "altsisyphus",
+    "srcname": "cataclysm-dda",
+    "status": "newest",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.I.1",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "fallback-mnt-aosc@repology"
+    ],
+    "origversion": null,
+    "repo": "aosc",
+    "srcname": "app-games/cataclysm",
+    "status": "outdated",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.I",
+    "visiblename": "cataclysm"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "arch",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A graphical post-apocalyptic roguelike.",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "arch",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A post-apocalyptic roguelike",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-git",
+    "licenses": [
+      "CCPL:by-sa"
+    ],
+    "maintainers": [
+      "gileri@aur"
+    ],
+    "origversion": "experimental.2026.01.26-1",
+    "repo": "aur",
+    "srcname": "cataclysm-dda-git",
+    "status": "rolling",
+    "summary": "A post-apocalyptic roguelike.",
+    "version": "experimental.2026.01.26",
+    "visiblename": "cataclysm-dda-git"
+  },
+  {
+    "binname": "cataclysm-dda-ncurses",
+    "licenses": [
+      "cc-by-nc-sa-3.0"
+    ],
+    "maintainers": [
+      "autoupdatebot@aur"
+    ],
+    "origversion": "0.I-1",
+    "repo": "aur",
+    "srcname": "cataclysm-dda-ncurses",
+    "status": "outdated",
+    "summary": "A post-apocalyptic roguelike (ncurses only)",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-ncurses"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.E-3-1",
+    "repo": "debian_11",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "bullseye/main",
+    "version": "0.E-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.F-3-9",
+    "repo": "debian_12",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "0.F-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.H-1",
+    "repo": "debian_13",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.I-1",
+    "repo": "debian_14",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "forky/main",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.I-1",
+    "repo": "debian_unstable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "sid/main",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.C+git20190228.faafa3a-2",
+    "repo": "deepin_unstable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.C+git20190228.faafa3a",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.G-4deepin1",
+    "repo": "deepin_23",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "community",
+    "version": "0.G",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.G-4deepin1",
+    "repo": "deepin_25",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "community",
+    "version": "0.G",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.E-3-1",
+    "repo": "devuan_4_0",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "0.E-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.I-1",
+    "repo": "devuan_unstable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "unstable/main",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-data",
+      "cataclysm-dda-tiles",
+      "cataclysm-dda-tiles-data",
+      "cataclysm-dda-debuginfo",
+      "cataclysm-dda-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC-BY-SA"
+    ],
+    "origversion": "0.G-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.G",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-data",
+      "cataclysm-dda-tiles",
+      "cataclysm-dda-tiles-data",
+      "cataclysm-dda-debuginfo",
+      "cataclysm-dda-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC-BY-SA"
+    ],
+    "origversion": "0.G-1.fc39",
+    "repo": "fedora_40",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.G",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_stable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A post-apocalyptic roguelike",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-data",
+      "cataclysm-dda-tiles",
+      "cataclysm-dda-tiles-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "LicenseRef-Callaway-CC-BY-SA"
+    ],
+    "origversion": "0.H-1.fc41",
+    "repo": "fedora_41",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-data",
+      "cataclysm-dda-tiles",
+      "cataclysm-dda-tiles-data",
+      "cataclysm-dda-debuginfo",
+      "cataclysm-dda-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC-BY-SA"
+    ],
+    "origversion": "0.G-1.fc39",
+    "repo": "fedora_41",
+    "srcname": "cataclysm-dda",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.G",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-data",
+      "cataclysm-dda-tiles",
+      "cataclysm-dda-tiles-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "LicenseRef-Callaway-CC-BY-SA"
+    ],
+    "origversion": "0.H-2.fc42",
+    "repo": "fedora_42",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-data",
+      "cataclysm-dda-tiles",
+      "cataclysm-dda-tiles-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "LicenseRef-Callaway-CC-BY-SA"
+    ],
+    "origversion": "0.H-3.fc43",
+    "repo": "fedora_43",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-data",
+      "cataclysm-dda-tiles",
+      "cataclysm-dda-tiles-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "LicenseRef-Callaway-CC-BY-SA"
+    ],
+    "origversion": "0.H-3.fc43",
+    "repo": "fedora_44",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-data",
+      "cataclysm-dda-tiles",
+      "cataclysm-dda-tiles-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 AND OFL-1.1 AND Apache-2.0 AND MIT AND BSD-3-Clause AND Zlib"
+    ],
+    "origversion": "0.I-1.fc46",
+    "repo": "fedora_rawhide",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "development",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "eduardo@freebsd.org"
+    ],
+    "origversion": "0.I,1",
+    "repo": "freebsd",
+    "srcname": "games/cataclysm-dda",
+    "status": "outdated",
+    "summary": "Roguelike set in a post-apocalyptic world",
+    "version": "0.I",
+    "visiblename": "games/cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "eduardo@freebsd.org"
+    ],
+    "origversion": "0.I,1",
+    "repo": "freebsd",
+    "srcname": "games/cataclysm-dda",
+    "status": "outdated",
+    "summary": "Roguelike set in a post-apocalyptic world",
+    "version": "0.I",
+    "visiblename": "games/cataclysm-dda"
+  },
+  {
+    "categories": [
+      "games-roguelike"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 Apache-2.0 soundpack? ( CC-BY-SA-4.0 ) MIT OFL-1.1 Unicode-3.0"
+    ],
+    "maintainers": [
+      "strategictraveler@proton.me",
+      "pastalian46@gmail.com"
+    ],
+    "origversion": "0h-r1",
+    "repo": "gentoo_ovl_guru",
+    "srcname": "games-roguelike/cataclysm-dda",
+    "status": "incorrect",
+    "summary": "A turn-based survival game set in a post-apocalyptic world",
+    "version": "0h",
+    "visiblename": "games-roguelike/cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_testing",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A graphical post-apocalyptic roguelike.",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "categories": [
+      "games-roguelike"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 Apache-2.0 BSD soundpack? ( CC-BY-SA-4.0 ) MIT OFL-1.1 Unicode-3.0"
+    ],
+    "maintainers": [
+      "strategictraveler@proton.me",
+      "pastalian46@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "gentoo_ovl_guru",
+    "srcname": "games-roguelike/cataclysm-dda",
+    "status": "rolling",
+    "summary": "A turn-based survival game set in a post-apocalyptic world",
+    "version": "9999",
+    "visiblename": "games-roguelike/cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "cataclysm-dda-tiles",
+    "status": "outdated",
+    "summary": "Survival horror roguelike video game, with graphics and sound",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "summary": "Survival horror roguelike video game",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "cataclysm",
+    "status": "newest",
+    "summary": "Fork/variant of Cataclysm Roguelike",
+    "version": "0.I-1",
+    "visiblename": "cataclysm"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "cataclysm",
+    "status": "rolling",
+    "summary": "Fork/variant of Cataclysm Roguelike",
+    "version": "HEAD",
+    "visiblename": "cataclysm"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.I-1",
+    "repo": "kali_rolling",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "0.H \"Herbert\" (2024-11-22)",
+    "repo": "libregamewiki",
+    "srcname": "Cataclysm:_Dark_Days_Ahead",
+    "status": "outdated",
+    "version": "0.H \"Herbert\"",
+    "visiblename": "Cataclysm: Dark Days Ahead"
+  },
+  {
+    "categories": [
+      "games-roguelike"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 Apache-2.0 BSD soundpack? ( CC-BY-SA-4.0 ) MIT OFL-1.1 Unicode-3.0"
+    ],
+    "maintainers": [
+      "strategictraveler@proton.me",
+      "pastalian46@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-roguelike/cataclysm-dda",
+    "status": "rolling",
+    "summary": "A turn-based survival game set in a post-apocalyptic world",
+    "version": "9999",
+    "visiblename": "games-roguelike/cataclysm-dda"
+  },
+  {
+    "categories": [
+      "games-roguelike"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 Apache-2.0 soundpack? ( CC-BY-SA-4.0 ) MIT OFL-1.1 Unicode-3.0"
+    ],
+    "maintainers": [
+      "strategictraveler@proton.me",
+      "pastalian46@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-roguelike/cataclysm-dda",
+    "status": "incorrect",
+    "summary": "A turn-based survival game set in a post-apocalyptic world",
+    "version": "0h",
+    "visiblename": "games-roguelike/cataclysm-dda"
+  },
+  {
+    "categories": [
+      "games-roguelike"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 Apache-2.0 BSD soundpack? ( CC-BY-SA-4.0 ) MIT OFL-1.1 Unicode-3.0"
+    ],
+    "maintainers": [
+      "strategictraveler@proton.me",
+      "pastalian46@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-roguelike/cataclysm-dda",
+    "status": "rolling",
+    "summary": "A turn-based survival game set in a post-apocalyptic world",
+    "version": "9999",
+    "visiblename": "games-roguelike/cataclysm-dda"
+  },
+  {
+    "categories": [
+      "games-roguelike"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 Apache-2.0 soundpack? ( CC-BY-SA-4.0 ) MIT OFL-1.1 Unicode-3.0"
+    ],
+    "maintainers": [
+      "strategictraveler@proton.me",
+      "pastalian46@gmail.com"
+    ],
+    "origversion": "0h-r1",
+    "repo": "liguros_develop",
+    "srcname": "games-roguelike/cataclysm-dda",
+    "status": "incorrect",
+    "summary": "A turn-based survival game set in a post-apocalyptic world",
+    "version": "0h",
+    "visiblename": "games-roguelike/cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_stable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A graphical post-apocalyptic roguelike.",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "summary": "A free, post apocalyptic, zombie infested rogue-like",
+    "version": "0.G",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com",
+      "ricardo.ardissone@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "cataclysm-dda-git",
+    "status": "incorrect",
+    "summary": "A free, post apocalyptic, zombie infested rogue-like",
+    "version": "2022-08-20",
+    "visiblename": "cataclysm-dda-git"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "0.G",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com",
+      "ricardo.ardissone@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "cataclysm-dda-git",
+    "status": "incorrect",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "2024-07-28",
+    "visiblename": "cataclysm-dda-git"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com",
+      "ricardo.ardissone@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "cataclysm-dda-git",
+    "status": "incorrect",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "2024-12-11",
+    "visiblename": "cataclysm-dda-git"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com",
+      "ricardo.ardissone@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "cataclysm-dda-git",
+    "status": "incorrect",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "2024-12-11",
+    "visiblename": "cataclysm-dda-git"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "0.H-2025-07-10-0402",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com",
+      "ricardo.ardissone@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "cataclysm-dda-git",
+    "status": "incorrect",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "2024-12-11",
+    "visiblename": "cataclysm-dda-git"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com",
+      "milestheperson@posteo.net"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "cataclysm-dda",
+    "status": "untrusted",
+    "summary": "Free post-apocalyptic zombie-infested roguelike",
+    "version": "0.I-2026-06-11-1250",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com",
+      "milestheperson@posteo.net"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "cataclysm-dda-git",
+    "status": "incorrect",
+    "summary": "Free post-apocalyptic zombie-infested roguelike",
+    "version": "2024-12-11",
+    "visiblename": "cataclysm-dda-git"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.F-3-9",
+    "repo": "raspbian_oldstable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.F-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kirby@openbsd.org"
+    ],
+    "origversion": "0.Ip0v0",
+    "repo": "openbsd",
+    "srcname": "games/cataclysm-dda",
+    "status": "outdated",
+    "summary": "rogue-like zombie survival game",
+    "version": "0.I",
+    "visiblename": "games/cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kirby@openbsd.org"
+    ],
+    "origversion": "0.Ip0v0",
+    "repo": "openbsd",
+    "srcname": "games/cataclysm-dda",
+    "status": "outdated",
+    "summary": "rogue-like zombie survival game",
+    "version": "0.I",
+    "visiblename": "games/cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-debuginfo",
+      "cataclysm-dda-debugsource",
+      "cataclysm-dda-lang",
+      "cataclysm-dda-data"
+    ],
+    "categories": [
+      "Amusements/Games/RPG"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "origversion": "0.E_3-10.4",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "summary": "A roguelike set in a post-apocalyptic world",
+    "version": "0.E_3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "parabola",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A graphical post-apocalyptic roguelike.",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "parabola",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A post-apocalyptic roguelike",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.E-3-1",
+    "repo": "pardus_21",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.E-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.H-1",
+    "repo": "parrot",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.H-1",
+    "repo": "parrot",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.F.2nb1",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/cataclysm-dda",
+    "status": "outdated",
+    "summary": "Post-apocalyptic turn-based survival game (text-only version)",
+    "version": "0.F.2",
+    "visiblename": "games/cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-sdl",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.F.2nb13",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/cataclysm-dda-sdl",
+    "status": "outdated",
+    "summary": "Post-apocalyptic turn-based survival game (tileset version)",
+    "version": "0.F.2",
+    "visiblename": "games/cataclysm-dda-sdl"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.F.2nb1",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/cataclysm-dda",
+    "status": "outdated",
+    "summary": "Post-apocalyptic turn-based survival game (text-only version)",
+    "version": "0.F.2",
+    "visiblename": "games/cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-sdl",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.F.2nb15",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/cataclysm-dda-sdl",
+    "status": "outdated",
+    "summary": "Post-apocalyptic turn-based survival game (tileset version)",
+    "version": "0.F.2",
+    "visiblename": "games/cataclysm-dda-sdl"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.F.2nb1",
+    "repo": "pkgsrc_current",
+    "srcname": "games/cataclysm-dda",
+    "status": "outdated",
+    "summary": "Post-apocalyptic turn-based survival game (text-only version)",
+    "version": "0.F.2",
+    "visiblename": "games/cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-sdl",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "0.F.2nb17",
+    "repo": "pkgsrc_current",
+    "srcname": "games/cataclysm-dda-sdl",
+    "status": "outdated",
+    "summary": "Post-apocalyptic turn-based survival game (tileset version)",
+    "version": "0.F.2",
+    "visiblename": "games/cataclysm-dda-sdl"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-curses",
+      "cataclysm-dda-data",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.C+git20190228.faafa3a-2",
+    "repo": "pureos_amber",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "amber/main",
+    "version": "0.C+git20190228.faafa3a",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-SA-3.0,GPL-2.0+,OFL-1.0,BSL-1.0,Zlib,MIT,BSD(libbacktrace)"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "games",
+    "version": "0.I-1",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "binname": "cataclysm-dda-tiles-experimental",
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "untrusted",
+    "subrepo": "games",
+    "version": "2026-10-02-0518",
+    "visiblename": "cataclysm-dda-tiles-experimental"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "outdated",
+    "subrepo": "games",
+    "version": "0.D",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "lin.ruohshoei+sbo@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/cataclysmdda",
+    "status": "outdated",
+    "version": "0.I",
+    "visiblename": "games/cataclysmdda"
+  },
+  {
+    "binname": "cataclysm",
+    "categories": [
+      "games.rpg"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-2.0-or-later WITH Font-exception-2.0",
+      "MIT",
+      "OFL-1.1-RFN",
+      "Zlib"
+    ],
+    "maintainers": [
+      "staudi.kaos@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "cataclysm",
+    "status": "incorrect",
+    "summary": "Turn-based survival game played in the terminal.",
+    "version": "0.16.0",
+    "visiblename": "cataclysm"
+  },
+  {
+    "binname": "cataclysm-common",
+    "categories": [
+      "games.rpg"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-2.0-or-later WITH Font-exception-2.0",
+      "MIT",
+      "OFL-1.1-RFN",
+      "Zlib"
+    ],
+    "maintainers": [
+      "staudi.kaos@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "cataclysm",
+    "status": "incorrect",
+    "summary": "Common files for cataclysm and cataclysm-tiles",
+    "version": "0.16.0",
+    "visiblename": "cataclysm-common"
+  },
+  {
+    "binname": "cataclysm-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-2.0-or-later WITH Font-exception-2.0",
+      "MIT",
+      "OFL-1.1-RFN",
+      "Zlib"
+    ],
+    "maintainers": [
+      "staudi.kaos@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "cataclysm",
+    "status": "incorrect",
+    "summary": "Debug symbols for cataclysm",
+    "version": "0.16.0",
+    "visiblename": "cataclysm-dbginfo"
+  },
+  {
+    "binname": "cataclysm-tiles",
+    "categories": [
+      "games.rpg"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-2.0-or-later WITH Font-exception-2.0",
+      "MIT",
+      "OFL-1.1-RFN",
+      "Zlib"
+    ],
+    "maintainers": [
+      "staudi.kaos@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "cataclysm",
+    "status": "incorrect",
+    "summary": "Turn-based survival game with GUI and tilesets.",
+    "version": "0.16.0",
+    "visiblename": "cataclysm-tiles"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "categories": [
+      "games.rpg"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-2.0-or-later WITH Font-exception-2.0",
+      "MIT",
+      "OFL-1.1-RFN",
+      "Zlib"
+    ],
+    "maintainers": [
+      "malfisya.dev@hotmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "cataclysm-dda",
+    "status": "incorrect",
+    "summary": "Turn-based survival game played in the terminal.",
+    "version": "0.17.0",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-common",
+    "categories": [
+      "games.rpg"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-2.0-or-later WITH Font-exception-2.0",
+      "MIT",
+      "OFL-1.1-RFN",
+      "Zlib"
+    ],
+    "maintainers": [
+      "malfisya.dev@hotmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "cataclysm-dda",
+    "status": "incorrect",
+    "summary": "Common files for cataclysm and cataclysm-tiles",
+    "version": "0.17.0",
+    "visiblename": "cataclysm-dda-common"
+  },
+  {
+    "binname": "cataclysm-dda-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-2.0-or-later WITH Font-exception-2.0",
+      "MIT",
+      "OFL-1.1-RFN",
+      "Zlib"
+    ],
+    "maintainers": [
+      "malfisya.dev@hotmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "cataclysm-dda",
+    "status": "incorrect",
+    "summary": "Debug symbols for cataclysm-dda",
+    "version": "0.17.0",
+    "visiblename": "cataclysm-dda-dbginfo"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "categories": [
+      "games.rpg"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-2.0-or-later WITH Font-exception-2.0",
+      "MIT",
+      "OFL-1.1-RFN",
+      "Zlib"
+    ],
+    "maintainers": [
+      "malfisya.dev@hotmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "cataclysm-dda",
+    "status": "incorrect",
+    "summary": "Turn-based survival game with GUI and tilesets.",
+    "version": "0.17.0",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "binname": "bin/cata/dda",
+    "categories": [
+      "bin"
+    ],
+    "maintainers": [
+      "anton@samokhvalov.xyz"
+    ],
+    "origversion": null,
+    "repo": "stalix",
+    "srcname": "bin/cata/dda",
+    "status": "outdated",
+    "version": "0.H",
+    "visiblename": "bin/cata/dda"
+  },
+  {
+    "binname": "bin/cata/dda",
+    "categories": [
+      "bin"
+    ],
+    "maintainers": [
+      "anton@samokhvalov.xyz"
+    ],
+    "origversion": null,
+    "repo": "stalix_dev",
+    "srcname": "bin/cata/dda",
+    "status": "outdated",
+    "version": "0.H",
+    "visiblename": "bin/cata/dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.D-4build1",
+    "repo": "trisquel_10_0",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "nabia/main",
+    "version": "0.D",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.F-3-3",
+    "repo": "trisquel_11_0",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "aramo/main",
+    "version": "0.F-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.D-4build1",
+    "repo": "ubuntu_20_04",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "focal/universe",
+    "version": "0.D",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.F-3-3",
+    "repo": "ubuntu_22_04",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "0.F-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.G-4",
+    "repo": "ubuntu_24_04",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "noble/universe",
+    "version": "0.G",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.H-1",
+    "repo": "ubuntu_25_04",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "plucky/universe",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.H-1",
+    "repo": "ubuntu_25_10",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "questing/universe",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.H-1build1",
+    "repo": "ubuntu_26_04",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "resolute/universe",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.I-1",
+    "repo": "ubuntu_26_10",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "stonking/universe",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "Cataclysm-DDA",
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "CC-BY-3.0"
+    ],
+    "maintainers": [
+      "me@johnnynator.dev"
+    ],
+    "origversion": "0.E_4",
+    "repo": "void_x86_64",
+    "srcname": "Cataclysm-DDA",
+    "status": "outdated",
+    "subrepo": "x86_64",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.E",
+    "visiblename": "Cataclysm-DDA"
+  },
+  {
+    "binname": "Cataclysm-DDA-data",
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "CC-BY-3.0"
+    ],
+    "maintainers": [
+      "me@johnnynator.dev"
+    ],
+    "origversion": "0.E_4",
+    "repo": "void_x86_64",
+    "srcname": "Cataclysm-DDA",
+    "status": "outdated",
+    "subrepo": "x86_64",
+    "summary": "Turn-based survival game set in a post-apocalyptic world - data files",
+    "version": "0.E",
+    "visiblename": "Cataclysm-DDA-data"
+  },
+  {
+    "binname": "Cataclysm-DDA-tiles",
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "CC-BY-3.0"
+    ],
+    "maintainers": [
+      "me@johnnynator.dev"
+    ],
+    "origversion": "0.E_4",
+    "repo": "void_x86_64",
+    "srcname": "Cataclysm-DDA",
+    "status": "outdated",
+    "subrepo": "x86_64",
+    "summary": "Turn-based survival game set in a post-apocalyptic world - SDL tiles version",
+    "version": "0.E",
+    "visiblename": "Cataclysm-DDA-tiles"
+  },
+  {
+    "licenses": [
+      "Creative Commons Attribution-ShareAlike 3.0 Unported"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q17515002",
+    "status": "outdated",
+    "summary": "2013 video game",
+    "version": "0.H",
+    "visiblename": "Cataclysm: Dark Days Ahead"
+  }
+]

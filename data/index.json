@@ -1,8 +1,5 @@
 {
-  "checkedAt": "2026-10-02T21:12:02.420637+00:00",
-  "listProblems": [
-    "extraPackages.gaming-team: cataclysmDDA is neither a nixpkgs attribute nor a top-level pname (aliases like python3Packages need their versioned name)"
-  ],
+  "checkedAt": "2026-10-02T21:31:13.234703+00:00",
   "packages": [
     {
       "attrs": [
@@ -264,7 +261,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
+        "checkedAt": "2026-10-02T21:31:13.234703+00:00",
         "community": true,
         "label": "www.barebones.com",
         "newer": false,
@@ -453,22 +450,75 @@
       "updateFailure": false
     },
     {
-      "attrs": [],
-      "dataFile": "cataclysmDDA.json",
+      "attrs": [
+        "cataclysm-dda"
+      ],
+      "builds": [
+        {
+          "attr": "cataclysm-dda",
+          "build": 347091375,
+          "lastSuccess": "2026-09-18T19:52:18+00:00",
+          "lastSuccessBuild": 346052983,
+          "lastSuccessName": "cataclysm-dda-0.I-2026-06-11-1250",
+          "lastSuccessVersion": "0.I-2026-06-11-1250",
+          "name": "cataclysm-dda-0.I-2026-06-11-1250",
+          "status": "failed",
+          "system": "x86_64-linux",
+          "version": "0.I-2026-06-11-1250"
+        },
+        {
+          "attr": "cataclysm-dda",
+          "build": 347091377,
+          "lastSuccess": "2026-09-18T20:02:58+00:00",
+          "lastSuccessBuild": 346052986,
+          "lastSuccessName": "cataclysm-dda-0.I-2026-06-11-1250",
+          "lastSuccessVersion": "0.I-2026-06-11-1250",
+          "name": "cataclysm-dda-0.I-2026-06-11-1250",
+          "status": "failed",
+          "system": "aarch64-linux",
+          "version": "0.I-2026-06-11-1250"
+        },
+        {
+          "attr": "cataclysm-dda",
+          "build": 347091376,
+          "name": "cataclysm-dda-0.I-2026-06-11-1250",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "0.I-2026-06-11-1250"
+        }
+      ],
+      "dataFile": "cataclysm-dda.json",
       "devel": false,
+      "homepage": "https://cataclysmdda.org/",
       "lists": [
         "gaming-team"
       ],
-      "name": "cataclysmDDA",
-      "nixStatus": "missing",
-      "nixVersion": null,
+      "name": "cataclysm-dda",
+      "nixStatus": "untrusted",
+      "nixVersion": "0.I-2026-06-11-1250",
       "nixVulnerable": false,
-      "openIssues": 0,
-      "openPRs": 0,
-      "project": null,
-      "refVersion": null,
-      "repoCount": 0,
-      "searchTerm": "cataclysmDDA"
+      "openIssues": 1,
+      "openPRs": 1,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "cataclysm-dda",
+      "refVersion": "0.I.1",
+      "repoCount": 105,
+      "searchTerm": "cataclysm-dda",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/games/cataclysm-dda/common.nix#L93",
+      "update": {
+        "attr": "cataclysm-dda",
+        "date": "2026-07-12",
+        "from": "0.H-2025-07-10-0402",
+        "log": "https://nixpkgs-update-logs.nixos.org/cataclysm-dda/2026-07-12.log",
+        "outcome": "noChange",
+        "parser": 1,
+        "to": "0.I",
+        "was": "0.H-2025-07-10-0402"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -1305,7 +1355,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
+        "checkedAt": "2026-10-02T21:31:13.234703+00:00",
         "community": true,
         "label": "versionhistory.googleapis.com",
         "newer": true,
@@ -1413,7 +1463,7 @@
         },
         {
           "attr": "heroic-unwrapped",
-          "build": 347137696,
+          "build": 347834826,
           "name": "heroic-unwrapped-2.22.3",
           "status": "ok",
           "system": "aarch64-linux",
@@ -1842,7 +1892,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
+        "checkedAt": "2026-10-02T21:31:13.234703+00:00",
         "community": true,
         "label": "packages.microsoft.com",
         "newer": true,
@@ -1890,7 +1940,7 @@
       "update": null,
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
+        "checkedAt": "2026-10-02T21:31:13.234703+00:00",
         "community": true,
         "follows": "microsoft-edge",
         "newer": true,
@@ -2796,7 +2846,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
+        "checkedAt": "2026-10-02T21:31:13.234703+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "community": true,
         "label": "stepmania/stepmania 5_1-new branch",
@@ -3486,7 +3536,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
+        "checkedAt": "2026-10-02T21:31:13.234703+00:00",
         "community": true,
         "label": "wesnoth/wesnoth tags",
         "newer": false,
