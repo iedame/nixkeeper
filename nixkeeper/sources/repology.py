@@ -8,6 +8,7 @@ import urllib.parse
 import urllib.request
 
 from .. import config
+from . import http
 
 # The domain that last answered: tried first for the rest of the run, so an
 # unreachable repology.org costs one failed connection, not one per lookup.
@@ -34,8 +35,10 @@ def get(path):
     first), and retrying the lot after RETRY_DELAYS seconds. Returns (json,
     final_url), or (None, None) on 404."""
     last_err = None
-    for delay in [0, *config.RETRY_DELAYS]:
-        if delay:
+    for attempt, delay in enumerate([0, *config.RETRY_DELAYS]):
+        if attempt:
+            # As long as Repology asked, if it did (http.retry_wait).
+            delay = http.retry_wait(delay, last_err, "Repology")
             print(f"  retrying in {delay}s...", file=sys.stderr)
             time.sleep(delay)
         for base in _domains():

@@ -7,6 +7,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 import urllib.error
 import urllib.request
 
@@ -54,11 +55,47 @@ def graphql(token, query, variables):
             "Content-Type": "application/json",
         },
     )
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        result = json.loads(resp.read().decode())
+    result = _send(req, timeout=60)
     for err in result.get("errors") or []:
         print(f"  GitHub error: {err.get('message')}", file=sys.stderr)
     return result.get("data") or {}
+
+
+def rate_limit_wait(err, now=None):
+    """The seconds GitHub asked to wait, when err is its rate limit (403 or
+    429): Retry-After (its secondary limits), or until x-ratelimit-reset once
+    x-ratelimit-remaining is 0 (the hourly one). None if it's another error."""
+    if not isinstance(err, urllib.error.HTTPError) or err.code not in (403, 429):
+        return None
+    headers = err.headers or {}
+    retry_after = str(headers.get("Retry-After", "")).strip()
+    if retry_after.isdigit():
+        return int(retry_after)
+    reset = str(headers.get("x-ratelimit-reset", "")).strip()
+    if headers.get("x-ratelimit-remaining") == "0" and reset.isdigit():
+        return max(0, int(reset) - int(now if now is not None else time.time()))
+    return None
+
+
+def _open_json(req, timeout):
+    with urllib.request.urlopen(req, timeout=timeout) as resp:
+        return json.loads(resp.read().decode())
+
+
+def _send(req, timeout):
+    """GitHub's JSON answer to req. When GitHub says to slow down (its rate
+    limits), waits as long as it asks and tries once more, if that's at most
+    MAX_RETRY_AFTER seconds; otherwise raises, like any failure."""
+    try:
+        return _open_json(req, timeout)
+    except urllib.error.HTTPError as e:
+        e.close()  # an HTTP error is also an open response
+        wait = rate_limit_wait(e)
+        if wait is None or wait > config.MAX_RETRY_AFTER:
+            raise
+        print(f"  GitHub asks to slow down: waiting {wait}s", file=sys.stderr)
+        time.sleep(wait)
+    return _open_json(req, timeout)
 
 
 PR_FIELDS = "nodes { ... on PullRequest { number title url isDraft baseRefName } }"

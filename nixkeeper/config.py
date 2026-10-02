@@ -108,6 +108,11 @@ REPOLOGY_URLS = (
     [_override] if _override else ["https://repology.org", "https://repology.amdmi3.ru"]
 )
 RETRY_DELAYS = [5, 15]  # seconds before each retry of a failed Repology request
+# A server that answers "too many requests" or "unavailable" may say how long
+# to wait (Retry-After): nixkeeper waits that long, up to this many seconds.
+# Asked to wait longer, it gives that request up instead of stalling the run
+# (the package keeps its previous data, as with any failed lookup).
+MAX_RETRY_AFTER = 300
 # If more lookups than this fail, Repology is likely down: abort and keep the
 # previous data (the page flags it as stale) instead of publishing a run that's
 # mostly "not refreshed".

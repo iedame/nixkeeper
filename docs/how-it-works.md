@@ -26,7 +26,9 @@ page that shows it.
 
 When a source can't be reached, the row keeps its last known result, marked
 as not refreshed, and the status issue says so; the rest of the sync goes
-on. If most Repology lookups fail, the sync stops and leaves the published
+on. nixkeeper asks each source one thing at a time, with a pause between
+requests, and when a source says to slow down (a `Retry-After`), it waits
+as long as asked, up to 5 minutes, before trying again. If most Repology lookups fail, the sync stops and leaves the published
 data as it was.
 
 ## What gets tracked
