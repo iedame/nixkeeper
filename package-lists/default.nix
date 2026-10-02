@@ -36,4 +36,9 @@
   # The page's colours for visitors who haven't picked any in its Theme menu:
   # "classic" or "catppuccin" (Latte when light, Mocha when dark).
   # page.theme = "catppuccin";
+
+  # The most packages a sync may track (default 2000): each costs about 8
+  # requests to public services and 7 seconds per sync, so above that the
+  # sync refuses to start. Raise it only to track that many on purpose.
+  # maxPackages = 3000;
 }
