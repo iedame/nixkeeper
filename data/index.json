@@ -1384,6 +1384,15 @@
       "nixVersion": "154.0.4258.37",
       "nixVulnerable": false,
       "openIssues": 1,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "154.0.4258.48",
+        "number": 569248,
+        "title": "microsoft-edge: 154.0.4258.48 -> 154.0.4258.53",
+        "to": "154.0.4258.53",
+        "url": "https://github.com/NixOS/nixpkgs/pull/569248"
+      },
       "openPRs": 1,
       "outdatedSince": "2026-09-29T22:59:45.183190+00:00",
       "platforms": {
