@@ -1,6 +1,7 @@
 """GET with retries, shared by the sources that don't need more (Repology has
 its own: it also falls back between domains)."""
 
+import email.utils
 import ipaddress
 import socket
 import sys
@@ -8,6 +9,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+from datetime import UTC, datetime
 
 from .. import config
 
@@ -47,6 +49,42 @@ class _CheckedRedirects(urllib.request.HTTPRedirectHandler):
 _safe_opener = urllib.request.build_opener(_CheckedRedirects)
 
 
+def asked_wait(err, now=None):
+    """The seconds a server asked to wait before trying again: the
+    Retry-After of a 429 (too many requests) or 503 (unavailable) answer, in
+    seconds or as a date. None if it didn't say."""
+    if not isinstance(err, urllib.error.HTTPError) or err.code not in (429, 503):
+        return None
+    value = (err.headers or {}).get("Retry-After", "").strip()
+    if value.isdigit():
+        return int(value)
+    try:
+        when = email.utils.parsedate_to_datetime(value)
+    except (TypeError, ValueError):
+        return None
+    if when.tzinfo is None:
+        when = when.replace(tzinfo=UTC)
+    return max(0, round((when - (now or datetime.now(UTC))).total_seconds()))
+
+
+def retry_wait(planned, err, host):
+    """How long to wait before retrying after err: the planned delay, or
+    longer if the server asked (asked_wait). If it asked for more than
+    MAX_RETRY_AFTER, raises err instead: that request fails, rather than
+    stalling the whole run."""
+    asked = asked_wait(err)
+    if asked is None:
+        return planned
+    if asked > config.MAX_RETRY_AFTER:
+        print(
+            f"  {host} asks to wait {asked}s, longer than nixkeeper waits "
+            f"({config.MAX_RETRY_AFTER}s): giving this request up",
+            file=sys.stderr,
+        )
+        raise err
+    return max(planned, asked)
+
+
 def get(url, accept=None, safe=False):
     """The body of url as text, retrying after RETRY_DELAYS seconds. Returns
     None on 404; raises once every attempt has failed. safe (community
@@ -57,8 +95,9 @@ def get(url, accept=None, safe=False):
         headers["Accept"] = accept
     host = urllib.parse.urlsplit(url).netloc
     last_err = None
-    for delay in [0, *config.RETRY_DELAYS]:
-        if delay:
+    for attempt, delay in enumerate([0, *config.RETRY_DELAYS]):
+        if attempt:
+            delay = retry_wait(delay, last_err, host)
             print(f"  retrying in {delay}s...", file=sys.stderr)
             time.sleep(delay)
         try:

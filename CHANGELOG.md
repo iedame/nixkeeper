@@ -11,6 +11,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- When a source answers "too many requests" or "unavailable" with how long
+  to wait (`Retry-After`), nixkeeper waits that long before trying again,
+  up to 5 minutes; asked to wait longer, it gives that request up and the
+  package keeps its previous data. GitHub's rate limits get the same: one
+  more try after the wait it asks for.
+
 - nixkeeper introduces itself properly to the sources it reads: its
   User-Agent is now `nixkeeper/<version> (+https://github.com/iedame/nixkeeper)`
   (it was a fixed `nixkeeper/1.0 (personal package tracker)`), plus the
