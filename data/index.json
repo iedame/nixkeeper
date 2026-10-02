@@ -924,6 +924,15 @@
       "nixVersion": "154.0.8037.57",
       "nixVulnerable": true,
       "openIssues": 5,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "154.0.8037.92",
+        "number": 569374,
+        "title": "google-chrome: 154.0.8037.92 -> 154.0.8037.97",
+        "to": "154.0.8037.97",
+        "url": "https://github.com/NixOS/nixpkgs/pull/569374"
+      },
       "openPRs": 2,
       "outdatedSince": "2026-09-29T21:11:12.205560+00:00",
       "platforms": {
