@@ -352,3 +352,134 @@ class AddAttempts(unittest.TestCase):
         for r in rows:
             self.assertEqual(r["notRefreshed"]["update"]["since"], NOW)
         self.assertIn("down", rows[0]["notRefreshed"]["update"]["reason"])
+
+
+class ReuseLogs(unittest.TestCase):
+    """A sync reads a log once: next time, if the bot's latest attempt is the
+    same (same attribute and date, read by the same rules), it takes the
+    previous reading instead of downloading it again, and judges it afresh
+    against nixpkgs and the rules now."""
+
+    EGOBOO = {"/egoboo/": listing("2026-09-15"), "/egoboo/2026-09-15.log": FAILED}
+    LOG = "/egoboo/2026-09-15.log"
+
+    def setUp(self):
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch("time.sleep"),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def sync(self, previous=None, pages=None, ignored=None, community=(), **row):
+        """One run of add_attempts for egoboo: (its row, the URLs fetched)."""
+        rows = [{"name": "egoboo", "attrs": ["egoboo"], "nixVersion": "2.7.3", **row}]
+        nixpkgs = {a: pkg(a) for a in rows[0]["attrs"]}
+        urlopen, calls = fake_site(pages or self.EGOBOO)
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            nixpkgs_update.add_attempts(
+                rows, nixpkgs, {"packages": previous or []}, NOW, ignored, community
+            )
+        return rows[0], calls
+
+    def test_the_same_attempt_isnt_downloaded_again(self):
+        first, calls = self.sync()
+        self.assertIn(self.LOG, calls)
+        self.assertEqual(first["update"]["parser"], nixpkgs_update.PARSER)
+        second, calls = self.sync(previous=[first])
+        self.assertEqual(calls, ["/egoboo/"])  # the listing, not the log
+        self.assertEqual(second["update"], first["update"])
+        self.assertTrue(second["updateFailure"])
+
+    def test_a_new_attempt_is(self):
+        first, _ = self.sync()
+        pages = {
+            **self.EGOBOO,
+            "/egoboo/": listing("2026-09-15", "2026-09-25"),
+            "/egoboo/2026-09-25.log": PR_OPENED,
+        }
+        second, calls = self.sync(previous=[first], pages=pages)
+        self.assertIn("/egoboo/2026-09-25.log", calls)
+        self.assertEqual(second["update"]["outcome"], "prOpened")
+
+    def test_read_again_when_the_rules_changed(self):
+        first, _ = self.sync()
+        with mock.patch.object(nixpkgs_update, "PARSER", nixpkgs_update.PARSER + 1):
+            second, calls = self.sync(previous=[first])
+        self.assertIn(self.LOG, calls)
+        # And data from before PARSER existed is read again too.
+        old = {k: v for k, v in first["update"].items() if k != "parser"}
+        third, calls = self.sync(previous=[{**first, "update": old}])
+        self.assertIn(self.LOG, calls)
+        self.assertEqual(third["update"]["parser"], nixpkgs_update.PARSER)
+
+    def test_judged_afresh_superseded(self):
+        # Superseded last time: nixpkgs had moved on.
+        first, _ = self.sync(nixVersion="2.8.1")
+        self.assertEqual(first["update"]["outcome"], "superseded")
+        self.assertEqual(first["update"]["supersededOn"], "nixos-unstable")
+        # Reused, it's judged on today's nixpkgs: still superseded...
+        second, calls = self.sync(previous=[first], nixVersion="2.8.1")
+        self.assertEqual(calls, ["/egoboo/"])
+        self.assertEqual(second["update"], first["update"])
+        # ...and as the log reads when nothing supersedes it.
+        third, _ = self.sync(previous=[first])
+        self.assertEqual(third["update"]["outcome"], "failed")
+        for judged in nixpkgs_update.JUDGED:
+            self.assertNotIn(judged, third["update"])
+        self.assertTrue(third["updateFailure"])
+
+    def test_judged_afresh_ignored(self):
+        rules = {"egoboo": {"2.8.1": "Never released."}}
+        community = {("egoboo", "2.8.1")}
+        first, _ = self.sync(ignored=rules, community=community)
+        self.assertEqual(first["update"]["supersededOn"], "ignored")
+        self.assertTrue(first["update"]["community"])
+        # The rule went away: the failure counts again, nothing of the rule left.
+        second, calls = self.sync(previous=[first])
+        self.assertEqual(calls, ["/egoboo/"])
+        self.assertEqual(second["update"]["outcome"], "failed")
+        self.assertNotIn("reason", second["update"])
+        self.assertNotIn("community", second["update"])
+        # Reused and still ignored: as a fresh read would be.
+        third, _ = self.sync(previous=[first], ignored=rules, community=community)
+        self.assertEqual(third["update"], first["update"])
+
+    def test_the_same_as_reading_the_log(self):
+        for log in (FAILED, PR_OPENED, CANT_UPDATE):
+            with self.subTest(log=log.splitlines()[-1][:40]):
+                pages = {"/egoboo/": listing("2026-09-15"), self.LOG: log}
+                first, _ = self.sync(pages=pages)
+                second, calls = self.sync(previous=[first], pages=pages)
+                self.assertEqual(calls, ["/egoboo/"])
+                self.assertEqual(second["update"], first["update"])
+                self.assertEqual(second["updateFailure"], first["updateFailure"])
+
+    def test_read_again_when_unsure(self):
+        first, _ = self.sync(nixVersion="2.8.1")
+        broken = {k: v for k, v in first["update"].items() if k != "supersededOutcome"}
+        _, calls = self.sync(previous=[{**first, "update": broken}])
+        self.assertIn(self.LOG, calls)
+
+    def test_another_attribute_is_read(self):
+        # The stored attempt is egoboo's; egoboo-unwrapped's is its own.
+        first, _ = self.sync()
+        pages = {
+            **self.EGOBOO,
+            "/egoboo-unwrapped/": listing("2026-09-15"),
+            "/egoboo-unwrapped/2026-09-15.log": FAILED,
+        }
+        _, calls = self.sync(
+            previous=[first], pages=pages, attrs=["egoboo", "egoboo-unwrapped"]
+        )
+        self.assertNotIn(self.LOG, calls)
+        self.assertIn("/egoboo-unwrapped/2026-09-15.log", calls)
+
+    def test_a_reused_attempt_is_a_copy(self):
+        first, _ = self.sync()
+        excerpt = list(first["update"]["excerpt"])
+        second, _ = self.sync(previous=[first])
+        second["update"]["excerpt"].append("changed")
+        second["update"]["outcome"] = "changed"
+        self.assertEqual(first["update"]["excerpt"], excerpt)
+        self.assertEqual(first["update"]["outcome"], "failed")

@@ -3,6 +3,7 @@ update each tracked package, read from its public logs. The logs carry no exit
 code, so the outcome is recognised from how the log reads (the approach of
 github.com/asymmetric/nixpkgs-update-notifier)."""
 
+import copy
 import re
 import sys
 import time
@@ -14,6 +15,15 @@ from ..rows import search_term
 from . import http
 
 LOG_NAME = re.compile(r'href="(\d{4}-\d{2}-\d{2})\.log"')
+# The version of parse()'s rules, stored with each attempt ("parser"). A sync
+# reuses the previous run's reading of a log it has already read (same
+# attribute, same date) instead of downloading it again, but only one read
+# with these same rules: bump this whenever parse() changes how it reads a
+# log, so the next sync reads every log again and the change applies at once.
+PARSER = 1
+# What add_attempts adds to an attempt after reading its log, from the
+# state of nixpkgs and the rules at the time; as_read() takes them off.
+JUDGED = ("supersededOutcome", "supersededOn", "reason", "community")
 # "UPDATE_INFO: egoboo 2.7.3 -> 2.8.1 https://..."; "0 -> 1" when the
 # package's own updateScript decides the version.
 UPDATE_INFO = re.compile(r"UPDATE_INFO: \S+ (\S+) -> (\S+)")
@@ -99,16 +109,38 @@ def parse(log):
     return result
 
 
-def latest_attempt(attr):
+def latest_attempt(attr, known=None):
     """The bot's latest attempt at attr: {"attr", "date", "outcome", ...}, or
-    None if it never tried."""
+    None if it never tried. known: an attempt read before (the previous
+    run's); if it's this same one, read with the same rules, its reading is
+    taken (as_read) instead of downloading the log again."""
     date = latest_date(attr)
     if date is None:
         return None
+    reused = as_read(known, attr, date)
+    if reused:
+        return reused
     url = f"{attempts_url(attr)}{date}.log"
     log = http.get(url) or ""
     time.sleep(1)
-    return {"attr": attr, "date": date, "log": url, **parse(log)}
+    return {"attr": attr, "date": date, "log": url, "parser": PARSER, **parse(log)}
+
+
+def as_read(known, attr, date):
+    """known as its log read, if it's the attempt at attr on date, read by
+    these rules (PARSER): without what add_attempts judged afterwards
+    (superseded, ignored), which depends on the state of nixpkgs and the
+    rules now, so it's judged again. A copy; None if it can't be reused."""
+    if not known or known.get("parser") != PARSER:
+        return None
+    if known.get("attr") != attr or known.get("date") != date:
+        return None
+    if known.get("outcome") == "superseded" and not known.get("supersededOutcome"):
+        return None  # can't tell what it was: read the log again
+    attempt = {k: copy.deepcopy(v) for k, v in known.items() if k not in JUDGED}
+    if known.get("outcome") == "superseded":
+        attempt["outcome"] = known["supersededOutcome"]
+    return attempt
 
 
 def moved_on(attempt, version):
@@ -189,7 +221,8 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=(
         try:
             if down:
                 raise OSError("not asked: it didn't answer earlier lookups")
-            attempts = [a for a in map(latest_attempt, attrs) if a]
+            known = before.get(row["name"], {}).get("update")
+            attempts = [a for a in (latest_attempt(a, known) for a in attrs) if a]
             consecutive = 0
         except (urllib.error.URLError, OSError) as e:
             failed += 1
