@@ -4,7 +4,7 @@
   "berk76-tetris"
   "blackvoxel"
   "bolt-launcher"
-  "cataclysmDDA"
+  "cataclysm-dda"
   "countryguess"
   "dustracing2d"
   "egoboo"
