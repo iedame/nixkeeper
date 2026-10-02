@@ -7,7 +7,8 @@ the same format as your own lists:
 
 - **Update checks** ([`community/update-checks.nix`](../community/update-checks.nix)):
   where to look for a package's new releases before Repology counts them (a
-  project's tags, the branch an unstable version follows, a release page).
+  project's tags, the branch an unstable version follows, a release page),
+  or which package it's updated together with (`follows`).
 - **Ignore rules** ([`community/ignored-updates.nix`](../community/ignored-updates.nix)):
   failed nixpkgs-update attempts that shouldn't count as the bot's failure,
   such as a version upstream never really released.
@@ -57,8 +58,26 @@ fetched, and shows as "check failing" on its row, with why:
   repeats like `(a+)+` and no back-references, which can take a very long
   time to match.
 - **Fields**: only the ones the format has (`github`, `tags`, `branch`,
-  `outdatedAfter`, `url`, `pattern`, `frequent`); GitHub repositories as
-  `owner/repo`.
+  `outdatedAfter`, `url`, `pattern`, `frequent`, `follows`); GitHub
+  repositories as `owner/repo`.
+
+## Packages updated together
+
+Some packages are always updated with another, to the same version, by the
+same PRs: msedgedriver with microsoft-edge, a browser's driver with the
+browser. Their PR titles name only the main package, so a search for the
+other finds nothing. A `follows` rule says so:
+
+```nix
+msedgedriver = { follows = "microsoft-edge"; };
+```
+
+The package then counts the other's newest version and update PRs (merged
+and open) as its own, in the daily sync and the hourly checks; its builds,
+bot attempts and vulnerabilities stay its own. It applies only when you
+track both. It fetches nothing, takes no other fields, and can't follow a
+package that follows another. The same rule works in your own update
+checks.
 
 Your own update checks keep their freedom: they're yours, so a page on your
 own network is fine there. Ignore rules fetch nothing, so they need no

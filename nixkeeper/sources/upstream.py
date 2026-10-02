@@ -96,7 +96,12 @@ def add_checks(rows, checks, previous, now, community=frozenset()):
     rule (community.py), held to its limits and fetched in safe mode."""
     by_name = {row["name"]: row for row in rows}
     # Checks for untracked packages: reported with the lists (listcheck.py).
-    wanted = {name: check for name, check in checks.items() if name in by_name}
+    # follows has nothing to fetch: follows.py applies it after master.
+    wanted = {
+        name: check
+        for name, check in checks.items()
+        if name in by_name and "follows" not in check
+    }
     if not wanted:
         return
     print(f"Running {len(wanted)} update checks...", file=sys.stderr)

@@ -851,18 +851,25 @@ async function fillDetail(pkg, el) {
         .filter(Boolean)
         .join(' or ')
     : '';
+  // A package updated together with another (follows): which, and that its
+  // newest version and update PRs are that package's.
+  const follows = up?.follows
+    ? `updated together with <b>${escapeHtml(up.follows)}</b> (${communityCheck(pkg) ? 'a community rule' : 'your update checks'}): its newest version and update PRs count for this package too`
+    : '';
   // When the update check is what makes it outdated, say where the newer
   // version came from, and how it compares with Repology.
   const upstreamLine = () =>
-    `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>; ${communityCheck(pkg) ? 'a community update check' : "nixkeeper's update check"} found <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span> ${upLink}${
-      pkg.refVersion !== up.version
-        ? `; Repology's newest is <span class="mono">${escapeHtml(pkg.refVersion)}</span>`
-        : repologyOutdated
-          ? ''
-          : up.commit
-            ? ` (${behind || 'newer commits'}; Repology only tracks releases, so it can't tell)`
-            : ", which Repology doesn't count as newest yet"
-    }${since}`;
+    follows
+      ? `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>, behind <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span>: it's ${follows}${since}.`
+      : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>; ${communityCheck(pkg) ? 'a community update check' : "nixkeeper's update check"} found <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span> ${upLink}${
+          pkg.refVersion !== up.version
+            ? `; Repology's newest is <span class="mono">${escapeHtml(pkg.refVersion)}</span>`
+            : repologyOutdated
+              ? ''
+              : up.commit
+                ? ` (${behind || 'newer commits'}; Repology only tracks releases, so it can't tell)`
+                : ", which Repology doesn't count as newest yet"
+        }${since}`;
   // A check that can't refresh needs fixing in nixkeeper, so the details say
   // so plainly, with the last result it's still using.
   const failing = notRefreshed(pkg, 'upstream');
@@ -892,9 +899,11 @@ async function fillDetail(pkg, el) {
                   : ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${others.length} other ${others.length === 1 ? 'repository' : 'repositories'}.`
           }${
             up && !up.newer && !failing
-              ? up.behind
-                ? ` nixkeeper's update check: ${behind} ${upLink} (up to <span class="mono">${escapeHtml(up.version)}</span>), not counted as outdated until ${limits}.`
-                : ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
+              ? follows
+                ? ` It's ${follows}.`
+                : up.behind
+                  ? ` nixkeeper's update check: ${behind} ${upLink} (up to <span class="mono">${escapeHtml(up.version)}</span>), not counted as outdated until ${limits}.`
+                  : ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
               : ''
           }`;
 

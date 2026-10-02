@@ -133,7 +133,25 @@ let
     in
     lib.optional (!isTracked lists name) (at "not a tracked package (use its row name, the attribute)")
     ++ (
-      if check ? github && check ? url then
+      # follows = "<package>": updated together with it (nixkeeper/follows.py).
+      if check ? follows then
+        let
+          target = check.follows;
+        in
+        if !builtins.isString target then
+          [ (at "follows must be a package's attribute name (a string)") ]
+        else
+          lib.optional (target == name) (at "follows itself")
+          ++ lib.optional (target != name && !isAttribute target) (
+            at "follows ${target}, which isn't a nixpkgs attribute"
+          )
+          ++ lib.optional (target != name && isAttribute target && !isTracked lists target) (
+            at "follows ${target}, which isn't tracked (track it too: its versions and PRs are where this one's come from)"
+          )
+          ++ map (k: at "follows takes no other fields (${k})") (
+            builtins.filter (k: k != "follows") (builtins.attrNames check)
+          )
+      else if check ? github && check ? url then
         [ (at "use either github (+ tags or branch) or url (+ pattern), not both") ]
       else if check ? github && check ? tags && check ? branch then
         [ (at "use either tags or branch with github, not both") ]
@@ -145,7 +163,7 @@ let
       else if check ? url then
         kind [ "url" "pattern" ] (builtins.match "https?://.+" check.url != null)
       else
-        [ (at "needs github + tags, github + branch, or url + pattern") ]
+        [ (at "needs github + tags, github + branch, url + pattern, or follows") ]
     );
 
   # ignoredUpdates.<name> = { "<version>" = "why"; }.
@@ -188,7 +206,8 @@ rec {
           map (p: p // { entry = name; }) (
             checkProblems {
               maintainers = [ ];
-              extraPackages = [ name ];
+              # As if both were tracked: a follows rule only applies when they are.
+              extraPackages = [ name ] ++ lib.optional (builtins.isString (check.follows or null)) check.follows;
             } name check
           )
       ) rules

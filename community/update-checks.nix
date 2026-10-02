@@ -17,6 +17,9 @@
 #   github = "owner/repo";  branch = "name";          an unstable version's
 #                                                     branch (+ outdatedAfter)
 #   url = "https://...";    pattern = "regex";        a web page
+#   follows = "package";                              updated together with
+#                                                     that package (same
+#                                                     version, same PRs)
 #
 # plus `frequent = true;` to also be checked by the hourly checks. Because
 # these run on everyone's machines, they're held to limits your own rules
@@ -27,7 +30,8 @@
 #     a page is read up to 2 MB;
 #   - tags and pattern: at most 200 characters, with no repeated repeats
 #     like (a+)+ and no back-references, which can take forever to match;
-#   - only the fields above.
+#   - only the fields above; follows takes no others, and fetches nothing
+#     (it only uses that package's results, when you track both).
 #
 # A good rule follows what nixpkgs packages: the stable series it tracks, the
 # page its source comes from. Say in a comment where the version comes from.
@@ -66,5 +70,11 @@
     url = "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages";
     pattern = "Package: microsoft-edge-stable\nVersion: ([0-9.]+)";
     frequent = true;
+  };
+
+  # Built from the same release as Edge, and updated with it by the same
+  # PRs ("microsoft-edge: x -> y" changes both packages).
+  msedgedriver = {
+    follows = "microsoft-edge";
   };
 }

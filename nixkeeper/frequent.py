@@ -9,7 +9,7 @@ import sys
 import urllib.error
 from datetime import UTC, datetime
 
-from . import community, history, partial, rows
+from . import community, follows, history, partial, rows
 from .changes import count_master
 from .sources import nixpkgs as nixpkgs_source
 from .sources import repology, upstream
@@ -85,7 +85,18 @@ def main():
     # Repology's refVersion is fresh again: count master (as the sync does).
     for row in selected:
         count_master(row)
-    history.add_outdated_since(selected, previous, now)
+    # Packages that follow one of these (follows.py) get its new version too.
+    refreshed = {row["name"] for row in selected}
+    following = {
+        name: target
+        for name, target in follows.recorded(packages).items()
+        if target in refreshed
+    }
+    followers = [by_name[name] for name in following if name in by_name]
+    for row in followers:
+        row.pop("outdatedSince", None)  # set again below, as for the others
+    follows.apply_versions(packages, following, now, from_community)
+    history.add_outdated_since([*selected, *followers], previous, now)
     partial.publish(previous, packages, now, data_files)
 
 
