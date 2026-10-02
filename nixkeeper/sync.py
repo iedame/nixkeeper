@@ -13,6 +13,7 @@ from . import (
     notify,
     output,
     rows,
+    scale,
     tracking,
     version,
 )
@@ -26,6 +27,7 @@ def main():
     nixpkgs = nixpkgs_source.load_index()
     lists = nixpkgs_source.read_lists()
     wanted = tracking.tracked_packages(lists, nixpkgs)
+    scale.check(lists, len(wanted))  # how long it'll take; refuses past the limit
     previous = history.load_previous_run()
     projects = lookup.collect_projects(wanted, previous)
     index_rows = rows.build_rows(projects, nixpkgs)

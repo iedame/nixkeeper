@@ -30,7 +30,7 @@ sorted by name.
 `listProblems`, only when there are any, lists mistakes the sync found in the
 package lists, as sentences: a maintainer handle no package lists, an extra
 package nixpkgs doesn't have, an update check or ignore rule for a package
-that isn't tracked. The page shows them above the table. `page`, only when
+that isn't tracked, or 500 packages or more (the cost of a sync). The page shows them above the table. `page`, only when
 the lists set it, holds the page's settings: `{ "theme": "catppuccin" }` is
 its default palette.
 

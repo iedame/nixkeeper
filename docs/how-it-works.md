@@ -28,7 +28,19 @@ When a source can't be reached, the row keeps its last known result, marked
 as not refreshed, and the status issue says so; the rest of the sync goes
 on. nixkeeper asks each source one thing at a time, with a pause between
 requests, and when a source says to slow down (a `Retry-After`), it waits
-as long as asked, up to 5 minutes, before trying again. If most Repology lookups fail, the sync stops and leaves the published
+as long as asked, up to 5 minutes, before trying again.
+
+## How much it tracks
+
+Every tracked package costs each sync about 8 requests to public services
+(Repology, Hydra, the nixpkgs-update logs, GitHub) and about 7 seconds. A
+sync starts by saying how long it should take (on GitHub, in the run's
+summary too). From 500 packages, the list check warns on the page and in the
+status issue; above 2,000, the sync refuses to start, so a big team or a
+typo can't send thousands of requests by accident. To track more on
+purpose, raise the limit in the lists: `maxPackages = 3000;`
+(`lists.maxPackages` in the modules). On GitHub Actions, keep a sync under
+its 6-hour limit: about 3,000 packages. If most Repology lookups fail, the sync stops and leaves the published
 data as it was.
 
 ## What gets tracked

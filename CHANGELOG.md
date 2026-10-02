@@ -9,6 +9,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- Keeping syncs reasonable as the lists grow: a sync starts by saying how
+  long it should take (and on GitHub, in the run's summary); from 500
+  packages the list check warns, on the page and in the status issue; above
+  2,000 the sync refuses to start, unless the lists raise the limit with
+  `maxPackages` (`lists.maxPackages` in the modules). Each package costs
+  about 8 requests to public services and 7 seconds per sync.
+
 ### Changed
 
 - When a source answers "too many requests" or "unavailable" with how long

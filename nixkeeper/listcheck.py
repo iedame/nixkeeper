@@ -11,6 +11,7 @@ page shows them above the table."""
 
 import sys
 
+from . import scale
 from .tracking import by_pname, extra_attrs, extra_lists
 
 # The page's palettes (page/logic.js PALETTES), for page.theme.
@@ -54,6 +55,15 @@ def problems(lists, nixpkgs, tracked):
     ):
         for name in sorted(set(entries) - set(tracked)):
             found.append(f"{what}: {name} isn't a tracked package")
+    big = scale.problem(len(tracked), lists)
+    if big:
+        found.append(big)
+    most = lists.get("maxPackages")
+    if most is not None and scale.limit(lists) != most:
+        found.append(
+            f"maxPackages: {most!r} isn't a positive whole number (using "
+            f"{scale.MAX_PACKAGES:,})"
+        )
     theme = (lists.get("page") or {}).get("theme")
     if theme is not None and theme not in THEMES:
         found.append(
