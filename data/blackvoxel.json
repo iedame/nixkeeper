@@ -1,0 +1,205 @@
+[
+  {
+    "binname": "blackvoxel",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "patlefort@aur"
+    ],
+    "origversion": "2.5-1",
+    "repo": "aur",
+    "srcname": "blackvoxel",
+    "status": "newest",
+    "summary": "Game of automation and programming in a voxel world",
+    "version": "2.5",
+    "visiblename": "blackvoxel"
+  },
+  {
+    "categories": [
+      "games-action"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "samuel.bauer@yahoo.fr"
+    ],
+    "origversion": null,
+    "repo": "gentoo_ovl_guru",
+    "srcname": "games-action/blackvoxel",
+    "status": "incorrect",
+    "summary": "Blackvoxel Video Game",
+    "version": "2.50",
+    "visiblename": "games-action/blackvoxel"
+  },
+  {
+    "categories": [
+      "games-action"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "samuel.bauer@yahoo.fr"
+    ],
+    "origversion": null,
+    "repo": "gentoo_ovl_guru",
+    "srcname": "games-action/blackvoxel",
+    "status": "rolling",
+    "summary": "Blackvoxel Video Game",
+    "version": "9999",
+    "visiblename": "games-action/blackvoxel"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "2.5 (2021-08-05)",
+    "repo": "libregamewiki",
+    "srcname": "Blackvoxel",
+    "status": "newest",
+    "version": "2.5",
+    "visiblename": "Blackvoxel"
+  },
+  {
+    "categories": [
+      "games-action"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "samuel.bauer@yahoo.fr"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-action/blackvoxel",
+    "status": "rolling",
+    "summary": "Blackvoxel Video Game",
+    "version": "9999",
+    "visiblename": "games-action/blackvoxel"
+  },
+  {
+    "categories": [
+      "games-action"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "samuel.bauer@yahoo.fr"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-action/blackvoxel",
+    "status": "incorrect",
+    "summary": "Blackvoxel Video Game",
+    "version": "2.50",
+    "visiblename": "games-action/blackvoxel"
+  },
+  {
+    "categories": [
+      "games-action"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "samuel.bauer@yahoo.fr"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-action/blackvoxel",
+    "status": "incorrect",
+    "summary": "Blackvoxel Video Game",
+    "version": "2.50",
+    "visiblename": "games-action/blackvoxel"
+  },
+  {
+    "categories": [
+      "games-action"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "samuel.bauer@yahoo.fr"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-action/blackvoxel",
+    "status": "rolling",
+    "summary": "Blackvoxel Video Game",
+    "version": "9999",
+    "visiblename": "games-action/blackvoxel"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later",
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com",
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "blackvoxel",
+    "status": "newest",
+    "summary": "A Sci-Fi game with industry and automation",
+    "version": "2.5",
+    "visiblename": "blackvoxel"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later",
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com",
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "blackvoxel",
+    "status": "newest",
+    "summary": "Sci-Fi game with industry and automation",
+    "version": "2.5",
+    "visiblename": "blackvoxel"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later",
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com",
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "blackvoxel",
+    "status": "newest",
+    "summary": "Sci-Fi game with industry and automation",
+    "version": "2.5",
+    "visiblename": "blackvoxel"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later",
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com",
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "blackvoxel",
+    "status": "newest",
+    "summary": "Sci-Fi game with industry and automation",
+    "version": "2.5",
+    "visiblename": "blackvoxel"
+  }
+]

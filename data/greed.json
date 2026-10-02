@@ -1,0 +1,911 @@
+[
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "pardus_21",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.3-2",
+    "repo": "parrot",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.3-2",
+    "repo": "parrot",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "3264117476@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "greed",
+    "status": "outdated",
+    "summary": "Game of Consumption",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binname": "greed",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/greed",
+    "status": "newest",
+    "summary": "Strategy game: eat as much as possible",
+    "version": "5.2",
+    "visiblename": "games/greed"
+  },
+  {
+    "binname": "game/puzzle/greed.lha",
+    "categories": [
+      "game/puzzle"
+    ],
+    "origversion": null,
+    "repo": "os4depot",
+    "status": "outdated",
+    "summary": "An NCurses based game called 'Greed'",
+    "version": "3.1",
+    "visiblename": "greed.lha"
+  },
+  {
+    "binnames": [
+      "greed",
+      "greed-debuginfo"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "BSD-like"
+    ],
+    "maintainers": [
+      "george@altlinux.ru"
+    ],
+    "origversion": "4.2-alt1",
+    "repo": "alt_p11",
+    "srcname": "greed",
+    "status": "outdated",
+    "summary": "the board puzzle game of Greed",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed",
+      "greed-debuginfo"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "george@altlinux.ru"
+    ],
+    "origversion": "4.5-alt2",
+    "repo": "altsisyphus",
+    "srcname": "greed",
+    "status": "outdated",
+    "summary": "the board puzzle game of Greed",
+    "version": "4.5",
+    "visiblename": "greed"
+  },
+  {
+    "binname": "greed",
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "plasticsoup@aur"
+    ],
+    "origversion": "4.4-1",
+    "repo": "aur",
+    "srcname": "greed",
+    "status": "outdated",
+    "summary": "A game of consumption. Eat as much as you can before munching yourself into a corner!",
+    "version": "4.4",
+    "visiblename": "greed"
+  },
+  {
+    "binname": "greed",
+    "categories": [
+      "Games"
+    ],
+    "maintainers": [
+      "jari.aalto@cygwin"
+    ],
+    "origversion": "4.2-1",
+    "repo": "cygwin",
+    "srcname": "greed",
+    "status": "outdated",
+    "summary": "Curses-based clone of the DOS freeware game Greed",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "debian_11",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "bullseye/main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "debian_12",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.3-2",
+    "repo": "debian_13",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.5-3",
+    "repo": "debian_14",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "forky/main",
+    "version": "4.5",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.5-3",
+    "repo": "debian_unstable",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "sid/main",
+    "version": "4.5",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "deepin_unstable",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.3-2",
+    "repo": "deepin_25",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "community",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "devuan_4_0",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.5-3",
+    "repo": "devuan_unstable",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "unstable/main",
+    "version": "4.5",
+    "visiblename": "greed"
+  },
+  {
+    "binname": "greed-game",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "eduardo@freebsd.org"
+    ],
+    "origversion": "5.2_3",
+    "repo": "freebsd",
+    "srcname": "games/greed",
+    "status": "newest",
+    "summary": "Text puzzle game with the aim of clearing the game field",
+    "version": "5.2",
+    "visiblename": "games/greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.5-3",
+    "repo": "kali_rolling",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "4.5",
+    "visiblename": "greed"
+  },
+  {
+    "binname": "greed",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "BSD"
+    ],
+    "maintainers": [
+      "nomaintainer@macports.org"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "games/greed",
+    "status": "outdated",
+    "summary": "The strategy game of Greed",
+    "version": "4.5",
+    "visiblename": "greed"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "3264117476@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "greed",
+    "status": "outdated",
+    "summary": "Game of Consumption",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "3264117476@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "greed",
+    "status": "outdated",
+    "summary": "Game of Consumption",
+    "version": "4.5",
+    "visiblename": "greed"
+  },
+  {
+    "licenses": [
+      "BSD-2-Clause"
+    ],
+    "maintainers": [
+      "3264117476@qq.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "greed",
+    "status": "outdated",
+    "summary": "Game of Consumption",
+    "version": "4.5",
+    "visiblename": "greed"
+  },
+  {
+    "binname": "greed",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/greed",
+    "status": "newest",
+    "summary": "Strategy game: eat as much as possible",
+    "version": "5.2",
+    "visiblename": "games/greed"
+  },
+  {
+    "binname": "greed",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": null,
+    "repo": "pkgsrc_current",
+    "srcname": "games/greed",
+    "status": "newest",
+    "summary": "Strategy game: eat as much as possible",
+    "version": "5.2",
+    "visiblename": "games/greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "pureos_amber",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "amber/main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "pureos_byzantium",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.3-2",
+    "repo": "pureos_landing",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "raspbian_oldstable",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.3-2",
+    "repo": "raspbian_stable",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.5-3",
+    "repo": "raspbian_testing",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "4.5",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "BSD"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "4.2-1",
+    "repo": "rosa_2019_1",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "The board puzzle game of Greed",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed",
+      "greed-debuginfo",
+      "greed-debugsource"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "BSD"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "4.3-1",
+    "repo": "rosa_13",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "The board puzzle game of Greed",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed",
+      "greed-debuginfo"
+    ],
+    "categories": [
+      "Games/Puzzles"
+    ],
+    "licenses": [
+      "BSD-like"
+    ],
+    "origversion": "4.2-1",
+    "repo": "rpmsphere",
+    "srcname": "greed",
+    "status": "outdated",
+    "summary": "The board puzzle game of Greed",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "d.zlatanidis@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/greed",
+    "status": "outdated",
+    "version": "4.2",
+    "visiblename": "games/greed"
+  },
+  {
+    "binname": "greed",
+    "maintainers": [
+      "termux@github"
+    ],
+    "origversion": null,
+    "repo": "termux",
+    "srcname": "greed",
+    "status": "newest",
+    "summary": "Game where you try to eat as much as possible of the board before munching yourself into a corner",
+    "version": "5.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "trisquel_10_0",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "nabia/main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "trisquel_11_0",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "aramo/main",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org.gt"
+    ],
+    "origversion": "3.8-1",
+    "repo": "ubuntu_14_04",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "trusty/universe",
+    "version": "3.8",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "3.10-1build1",
+    "repo": "ubuntu_16_04",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "xenial/universe",
+    "version": "3.10",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "3.10-1build2",
+    "repo": "ubuntu_18_04",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "bionic/universe",
+    "version": "3.10",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "ubuntu_20_04",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "focal/universe",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "ubuntu_22_04",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.2-1",
+    "repo": "ubuntu_24_04",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "noble/universe",
+    "version": "4.2",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.3-2",
+    "repo": "ubuntu_25_04",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "plucky/universe",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.3-3",
+    "repo": "ubuntu_25_10",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "questing/universe",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.3-3build1",
+    "repo": "ubuntu_26_04",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "resolute/universe",
+    "version": "4.3",
+    "visiblename": "greed"
+  },
+  {
+    "binnames": [
+      "greed"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jmaslibre@debian.org"
+    ],
+    "origversion": "4.5-3",
+    "repo": "ubuntu_26_10",
+    "srcname": "greed",
+    "status": "outdated",
+    "subrepo": "stonking/universe",
+    "version": "4.5",
+    "visiblename": "greed"
+  }
+]

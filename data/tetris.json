@@ -1,0 +1,88 @@
+[
+  {
+    "binname": "tetris",
+    "licenses": [
+      "BSD"
+    ],
+    "maintainers": [
+      "env25@aur"
+    ],
+    "origversion": "7.9.0-1",
+    "repo": "aur",
+    "srcname": "tetris",
+    "status": "newest",
+    "summary": "Linux port of the OpenBSD version",
+    "version": "7.9.0",
+    "visiblename": "tetris"
+  },
+  {
+    "licenses": [
+      "BSD-3-Clause"
+    ],
+    "maintainers": [
+      "s.ziegler@holypenguin.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "tetris",
+    "status": "outdated",
+    "version": "0.1.6",
+    "visiblename": "tetris"
+  },
+  {
+    "licenses": [
+      "BSD-3-Clause"
+    ],
+    "maintainers": [
+      "s.ziegler@holypenguin.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "tetris",
+    "status": "outdated",
+    "version": "0.1.6",
+    "visiblename": "tetris"
+  },
+  {
+    "licenses": [
+      "BSD-3-Clause"
+    ],
+    "maintainers": [
+      "s.ziegler@holypenguin.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "tetris",
+    "status": "outdated",
+    "version": "0.1.6",
+    "visiblename": "tetris"
+  },
+  {
+    "licenses": [
+      "BSD-3-Clause"
+    ],
+    "maintainers": [
+      "s.ziegler@holypenguin.net"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "tetris",
+    "status": "outdated",
+    "version": "0.1.6",
+    "visiblename": "tetris"
+  },
+  {
+    "licenses": [
+      "BSD-3-Clause"
+    ],
+    "maintainers": [
+      "s.ziegler@holypenguin.net"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "tetris",
+    "status": "outdated",
+    "version": "0.1.6",
+    "visiblename": "tetris"
+  }
+]

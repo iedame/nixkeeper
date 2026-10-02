@@ -1,0 +1,62 @@
+[
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "msnake",
+    "status": "unique",
+    "summary": "Multiplatform command line snake game",
+    "version": "0.1.1-unstable-2020-02-01",
+    "visiblename": "msnake"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "msnake",
+    "status": "unique",
+    "summary": "Multiplatform command line snake game",
+    "version": "0.1.1-unstable-2020-02-01",
+    "visiblename": "msnake"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "msnake",
+    "status": "unique",
+    "summary": "Multiplatform command line snake game",
+    "version": "0.1.1-unstable-2020-02-01",
+    "visiblename": "msnake"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "msnake",
+    "status": "unique",
+    "summary": "Multiplatform command line snake game",
+    "version": "0.1.1-unstable-2020-02-01",
+    "visiblename": "msnake"
+  }
+]

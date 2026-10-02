@@ -1,0 +1,96 @@
+[
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru",
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "stardust",
+    "status": "unique",
+    "summary": "Space flight simulator",
+    "version": "0.1.13",
+    "visiblename": "stardust"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "stardust",
+    "status": "unique",
+    "summary": "Space flight simulator",
+    "version": "0.1.13",
+    "visiblename": "stardust"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "stardust",
+    "status": "unique",
+    "summary": "Space flight simulator",
+    "version": "0.1.13",
+    "visiblename": "stardust"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru",
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "stardust",
+    "status": "unique",
+    "summary": "Space flight simulator",
+    "version": "0.1.13",
+    "visiblename": "stardust"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru",
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "stardust",
+    "status": "unique",
+    "summary": "Space flight simulator",
+    "version": "0.1.13",
+    "visiblename": "stardust"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "7c6f434c@mail.ru",
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "stardust",
+    "status": "unique",
+    "summary": "Space flight simulator",
+    "version": "0.1.13",
+    "visiblename": "stardust"
+  }
+]

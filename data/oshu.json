@@ -1,0 +1,260 @@
+[
+  {
+    "binname": "oshu",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "fmang@aur"
+    ],
+    "origversion": "2.0.2-1",
+    "repo": "aur",
+    "srcname": "oshu",
+    "status": "outdated",
+    "summary": "Fast port of the osu! rhythm game",
+    "version": "2.0.2",
+    "visiblename": "oshu"
+  },
+  {
+    "categories": [
+      "games-music"
+    ],
+    "maintainers": [
+      "fallback-mnt-exherbo@repology"
+    ],
+    "origversion": null,
+    "repo": "exherbo",
+    "srcname": "games-music/oshu",
+    "status": "rolling",
+    "subrepo": "cogitri",
+    "summary": "Fast osu! port for Linux (and more)",
+    "version": "scm",
+    "visiblename": "games-music/oshu"
+  },
+  {
+    "categories": [
+      "games-arcade"
+    ],
+    "licenses": [
+      "GPL-3",
+      "CC-BY-NC-4.0"
+    ],
+    "maintainers": [
+      "contact@hacktivis.me",
+      "proxy-maint@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-arcade/oshu",
+    "status": "rolling",
+    "summary": "Lightweight osu! port",
+    "version": "9999",
+    "visiblename": "games-arcade/oshu"
+  },
+  {
+    "categories": [
+      "games-arcade"
+    ],
+    "licenses": [
+      "GPL-3",
+      "CC-BY-NC-4.0"
+    ],
+    "maintainers": [
+      "contact@hacktivis.me",
+      "proxy-maint@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-arcade/oshu",
+    "status": "newest",
+    "summary": "Lightweight osu! port",
+    "version": "2.0.3",
+    "visiblename": "games-arcade/oshu"
+  },
+  {
+    "binname": "oshu",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "oshu",
+    "status": "newest",
+    "summary": "Rhythm game in which you click on circles",
+    "version": "2.0.3",
+    "visiblename": "oshu"
+  },
+  {
+    "categories": [
+      "games-arcade"
+    ],
+    "licenses": [
+      "GPL-3",
+      "CC-BY-NC-4.0"
+    ],
+    "maintainers": [
+      "contact@hacktivis.me",
+      "proxy-maint@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-arcade/oshu",
+    "status": "rolling",
+    "summary": "Lightweight osu! port",
+    "version": "9999",
+    "visiblename": "games-arcade/oshu"
+  },
+  {
+    "categories": [
+      "games-arcade"
+    ],
+    "licenses": [
+      "GPL-3",
+      "CC-BY-NC-4.0"
+    ],
+    "maintainers": [
+      "contact@hacktivis.me",
+      "proxy-maint@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-arcade/oshu",
+    "status": "outdated",
+    "summary": "Lightweight osu! port",
+    "version": "2.0.2",
+    "visiblename": "games-arcade/oshu"
+  },
+  {
+    "categories": [
+      "games-arcade"
+    ],
+    "licenses": [
+      "GPL-3",
+      "CC-BY-NC-4.0"
+    ],
+    "maintainers": [
+      "contact@hacktivis.me",
+      "proxy-maint@gentoo.org"
+    ],
+    "origversion": "2.0.2-r1",
+    "repo": "liguros_stable",
+    "srcname": "games-arcade/oshu",
+    "status": "outdated",
+    "summary": "Lightweight osu! port",
+    "version": "2.0.2",
+    "visiblename": "games-arcade/oshu"
+  },
+  {
+    "categories": [
+      "games-arcade"
+    ],
+    "licenses": [
+      "GPL-3",
+      "CC-BY-NC-4.0"
+    ],
+    "maintainers": [
+      "contact@hacktivis.me",
+      "proxy-maint@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-arcade/oshu",
+    "status": "newest",
+    "summary": "Lightweight osu! port",
+    "version": "2.0.3",
+    "visiblename": "games-arcade/oshu"
+  },
+  {
+    "categories": [
+      "games-arcade"
+    ],
+    "licenses": [
+      "GPL-3",
+      "CC-BY-NC-4.0"
+    ],
+    "maintainers": [
+      "contact@hacktivis.me",
+      "proxy-maint@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-arcade/oshu",
+    "status": "rolling",
+    "summary": "Lightweight osu! port",
+    "version": "9999",
+    "visiblename": "games-arcade/oshu"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "solemnsquire@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "oshu",
+    "status": "newest",
+    "summary": "Lightweight osu! client for Linux and low-end systems",
+    "version": "2.0.3",
+    "visiblename": "oshu"
+  },
+  {
+    "binname": "oshu",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "2.0.2nb17",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/oshu",
+    "status": "outdated",
+    "summary": "Fast osu! port",
+    "version": "2.0.2",
+    "visiblename": "games/oshu"
+  },
+  {
+    "binname": "oshu",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "2.0.2nb19",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/oshu",
+    "status": "outdated",
+    "summary": "Fast osu! port",
+    "version": "2.0.2",
+    "visiblename": "games/oshu"
+  },
+  {
+    "binname": "oshu",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "2.0.2nb21",
+    "repo": "pkgsrc_current",
+    "srcname": "games/oshu",
+    "status": "outdated",
+    "summary": "Fast osu! port",
+    "version": "2.0.2",
+    "visiblename": "games/oshu"
+  },
+  {
+    "binname": "oshu",
+    "maintainers": [
+      "termux@github"
+    ],
+    "origversion": null,
+    "repo": "termux",
+    "srcname": "oshu",
+    "status": "newest",
+    "summary": "Oshu Is a Musical Game",
+    "version": "2.0.3",
+    "visiblename": "oshu"
+  }
+]

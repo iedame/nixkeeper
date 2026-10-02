@@ -1,0 +1,240 @@
+[
+  {
+    "binnames": [
+      "taradino",
+      "rott"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "evgeni@debian.org",
+      "fabian@debian.org"
+    ],
+    "origversion": "20251222-2",
+    "repo": "debian_14",
+    "srcname": "taradino",
+    "status": "newest",
+    "subrepo": "forky/contrib",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "binnames": [
+      "taradino",
+      "rott"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "evgeni@debian.org",
+      "fabian@debian.org"
+    ],
+    "origversion": "20251222-2",
+    "repo": "debian_unstable",
+    "srcname": "taradino",
+    "status": "newest",
+    "subrepo": "sid/contrib",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "binnames": [
+      "taradino",
+      "rott"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "evgeni@debian.org",
+      "fabian@debian.org"
+    ],
+    "origversion": "20251222-2",
+    "repo": "devuan_unstable",
+    "srcname": "taradino",
+    "status": "newest",
+    "subrepo": "unstable/contrib",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "binnames": [
+      "taradino",
+      "rott"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "evgeni@debian.org",
+      "fabian@debian.org"
+    ],
+    "origversion": "20251222-2",
+    "repo": "kali_rolling",
+    "srcname": "taradino",
+    "status": "newest",
+    "subrepo": "contrib",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "taradino",
+    "status": "newest",
+    "summary": "SDL2 port of Rise of the Triad",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "taradino",
+    "status": "newest",
+    "summary": "SDL2 port of Rise of the Triad",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "binnames": [
+      "taradino",
+      "taradino-debuginfo",
+      "taradino-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/3D/Shoot"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "20251222-1.5",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "taradino",
+    "status": "newest",
+    "subrepo": "src-oss",
+    "summary": "SDL port of the Rise of the Triad engine",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "binnames": [
+      "taradino",
+      "taradino-debuginfo",
+      "taradino-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/3D/Shoot"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "20251222-1.32",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "taradino",
+    "status": "newest",
+    "summary": "SDL port of the Rise of the Triad engine",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "binnames": [
+      "taradino",
+      "taradino-debuginfo",
+      "taradino-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/3D/Shoot"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "20251222-1.33",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "taradino",
+    "status": "newest",
+    "summary": "SDL port of the Rise of the Triad engine",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "binnames": [
+      "taradino",
+      "rott"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "evgeni@debian.org",
+      "fabian@debian.org"
+    ],
+    "origversion": "20251222-2",
+    "repo": "raspbian_testing",
+    "srcname": "taradino",
+    "status": "newest",
+    "subrepo": "contrib",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "binnames": [
+      "taradino",
+      "rott"
+    ],
+    "categories": [
+      "multiverse/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "evgeni@debian.org",
+      "fabian@debian.org"
+    ],
+    "origversion": "20251222-1",
+    "repo": "ubuntu_26_04",
+    "srcname": "taradino",
+    "status": "newest",
+    "subrepo": "resolute/multiverse",
+    "version": "20251222",
+    "visiblename": "taradino"
+  },
+  {
+    "binnames": [
+      "taradino",
+      "rott"
+    ],
+    "categories": [
+      "multiverse/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "evgeni@debian.org",
+      "fabian@debian.org"
+    ],
+    "origversion": "20251222-2",
+    "repo": "ubuntu_26_10",
+    "srcname": "taradino",
+    "status": "newest",
+    "subrepo": "stonking/multiverse",
+    "version": "20251222",
+    "visiblename": "taradino"
+  }
+]

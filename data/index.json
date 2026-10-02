@@ -1,5 +1,8 @@
 {
-  "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+  "checkedAt": "2026-10-02T21:12:02.420637+00:00",
+  "listProblems": [
+    "extraPackages.gaming-team: cataclysmDDA is neither a nixpkgs attribute nor a top-level pname (aliases like python3Packages need their versioned name)"
+  ],
   "packages": [
     {
       "attrs": [
@@ -45,6 +48,70 @@
         "supersededOutcome": "failed",
         "to": "1",
         "was": "1password-8.12.34"
+      },
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "anarch"
+      ],
+      "builds": [
+        {
+          "attr": "anarch",
+          "build": 347084675,
+          "name": "anarch-1.0-unstable-2023-09-08",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "1.0-unstable-2023-09-08"
+        },
+        {
+          "attr": "anarch",
+          "build": 347084674,
+          "name": "anarch-1.0-unstable-2023-09-08",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "1.0-unstable-2023-09-08"
+        },
+        {
+          "attr": "anarch",
+          "build": 347084673,
+          "name": "anarch-1.0-unstable-2023-09-08",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "1.0-unstable-2023-09-08"
+        }
+      ],
+      "dataFile": "anarch.json",
+      "devel": false,
+      "homepage": "https://drummyfish.gitlab.io/anarch/",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "anarch",
+      "nixStatus": "outdated",
+      "nixVersion": "1.0-unstable-2023-09-08",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 1,
+      "outdatedSince": "2026-10-02T21:12:02.420637+00:00",
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "anarch",
+      "refVersion": "1.1",
+      "repoCount": 19,
+      "searchTerm": "anarch",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/an/anarch/package.nix#L54",
+      "update": {
+        "attr": "anarch",
+        "date": "2026-09-26",
+        "from": "1.0-unstable-2023-09-08",
+        "log": "https://nixpkgs-update-logs.nixos.org/anarch/2026-09-26.log",
+        "outcome": "other",
+        "parser": 1,
+        "to": "1.1",
+        "was": "1.0-unstable-2023-09-08"
       },
       "updateFailure": false
     },
@@ -197,13 +264,136 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
         "community": true,
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
         "version": "16.0.3"
       }
+    },
+    {
+      "attrs": [
+        "berk76-tetris"
+      ],
+      "builds": [
+        {
+          "attr": "berk76-tetris",
+          "build": 347088831,
+          "name": "berk76-tetris-1.1.0-unstable-2024-11-24",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "1.1.0-unstable-2024-11-24"
+        },
+        {
+          "attr": "berk76-tetris",
+          "build": 347088826,
+          "name": "berk76-tetris-1.1.0-unstable-2024-11-24",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "1.1.0-unstable-2024-11-24"
+        },
+        {
+          "attr": "berk76-tetris",
+          "build": 347088827,
+          "name": "berk76-tetris-1.1.0-unstable-2024-11-24",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "1.1.0-unstable-2024-11-24"
+        }
+      ],
+      "dataFile": "berk76-tetris.json",
+      "devel": false,
+      "homepage": "https://github.com/oldcompcz/tetris",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "berk76-tetris",
+      "nixStatus": "unique",
+      "nixVersion": "1.1.0-unstable-2024-11-24",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "berk76-tetris",
+      "refVersion": null,
+      "repoCount": 0,
+      "searchTerm": "berk76-tetris",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/be/berk76-tetris/package.nix#L41",
+      "update": {
+        "attr": "berk76-tetris",
+        "date": "2026-09-29",
+        "from": "1.1.0-unstable-2024-11-24",
+        "log": "https://nixpkgs-update-logs.nixos.org/berk76-tetris/2026-09-29.log",
+        "outcome": "other",
+        "parser": 1,
+        "to": "1.1.0",
+        "was": "1.1.0-unstable-2024-11-24"
+      },
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "blackvoxel"
+      ],
+      "builds": [
+        {
+          "attr": "blackvoxel",
+          "build": 347089228,
+          "name": "blackvoxel-2.5",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "2.5"
+        },
+        {
+          "attr": "blackvoxel",
+          "build": 347089229,
+          "name": "blackvoxel-2.5",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "2.5"
+        }
+      ],
+      "dataFile": "blackvoxel.json",
+      "devel": false,
+      "homepage": "https://www.blackvoxel.com",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "blackvoxel",
+      "nixStatus": "newest",
+      "nixVersion": "2.5",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": false,
+        "linux": true
+      },
+      "project": "blackvoxel",
+      "refVersion": "2.5",
+      "repoCount": 11,
+      "searchTerm": "blackvoxel",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/bl/blackvoxel/package.nix#L69",
+      "update": {
+        "attr": "blackvoxel",
+        "date": "2026-09-27",
+        "excerpt": [
+          "         nix log /nix/store/h1qlfml12h7jfvznjz8f8zxdx3fzw6h3-source.drv",
+          "--- SHOWING ERROR LOG FOR blackvoxel-2.5 ----------------------",
+          "The update script for blackvoxel-2.5 failed with exit code 1"
+        ],
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/blackvoxel/2026-09-27.log",
+        "outcome": "failed",
+        "parser": 1,
+        "to": "1",
+        "was": "blackvoxel-2.5"
+      },
+      "updateFailure": true
     },
     {
       "attrs": [
@@ -263,6 +453,92 @@
       "updateFailure": false
     },
     {
+      "attrs": [],
+      "dataFile": "cataclysmDDA.json",
+      "devel": false,
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "cataclysmDDA",
+      "nixStatus": "missing",
+      "nixVersion": null,
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "project": null,
+      "refVersion": null,
+      "repoCount": 0,
+      "searchTerm": "cataclysmDDA"
+    },
+    {
+      "attrs": [
+        "countryguess"
+      ],
+      "builds": [
+        {
+          "attr": "countryguess",
+          "build": 347097164,
+          "name": "countryguess-0-unstable-2025-03-04",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "0-unstable-2025-03-04"
+        },
+        {
+          "attr": "countryguess",
+          "build": 347097156,
+          "name": "countryguess-0-unstable-2025-03-04",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "0-unstable-2025-03-04"
+        },
+        {
+          "attr": "countryguess",
+          "build": 347097155,
+          "name": "countryguess-0-unstable-2025-03-04",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "0-unstable-2025-03-04"
+        }
+      ],
+      "dataFile": "countryguess.json",
+      "devel": false,
+      "homepage": "https://github.com/swarbler/countryguess",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "countryguess",
+      "nixStatus": "unique",
+      "nixVersion": "0-unstable-2025-03-04",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "countryguess",
+      "refVersion": "0-unstable-2025-03-04",
+      "repoCount": 3,
+      "searchTerm": "countryguess",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/co/countryguess/package.nix#L41",
+      "update": {
+        "attr": "countryguess",
+        "date": "2026-09-24",
+        "excerpt": [
+          "nix_update.errors.VersionError: Please specify the version. We can only get the latest version from codeberg/crates.io/gitea/github/gitlab/pypi/savannah/sourcehut/rubygems/npm projects right now",
+          "--- SHOWING ERROR LOG FOR countryguess-0-unstable-2025-03-04 ----------------------",
+          "The update script for countryguess-0-unstable-2025-03-04 failed with exit code 1"
+        ],
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/countryguess/2026-09-24.log",
+        "outcome": "failed",
+        "parser": 1,
+        "to": "1",
+        "was": "countryguess-0-unstable-2025-03-04"
+      },
+      "updateFailure": true
+    },
+    {
       "attrs": [
         "d-seams"
       ],
@@ -317,6 +593,70 @@
         "was": "1.0.1"
       },
       "updateFailure": false
+    },
+    {
+      "attrs": [
+        "dustracing2d"
+      ],
+      "builds": [
+        {
+          "attr": "dustracing2d",
+          "build": 347101052,
+          "name": "dustracing2d-2.2.0",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "2.2.0"
+        },
+        {
+          "attr": "dustracing2d",
+          "build": 347101051,
+          "name": "dustracing2d-2.2.0",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "2.2.0"
+        },
+        {
+          "attr": "dustracing2d",
+          "status": "notBuilt",
+          "system": "aarch64-darwin"
+        }
+      ],
+      "dataFile": "dustrac.json",
+      "devel": false,
+      "homepage": "https://juzzlin.github.io/DustRacing2D/index.html",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "dustracing2d",
+      "nixStatus": "newest",
+      "nixVersion": "2.2.0",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "dustrac",
+      "refVersion": "2.2.0",
+      "repoCount": 61,
+      "searchTerm": "dustracing2d",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/du/dustracing2d/package.nix#L55",
+      "update": {
+        "attr": "dustracing2d",
+        "date": "2026-09-28",
+        "excerpt": [
+          "this derivation will be built:",
+          "  /nix/store/plwdcwfminbqimg7xk17gbdb5qpl8r3q-packages.json.drv",
+          "error: the build users group 'nixbld' has no members"
+        ],
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/dustracing2d/2026-09-28.log",
+        "outcome": "failed",
+        "parser": 1,
+        "to": "1"
+      },
+      "updateFailure": true
     },
     {
       "attrs": [
@@ -941,7 +1281,7 @@
       "nixVersion": "154.0.8037.92",
       "nixVulnerable": true,
       "openIssues": 5,
-      "openPRs": 3,
+      "openPRs": 2,
       "outdatedSince": "2026-09-29T21:11:12.205560+00:00",
       "platforms": {
         "darwin": true,
@@ -965,13 +1305,82 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T18:29:15.773049+00:00",
+        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
         "community": true,
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
         "version": "154.0.8037.97"
       }
+    },
+    {
+      "attrs": [
+        "greed"
+      ],
+      "builds": [
+        {
+          "attr": "greed",
+          "build": 347113449,
+          "name": "greed-4.5",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "4.5"
+        },
+        {
+          "attr": "greed",
+          "build": 347113447,
+          "name": "greed-4.5",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "4.5"
+        },
+        {
+          "attr": "greed",
+          "build": 347113446,
+          "name": "greed-4.5",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "4.5"
+        }
+      ],
+      "dataFile": "greed.json",
+      "devel": false,
+      "homepage": "http://www.catb.org/~esr/",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "greed",
+      "nixStatus": "outdated",
+      "nixVersion": "4.5",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "outdatedSince": "2026-10-02T21:12:02.420637+00:00",
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "greed",
+      "refVersion": "5.2",
+      "repoCount": 49,
+      "searchTerm": "greed",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/gr/greed/package.nix#L47",
+      "update": {
+        "attr": "greed",
+        "date": "2026-09-28",
+        "excerpt": [
+          "source root is source",
+          "Running phase: patchPhase",
+          "substituteStream() in derivation greed-5.2: ERROR: pattern -lcurses doesn't match anything in file 'Makefile'"
+        ],
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/greed/2026-09-28.log",
+        "outcome": "failed",
+        "parser": 1,
+        "to": "1",
+        "was": "greed-4.5"
+      },
+      "updateFailure": true
     },
     {
       "attrs": [
@@ -1405,10 +1814,10 @@
       },
       "name": "microsoft-edge",
       "nixStatus": "outdated",
-      "nixVersion": "154.0.4258.37",
+      "nixVersion": "154.0.4258.48",
       "nixVulnerable": false,
       "openIssues": 1,
-      "openPRs": 2,
+      "openPRs": 1,
       "outdatedSince": "2026-09-29T22:59:45.183190+00:00",
       "platforms": {
         "darwin": true,
@@ -1433,7 +1842,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T18:29:15.773049+00:00",
+        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
         "community": true,
         "label": "packages.microsoft.com",
         "newer": true,
@@ -1462,8 +1871,8 @@
         "url": "https://github.com/NixOS/nixpkgs/pull/569248"
       },
       "name": "msedgedriver",
-      "nixStatus": "outdated",
-      "nixVersion": "154.0.4258.37",
+      "nixStatus": "unique",
+      "nixVersion": "154.0.4258.48",
       "nixVulnerable": false,
       "openIssues": 0,
       "openPRs": 0,
@@ -1481,12 +1890,66 @@
       "update": null,
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T18:29:15.773049+00:00",
+        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
         "community": true,
         "follows": "microsoft-edge",
         "newer": true,
         "version": "154.0.4258.53"
       }
+    },
+    {
+      "attrs": [
+        "msnake"
+      ],
+      "builds": [
+        {
+          "attr": "msnake",
+          "build": 347163105,
+          "name": "msnake-0.1.1-unstable-2020-02-01",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "0.1.1-unstable-2020-02-01"
+        },
+        {
+          "attr": "msnake",
+          "build": 347163022,
+          "name": "msnake-0.1.1-unstable-2020-02-01",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "0.1.1-unstable-2020-02-01"
+        },
+        {
+          "attr": "msnake",
+          "build": 347163019,
+          "name": "msnake-0.1.1-unstable-2020-02-01",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "0.1.1-unstable-2020-02-01"
+        }
+      ],
+      "dataFile": "msnake.json",
+      "devel": false,
+      "homepage": "https://github.com/mogria/msnake",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "msnake",
+      "nixStatus": "unique",
+      "nixVersion": "0.1.1-unstable-2020-02-01",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "msnake",
+      "refVersion": "0.1.1-unstable-2020-02-01",
+      "repoCount": 3,
+      "searchTerm": "msnake",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/ms/msnake/package.nix#L41",
+      "update": null,
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -1795,6 +2258,115 @@
     },
     {
       "attrs": [
+        "oshu"
+      ],
+      "builds": [
+        {
+          "attr": "oshu",
+          "build": 347176923,
+          "name": "oshu-2.0.3",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "2.0.3"
+        },
+        {
+          "attr": "oshu",
+          "build": 347176922,
+          "name": "oshu-2.0.3",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "2.0.3"
+        }
+      ],
+      "dataFile": "oshu.json",
+      "devel": false,
+      "homepage": "https://github.com/fmang/oshu",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "oshu",
+      "nixStatus": "newest",
+      "nixVersion": "2.0.3",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": false,
+        "linux": true
+      },
+      "project": "oshu",
+      "refVersion": "2.0.3",
+      "repoCount": 14,
+      "searchTerm": "oshu",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/os/oshu/package.nix#L57",
+      "update": {
+        "attr": "oshu",
+        "date": "2026-09-29",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/oshu/2026-09-29.log",
+        "outcome": "noChange",
+        "parser": 1,
+        "to": "1",
+        "was": "oshu-2.0.3"
+      },
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "pacman-game"
+      ],
+      "builds": [
+        {
+          "attr": "pacman-game",
+          "build": 347177309,
+          "name": "pacman-game-0-unstable-2017-01-30",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "0-unstable-2017-01-30"
+        },
+        {
+          "attr": "pacman-game",
+          "build": 347177323,
+          "name": "pacman-game-0-unstable-2017-01-30",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "0-unstable-2017-01-30"
+        },
+        {
+          "attr": "pacman-game",
+          "build": 347177294,
+          "name": "pacman-game-0-unstable-2017-01-30",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "0-unstable-2017-01-30"
+        }
+      ],
+      "dataFile": "pacman-game.json",
+      "devel": false,
+      "homepage": "https://github.com/justinjo/Pacman",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "pacman-game",
+      "nixStatus": "unique",
+      "nixVersion": "0-unstable-2017-01-30",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "pacman-game",
+      "refVersion": "0-unstable-2017-01-30",
+      "repoCount": 3,
+      "searchTerm": "pacman-game",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/pa/pacman-game/package.nix#L38",
+      "update": null,
+      "updateFailure": false
+    },
+    {
+      "attrs": [
         "pacvim"
       ],
       "builds": [
@@ -1845,6 +2417,123 @@
       "searchTerm": "pacvim",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/pa/pacvim/package.nix#L33",
       "update": null,
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "pond"
+      ],
+      "builds": [
+        {
+          "attr": "pond",
+          "build": 347193873,
+          "name": "pond-0-unstable-2025-01-03",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "0-unstable-2025-01-03"
+        },
+        {
+          "attr": "pond",
+          "build": 347193797,
+          "name": "pond-0-unstable-2025-01-03",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "0-unstable-2025-01-03"
+        },
+        {
+          "attr": "pond",
+          "build": 347193794,
+          "name": "pond-0-unstable-2025-01-03",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "0-unstable-2025-01-03"
+        }
+      ],
+      "dataFile": "pond.json",
+      "devel": false,
+      "homepage": "https://gitlab.com/alice-lefebvre/pond",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "pond",
+      "nixStatus": "unique",
+      "nixVersion": "0-unstable-2025-01-03",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "pond",
+      "refVersion": null,
+      "repoCount": 0,
+      "searchTerm": "pond",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/po/pond/package.nix#L38",
+      "update": null,
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "rebels-in-the-sky"
+      ],
+      "builds": [
+        {
+          "attr": "rebels-in-the-sky",
+          "build": 347265653,
+          "name": "rebels-in-the-sky-1.8.1",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "1.8.1"
+        },
+        {
+          "attr": "rebels-in-the-sky",
+          "build": 347265564,
+          "name": "rebels-in-the-sky-1.8.1",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "1.8.1"
+        },
+        {
+          "attr": "rebels-in-the-sky",
+          "build": 347265576,
+          "name": "rebels-in-the-sky-1.8.1",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "1.8.1"
+        }
+      ],
+      "dataFile": "rebels-in-the-sky.json",
+      "devel": false,
+      "homepage": "https://frittura.org/",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "rebels-in-the-sky",
+      "nixStatus": "newest",
+      "nixVersion": "1.8.1",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "rebels-in-the-sky",
+      "refVersion": "1.8.1",
+      "repoCount": 10,
+      "searchTerm": "rebels-in-the-sky",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/re/rebels-in-the-sky/package.nix#L57",
+      "update": {
+        "attr": "rebels-in-the-sky",
+        "date": "2026-09-23",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/rebels-in-the-sky/2026-09-23.log",
+        "outcome": "noChange",
+        "parser": 1,
+        "to": "1",
+        "was": "rebels-in-the-sky-1.8.1"
+      },
       "updateFailure": false
     },
     {
@@ -2006,6 +2695,52 @@
     },
     {
       "attrs": [
+        "stardust"
+      ],
+      "builds": [
+        {
+          "attr": "stardust",
+          "build": 347278198,
+          "name": "stardust-0.1.13",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "0.1.13"
+        },
+        {
+          "attr": "stardust",
+          "build": 347278196,
+          "name": "stardust-0.1.13",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "0.1.13"
+        }
+      ],
+      "dataFile": "stardust.json",
+      "devel": false,
+      "homepage": "http://iwar.free.fr/spip/rubrique2.html",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "stardust",
+      "nixStatus": "unique",
+      "nixVersion": "0.1.13",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 2,
+      "platforms": {
+        "darwin": false,
+        "linux": true
+      },
+      "project": "stardust",
+      "refVersion": "0.1.13",
+      "repoCount": 5,
+      "searchTerm": "stardust",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/st/stardust/package.nix#L58",
+      "update": null,
+      "updateFailure": false
+    },
+    {
+      "attrs": [
         "stepmania"
       ],
       "builds": [
@@ -2061,7 +2796,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "community": true,
         "label": "stepmania/stepmania 5_1-new branch",
@@ -2136,6 +2871,202 @@
         "was": "0.6.3"
       },
       "updateFailure": false
+    },
+    {
+      "attrs": [
+        "taradino"
+      ],
+      "builds": [
+        {
+          "attr": "taradino",
+          "build": 347279859,
+          "name": "taradino-20251222",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "20251222"
+        },
+        {
+          "attr": "taradino",
+          "build": 347279858,
+          "name": "taradino-20251222",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "20251222"
+        },
+        {
+          "attr": "taradino",
+          "build": 347279857,
+          "name": "taradino-20251222",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "20251222"
+        }
+      ],
+      "dataFile": "taradino.json",
+      "devel": false,
+      "homepage": "https://github.com/fabiangreffrath/taradino",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "taradino",
+      "nixStatus": "newest",
+      "nixVersion": "20251222",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "taradino",
+      "refVersion": "20251222",
+      "repoCount": 11,
+      "searchTerm": "taradino",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/ta/taradino/package.nix#L65",
+      "update": {
+        "attr": "taradino",
+        "date": "2026-10-02",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/taradino/2026-10-02.log",
+        "outcome": "noChange",
+        "parser": 1,
+        "to": "1",
+        "was": "taradino-20251222"
+      },
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "terminal-space-program"
+      ],
+      "builds": [
+        {
+          "attr": "terminal-space-program",
+          "build": 347792476,
+          "name": "terminal-space-program-0.44.3",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "0.44.3"
+        },
+        {
+          "attr": "terminal-space-program",
+          "build": 347792477,
+          "name": "terminal-space-program-0.44.3",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "0.44.3"
+        },
+        {
+          "attr": "terminal-space-program",
+          "build": 347792479,
+          "name": "terminal-space-program-0.44.3",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "0.44.3"
+        }
+      ],
+      "dataFile": "terminal-space-program.json",
+      "devel": false,
+      "homepage": "https://terminalspaceprogram.com",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "terminal-space-program",
+      "nixStatus": "unique",
+      "nixVersion": "0.44.3",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "terminal-space-program",
+      "refVersion": null,
+      "repoCount": 0,
+      "searchTerm": "terminal-space-program",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/te/terminal-space-program/package.nix#L37",
+      "update": {
+        "attr": "terminal-space-program",
+        "date": "2026-09-29",
+        "from": "0.43.0",
+        "log": "https://nixpkgs-update-logs.nixos.org/terminal-space-program/2026-09-29.log",
+        "outcome": "prOpened",
+        "parser": 1,
+        "pr": 568201,
+        "to": "0.44.3",
+        "was": "0.43.0"
+      },
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "tetris"
+      ],
+      "builds": [
+        {
+          "attr": "tetris",
+          "build": 347286485,
+          "name": "tetris-0.1.6",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "0.1.6"
+        },
+        {
+          "attr": "tetris",
+          "build": 347286482,
+          "name": "tetris-0.1.6",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "0.1.6"
+        },
+        {
+          "attr": "tetris",
+          "build": 347286498,
+          "name": "tetris-0.1.6",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "0.1.6"
+        }
+      ],
+      "dataFile": "tetris.json",
+      "devel": false,
+      "homepage": "https://github.com/samtay/tetris",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "tetris",
+      "nixStatus": "outdated",
+      "nixVersion": "0.1.6",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 1,
+      "outdatedSince": "2026-10-02T21:12:02.420637+00:00",
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "tetris",
+      "refVersion": "7.9.0",
+      "repoCount": 5,
+      "searchTerm": "tetris",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/te/tetris/package.nix#L29",
+      "update": {
+        "attr": "tetris",
+        "date": "2026-09-26",
+        "excerpt": [
+          "       Reason: 1 dependency failed.",
+          "       Output paths:",
+          "         /nix/store/6g4g7rpwd5f0jzggkr0wqgi565pgg5nz-tetris-7.9.0"
+        ],
+        "from": "0.1.6",
+        "log": "https://nixpkgs-update-logs.nixos.org/tetris/2026-09-26.log",
+        "outcome": "failed",
+        "parser": 1,
+        "to": "7.9.0",
+        "was": "0.1.6"
+      },
+      "updateFailure": true
     },
     {
       "attrs": [
@@ -2326,11 +3257,11 @@
         },
         {
           "attr": "unciv",
-          "build": 347290294,
-          "name": "unciv-4.22.1",
+          "build": 347805561,
+          "name": "unciv-4.22.5",
           "status": "ok",
           "system": "aarch64-darwin",
-          "version": "4.22.1"
+          "version": "4.22.5"
         }
       ],
       "dataFile": "unciv.json",
@@ -2528,28 +3459,18 @@
       "lists": [
         "maintained"
       ],
-      "masterPR": {
-        "base": "master",
-        "draft": false,
-        "from": "1.19.24",
-        "number": 568190,
-        "title": "wesnoth-devel: 1.19.24 -> 1.19.28",
-        "to": "1.19.28",
-        "url": "https://github.com/NixOS/nixpkgs/pull/568190"
-      },
       "name": "wesnoth-devel",
-      "nixStatus": "devel",
-      "nixVersion": "1.19.24",
+      "nixStatus": "ignored",
+      "nixVersion": "1.19.28",
       "nixVulnerable": false,
       "openIssues": 0,
       "openPRs": 0,
-      "outdatedSince": "2026-09-28T15:25:14.169600+00:00",
       "platforms": {
         "darwin": true,
         "linux": true
       },
       "project": "wesnoth",
-      "refVersion": "1.19.28",
+      "refVersion": "1.19.24",
       "repoCount": 178,
       "searchTerm": "wesnoth-devel",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/we/wesnoth/package.nix#L170",
@@ -2565,10 +3486,10 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "checkedAt": "2026-10-02T21:12:02.420637+00:00",
         "community": true,
         "label": "wesnoth/wesnoth tags",
-        "newer": true,
+        "newer": false,
         "repo": "wesnoth/wesnoth",
         "url": "https://github.com/wesnoth/wesnoth/tags",
         "version": "1.19.28"
@@ -2708,6 +3629,114 @@
         "to": "4.0-9",
         "was": "4.0"
       },
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "yetris"
+      ],
+      "builds": [
+        {
+          "attr": "yetris",
+          "build": 347298312,
+          "name": "yetris-2.3.0",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "2.3.0"
+        },
+        {
+          "attr": "yetris",
+          "build": 347298310,
+          "name": "yetris-2.3.0",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "2.3.0"
+        },
+        {
+          "attr": "yetris",
+          "build": 347298309,
+          "name": "yetris-2.3.0",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "2.3.0"
+        }
+      ],
+      "dataFile": "yetris.json",
+      "devel": false,
+      "homepage": "https://alexdantas.github.io/yetris/",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "yetris",
+      "nixStatus": "newest",
+      "nixVersion": "2.3.0",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "yetris",
+      "refVersion": "2.3.0",
+      "repoCount": 10,
+      "searchTerm": "yetris",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/ye/yetris/package.nix#L49",
+      "update": null,
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "zztgo"
+      ],
+      "builds": [
+        {
+          "attr": "zztgo",
+          "build": 347299480,
+          "name": "zztgo-0-unstable-2020-05-29",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "0-unstable-2020-05-29"
+        },
+        {
+          "attr": "zztgo",
+          "build": 347299468,
+          "name": "zztgo-0-unstable-2020-05-29",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "0-unstable-2020-05-29"
+        },
+        {
+          "attr": "zztgo",
+          "build": 347299479,
+          "name": "zztgo-0-unstable-2020-05-29",
+          "status": "ok",
+          "system": "aarch64-darwin",
+          "version": "0-unstable-2020-05-29"
+        }
+      ],
+      "dataFile": "zztgo.json",
+      "devel": false,
+      "homepage": "https://github.com/benhoyt/zztgo",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "zztgo",
+      "nixStatus": "unique",
+      "nixVersion": "0-unstable-2020-05-29",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "zztgo",
+      "refVersion": null,
+      "repoCount": 0,
+      "searchTerm": "zztgo",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/zz/zztgo/package.nix#L35",
+      "update": null,
       "updateFailure": false
     }
   ],

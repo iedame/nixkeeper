@@ -1,0 +1,17 @@
+[
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "tomas.riveral@icloud.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "terminal-space-program",
+    "status": "unique",
+    "summary": "Terminal-native orbital-mechanics rocket simulator",
+    "version": "0.44.3",
+    "visiblename": "terminal-space-program"
+  }
+]

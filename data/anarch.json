@@ -1,0 +1,349 @@
+[
+  {
+    "binname": "anarch",
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "maintainers": [
+      "waweic@activ.ism.rocks"
+    ],
+    "origversion": "1.0-r1",
+    "repo": "alpine_edge",
+    "srcname": "anarch",
+    "status": "outdated",
+    "subrepo": "testing",
+    "summary": "Extremely small 90s style doom clone",
+    "version": "1.0",
+    "visiblename": "anarch"
+  },
+  {
+    "binname": "anarch-doc",
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "maintainers": [
+      "waweic@activ.ism.rocks"
+    ],
+    "origversion": "1.0-r1",
+    "repo": "alpine_edge",
+    "srcname": "anarch",
+    "status": "outdated",
+    "subrepo": "testing",
+    "summary": "Extremely small 90s style doom clone (documentation)",
+    "version": "1.0",
+    "visiblename": "anarch-doc"
+  },
+  {
+    "binname": "anarch",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "misano@aur"
+    ],
+    "origversion": "0.1.0-1",
+    "repo": "aur",
+    "srcname": "anarch",
+    "status": "outdated",
+    "summary": "Archlinux conf manager",
+    "version": "0.1.0",
+    "visiblename": "anarch"
+  },
+  {
+    "binname": "anarch-bin",
+    "licenses": [
+      "custom"
+    ],
+    "maintainers": [
+      "misano@aur"
+    ],
+    "origversion": "0.1.0-1",
+    "repo": "aur",
+    "srcname": "anarch-bin",
+    "status": "outdated",
+    "summary": "Arch Linux config manager (binary only)",
+    "version": "0.1.0",
+    "visiblename": "anarch-bin"
+  },
+  {
+    "binname": "anarch-git",
+    "licenses": [
+      "CC0"
+    ],
+    "maintainers": [
+      "kleintux@aur"
+    ],
+    "origversion": "1.0.r127-1",
+    "repo": "aur",
+    "srcname": "anarch-git",
+    "status": "rolling",
+    "summary": "Anarch, the suckless FPS game",
+    "version": "1.0.r127",
+    "visiblename": "anarch-git"
+  },
+  {
+    "binnames": [
+      "anarch-SDL2",
+      "anarch-CSFML",
+      "anarch-debuginfo",
+      "anarch-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC0"
+    ],
+    "origversion": "1.1-2.20230123giteeb04a07.fc39",
+    "repo": "fedora_39",
+    "srcname": "anarch",
+    "status": "newest",
+    "subrepo": "release",
+    "summary": "Suckless, anarcho-pacifist Doom clone that runs everywhere",
+    "version": "1.1",
+    "visiblename": "anarch"
+  },
+  {
+    "binnames": [
+      "anarch-SDL2",
+      "anarch-CSFML",
+      "anarch-debuginfo",
+      "anarch-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "origversion": "1.1^20230123giteeb04a07-1.fc40",
+    "repo": "fedora_40",
+    "srcname": "anarch",
+    "status": "ignored",
+    "subrepo": "release",
+    "summary": "Suckless, anarcho-pacifist Doom clone that runs everywhere",
+    "version": "1.1^20230123giteeb04a07",
+    "visiblename": "anarch"
+  },
+  {
+    "binnames": [
+      "anarch-SDL2",
+      "anarch-CSFML"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "origversion": "1.1^20230123giteeb04a07-2.fc41",
+    "repo": "fedora_41",
+    "srcname": "anarch",
+    "status": "ignored",
+    "subrepo": "release",
+    "summary": "Suckless, anarcho-pacifist Doom clone that runs everywhere",
+    "version": "1.1^20230123giteeb04a07",
+    "visiblename": "anarch"
+  },
+  {
+    "binnames": [
+      "anarch-SDL2",
+      "anarch-CSFML"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "origversion": "1.1^20230123giteeb04a07-3.fc42",
+    "repo": "fedora_42",
+    "srcname": "anarch",
+    "status": "ignored",
+    "subrepo": "release",
+    "summary": "Suckless, anarcho-pacifist Doom clone that runs everywhere",
+    "version": "1.1^20230123giteeb04a07",
+    "visiblename": "anarch"
+  },
+  {
+    "binnames": [
+      "anarch-SDL2",
+      "anarch-CSFML"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "origversion": "1.1^20230123giteeb04a07-4.fc43",
+    "repo": "fedora_43",
+    "srcname": "anarch",
+    "status": "ignored",
+    "subrepo": "release",
+    "summary": "Suckless, anarcho-pacifist Doom clone that runs everywhere",
+    "version": "1.1^20230123giteeb04a07",
+    "visiblename": "anarch"
+  },
+  {
+    "binnames": [
+      "anarch-SDL2",
+      "anarch-CSFML"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "origversion": "1.1^20230123giteeb04a07-6.fc44",
+    "repo": "fedora_44",
+    "srcname": "anarch",
+    "status": "ignored",
+    "subrepo": "release",
+    "summary": "Suckless, anarcho-pacifist Doom clone that runs everywhere",
+    "version": "1.1^20230123giteeb04a07",
+    "visiblename": "anarch"
+  },
+  {
+    "binnames": [
+      "anarch-SDL2",
+      "anarch-CSFML"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "origversion": "1.1^20230123giteeb04a07-7.fc45",
+    "repo": "fedora_rawhide",
+    "srcname": "anarch",
+    "status": "ignored",
+    "subrepo": "development",
+    "summary": "Suckless, anarcho-pacifist Doom clone that runs everywhere",
+    "version": "1.1^20230123giteeb04a07",
+    "visiblename": "anarch"
+  },
+  {
+    "binname": "anarch",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "anarch",
+    "status": "ignored",
+    "summary": "Public domain 90s-style shooter game",
+    "version": "1.1d-1.2d78d0c",
+    "visiblename": "anarch"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "1.1 (2023-01-23)",
+    "repo": "libregamewiki",
+    "srcname": "Anarch",
+    "status": "newest",
+    "version": "1.1",
+    "visiblename": "Anarch"
+  },
+  {
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "anarch",
+    "status": "outdated",
+    "summary": "Suckless FPS game",
+    "version": "1.0-unstable-2023-09-08",
+    "visiblename": "anarch"
+  },
+  {
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "anarch",
+    "status": "outdated",
+    "summary": "Suckless FPS game",
+    "version": "1.0-unstable-2023-09-08",
+    "visiblename": "anarch"
+  },
+  {
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "anarch",
+    "status": "outdated",
+    "summary": "Suckless FPS game",
+    "version": "1.0-unstable-2023-09-08",
+    "visiblename": "anarch"
+  },
+  {
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "anarch",
+    "status": "outdated",
+    "summary": "Suckless FPS game",
+    "version": "1.0-unstable-2023-09-08",
+    "visiblename": "anarch"
+  },
+  {
+    "binnames": [
+      "anarch",
+      "anarch-debuginfo",
+      "anarch-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/3D/Shoot"
+    ],
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "origversion": "1.0-2.53",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "anarch",
+    "status": "outdated",
+    "summary": "A Doom-like 3D first person shooter",
+    "version": "1.0",
+    "visiblename": "anarch"
+  },
+  {
+    "binnames": [
+      "anarch",
+      "anarch-debuginfo",
+      "anarch-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/3D/Shoot"
+    ],
+    "licenses": [
+      "CC0-1.0"
+    ],
+    "origversion": "1.0-2.54",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "anarch",
+    "status": "outdated",
+    "summary": "A Doom-like 3D first person shooter",
+    "version": "1.0",
+    "visiblename": "anarch"
+  }
+]

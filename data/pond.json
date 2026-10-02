@@ -1,0 +1,17 @@
+[
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "preprocesor@github"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "pond",
+    "status": "unique",
+    "summary": "Software that simulates a little pond",
+    "version": "0-unstable-2025-01-03",
+    "visiblename": "pond"
+  }
+]

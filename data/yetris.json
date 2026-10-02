@@ -1,0 +1,165 @@
+[
+  {
+    "binname": "yetris",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "mibu@aur"
+    ],
+    "origversion": "2.3.0-3",
+    "repo": "aur",
+    "srcname": "yetris",
+    "status": "newest",
+    "summary": "Customizable Tetris clone for the terminal",
+    "version": "2.3.0",
+    "visiblename": "yetris"
+  },
+  {
+    "binname": "yetris-git",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "aksr@aur"
+    ],
+    "origversion": "20150103-1",
+    "repo": "aur",
+    "srcname": "yetris-git",
+    "status": "rolling",
+    "summary": "Customizable Tetris(tm) for the terminal.",
+    "version": "20150103",
+    "visiblename": "yetris-git"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "yetris",
+    "status": "newest",
+    "summary": "Customizable Tetris for the terminal",
+    "version": "2.3.0",
+    "visiblename": "yetris"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "yetris",
+    "status": "newest",
+    "summary": "Customizable Tetris(tm) for the terminal",
+    "version": "2.3.0",
+    "visiblename": "yetris"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "yetris",
+    "status": "newest",
+    "summary": "Customizable Tetris(tm) for the terminal",
+    "version": "2.3.0",
+    "visiblename": "yetris"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "yetris",
+    "status": "newest",
+    "summary": "Customizable Tetris(tm) for the terminal",
+    "version": "2.3.0",
+    "visiblename": "yetris"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "yetris",
+    "status": "newest",
+    "summary": "Customizable Tetris(tm) for the terminal",
+    "version": "2.3.0",
+    "visiblename": "yetris"
+  },
+  {
+    "binnames": [
+      "yetris",
+      "yetris-debuginfo",
+      "yetris-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "origversion": "2.3.0-4.1",
+    "repo": "rpmsphere",
+    "srcname": "yetris",
+    "status": "newest",
+    "summary": "Tetris(tm) on console",
+    "version": "2.3.0",
+    "visiblename": "yetris"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "d.zlatanidis@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/yetris",
+    "status": "newest",
+    "version": "2.3.0",
+    "visiblename": "games/yetris"
+  },
+  {
+    "maintainers": [
+      "wonkru-dev@proton.me"
+    ],
+    "origversion": "2.3.0-1",
+    "repo": "vylen",
+    "srcname": "yetris",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "Customizable Tetris clone for the terminal",
+    "version": "2.3.0",
+    "visiblename": "yetris"
+  },
+  {
+    "binnames": [
+      "yetris"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "origversion": null,
+    "repo": "yacp",
+    "srcname": "yetris",
+    "status": "newest",
+    "summary": "Customizable Tetris(tm) for the terminal",
+    "version": "2.3.0",
+    "visiblename": "yetris"
+  }
+]

@@ -1,0 +1,1144 @@
+[
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-1",
+    "repo": "pardus_21",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "parrot",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "parrot",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binname": "dustracing2d",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "kommander@laposte.net"
+    ],
+    "origversion": "2.2.0-r0",
+    "repo": "alpine_edge",
+    "srcname": "dustracing2d",
+    "status": "newest",
+    "subrepo": "testing",
+    "summary": "Traditional top-down car racing game including a level editor",
+    "version": "2.2.0",
+    "visiblename": "dustracing2d"
+  },
+  {
+    "binname": "dustrac",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "fredbezies@aur"
+    ],
+    "origversion": "2.2.0-1",
+    "repo": "aur",
+    "srcname": "dustrac",
+    "status": "newest",
+    "summary": "Dust Racing 2D is a traditional top-down car racing game including a level editor",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-1",
+    "repo": "debian_11",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "bullseye/main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "debian_12",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "debian_13",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.2.0-1",
+    "repo": "debian_14",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "forky/main",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.2.0-1",
+    "repo": "debian_unstable",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "sid/main",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.0.1-1+rb2",
+    "repo": "deepin_unstable",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "2.0.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "deepin_25",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "community",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-1",
+    "repo": "devuan_4_0",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.2.0-1",
+    "repo": "devuan_unstable",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-3.0-or-later AND MIT"
+    ],
+    "origversion": "2.1.1-3.fc41",
+    "repo": "fedora_41",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Traditional top-down car racing game",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-3.0-or-later AND MIT"
+    ],
+    "origversion": "2.1.1-3.fc42",
+    "repo": "fedora_42",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Traditional top-down car racing game",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-3.0-or-later AND MIT"
+    ],
+    "origversion": "2.1.1-3.fc43",
+    "repo": "fedora_43",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Traditional top-down car racing game",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-3.0-or-later AND MIT"
+    ],
+    "origversion": "2.1.1-4.fc43",
+    "repo": "fedora_43",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Traditional top-down car racing game",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-3.0-or-later AND MIT"
+    ],
+    "origversion": "2.1.1-4.fc44",
+    "repo": "fedora_44",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Traditional top-down car racing game",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-3.0-or-later AND MIT"
+    ],
+    "origversion": "2.1.1-5.fc44",
+    "repo": "fedora_44",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Traditional top-down car racing game",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later AND GPL-2.0-or-later AND LGPL-3.0-or-later AND MIT"
+    ],
+    "origversion": "2.2.0-3.fc45",
+    "repo": "fedora_rawhide",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "development",
+    "summary": "Traditional top-down car racing game",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binname": "dustrac",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "amdmi3@amdmi3.ru"
+    ],
+    "origversion": null,
+    "repo": "freebsd",
+    "srcname": "games/dustrac",
+    "status": "newest",
+    "summary": "2D top-view racing game",
+    "version": "2.2.0",
+    "visiblename": "games/dustrac"
+  },
+  {
+    "categories": [
+      "games-sports"
+    ],
+    "licenses": [
+      "GPL-3+",
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo",
+    "srcname": "games-sports/dustrac",
+    "status": "newest",
+    "summary": "Tile-based, cross-platform 2D racing game",
+    "version": "2.2.0",
+    "visiblename": "games-sports/dustrac"
+  },
+  {
+    "binname": "dustracing2d",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "dustracing2d",
+    "status": "newest",
+    "summary": "Top-down car racing game",
+    "version": "2.2.0",
+    "visiblename": "dustracing2d"
+  },
+  {
+    "categories": [
+      "games-sports"
+    ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "games-sports/dustrac",
+    "status": "newest",
+    "version": "2.2.0",
+    "visiblename": "games-sports/dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.2.0-1",
+    "repo": "kali_rolling",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "origversion": "2.2.0 (2026-01-26)",
+    "repo": "libregamewiki",
+    "srcname": "Dust_Racing_2D",
+    "status": "newest",
+    "version": "2.2.0",
+    "visiblename": "Dust Racing 2D"
+  },
+  {
+    "categories": [
+      "games-sports"
+    ],
+    "licenses": [
+      "GPL-3+",
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-sports/dustrac",
+    "status": "outdated",
+    "summary": "Tile-based, cross-platform 2D racing game",
+    "version": "2.1.1",
+    "visiblename": "games-sports/dustrac"
+  },
+  {
+    "categories": [
+      "games-sports"
+    ],
+    "licenses": [
+      "GPL-3+",
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "games@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-sports/dustrac",
+    "status": "newest",
+    "summary": "Tile-based, cross-platform 2D racing game",
+    "version": "2.2.0",
+    "visiblename": "games-sports/dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac"
+    ],
+    "categories": [
+      "Games/Sports"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "2.2.0-1.mga10",
+    "repo": "mageia_10",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Dust Racing 2D is a traditional top-down car racing game including a level editor",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-debuginfo",
+      "dustrac-debugsource"
+    ],
+    "categories": [
+      "Games/Sports"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "2.1.1-2.mga9",
+    "repo": "mageia_9",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Dust Racing 2D is a traditional top-down car racing game including a level editor",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac"
+    ],
+    "categories": [
+      "Games/Sports"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "2.2.0-1.mga10",
+    "repo": "mageia_cauldron",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "core/release",
+    "summary": "Dust Racing 2D is a traditional top-down car racing game including a level editor",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "solemnsquire@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "dustracing2d",
+    "status": "newest",
+    "summary": "Top-down 2D racing game with split-screen multiplayer",
+    "version": "2.2.0",
+    "visiblename": "dustracing2d"
+  },
+  {
+    "binname": "dustrac",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": null,
+    "repo": "openbsd",
+    "srcname": "games/dustrac",
+    "status": "newest",
+    "summary": "traditional top-down car racing game",
+    "version": "2.2.0",
+    "visiblename": "games/dustrac"
+  },
+  {
+    "categories": [
+      "Amusements/Games/Action/Race"
+    ],
+    "licenses": [
+      "GPL-3.0-only AND CC-BY-SA-3.0"
+    ],
+    "origversion": "2.1.1-bp155.2.17",
+    "repo": "opensuse_leap_15_5",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "Tile-based 2D Racing Game",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "categories": [
+      "Amusements/Games/Action/Race"
+    ],
+    "licenses": [
+      "GPL-3.0-only AND CC-BY-SA-3.0"
+    ],
+    "origversion": "2.1.1-bp156.3.7",
+    "repo": "opensuse_leap_15_6",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "Tile-based 2D Racing Game",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-debuginfo",
+      "dustrac-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/Action/Race"
+    ],
+    "licenses": [
+      "GPL-3.0-only AND CC-BY-SA-3.0"
+    ],
+    "origversion": "2.2.0-1.3",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "src-oss",
+    "summary": "Tile-based 2D Racing Game",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-debuginfo",
+      "dustrac-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/Action/Race"
+    ],
+    "licenses": [
+      "GPL-3.0-only AND CC-BY-SA-3.0"
+    ],
+    "origversion": "2.2.0-18.30",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "dustrac",
+    "status": "newest",
+    "summary": "Tile-based 2D Racing Game",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-debuginfo",
+      "dustrac-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/Action/Race"
+    ],
+    "licenses": [
+      "GPL-3.0-only AND CC-BY-SA-3.0"
+    ],
+    "origversion": "2.2.0-18.31",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "dustrac",
+    "status": "newest",
+    "summary": "Tile-based 2D Racing Game",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "categories": [
+      "app:gui"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "maintainers": [
+      "groni@pisilinux.org"
+    ],
+    "origversion": null,
+    "repo": "pisi_main",
+    "srcname": "game/arcade/dustrac",
+    "status": "outdated",
+    "subrepo": "main",
+    "summary": "Dust Racing 2D (dustrac) is an open source, tile-based 2D racing game",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.0.1-1",
+    "repo": "pureos_amber",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "amber/main",
+    "version": "2.0.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-1",
+    "repo": "pureos_byzantium",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "pureos_landing",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "raspbian_oldstable",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "raspbian_stable",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.2.0-1",
+    "repo": "raspbian_testing",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-debuginfo",
+      "dustrac-debugsource"
+    ],
+    "categories": [
+      "Games/Sports"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "m.novosyolov@rosalinux.ru"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "rosa_2019_1",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "A nice 2D racing game and a level editor written in Qt and OpenGL",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustrac",
+      "dustrac-debuginfo",
+      "dustrac-debugsource"
+    ],
+    "categories": [
+      "Games/Sports"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "2.1.1-2",
+    "repo": "rosa_13",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "A nice 2D racing game and a level editor written in Qt and OpenGL",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "yth@ythogtha.org"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/dustrac",
+    "status": "newest",
+    "version": "2.2.0",
+    "visiblename": "games/dustrac"
+  },
+  {
+    "binname": "dustrac",
+    "categories": [
+      "games.arcade"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "maddock.evan@vivaldi.net"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "dustrac",
+    "status": "newest",
+    "summary": "Dust Racing (Dustrac) is a tile-based, cross-platform 2D racing game",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binname": "dustrac-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "maddock.evan@vivaldi.net"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "dustrac",
+    "status": "newest",
+    "summary": "Debug symbols for dustrac",
+    "version": "2.2.0",
+    "visiblename": "dustrac-dbginfo"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.0.5-1",
+    "repo": "trisquel_10_0",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "nabia/main",
+    "version": "2.0.5",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-1",
+    "repo": "trisquel_11_0",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "aramo/main",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.0.1-1",
+    "repo": "ubuntu_18_04",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "bionic/universe",
+    "version": "2.0.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.0.5-1",
+    "repo": "ubuntu_20_04",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "focal/universe",
+    "version": "2.0.5",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.1.1-1",
+    "repo": "ubuntu_22_04",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "2.1.1-2build2",
+    "repo": "ubuntu_24_04",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "noble/universe",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "2.1.1-2build2",
+    "repo": "ubuntu_25_04",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "plucky/universe",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com"
+    ],
+    "origversion": "2.1.1-2build2",
+    "repo": "ubuntu_25_10",
+    "srcname": "dustrac",
+    "status": "outdated",
+    "subrepo": "questing/universe",
+    "version": "2.1.1",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.2.0-1",
+    "repo": "ubuntu_26_04",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "resolute/universe",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "binnames": [
+      "dustracing2d",
+      "dustracing2d-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pino@debian.org"
+    ],
+    "origversion": "2.2.0-1",
+    "repo": "ubuntu_26_10",
+    "srcname": "dustrac",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "2.2.0",
+    "visiblename": "dustrac"
+  },
+  {
+    "licenses": [
+      "GNU General Public License"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q5316991",
+    "status": "newest",
+    "summary": "2012 video game",
+    "version": "2.2.0",
+    "visiblename": "Dust Racing 2D"
+  }
+]

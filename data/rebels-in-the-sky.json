@@ -1,0 +1,167 @@
+[
+  {
+    "binname": "rebels-in-the-sky",
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "origversion": "1.8.0-1",
+    "repo": "arch",
+    "srcname": "rebels-in-the-sky",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy",
+    "version": "1.8.0",
+    "visiblename": "rebels-in-the-sky"
+  },
+  {
+    "binname": "rebels-in-the-sky-git",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "orhun@aur"
+    ],
+    "origversion": "1.0.9.r0.g201d183-1",
+    "repo": "aur",
+    "srcname": "rebels-in-the-sky-git",
+    "status": "rolling",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy (git)",
+    "version": "1.0.9.r0.g201d183",
+    "visiblename": "rebels-in-the-sky-git"
+  },
+  {
+    "binname": "rebels-in-the-sky",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "halostatue@github"
+    ],
+    "origversion": null,
+    "repo": "macports",
+    "srcname": "games/rebels-in-the-sky",
+    "status": "newest",
+    "summary": "A P2P terminal game about space pirates playing basketball across the galaxy",
+    "version": "1.8.1",
+    "visiblename": "rebels-in-the-sky"
+  },
+  {
+    "binname": "rebels-in-the-sky",
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "origversion": "1.8.0-1",
+    "repo": "manjaro_stable",
+    "srcname": "rebels-in-the-sky",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy",
+    "version": "1.8.0",
+    "visiblename": "rebels-in-the-sky"
+  },
+  {
+    "binname": "rebels-in-the-sky",
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "origversion": "1.8.0-1",
+    "repo": "manjaro_testing",
+    "srcname": "rebels-in-the-sky",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy",
+    "version": "1.8.0",
+    "visiblename": "rebels-in-the-sky"
+  },
+  {
+    "binname": "rebels-in-the-sky",
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "origversion": "1.8.0-1",
+    "repo": "manjaro_unstable",
+    "srcname": "rebels-in-the-sky",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy",
+    "version": "1.8.0",
+    "visiblename": "rebels-in-the-sky"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "rebels-in-the-sky",
+    "status": "outdated",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy",
+    "version": "1.0.30",
+    "visiblename": "rebels-in-the-sky"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "rebels-in-the-sky",
+    "status": "outdated",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy",
+    "version": "1.1.3",
+    "visiblename": "rebels-in-the-sky"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "rebels-in-the-sky",
+    "status": "outdated",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy",
+    "version": "1.6.1",
+    "visiblename": "rebels-in-the-sky"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "marcin@serwin.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "rebels-in-the-sky",
+    "status": "newest",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy",
+    "version": "1.8.1",
+    "visiblename": "rebels-in-the-sky"
+  },
+  {
+    "binname": "rebels-in-the-sky",
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "origversion": "1.8.0-1",
+    "repo": "parabola",
+    "srcname": "rebels-in-the-sky",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "P2P terminal game about spacepirates playing basketball across the galaxy",
+    "version": "1.8.0",
+    "visiblename": "rebels-in-the-sky"
+  }
+]

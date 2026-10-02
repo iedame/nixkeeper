@@ -1,17 +1,109 @@
 [
   {
-    "licenses": [
-      "GPL-2.0-or-later"
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
     ],
-    "maintainers": [
-      "ab@fmap.me"
+    "licenses": [
+      "GPLv2"
     ],
     "origversion": null,
-    "repo": "nix_stable_24_11",
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.12.6",
+    "visiblename": "Battle for Wesnoth"
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.14.1",
+    "visiblename": "Battle for Wesnoth"
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.14.2",
+    "visiblename": "Battle for Wesnoth"
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.14.3",
+    "visiblename": "Battle for Wesnoth"
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.14.6",
+    "visiblename": "Battle for Wesnoth"
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.14.5",
+    "visiblename": "Battle for Wesnoth"
+  },
+  {
+    "binname": "wesnoth",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "markand@malikania.fr"
+    ],
+    "origversion": "1.18.5-r0",
+    "repo": "alpine_3_23",
     "srcname": "wesnoth",
     "status": "outdated",
-    "summary": "Battle for Wesnoth, a free, turn-based strategy game with a fantasy theme",
-    "version": "1.18.2",
+    "subrepo": "community",
+    "summary": "turn-based strategy game in fantasy world",
+    "version": "1.18.5",
     "visiblename": "wesnoth"
   },
   {
@@ -26,35 +118,10 @@
     "repo": "npackd_stable",
     "srcname": "BattleForWesnoth",
     "status": "legacy",
-    "version": "1.12.5",
+    "version": "1.14.4",
     "visiblename": "Battle for Wesnoth"
   },
   {
-    "origversion": "1.18.7-1",
-    "repo": "pld",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "version": "1.18.7",
-    "visiblename": "wesnoth"
-  },
-  {
-    "binname": "wesnoth",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "markand@malikania.fr"
-    ],
-    "origversion": "1.16.8-r1",
-    "repo": "alpine_3_18",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "turn-based strategy game in fantasy world",
-    "version": "1.16.8",
-    "visiblename": "wesnoth"
-  },
-  {
     "binname": "wesnoth-doc",
     "licenses": [
       "GPL-2.0-only"
@@ -62,166 +129,60 @@
     "maintainers": [
       "markand@malikania.fr"
     ],
-    "origversion": "1.16.8-r1",
-    "repo": "alpine_3_18",
+    "origversion": "1.18.5-r0",
+    "repo": "alpine_3_23",
     "srcname": "wesnoth",
     "status": "outdated",
     "subrepo": "community",
     "summary": "turn-based strategy game in fantasy world (documentation)",
-    "version": "1.16.8",
+    "version": "1.18.5",
     "visiblename": "wesnoth-doc"
   },
   {
-    "binname": "wesnoth",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "markand@malikania.fr"
-    ],
-    "origversion": "1.16.9-r0",
-    "repo": "alpine_3_19",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "turn-based strategy game in fantasy world",
-    "version": "1.16.9",
-    "visiblename": "wesnoth"
-  },
-  {
-    "binname": "wesnoth-doc",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "markand@malikania.fr"
-    ],
-    "origversion": "1.16.9-r0",
-    "repo": "alpine_3_19",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "turn-based strategy game in fantasy world (documentation)",
-    "version": "1.16.9",
-    "visiblename": "wesnoth-doc"
-  },
-  {
-    "binname": "wesnoth",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "markand@malikania.fr"
-    ],
-    "origversion": "1.16.12-r0",
-    "repo": "alpine_3_20",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "turn-based strategy game in fantasy world",
-    "version": "1.16.12",
-    "visiblename": "wesnoth"
-  },
-  {
-    "binname": "wesnoth-doc",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "markand@malikania.fr"
-    ],
-    "origversion": "1.16.12-r0",
-    "repo": "alpine_3_20",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "turn-based strategy game in fantasy world (documentation)",
-    "version": "1.16.12",
-    "visiblename": "wesnoth-doc"
-  },
-  {
-    "binname": "wesnoth",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "markand@malikania.fr"
-    ],
-    "origversion": "1.16.12-r0",
-    "repo": "alpine_3_21",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "turn-based strategy game in fantasy world",
-    "version": "1.16.12",
-    "visiblename": "wesnoth"
-  },
-  {
-    "binname": "wesnoth-doc",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "markand@malikania.fr"
-    ],
-    "origversion": "1.16.12-r0",
-    "repo": "alpine_3_21",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "turn-based strategy game in fantasy world (documentation)",
-    "version": "1.16.12",
-    "visiblename": "wesnoth-doc"
-  },
-  {
-    "binname": "wesnoth",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "markand@malikania.fr"
-    ],
-    "origversion": "1.18.3-r0",
-    "repo": "alpine_3_22",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "turn-based strategy game in fantasy world",
-    "version": "1.18.3",
-    "visiblename": "wesnoth"
-  },
-  {
-    "binname": "wesnoth-doc",
-    "licenses": [
-      "GPL-2.0-only"
-    ],
-    "maintainers": [
-      "markand@malikania.fr"
-    ],
-    "origversion": "1.18.3-r0",
-    "repo": "alpine_3_22",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "community",
-    "summary": "turn-based strategy game in fantasy world (documentation)",
-    "version": "1.18.3",
-    "visiblename": "wesnoth-doc"
-  },
-  {
-    "binname": "wesnoth-1.12",
+    "binname": "wesnoth-1.14",
     "licenses": [
       "GPL"
     ],
     "maintainers": [
       "singularity@aur"
     ],
-    "origversion": "1.12.6+dev-13",
+    "origversion": "1.14.17-1",
     "repo": "aur",
-    "srcname": "wesnoth-1.12",
+    "srcname": "wesnoth-1.14",
+    "status": "outdated",
+    "summary": "Turn-based strategy game on a fantasy world (1.14 version)",
+    "version": "1.14.17",
+    "visiblename": "wesnoth-1.14"
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
     "status": "legacy",
-    "summary": "Turn-based strategy game on a fantasy world (oldstable)",
-    "version": "1.12.6",
-    "visiblename": "wesnoth-1.12"
+    "version": "1.14.7",
+    "visiblename": "Battle for Wesnoth"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "nixpkgs@korz.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "summary": "Battle for Wesnoth, a free, turn-based strategy game with a fantasy theme",
+    "version": "1.18.5",
+    "visiblename": "wesnoth"
   },
   {
     "binname": "wesnoth",
@@ -231,13 +192,13 @@
     "maintainers": [
       "markand@malikania.fr"
     ],
-    "origversion": "1.18.5-r0",
-    "repo": "alpine_3_23",
+    "origversion": "1.16.8-r1",
+    "repo": "alpine_3_18",
     "srcname": "wesnoth",
     "status": "outdated",
     "subrepo": "community",
     "summary": "turn-based strategy game in fantasy world",
-    "version": "1.18.5",
+    "version": "1.16.8",
     "visiblename": "wesnoth"
   },
   {
@@ -248,13 +209,149 @@
     "maintainers": [
       "markand@malikania.fr"
     ],
-    "origversion": "1.18.5-r0",
-    "repo": "alpine_3_23",
+    "origversion": "1.16.8-r1",
+    "repo": "alpine_3_18",
     "srcname": "wesnoth",
     "status": "outdated",
     "subrepo": "community",
     "summary": "turn-based strategy game in fantasy world (documentation)",
-    "version": "1.18.5",
+    "version": "1.16.8",
+    "visiblename": "wesnoth-doc"
+  },
+  {
+    "binname": "wesnoth",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "markand@malikania.fr"
+    ],
+    "origversion": "1.16.9-r0",
+    "repo": "alpine_3_19",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "turn-based strategy game in fantasy world",
+    "version": "1.16.9",
+    "visiblename": "wesnoth"
+  },
+  {
+    "binname": "wesnoth-doc",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "markand@malikania.fr"
+    ],
+    "origversion": "1.16.9-r0",
+    "repo": "alpine_3_19",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "turn-based strategy game in fantasy world (documentation)",
+    "version": "1.16.9",
+    "visiblename": "wesnoth-doc"
+  },
+  {
+    "binname": "wesnoth",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "markand@malikania.fr"
+    ],
+    "origversion": "1.16.12-r0",
+    "repo": "alpine_3_20",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "turn-based strategy game in fantasy world",
+    "version": "1.16.12",
+    "visiblename": "wesnoth"
+  },
+  {
+    "binname": "wesnoth-doc",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "markand@malikania.fr"
+    ],
+    "origversion": "1.16.12-r0",
+    "repo": "alpine_3_20",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "turn-based strategy game in fantasy world (documentation)",
+    "version": "1.16.12",
+    "visiblename": "wesnoth-doc"
+  },
+  {
+    "binname": "wesnoth",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "markand@malikania.fr"
+    ],
+    "origversion": "1.16.12-r0",
+    "repo": "alpine_3_21",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "turn-based strategy game in fantasy world",
+    "version": "1.16.12",
+    "visiblename": "wesnoth"
+  },
+  {
+    "binname": "wesnoth-doc",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "markand@malikania.fr"
+    ],
+    "origversion": "1.16.12-r0",
+    "repo": "alpine_3_21",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "turn-based strategy game in fantasy world (documentation)",
+    "version": "1.16.12",
+    "visiblename": "wesnoth-doc"
+  },
+  {
+    "binname": "wesnoth",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "markand@malikania.fr"
+    ],
+    "origversion": "1.18.3-r0",
+    "repo": "alpine_3_22",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "turn-based strategy game in fantasy world",
+    "version": "1.18.3",
+    "visiblename": "wesnoth"
+  },
+  {
+    "binname": "wesnoth-doc",
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "maintainers": [
+      "markand@malikania.fr"
+    ],
+    "origversion": "1.18.3-r0",
+    "repo": "alpine_3_22",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "turn-based strategy game in fantasy world (documentation)",
+    "version": "1.18.3",
     "visiblename": "wesnoth-doc"
   },
   {
@@ -410,20 +507,20 @@
     "visiblename": "wesnoth"
   },
   {
-    "binname": "wesnoth-1.14",
+    "binname": "wesnoth-1.12",
     "licenses": [
       "GPL"
     ],
     "maintainers": [
       "singularity@aur"
     ],
-    "origversion": "1.14.17-1",
+    "origversion": "1.12.6+dev-13",
     "repo": "aur",
-    "srcname": "wesnoth-1.14",
-    "status": "outdated",
-    "summary": "Turn-based strategy game on a fantasy world (1.14 version)",
-    "version": "1.14.17",
-    "visiblename": "wesnoth-1.14"
+    "srcname": "wesnoth-1.12",
+    "status": "legacy",
+    "summary": "Turn-based strategy game on a fantasy world (oldstable)",
+    "version": "1.12.6",
+    "visiblename": "wesnoth-1.12"
   },
   {
     "binname": "wesnoth-devel",
@@ -513,6 +610,43 @@
   },
   {
     "binnames": [
+      "wesnoth",
+      "wesnoth-server",
+      "wesnoth-tools",
+      "wesnoth-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.19.24-1.fc44",
+    "repo": "fedora_44",
+    "srcname": "wesnoth",
+    "status": "devel",
+    "subrepo": "updates",
+    "summary": "Turn-based strategy game with a fantasy theme",
+    "version": "1.19.24",
+    "visiblename": "wesnoth"
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.14.9",
+    "visiblename": "Battle for Wesnoth"
+  },
+  {
+    "binnames": [
       "wesnoth-1.16-data",
       "wesnoth-1.16-core",
       "wesnoth-core",
@@ -598,6 +732,51 @@
     "status": "outdated",
     "subrepo": "bookworm-backports/main",
     "version": "1.18.5",
+    "visiblename": "wesnoth-1.18"
+  },
+  {
+    "binnames": [
+      "wesnoth-1.18-data",
+      "wesnoth-core",
+      "wesnoth-1.18",
+      "wesnoth",
+      "wesnoth-1.18-music",
+      "wesnoth-music",
+      "wesnoth-1.18-server",
+      "wesnoth-1.18-tools",
+      "wesnoth-1.18-httt",
+      "wesnoth-1.18-tsg",
+      "wesnoth-1.18-trow",
+      "wesnoth-1.18-ttb",
+      "wesnoth-1.18-ei",
+      "wesnoth-1.18-utbs",
+      "wesnoth-1.18-did",
+      "wesnoth-1.18-nr",
+      "wesnoth-1.18-sof",
+      "wesnoth-1.18-sotbe",
+      "wesnoth-1.18-l",
+      "wesnoth-1.18-thot",
+      "wesnoth-1.18-low",
+      "wesnoth-1.18-dm",
+      "wesnoth-1.18-dw",
+      "wesnoth-1.18-sota",
+      "wesnoth-1.18-wof"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pj@pehjota.net",
+      "rhonda@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "1:1.18.8-1",
+    "repo": "devuan_unstable",
+    "srcname": "wesnoth-1.18",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "1.18.8",
     "visiblename": "wesnoth-1.18"
   },
   {
@@ -869,28 +1048,6 @@
   },
   {
     "binnames": [
-      "wesnoth",
-      "wesnoth-server",
-      "wesnoth-tools",
-      "wesnoth-data"
-    ],
-    "categories": [
-      "Unspecified"
-    ],
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "origversion": "1.19.24-1.fc44",
-    "repo": "fedora_44",
-    "srcname": "wesnoth",
-    "status": "devel",
-    "subrepo": "updates",
-    "summary": "Turn-based strategy game with a fantasy theme",
-    "version": "1.19.24",
-    "visiblename": "wesnoth"
-  },
-  {
-    "binnames": [
       "wesnoth-1.14-data",
       "wesnoth-1.14-core",
       "wesnoth-core",
@@ -933,51 +1090,6 @@
     "subrepo": "chimaera/main",
     "version": "1.14.15",
     "visiblename": "wesnoth-1.14"
-  },
-  {
-    "binnames": [
-      "wesnoth-1.18-data",
-      "wesnoth-core",
-      "wesnoth-1.18",
-      "wesnoth",
-      "wesnoth-1.18-music",
-      "wesnoth-music",
-      "wesnoth-1.18-server",
-      "wesnoth-1.18-tools",
-      "wesnoth-1.18-httt",
-      "wesnoth-1.18-tsg",
-      "wesnoth-1.18-trow",
-      "wesnoth-1.18-ttb",
-      "wesnoth-1.18-ei",
-      "wesnoth-1.18-utbs",
-      "wesnoth-1.18-did",
-      "wesnoth-1.18-nr",
-      "wesnoth-1.18-sof",
-      "wesnoth-1.18-sotbe",
-      "wesnoth-1.18-l",
-      "wesnoth-1.18-thot",
-      "wesnoth-1.18-low",
-      "wesnoth-1.18-dm",
-      "wesnoth-1.18-dw",
-      "wesnoth-1.18-sota",
-      "wesnoth-1.18-wof"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "pj@pehjota.net",
-      "rhonda@debian.org",
-      "vcheng@debian.org"
-    ],
-    "origversion": "1:1.18.8-1",
-    "repo": "devuan_unstable",
-    "srcname": "wesnoth-1.18",
-    "status": "newest",
-    "subrepo": "unstable/main",
-    "version": "1.18.8",
-    "visiblename": "wesnoth-1.18"
   },
   {
     "categories": [
@@ -1277,6 +1389,21 @@
     "visiblename": "wesnoth"
   },
   {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.12.4",
+    "visiblename": "Battle for Wesnoth"
+  },
+  {
     "binnames": [
       "wesnoth",
       "wesnoth-server",
@@ -1543,21 +1670,6 @@
     "visiblename": "games-strategy/wesnoth"
   },
   {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "ab@fmap.me"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_05",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "summary": "The Battle for Wesnoth, a free, turn-based strategy game with a fantasy theme",
-    "version": "1.18.0",
-    "visiblename": "wesnoth"
-  },
-  {
     "categories": [
       "games-strategy"
     ],
@@ -1578,6 +1690,22 @@
     "visiblename": "games-strategy/wesnoth"
   },
   {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "ab@fmap.me",
+      "nixpkgs@korz.dev"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "summary": "Battle for Wesnoth, a free, turn-based strategy game with a fantasy theme",
+    "version": "1.18.5",
+    "visiblename": "wesnoth"
+  },
+  {
     "categories": [
       "games-strategy"
     ],
@@ -1596,6 +1724,21 @@
     "summary": "Battle for Wesnoth - A fantasy turn-based strategy game",
     "version": "1.19.19",
     "visiblename": "games-strategy/wesnoth"
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.12.5",
+    "visiblename": "Battle for Wesnoth"
   },
   {
     "categories": [
@@ -1835,15 +1978,14 @@
       "GPL-2.0-or-later"
     ],
     "maintainers": [
-      "ab@fmap.me",
-      "nixpkgs@korz.dev"
+      "ab@fmap.me"
     ],
     "origversion": null,
-    "repo": "nix_stable_25_05",
+    "repo": "nix_stable_24_05",
     "srcname": "wesnoth",
     "status": "outdated",
-    "summary": "Battle for Wesnoth, a free, turn-based strategy game with a fantasy theme",
-    "version": "1.18.5",
+    "summary": "The Battle for Wesnoth, a free, turn-based strategy game with a fantasy theme",
+    "version": "1.18.0",
     "visiblename": "wesnoth"
   },
   {
@@ -1851,14 +1993,14 @@
       "GPL-2.0-or-later"
     ],
     "maintainers": [
-      "nixpkgs@korz.dev"
+      "ab@fmap.me"
     ],
     "origversion": null,
-    "repo": "nix_stable_25_11",
+    "repo": "nix_stable_24_11",
     "srcname": "wesnoth",
     "status": "outdated",
     "summary": "Battle for Wesnoth, a free, turn-based strategy game with a fantasy theme",
-    "version": "1.18.5",
+    "version": "1.18.2",
     "visiblename": "wesnoth"
   },
   {
@@ -1933,160 +2075,10 @@
     "origversion": null,
     "repo": "nix_unstable",
     "srcname": "wesnoth-devel",
-    "status": "devel",
+    "status": "ignored",
     "summary": "Battle for Wesnoth, a free, turn-based strategy game with a fantasy theme",
-    "version": "1.19.24",
+    "version": "1.19.28",
     "visiblename": "wesnoth-devel"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.12.4",
-    "visiblename": "Battle for Wesnoth"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.12.6",
-    "visiblename": "Battle for Wesnoth"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.14.1",
-    "visiblename": "Battle for Wesnoth"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.14.2",
-    "visiblename": "Battle for Wesnoth"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.14.3",
-    "visiblename": "Battle for Wesnoth"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.14.4",
-    "visiblename": "Battle for Wesnoth"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.14.5",
-    "visiblename": "Battle for Wesnoth"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.14.6",
-    "visiblename": "Battle for Wesnoth"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.14.7",
-    "visiblename": "Battle for Wesnoth"
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.14.9",
-    "visiblename": "Battle for Wesnoth"
   },
   {
     "binname": "BattleForWesnoth",
@@ -2506,31 +2498,6 @@
   {
     "binnames": [
       "wesnoth",
-      "wesnoth-server",
-      "wesnoth-debuginfo",
-      "wesnoth-debugsource"
-    ],
-    "categories": [
-      "Games/Strategy"
-    ],
-    "licenses": [
-      "GPLv2+"
-    ],
-    "maintainers": [
-      "alexander@mezon.ru"
-    ],
-    "origversion": "1:1.19.20-1",
-    "repo": "rosa_13",
-    "srcname": "wesnoth",
-    "status": "outdated",
-    "subrepo": "contrib/release",
-    "summary": "Fantasy turn-based strategy game",
-    "version": "1.19.20",
-    "visiblename": "wesnoth"
-  },
-  {
-    "binnames": [
-      "wesnoth",
       "wesnoth-debuginfo",
       "wesnoth-debugsource",
       "wesnoth-data",
@@ -2786,49 +2753,12 @@
     "visiblename": "games/wesnoth"
   },
   {
-    "binnames": [
-      "wesnoth-1.18-data",
-      "wesnoth-core",
-      "wesnoth-1.18",
-      "wesnoth",
-      "wesnoth-1.18-music",
-      "wesnoth-music",
-      "wesnoth-1.18-server",
-      "wesnoth-1.18-tools",
-      "wesnoth-1.18-httt",
-      "wesnoth-1.18-tsg",
-      "wesnoth-1.18-trow",
-      "wesnoth-1.18-ttb",
-      "wesnoth-1.18-ei",
-      "wesnoth-1.18-utbs",
-      "wesnoth-1.18-did",
-      "wesnoth-1.18-nr",
-      "wesnoth-1.18-sof",
-      "wesnoth-1.18-sotbe",
-      "wesnoth-1.18-l",
-      "wesnoth-1.18-thot",
-      "wesnoth-1.18-low",
-      "wesnoth-1.18-dm",
-      "wesnoth-1.18-dw",
-      "wesnoth-1.18-sota",
-      "wesnoth-1.18-wof"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "pj@pehjota.net",
-      "rhonda@debian.org",
-      "vcheng@debian.org"
-    ],
-    "origversion": "1:1.18.8-1",
-    "repo": "raspbian_testing",
-    "srcname": "wesnoth-1.18",
-    "status": "newest",
-    "subrepo": "main",
-    "version": "1.18.8",
-    "visiblename": "wesnoth-1.18"
+    "origversion": "1.18.7-1",
+    "repo": "pld",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "version": "1.18.7",
+    "visiblename": "wesnoth"
   },
   {
     "binnames": [
@@ -3189,6 +3119,51 @@
   },
   {
     "binnames": [
+      "wesnoth-1.18-data",
+      "wesnoth-core",
+      "wesnoth-1.18",
+      "wesnoth",
+      "wesnoth-1.18-music",
+      "wesnoth-music",
+      "wesnoth-1.18-server",
+      "wesnoth-1.18-tools",
+      "wesnoth-1.18-httt",
+      "wesnoth-1.18-tsg",
+      "wesnoth-1.18-trow",
+      "wesnoth-1.18-ttb",
+      "wesnoth-1.18-ei",
+      "wesnoth-1.18-utbs",
+      "wesnoth-1.18-did",
+      "wesnoth-1.18-nr",
+      "wesnoth-1.18-sof",
+      "wesnoth-1.18-sotbe",
+      "wesnoth-1.18-l",
+      "wesnoth-1.18-thot",
+      "wesnoth-1.18-low",
+      "wesnoth-1.18-dm",
+      "wesnoth-1.18-dw",
+      "wesnoth-1.18-sota",
+      "wesnoth-1.18-wof"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "pj@pehjota.net",
+      "rhonda@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "1:1.18.8-1",
+    "repo": "raspbian_testing",
+    "srcname": "wesnoth-1.18",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "1.18.8",
+    "visiblename": "wesnoth-1.18"
+  },
+  {
+    "binnames": [
       "wesnoth",
       "wesnoth-server",
       "wesnoth-debuginfo",
@@ -3210,6 +3185,31 @@
     "subrepo": "contrib/release",
     "summary": "Fantasy turn-based strategy game",
     "version": "1.18.0",
+    "visiblename": "wesnoth"
+  },
+  {
+    "binnames": [
+      "wesnoth",
+      "wesnoth-server",
+      "wesnoth-debuginfo",
+      "wesnoth-debugsource"
+    ],
+    "categories": [
+      "Games/Strategy"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "1:1.19.20-1",
+    "repo": "rosa_13",
+    "srcname": "wesnoth",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "Fantasy turn-based strategy game",
+    "version": "1.19.20",
     "visiblename": "wesnoth"
   },
   {
@@ -3918,6 +3918,64 @@
     "visiblename": "Q214142"
   },
   {
+    "origversion": null,
+    "repo": "gobolinux",
+    "srcname": "Wesnoth",
+    "status": "outdated",
+    "version": "0.8.2",
+    "visiblename": "Wesnoth",
+    "vulnerable": true
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.10.6",
+    "visiblename": "Battle for Wesnoth",
+    "vulnerable": true
+  },
+  {
+    "binname": "BattleForWesnoth",
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "BattleForWesnoth",
+    "status": "legacy",
+    "version": "1.12.2",
+    "visiblename": "Battle for Wesnoth",
+    "vulnerable": true
+  },
+  {
+    "binname": "wesnoth-1.2",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "singularity@aur"
+    ],
+    "origversion": "1.2.8+dev-1",
+    "repo": "aur",
+    "srcname": "wesnoth-1.2",
+    "status": "legacy",
+    "summary": "Turn-based strategy game on a fantasy world (for old replays)",
+    "version": "1.2.8",
+    "visiblename": "wesnoth-1.2",
+    "vulnerable": true
+  },
+  {
     "binname": "wesnoth-1.0",
     "licenses": [
       "GPL"
@@ -3949,23 +4007,6 @@
     "summary": "Turn-based strategy game on a fantasy world (for old replays)",
     "version": "1.10.7",
     "visiblename": "wesnoth-1.10",
-    "vulnerable": true
-  },
-  {
-    "binname": "wesnoth-1.2",
-    "licenses": [
-      "GPL"
-    ],
-    "maintainers": [
-      "singularity@aur"
-    ],
-    "origversion": "1.2.8+dev-1",
-    "repo": "aur",
-    "srcname": "wesnoth-1.2",
-    "status": "legacy",
-    "summary": "Turn-based strategy game on a fantasy world (for old replays)",
-    "version": "1.2.8",
-    "visiblename": "wesnoth-1.2",
     "vulnerable": true
   },
   {
@@ -4020,31 +4061,6 @@
     "vulnerable": true
   },
   {
-    "origversion": null,
-    "repo": "gobolinux",
-    "srcname": "Wesnoth",
-    "status": "outdated",
-    "version": "0.8.2",
-    "visiblename": "Wesnoth",
-    "vulnerable": true
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.10.6",
-    "visiblename": "Battle for Wesnoth",
-    "vulnerable": true
-  },
-  {
     "binname": "BattleForWesnoth",
     "categories": [
       "Games"
@@ -4073,22 +4089,6 @@
     "srcname": "BattleForWesnoth",
     "status": "legacy",
     "version": "1.12",
-    "visiblename": "Battle for Wesnoth",
-    "vulnerable": true
-  },
-  {
-    "binname": "BattleForWesnoth",
-    "categories": [
-      "Games"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "BattleForWesnoth",
-    "status": "legacy",
-    "version": "1.12.2",
     "visiblename": "Battle for Wesnoth",
     "vulnerable": true
   },

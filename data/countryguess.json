@@ -1,0 +1,62 @@
+[
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "countryguess",
+    "status": "unique",
+    "summary": "Guess the 193 U.N. recognised countries",
+    "version": "0-unstable-2025-03-04",
+    "visiblename": "countryguess"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "countryguess",
+    "status": "unique",
+    "summary": "Guess the 193 U.N. recognised countries",
+    "version": "0-unstable-2025-03-04",
+    "visiblename": "countryguess"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "countryguess",
+    "status": "unique",
+    "summary": "Guess the 193 U.N. recognised countries",
+    "version": "0-unstable-2025-03-04",
+    "visiblename": "countryguess"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "ethan@ethancedwards.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "countryguess",
+    "status": "unique",
+    "summary": "Guess the 193 U.N. recognised countries",
+    "version": "0-unstable-2025-03-04",
+    "visiblename": "countryguess"
+  }
+]
