@@ -1,5 +1,25 @@
 [
   {
+    "binnames": [
+      "pacvim",
+      "pacvim-debuginfo",
+      "pacvim-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/Board/Puzzle"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "1.1.1-3.24",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "pacvim",
+    "status": "newest",
+    "summary": "Game to teach vim commands",
+    "version": "1.1.1",
+    "visiblename": "pacvim"
+  },
+  {
     "binname": "pacvim-git",
     "licenses": [
       "LGPL3"
@@ -316,7 +336,7 @@
     "licenses": [
       "GPL-3.0-only"
     ],
-    "origversion": "1.1.1-3.24",
+    "origversion": "1.1.1-3.25",
     "repo": "opensuse_games_tumbleweed",
     "srcname": "pacvim",
     "status": "newest",

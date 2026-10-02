@@ -1,5 +1,49 @@
 [
   {
+    "binnames": [
+      "openmw",
+      "openmw-cs",
+      "openmw-data",
+      "openmw-launcher"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "psi29a@gmail.com"
+    ],
+    "origversion": "0.46.0-3",
+    "repo": "devuan_4_0",
+    "srcname": "openmw",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "0.46.0",
+    "visiblename": "openmw"
+  },
+  {
+    "binnames": [
+      "openmw",
+      "openmw-cs",
+      "openmw-data",
+      "openmw-launcher"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "psi29a@gmail.com"
+    ],
+    "origversion": "0.51.0-1",
+    "repo": "devuan_unstable",
+    "srcname": "openmw",
+    "status": "newest",
+    "subrepo": "unstable/main",
+    "version": "0.51.0",
+    "visiblename": "openmw"
+  },
+  {
     "binname": "openmw",
     "categories": [
       "games"
@@ -7,13 +51,47 @@
     "maintainers": [
       "nia@netbsd.org"
     ],
-    "origversion": "0.47.0nb76",
-    "repo": "pkgsrc_2026_2",
+    "origversion": "0.47.0nb85",
+    "repo": "pkgsrc_current",
     "srcname": "games/openmw",
     "status": "outdated",
     "summary": "Recreation of The Elder Scrolls III: Morrowind game engine",
     "version": "0.47.0",
     "visiblename": "games/openmw"
+  },
+  {
+    "binname": "openmw",
+    "licenses": [
+      "GPL3",
+      "MIT",
+      "custom"
+    ],
+    "origversion": "0.45.0-1.parabola1",
+    "repo": "parabola",
+    "srcname": "openmw",
+    "status": "outdated",
+    "subrepo": "libre",
+    "summary": "Open-source engine reimplementation for the role-playing game Morrowind, without without downloader/installer wizard",
+    "version": "0.45.0",
+    "visiblename": "openmw"
+  },
+  {
+    "binnames": [
+      "openmw",
+      "openmw-cs",
+      "openmw-data",
+      "openmw-launcher"
+    ],
+    "maintainers": [
+      "psi29a@gmail.com"
+    ],
+    "origversion": "0.45.0-2+rb2",
+    "repo": "deepin_unstable",
+    "srcname": "openmw",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.45.0",
+    "visiblename": "openmw"
   },
   {
     "binname": "openmw",
@@ -101,6 +179,28 @@
     "visiblename": "openmw"
   },
   {
+    "binnames": [
+      "openmw",
+      "openmw-cs",
+      "openmw-data",
+      "openmw-launcher"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "psi29a@gmail.com"
+    ],
+    "origversion": "0.46.0-3",
+    "repo": "pardus_21",
+    "srcname": "openmw",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.46.0",
+    "visiblename": "openmw"
+  },
+  {
     "binname": "openmw",
     "licenses": [
       "GPL-3.0-or-later"
@@ -166,6 +266,24 @@
     "subrepo": "community",
     "summary": "Open-source engine reimplementation for the role-playing game Morrowind",
     "version": "0.51.0",
+    "visiblename": "openmw"
+  },
+  {
+    "binnames": [
+      "openmw",
+      "openmw-cs",
+      "openmw-data",
+      "openmw-launcher"
+    ],
+    "maintainers": [
+      "psi29a@gmail.com"
+    ],
+    "origversion": "0.45.0-2",
+    "repo": "deepin_unstable",
+    "srcname": "openmw",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "0.45.0",
     "visiblename": "openmw"
   },
   {
@@ -399,86 +517,6 @@
     "visiblename": "openmw"
   },
   {
-    "binnames": [
-      "openmw",
-      "openmw-cs",
-      "openmw-data",
-      "openmw-launcher"
-    ],
-    "maintainers": [
-      "psi29a@gmail.com"
-    ],
-    "origversion": "0.45.0-2",
-    "repo": "deepin_unstable",
-    "srcname": "openmw",
-    "status": "outdated",
-    "subrepo": "contrib",
-    "version": "0.45.0",
-    "visiblename": "openmw"
-  },
-  {
-    "binnames": [
-      "openmw",
-      "openmw-cs",
-      "openmw-data",
-      "openmw-launcher"
-    ],
-    "maintainers": [
-      "psi29a@gmail.com"
-    ],
-    "origversion": "0.45.0-2+rb2",
-    "repo": "deepin_unstable",
-    "srcname": "openmw",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "0.45.0",
-    "visiblename": "openmw"
-  },
-  {
-    "binnames": [
-      "openmw",
-      "openmw-cs",
-      "openmw-data",
-      "openmw-launcher"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "psi29a@gmail.com"
-    ],
-    "origversion": "0.46.0-3",
-    "repo": "devuan_4_0",
-    "srcname": "openmw",
-    "status": "outdated",
-    "subrepo": "chimaera/main",
-    "version": "0.46.0",
-    "visiblename": "openmw"
-  },
-  {
-    "binnames": [
-      "openmw",
-      "openmw-cs",
-      "openmw-data",
-      "openmw-launcher"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "psi29a@gmail.com"
-    ],
-    "origversion": "0.51.0-1",
-    "repo": "devuan_unstable",
-    "srcname": "openmw",
-    "status": "newest",
-    "subrepo": "unstable/main",
-    "version": "0.51.0",
-    "visiblename": "openmw"
-  },
-  {
     "categories": [
       "games-engines"
     ],
@@ -516,6 +554,22 @@
     "visiblename": "openmw"
   },
   {
+    "binname": "openmw",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "nia@netbsd.org"
+    ],
+    "origversion": "0.47.0nb76",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/openmw",
+    "status": "outdated",
+    "summary": "Recreation of The Elder Scrolls III: Morrowind game engine",
+    "version": "0.47.0",
+    "visiblename": "games/openmw"
+  },
+  {
     "binnames": [
       "openmw",
       "openmw-cs",
@@ -548,13 +602,13 @@
     "licenses": [
       "GPL-3.0-only AND (Zlib AND MIT AND BSD-3-clause AND BSL-1.0 AND NTP) AND (GPL-2.0-only AND LGPL-2.0-or-later WITH WxWindows-exception-3.1) AND MIT AND OFL-1.1-RFN"
     ],
-    "origversion": "0.51.0-7.fc43",
+    "origversion": "0.49.0-6.fc43",
     "repo": "fedora_43",
     "srcname": "openmw",
-    "status": "newest",
-    "subrepo": "updates",
+    "status": "legacy",
+    "subrepo": "release",
     "summary": "OpenMW is an open-source game engine",
-    "version": "0.51.0",
+    "version": "0.49.0",
     "visiblename": "openmw"
   },
   {
@@ -569,13 +623,13 @@
     "licenses": [
       "GPL-3.0-only AND (Zlib AND MIT AND BSD-3-clause AND BSL-1.0 AND NTP) AND (GPL-2.0-only AND LGPL-2.0-or-later WITH WxWindows-exception-3.1) AND MIT AND OFL-1.1-RFN"
     ],
-    "origversion": "0.49.0-6.fc43",
+    "origversion": "0.51.0-7.fc43",
     "repo": "fedora_43",
     "srcname": "openmw",
-    "status": "legacy",
-    "subrepo": "release",
+    "status": "newest",
+    "subrepo": "updates",
     "summary": "OpenMW is an open-source game engine",
-    "version": "0.49.0",
+    "version": "0.51.0",
     "visiblename": "openmw"
   },
   {
@@ -842,6 +896,22 @@
     "summary": "Open source reimplementation of TES III: Morrowind",
     "version": "0.51.0",
     "visiblename": "games-engines/openmw"
+  },
+  {
+    "binname": "openmw",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "nia@netbsd.org"
+    ],
+    "origversion": "0.47.0nb82",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/openmw",
+    "status": "outdated",
+    "summary": "Recreation of The Elder Scrolls III: Morrowind game engine",
+    "version": "0.47.0",
+    "visiblename": "games/openmw"
   },
   {
     "categories": [
@@ -1111,6 +1181,18 @@
     "visiblename": "openmw"
   },
   {
+    "binname": "openmw",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "outdated",
+    "subrepo": "games",
+    "version": "0.50.0",
+    "visiblename": "openmw"
+  },
+  {
     "binnames": [
       "openmw"
     ],
@@ -1185,7 +1267,7 @@
     "licenses": [
       "GPL-3.0-only AND MIT"
     ],
-    "origversion": "0.51.0-57.18",
+    "origversion": "0.51.0-57.20",
     "repo": "opensuse_games_tumbleweed",
     "srcname": "openmw",
     "status": "newest",
@@ -1194,74 +1276,24 @@
     "visiblename": "openmw"
   },
   {
-    "binname": "openmw",
-    "licenses": [
-      "GPL3",
-      "MIT",
-      "custom"
-    ],
-    "origversion": "0.45.0-1.parabola1",
-    "repo": "parabola",
-    "srcname": "openmw",
-    "status": "outdated",
-    "subrepo": "libre",
-    "summary": "Open-source engine reimplementation for the role-playing game Morrowind, without without downloader/installer wizard",
-    "version": "0.45.0",
-    "visiblename": "openmw"
-  },
-  {
     "binnames": [
       "openmw",
-      "openmw-cs",
-      "openmw-data",
-      "openmw-launcher"
+      "openmw-debuginfo",
+      "openmw-debugsource"
     ],
     "categories": [
-      "misc"
+      "Amusements/Games/RPG"
     ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "psi29a@gmail.com"
+    "licenses": [
+      "GPL-3.0-only AND MIT"
     ],
-    "origversion": "0.46.0-3",
-    "repo": "pardus_21",
+    "origversion": "0.51.0-57.21",
+    "repo": "opensuse_games_tumbleweed",
     "srcname": "openmw",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "0.46.0",
+    "status": "newest",
+    "summary": "Reimplementation of The Elder Scrolls III: Morrowind",
+    "version": "0.51.0",
     "visiblename": "openmw"
-  },
-  {
-    "binname": "openmw",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "nia@netbsd.org"
-    ],
-    "origversion": "0.47.0nb82",
-    "repo": "pkgsrc_2026_3",
-    "srcname": "games/openmw",
-    "status": "outdated",
-    "summary": "Recreation of The Elder Scrolls III: Morrowind game engine",
-    "version": "0.47.0",
-    "visiblename": "games/openmw"
-  },
-  {
-    "binname": "openmw",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "nia@netbsd.org"
-    ],
-    "origversion": "0.47.0nb85",
-    "repo": "pkgsrc_current",
-    "srcname": "games/openmw",
-    "status": "outdated",
-    "summary": "Recreation of The Elder Scrolls III: Morrowind game engine",
-    "version": "0.47.0",
-    "visiblename": "games/openmw"
   },
   {
     "binnames": [
@@ -1397,18 +1429,6 @@
     "subrepo": "contrib/release",
     "summary": "A reimplementation of The Elder Scrolls III: Morrowind",
     "version": "0.51.0",
-    "visiblename": "openmw"
-  },
-  {
-    "binname": "openmw",
-    "licenses": [
-      "GPL-3.0-or-later"
-    ],
-    "origversion": null,
-    "repo": "scoop",
-    "status": "outdated",
-    "subrepo": "games",
-    "version": "0.50.0",
     "visiblename": "openmw"
   },
   {

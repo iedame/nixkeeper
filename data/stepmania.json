@@ -1,5 +1,29 @@
 [
   {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "svoges.sbo@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/stepmania",
+    "status": "untrusted",
+    "version": "20221114_d55acb1",
+    "visiblename": "games/stepmania"
+  },
+  {
+    "binname": "stepmania",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "stepmania",
+    "status": "ignored",
+    "summary": "Advanced rhythm game designed for both home and arcade use",
+    "version": "5.1.0-b2-1.d55acb1",
+    "visiblename": "stepmania"
+  },
+  {
     "binname": "stepmania",
     "licenses": [
       "MIT AND CC-BY-NC-4.0"
@@ -14,16 +38,6 @@
     "status": "ignored",
     "summary": "Advanced rhythm game. Designed for both home and arcade use.",
     "version": "5.1.0.b2.r627.d55acb1ba2",
-    "visiblename": "stepmania"
-  },
-  {
-    "binname": "stepmania",
-    "origversion": null,
-    "repo": "gnuguix",
-    "srcname": "stepmania",
-    "status": "ignored",
-    "summary": "Advanced rhythm game designed for both home and arcade use",
-    "version": "5.1.0-b2-1.d55acb1",
     "visiblename": "stepmania"
   },
   {
@@ -277,20 +291,6 @@
     "categories": [
       "games"
     ],
-    "maintainers": [
-      "svoges.sbo@gmail.com"
-    ],
-    "origversion": null,
-    "repo": "slackbuilds",
-    "srcname": "games/stepmania",
-    "status": "untrusted",
-    "version": "20221114_d55acb1",
-    "visiblename": "games/stepmania"
-  },
-  {
-    "categories": [
-      "games"
-    ],
     "origversion": "5.0.12 (2016-08-14)",
     "repo": "libregamewiki",
     "srcname": "StepMania",
@@ -339,7 +339,7 @@
     "licenses": [
       "MIT"
     ],
-    "origversion": "5.1.0b2-4.287",
+    "origversion": "5.1.0b2-4.293",
     "repo": "opensuse_games_tumbleweed",
     "srcname": "stepmania",
     "status": "untrusted",

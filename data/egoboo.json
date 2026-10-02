@@ -1,5 +1,36 @@
 [
   {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "git@ieda.me"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "egoboo",
+    "status": "newest",
+    "summary": "3D dungeon crawling adventure",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "binname": "egoboo",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": "2.8.1p1",
+    "repo": "openbsd",
+    "srcname": "games/egoboo",
+    "status": "newest",
+    "summary": "dungeon-crawling action-RPG adventure",
+    "version": "2.8.1",
+    "visiblename": "games/egoboo"
+  },
+  {
     "binname": "egoboo",
     "licenses": [
       "GPL"
@@ -304,37 +335,6 @@
     "visiblename": "egoboo"
   },
   {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "git@ieda.me"
-    ],
-    "origversion": null,
-    "repo": "nix_unstable",
-    "srcname": "egoboo",
-    "status": "newest",
-    "summary": "3D dungeon crawling adventure",
-    "version": "2.8.1",
-    "visiblename": "egoboo"
-  },
-  {
-    "binname": "egoboo",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "ports@openbsd.org"
-    ],
-    "origversion": "2.8.1p1",
-    "repo": "openbsd",
-    "srcname": "games/egoboo",
-    "status": "newest",
-    "summary": "dungeon-crawling action-RPG adventure",
-    "version": "2.8.1",
-    "visiblename": "games/egoboo"
-  },
-  {
     "binnames": [
       "egoboo-data"
     ],
@@ -414,6 +414,27 @@
       "GPL-3.0+"
     ],
     "origversion": "2.8.1-4.32",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "egoboo",
+    "status": "newest",
+    "summary": "A top down graphical (3D) RPG in the spirit of Nethack",
+    "version": "2.8.1",
+    "visiblename": "egoboo"
+  },
+  {
+    "binnames": [
+      "egoboo",
+      "egoboo-debuginfo",
+      "egoboo-debugsource",
+      "egoboo-data"
+    ],
+    "categories": [
+      "Amusements/Games/RPG"
+    ],
+    "licenses": [
+      "GPL-3.0+"
+    ],
+    "origversion": "2.8.1-4.33",
     "repo": "opensuse_games_tumbleweed",
     "srcname": "egoboo",
     "status": "newest",

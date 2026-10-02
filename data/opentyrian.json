@@ -1,26 +1,6 @@
 [
   {
     "binnames": [
-      "opentyrian"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "me@emillon.org",
-      "tchet@debian.org"
-    ],
-    "origversion": "2.1.20221123-2",
-    "repo": "parrot",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "subrepo": "parrot-updates/contrib",
-    "version": "2.1.20221123",
-    "visiblename": "opentyrian"
-  },
-  {
-    "binnames": [
       "opentyrian",
       "opentyrian-debuginfo"
     ],
@@ -278,30 +258,6 @@
     "visiblename": "games-arcade/OpenTyrian"
   },
   {
-    "categories": [
-      "Games/Arcade"
-    ],
-    "origversion": "2.1-2pclos2013",
-    "repo": "pclinuxos",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "summary": "Classic shoot-em-up arcade port",
-    "version": "2.1",
-    "visiblename": "opentyrian"
-  },
-  {
-    "categories": [
-      "Games/Arcade"
-    ],
-    "origversion": "2.1-3pclos2019",
-    "repo": "pclinuxos",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "summary": "Classic shoot-em-up arcade port",
-    "version": "2.1",
-    "visiblename": "opentyrian"
-  },
-  {
     "binname": "opentyrian",
     "categories": [
       "games"
@@ -334,6 +290,28 @@
     "summary": "Open-source port of the DOS game Tyrian, vertical scrolling shooter",
     "version": "2.1.20130907",
     "visiblename": "games-arcade/opentyrian"
+  },
+  {
+    "binnames": [
+      "opentyrian"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "2.1.20221123-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "subrepo": "non-free/release",
+    "summary": "Classic shoot-em-up arcade port",
+    "version": "2.1.20221123",
+    "visiblename": "opentyrian"
   },
   {
     "categories": [
@@ -469,14 +447,6 @@
     "visiblename": "opentyrian"
   },
   {
-    "origversion": "0-0.20110209",
-    "repo": "pld",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "version": "0",
-    "visiblename": "opentyrian"
-  },
-  {
     "maintainers": [
       "fallback-mnt-nix@repology"
     ],
@@ -515,28 +485,6 @@
     "summary": "port of the DOS shoot-em-up Tyrian",
     "version": "2.1.20221123",
     "visiblename": "games/opentyrian"
-  },
-  {
-    "binnames": [
-      "opentyrian"
-    ],
-    "categories": [
-      "Games/Arcade"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "maintainers": [
-      "bero@lindev.ch"
-    ],
-    "origversion": "2.1.20221123-1",
-    "repo": "openmandriva_6_0",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "subrepo": "non-free/release",
-    "summary": "Classic shoot-em-up arcade port",
-    "version": "2.1.20221123",
-    "visiblename": "opentyrian"
   },
   {
     "binnames": [
@@ -647,7 +595,7 @@
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "origversion": "2.1.20260913-32.1",
+    "origversion": "2.1.20260913-33.1",
     "repo": "opensuse_games_tumbleweed",
     "srcname": "opentyrian",
     "status": "newest",
@@ -667,7 +615,7 @@
     "licenses": [
       "GPL-2.0-or-later"
     ],
-    "origversion": "2.1.20260913-33.1",
+    "origversion": "2.1.20260913-33.2",
     "repo": "opensuse_games_tumbleweed",
     "srcname": "opentyrian",
     "status": "newest",
@@ -723,8 +671,60 @@
     "repo": "parrot",
     "srcname": "opentyrian",
     "status": "outdated",
+    "subrepo": "parrot-updates/contrib",
+    "version": "2.1.20221123",
+    "visiblename": "opentyrian"
+  },
+  {
+    "binnames": [
+      "opentyrian"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "me@emillon.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "2.1.20221123-2",
+    "repo": "parrot",
+    "srcname": "opentyrian",
+    "status": "outdated",
     "subrepo": "parrot/contrib",
     "version": "2.1.20221123",
+    "visiblename": "opentyrian"
+  },
+  {
+    "categories": [
+      "Games/Arcade"
+    ],
+    "origversion": "2.1-2pclos2013",
+    "repo": "pclinuxos",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "summary": "Classic shoot-em-up arcade port",
+    "version": "2.1",
+    "visiblename": "opentyrian"
+  },
+  {
+    "categories": [
+      "Games/Arcade"
+    ],
+    "origversion": "2.1-3pclos2019",
+    "repo": "pclinuxos",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "summary": "Classic shoot-em-up arcade port",
+    "version": "2.1",
+    "visiblename": "opentyrian"
+  },
+  {
+    "origversion": "0-0.20110209",
+    "repo": "pld",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "version": "0",
     "visiblename": "opentyrian"
   },
   {

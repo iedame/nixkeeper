@@ -2,6 +2,221 @@
   {
     "binnames": [
       "lugaru",
+      "lugaru-data",
+      "openlugaru",
+      "openlugaru-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vinceprat@free.fr"
+    ],
+    "origversion": "1.2-4",
+    "repo": "pureos_amber",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "amber/main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-5",
+    "repo": "pureos_byzantium",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "byzantium/main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "lugaru",
+    "status": "newest",
+    "summary": "Third person ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7",
+    "repo": "pureos_landing",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "landing/main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binname": "lugaru",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "charlotte@netbsd.org"
+    ],
+    "origversion": "1.2nb18",
+    "repo": "pkgsrc_current",
+    "srcname": "games/lugaru",
+    "status": "newest",
+    "summary": "Cross-platform third-person action game from Wolfire",
+    "version": "1.2",
+    "visiblename": "games/lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data",
+      "lugaru-debuginfo"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "viy@altlinux.org"
+    ],
+    "origversion": "0.0.r262-alt2.2",
+    "repo": "alt_p11",
+    "srcname": "lugaru",
+    "status": "outdated",
+    "summary": "A well-trained ninja rabbit fight through a detailed 3D world",
+    "version": "0.0.r262",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data",
+      "lugaru-debuginfo"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "george@altlinux.org"
+    ],
+    "origversion": "0.20260114-alt1",
+    "repo": "altsisyphus",
+    "srcname": "lugaru",
+    "status": "outdated",
+    "summary": "Third-person ninja rabbit action game",
+    "version": "0.20260114",
+    "visiblename": "lugaru"
+  },
+  {
+    "binname": "lugaru",
+    "licenses": [
+      "GPL"
+    ],
+    "maintainers": [
+      "krumelmonster@aur"
+    ],
+    "origversion": "1.2-2",
+    "repo": "aur",
+    "srcname": "lugaru",
+    "status": "newest",
+    "summary": "A third-person action game featuring a unique close-range combat system",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-5",
+    "repo": "debian_11",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "bullseye/main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-6",
+    "repo": "debian_12",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "bookworm/main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7",
+    "repo": "debian_13",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "trixie/main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
       "lugaru-data"
     ],
     "categories": [
@@ -198,594 +413,6 @@
     "visiblename": "lugaru"
   },
   {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "fallback-mnt-nix@repology"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_11",
-    "srcname": "lugaru",
-    "status": "newest",
-    "summary": "Third person ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "fallback-mnt-nix@repology"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_26_05",
-    "srcname": "lugaru",
-    "status": "newest",
-    "summary": "Third person ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "fallback-mnt-nix@repology"
-    ],
-    "origversion": null,
-    "repo": "nix_unstable",
-    "srcname": "lugaru",
-    "status": "newest",
-    "summary": "Third person ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binname": "lugaru",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "kaashif@kaashif.co.uk"
-    ],
-    "origversion": "1.2p3",
-    "repo": "openbsd",
-    "srcname": "games/lugaru",
-    "status": "newest",
-    "summary": "third-person rabbit combat action game",
-    "version": "1.2",
-    "visiblename": "games/lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-6",
-    "repo": "raspbian_oldstable",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "main",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "openlugaru"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "martinerikwerner@gmail.com"
-    ],
-    "origversion": "0~20110520.1+hge4354+dfsg-5",
-    "repo": "raspbian_oldstable",
-    "srcname": "openlugaru",
-    "status": "legacy",
-    "subrepo": "contrib",
-    "version": "0~20110520.1+hge4354",
-    "visiblename": "openlugaru"
-  },
-  {
-    "binnames": [
-      "openlugaru"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "martinerikwerner@gmail.com"
-    ],
-    "origversion": "0~20110520.1+hge4354+dfsg-5",
-    "repo": "raspbian_stable",
-    "srcname": "openlugaru",
-    "status": "legacy",
-    "subrepo": "contrib",
-    "version": "0~20110520.1+hge4354",
-    "visiblename": "openlugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7",
-    "repo": "raspbian_stable",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "main",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "openlugaru"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "martinerikwerner@gmail.com"
-    ],
-    "origversion": "0~20110520.1+hge4354+dfsg-5",
-    "repo": "raspbian_testing",
-    "srcname": "openlugaru",
-    "status": "legacy",
-    "subrepo": "contrib",
-    "version": "0~20110520.1+hge4354",
-    "visiblename": "openlugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7.1",
-    "repo": "raspbian_testing",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "main",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data",
-      "lugaru-debuginfo",
-      "lugaru-debugsource"
-    ],
-    "categories": [
-      "Games/Other"
-    ],
-    "licenses": [
-      "GPLv2+"
-    ],
-    "maintainers": [
-      "survolog@yandex.ru"
-    ],
-    "origversion": "1.2-3",
-    "repo": "rosa_2019_1",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "contrib/release",
-    "summary": "Ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "Games/Other"
-    ],
-    "licenses": [
-      "GPLv2+"
-    ],
-    "maintainers": [
-      "alexander@mezon.ru"
-    ],
-    "origversion": "1.2-3",
-    "repo": "rosa_13",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "contrib/release",
-    "summary": "Ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binname": "lugaru",
-    "categories": [
-      "games.action"
-    ],
-    "licenses": [
-      "CC-BY-SA-3.0",
-      "CC-BY-SA-4.0",
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "josephriches@gmail.com"
-    ],
-    "origversion": null,
-    "repo": "solus",
-    "srcname": "lugaru",
-    "status": "newest",
-    "summary": "Lugaru (pronounced Loo-GAH-roo) is a cross-platform third-person action game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binname": "lugaru-dbginfo",
-    "categories": [
-      "debug"
-    ],
-    "licenses": [
-      "CC-BY-SA-3.0",
-      "CC-BY-SA-4.0",
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "josephriches@gmail.com"
-    ],
-    "origversion": null,
-    "repo": "solus",
-    "srcname": "lugaru",
-    "status": "newest",
-    "summary": "Debug symbols for lugaru",
-    "version": "1.2",
-    "visiblename": "lugaru-dbginfo"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7.1",
-    "repo": "ubuntu_26_10",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "stonking/universe",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binname": "lugaru",
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "me@johnnynator.dev"
-    ],
-    "origversion": "1.2_2",
-    "repo": "void_x86_64",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "x86_64",
-    "summary": "Third person ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binname": "lugaru-data",
-    "licenses": [
-      "CC-BY-SA-4.0",
-      "CC-BY-SA-3.0"
-    ],
-    "maintainers": [
-      "me@johnnynator.dev"
-    ],
-    "origversion": "1.2_2",
-    "repo": "void_x86_64",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "x86_64",
-    "summary": "Third person ninja rabbit fighting game - data files",
-    "version": "1.2",
-    "visiblename": "lugaru-data"
-  },
-  {
-    "licenses": [
-      "Creative Commons Attribution-ShareAlike 3.0 Unported",
-      "GNU General Public License, version 2.0 or later"
-    ],
-    "origversion": null,
-    "repo": "wikidata",
-    "srcname": "Q6699736",
-    "status": "newest",
-    "summary": "2005 free and open-source video game",
-    "version": "1.2",
-    "visiblename": "Lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru"
-    ],
-    "categories": [
-      "Games"
-    ],
-    "origversion": null,
-    "repo": "yacp",
-    "srcname": "lugaru",
-    "status": "newest",
-    "summary": "Free and open source ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7",
-    "repo": "ubuntu_25_10",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "questing/universe",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7.1",
-    "repo": "ubuntu_26_04",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "resolute/universe",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "licenses": [
-      "GPL-2.0-or-later"
-    ],
-    "maintainers": [
-      "fallback-mnt-nix@repology"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
-    "srcname": "lugaru",
-    "status": "newest",
-    "summary": "Third person ninja rabbit fighting game",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-5",
-    "repo": "ubuntu_22_04",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "jammy/universe",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "ubuntu-devel-discuss@lists.ubuntu.com",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-6build2",
-    "repo": "ubuntu_24_04",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "noble/universe",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "universe/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7",
-    "repo": "ubuntu_25_04",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "plucky/universe",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-7",
-    "repo": "debian_13",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "trixie/main",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data",
-      "lugaru-debuginfo"
-    ],
-    "categories": [
-      "Games/Adventure"
-    ],
-    "licenses": [
-      "GPL"
-    ],
-    "maintainers": [
-      "viy@altlinux.org"
-    ],
-    "origversion": "0.0.r262-alt2.2",
-    "repo": "alt_p11",
-    "srcname": "lugaru",
-    "status": "outdated",
-    "summary": "A well-trained ninja rabbit fight through a detailed 3D world",
-    "version": "0.0.r262",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data",
-      "lugaru-debuginfo"
-    ],
-    "categories": [
-      "Games/Arcade"
-    ],
-    "licenses": [
-      "GPLv2+"
-    ],
-    "maintainers": [
-      "george@altlinux.org"
-    ],
-    "origversion": "0.20260114-alt1",
-    "repo": "altsisyphus",
-    "srcname": "lugaru",
-    "status": "outdated",
-    "summary": "Third-person ninja rabbit action game",
-    "version": "0.20260114",
-    "visiblename": "lugaru"
-  },
-  {
-    "binname": "lugaru",
-    "licenses": [
-      "GPL"
-    ],
-    "maintainers": [
-      "krumelmonster@aur"
-    ],
-    "origversion": "1.2-2",
-    "repo": "aur",
-    "srcname": "lugaru",
-    "status": "newest",
-    "summary": "A third-person action game featuring a unique close-range combat system",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-5",
-    "repo": "debian_11",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "bullseye/main",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-6",
-    "repo": "debian_12",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "bookworm/main",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
     "binnames": [
       "lugaru",
       "lugaru-data"
@@ -802,6 +429,26 @@
     "status": "newest",
     "subrepo": "release",
     "summary": "Ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-6",
+    "repo": "raspbian_oldstable",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "main",
     "version": "1.2",
     "visiblename": "lugaru"
   },
@@ -1015,6 +662,67 @@
     "visiblename": "lugaru"
   },
   {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "lugaru",
+    "status": "newest",
+    "summary": "Third person ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "lugaru",
+    "status": "newest",
+    "summary": "Third person ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "lugaru",
+    "status": "newest",
+    "summary": "Third person ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binname": "lugaru",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "kaashif@kaashif.co.uk"
+    ],
+    "origversion": "1.2p3",
+    "repo": "openbsd",
+    "srcname": "games/lugaru",
+    "status": "newest",
+    "summary": "third-person rabbit combat action game",
+    "version": "1.2",
+    "visiblename": "games/lugaru"
+  },
+  {
     "binnames": [
       "lugaru",
       "lugaru-debuginfo",
@@ -1164,6 +872,27 @@
   {
     "binnames": [
       "lugaru",
+      "lugaru-debuginfo",
+      "lugaru-debugsource",
+      "lugaru-data"
+    ],
+    "categories": [
+      "Amusements/Games/Action/Other"
+    ],
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "origversion": "1.2-16.70",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "lugaru",
+    "status": "newest",
+    "summary": "Third-person ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
       "lugaru-data"
     ],
     "categories": [
@@ -1197,7 +926,7 @@
     "repo": "parrot",
     "srcname": "lugaru",
     "status": "newest",
-    "subrepo": "parrot-updates/main",
+    "subrepo": "parrot/main",
     "version": "1.2",
     "visiblename": "lugaru"
   },
@@ -1217,7 +946,7 @@
     "repo": "parrot",
     "srcname": "lugaru",
     "status": "newest",
-    "subrepo": "parrot/main",
+    "subrepo": "parrot-updates/main",
     "version": "1.2",
     "visiblename": "lugaru"
   },
@@ -1254,42 +983,42 @@
     "visiblename": "games/lugaru"
   },
   {
-    "binname": "lugaru",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "charlotte@netbsd.org"
-    ],
-    "origversion": "1.2nb18",
-    "repo": "pkgsrc_current",
-    "srcname": "games/lugaru",
-    "status": "newest",
-    "summary": "Cross-platform third-person action game from Wolfire",
-    "version": "1.2",
-    "visiblename": "games/lugaru"
-  },
-  {
     "binnames": [
-      "lugaru",
-      "lugaru-data",
-      "openlugaru",
-      "openlugaru-data"
+      "openlugaru"
     ],
     "categories": [
-      "games"
+      "contrib/misc"
     ],
     "maintainers": [
       "pkg-games-devel@lists.alioth.debian.org",
-      "vinceprat@free.fr"
+      "martinerikwerner@gmail.com"
     ],
-    "origversion": "1.2-4",
-    "repo": "pureos_amber",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "amber/main",
-    "version": "1.2",
-    "visiblename": "lugaru"
+    "origversion": "0~20110520.1+hge4354+dfsg-5",
+    "repo": "raspbian_oldstable",
+    "srcname": "openlugaru",
+    "status": "legacy",
+    "subrepo": "contrib",
+    "version": "0~20110520.1+hge4354",
+    "visiblename": "openlugaru"
+  },
+  {
+    "binnames": [
+      "openlugaru"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "martinerikwerner@gmail.com"
+    ],
+    "origversion": "0~20110520.1+hge4354+dfsg-5",
+    "repo": "raspbian_stable",
+    "srcname": "openlugaru",
+    "status": "legacy",
+    "subrepo": "contrib",
+    "version": "0~20110520.1+hge4354",
+    "visiblename": "openlugaru"
   },
   {
     "binnames": [
@@ -1297,39 +1026,148 @@
       "lugaru-data"
     ],
     "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "vivi@debian.org"
-    ],
-    "origversion": "1.2-5",
-    "repo": "pureos_byzantium",
-    "srcname": "lugaru",
-    "status": "newest",
-    "subrepo": "byzantium/main",
-    "version": "1.2",
-    "visiblename": "lugaru"
-  },
-  {
-    "binnames": [
-      "lugaru",
-      "lugaru-data"
-    ],
-    "categories": [
-      "games"
+      "misc"
     ],
     "maintainers": [
       "pkg-games-devel@lists.alioth.debian.org",
       "vivi@debian.org"
     ],
     "origversion": "1.2-7",
-    "repo": "pureos_landing",
+    "repo": "raspbian_stable",
     "srcname": "lugaru",
     "status": "newest",
-    "subrepo": "landing/main",
+    "subrepo": "main",
     "version": "1.2",
     "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "openlugaru"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "martinerikwerner@gmail.com"
+    ],
+    "origversion": "0~20110520.1+hge4354+dfsg-5",
+    "repo": "raspbian_testing",
+    "srcname": "openlugaru",
+    "status": "legacy",
+    "subrepo": "contrib",
+    "version": "0~20110520.1+hge4354",
+    "visiblename": "openlugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7.1",
+    "repo": "raspbian_testing",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "main",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data",
+      "lugaru-debuginfo",
+      "lugaru-debugsource"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "survolog@yandex.ru"
+    ],
+    "origversion": "1.2-3",
+    "repo": "rosa_2019_1",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "Ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPLv2+"
+    ],
+    "maintainers": [
+      "alexander@mezon.ru"
+    ],
+    "origversion": "1.2-3",
+    "repo": "rosa_13",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "contrib/release",
+    "summary": "Ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binname": "lugaru",
+    "categories": [
+      "games.action"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "CC-BY-SA-4.0",
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "josephriches@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "lugaru",
+    "status": "newest",
+    "summary": "Lugaru (pronounced Loo-GAH-roo) is a cross-platform third-person action game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binname": "lugaru-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0",
+      "CC-BY-SA-4.0",
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "josephriches@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "lugaru",
+    "status": "newest",
+    "summary": "Debug symbols for lugaru",
+    "version": "1.2",
+    "visiblename": "lugaru-dbginfo"
   },
   {
     "binname": "lugaru",
@@ -1466,6 +1304,189 @@
     "srcname": "lugaru",
     "status": "newest",
     "subrepo": "focal/universe",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-5",
+    "repo": "ubuntu_22_04",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "jammy/universe",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "ubuntu-devel-discuss@lists.ubuntu.com",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-6build2",
+    "repo": "ubuntu_24_04",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "noble/universe",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7",
+    "repo": "ubuntu_25_04",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "plucky/universe",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7",
+    "repo": "ubuntu_25_10",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "questing/universe",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7.1",
+    "repo": "ubuntu_26_04",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "resolute/universe",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru",
+      "lugaru-data"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "vivi@debian.org"
+    ],
+    "origversion": "1.2-7.1",
+    "repo": "ubuntu_26_10",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "stonking/universe",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binname": "lugaru",
+    "licenses": [
+      "GPL-2.0-or-later"
+    ],
+    "maintainers": [
+      "me@johnnynator.dev"
+    ],
+    "origversion": "1.2_2",
+    "repo": "void_x86_64",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Third person ninja rabbit fighting game",
+    "version": "1.2",
+    "visiblename": "lugaru"
+  },
+  {
+    "binname": "lugaru-data",
+    "licenses": [
+      "CC-BY-SA-4.0",
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "me@johnnynator.dev"
+    ],
+    "origversion": "1.2_2",
+    "repo": "void_x86_64",
+    "srcname": "lugaru",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Third person ninja rabbit fighting game - data files",
+    "version": "1.2",
+    "visiblename": "lugaru-data"
+  },
+  {
+    "licenses": [
+      "Creative Commons Attribution-ShareAlike 3.0 Unported",
+      "GNU General Public License, version 2.0 or later"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q6699736",
+    "status": "newest",
+    "summary": "2005 free and open-source video game",
+    "version": "1.2",
+    "visiblename": "Lugaru"
+  },
+  {
+    "binnames": [
+      "lugaru"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "origversion": null,
+    "repo": "yacp",
+    "srcname": "lugaru",
+    "status": "newest",
+    "summary": "Free and open source ninja rabbit fighting game",
     "version": "1.2",
     "visiblename": "lugaru"
   }

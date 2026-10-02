@@ -1,19 +1,5 @@
 [
   {
-    "binname": "heroic-games-launcher",
-    "licenses": [
-      "GPL-3.0-only"
-    ],
-    "origversion": "2.22.1-2",
-    "repo": "manjaro_stable",
-    "srcname": "heroic-games-launcher",
-    "status": "outdated",
-    "subrepo": "extra",
-    "summary": "Native GOG, Epic Games and Amazon games launcher for Linux",
-    "version": "2.22.1",
-    "visiblename": "heroic-games-launcher"
-  },
-  {
     "licenses": [
       "GPL-3.0-or-later"
     ],
@@ -239,6 +225,18 @@
     "visiblename": "games-util/heroic-bin"
   },
   {
+    "binname": "heroic-games-launcher",
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "newest",
+    "subrepo": "games",
+    "version": "2.22.3",
+    "visiblename": "heroic-games-launcher"
+  },
+  {
     "categories": [
       "games-util"
     ],
@@ -277,6 +275,20 @@
     "summary": "GOG and Epic Games Launcher for Linux",
     "version": "2.22.1",
     "visiblename": "games-util/heroic-bin"
+  },
+  {
+    "binname": "heroic-games-launcher",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "2.22.1-2",
+    "repo": "manjaro_stable",
+    "srcname": "heroic-games-launcher",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "Native GOG, Epic Games and Amazon games launcher for Linux",
+    "version": "2.22.1",
+    "visiblename": "heroic-games-launcher"
   },
   {
     "binname": "heroic-games-launcher",
@@ -538,32 +550,6 @@
   },
   {
     "binname": "heroic-games-launcher",
-    "licenses": [
-      "GPL-3.0"
-    ],
-    "origversion": null,
-    "repo": "scoop",
-    "status": "newest",
-    "subrepo": "games",
-    "version": "2.22.3",
-    "visiblename": "heroic-games-launcher"
-  },
-  {
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "414n@slacky.it"
-    ],
-    "origversion": null,
-    "repo": "slackbuilds",
-    "srcname": "games/heroic-bin",
-    "status": "outdated",
-    "version": "2.16.1",
-    "visiblename": "games/heroic-bin"
-  },
-  {
-    "binname": "heroic-games-launcher",
     "categories": [
       "games"
     ],
@@ -675,5 +661,19 @@
     "summary": "A games launcher for GOG, Amazon, and Epic Games",
     "version": "2.22.3",
     "visiblename": "heroic-games-launcher"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "414n@slacky.it"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/heroic-bin",
+    "status": "outdated",
+    "version": "2.16.1",
+    "visiblename": "games/heroic-bin"
   }
 ]

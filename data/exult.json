@@ -1,5 +1,13 @@
 [
   {
+    "origversion": null,
+    "repo": "gobolinux",
+    "srcname": "Exult",
+    "status": "outdated",
+    "version": "1.2",
+    "visiblename": "Exult"
+  },
+  {
     "binnames": [
       "exult",
       "exult-studio"
@@ -10,12 +18,12 @@
     "maintainers": [
       "mbanck@debian.org"
     ],
-    "origversion": "1.8-1",
-    "repo": "raspbian_oldstable",
+    "origversion": "1.6-3",
+    "repo": "pardus_21",
     "srcname": "exult",
     "status": "outdated",
     "subrepo": "contrib",
-    "version": "1.8",
+    "version": "1.6",
     "visiblename": "exult"
   },
   {
@@ -30,10 +38,10 @@
       "mbanck@debian.org"
     ],
     "origversion": "1.10.1-3",
-    "repo": "raspbian_stable",
+    "repo": "parrot",
     "srcname": "exult",
     "status": "outdated",
-    "subrepo": "contrib",
+    "subrepo": "parrot-updates/contrib",
     "version": "1.10.1",
     "visiblename": "exult"
   },
@@ -48,31 +56,12 @@
     "maintainers": [
       "mbanck@debian.org"
     ],
-    "origversion": "1.12.1-3",
-    "repo": "raspbian_testing",
-    "srcname": "exult",
-    "status": "newest",
-    "subrepo": "contrib",
-    "version": "1.12.1",
-    "visiblename": "exult"
-  },
-  {
-    "binnames": [
-      "exult",
-      "exult-studio"
-    ],
-    "categories": [
-      "contrib/games"
-    ],
-    "maintainers": [
-      "mbanck@debian.org"
-    ],
-    "origversion": "1.6-3",
-    "repo": "devuan_4_0",
+    "origversion": "1.10.1-3",
+    "repo": "parrot",
     "srcname": "exult",
     "status": "outdated",
-    "subrepo": "chimaera/contrib",
-    "version": "1.6",
+    "subrepo": "parrot/contrib",
+    "version": "1.10.1",
     "visiblename": "exult"
   },
   {
@@ -210,6 +199,25 @@
     "maintainers": [
       "mbanck@debian.org"
     ],
+    "origversion": "1.6-3",
+    "repo": "devuan_4_0",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "chimaera/contrib",
+    "version": "1.6",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
     "origversion": "1.12.1-3",
     "repo": "devuan_unstable",
     "srcname": "exult",
@@ -279,14 +287,6 @@
     "visiblename": "exult"
   },
   {
-    "origversion": null,
-    "repo": "gobolinux",
-    "srcname": "Exult",
-    "status": "outdated",
-    "version": "1.2",
-    "visiblename": "Exult"
-  },
-  {
     "categories": [
       "games-engines"
     ],
@@ -314,22 +314,6 @@
     "summary": "Recreation of Ultima 7",
     "version": "HEAD",
     "visiblename": "exult"
-  },
-  {
-    "binname": "exult",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "nikkohigashi@gmail.com"
-    ],
-    "origversion": "1.6nb18",
-    "repo": "pkgsrc_current",
-    "srcname": "games/exult",
-    "status": "outdated",
-    "summary": "Open-source Ultima 7 engine",
-    "version": "1.6",
-    "visiblename": "games/exult"
   },
   {
     "categories": [
@@ -505,7 +489,28 @@
     "licenses": [
       "GPL-2.0-only"
     ],
-    "origversion": "1.12.1-1.75",
+    "origversion": "1.12.1-1.76",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "exult",
+    "status": "newest",
+    "summary": "Open source Ultima 7 RPG game engine",
+    "version": "1.12.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-debuginfo",
+      "exult-debugsource",
+      "exult-studio"
+    ],
+    "categories": [
+      "Amusements/Games/RPG"
+    ],
+    "licenses": [
+      "GPL-2.0-only"
+    ],
+    "origversion": "1.12.1-1.77",
     "repo": "opensuse_games_tumbleweed",
     "srcname": "exult",
     "status": "newest",
@@ -524,63 +529,6 @@
     "summary": "Ultima 7 rebuilt",
     "version": "1.2",
     "visiblename": "exult.lha"
-  },
-  {
-    "binnames": [
-      "exult",
-      "exult-studio"
-    ],
-    "categories": [
-      "contrib/games"
-    ],
-    "maintainers": [
-      "mbanck@debian.org"
-    ],
-    "origversion": "1.6-3",
-    "repo": "pardus_21",
-    "srcname": "exult",
-    "status": "outdated",
-    "subrepo": "contrib",
-    "version": "1.6",
-    "visiblename": "exult"
-  },
-  {
-    "binnames": [
-      "exult",
-      "exult-studio"
-    ],
-    "categories": [
-      "contrib/games"
-    ],
-    "maintainers": [
-      "mbanck@debian.org"
-    ],
-    "origversion": "1.10.1-3",
-    "repo": "parrot",
-    "srcname": "exult",
-    "status": "outdated",
-    "subrepo": "parrot/contrib",
-    "version": "1.10.1",
-    "visiblename": "exult"
-  },
-  {
-    "binnames": [
-      "exult",
-      "exult-studio"
-    ],
-    "categories": [
-      "contrib/games"
-    ],
-    "maintainers": [
-      "mbanck@debian.org"
-    ],
-    "origversion": "1.10.1-3",
-    "repo": "parrot",
-    "srcname": "exult",
-    "status": "outdated",
-    "subrepo": "parrot-updates/contrib",
-    "version": "1.10.1",
-    "visiblename": "exult"
   },
   {
     "binname": "exult",
@@ -613,6 +561,79 @@
     "summary": "Open-source Ultima 7 engine",
     "version": "1.6",
     "visiblename": "games/exult"
+  },
+  {
+    "binname": "exult",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "nikkohigashi@gmail.com"
+    ],
+    "origversion": "1.6nb18",
+    "repo": "pkgsrc_current",
+    "srcname": "games/exult",
+    "status": "outdated",
+    "summary": "Open-source Ultima 7 engine",
+    "version": "1.6",
+    "visiblename": "games/exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.8-1",
+    "repo": "raspbian_oldstable",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "1.8",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.10.1-3",
+    "repo": "raspbian_stable",
+    "srcname": "exult",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "1.10.1",
+    "visiblename": "exult"
+  },
+  {
+    "binnames": [
+      "exult",
+      "exult-studio"
+    ],
+    "categories": [
+      "contrib/games"
+    ],
+    "maintainers": [
+      "mbanck@debian.org"
+    ],
+    "origversion": "1.12.1-3",
+    "repo": "raspbian_testing",
+    "srcname": "exult",
+    "status": "newest",
+    "subrepo": "contrib",
+    "version": "1.12.1",
+    "visiblename": "exult"
   },
   {
     "binnames": [

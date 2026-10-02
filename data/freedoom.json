@@ -1,5 +1,73 @@
 [
   {
+    "binname": "freedoom",
+    "licenses": [
+      "BSD-3-Clause-Clear"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "0.13.0-r1",
+    "repo": "alpine_3_21",
+    "srcname": "freedoom",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "an entirely free software game running on a Doom engine.",
+    "version": "0.13.0",
+    "visiblename": "freedoom"
+  },
+  {
+    "binname": "freedoom-doc",
+    "licenses": [
+      "BSD-3-Clause-Clear"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "0.13.0-r1",
+    "repo": "alpine_3_21",
+    "srcname": "freedoom",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "an entirely free software game running on a Doom engine. (documentation)",
+    "version": "0.13.0",
+    "visiblename": "freedoom-doc"
+  },
+  {
+    "binname": "freedoom",
+    "licenses": [
+      "BSD-3-Clause-Clear"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "0.13.0-r1",
+    "repo": "alpine_3_22",
+    "srcname": "freedoom",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "an entirely free software game running on a Doom engine.",
+    "version": "0.13.0",
+    "visiblename": "freedoom"
+  },
+  {
+    "binname": "freedoom-doc",
+    "licenses": [
+      "BSD-3-Clause-Clear"
+    ],
+    "maintainers": [
+      "miyopan@e.email"
+    ],
+    "origversion": "0.13.0-r1",
+    "repo": "alpine_3_22",
+    "srcname": "freedoom",
+    "status": "newest",
+    "subrepo": "community",
+    "summary": "an entirely free software game running on a Doom engine. (documentation)",
+    "version": "0.13.0",
+    "visiblename": "freedoom-doc"
+  },
+  {
     "binnames": [
       "freedm",
       "freedoom"
@@ -26,74 +94,6 @@
     "maintainers": [
       "miyopan@e.email"
     ],
-    "origversion": "0.13.0-r1",
-    "repo": "alpine_3_21",
-    "srcname": "freedoom",
-    "status": "newest",
-    "subrepo": "community",
-    "summary": "an entirely free software game running on a Doom engine.",
-    "version": "0.13.0",
-    "visiblename": "freedoom"
-  },
-  {
-    "binname": "freedoom-doc",
-    "licenses": [
-      "BSD-3-Clause-Clear"
-    ],
-    "maintainers": [
-      "miyopan@e.email"
-    ],
-    "origversion": "0.13.0-r1",
-    "repo": "alpine_3_21",
-    "srcname": "freedoom",
-    "status": "newest",
-    "subrepo": "community",
-    "summary": "an entirely free software game running on a Doom engine. (documentation)",
-    "version": "0.13.0",
-    "visiblename": "freedoom-doc"
-  },
-  {
-    "binname": "freedoom",
-    "licenses": [
-      "BSD-3-Clause-Clear"
-    ],
-    "maintainers": [
-      "miyopan@e.email"
-    ],
-    "origversion": "0.13.0-r1",
-    "repo": "alpine_3_22",
-    "srcname": "freedoom",
-    "status": "newest",
-    "subrepo": "community",
-    "summary": "an entirely free software game running on a Doom engine.",
-    "version": "0.13.0",
-    "visiblename": "freedoom"
-  },
-  {
-    "binname": "freedoom-doc",
-    "licenses": [
-      "BSD-3-Clause-Clear"
-    ],
-    "maintainers": [
-      "miyopan@e.email"
-    ],
-    "origversion": "0.13.0-r1",
-    "repo": "alpine_3_22",
-    "srcname": "freedoom",
-    "status": "newest",
-    "subrepo": "community",
-    "summary": "an entirely free software game running on a Doom engine. (documentation)",
-    "version": "0.13.0",
-    "visiblename": "freedoom-doc"
-  },
-  {
-    "binname": "freedoom",
-    "licenses": [
-      "BSD-3-Clause-Clear"
-    ],
-    "maintainers": [
-      "miyopan@e.email"
-    ],
     "origversion": "0.13.0-r2",
     "repo": "alpine_3_23",
     "srcname": "freedoom",
@@ -187,18 +187,6 @@
     "summary": "an entirely free software game running on a Doom engine. (documentation)",
     "version": "0.13.0",
     "visiblename": "freedoom-doc"
-  },
-  {
-    "licenses": [
-      "3-clause BSD License"
-    ],
-    "origversion": null,
-    "repo": "wikidata",
-    "srcname": "Q4038978",
-    "status": "newest",
-    "summary": "free and open-source first-person shooter",
-    "version": "0.13.0",
-    "visiblename": "Freedoom"
   },
   {
     "binnames": [
@@ -507,6 +495,45 @@
     "licenses": [
       "BSD-3-Clause"
     ],
+    "origversion": "0.13.0-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "freedoom",
+    "status": "newest",
+    "subrepo": "updates",
+    "summary": "Doom styled first person shooter game",
+    "version": "0.13.0",
+    "visiblename": "freedoom"
+  },
+  {
+    "binnames": [
+      "freedoom-freedm"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "BSD-3-Clause"
+    ],
+    "origversion": "0.13.0-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "freedoom-freedm",
+    "status": "newest",
+    "subrepo": "updates",
+    "summary": "Doom styled first person shooter deathmatch game",
+    "version": "0.13.0",
+    "visiblename": "freedoom-freedm"
+  },
+  {
+    "binnames": [
+      "freedoom",
+      "freedoom2"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "BSD-3-Clause"
+    ],
     "origversion": "0.12.1-11.fc39",
     "repo": "fedora_39",
     "srcname": "freedoom",
@@ -533,45 +560,6 @@
     "subrepo": "release",
     "summary": "Doom styled first person shooter deathmatch game",
     "version": "0.12.1",
-    "visiblename": "freedoom-freedm"
-  },
-  {
-    "binnames": [
-      "freedoom",
-      "freedoom2"
-    ],
-    "categories": [
-      "Unspecified"
-    ],
-    "licenses": [
-      "BSD-3-Clause"
-    ],
-    "origversion": "0.13.0-1.fc39",
-    "repo": "fedora_39",
-    "srcname": "freedoom",
-    "status": "newest",
-    "subrepo": "updates",
-    "summary": "Doom styled first person shooter game",
-    "version": "0.13.0",
-    "visiblename": "freedoom"
-  },
-  {
-    "binnames": [
-      "freedoom-freedm"
-    ],
-    "categories": [
-      "Unspecified"
-    ],
-    "licenses": [
-      "BSD-3-Clause"
-    ],
-    "origversion": "0.13.0-1.fc39",
-    "repo": "fedora_39",
-    "srcname": "freedoom-freedm",
-    "status": "newest",
-    "subrepo": "updates",
-    "summary": "Doom styled first person shooter deathmatch game",
-    "version": "0.13.0",
     "visiblename": "freedoom-freedm"
   },
   {
@@ -786,6 +774,25 @@
     "status": "newest",
     "subrepo": "development",
     "summary": "Doom styled first person shooter game",
+    "version": "0.13.0",
+    "visiblename": "freedoom"
+  },
+  {
+    "binnames": [
+      "freedm",
+      "freedoom"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "stevep@mxlinux.org",
+      "fabian@debian.org"
+    ],
+    "origversion": "0.13.0-2~mx23+1",
+    "repo": "mx_23_testing",
+    "srcname": "freedoom",
+    "status": "newest",
     "version": "0.13.0",
     "visiblename": "freedoom"
   },
@@ -841,16 +848,6 @@
     "summary": "A complete free-content single-player focused game based on the Doom engine",
     "version": "0.13.0",
     "visiblename": "games-fps/freedoom"
-  },
-  {
-    "binname": "freedoom",
-    "origversion": null,
-    "repo": "gnuguix",
-    "srcname": "freedoom",
-    "status": "newest",
-    "summary": "Free content game based on the Doom engine",
-    "version": "0.13.0",
-    "visiblename": "freedoom"
   },
   {
     "licenses": [
@@ -996,25 +993,6 @@
     "status": "newest",
     "subrepo": "core/release",
     "summary": "Complete and free DOOM IWAD",
-    "version": "0.13.0",
-    "visiblename": "freedoom"
-  },
-  {
-    "binnames": [
-      "freedm",
-      "freedoom"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "stevep@mxlinux.org",
-      "fabian@debian.org"
-    ],
-    "origversion": "0.13.0-2~mx23+1",
-    "repo": "mx_23_testing",
-    "srcname": "freedoom",
-    "status": "newest",
     "version": "0.13.0",
     "visiblename": "freedoom"
   },
@@ -1283,20 +1261,6 @@
     "visiblename": "freedoom"
   },
   {
-    "binname": "freedm",
-    "licenses": [
-      "BSD"
-    ],
-    "origversion": "0.12.1-1",
-    "repo": "parabola",
-    "srcname": "freedoom",
-    "status": "outdated",
-    "subrepo": "pcr",
-    "summary": "Free game based on the Doom engine",
-    "version": "0.12.1",
-    "visiblename": "freedm"
-  },
-  {
     "binnames": [
       "freedm",
       "freedoom"
@@ -1332,7 +1296,7 @@
     "repo": "parrot",
     "srcname": "freedoom",
     "status": "newest",
-    "subrepo": "parrot-updates/main",
+    "subrepo": "parrot/main",
     "version": "0.13.0",
     "visiblename": "freedoom"
   },
@@ -1352,7 +1316,7 @@
     "repo": "parrot",
     "srcname": "freedoom",
     "status": "newest",
-    "subrepo": "parrot/main",
+    "subrepo": "parrot-updates/main",
     "version": "0.13.0",
     "visiblename": "freedoom"
   },
@@ -1859,5 +1823,41 @@
     "subrepo": "stonking/universe",
     "version": "0.13.0",
     "visiblename": "freedoom"
+  },
+  {
+    "licenses": [
+      "3-clause BSD License"
+    ],
+    "origversion": null,
+    "repo": "wikidata",
+    "srcname": "Q4038978",
+    "status": "newest",
+    "summary": "free and open-source first-person shooter",
+    "version": "0.13.0",
+    "visiblename": "Freedoom"
+  },
+  {
+    "binname": "freedoom",
+    "origversion": null,
+    "repo": "gnuguix",
+    "srcname": "freedoom",
+    "status": "newest",
+    "summary": "Free content game based on the Doom engine",
+    "version": "0.13.0",
+    "visiblename": "freedoom"
+  },
+  {
+    "binname": "freedm",
+    "licenses": [
+      "BSD"
+    ],
+    "origversion": "0.12.1-1",
+    "repo": "parabola",
+    "srcname": "freedoom",
+    "status": "outdated",
+    "subrepo": "pcr",
+    "summary": "Free game based on the Doom engine",
+    "version": "0.12.1",
+    "visiblename": "freedm"
   }
 ]

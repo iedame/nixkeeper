@@ -1,19 +1,18 @@
 [
   {
-    "binname": "tome4",
-    "categories": [
-      "games"
+    "licenses": [
+      "GPL-3.0"
     ],
     "maintainers": [
-      "ports@openbsd.org"
+      "peter@hoeg.com"
     ],
-    "origversion": "1.7.6p0",
-    "repo": "openbsd",
-    "srcname": "games/tome4",
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "tome4",
     "status": "newest",
-    "summary": "graphical sdl rogue-like game",
+    "summary": "Tales of Maj'eyal (rogue-like game)",
     "version": "1.7.6",
-    "visiblename": "games/tome4"
+    "visiblename": "tome4"
   },
   {
     "binname": "tome4",
@@ -326,21 +325,6 @@
       "peter@hoeg.com"
     ],
     "origversion": null,
-    "repo": "nix_stable_25_11",
-    "srcname": "tome4",
-    "status": "newest",
-    "summary": "Tales of Maj'eyal (rogue-like game)",
-    "version": "1.7.6",
-    "visiblename": "tome4"
-  },
-  {
-    "licenses": [
-      "GPL-3.0"
-    ],
-    "maintainers": [
-      "peter@hoeg.com"
-    ],
-    "origversion": null,
     "repo": "nix_stable_26_05",
     "srcname": "tome4",
     "status": "newest",
@@ -362,6 +346,22 @@
     "summary": "Tales of Maj'eyal (rogue-like game)",
     "version": "1.7.6",
     "visiblename": "tome4"
+  },
+  {
+    "binname": "tome4",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "ports@openbsd.org"
+    ],
+    "origversion": "1.7.6p0",
+    "repo": "openbsd",
+    "srcname": "games/tome4",
+    "status": "newest",
+    "summary": "graphical sdl rogue-like game",
+    "version": "1.7.6",
+    "visiblename": "games/tome4"
   },
   {
     "binname": "tome4",
@@ -407,7 +407,7 @@
     "licenses": [
       "GPL-3.0-only AND SUSE-Freeware"
     ],
-    "origversion": "1.7.6-2.7",
+    "origversion": "1.7.6-2.8",
     "repo": "opensuse_games_tumbleweed",
     "srcname": "tome4",
     "status": "newest",

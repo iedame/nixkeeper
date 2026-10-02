@@ -1,15 +1,34 @@
 [
   {
-    "binname": "supertux",
-    "licenses": [
-      "GPL-3.0-only"
+    "categories": [
+      "games"
     ],
-    "origversion": "0.7.0-1",
-    "repo": "archpower_powerpc64le",
-    "srcname": "supertux",
+    "origversion": "0.7.0 (2026-03-14)",
+    "repo": "libregamewiki",
+    "srcname": "SuperTux",
     "status": "newest",
-    "summary": "A classic 2D jump'n'run sidescroller game in a style similar to the original SuperMario games",
     "version": "0.7.0",
+    "visiblename": "SuperTux"
+  },
+  {
+    "binnames": [
+      "supertux",
+      "supertux-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "fenio@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "0.6.2-1",
+    "repo": "pardus_21",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.6.2",
     "visiblename": "supertux"
   },
   {
@@ -71,27 +90,6 @@
     "summary": "Platform game featuring Tux the Penugin (documentation)",
     "version": "0.6.3",
     "visiblename": "supertux-doc"
-  },
-  {
-    "binnames": [
-      "supertux",
-      "supertux-data"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "fenio@debian.org",
-      "vcheng@debian.org"
-    ],
-    "origversion": "0.6.3-5",
-    "repo": "kali_rolling",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "0.6.3",
-    "visiblename": "supertux"
   },
   {
     "binname": "supertux",
@@ -908,17 +906,6 @@
     "visiblename": "supertux"
   },
   {
-    "categories": [
-      "games"
-    ],
-    "origversion": "0.7.0 (2026-03-14)",
-    "repo": "libregamewiki",
-    "srcname": "SuperTux",
-    "status": "newest",
-    "version": "0.7.0",
-    "visiblename": "SuperTux"
-  },
-  {
     "binnames": [
       "supertux",
       "supertux-debuginfo",
@@ -1118,17 +1105,25 @@
     "visiblename": "games-arcade/supertux"
   },
   {
-    "binname": "supertux",
-    "licenses": [
-      "GPL"
+    "binnames": [
+      "supertux",
+      "supertux-data"
     ],
-    "origversion": null,
-    "repo": "reactos",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "fenio@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "0.6.3-5",
+    "repo": "kali_rolling",
     "srcname": "supertux",
     "status": "outdated",
-    "summary": "A free, open-source two-dimensional platform game.",
-    "version": "0.5.1",
-    "visiblename": "SuperTux"
+    "subrepo": "main",
+    "version": "0.6.3",
+    "visiblename": "supertux"
   },
   {
     "categories": [
@@ -1597,6 +1592,19 @@
     "visiblename": "supertux2"
   },
   {
+    "binname": "supertux",
+    "licenses": [
+      "GPL"
+    ],
+    "origversion": null,
+    "repo": "reactos",
+    "srcname": "supertux",
+    "status": "outdated",
+    "summary": "A free, open-source two-dimensional platform game.",
+    "version": "0.5.1",
+    "visiblename": "SuperTux"
+  },
+  {
     "categories": [
       "Amusements/Games/Action/Arcade"
     ],
@@ -1654,6 +1662,26 @@
     "visiblename": "supertux2"
   },
   {
+    "binnames": [
+      "supertux2",
+      "supertux2-debuginfo",
+      "supertux2-debugsource"
+    ],
+    "categories": [
+      "Amusements/Games/Action/Arcade"
+    ],
+    "licenses": [
+      "CC-BY-SA-3.0 AND GPL-3.0-or-later AND GPL-2.0-or-later AND GPL-1.0-only"
+    ],
+    "origversion": "0.7.0-48.36",
+    "repo": "opensuse_games_tumbleweed",
+    "srcname": "supertux2",
+    "status": "newest",
+    "summary": "Jump'n run game",
+    "version": "0.7.0",
+    "visiblename": "supertux2"
+  },
+  {
     "binname": "supertux",
     "licenses": [
       "GPL-3.0-only"
@@ -1680,32 +1708,11 @@
       "fenio@debian.org",
       "vcheng@debian.org"
     ],
-    "origversion": "0.6.2-1",
-    "repo": "pardus_21",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "0.6.2",
-    "visiblename": "supertux"
-  },
-  {
-    "binnames": [
-      "supertux",
-      "supertux-data"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "fenio@debian.org",
-      "vcheng@debian.org"
-    ],
     "origversion": "0.6.3-3",
     "repo": "parrot",
     "srcname": "supertux",
     "status": "outdated",
-    "subrepo": "parrot/main",
+    "subrepo": "parrot-updates/main",
     "version": "0.6.3",
     "visiblename": "supertux"
   },
@@ -1726,7 +1733,7 @@
     "repo": "parrot",
     "srcname": "supertux",
     "status": "outdated",
-    "subrepo": "parrot-updates/main",
+    "subrepo": "parrot/main",
     "version": "0.6.3",
     "visiblename": "supertux"
   },
@@ -1876,48 +1883,6 @@
     ],
     "origversion": "0.6.3-2",
     "repo": "raspbian_oldstable",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "0.6.3",
-    "visiblename": "supertux"
-  },
-  {
-    "binnames": [
-      "supertux",
-      "supertux-data"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "fenio@debian.org",
-      "vcheng@debian.org"
-    ],
-    "origversion": "0.6.3-3",
-    "repo": "raspbian_stable",
-    "srcname": "supertux",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "0.6.3",
-    "visiblename": "supertux"
-  },
-  {
-    "binnames": [
-      "supertux",
-      "supertux-data"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "fenio@debian.org",
-      "vcheng@debian.org"
-    ],
-    "origversion": "0.6.3-5",
-    "repo": "raspbian_testing",
     "srcname": "supertux",
     "status": "outdated",
     "subrepo": "main",
@@ -2376,5 +2341,60 @@
     "summary": "free and open-source two-dimensional platform game published under the GNU General Public License",
     "version": "0.7.0",
     "visiblename": "Q911827"
+  },
+  {
+    "binname": "supertux",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "0.7.0-1",
+    "repo": "archpower_powerpc64le",
+    "srcname": "supertux",
+    "status": "newest",
+    "summary": "A classic 2D jump'n'run sidescroller game in a style similar to the original SuperMario games",
+    "version": "0.7.0",
+    "visiblename": "supertux"
+  },
+  {
+    "binnames": [
+      "supertux",
+      "supertux-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "fenio@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "0.6.3-3",
+    "repo": "raspbian_stable",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.6.3",
+    "visiblename": "supertux"
+  },
+  {
+    "binnames": [
+      "supertux",
+      "supertux-data"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "fenio@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "0.6.3-5",
+    "repo": "raspbian_testing",
+    "srcname": "supertux",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.6.3",
+    "visiblename": "supertux"
   }
 ]

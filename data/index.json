@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-02T00:35:03.347173+00:00",
+  "checkedAt": "2026-10-02T11:57:39.088379+00:00",
   "packages": [
     {
       "attrs": [
@@ -13,17 +13,18 @@
         "extra"
       ],
       "name": "_1password-gui",
-      "nixStatus": "newest",
+      "nixStatus": "outdated",
       "nixVersion": "8.12.36",
       "nixVulnerable": false,
       "openIssues": 0,
       "openPRs": 1,
+      "outdatedSince": "2026-10-02T11:57:39.088379+00:00",
       "platforms": {
         "darwin": true,
         "linux": true
       },
       "project": "1password",
-      "refVersion": "8.12.36",
+      "refVersion": "8.12.38",
       "repoCount": 29,
       "searchTerm": "_1password-gui",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/_1/_1password-gui/package.nix#L29",
@@ -86,7 +87,7 @@
       },
       "project": "asc",
       "refVersion": "2.6.1.0",
-      "repoCount": 60,
+      "repoCount": 61,
       "searchTerm": "asc",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/as/asc/package.nix#L71",
       "update": null,
@@ -193,7 +194,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T00:35:03.347173+00:00",
+        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
@@ -360,7 +361,7 @@
       },
       "project": "egoboo",
       "refVersion": "2.8.1",
-      "repoCount": 33,
+      "repoCount": 34,
       "searchTerm": "egoboo",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/eg/egoboo/package.nix#L88",
       "update": {
@@ -426,7 +427,7 @@
       "platforms": null,
       "project": "exult",
       "refVersion": "1.12.1",
-      "repoCount": 50,
+      "repoCount": 51,
       "searchTerm": "exult",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/ex/exult/package.nix#L59",
       "update": {
@@ -603,7 +604,7 @@
       },
       "project": "fheroes2",
       "refVersion": "1.1.17",
-      "repoCount": 62,
+      "repoCount": 63,
       "searchTerm": "fheroes2",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/fh/fheroes2/package.nix#L82",
       "update": {
@@ -712,7 +713,7 @@
       },
       "project": "freeciv",
       "refVersion": "3.2.6",
-      "repoCount": 258,
+      "repoCount": 259,
       "searchTerm": "freeciv",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/fr/freeciv/package.nix#L123",
       "update": {
@@ -775,7 +776,7 @@
       },
       "project": "freedink",
       "refVersion": "109.6",
-      "repoCount": 67,
+      "repoCount": 68,
       "searchTerm": "freedink",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/fr/freedink/package.nix#L114",
       "update": null,
@@ -933,7 +934,7 @@
         "to": "154.0.8037.97",
         "url": "https://github.com/NixOS/nixpkgs/pull/569374"
       },
-      "openPRs": 2,
+      "openPRs": 3,
       "outdatedSince": "2026-09-29T21:11:12.205560+00:00",
       "platforms": {
         "darwin": true,
@@ -956,7 +957,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T05:47:36.630221+00:00",
+        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -1207,7 +1208,7 @@
       "platforms": null,
       "project": "lincity",
       "refVersion": "1.12.1",
-      "repoCount": 51,
+      "repoCount": 52,
       "searchTerm": "lincity",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/li/lincity/package.nix#L83",
       "update": null,
@@ -1254,7 +1255,7 @@
       },
       "project": "lincity-ng",
       "refVersion": "2.15.0",
-      "repoCount": 88,
+      "repoCount": 89,
       "searchTerm": "lincity-ng",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/li/lincity-ng/package.nix#L77",
       "update": {
@@ -1362,7 +1363,7 @@
       },
       "project": "lugaru",
       "refVersion": "1.2",
-      "repoCount": 76,
+      "repoCount": 77,
       "searchTerm": "lugaru",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/lu/lugaru/package.nix#L66",
       "update": null,
@@ -1426,7 +1427,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T05:47:36.630221+00:00",
+        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
@@ -1445,11 +1446,12 @@
         "maintained"
       ],
       "name": "msedgedriver",
-      "nixStatus": "unique",
+      "nixStatus": "outdated",
       "nixVersion": "154.0.4258.37",
       "nixVulnerable": false,
       "openIssues": 0,
       "openPRs": 0,
+      "outdatedSince": "2026-10-02T11:57:39.088379+00:00",
       "platforms": {
         "darwin": true,
         "linux": true
@@ -1511,7 +1513,7 @@
       },
       "project": "nethack",
       "refVersion": "5.0.0",
-      "repoCount": 163,
+      "repoCount": 164,
       "searchTerm": "nethack",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/ne/nethack/package.nix#L275",
       "update": {
@@ -1578,7 +1580,7 @@
       },
       "project": "openmw",
       "refVersion": "0.51.0",
-      "repoCount": 91,
+      "repoCount": 92,
       "searchTerm": "openmw",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/op/openmw/package.nix#L147",
       "update": {
@@ -1640,7 +1642,7 @@
       },
       "project": "opensurge",
       "refVersion": "0.6.1.3",
-      "repoCount": 45,
+      "repoCount": 46,
       "searchTerm": "opensurge",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/op/opensurge/package.nix#L56",
       "update": {
@@ -1694,7 +1696,7 @@
       },
       "project": "openttd",
       "refVersion": "15.3",
-      "repoCount": 200,
+      "repoCount": 201,
       "searchTerm": "openttd",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/op/openttd/package.nix#L138",
       "update": {
@@ -1811,7 +1813,7 @@
       },
       "project": "pacvim",
       "refVersion": "1.1.1",
-      "repoCount": 37,
+      "repoCount": 38,
       "searchTerm": "pacvim",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/pa/pacvim/package.nix#L33",
       "update": null,
@@ -1918,9 +1920,9 @@
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/ru/runelite/package.nix#L80",
       "update": {
         "attr": "runelite",
-        "date": "2026-09-22",
+        "date": "2026-10-02",
         "from": "0",
-        "log": "https://nixpkgs-update-logs.nixos.org/runelite/2026-09-22.log",
+        "log": "https://nixpkgs-update-logs.nixos.org/runelite/2026-10-02.log",
         "outcome": "noChange",
         "to": "1",
         "was": "runelite-2.8.0"
@@ -2030,7 +2032,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-10-02T00:35:03.347173+00:00",
+        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "label": "stepmania/stepmania 5_1-new branch",
         "newer": true,
@@ -2083,7 +2085,7 @@
       },
       "project": "supertux2",
       "refVersion": "0.7.0",
-      "repoCount": 132,
+      "repoCount": 133,
       "searchTerm": "supertux",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/su/supertux/package.nix#L68",
       "update": {
@@ -2150,7 +2152,7 @@
       },
       "project": "edgar",
       "refVersion": "1.38",
-      "repoCount": 89,
+      "repoCount": 90,
       "searchTerm": "the-legend-of-edgar",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/th/the-legend-of-edgar/package.nix#L80",
       "update": {
@@ -2440,7 +2442,7 @@
       },
       "project": "wesnoth",
       "refVersion": "1.18.8",
-      "repoCount": 173,
+      "repoCount": 178,
       "searchTerm": "wesnoth",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/we/wesnoth/package.nix#L170",
       "update": {
@@ -2512,28 +2514,21 @@
       },
       "project": "wesnoth",
       "refVersion": "1.19.28",
-      "repoCount": 173,
+      "repoCount": 178,
       "searchTerm": "wesnoth-devel",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/we/wesnoth/package.nix#L170",
       "update": {
         "attr": "wesnoth-devel",
-        "date": "2026-09-22",
-        "excerpt": [
-          "  installed.",
-          "",
-          "-- Configuring incomplete, errors occurred!"
-        ],
+        "date": "2026-10-02",
         "from": "0",
-        "log": "https://nixpkgs-update-logs.nixos.org/wesnoth-devel/2026-09-22.log",
-        "outcome": "superseded",
-        "supersededOn": "master",
-        "supersededOutcome": "failed",
+        "log": "https://nixpkgs-update-logs.nixos.org/wesnoth-devel/2026-10-02.log",
+        "outcome": "noChange",
         "to": "1",
-        "was": "wesnoth-devel-1.19.24"
+        "was": "wesnoth-devel-1.19.28"
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T00:35:03.347173+00:00",
+        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
         "label": "wesnoth/wesnoth tags",
         "newer": true,
         "repo": "wesnoth/wesnoth",
@@ -2651,8 +2646,8 @@
         "linux": true
       },
       "project": "xskat",
-      "refVersion": "4.0",
-      "repoCount": 71,
+      "refVersion": "4.0.0",
+      "repoCount": 72,
       "searchTerm": "xskat",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/xs/xskat/package.nix#L39",
       "update": {
