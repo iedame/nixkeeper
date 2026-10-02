@@ -70,6 +70,7 @@ in
       notify
       githubRepo
       pageUrl
+      contact
       ;
 
     dataDir = mkOption {

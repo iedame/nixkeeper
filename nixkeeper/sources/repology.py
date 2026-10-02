@@ -40,7 +40,7 @@ def get(path):
             time.sleep(delay)
         for base in _domains():
             req = urllib.request.Request(
-                base + path, headers={"User-Agent": config.USER_AGENT}
+                base + path, headers={"User-Agent": config.user_agent()}
             )
             try:
                 with urllib.request.urlopen(req, timeout=20) as resp:

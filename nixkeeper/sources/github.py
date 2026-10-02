@@ -49,7 +49,7 @@ def graphql(token, query, variables):
         "https://api.github.com/graphql",
         data=json.dumps({"query": query, "variables": variables}).encode(),
         headers={
-            "User-Agent": config.USER_AGENT,
+            "User-Agent": config.user_agent(),
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",
         },
@@ -335,7 +335,7 @@ def api(method, path, token, body=None):
         method=method,
         data=json.dumps(body).encode() if body is not None else None,
         headers={
-            "User-Agent": config.USER_AGENT,
+            "User-Agent": config.user_agent(),
             "Accept": "application/vnd.github+json",
             "Authorization": f"Bearer {token}",
             "Content-Type": "application/json",

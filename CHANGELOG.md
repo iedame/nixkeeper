@@ -11,6 +11,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- nixkeeper introduces itself properly to the sources it reads: its
+  User-Agent is now `nixkeeper/<version> (+https://github.com/iedame/nixkeeper)`
+  (it was a fixed `nixkeeper/1.0 (personal package tracker)`), plus the
+  repository running it on GitHub Actions. Self-hosters can add how they can
+  be reached with `NIXKEEPER_CONTACT` (`contact` in the modules).
+
 - When master is partway there (an update merged, waiting for the channel,
   and a newer release already out, as with Chrome's quick security
   releases), the page shows master's version on a line of its own with its

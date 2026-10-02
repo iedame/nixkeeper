@@ -31,7 +31,8 @@ The flake's darwin module runs the same jobs as launchd agents of your user
 It takes the same `lists` (including `lists.community`, for the
 [community rules](community.md)), `listsPath`, `githubTokenFile` (a file only you
 can read; without one, a `gh` login is used for reading, as the command
-does), `notify`, `githubRepo` and `pageUrl` as the NixOS module, and:
+does), `notify`, `githubRepo`, `pageUrl` and `contact` as the NixOS module,
+and:
 
 | Option | Default | What it sets |
 |---|---|---|

@@ -132,6 +132,18 @@ rec {
       description = "The repository for the status issue (notify = github-issue).";
     };
 
+    contact = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      example = "you@example.org";
+      description = ''
+        How the people running this nixkeeper can be reached (an email or a
+        URL), sent in the User-Agent to the sources it reads (Repology,
+        Hydra, GitHub, ...), so their operators can get in touch. Without it,
+        the User-Agent names only nixkeeper and its version.
+      '';
+    };
+
     pageUrl = mkOption {
       type = types.nullOr types.str;
       default = null;
@@ -181,5 +193,6 @@ rec {
     }
     // lib.optionalAttrs (cfg.githubTokenFile != null) { NIXKEEPER_GITHUB_TOKEN_FILE = token; }
     // lib.optionalAttrs (cfg.githubRepo != null) { NIXKEEPER_GITHUB_REPO = cfg.githubRepo; }
-    // lib.optionalAttrs (cfg.pageUrl != null) { NIXKEEPER_PAGE_URL = cfg.pageUrl; };
+    // lib.optionalAttrs (cfg.pageUrl != null) { NIXKEEPER_PAGE_URL = cfg.pageUrl; }
+    // lib.optionalAttrs (cfg.contact != null) { NIXKEEPER_CONTACT = cfg.contact; };
 }

@@ -44,7 +44,15 @@ choose others; a flag wins over its variable:
 | `--notify` | `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issue up to date (the workflows set it) |
 | | `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issue lives |
 | | `NIXKEEPER_PAGE_URL` | the GitHub Pages site | the page link in notifications |
+| | `NIXKEEPER_CONTACT` | – | how you can be reached (an email or a URL), added to the User-Agent nixkeeper sends to the sources; see below |
 | | `REPOLOGY_BASE_URL` | – | one Repology address to use (normally `repology.org`, falling back to its mirror `repology.amdmi3.ru`) |
+
+nixkeeper introduces itself to every source it reads with a User-Agent
+like `nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper)`: the
+software, its version and where it lives, so the people running Repology,
+Hydra and the others know what's asking. On GitHub Actions it adds the
+repository running it (`; you/nixkeeper`), which is public anyway. On your
+own machine it adds nothing more, unless you set `NIXKEEPER_CONTACT`.
 
 The status issue is only posted with a token given explicitly (the token file
 or `GITHUB_TOKEN`), never with the local `gh` login. Reading from GitHub (PR

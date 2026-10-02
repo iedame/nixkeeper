@@ -240,3 +240,46 @@ class Notify(unittest.TestCase):
             self.assertIsNone(notify.page_url())
         with mock.patch.dict(os.environ, {"NIXKEEPER_PAGE_URL": "https://x/"}):
             self.assertEqual(notify.page_url("o/r"), "https://x/")
+
+
+class UserAgent(unittest.TestCase):
+    """How nixkeeper introduces itself to the sources (config.user_agent)."""
+
+    def agent(self, env):
+        with (
+            mock.patch.dict(os.environ, env, clear=True),
+            mock.patch("nixkeeper.version", return_value="0.9.0"),
+        ):
+            return config.user_agent()
+
+    def test_the_software_and_its_version(self):
+        self.assertEqual(
+            self.agent({}), "nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper)"
+        )
+
+    def test_the_repository_running_it_on_github_actions(self):
+        env = {"GITHUB_ACTIONS": "true", "GITHUB_REPOSITORY": "someone/nixkeeper"}
+        self.assertEqual(
+            self.agent(env),
+            "nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper; someone/nixkeeper)",
+        )
+        # Not repeated for nixkeeper's own repository, nor outside Actions.
+        env["GITHUB_REPOSITORY"] = "iedame/nixkeeper"
+        self.assertNotIn("; ", self.agent(env))
+        self.assertNotIn("someone", self.agent({"GITHUB_REPOSITORY": "someone/x"}))
+
+    def test_a_contact_when_chosen(self):
+        self.assertEqual(
+            self.agent({"NIXKEEPER_CONTACT": "me@example.org"}),
+            "nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper; me@example.org)",
+        )
+
+    def test_a_contact_cant_break_the_header(self):
+        agent = self.agent(
+            {"NIXKEEPER_CONTACT": "me\r\nX-Evil: 1 (a); b) " + "x" * 300}
+        )
+        self.assertNotIn("\n", agent)
+        self.assertNotIn("\r", agent)
+        self.assertEqual(agent.count("("), 1)
+        self.assertEqual(agent.count(")"), 1)
+        self.assertLessEqual(len(agent), 60 + config.CONTACT_MAX)

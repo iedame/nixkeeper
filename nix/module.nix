@@ -108,6 +108,7 @@ in
       notify
       githubRepo
       pageUrl
+      contact
       ;
 
     nginx.virtualHost = mkOption {
