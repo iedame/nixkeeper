@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-02T11:57:39.088379+00:00",
+  "checkedAt": "2026-10-02T16:26:07.366147+00:00",
   "packages": [
     {
       "attrs": [
@@ -40,6 +40,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/_1password-gui/2026-09-23.log",
         "outcome": "superseded",
+        "parser": 1,
         "supersededOn": "nixos-unstable",
         "supersededOutcome": "failed",
         "to": "1",
@@ -150,6 +151,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/backrest/2026-09-30.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "backrest-1.14.1"
       },
@@ -188,13 +190,15 @@
         "from": "15.5.5",
         "log": "https://nixpkgs-update-logs.nixos.org/bbedit/2026-08-31.log",
         "outcome": "prExists",
+        "parser": 1,
         "pr": 558133,
         "to": "16.0.3",
         "was": "15.5.5"
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
+        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "community": true,
         "label": "www.barebones.com",
         "newer": false,
         "url": "https://www.barebones.com/support/bbedit/updates.html",
@@ -251,6 +255,7 @@
         "from": "0.22.0",
         "log": "https://nixpkgs-update-logs.nixos.org/bolt-launcher/2026-09-08.log",
         "outcome": "prExists",
+        "parser": 1,
         "pr": 559959,
         "to": "0.23.2",
         "was": "0.22.0"
@@ -306,6 +311,7 @@
         "from": "1.0.1",
         "log": "https://nixpkgs-update-logs.nixos.org/d-seams/2026-09-15.log",
         "outcome": "prExists",
+        "parser": 1,
         "pr": 562937,
         "to": "2.10.0",
         "was": "1.0.1"
@@ -375,6 +381,7 @@
         "from": "2.7.3",
         "log": "https://nixpkgs-update-logs.nixos.org/egoboo/2026-09-15.log",
         "outcome": "superseded",
+        "parser": 1,
         "supersededOn": "nixos-unstable",
         "supersededOutcome": "failed",
         "to": "2.8.1",
@@ -436,6 +443,7 @@
         "from": "1.12.0",
         "log": "https://nixpkgs-update-logs.nixos.org/exult/2026-02-04.log",
         "outcome": "other",
+        "parser": 1,
         "to": "1.12.1",
         "was": "1.12.0"
       },
@@ -474,6 +482,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/fallout-ce/2026-09-30.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "fallout-ce-1.1.0"
       },
@@ -512,6 +521,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/fallout2-ce/2026-09-27.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "fallout2-ce-1.3.0"
       },
@@ -550,6 +560,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/fastmail-desktop/2026-09-25.log",
         "outcome": "prOpened",
+        "parser": 1,
         "pr": 567005,
         "to": "1",
         "was": "fastmail-desktop-1.7.0"
@@ -613,6 +624,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/fheroes2/2026-09-25.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "fheroes2-1.1.17"
       },
@@ -667,6 +679,7 @@
         "from": "3.70.6",
         "log": "https://nixpkgs-update-logs.nixos.org/filezilla/2026-09-19.log",
         "outcome": "prExists",
+        "parser": 1,
         "pr": 559927,
         "to": "3.71.1",
         "was": "3.70.6"
@@ -722,6 +735,7 @@
         "from": "3.2.5",
         "log": "https://nixpkgs-update-logs.nixos.org/freeciv/2026-09-15.log",
         "outcome": "other",
+        "parser": 1,
         "to": "3.2.6",
         "was": "3.2.5"
       },
@@ -839,6 +853,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/freedoom/2026-09-24.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "freedoom-0.13.0"
       },
@@ -895,6 +910,7 @@
         "from": "1.3.0",
         "log": "https://nixpkgs-update-logs.nixos.org/fzssh/2026-09-21.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1.4.0",
         "was": "1.3.0"
       },
@@ -952,12 +968,14 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/google-chrome/2026-09-30.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "google-chrome-154.0.8037.92"
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
+        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "community": true,
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
@@ -1030,6 +1048,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/heroic-unwrapped/2026-09-26.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "heroic-unwrapped-2.22.3"
       },
@@ -1092,6 +1111,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/hitori/2026-09-30.log",
         "outcome": "other",
+        "parser": 1,
         "to": "1"
       },
       "updateFailure": false
@@ -1157,6 +1177,7 @@
         "from": "0.56.1",
         "log": "https://nixpkgs-update-logs.nixos.org/libfilezilla/2026-08-30.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "0.57.0",
         "was": "0.56.1"
       },
@@ -1264,6 +1285,7 @@
         "from": "2.14.2",
         "log": "https://nixpkgs-update-logs.nixos.org/lincity-ng/2026-08-05.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "2.15.0",
         "was": "2.14.2"
       },
@@ -1318,6 +1340,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/linkding/2026-09-25.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "linkding-1.47.0"
       },
@@ -1421,13 +1444,15 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/microsoft-edge/2026-09-25.log",
         "outcome": "prExists",
+        "parser": 1,
         "pr": 566773,
         "to": "1",
         "was": "microsoft-edge-153.0.4234.48"
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
+        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "community": true,
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
@@ -1445,11 +1470,29 @@
       "lists": [
         "maintained"
       ],
+      "masterPR": {
+        "base": "master",
+        "draft": false,
+        "from": "154.0.4258.37",
+        "number": 568437,
+        "title": "microsoft-edge: 154.0.4258.37 -> 154.0.4258.48",
+        "to": "154.0.4258.48",
+        "url": "https://github.com/NixOS/nixpkgs/pull/568437"
+      },
       "name": "msedgedriver",
       "nixStatus": "outdated",
       "nixVersion": "154.0.4258.37",
       "nixVulnerable": false,
       "openIssues": 0,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "154.0.4258.48",
+        "number": 569248,
+        "title": "microsoft-edge: 154.0.4258.48 -> 154.0.4258.53",
+        "to": "154.0.4258.53",
+        "url": "https://github.com/NixOS/nixpkgs/pull/569248"
+      },
       "openPRs": 0,
       "outdatedSince": "2026-10-02T11:57:39.088379+00:00",
       "platforms": {
@@ -1457,13 +1500,20 @@
         "linux": true
       },
       "project": "msedgedriver",
-      "refVersion": null,
+      "refVersion": "154.0.4258.53",
       "repoCount": 4,
       "searchTerm": "msedgedriver",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/ms/msedgedriver/package.nix#L60",
       "unfree": true,
       "update": null,
-      "updateFailure": false
+      "updateFailure": false,
+      "upstream": {
+        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "community": true,
+        "follows": "microsoft-edge",
+        "newer": true,
+        "version": "154.0.4258.53"
+      }
     },
     {
       "attrs": [
@@ -1522,6 +1572,7 @@
         "from": "3.6.7",
         "log": "https://nixpkgs-update-logs.nixos.org/nethack/2026-06-06.log",
         "outcome": "prExists",
+        "parser": 1,
         "pr": 516017,
         "to": "5.0.0",
         "was": "3.6.7"
@@ -1589,6 +1640,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/openmw/2026-09-25.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "openmw-0.51.0"
       },
@@ -1651,6 +1703,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/opensurge/2026-09-22.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "opensurge-0.6.1.3"
       },
@@ -1709,6 +1762,7 @@
         "from": "15.2",
         "log": "https://nixpkgs-update-logs.nixos.org/openttd/2026-04-05.log",
         "outcome": "superseded",
+        "parser": 1,
         "supersededOn": "nixos-unstable",
         "supersededOutcome": "cantUpdate",
         "to": "15.3",
@@ -1760,6 +1814,7 @@
         "from": "2.1.20221123",
         "log": "https://nixpkgs-update-logs.nixos.org/opentyrian/2026-09-23.log",
         "outcome": "cantUpdate",
+        "parser": 1,
         "to": "2.1.20260913",
         "was": "2.1.20221123"
       },
@@ -1924,6 +1979,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/runelite/2026-10-02.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "runelite-2.8.0"
       },
@@ -2032,8 +2088,9 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
+        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
+        "community": true,
         "label": "stepmania/stepmania 5_1-new branch",
         "newer": true,
         "outdatedAfter": {
@@ -2099,6 +2156,7 @@
         "from": "0.6.3",
         "log": "https://nixpkgs-update-logs.nixos.org/supertux/2026-03-15.log",
         "outcome": "superseded",
+        "parser": 1,
         "supersededOn": "nixos-unstable",
         "supersededOutcome": "failed",
         "to": "0.7.0",
@@ -2165,6 +2223,7 @@
         "from": "1.37",
         "log": "https://nixpkgs-update-logs.nixos.org/the-legend-of-edgar/2026-09-26.log",
         "outcome": "cantUpdate",
+        "parser": 1,
         "to": "1.38",
         "was": "1.37"
       },
@@ -2211,6 +2270,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/tome4/2026-09-23.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "tome4-1.7.6"
       },
@@ -2338,6 +2398,7 @@
         "from": "4.22.1",
         "log": "https://nixpkgs-update-logs.nixos.org/unciv/2026-09-30.log",
         "outcome": "prOpened",
+        "parser": 1,
         "pr": 568694,
         "to": "4.22.5",
         "was": "4.22.1"
@@ -2387,6 +2448,7 @@
         "from": "2.4.3",
         "log": "https://nixpkgs-update-logs.nixos.org/vvvvvv/2026-09-23.log",
         "outcome": "prExists",
+        "parser": 1,
         "pr": 493465,
         "to": "2.4.4",
         "was": "2.4.3"
@@ -2416,7 +2478,7 @@
         },
         {
           "attr": "wesnoth",
-          "build": 347295535,
+          "build": 347792837,
           "name": "wesnoth-1.18.8",
           "status": "ok",
           "system": "aarch64-darwin",
@@ -2451,6 +2513,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/wesnoth/2026-09-25.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "wesnoth-1.18.8"
       },
@@ -2479,11 +2542,11 @@
         },
         {
           "attr": "wesnoth-devel",
-          "build": 347295537,
-          "name": "wesnoth-devel-1.19.24",
+          "build": 347792838,
+          "name": "wesnoth-devel-1.19.28",
           "status": "ok",
           "system": "aarch64-darwin",
-          "version": "1.19.24"
+          "version": "1.19.28"
         }
       ],
       "dataFile": "wesnoth.json",
@@ -2523,12 +2586,14 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/wesnoth-devel/2026-10-02.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "wesnoth-devel-1.19.28"
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T11:57:39.088379+00:00",
+        "checkedAt": "2026-10-02T16:26:07.366147+00:00",
+        "community": true,
         "label": "wesnoth/wesnoth tags",
         "newer": true,
         "repo": "wesnoth/wesnoth",
@@ -2594,6 +2659,7 @@
         "from": "0",
         "log": "https://nixpkgs-update-logs.nixos.org/xournalpp/2026-09-22.log",
         "outcome": "noChange",
+        "parser": 1,
         "to": "1",
         "was": "xournalpp-1.3.7"
       },
@@ -2652,6 +2718,7 @@
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/xs/xskat/package.nix#L39",
       "update": {
         "attr": "xskat",
+        "community": true,
         "date": "2026-02-10",
         "excerpt": [
           "       Reason: 1 dependency failed.",
@@ -2661,6 +2728,7 @@
         "from": "4.0",
         "log": "https://nixpkgs-update-logs.nixos.org/xskat/2026-02-10.log",
         "outcome": "superseded",
+        "parser": 1,
         "reason": "Never released: an upstream versioning mistake. Repology ignores it too.",
         "supersededOn": "ignored",
         "supersededOutcome": "failed",
