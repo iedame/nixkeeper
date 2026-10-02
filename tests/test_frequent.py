@@ -173,3 +173,28 @@ class FrequentCheck(unittest.TestCase):
     def test_needs_a_previous_sync(self):
         with self.assertRaises(SystemExit):
             frequent.main()
+
+    def test_follows_the_new_release(self):
+        """A package updated together with one this check refreshes
+        (follows.py) gets its new version in the same run."""
+        follows = {
+            "version": "154.0.8037.57",
+            "newer": False,
+            "follows": "google-chrome",
+        }
+        driver = {
+            "name": "chromedriver",
+            "attrs": ["chromedriver"],
+            "nixVersion": "154.0.8037.57",
+            "nixStatus": "newest",
+            "refVersion": "154.0.8037.57",
+            "upstream": follows,
+        }
+        self.publish(chrome_row(), driver)
+        index, notified, _ = self.run_frequent(api("154.0.8040.12", "154.0.8037.57"))
+        chrome, driver = index["packages"]
+        self.assertEqual(driver["refVersion"], "154.0.8040.12")
+        self.assertEqual(driver["upstream"]["follows"], "google-chrome")
+        self.assertTrue(driver["upstream"]["newer"])
+        self.assertEqual(driver["outdatedSince"], chrome["outdatedSince"])
+        notified.assert_called_once()

@@ -36,7 +36,18 @@ IGNORES = "ignored-updates.nix"
 
 # The fields a community rule may have (as your own rules: github + tags,
 # github + branch (+ outdatedAfter), or url + pattern, and frequent).
-FIELDS = {"github", "tags", "branch", "outdatedAfter", "url", "pattern", "frequent"}
+FIELDS = {
+    "github",
+    "tags",
+    "branch",
+    "outdatedAfter",
+    "url",
+    "pattern",
+    "frequent",
+    "follows",
+}
+# A nixpkgs attribute, for follows: letters, digits, _ - + ' and dots between.
+ATTRIBUTE = re.compile(r"^[A-Za-z_][A-Za-z0-9_'+-]*(?:\.[A-Za-z_][A-Za-z0-9_'+-]*)*$")
 # A GitHub owner (letters, digits, hyphens) and repository (not "." or "..").
 GITHUB_REPO = re.compile(r"^[A-Za-z0-9][A-Za-z0-9-]*/(?!\.\.?$)[A-Za-z0-9_.-]+$")
 # Hostnames that only mean something on a local network.
@@ -155,6 +166,13 @@ def safety(rule):
     unknown = set(rule) - FIELDS
     if unknown:
         return f"unknown field {', '.join(sorted(unknown))}"
+    if "follows" in rule:
+        # Fetches nothing: only another package's results are used.
+        if set(rule) != {"follows"}:
+            return "follows takes no other fields"
+        if not ATTRIBUTE.match(str(rule["follows"])):
+            return "follows must be a nixpkgs attribute"
+        return None
     if "github" in rule and not GITHUB_REPO.match(str(rule["github"])):
         return 'github must be "owner/repo"'
     if "url" in rule:
@@ -192,6 +210,24 @@ def problems(rules):
                         found.append(f"{name}: {field} has more than one capture group")
                 except re.error as e:
                     found.append(f"{name}: {field} is not a valid regex ({e})")
+    found += follows_problems(rules)
+    return sorted(found)
+
+
+def follows_problems(rules):
+    """Rules that follow themselves, or a package that follows another (no
+    chains: follows.py would skip them)."""
+    following = {
+        name: rule["follows"]
+        for name, rule in rules.items()
+        if isinstance(rule, dict) and isinstance(rule.get("follows"), str)
+    }
+    found = []
+    for name, target in sorted(following.items()):
+        if target == name:
+            found.append(f"{name}: follows itself")
+        elif target in following:
+            found.append(f"{name}: follows {target}, which follows another package")
     return found
 
 
@@ -216,6 +252,15 @@ def run(names=None, file=None):
     for name in chosen:
         if name not in index:
             results[name] = (None, "not in nixpkgs' channel index")
+            continue
+        target = chosen[name].get("follows")
+        if target is not None:
+            # Nothing of its own to try: the package it follows has to exist.
+            results[name] = (
+                (index[target].get("version"), None)
+                if target in index
+                else (None, f"follows {target}, which isn't in nixpkgs' channel index")
+            )
             continue
         version = index[name].get("version")
         rows.append({"name": name, "nixVersion": version, "refVersion": version})

@@ -8,7 +8,7 @@ checkout, `nix run .#pr-check`."""
 import sys
 from datetime import UTC, datetime
 
-from . import partial
+from . import follows, partial
 from .changes import is_outdated
 from .sources import github, nixpkgs_update
 
@@ -22,6 +22,8 @@ def main():
         return
     print(f"PR check: {', '.join(row['name'] for row in outdated)}", file=sys.stderr)
     github.add_update_prs(outdated)
+    # Packages that follow another (follows.py): the same PRs, as its own.
+    follows.apply_prs(packages, follows.recorded(packages))
     # A merged PR can supersede a failed bot attempt before Hydra builds it.
     nixpkgs_update.recheck_superseded(outdated)
     partial.publish(previous, packages, now)

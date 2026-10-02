@@ -11,9 +11,8 @@
 # A failed attempt at that version shows as superseded, with the reason; a
 # failed attempt at any other version shows as failed again. When the bot's
 # latest attempt is at another version, the sync says the rule can go.
-{
-  # Upstream's versioning produced a 4.0-9 that was never released (its
-  # download 404s). Repology ignores it now, so the bot won't try again, but
-  # its failed attempt stays the latest.
-  xskat."4.0-9" = "Never released: an upstream versioning mistake. Repology ignores it too.";
-}
+#
+# This list's rules are all community rules (community/ in the repository,
+# turned on in default.nix), so this file is empty: add a rule here only for
+# something the community rules shouldn't have, or to override one.
+{ }

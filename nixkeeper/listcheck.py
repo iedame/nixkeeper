@@ -11,7 +11,7 @@ page shows them above the table."""
 
 import sys
 
-from . import scale
+from . import follows, scale
 from .tracking import by_pname, extra_attrs, extra_lists
 
 # The page's palettes (page/logic.js PALETTES), for page.theme.
@@ -55,6 +55,7 @@ def problems(lists, nixpkgs, tracked):
     ):
         for name in sorted(set(entries) - set(tracked)):
             found.append(f"{what}: {name} isn't a tracked package")
+    found += follows_problems(lists.get("updateChecks") or {}, tracked)
     big = scale.problem(len(tracked), lists)
     if big:
         found.append(big)
@@ -69,6 +70,29 @@ def problems(lists, nixpkgs, tracked):
         found.append(
             f"page.theme: {theme} isn't one of the page's themes ({', '.join(THEMES)})"
         )
+    return found
+
+
+def follows_problems(checks, tracked):
+    """Update checks that follow a package (follows.py) that isn't tracked
+    (where its versions and PRs would come from), themselves, or a package
+    that follows another (no chains)."""
+    found = []
+    for name, target in sorted(follows.of(checks).items()):
+        if name not in tracked:
+            continue  # said above: the rule is for an untracked package
+        if target == name:
+            found.append(f"updateChecks.{name}: follows itself")
+        elif target not in tracked:
+            found.append(
+                f"updateChecks.{name}: follows {target}, which isn't tracked "
+                "(track it too: its versions and PRs are where this one's come from)"
+            )
+        elif target in follows.of(checks):
+            found.append(
+                f"updateChecks.{name}: follows {target}, which follows another "
+                "package itself (follow that one instead)"
+            )
     return found
 
 

@@ -21,6 +21,12 @@
 #   url = "https://...";    a web page, e.g. the vendor's release notes,
 #   pattern = "regex";      how a version appears on it: "Foo ([0-9.]+)"
 #
+#   follows = "package";    updated together with that package, to the same
+#                           version, by the same PRs (msedgedriver follows
+#                           microsoft-edge): its newest version and update
+#                           PRs count for this one too. It must be tracked
+#                           as well, and can't follow another itself.
+#
 # Patterns are Python regexes; a capture group, if there is one, is the
 # version. The highest version found counts; if it's newer than nixpkgs', the
 # package shows as outdated (for a branch, once outdatedAfter says so).
@@ -29,38 +35,8 @@
 # the daily sync (.github/workflows/data-hourly.yml): for packages whose new
 # releases matter within hours, like browsers' security fixes. (GitHub may
 # delay or skip scheduled runs, so expect gaps of a few hours at times.)
-{
-  wesnoth-devel = {
-    github = "wesnoth/wesnoth";
-    tags = "^(1\\.19\\.[0-9]+)$"; # the 1.19 development series
-  };
-
-  # nixpkgs packages the 5.1 beta branch, unstable; Repology only knows
-  # releases (the last one, 5.0.12, is from 2016), so it can't tell.
-  stepmania = {
-    github = "stepmania/stepmania";
-    branch = "5_1-new";
-  };
-
-  bbedit = {
-    url = "https://www.barebones.com/support/bbedit/updates.html";
-    pattern = "BBEdit ([0-9]+\\.[0-9]+\\.[0-9]+)";
-  };
-
-  # Browsers: security fixes, so checked hourly. Linux stable only, which is
-  # what nixpkgs follows.
-  google-chrome = {
-    # Google's version history API, newest first.
-    url = "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions";
-    pattern = "\"version\": \"([0-9.]+)\"";
-    frequent = true;
-  };
-
-  microsoft-edge = {
-    # Microsoft's Debian repository index: where nixpkgs gets the .deb. It
-    # lists every channel, so the pattern pins the stable package.
-    url = "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages";
-    pattern = "Package: microsoft-edge-stable\nVersion: ([0-9.]+)";
-    frequent = true;
-  };
-}
+#
+# This list's rules are all community rules (community/ in the repository,
+# turned on in default.nix), so this file is empty: add a rule here only for
+# something the community rules shouldn't have, or to override one.
+{ }

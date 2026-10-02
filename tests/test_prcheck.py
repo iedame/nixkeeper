@@ -163,3 +163,20 @@ class PRCheck(unittest.TestCase):
             prcheck.main()
         with open("data/index.json") as f:
             self.assertEqual(json.load(f)["packages"][0]["openPR"], existing)
+
+    def test_the_followed_packages_prs(self):
+        """A package updated together with another (follows.py) gets its
+        update PRs too: their titles name only the other package."""
+        follows = {"version": "1.19.28", "newer": True, "follows": "wesnoth"}
+        self.publish(row("wesnoth"), row("wesnoth-data", upstream=follows))
+        index, _, _ = self.run_check(
+            {
+                "state:open in:title wesnoth-data": [],
+                "is:merged in:title wesnoth-data": [],
+                "state:open in:title wesnoth": [pr(9, "wesnoth: 1.19.24 -> 1.19.28")],
+                "is:merged in:title wesnoth": [],
+            }
+        )
+        wesnoth, data = index["packages"]
+        self.assertEqual(data["openPR"], wesnoth["openPR"])
+        self.assertEqual(data["openPR"]["number"], 9)

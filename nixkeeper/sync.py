@@ -7,6 +7,7 @@ from datetime import UTC, datetime
 
 from . import (
     community,
+    follows,
     history,
     listcheck,
     lookup,
@@ -45,6 +46,10 @@ def main():
     # a row outdated (master, by having a newer version than the channel).
     for row in index_rows:
         count_master(row)
+    # Packages updated together with another (follows): its newest version,
+    # once master is counted for it, is theirs too.
+    following = follows.of(checks)
+    follows.apply_versions(index_rows, following, now, from_community)
     history.add_outdated_since(index_rows, previous, now)
     ignored, ignored_by_community = community.merge_ignores(
         lists, [row["name"] for row in index_rows]
@@ -55,6 +60,7 @@ def main():
     github.add_counts(index_rows)  # and open update PRs
     outdated = [row for row in index_rows if is_outdated(row)]
     github.add_update_prs(outdated, open_prs=False)  # merged into master
+    follows.apply_prs(index_rows, following)  # theirs are the same PRs
     nixpkgs_update.recheck_superseded(outdated)
     # version: the nixkeeper that made this data, for the page's footer.
     index = {"checkedAt": now, "packages": index_rows, "version": version()}

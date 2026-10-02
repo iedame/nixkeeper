@@ -21,6 +21,12 @@
 #   url = "https://...";    a web page, e.g. the vendor's release notes,
 #   pattern = "regex";      how a version appears on it: "Foo ([0-9.]+)"
 #
+#   follows = "package";    updated together with that package, to the same
+#                           version, by the same PRs (msedgedriver follows
+#                           microsoft-edge): its newest version and update
+#                           PRs count for this one too. It must be tracked
+#                           as well, and can't follow another itself.
+#
 # Patterns are Python regexes; a capture group, if there is one, is the
 # version. The highest version found counts; if it's newer than nixpkgs', the
 # package shows as outdated (for a branch, once outdatedAfter says so).

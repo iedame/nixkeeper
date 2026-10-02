@@ -19,18 +19,26 @@
 
   # Where to look for new releases of some tracked packages, on top of
   # Repology. See the file for the format.
+  # ┌──────────────────────────────────────────────────────────────────────┐
+  # │ LOOKING FOR THIS PAGE'S UPDATE CHECKS AND IGNORE RULES?              │
+  # │                                                                      │
+  # │ They're the COMMUNITY RULES, not in this folder:                     │
+  # │   community/update-checks.nix    where to look for new releases      │
+  # │   community/ignored-updates.nix  bot failures that don't count       │
+  # │                                                                      │
+  # │ Anyone can contribute to them by pull request (docs/community.md),   │
+  # │ and every nixkeeper can use them for the packages it tracks, by      │
+  # │ turning them on like this:                                           │
+  # └──────────────────────────────────────────────────────────────────────┘
+  community = {
+    updateChecks = true; # where to look for new releases
+    ignoredUpdates = true; # bot failures that don't count
+  };
+
+  # Rules of this list's own, on top of the community's (and winning over
+  # them for the same package). Empty here: they're all community rules.
+  # See each file for the format.
   updateChecks = import ./update-checks.nix;
-
-  # Also use the community's rules, which anyone can contribute to nixkeeper
-  # (community/ in its repository), for the packages tracked here; the ones
-  # above win over them.
-  # community = {
-  #   updateChecks = true;   # where to look for new releases
-  #   ignoredUpdates = true; # bot failures that don't count
-  # };
-
-  # Versions nixpkgs-update tried and failed that don't count as its failure
-  # (never really released, say). See the file for the format.
   ignoredUpdates = import ./ignored-updates.nix;
 
   # The page's colours for visitors who haven't picked any in its Theme menu:

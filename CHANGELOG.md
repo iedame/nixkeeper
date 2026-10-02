@@ -11,6 +11,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- `follows`, a new kind of update check, for a package updated together with
+  another, to the same version, by the same PRs:
+  `msedgedriver = { follows = "microsoft-edge"; };`. It counts the other's
+  newest version and update PRs (merged and open) as its own, in the daily
+  sync and the hourly checks; their titles name only the other package, so
+  nixkeeper couldn't find them before. Checked like the other kinds (the
+  package followed has to be tracked too; no chains). The community update
+  checks have it for msedgedriver.
+
 - Fewer requests to the nixpkgs-update logs: a sync no longer downloads the
   log of an attempt it read the day before (the bot tries each package about
   every ten days), and takes the previous reading instead, judged afresh
