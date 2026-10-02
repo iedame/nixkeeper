@@ -8,7 +8,7 @@ import socket
 import unittest
 from unittest import mock
 
-from nixkeeper import community
+from nixkeeper import cli, community, config
 from nixkeeper.sources import http, upstream
 
 NOW = "2026-10-01T06:00:00+00:00"
@@ -287,6 +287,71 @@ class RunForReal(unittest.TestCase):
         ):
             failed = community.report({"a": ("1.0", None), "b": (None, "moved")})
         self.assertEqual(failed, 1)
+
+
+class CheckByName(unittest.TestCase):
+    """`nixkeeper community-check NAME...`: each name is tried for the kinds
+    of rule it has, update check or ignore rules, and a name with neither is
+    reported (a typo)."""
+
+    CHECKS = {"google-chrome": CHROME, "both": CHROME}
+    IGNORES = {"xskat": {"4.0-9": "Never released."}, "both": {"2.0": "No."}}
+
+    def check(self, *names):
+        """(what it printed, whether it failed) for community-check names."""
+        index = {"google-chrome": {"version": "154.0.1"}, "both": {"version": "1"}}
+        attempts = {
+            "xskat": {"to": "4.0-9", "outcome": "failed"},
+            "both": {"to": "2.0", "outcome": "failed"},
+        }
+        out = io.StringIO()
+        with (
+            mock.patch.object(community, "rules", return_value=self.CHECKS),
+            mock.patch.object(community, "ignores", return_value=self.IGNORES),
+            mock.patch("nixkeeper.sources.nixpkgs.load_index", return_value=index),
+            mock.patch.object(http, "get", return_value='{"version": "154.0.2"}'),
+            mock.patch(
+                "nixkeeper.sources.nixpkgs_update.latest_attempt",
+                side_effect=lambda name: attempts.get(name),
+            ),
+            mock.patch.dict(os.environ, {}, clear=True),
+            # The command sets these from its flags: put back after.
+            mock.patch.object(config, "LISTS", config.LISTS),
+            mock.patch.object(config, "OUT_DIR", config.OUT_DIR),
+            mock.patch.object(config, "NOTIFY", config.NOTIFY),
+            mock.patch("sys.stdout", out),
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            try:
+                cli.main(["community-check", *names])
+                failed = False
+            except SystemExit:
+                failed = True
+        return out.getvalue(), failed
+
+    def test_an_update_check_only(self):
+        out, failed = self.check("google-chrome")
+        self.assertIn("google-chrome: 154.0.2", out)
+        self.assertNotIn("ignore rules", out)  # it has none
+        self.assertFalse(failed)
+
+    def test_ignore_rules_only(self):
+        out, failed = self.check("xskat")
+        self.assertIn("ignore rules for xskat: still apply", out)
+        self.assertNotIn("no community rule", out)  # not tried as an update check
+        self.assertFalse(failed)
+
+    def test_both_kinds(self):
+        out, failed = self.check("both")
+        self.assertIn("both: 154.0.2", out)
+        self.assertIn("ignore rules for both: still apply", out)
+        self.assertFalse(failed)
+
+    def test_neither_is_a_typo(self):
+        out, failed = self.check("google-chrome", "xskatt")
+        self.assertIn("xskatt: no community rule of that name", out)
+        self.assertNotIn("ignore rules", out)
+        self.assertTrue(failed)
 
 
 class StatusIssue(unittest.TestCase):

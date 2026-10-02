@@ -57,12 +57,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- `nixkeeper community-check NAME` tried each name as both an update check
+  and an ignore rule: a package with only an update check said its "ignore
+  rules still apply", and one with only ignore rules failed as a missing
+  update check. Each name is now tried for the rules it has; a name with
+  neither is reported as such (a typo, most likely).
 - A package only Nix packages (msedgedriver) showed its update as `→ ?`:
   Repology marks no repository "newest" then, but the one ahead (a stable
   branch with a backport) "unique", which now counts. The newest version is
   also the highest of those Repology marks, not the first listed. Should no
   newer version be known, the page says "newer version unknown".
-
 
 ## [0.9.0] - 2026-10-01
 
