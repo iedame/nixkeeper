@@ -114,6 +114,9 @@ services.nixkeeper = {
 See [nixkeeper on NixOS](docs/nixos.md) or
 [nixkeeper on macOS](docs/darwin.md).
 
+**Tried it?** [Tell us how it went](https://github.com/iedame/nixkeeper/issues/53):
+how you run it, what was confusing, what's missing.
+
 ## Documentation
 
 - [Reading the page](docs/reading-the-page.md): the dots, badges, panels and tab icon
