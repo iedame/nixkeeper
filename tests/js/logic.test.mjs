@@ -19,6 +19,7 @@ import {
   githubRepo,
   hasFailure,
   href,
+  midway,
   onMaster,
   onPlatform,
   safeUrl,
@@ -426,5 +427,21 @@ describe('updateTitle', () => {
   test('none when up to date, or without a newest version', () => {
     assert.equal(updateTitle(pkg({ nixVersion: '1.0' })), null);
     assert.equal(updateTitle(outdated({ refVersion: undefined })), null);
+  });
+});
+
+describe('midway', () => {
+  test("master between the channel and the newest: master's version", () => {
+    const pkg = outdated({ nixVersion: '1.0', refVersion: '1.2', masterPR: { to: '1.1' } });
+    assert.equal(midway(pkg), '1.1');
+    assert.equal(updateTitle({ ...pkg, name: 'p' }), 'p: 1.1 -> 1.2');
+  });
+  test('none when master already has the newest, or has nothing new', () => {
+    assert.equal(
+      midway(outdated({ nixVersion: '1.0', refVersion: '1.1', masterPR: { to: '1.1' } })),
+      null,
+    );
+    assert.equal(midway(outdated({ nixVersion: '1.0', refVersion: '1.1' })), null);
+    assert.equal(midway(pkg({ nixVersion: '1.1', masterPR: { to: '1.1' } })), null);
   });
 });

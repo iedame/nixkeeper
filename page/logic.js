@@ -247,9 +247,28 @@ export function comparedRepos(entries) {
 // An update's title as nixpkgs writes it, for commits and PRs:
 // "unciv: 4.22.1 -> 4.22.6". Only for an outdated package with a known
 // newest version; null otherwise.
+// Starting from master's version when master is partway there (the next
+// update goes on from it): "google-chrome: 154.0.8037.92 -> 154.0.8037.97".
 export function updateTitle(pkg) {
   const target = targetVersion(pkg);
-  return computeStatus(pkg) === 'warn' && pkg.nixVersion && target
-    ? `${pkg.name}: ${pkg.nixVersion} -> ${target}`
+  const from = midway(pkg) || pkg.nixVersion;
+  return computeStatus(pkg) === 'warn' && from && target
+    ? `${pkg.name}: ${from} -> ${target}`
+    : null;
+}
+
+// Master's version when it's partway between the channel and the newest: an
+// update merged (waiting for the channel), and a newer one after it. Null
+// otherwise (nothing on master, or master already has the newest).
+export function midway(pkg) {
+  const master = onMaster(pkg);
+  const target = targetVersion(pkg);
+  return computeStatus(pkg) === 'warn' &&
+    master &&
+    target &&
+    pkg.nixVersion &&
+    compareVersions(master, pkg.nixVersion) > 0 &&
+    compareVersions(master, target) < 0
+    ? master
     : null;
 }
