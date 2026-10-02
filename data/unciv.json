@@ -8,12 +8,12 @@
       "petercxy@aur",
       "lilac@aur"
     ],
-    "origversion": "4.22.6.REL-1",
+    "origversion": "4.22.6.1-1",
     "repo": "aur",
     "srcname": "unciv",
-    "status": "outdated",
+    "status": "newest",
     "summary": "Open-source remake of Civilization V",
-    "version": "4.22.6.REL",
+    "version": "4.22.6.1",
     "visiblename": "unciv"
   },
   {
@@ -25,12 +25,12 @@
       "thyrum@aur",
       "tiziodcaio@aur"
     ],
-    "origversion": "4.22.6-0",
+    "origversion": "4.22.6_patch1-0",
     "repo": "aur",
     "srcname": "unciv-bin",
-    "status": "newest",
+    "status": "outdated",
     "summary": "Open-source remake of Civilization V",
-    "version": "4.22.6",
+    "version": "4.22.6_patch1",
     "visiblename": "unciv-bin"
   },
   {
@@ -82,7 +82,7 @@
     "origversion": null,
     "repo": "homebrew",
     "srcname": "unciv",
-    "status": "newest",
+    "status": "outdated",
     "summary": "Open-source Android/Desktop remake of Civ V",
     "version": "4.22.6",
     "visiblename": "unciv"
