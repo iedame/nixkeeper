@@ -730,7 +730,14 @@ button.plat[aria-pressed="true"] {
 .v-tags.bottom {
   grid-row: 2;
 }
+/* Master partway there: a line between, master's version beside its
+   badge, and the newest below. */
+.v-mid,
+.v-tags.mid {
+  grid-row: 2;
+}
 .v-now,
+.v-mid,
 .v-next {
   grid-column: 1;
   white-space: nowrap;
@@ -738,12 +745,21 @@ button.plat[aria-pressed="true"] {
 .v-tags {
   grid-column: 2;
 }
+.vcell.three .vcopy {
+  grid-row: 1 / span 3;
+}
+.vcell.three .v-next,
+.vcell.three .v-tags.bottom {
+  grid-row: 3;
+}
 /* The newest version: the start it shares with nixpkgs' faded, the "→"
    hanging in the gap to the left, so both versions start in the same
    column. */
+.v-mid .same,
 .v-next .same {
   opacity: 0.4;
 }
+.v-mid .arrow,
 .v-next .arrow {
   display: inline-block;
   width: 2ch;

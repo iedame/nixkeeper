@@ -30,8 +30,19 @@ master):
 
 Versions are compared by whole parts (split at `.`, `-`, `_`, `+`, `~`), so
 `1.19.24 → 1.19.28` colours `28`, and an unstable version only its new date.
+When an update is merged into master but a newer release is already out,
+master's version gets a line of its own in between, with its `on master`
+badge, and the newest under it with its PR:
+
+```
+  154.0.8037.57
+→ 154.0.8037.92    on master
+→ 154.0.8037.97    PR #569374
+```
+
 Click the versions to copy the update's title as nixpkgs writes it, for a
-commit or a PR: `unciv: 4.22.1 -> 4.22.6`.
+commit or a PR: `unciv: 4.22.1 -> 4.22.6` (from master's version when it's
+partway there).
 
 How long a package has been outdated shows after its name (`3 d`; violet
 when the update is merged and waiting for the channel).

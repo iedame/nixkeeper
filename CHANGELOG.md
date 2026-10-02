@@ -9,6 +9,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Changed
+
+- When master is partway there (an update merged, waiting for the channel,
+  and a newer release already out, as with Chrome's quick security
+  releases), the page shows master's version on a line of its own with its
+  `on master` badge, between nixpkgs' version and the newest with its PR.
+  Clicking the versions then copies the next update's title, from master's
+  version.
+
 ## [0.9.0] - 2026-10-01
 
 ### Added

@@ -10,6 +10,7 @@ import {
   faviconKey,
   fromMaster,
   href,
+  midway,
   onMaster,
   onPlatform,
   attentionRank as rankOn,
@@ -132,20 +133,27 @@ const FILTERS = {
 // Where the package's update stands on GitHub, in GitHub's own colors:
 // "on master" (merged, purple) while waiting for the channel, else an open
 // update PR (green; grey while a draft). A link to the PR when it's known.
+const badge = (cls, text, title, pr) =>
+  pr
+    ? ` <a class="badge ${cls}" href="${href(pr.url)}" target="_blank" rel="noopener" title="${escapeHtml(title)}">${text}</a>`
+    : ` <span class="badge ${cls}" title="${escapeHtml(title)}">${text}</span>`;
+
+// The update's badge: on master when that's all it waits for, else its PR.
 function prBadge(pkg) {
-  const badge = (cls, text, title, pr) =>
-    pr
-      ? ` <a class="badge ${cls}" href="${href(pr.url)}" target="_blank" rel="noopener" title="${escapeHtml(title)}">${text}</a>`
-      : ` <span class="badge ${cls}" title="${escapeHtml(title)}">${text}</span>`;
-  if (waitingForChannel(pkg)) {
-    const pr = pkg.masterPR;
-    return badge(
-      'onmaster',
-      'on master',
-      `master already has ${onMaster(pkg)}: merged${pr ? ` in #${pr.number} (${pr.title})` : ''}, waiting for nixos-unstable to catch up (usually a few days)`,
-      pr,
-    );
-  }
+  return waitingForChannel(pkg) ? masterBadge(pkg) : openPrBadge(pkg);
+}
+
+function masterBadge(pkg) {
+  const pr = pkg.masterPR;
+  return badge(
+    'onmaster',
+    'on master',
+    `master already has ${onMaster(pkg)}: merged${pr ? ` in #${pr.number} (${pr.title})` : ''}, waiting for nixos-unstable to catch up (usually a few days)`,
+    pr,
+  );
+}
+
+function openPrBadge(pkg) {
   const pr = pkg.openPR;
   if (!pr) return '';
   const behind =
@@ -180,16 +188,29 @@ function versionCell(pkg, st) {
   if (st !== 'warn')
     return `<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
-  const d = versionDiff(pkg.nixVersion, target);
   const merged = waitingForChannel(pkg);
   const title = updateTitle(pkg);
-  return `<div class="vcell">
+  // A newer version under the one before it: the start they share faded,
+  // the rest in colour, "→" hanging to its left.
+  const step = (cls, from, to, colour) => {
+    const d = versionDiff(from, to);
+    return `<span class="${cls}" aria-hidden="true" title="${escapeHtml(to || '')}"><span class="arrow">→</span><span class="same">${escapeHtml(d.same)}</span><span class="ref${colour}">${escapeHtml(d.to || '?')}</span></span>`;
+  };
+  // Master partway there: its own line, with its badge, between the two.
+  const mid = midway(pkg);
+  const steps = mid
+    ? `${step('v-mid', pkg.nixVersion, mid, ' merged')}${step('v-next', mid, target, '')}`
+    : step('v-next', pkg.nixVersion, target, merged ? ' merged' : '');
+  const said = mid
+    ? `${now}, on master ${escapeHtml(mid)}, newest ${escapeHtml(target || 'unknown')}`
+    : `${now}, newest ${escapeHtml(target || 'unknown')}`;
+  return `<div class="vcell${mid ? ' three' : ''}">
     <button type="button" class="vcopy" data-copy="${escapeHtml(title || '')}" title="Copy “${escapeHtml(title || '')}”">
-    <span class="v-now"><span class="v" aria-hidden="true">${now}</span><span class="sr-only">${now}, newest ${escapeHtml(target || 'unknown')}</span></span>
-    <span class="v-next" aria-hidden="true" title="${escapeHtml(target || '')}"><span class="arrow">→</span><span class="same">${escapeHtml(d.same)}</span><span class="ref${merged ? ' merged' : ''}">${escapeHtml(d.to || '?')}</span></span>
+    <span class="v-now"><span class="v" aria-hidden="true">${now}</span><span class="sr-only">${said}</span></span>
+    ${steps}
     </button>
-    <span class="v-tags top">${about}</span>
-    <span class="v-tags bottom">${prBadge(pkg)}${failing}</span>
+    <span class="v-tags top">${about}</span>${mid ? `<span class="v-tags mid">${masterBadge(pkg)}</span>` : ''}
+    <span class="v-tags bottom">${mid ? openPrBadge(pkg) : prBadge(pkg)}${failing}</span>
   </div>`;
 }
 
