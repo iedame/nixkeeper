@@ -769,6 +769,11 @@ button.plat[aria-pressed="true"] {
 .ver .ref {
   color: var(--warn);
 }
+.ver .unknown {
+  color: var(--ink-faint);
+  font-family: var(--nk-font-ui);
+  font-size: 12px;
+}
 .ver .ref.merged {
   color: var(--merged);
 }

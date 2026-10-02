@@ -2,6 +2,7 @@
 
 from . import config
 from .sources.nixpkgs import platforms
+from .versions import version_key
 
 
 def search_term(attr):
@@ -57,9 +58,13 @@ def project_rows(proj, nixpkgs):
 
 def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
     def newest(status):
-        return next(
-            (e.get("version") for e in others if e.get("status") == status), None
-        )
+        """The highest version among the other repositories with status."""
+        versions = [
+            e["version"]
+            for e in others
+            if e.get("status") == status and e.get("version")
+        ]
+        return max(versions, key=version_key, default=None)
 
     row = {
         "name": name,
@@ -72,7 +77,13 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         "nixVersion": nix.get("version") if nix else None,
         "nixStatus": nix.get("status") if nix else "missing",
         "nixVulnerable": bool(nix.get("vulnerable")) if nix else False,
-        "refVersion": (devel and newest("devel")) or newest("newest"),
+        # When only Nix packages it (msedgedriver), Repology marks no
+        # repository newest, but the one ahead (a stable branch with a
+        # backport, say) unique: compared within the family, nixpkgs
+        # unstable can still be outdated against it.
+        "refVersion": (devel and newest("devel"))
+        or newest("newest")
+        or newest("unique"),
         "repoCount": len(others),
         # A devel variant of a split project, or a version Repology itself
         # classifies as devel (lincity).
