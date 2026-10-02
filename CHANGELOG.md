@@ -11,6 +11,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Fewer requests to the nixpkgs-update logs: a sync no longer downloads the
+  log of an attempt it read the day before (the bot tries each package about
+  every ten days), and takes the previous reading instead, judged afresh
+  against nixpkgs and the ignore rules. Each attempt records the version of
+  the rules it was read with (`parser`), so a fix to how logs are read
+  applies at the next sync.
+
 - Keeping syncs reasonable as the lists grow: a sync starts by saying how
   long it should take (and on GitHub, in the run's summary); from 500
   packages the list check warns, on the page and in the status issue; above

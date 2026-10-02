@@ -130,6 +130,8 @@ Only `failed` counts as a failure.
 | `supersededOn` | for `superseded`: `nixos-unstable` or `master` (nixpkgs moved past that version), or `ignored` (a manual rule) |
 | `supersededOutcome` | what the attempt was before: `failed` or `cantUpdate` |
 | `reason` | the manual rule's reason, for `ignored` |
+| `community` | `true` when that rule is a [community rule](community.md) |
+| `parser` | the version of the rules the log was read with: the next sync reuses this reading instead of downloading the same log again, unless those rules have changed since |
 
 ### Sources that couldn't be refreshed
 
