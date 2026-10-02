@@ -275,6 +275,19 @@ def run(names=None, file=None):
     return results
 
 
+def sort_names(names, file=None):
+    """Package names given by hand, sorted by the community rules they have:
+    (those with an update check, those with ignore rules, those with
+    neither). A name can have both kinds. file: another update checks file,
+    as for run()."""
+    with_checks, with_ignores = set(rules(file)), set(ignores())
+    return (
+        [n for n in names if n in with_checks],
+        [n for n in names if n in with_ignores],
+        [n for n in names if n not in with_checks and n not in with_ignores],
+    )
+
+
 def stale_ignores(names=None, file=None):
     """Community ignore rules that no longer do anything: the bot's latest
     attempt isn't a failure at that version anymore (it moved on, or never

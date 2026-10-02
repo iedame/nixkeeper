@@ -220,7 +220,11 @@ def main(argv=None):
         )
         return
     if args.command == "community-check":
-        checks = ignored = args.names or None
+        # Every rule of both kinds; or, named, each kind a name has a rule of.
+        checks = ignored = None
+        unknown = []
+        if args.names:
+            checks, ignored, unknown = community.sort_names(args.names, args.file)
         if args.changed_from:
             checks, ignored = community.changed(args.changed_from)
             if not checks and not ignored:
@@ -229,8 +233,12 @@ def main(argv=None):
         results = community.run(checks, args.file)
         stale = community.stale_ignores(ignored) if ignored != [] else {}
         failed = community.report(results, stale)
-        if ignored and not stale:
-            print(f"  ignore rules for {', '.join(ignored)}: still apply")
+        still = [name for name in ignored or [] if name not in stale]
+        if still:
+            print(f"  ignore rules for {', '.join(still)}: still apply")
+        for name in unknown:  # a typo, most likely
+            print(f"  {name}: no community rule of that name (check or ignore)")
+        failed += len(unknown)
         if args.report_issue:
             community.publish(results, stale)
             return
