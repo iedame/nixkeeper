@@ -2,84 +2,28 @@
   {
     "binname": "cataclysm-dda",
     "licenses": [
-      "CC-BY-NC-SA-3.0"
+      "CC-BY-SA-3.0"
     ],
-    "origversion": "0.I-1",
-    "repo": "manjaro_testing",
-    "srcname": "cataclysm-dda",
+    "origversion": null,
+    "repo": "scoop",
     "status": "outdated",
-    "subrepo": "extra",
-    "summary": "A post-apocalyptic roguelike",
-    "version": "0.I",
+    "subrepo": "games",
+    "version": "0.D",
     "visiblename": "cataclysm-dda"
   },
   {
-    "binname": "cataclysm-dda",
-    "licenses": [
-      "CC-BY-NC-SA-3.0"
-    ],
-    "origversion": "0.I-1",
-    "repo": "manjaro_unstable",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "extra",
-    "summary": "A post-apocalyptic roguelike",
-    "version": "0.I",
-    "visiblename": "cataclysm-dda"
-  },
-  {
-    "binname": "cataclysm-dda-tiles",
-    "licenses": [
-      "CC-BY-NC-SA-3.0"
-    ],
-    "origversion": "0.I-1",
-    "repo": "manjaro_unstable",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "extra",
-    "summary": "A graphical post-apocalyptic roguelike.",
-    "version": "0.I",
-    "visiblename": "cataclysm-dda-tiles"
-  },
-  {
-    "binnames": [
-      "cataclysm-dda-curses",
-      "cataclysm-dda-data",
-      "cataclysm-dda-sdl"
-    ],
     "categories": [
       "games"
     ],
     "maintainers": [
-      "reiner@reiner-h.de"
+      "lin.ruohshoei+sbo@gmail.com"
     ],
-    "origversion": "0.E-3-1",
-    "repo": "pureos_byzantium",
-    "srcname": "cataclysm-dda",
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/cataclysmdda",
     "status": "outdated",
-    "subrepo": "byzantium/main",
-    "version": "0.E-3",
-    "visiblename": "cataclysm-dda"
-  },
-  {
-    "binnames": [
-      "cataclysm-dda-curses",
-      "cataclysm-dda-data",
-      "cataclysm-dda-sdl"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "reiner@reiner-h.de"
-    ],
-    "origversion": "0.H-1",
-    "repo": "pureos_landing",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "landing/main",
-    "version": "0.H",
-    "visiblename": "cataclysm-dda"
+    "version": "0.I",
+    "visiblename": "games/cataclysmdda"
   },
   {
     "binname": "cataclysm-dda",
@@ -235,20 +179,6 @@
     "visiblename": "cataclysm"
   },
   {
-    "binname": "cataclysm-dda-tiles",
-    "licenses": [
-      "CC-BY-NC-SA-3.0"
-    ],
-    "origversion": "0.I-1",
-    "repo": "arch",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "extra",
-    "summary": "A graphical post-apocalyptic roguelike.",
-    "version": "0.I",
-    "visiblename": "cataclysm-dda-tiles"
-  },
-  {
     "binname": "cataclysm-dda",
     "licenses": [
       "CC-BY-NC-SA-3.0"
@@ -261,6 +191,20 @@
     "summary": "A post-apocalyptic roguelike",
     "version": "0.I",
     "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "arch",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A graphical post-apocalyptic roguelike.",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
   },
   {
     "binname": "cataclysm-dda-git",
@@ -372,6 +316,22 @@
     "status": "outdated",
     "subrepo": "forky/main",
     "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "0.H",
     "visiblename": "cataclysm-dda"
   },
   {
@@ -537,20 +497,6 @@
     "visiblename": "cataclysm-dda"
   },
   {
-    "binname": "cataclysm-dda",
-    "licenses": [
-      "CC-BY-NC-SA-3.0"
-    ],
-    "origversion": "0.I-1",
-    "repo": "manjaro_stable",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "extra",
-    "summary": "A post-apocalyptic roguelike",
-    "version": "0.I",
-    "visiblename": "cataclysm-dda"
-  },
-  {
     "binnames": [
       "cataclysm-dda",
       "cataclysm-dda-data",
@@ -639,6 +585,23 @@
     "summary": "Turn-based survival game set in a post-apocalyptic world",
     "version": "0.H",
     "visiblename": "cataclysm-dda"
+  },
+  {
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "maintainers": [
+      "m.nacamura@gmail.com",
+      "d.anzorge@gmail.com",
+      "ricardo.ardissone@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "cataclysm-dda-git",
+    "status": "incorrect",
+    "summary": "Free, post apocalyptic, zombie infested rogue-like",
+    "version": "2024-12-11",
+    "visiblename": "cataclysm-dda-git"
   },
   {
     "binnames": [
@@ -734,20 +697,6 @@
     "summary": "A turn-based survival game set in a post-apocalyptic world",
     "version": "0h",
     "visiblename": "games-roguelike/cataclysm-dda"
-  },
-  {
-    "binname": "cataclysm-dda-tiles",
-    "licenses": [
-      "CC-BY-NC-SA-3.0"
-    ],
-    "origversion": "0.I-1",
-    "repo": "manjaro_testing",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "extra",
-    "summary": "A graphical post-apocalyptic roguelike.",
-    "version": "0.I",
-    "visiblename": "cataclysm-dda-tiles"
   },
   {
     "categories": [
@@ -928,6 +877,76 @@
     "visiblename": "cataclysm-dda-tiles"
   },
   {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_stable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A post-apocalyptic roguelike",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_testing",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A graphical post-apocalyptic roguelike.",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_testing",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A post-apocalyptic roguelike",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_unstable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A post-apocalyptic roguelike",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "manjaro_unstable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A graphical post-apocalyptic roguelike.",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
+  },
+  {
     "licenses": [
       "CC-BY-SA-3.0"
     ],
@@ -991,39 +1010,6 @@
     "status": "incorrect",
     "summary": "Free, post apocalyptic, zombie infested rogue-like",
     "version": "2024-07-28",
-    "visiblename": "cataclysm-dda-git"
-  },
-  {
-    "licenses": [
-      "CC-BY-SA-3.0"
-    ],
-    "maintainers": [
-      "m.nacamura@gmail.com",
-      "d.anzorge@gmail.com"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "summary": "Free, post apocalyptic, zombie infested rogue-like",
-    "version": "0.H",
-    "visiblename": "cataclysm-dda"
-  },
-  {
-    "licenses": [
-      "CC-BY-SA-3.0"
-    ],
-    "maintainers": [
-      "m.nacamura@gmail.com",
-      "d.anzorge@gmail.com",
-      "ricardo.ardissone@gmail.com"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
-    "srcname": "cataclysm-dda-git",
-    "status": "incorrect",
-    "summary": "Free, post apocalyptic, zombie infested rogue-like",
-    "version": "2024-12-11",
     "visiblename": "cataclysm-dda-git"
   },
   {
@@ -1127,26 +1113,6 @@
     "visiblename": "cataclysm-dda-git"
   },
   {
-    "binnames": [
-      "cataclysm-dda-data",
-      "cataclysm-dda-curses",
-      "cataclysm-dda-sdl"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "reiner@reiner-h.de"
-    ],
-    "origversion": "0.F-3-9",
-    "repo": "raspbian_oldstable",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "0.F-3",
-    "visiblename": "cataclysm-dda"
-  },
-  {
     "binname": "cataclysm-dda",
     "categories": [
       "games"
@@ -1201,20 +1167,6 @@
     "visiblename": "cataclysm-dda"
   },
   {
-    "binname": "cataclysm-dda-tiles",
-    "licenses": [
-      "CC-BY-NC-SA-3.0"
-    ],
-    "origversion": "0.I-1",
-    "repo": "parabola",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "extra",
-    "summary": "A graphical post-apocalyptic roguelike.",
-    "version": "0.I",
-    "visiblename": "cataclysm-dda-tiles"
-  },
-  {
     "binname": "cataclysm-dda",
     "licenses": [
       "CC-BY-NC-SA-3.0"
@@ -1227,6 +1179,20 @@
     "summary": "A post-apocalyptic roguelike",
     "version": "0.I",
     "visiblename": "cataclysm-dda"
+  },
+  {
+    "binname": "cataclysm-dda-tiles",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "parabola",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A graphical post-apocalyptic roguelike.",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda-tiles"
   },
   {
     "binnames": [
@@ -1405,6 +1371,66 @@
     "visiblename": "cataclysm-dda"
   },
   {
+    "binnames": [
+      "cataclysm-dda-curses",
+      "cataclysm-dda-data",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.E-3-1",
+    "repo": "pureos_byzantium",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "0.E-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-curses",
+      "cataclysm-dda-data",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.H-1",
+    "repo": "pureos_landing",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "0.H",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.F-3-9",
+    "repo": "raspbian_oldstable",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.F-3",
+    "visiblename": "cataclysm-dda"
+  },
+  {
     "binname": "cataclysm-dda-tiles",
     "licenses": [
       "CC-BY-SA-3.0,GPL-2.0+,OFL-1.0,BSL-1.0,Zlib,MIT,BSD(libbacktrace)"
@@ -1425,34 +1451,8 @@
     "repo": "scoop",
     "status": "untrusted",
     "subrepo": "games",
-    "version": "2026-10-02-0518",
+    "version": "2026-10-02-1831",
     "visiblename": "cataclysm-dda-tiles-experimental"
-  },
-  {
-    "binname": "cataclysm-dda",
-    "licenses": [
-      "CC-BY-SA-3.0"
-    ],
-    "origversion": null,
-    "repo": "scoop",
-    "status": "outdated",
-    "subrepo": "games",
-    "version": "0.D",
-    "visiblename": "cataclysm-dda"
-  },
-  {
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "lin.ruohshoei+sbo@gmail.com"
-    ],
-    "origversion": null,
-    "repo": "slackbuilds",
-    "srcname": "games/cataclysmdda",
-    "status": "outdated",
-    "version": "0.I",
-    "visiblename": "games/cataclysmdda"
   },
   {
     "binname": "cataclysm",

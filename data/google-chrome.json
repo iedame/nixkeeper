@@ -1,5 +1,28 @@
 [
   {
+    "binname": "GoogleChrome",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Google Chrome"
+  },
+  {
+    "binname": "com.google.Chrome",
+    "categories": [
+      "Communications"
+    ],
+    "licenses": [
+      "Chrome license"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "com.google.Chrome",
+    "status": "outdated",
+    "version": "155.0.8059.26",
+    "visiblename": "Chrome"
+  },
+  {
     "binname": "google-chrome",
     "categories": [
       "non-free/web"
@@ -80,14 +103,6 @@
     "visiblename": "google-chrome-dev"
   },
   {
-    "binname": "GoogleChrome",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Google Chrome"
-  },
-  {
     "categories": [
       "net-www"
     ],
@@ -120,15 +135,6 @@
     "summary": "The web browser from Google",
     "version": "155.0.8059.12",
     "visiblename": "www-client/google-chrome-beta"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew_casks",
-    "srcname": "google-chrome@beta",
-    "status": "devel",
-    "summary": "Web browser",
-    "version": "156.0.8078.4",
-    "visiblename": "Google Chrome Beta"
   },
   {
     "categories": [
@@ -210,6 +216,15 @@
     "summary": "Web browser",
     "version": "154.0.8037.98",
     "visiblename": "Google Chrome"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew_casks",
+    "srcname": "google-chrome@beta",
+    "status": "devel",
+    "summary": "Web browser",
+    "version": "156.0.8078.4",
+    "visiblename": "Google Chrome Beta"
   },
   {
     "origversion": null,
@@ -354,21 +369,6 @@
     "visiblename": "www-client/google-chrome-beta"
   },
   {
-    "binname": "com.google.Chrome",
-    "categories": [
-      "Communications"
-    ],
-    "licenses": [
-      "Chrome license"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "com.google.Chrome",
-    "status": "outdated",
-    "version": "155.0.8059.26",
-    "visiblename": "Chrome"
-  },
-  {
     "binname": "google-chrome-x64",
     "categories": [
       "Communications"
@@ -428,7 +428,7 @@
     "repo": "scoop",
     "status": "ignored",
     "subrepo": "versions",
-    "version": "157.0.8083.0",
+    "version": "157.0.8084.0",
     "visiblename": "googlechrome-canary"
   },
   {
@@ -456,39 +456,6 @@
     "visiblename": "Google Chrome"
   },
   {
-    "binname": "google-chrome",
-    "origversion": "86.0.4240.111-1-18",
-    "repo": "distri",
-    "srcname": "google-chrome",
-    "status": "outdated",
-    "version": "86.0.4240.111-1",
-    "visiblename": "google-chrome",
-    "vulnerable": true
-  },
-  {
-    "licenses": [
-      "google-chrome"
-    ],
-    "origversion": null,
-    "repo": "chromebrew",
-    "srcname": "google_chrome_unstable",
-    "status": "outdated",
-    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Dev Channel)",
-    "version": "129.0.6628.3-1",
-    "visiblename": "google_chrome_unstable",
-    "vulnerable": true
-  },
-  {
-    "binname": "google-chrome-for-enterprise",
-    "origversion": null,
-    "repo": "chocolatey",
-    "status": "outdated",
-    "summary": "Google Chrome for Enterprise",
-    "version": "120.0.6099.225",
-    "visiblename": "[Deprecated] Google Chrome for Enterprise",
-    "vulnerable": true
-  },
-  {
     "binname": "GoogleChrome-AllUsers",
     "origversion": null,
     "repo": "chocolatey",
@@ -513,6 +480,29 @@
     ],
     "origversion": null,
     "repo": "chromebrew",
+    "srcname": "google_chrome_beta",
+    "status": "outdated",
+    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Beta Channel)",
+    "version": "128.0.6613.18-1",
+    "visiblename": "google_chrome_beta",
+    "vulnerable": true
+  },
+  {
+    "binname": "google-chrome-for-enterprise",
+    "origversion": null,
+    "repo": "chocolatey",
+    "status": "outdated",
+    "summary": "Google Chrome for Enterprise",
+    "version": "120.0.6099.225",
+    "visiblename": "[Deprecated] Google Chrome for Enterprise",
+    "vulnerable": true
+  },
+  {
+    "licenses": [
+      "google-chrome"
+    ],
+    "origversion": null,
+    "repo": "chromebrew",
     "srcname": "google_chrome",
     "status": "outdated",
     "summary": "Google Chrome is a fast, easy to use, and secure web browser.",
@@ -526,11 +516,21 @@
     ],
     "origversion": null,
     "repo": "chromebrew",
-    "srcname": "google_chrome_beta",
+    "srcname": "google_chrome_unstable",
     "status": "outdated",
-    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Beta Channel)",
-    "version": "128.0.6613.18-1",
-    "visiblename": "google_chrome_beta",
+    "summary": "Google Chrome is a fast, easy to use, and secure web browser. (Dev Channel)",
+    "version": "129.0.6628.3-1",
+    "visiblename": "google_chrome_unstable",
+    "vulnerable": true
+  },
+  {
+    "binname": "google-chrome",
+    "origversion": "86.0.4240.111-1-18",
+    "repo": "distri",
+    "srcname": "google-chrome",
+    "status": "outdated",
+    "version": "86.0.4240.111-1",
+    "visiblename": "google-chrome",
     "vulnerable": true
   },
   {

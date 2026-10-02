@@ -221,7 +221,7 @@
     "srcname": "microsoft-edge@beta",
     "status": "ignored",
     "summary": "Multi-platform web browser",
-    "version": "155.0.4283.24",
+    "version": "155.0.4283.33",
     "visiblename": "Microsoft Edge Beta"
   },
   {
@@ -421,6 +421,36 @@
     "status": "outdated",
     "version": "153.0.4234.48",
     "visiblename": "network/microsoft-edge"
+  },
+  {
+    "binname": "microsoft-edge-stable-deb",
+    "maintainers": [
+      "oren@taumoda.com",
+      "jimedrand@disroot.org"
+    ],
+    "origversion": "135.0.3179.98-1-1",
+    "repo": "pacstall",
+    "srcname": "microsoft-edge-stable-deb",
+    "status": "legacy",
+    "summary": "The Chromium-based web browser from Microsoft",
+    "version": "135.0.3179.98-1",
+    "visiblename": "microsoft-edge-stable-deb",
+    "vulnerable": true
+  },
+  {
+    "binname": "microsoft-edge-dev-deb",
+    "maintainers": [
+      "oren@taumoda.com",
+      "jimedrand@disroot.org"
+    ],
+    "origversion": "137.0.3282.1-1-1",
+    "repo": "pacstall",
+    "srcname": "microsoft-edge-dev-deb",
+    "status": "outdated",
+    "summary": "The Chromium-based web browser from Microsoft - Developer channel",
+    "version": "137.0.3282.1-1",
+    "visiblename": "microsoft-edge-dev-deb",
+    "vulnerable": true
   },
   {
     "licenses": [
@@ -697,36 +727,6 @@
     "summary": "The web browser from Microsoft - Beta",
     "version": "136.0.3240.45",
     "visiblename": "microsoft-edge-beta-deb",
-    "vulnerable": true
-  },
-  {
-    "binname": "microsoft-edge-dev-deb",
-    "maintainers": [
-      "oren@taumoda.com",
-      "jimedrand@disroot.org"
-    ],
-    "origversion": "137.0.3282.1-1-1",
-    "repo": "pacstall",
-    "srcname": "microsoft-edge-dev-deb",
-    "status": "outdated",
-    "summary": "The Chromium-based web browser from Microsoft - Developer channel",
-    "version": "137.0.3282.1-1",
-    "visiblename": "microsoft-edge-dev-deb",
-    "vulnerable": true
-  },
-  {
-    "binname": "microsoft-edge-stable-deb",
-    "maintainers": [
-      "oren@taumoda.com",
-      "jimedrand@disroot.org"
-    ],
-    "origversion": "135.0.3179.98-1-1",
-    "repo": "pacstall",
-    "srcname": "microsoft-edge-stable-deb",
-    "status": "legacy",
-    "summary": "The Chromium-based web browser from Microsoft",
-    "version": "135.0.3179.98-1",
-    "visiblename": "microsoft-edge-stable-deb",
     "vulnerable": true
   },
   {
