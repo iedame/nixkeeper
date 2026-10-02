@@ -1,5 +1,35 @@
 [
   {
+    "binname": "com.google.Chrome",
+    "categories": [
+      "Communications"
+    ],
+    "licenses": [
+      "Chrome license"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable",
+    "srcname": "com.google.Chrome",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Chrome"
+  },
+  {
+    "binname": "google-chrome-x64",
+    "categories": [
+      "Communications"
+    ],
+    "licenses": [
+      "Chrome license"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "google-chrome-x64",
+    "status": "outdated",
+    "version": "155.0.8059.12",
+    "visiblename": "Chrome 64 bit"
+  },
+  {
     "binname": "google-chrome-beta",
     "licenses": [
       "custom:chrome"
@@ -92,21 +122,6 @@
     "visiblename": "www-client/google-chrome-beta"
   },
   {
-    "binname": "google-chrome-x64",
-    "categories": [
-      "Communications"
-    ],
-    "licenses": [
-      "Chrome license"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable64",
-    "srcname": "google-chrome-x64",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Chrome 64 bit"
-  },
-  {
     "categories": [
       "www-client"
     ],
@@ -166,7 +181,7 @@
     "srcname": "google-chrome",
     "status": "ignored",
     "summary": "Web browser",
-    "version": "154.0.8037.93",
+    "version": "154.0.8037.98",
     "visiblename": "Google Chrome"
   },
   {
@@ -184,7 +199,7 @@
     "srcname": "google-chrome@canary",
     "status": "ignored",
     "summary": "Web browser",
-    "version": "157.0.8081.0",
+    "version": "157.0.8082.0",
     "visiblename": "Google Chrome Canary"
   },
   {
@@ -321,21 +336,6 @@
     "visiblename": "www-client/google-chrome-beta"
   },
   {
-    "binname": "com.google.Chrome",
-    "categories": [
-      "Communications"
-    ],
-    "licenses": [
-      "Chrome license"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable",
-    "srcname": "com.google.Chrome",
-    "status": "outdated",
-    "version": "155.0.8059.12",
-    "visiblename": "Chrome"
-  },
-  {
     "binname": "googlechrome",
     "licenses": [
       "Freeware"
@@ -344,7 +344,7 @@
     "repo": "scoop",
     "status": "ignored",
     "subrepo": "extras",
-    "version": "154.0.8037.93",
+    "version": "154.0.8037.98",
     "visiblename": "googlechrome"
   },
   {
@@ -615,6 +615,25 @@
     "summary": "The web browser from Google",
     "version": "151.0.7922.137",
     "visiblename": "www-client/google-chrome",
+    "vulnerable": true
+  },
+  {
+    "categories": [
+      "app:gui"
+    ],
+    "licenses": [
+      "EULA"
+    ],
+    "maintainers": [
+      "admins@pisilinux.org"
+    ],
+    "origversion": null,
+    "repo": "pisi_contrib",
+    "srcname": "network/browser/google-chrome-dev",
+    "status": "outdated",
+    "summary": "Google Chrome for Linux",
+    "version": "88.0.4292.2",
+    "visiblename": "google-chrome-dev",
     "vulnerable": true
   },
   {
@@ -907,25 +926,6 @@
     "summary": "Google Chrome",
     "version": "154.0.8037.57",
     "visiblename": "google-chrome-browser",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "app:gui"
-    ],
-    "licenses": [
-      "EULA"
-    ],
-    "maintainers": [
-      "admins@pisilinux.org"
-    ],
-    "origversion": null,
-    "repo": "pisi_contrib",
-    "srcname": "network/browser/google-chrome-dev",
-    "status": "outdated",
-    "summary": "Google Chrome for Linux",
-    "version": "88.0.4292.2",
-    "visiblename": "google-chrome-dev",
     "vulnerable": true
   },
   {

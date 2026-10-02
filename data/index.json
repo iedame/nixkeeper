@@ -931,7 +931,7 @@
         "linux": true
       },
       "project": "google-chrome",
-      "refVersion": "154.0.8037.92",
+      "refVersion": "154.0.8037.97",
       "repoCount": 63,
       "searchTerm": "google-chrome",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/go/google-chrome/package.nix#L354",
@@ -947,11 +947,11 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T00:35:03.347173+00:00",
+        "checkedAt": "2026-10-02T05:47:36.630221+00:00",
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
-        "version": "154.0.8037.92"
+        "version": "154.0.8037.97"
       }
     },
     {
@@ -1417,7 +1417,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T00:35:03.347173+00:00",
+        "checkedAt": "2026-10-02T05:47:36.630221+00:00",
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
