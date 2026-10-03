@@ -24,8 +24,5 @@
 # that's Repology's ignore rules or nixpkgs-update's skiplist. A rule here
 # only stops the failure it already made from showing.
 {
-  # Upstream's versioning produced a 4.0-9 that was never released (its
-  # download 404s). Repology ignores it now, so the bot won't try again, but
-  # its failed attempt stays the latest.
   xskat."4.0-9" = "Never released: an upstream versioning mistake. Repology ignores it too.";
 }
