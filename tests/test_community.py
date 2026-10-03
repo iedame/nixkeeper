@@ -113,7 +113,7 @@ class StaleIgnores(unittest.TestCase):
         found = self.stale(
             {
                 "xskat": {"to": "4.0-9", "outcome": "failed"},
-                "egoboo": {"to": "2.8.1", "outcome": "failed"},
+                "egoboo": {"to": "1", "was": "egoboo-2.8.1", "outcome": "failed"},
             }
         )
         self.assertEqual(found, {})
@@ -128,6 +128,17 @@ class StaleIgnores(unittest.TestCase):
                 "xskat": [("4.0-9", "the bot's latest attempt is at 4.1")],
                 "egoboo": [("2.8.1", "the bot has never tried this package")],
             },
+        )
+        # And when an updateScript attempt was at a newer version.
+        moved = self.stale(
+            {
+                "xskat": {"to": "4.0-9", "outcome": "failed"},
+                "egoboo": {"to": "1", "was": "egoboo-2.8.2", "outcome": "failed"},
+            }
+        )
+        self.assertEqual(
+            moved,
+            {"egoboo": [("2.8.1", "the bot's latest attempt is at egoboo-2.8.2")]},
         )
 
     def test_a_log_that_cant_be_read_isnt_called_stale(self):

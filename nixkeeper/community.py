@@ -311,8 +311,11 @@ def stale_ignores(names=None, file=None):
         for version in sorted(versions):
             if attempt is None:
                 why = "the bot has never tried this package"
-            elif attempt.get("to") != version:
-                why = f"the bot's latest attempt is at {attempt.get('to') or '?'}"
+            elif not nixpkgs_update.at_version(attempt, version):
+                at = attempt.get("to")
+                if at == nixpkgs_update.UPDATE_SCRIPT_TO:
+                    at = attempt.get("was")
+                why = f"the bot's latest attempt is at {at or '?'}"
             elif attempt.get("outcome") != "failed":
                 why = f"the bot's attempt at {version} didn't fail"
             else:

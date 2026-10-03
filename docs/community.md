@@ -86,11 +86,14 @@ limits.
 ## Ignore rules: short-lived by design
 
 An ignore rule only matters while the bot's latest attempt for that package
-is a failure at that version. Once the bot tries another version, the rule
-does nothing, and the weekly run lists it as one that can go. They're also
-not the fix at the source: to stop the bot trying a version again, that's
-Repology's ignore rules or nixpkgs-update's skiplist. A community ignore rule
-only stops the failure the bot already made from showing for everyone.
+is a failure at that version (or, when an `updateScript` failed before
+picking a version, while the package is still up to date at the version
+nixpkgs had). Once the bot tries another version — or a newer release comes
+out — the rule does nothing, and the weekly run lists it as one that can go.
+They're also not the fix at the source: to stop the bot trying a version
+again, that's Repology's ignore rules or nixpkgs-update's skiplist. A
+community ignore rule only stops the failure the bot already made from
+showing for everyone.
 
 ## Adding a rule
 

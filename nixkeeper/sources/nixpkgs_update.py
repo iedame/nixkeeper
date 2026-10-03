@@ -10,7 +10,7 @@ import time
 import urllib.error
 
 from .. import config, history
-from ..changes import on_master
+from ..changes import is_outdated, on_master
 from ..rows import search_term
 from . import http
 
@@ -20,7 +20,7 @@ LOG_NAME = re.compile(r'href="(\d{4}-\d{2}-\d{2})\.log"')
 # attribute, same date) instead of downloading it again, but only one read
 # with these same rules: bump this whenever parse() changes how it reads a
 # log, so the next sync reads every log again and the change applies at once.
-PARSER = 1
+PARSER = 2
 # What add_attempts adds to an attempt after reading its log, from the
 # state of nixpkgs and the rules at the time; as_read() takes them off.
 JUDGED = ("supersededOutcome", "supersededOn", "reason", "community")
@@ -28,11 +28,13 @@ JUDGED = ("supersededOutcome", "supersededOn", "reason", "community")
 # package's own updateScript decides the version.
 UPDATE_INFO = re.compile(r"UPDATE_INFO: \S+ (\S+) -> (\S+)")
 UPDATE_SCRIPT = "0"  # the "from" of an updateScript attempt
+UPDATE_SCRIPT_TO = "1"  # and its "to", before the script runs
 # With an updateScript, what nixpkgs had shows as its name-version instead:
 # "Going to be running update for following packages:\n - wesnoth-devel-1.19.24".
 UPDATE_SCRIPT_PACKAGE = re.compile(
     r"Going to be running update for following packages:\s*\n\s*- (\S+)"
 )
+DIFF_HEAD = "Diff after rewrites:\n"
 PR = re.compile(r"api\.github\.com/repos/NixOS/nixpkgs/(?:pulls|issues)/(\d+)")
 PR_EXISTS = "There might already be an open PR"
 # Every rewriter left the package as it was. After an updateScript attempt
@@ -77,6 +79,36 @@ def excerpt(log):
     return lines[-EXCERPT_LINES:]
 
 
+def diff_versions(log, was):
+    """(from, to) from the diff of an updateScript log ("0 -> 1"), when every
+    version change in it updates the version in `was` (wesnoth-devel-1.19.24)
+    to the same new version; None otherwise (no diff, or the script failed
+    before writing one)."""
+    if not was or DIFF_HEAD not in log:
+        return None
+    diff = log.split(DIFF_HEAD, 1)[1].splitlines()
+    removed = [
+        line[1:] for line in diff if line.startswith("-") and not line.startswith("---")
+    ]
+    added = [
+        line[1:] for line in diff if line.startswith("+") and not line.startswith("+++")
+    ]
+    parts = was.split("-")
+    candidates = ["-".join(parts[i:]) for i in range(1, len(parts))]
+    found = set()
+    for old in candidates:
+        quoted = f'"{old}"'
+        for minus in removed:
+            if quoted not in minus:
+                continue
+            pattern = re.escape(minus).replace(re.escape(quoted), r'"([^"\n]+)"', 1)
+            pattern = pattern.replace(re.escape(quoted), r'"\1"')
+            for plus in added:
+                if (match := re.fullmatch(pattern, plus)) and match.group(1) != old:
+                    found.add((old, match.group(1)))
+    return next(iter(found)) if len(found) == 1 else None
+
+
 def parse(log):
     """{"outcome", "from"?, "to"?, "was"?, "pr"?, "excerpt"?} for one log.
     outcome: prOpened, prExists, cantUpdate (a newer version, but no way for
@@ -91,6 +123,10 @@ def parse(log):
             result["was"] = result["from"]
     if "was" not in result and (package := UPDATE_SCRIPT_PACKAGE.search(log)):
         result["was"] = package.group(1)
+    if result.get("from") == UPDATE_SCRIPT and (
+        versions := diff_versions(log, result.get("was"))
+    ):
+        result["from"], result["to"] = versions
     prs = PR.findall(log)
     if PR_EXISTS in log:
         result["outcome"] = "prExists"
@@ -191,13 +227,31 @@ def recheck_superseded(rows):
             row["updateFailure"] = False
 
 
-def ignored(attempt, rules):
-    """The reason a manual rule gives for ignoring the version a failed
-    attempt tried to update to, or None. rules: {version: reason}, the row's
-    entry in package-lists/ignored-updates.nix."""
-    if attempt.get("outcome") != "failed":
+def at_version(attempt, version):
+    """Whether attempt is for version: its target ("to"), or, when an
+    updateScript failed before picking one ("0 -> 1"), the version in "was"
+    that nixpkgs had."""
+    if not attempt or not version or version == UPDATE_SCRIPT_TO:
+        return False
+    if attempt.get("to") != UPDATE_SCRIPT_TO:
+        return attempt.get("to") == version
+    return bool(attempt.get("was")) and not moved_on(attempt, version)
+
+
+def ignored(attempt, rules, outdated=False):
+    """The reason a manual rule gives for ignoring a failed attempt, or None.
+    rules: {version: reason}, the row's entry in package-lists/ignored-updates.nix.
+    Matches the version the bot tried to update to ("to"), or, when an
+    updateScript failed before picking one ("0 -> 1") and the package isn't
+    outdated, the version nixpkgs had ("was")."""
+    if attempt.get("outcome") != "failed" or not rules:
         return None
-    return (rules or {}).get(attempt.get("to"))
+    if attempt.get("to") == UPDATE_SCRIPT_TO and outdated:
+        return None
+    for version, reason in rules.items():
+        if at_version(attempt, version):
+            return reason
+    return None
 
 
 def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=()):
@@ -245,16 +299,23 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=(
         )
         if where:
             supersede(attempt, where)
-        elif attempt and (reason := ignored(attempt, ignored_updates.get(row["name"]))):
+        elif attempt and (
+            reason := ignored(
+                attempt, ignored_updates.get(row["name"]), is_outdated(row)
+            )
+        ):
             supersede(attempt, "ignored")
             attempt["reason"] = reason
-            if (row["name"], attempt.get("to")) in community:
+            if any(
+                (row["name"], v) in community and at_version(attempt, v)
+                for v in ignored_updates.get(row["name"]) or {}
+            ):
                 attempt["community"] = True
         for version in ignored_updates.get(row["name"]) or {}:
             # The community's own tidy-up lists those (community-check).
             if (row["name"], version) in community:
                 continue
-            if not attempt or attempt.get("to") != version:
+            if not at_version(attempt, version):
                 print(
                     f"::notice::ignoredUpdates.{row['name']}: the bot's latest "
                     f"attempt isn't at {version} anymore; the rule can go",

@@ -644,8 +644,9 @@ const UPDATE_OUTCOME = {
     dot: 'neutral',
     text: (u, pkg) => {
       const what = u.supersededOutcome === 'cantUpdate' ? "couldn't update it" : 'failed';
+      const version = u.to === '1' ? pkg.nixVersion : u.to;
       return u.supersededOn === 'ignored'
-        ? `failed trying <span class="mono">${escapeHtml(u.to)}</span>, a version ignored by ${u.community ? 'a community rule' : 'a manual rule'}: ${escapeHtml(u.reason)}`
+        ? `failed trying <span class="mono">${escapeHtml(version)}</span>, a version ignored by ${u.community ? 'a community rule' : 'a manual rule'}: ${escapeHtml(u.reason)}`
         : u.supersededOn === 'master'
           ? `${what}, but master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (merged, waiting for nixos-unstable)`
           : `${what}, but nixpkgs has moved on to <span class="mono">${escapeHtml(pkg.nixVersion)}</span> since`;
