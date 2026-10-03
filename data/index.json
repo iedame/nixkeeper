@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-02T22:09:55.177123+00:00",
+  "checkedAt": "2026-10-03T00:51:47.070239+00:00",
   "packages": [
     {
       "attrs": [
@@ -119,7 +119,7 @@
       "builds": [
         {
           "attr": "asc",
-          "build": 347086215,
+          "build": 347846411,
           "name": "asc-2.6.3.0",
           "status": "ok",
           "system": "x86_64-linux",
@@ -127,7 +127,7 @@
         },
         {
           "attr": "asc",
-          "build": 347086302,
+          "build": 347846412,
           "name": "asc-2.6.3.0",
           "status": "ok",
           "system": "aarch64-linux",
@@ -261,7 +261,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T22:09:55.177123+00:00",
+        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
         "community": true,
         "label": "www.barebones.com",
         "newer": false,
@@ -715,7 +715,7 @@
       "builds": [
         {
           "attr": "egoboo",
-          "build": 347101605,
+          "build": 347846939,
           "name": "egoboo-2.8.1",
           "status": "ok",
           "system": "x86_64-linux",
@@ -723,7 +723,7 @@
         },
         {
           "attr": "egoboo",
-          "build": 347101603,
+          "build": 347846938,
           "name": "egoboo-2.8.1",
           "status": "ok",
           "system": "aarch64-linux",
@@ -731,7 +731,7 @@
         },
         {
           "attr": "egoboo",
-          "build": 347101604,
+          "build": 347846940,
           "name": "egoboo-2.8.1",
           "status": "ok",
           "system": "aarch64-darwin",
@@ -1355,7 +1355,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T22:09:55.177123+00:00",
+        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
         "community": true,
         "label": "versionhistory.googleapis.com",
         "newer": true,
@@ -1413,7 +1413,7 @@
         "to": "5.2",
         "url": "https://github.com/NixOS/nixpkgs/pull/569610"
       },
-      "openPRs": 0,
+      "openPRs": 1,
       "outdatedSince": "2026-10-02T21:12:02.420637+00:00",
       "platforms": {
         "darwin": true,
@@ -1449,7 +1449,7 @@
       "builds": [
         {
           "attr": "heroic",
-          "build": 347137788,
+          "build": 347834830,
           "name": "heroic-2.22.3",
           "status": "ok",
           "system": "x86_64-linux",
@@ -1464,7 +1464,7 @@
         },
         {
           "attr": "heroic-unwrapped",
-          "build": 347137798,
+          "build": 347834829,
           "name": "heroic-unwrapped-2.22.3",
           "status": "ok",
           "system": "x86_64-linux",
@@ -1901,7 +1901,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T22:09:55.177123+00:00",
+        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
         "community": true,
         "label": "packages.microsoft.com",
         "newer": true,
@@ -1949,7 +1949,7 @@
       "update": null,
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T22:09:55.177123+00:00",
+        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
         "community": true,
         "follows": "microsoft-edge",
         "newer": true,
@@ -2194,9 +2194,9 @@
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/op/opensurge/package.nix#L56",
       "update": {
         "attr": "opensurge",
-        "date": "2026-09-22",
+        "date": "2026-10-02",
         "from": "0",
-        "log": "https://nixpkgs-update-logs.nixos.org/opensurge/2026-09-22.log",
+        "log": "https://nixpkgs-update-logs.nixos.org/opensurge/2026-10-02.log",
         "outcome": "noChange",
         "parser": 1,
         "to": "1",
@@ -2855,7 +2855,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-10-02T22:09:55.177123+00:00",
+        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "community": true,
         "label": "stepmania/stepmania 5_1-new branch",
@@ -3088,26 +3088,25 @@
           "version": "0.1.6"
         }
       ],
-      "dataFile": "tetris.json",
+      "dataFile": "tetris-samtay.json",
       "devel": false,
       "homepage": "https://github.com/samtay/tetris",
       "lists": [
         "gaming-team"
       ],
       "name": "tetris",
-      "nixStatus": "outdated",
+      "nixStatus": "unique",
       "nixVersion": "0.1.6",
       "nixVulnerable": false,
       "openIssues": 0,
       "openPRs": 1,
-      "outdatedSince": "2026-10-02T21:12:02.420637+00:00",
       "platforms": {
         "darwin": true,
         "linux": true
       },
-      "project": "tetris",
-      "refVersion": "7.9.0",
-      "repoCount": 5,
+      "project": "tetris-samtay",
+      "refVersion": "0.1.6",
+      "repoCount": 4,
       "searchTerm": "tetris",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/te/tetris/package.nix#L29",
       "update": {
@@ -3549,7 +3548,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-02T22:09:55.177123+00:00",
+        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
         "community": true,
         "label": "wesnoth/wesnoth tags",
         "newer": false,
@@ -3599,7 +3598,16 @@
       "nixVersion": "1.3.7",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "1.3.7",
+        "number": 569611,
+        "title": "xournalpp: 1.3.7 -> 1.3.8",
+        "to": "1.3.8",
+        "url": "https://github.com/NixOS/nixpkgs/pull/569611"
+      },
+      "openPRs": 1,
       "outdatedSince": "2026-09-28T03:09:58.527549+00:00",
       "platforms": {
         "darwin": true,
@@ -3612,13 +3620,14 @@
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/xo/xournalpp/package.nix#L84",
       "update": {
         "attr": "xournalpp",
-        "date": "2026-09-22",
-        "from": "0",
-        "log": "https://nixpkgs-update-logs.nixos.org/xournalpp/2026-09-22.log",
-        "outcome": "noChange",
+        "date": "2026-10-02",
+        "from": "1.3.7",
+        "log": "https://nixpkgs-update-logs.nixos.org/xournalpp/2026-10-02.log",
+        "outcome": "prOpened",
         "parser": 1,
-        "to": "1",
-        "was": "xournalpp-1.3.7"
+        "pr": 569611,
+        "to": "1.3.8",
+        "was": "1.3.7"
       },
       "updateFailure": false
     },
