@@ -24,11 +24,6 @@
 # that's Repology's ignore rules or nixpkgs-update's skiplist. A rule here
 # only stops the failure it already made from showing.
 {
-  # Repology mixes github.com{eNV25/tetris,samtay/tetris} AUR/nixpkgs
-  # fixed by nixkeeper ignore list, but reported upstream to Repology
-  # to be removed after repology fixes it
-  tetris."7.9.0" =
-    "Incorrect version: AUR package with same name is a different project than nixpkgs.";
   # Upstream's versioning produced a 4.0-9 that was never released (its
   # download 404s). Repology ignores it now, so the bot won't try again, but
   # its failed attempt stays the latest.
