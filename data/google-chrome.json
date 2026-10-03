@@ -71,12 +71,12 @@
     "maintainers": [
       "gromit@aur"
     ],
-    "origversion": "156.0.8072.0-1",
+    "origversion": "157.0.8081.0-1",
     "repo": "aur",
     "srcname": "google-chrome-dev",
-    "status": "outdated",
+    "status": "ignored",
     "summary": "The popular web browser by Google (Dev Channel)",
-    "version": "156.0.8072.0",
+    "version": "157.0.8081.0",
     "visiblename": "google-chrome-dev"
   },
   {
@@ -138,6 +138,21 @@
     "summary": "The web browser from Google",
     "version": "156.0.8078.4",
     "visiblename": "www-client/google-chrome-beta"
+  },
+  {
+    "binname": "google-chrome-x64",
+    "categories": [
+      "Communications"
+    ],
+    "licenses": [
+      "Chrome license"
+    ],
+    "origversion": null,
+    "repo": "npackd_stable64",
+    "srcname": "google-chrome-x64",
+    "status": "outdated",
+    "version": "155.0.8059.26",
+    "visiblename": "Chrome 64 bit"
   },
   {
     "categories": [
@@ -217,7 +232,7 @@
     "srcname": "google-chrome@canary",
     "status": "ignored",
     "summary": "Web browser",
-    "version": "157.0.8084.0",
+    "version": "157.0.8085.0",
     "visiblename": "Google Chrome Canary"
   },
   {
@@ -369,21 +384,6 @@
     "visiblename": "Chrome"
   },
   {
-    "binname": "google-chrome-x64",
-    "categories": [
-      "Communications"
-    ],
-    "licenses": [
-      "Chrome license"
-    ],
-    "origversion": null,
-    "repo": "npackd_stable64",
-    "srcname": "google-chrome-x64",
-    "status": "outdated",
-    "version": "155.0.8059.26",
-    "visiblename": "Chrome 64 bit"
-  },
-  {
     "binname": "googlechrome",
     "licenses": [
       "Freeware"
@@ -414,9 +414,9 @@
     ],
     "origversion": null,
     "repo": "scoop",
-    "status": "outdated",
+    "status": "ignored",
     "subrepo": "versions",
-    "version": "156.0.8072.0",
+    "version": "157.0.8081.0",
     "visiblename": "googlechrome-dev"
   },
   {
@@ -551,20 +551,6 @@
     "vulnerable": true
   },
   {
-    "binname": "google-chrome-unstable-deb",
-    "maintainers": [
-      "oren@taumoda.com"
-    ],
-    "origversion": "139.0.7232.3-1",
-    "repo": "pacstall",
-    "srcname": "google-chrome-unstable-deb",
-    "status": "outdated",
-    "summary": "The web browser built by Google - Developer/Unstable channel",
-    "version": "139.0.7232.3",
-    "visiblename": "google-chrome-unstable-deb",
-    "vulnerable": true
-  },
-  {
     "categories": [
       "www-client"
     ],
@@ -638,19 +624,6 @@
     "summary": "The web browser from Google",
     "version": "151.0.7922.137",
     "visiblename": "www-client/google-chrome",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "Networking/WWW"
-    ],
-    "origversion": "154.0.8037.57-1pclos2026",
-    "repo": "pclinuxos",
-    "srcname": "google-chrome-browser",
-    "status": "outdated",
-    "summary": "Google Chrome",
-    "version": "154.0.8037.57",
-    "visiblename": "google-chrome-browser",
     "vulnerable": true
   },
   {
@@ -916,6 +889,33 @@
     "summary": "The popular and trusted web browser by Google",
     "version": "152.0.7977.64",
     "visiblename": "google-chrome-deb",
+    "vulnerable": true
+  },
+  {
+    "binname": "google-chrome-unstable-deb",
+    "maintainers": [
+      "oren@taumoda.com"
+    ],
+    "origversion": "139.0.7232.3-1",
+    "repo": "pacstall",
+    "srcname": "google-chrome-unstable-deb",
+    "status": "outdated",
+    "summary": "The web browser built by Google - Developer/Unstable channel",
+    "version": "139.0.7232.3",
+    "visiblename": "google-chrome-unstable-deb",
+    "vulnerable": true
+  },
+  {
+    "categories": [
+      "Networking/WWW"
+    ],
+    "origversion": "154.0.8037.57-1pclos2026",
+    "repo": "pclinuxos",
+    "srcname": "google-chrome-browser",
+    "status": "outdated",
+    "summary": "Google Chrome",
+    "version": "154.0.8037.57",
+    "visiblename": "google-chrome-browser",
     "vulnerable": true
   },
   {

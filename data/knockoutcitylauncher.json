@@ -1,0 +1,17 @@
+[
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "liamthexpl0rer@github"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "knockoutcitylauncher",
+    "status": "unique",
+    "summary": "Unofficial Knockout City Launcher",
+    "version": "2.4.6",
+    "visiblename": "knockoutcitylauncher"
+  }
+]

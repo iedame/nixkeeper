@@ -1,0 +1,32 @@
+[
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "liamthexpl0rer@github"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "trucky",
+    "status": "unique",
+    "summary": "The Virtual Trucker Companion",
+    "version": "3.8.2",
+    "visiblename": "trucky"
+  },
+  {
+    "licenses": [
+      "Unfree"
+    ],
+    "maintainers": [
+      "liamthexpl0rer@github"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "trucky",
+    "status": "unique",
+    "summary": "The Virtual Trucker Companion",
+    "version": "3.8.2",
+    "visiblename": "trucky"
+  }
+]

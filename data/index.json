@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-03T05:04:52.921419+00:00",
+  "checkedAt": "2026-10-03T10:49:37.400289+00:00",
   "packages": [
     {
       "attrs": [
@@ -261,7 +261,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
+        "checkedAt": "2026-10-03T10:49:37.400289+00:00",
         "community": true,
         "label": "www.barebones.com",
         "newer": false,
@@ -1408,7 +1408,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
+        "checkedAt": "2026-10-03T10:49:37.400289+00:00",
         "community": true,
         "label": "versionhistory.googleapis.com",
         "newer": true,
@@ -1687,6 +1687,36 @@
         "parser": 1,
         "to": "1"
       },
+      "updateFailure": false
+    },
+    {
+      "attrs": [
+        "knockoutcitylauncher"
+      ],
+      "builds": [],
+      "dataFile": "knockoutcitylauncher.json",
+      "devel": false,
+      "homepage": "https://kocity.xyz/",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "knockoutcitylauncher",
+      "nixStatus": "unique",
+      "nixVersion": "2.4.6",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": false,
+        "linux": true
+      },
+      "project": "knockoutcitylauncher",
+      "refVersion": null,
+      "repoCount": 0,
+      "searchTerm": "knockoutcitylauncher",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/kn/knockoutcitylauncher/package.nix#L98",
+      "unfree": true,
+      "update": null,
       "updateFailure": false
     },
     {
@@ -2015,7 +2045,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
+        "checkedAt": "2026-10-03T10:49:37.400289+00:00",
         "community": true,
         "label": "packages.microsoft.com",
         "newer": true,
@@ -2115,7 +2145,7 @@
       "update": null,
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
+        "checkedAt": "2026-10-03T10:49:37.400289+00:00",
         "community": true,
         "follows": "microsoft-edge",
         "newer": true,
@@ -3081,7 +3111,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
+        "checkedAt": "2026-10-03T10:49:37.400289+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "community": true,
         "label": "stepmania/stepmania 5_1-new branch",
@@ -3470,6 +3500,36 @@
     },
     {
       "attrs": [
+        "trucky"
+      ],
+      "builds": [],
+      "dataFile": "trucky.json",
+      "devel": false,
+      "homepage": "https://truckyapp.com/",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "trucky",
+      "nixStatus": "unique",
+      "nixVersion": "3.8.2",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": true,
+        "linux": true
+      },
+      "project": "trucky",
+      "refVersion": "3.8.2",
+      "repoCount": 1,
+      "searchTerm": "trucky",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/tr/trucky/package.nix#L32",
+      "unfree": true,
+      "update": null,
+      "updateFailure": false
+    },
+    {
+      "attrs": [
         "typioca"
       ],
       "builds": [
@@ -3774,7 +3834,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
+        "checkedAt": "2026-10-03T10:49:37.400289+00:00",
         "community": true,
         "label": "wesnoth/wesnoth tags",
         "newer": false,
@@ -3790,19 +3850,19 @@
       "builds": [
         {
           "attr": "xournalpp",
-          "build": 347297570,
-          "name": "xournalpp-1.3.7",
+          "build": 347849943,
+          "name": "xournalpp-1.3.8",
           "status": "ok",
           "system": "x86_64-linux",
-          "version": "1.3.7"
+          "version": "1.3.8"
         },
         {
           "attr": "xournalpp",
-          "build": 347297568,
-          "name": "xournalpp-1.3.7",
+          "build": 347849944,
+          "name": "xournalpp-1.3.8",
           "status": "ok",
           "system": "aarch64-linux",
-          "version": "1.3.7"
+          "version": "1.3.8"
         },
         {
           "attr": "xournalpp",
@@ -3819,6 +3879,7 @@
       "lists": [
         "maintained"
       ],
+      "master": "1.3.8",
       "masterPR": {
         "base": "master",
         "draft": false,
