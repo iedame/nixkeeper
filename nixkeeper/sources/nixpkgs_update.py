@@ -183,7 +183,7 @@ def moved_on(attempt, version):
     """Whether version differs from what nixpkgs had when the bot tried.
     Unknown (False) when the log doesn't say what that was."""
     was = attempt.get("was")
-    if not was or not version:
+    if not was or not version or was == UPDATE_SCRIPT:
         return False
     # A name-version ends in the version: wesnoth-devel-1.19.24.
     return was != version and not was.endswith(f"-{version}")
@@ -291,6 +291,13 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=(
             )
             continue
         attempt = max(attempts, key=lambda a: a["date"], default=None)
+        if (
+            attempt
+            and attempt.get("from") == UPDATE_SCRIPT
+            and "was" not in attempt
+            and row.get("nixVersion")
+        ):
+            attempt["was"] = row["nixVersion"]
         # "master" comes from Hydra, read before this.
         where = (
             attempt

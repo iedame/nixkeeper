@@ -348,6 +348,15 @@ def stale_ignores(names=None, file=None):
             continue
         try:
             attempt = nixpkgs_update.latest_attempt(name)
+            if (
+                attempt
+                and attempt.get("from") == nixpkgs_update.UPDATE_SCRIPT
+                and "was" not in attempt
+            ):
+                from .sources import nixpkgs
+
+                if v := (nixpkgs.load_index().get(name) or {}).get("version"):
+                    attempt["was"] = v
         except OSError as e:  # urllib's errors are OSErrors
             print(
                 f"  {name}: couldn't read the nixpkgs-update logs ({e})",
