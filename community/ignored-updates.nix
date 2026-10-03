@@ -27,6 +27,8 @@
 {
   blackvoxel."2.5" = "Temporary: v prefix removal at 2.5 causes update error.";
 
+  countryguess."0-unstable-2025-03-04" = "Open PR: update with fix incoming.";
+
   dustracing2d."2.2.0" = "Unrelated: update bot error is unrelated to package.";
 
   tetris."7.9.0" = "Incorrect version: package name collision, reported to Repology.";
