@@ -15,5 +15,4 @@
   "pacvim" = "2018-05-16";
   "steamtinkerlaunch" = "12.12-unstable-2025-07-14";
   "asc" = "2.6.3.0";
-  "cataclysm-dda" = "0.I-2026-06-11-1250";
 }
