@@ -4,32 +4,6 @@
     "licenses": [
       "CC-BY-SA-3.0"
     ],
-    "origversion": null,
-    "repo": "scoop",
-    "status": "outdated",
-    "subrepo": "games",
-    "version": "0.D",
-    "visiblename": "cataclysm-dda"
-  },
-  {
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "lin.ruohshoei+sbo@gmail.com"
-    ],
-    "origversion": null,
-    "repo": "slackbuilds",
-    "srcname": "games/cataclysmdda",
-    "status": "outdated",
-    "version": "0.I",
-    "visiblename": "games/cataclysmdda"
-  },
-  {
-    "binname": "cataclysm-dda",
-    "licenses": [
-      "CC-BY-SA-3.0"
-    ],
     "maintainers": [
       "joshuamurphy@posteo.net"
     ],
@@ -58,6 +32,26 @@
     "summary": "A post-apocalyptic roguelike (curses)",
     "version": "0i",
     "visiblename": "cataclysm-dda-curses"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda-data",
+      "cataclysm-dda-curses",
+      "cataclysm-dda-sdl"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "reiner@reiner-h.de"
+    ],
+    "origversion": "0.E-3-1",
+    "repo": "devuan_4_0",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "0.E-3",
+    "visiblename": "cataclysm-dda"
   },
   {
     "binname": "cataclysm-dda-doc",
@@ -179,20 +173,6 @@
     "visiblename": "cataclysm"
   },
   {
-    "binname": "cataclysm-dda",
-    "licenses": [
-      "CC-BY-NC-SA-3.0"
-    ],
-    "origversion": "0.I-1",
-    "repo": "arch",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "extra",
-    "summary": "A post-apocalyptic roguelike",
-    "version": "0.I",
-    "visiblename": "cataclysm-dda"
-  },
-  {
     "binname": "cataclysm-dda-tiles",
     "licenses": [
       "CC-BY-NC-SA-3.0"
@@ -205,6 +185,20 @@
     "summary": "A graphical post-apocalyptic roguelike.",
     "version": "0.I",
     "visiblename": "cataclysm-dda-tiles"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-NC-SA-3.0"
+    ],
+    "origversion": "0.I-1",
+    "repo": "arch",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A post-apocalyptic roguelike",
+    "version": "0.I",
+    "visiblename": "cataclysm-dda"
   },
   {
     "binname": "cataclysm-dda-git",
@@ -420,26 +414,6 @@
     "maintainers": [
       "reiner@reiner-h.de"
     ],
-    "origversion": "0.E-3-1",
-    "repo": "devuan_4_0",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "chimaera/main",
-    "version": "0.E-3",
-    "visiblename": "cataclysm-dda"
-  },
-  {
-    "binnames": [
-      "cataclysm-dda-data",
-      "cataclysm-dda-curses",
-      "cataclysm-dda-sdl"
-    ],
-    "categories": [
-      "misc"
-    ],
-    "maintainers": [
-      "reiner@reiner-h.de"
-    ],
     "origversion": "0.I-1",
     "repo": "devuan_unstable",
     "srcname": "cataclysm-dda",
@@ -501,28 +475,6 @@
       "cataclysm-dda",
       "cataclysm-dda-data",
       "cataclysm-dda-tiles",
-      "cataclysm-dda-tiles-data"
-    ],
-    "categories": [
-      "Unspecified"
-    ],
-    "licenses": [
-      "LicenseRef-Callaway-CC-BY-SA"
-    ],
-    "origversion": "0.H-1.fc41",
-    "repo": "fedora_41",
-    "srcname": "cataclysm-dda",
-    "status": "outdated",
-    "subrepo": "updates",
-    "summary": "Turn-based survival game set in a post-apocalyptic world",
-    "version": "0.H",
-    "visiblename": "cataclysm-dda"
-  },
-  {
-    "binnames": [
-      "cataclysm-dda",
-      "cataclysm-dda-data",
-      "cataclysm-dda-tiles",
       "cataclysm-dda-tiles-data",
       "cataclysm-dda-debuginfo",
       "cataclysm-dda-debugsource"
@@ -540,6 +492,28 @@
     "subrepo": "release",
     "summary": "Turn-based survival game set in a post-apocalyptic world",
     "version": "0.G",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "binnames": [
+      "cataclysm-dda",
+      "cataclysm-dda-data",
+      "cataclysm-dda-tiles",
+      "cataclysm-dda-tiles-data"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "LicenseRef-Callaway-CC-BY-SA"
+    ],
+    "origversion": "0.H-1.fc41",
+    "repo": "fedora_41",
+    "srcname": "cataclysm-dda",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Turn-based survival game set in a post-apocalyptic world",
+    "version": "0.H",
     "visiblename": "cataclysm-dda"
   },
   {
@@ -1453,6 +1427,32 @@
     "subrepo": "games",
     "version": "2026-10-02-1831",
     "visiblename": "cataclysm-dda-tiles-experimental"
+  },
+  {
+    "binname": "cataclysm-dda",
+    "licenses": [
+      "CC-BY-SA-3.0"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "outdated",
+    "subrepo": "games",
+    "version": "0.D",
+    "visiblename": "cataclysm-dda"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "lin.ruohshoei+sbo@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/cataclysmdda",
+    "status": "newest",
+    "version": "0.I_1",
+    "visiblename": "games/cataclysmdda"
   },
   {
     "binname": "cataclysm",

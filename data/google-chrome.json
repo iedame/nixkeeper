@@ -224,9 +224,9 @@
     "origversion": null,
     "repo": "homebrew_casks",
     "srcname": "google-chrome@dev",
-    "status": "outdated",
+    "status": "ignored",
     "summary": "Web browser",
-    "version": "156.0.8072.0",
+    "version": "157.0.8081.0",
     "visiblename": "Google Chrome Dev"
   },
   {
@@ -551,6 +551,20 @@
     "vulnerable": true
   },
   {
+    "binname": "google-chrome-unstable-deb",
+    "maintainers": [
+      "oren@taumoda.com"
+    ],
+    "origversion": "139.0.7232.3-1",
+    "repo": "pacstall",
+    "srcname": "google-chrome-unstable-deb",
+    "status": "outdated",
+    "summary": "The web browser built by Google - Developer/Unstable channel",
+    "version": "139.0.7232.3",
+    "visiblename": "google-chrome-unstable-deb",
+    "vulnerable": true
+  },
+  {
     "categories": [
       "www-client"
     ],
@@ -624,6 +638,19 @@
     "summary": "The web browser from Google",
     "version": "151.0.7922.137",
     "visiblename": "www-client/google-chrome",
+    "vulnerable": true
+  },
+  {
+    "categories": [
+      "Networking/WWW"
+    ],
+    "origversion": "154.0.8037.57-1pclos2026",
+    "repo": "pclinuxos",
+    "srcname": "google-chrome-browser",
+    "status": "outdated",
+    "summary": "Google Chrome",
+    "version": "154.0.8037.57",
+    "visiblename": "google-chrome-browser",
     "vulnerable": true
   },
   {
@@ -889,33 +916,6 @@
     "summary": "The popular and trusted web browser by Google",
     "version": "152.0.7977.64",
     "visiblename": "google-chrome-deb",
-    "vulnerable": true
-  },
-  {
-    "binname": "google-chrome-unstable-deb",
-    "maintainers": [
-      "oren@taumoda.com"
-    ],
-    "origversion": "139.0.7232.3-1",
-    "repo": "pacstall",
-    "srcname": "google-chrome-unstable-deb",
-    "status": "outdated",
-    "summary": "The web browser built by Google - Developer/Unstable channel",
-    "version": "139.0.7232.3",
-    "visiblename": "google-chrome-unstable-deb",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "Networking/WWW"
-    ],
-    "origversion": "154.0.8037.57-1pclos2026",
-    "repo": "pclinuxos",
-    "srcname": "google-chrome-browser",
-    "status": "outdated",
-    "summary": "Google Chrome",
-    "version": "154.0.8037.57",
-    "visiblename": "google-chrome-browser",
     "vulnerable": true
   },
   {

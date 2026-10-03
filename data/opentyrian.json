@@ -1,6 +1,66 @@
 [
   {
     "binnames": [
+      "opentyrian"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "alexandre.detiste@gmail.com",
+      "me@emillon.org"
+    ],
+    "origversion": "2.1.20221123-1",
+    "repo": "raspbian_oldstable",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "2.1.20221123",
+    "visiblename": "opentyrian"
+  },
+  {
+    "binnames": [
+      "opentyrian"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "me@emillon.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "2.1.20221123-2",
+    "repo": "raspbian_stable",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "2.1.20221123",
+    "visiblename": "opentyrian"
+  },
+  {
+    "binnames": [
+      "opentyrian"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "me@emillon.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "2.1.20260912-1",
+    "repo": "raspbian_testing",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "subrepo": "contrib",
+    "version": "2.1.20260912",
+    "visiblename": "opentyrian"
+  },
+  {
+    "binnames": [
       "opentyrian",
       "opentyrian-debuginfo"
     ],
@@ -258,6 +318,38 @@
     "visiblename": "games-arcade/OpenTyrian"
   },
   {
+    "binnames": [
+      "opentyrian"
+    ],
+    "categories": [
+      "contrib/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "me@emillon.org",
+      "tchet@debian.org"
+    ],
+    "origversion": "2.1.20221123-2",
+    "repo": "parrot",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "subrepo": "parrot/contrib",
+    "version": "2.1.20221123",
+    "visiblename": "opentyrian"
+  },
+  {
+    "categories": [
+      "Games/Arcade"
+    ],
+    "origversion": "2.1-2pclos2013",
+    "repo": "pclinuxos",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "summary": "Classic shoot-em-up arcade port",
+    "version": "2.1",
+    "visiblename": "opentyrian"
+  },
+  {
     "binname": "opentyrian",
     "categories": [
       "games"
@@ -290,28 +382,6 @@
     "summary": "Open-source port of the DOS game Tyrian, vertical scrolling shooter",
     "version": "2.1.20130907",
     "visiblename": "games-arcade/opentyrian"
-  },
-  {
-    "binnames": [
-      "opentyrian"
-    ],
-    "categories": [
-      "Games/Arcade"
-    ],
-    "licenses": [
-      "GPLv2"
-    ],
-    "maintainers": [
-      "bero@lindev.ch"
-    ],
-    "origversion": "2.1.20221123-1",
-    "repo": "openmandriva_6_0",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "subrepo": "non-free/release",
-    "summary": "Classic shoot-em-up arcade port",
-    "version": "2.1.20221123",
-    "visiblename": "opentyrian"
   },
   {
     "categories": [
@@ -447,6 +517,26 @@
     "visiblename": "opentyrian"
   },
   {
+    "categories": [
+      "Games/Arcade"
+    ],
+    "origversion": "2.1-3pclos2019",
+    "repo": "pclinuxos",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "summary": "Classic shoot-em-up arcade port",
+    "version": "2.1",
+    "visiblename": "opentyrian"
+  },
+  {
+    "origversion": "0-0.20110209",
+    "repo": "pld",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "version": "0",
+    "visiblename": "opentyrian"
+  },
+  {
     "maintainers": [
       "fallback-mnt-nix@repology"
     ],
@@ -485,6 +575,28 @@
     "summary": "port of the DOS shoot-em-up Tyrian",
     "version": "2.1.20221123",
     "visiblename": "games/opentyrian"
+  },
+  {
+    "binnames": [
+      "opentyrian"
+    ],
+    "categories": [
+      "Games/Arcade"
+    ],
+    "licenses": [
+      "GPLv2"
+    ],
+    "maintainers": [
+      "bero@lindev.ch"
+    ],
+    "origversion": "2.1.20221123-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "opentyrian",
+    "status": "outdated",
+    "subrepo": "non-free/release",
+    "summary": "Classic shoot-em-up arcade port",
+    "version": "2.1.20221123",
+    "visiblename": "opentyrian"
   },
   {
     "binnames": [
@@ -677,118 +789,6 @@
   },
   {
     "binnames": [
-      "opentyrian"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "me@emillon.org",
-      "tchet@debian.org"
-    ],
-    "origversion": "2.1.20221123-2",
-    "repo": "parrot",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "subrepo": "parrot/contrib",
-    "version": "2.1.20221123",
-    "visiblename": "opentyrian"
-  },
-  {
-    "categories": [
-      "Games/Arcade"
-    ],
-    "origversion": "2.1-2pclos2013",
-    "repo": "pclinuxos",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "summary": "Classic shoot-em-up arcade port",
-    "version": "2.1",
-    "visiblename": "opentyrian"
-  },
-  {
-    "categories": [
-      "Games/Arcade"
-    ],
-    "origversion": "2.1-3pclos2019",
-    "repo": "pclinuxos",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "summary": "Classic shoot-em-up arcade port",
-    "version": "2.1",
-    "visiblename": "opentyrian"
-  },
-  {
-    "origversion": "0-0.20110209",
-    "repo": "pld",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "version": "0",
-    "visiblename": "opentyrian"
-  },
-  {
-    "binnames": [
-      "opentyrian"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "alexandre.detiste@gmail.com",
-      "me@emillon.org"
-    ],
-    "origversion": "2.1.20221123-1",
-    "repo": "raspbian_oldstable",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "subrepo": "contrib",
-    "version": "2.1.20221123",
-    "visiblename": "opentyrian"
-  },
-  {
-    "binnames": [
-      "opentyrian"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "me@emillon.org",
-      "tchet@debian.org"
-    ],
-    "origversion": "2.1.20221123-2",
-    "repo": "raspbian_stable",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "subrepo": "contrib",
-    "version": "2.1.20221123",
-    "visiblename": "opentyrian"
-  },
-  {
-    "binnames": [
-      "opentyrian"
-    ],
-    "categories": [
-      "contrib/misc"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "me@emillon.org",
-      "tchet@debian.org"
-    ],
-    "origversion": "2.1.20260912-1",
-    "repo": "raspbian_testing",
-    "srcname": "opentyrian",
-    "status": "outdated",
-    "subrepo": "contrib",
-    "version": "2.1.20260912",
-    "visiblename": "opentyrian"
-  },
-  {
-    "binnames": [
       "opentyrian",
       "opentyrian-debuginfo",
       "opentyrian-debugsource"
@@ -860,8 +860,8 @@
     "origversion": null,
     "repo": "slackbuilds",
     "srcname": "games/opentyrian",
-    "status": "outdated",
-    "version": "2.1.20221123",
+    "status": "newest",
+    "version": "2.1.20260913",
     "visiblename": "games/opentyrian"
   },
   {

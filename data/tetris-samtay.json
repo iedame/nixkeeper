@@ -1,5 +1,21 @@
 [
   {
+    "binname": "tetris-terminal-git",
+    "licenses": [
+      "custom"
+    ],
+    "maintainers": [
+      "jose1711@aur"
+    ],
+    "origversion": "r82.8f506c3-1",
+    "repo": "aur",
+    "srcname": "tetris-terminal-git",
+    "status": "rolling",
+    "summary": "Terminal interface for Tetris",
+    "version": "r82.8f506c3",
+    "visiblename": "tetris-terminal-git"
+  },
+  {
     "licenses": [
       "BSD-3-Clause"
     ],
@@ -9,7 +25,7 @@
     "origversion": null,
     "repo": "nix_stable_24_11",
     "srcname": "tetris",
-    "status": "unique",
+    "status": "newest",
     "version": "0.1.6",
     "visiblename": "tetris"
   },
@@ -23,7 +39,7 @@
     "origversion": null,
     "repo": "nix_stable_25_05",
     "srcname": "tetris",
-    "status": "unique",
+    "status": "newest",
     "version": "0.1.6",
     "visiblename": "tetris"
   },
@@ -37,7 +53,7 @@
     "origversion": null,
     "repo": "nix_stable_25_11",
     "srcname": "tetris",
-    "status": "unique",
+    "status": "newest",
     "version": "0.1.6",
     "visiblename": "tetris"
   },
@@ -51,7 +67,7 @@
     "origversion": null,
     "repo": "nix_stable_26_05",
     "srcname": "tetris",
-    "status": "unique",
+    "status": "newest",
     "version": "0.1.6",
     "visiblename": "tetris"
   },
@@ -65,7 +81,7 @@
     "origversion": null,
     "repo": "nix_unstable",
     "srcname": "tetris",
-    "status": "unique",
+    "status": "newest",
     "version": "0.1.6",
     "visiblename": "tetris"
   }

@@ -1,0 +1,1258 @@
+[
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "parrot",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "devuan_unstable",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "unstable/main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "System/Configuration/Hardware"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "oddity@altlinux.ru"
+    ],
+    "origversion": "1.7.3-alt1",
+    "repo": "alt_p11",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "Graphical UI to help manage Linux overlays",
+    "version": "1.7.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay",
+      "goverlay-debuginfo"
+    ],
+    "categories": [
+      "System/Configuration/Hardware"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "oddity@altlinux.ru"
+    ],
+    "origversion": "1.9.2-alt1",
+    "repo": "altsisyphus",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "Graphical UI to help manage Linux overlays",
+    "version": "1.9.2",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay",
+    "categories": [
+      "utils"
+    ],
+    "maintainers": [
+      "fallback-mnt-aosc@repology"
+    ],
+    "origversion": null,
+    "repo": "aosc",
+    "srcname": "app-utils/goverlay",
+    "status": "outdated",
+    "summary": "A GUI application to manage Vulkan/OpenGL overlays",
+    "version": "1.2",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1.9.3-1",
+    "repo": "arch",
+    "srcname": "goverlay",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A GUI to help manage Vulkan/OpenGL overlays",
+    "version": "1.9.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay-git",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "yochananmarqos@aur"
+    ],
+    "origversion": "1.9.1.r34.gbd1fde8-1",
+    "repo": "aur",
+    "srcname": "goverlay-git",
+    "status": "rolling",
+    "summary": "A GUI to help manage Vulkan/OpenGL overlays",
+    "version": "1.9.1.r34.gbd1fde8",
+    "visiblename": "goverlay-git"
+  },
+  {
+    "binname": "goverlay",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1.9.3-1",
+    "repo": "artix",
+    "srcname": "goverlay",
+    "status": "newest",
+    "subrepo": "galaxy",
+    "summary": "A GUI to help manage Vulkan/OpenGL overlays",
+    "version": "1.9.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "parrot",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@protonmail.com"
+    ],
+    "origversion": "0.4.4-1",
+    "repo": "debian_11",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "bullseye/main",
+    "version": "0.4.4",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "0.9.1-1",
+    "repo": "debian_12",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "0.9.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "debian_13",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "debian_14",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "forky/main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "debian_unstable",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "sid/main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@protonmail.com"
+    ],
+    "origversion": "0.4.4-1",
+    "repo": "devuan_4_0",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "0.4.4",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay",
+      "goverlay-debuginfo",
+      "goverlay-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "0.9-5.fc39",
+    "repo": "fedora_39",
+    "srcname": "goverlay",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "0.9",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay",
+      "goverlay-debuginfo",
+      "goverlay-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:0.9.1-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "0.9.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay",
+      "goverlay-debuginfo",
+      "goverlay-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "origversion": "0.9-7.fc40",
+    "repo": "fedora_40",
+    "srcname": "goverlay",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "0.9",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay",
+      "goverlay-debuginfo",
+      "goverlay-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:1.3-1.fc40",
+    "repo": "fedora_40",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "1.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:1.3-1.fc41",
+    "repo": "fedora_41",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "1.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:1.2-1.fc41",
+    "repo": "fedora_41",
+    "srcname": "goverlay",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "1.2",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:1.3-1.fc42",
+    "repo": "fedora_42",
+    "srcname": "goverlay",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "1.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:1.7.5-1.fc42",
+    "repo": "fedora_42",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Graphical interface to configure MangoHud, vkBasalt, and OptiScaler",
+    "version": "1.7.5",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:1.3-2.fc43",
+    "repo": "fedora_43",
+    "srcname": "goverlay",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "Project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "1.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:1.7.5-1.fc43",
+    "repo": "fedora_43",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Graphical interface to configure MangoHud, vkBasalt, and OptiScaler",
+    "version": "1.7.5",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:1.7.5-1.fc44",
+    "repo": "fedora_44",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Graphical interface to configure MangoHud, vkBasalt, and OptiScaler",
+    "version": "1.7.5",
+    "visiblename": "goverlay"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "Opensource project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "1.6.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1:1.8.0-2.fc45",
+    "repo": "fedora_rawhide",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "development",
+    "summary": "Graphical interface to configure MangoHud, vkBasalt, and OptiScaler",
+    "version": "1.8.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "1758961307@qq.com"
+    ],
+    "origversion": null,
+    "repo": "gentoo_ovl_guru",
+    "srcname": "games-util/goverlay",
+    "status": "outdated",
+    "summary": "Graphical UI to help manage Linux game overlays (MangoHud).",
+    "version": "1.2",
+    "visiblename": "games-util/goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "kali_rolling",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "1758961307@qq.com"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-util/goverlay",
+    "status": "outdated",
+    "summary": "Graphical UI to help manage Linux game overlays (MangoHud).",
+    "version": "1.2",
+    "visiblename": "games-util/goverlay"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "1758961307@qq.com"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-util/goverlay",
+    "status": "outdated",
+    "summary": "Graphical UI to help manage Linux game overlays (MangoHud).",
+    "version": "1.2",
+    "visiblename": "games-util/goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Graphics/Utilities"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "origversion": "1.7.5-1.mga10",
+    "repo": "mageia_10",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Graphical UI to help manage Vulkan/OpenGL overlays",
+    "version": "1.7.5",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay",
+      "goverlay-debuginfo",
+      "goverlay-debugsource"
+    ],
+    "categories": [
+      "Graphics/Utilities"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "origversion": "0.9.1-1.mga9",
+    "repo": "mageia_9",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Graphical UI to help manage Vulkan/OpenGL overlays",
+    "version": "0.9.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Graphics/Utilities"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "origversion": "1.8.11-1.mga11",
+    "repo": "mageia_cauldron",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "core/release",
+    "summary": "Graphical UI to help manage Vulkan/OpenGL overlays",
+    "version": "1.8.11",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1.9.0-1",
+    "repo": "manjaro_stable",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A GUI to help manage Vulkan/OpenGL overlays",
+    "version": "1.9.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1.9.0-1",
+    "repo": "manjaro_testing",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "extra",
+    "summary": "A GUI to help manage Vulkan/OpenGL overlays",
+    "version": "1.9.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1.9.3-1",
+    "repo": "manjaro_unstable",
+    "srcname": "goverlay",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A GUI to help manage Vulkan/OpenGL overlays",
+    "version": "1.9.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "kira.bruneau@pm.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "An opensource project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "0.7.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "Opensource project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "0.7.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "Opensource project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "1.3-2",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "0.9.1-1",
+    "repo": "raspbian_oldstable",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.9.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "Opensource project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "1.8.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "Open source project that aims to create a Graphical UI to help manage Linux overlays",
+    "version": "1.9.2",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Graphical Desktop/Applications/Multimedia"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "silvan@openmamba.org"
+    ],
+    "origversion": "1.9.3-1mamba",
+    "repo": "openmamba",
+    "srcname": "goverlay",
+    "status": "newest",
+    "subrepo": "base",
+    "summary": "A Graphical UI to help manage Linux overlays",
+    "version": "1.9.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Graphics/Utilities"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.3-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Graphical UI to help manage Vulkan/OpenGL overlays",
+    "version": "1.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Graphics/Utilities"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.7.5-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Graphical UI to help manage Vulkan/OpenGL overlays",
+    "version": "1.7.5",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "Graphics/Utilities"
+    ],
+    "licenses": [
+      "GPLv3"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.7.5-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Graphical UI to help manage Vulkan/OpenGL overlays",
+    "version": "1.7.5",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay",
+      "goverlay-debuginfo",
+      "goverlay-debugsource"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1.9.2-1.1",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "src-oss",
+    "summary": "Graphical UI to help manage overlays",
+    "version": "1.9.2",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay",
+    "maintainers": [
+      "xdavius@github.com"
+    ],
+    "origversion": "1.7.4-1",
+    "repo": "pacstall",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "A GUI to help manage Vulkan/OpenGL overlays",
+    "version": "1.7.4",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay-bin",
+    "maintainers": [
+      "xdavius@github.com"
+    ],
+    "origversion": "1.2.0-1",
+    "repo": "pacstall",
+    "srcname": "goverlay-bin",
+    "status": "outdated",
+    "summary": "Graphical UI to help manage Linux overlays",
+    "version": "1.2.0",
+    "visiblename": "goverlay-bin"
+  },
+  {
+    "binname": "goverlay",
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "origversion": "1.9.3-1",
+    "repo": "parabola",
+    "srcname": "goverlay",
+    "status": "newest",
+    "subrepo": "extra",
+    "summary": "A GUI to help manage Vulkan/OpenGL overlays",
+    "version": "1.9.3",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@protonmail.com"
+    ],
+    "origversion": "0.4.4-1",
+    "repo": "pardus_21",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "0.4.4",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@protonmail.com"
+    ],
+    "origversion": "0.4.4-1",
+    "repo": "pureos_byzantium",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "0.4.4",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "pureos_landing",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay",
+      "goverlay-debuginfo",
+      "goverlay-debugsource"
+    ],
+    "categories": [
+      "Graphics"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "s.matveev@rosalinux.ru"
+    ],
+    "origversion": "1.1.1-1",
+    "repo": "rosa_2019_1",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "GUI to help manage Linux overlays",
+    "version": "1.1.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay",
+      "goverlay-debuginfo",
+      "goverlay-debugsource"
+    ],
+    "categories": [
+      "Graphics"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "a.proklov@rosa.ru"
+    ],
+    "origversion": "1:1.7.5-1",
+    "repo": "rosa_13",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "contrib/release",
+    "summary": "GUI to help manage Linux overlays",
+    "version": "1.7.5",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay",
+    "categories": [
+      "system.utils"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "jared@jaredcervantes.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "GUI for configuring Vulkan/OpenGL overlays - MangoHud, vkBasalt and ReplaySorcery",
+    "version": "1.8.10",
+    "visiblename": "goverlay"
+  },
+  {
+    "binname": "goverlay-dbginfo",
+    "categories": [
+      "debug"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "jared@jaredcervantes.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "summary": "Debug symbols for goverlay",
+    "version": "1.8.10",
+    "visiblename": "goverlay-dbginfo"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "0.7.1-2",
+    "repo": "trisquel_11_0",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "aramo/main",
+    "version": "0.7.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "0.7.1-2",
+    "repo": "ubuntu_22_04",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "0.7.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "0.9.1-2",
+    "repo": "ubuntu_24_04",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "noble/universe",
+    "version": "0.9.1",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "ubuntu_25_04",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "plucky/universe",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "ubuntu_25_10",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "questing/universe",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1build1",
+    "repo": "ubuntu_26_04",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "resolute/universe",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1build1",
+    "repo": "ubuntu_26_10",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "stonking/universe",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "raspbian_stable",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  },
+  {
+    "binnames": [
+      "goverlay"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.0-1",
+    "repo": "raspbian_testing",
+    "srcname": "goverlay",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.0",
+    "visiblename": "goverlay"
+  }
+]

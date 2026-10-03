@@ -1,0 +1,532 @@
+[
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "origversion": null,
+    "repo": "aerynos",
+    "srcname": "faugus-launcher",
+    "status": "newest",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "2.4.2",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "boria138@altlinux.org"
+    ],
+    "origversion": "2.4.2-alt1",
+    "repo": "altsisyphus",
+    "srcname": "faugus-launcher",
+    "status": "newest",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "2.4.2",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binname": "faugus-launcher",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "flxrbr@aur"
+    ],
+    "origversion": "2.4.2-1",
+    "repo": "aur",
+    "srcname": "faugus-launcher",
+    "status": "newest",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "2.4.2",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binname": "faugus-launcher-bin",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "felitendo@aur"
+    ],
+    "origversion": "2.4.2-1",
+    "repo": "aur",
+    "srcname": "faugus-launcher-bin",
+    "status": "newest",
+    "summary": "Simple and lightweight app for running Windows games using UMU-Launcher (upstream binary)",
+    "version": "2.4.2",
+    "visiblename": "faugus-launcher-bin"
+  },
+  {
+    "binname": "faugus-launcher-git",
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "flxrbr@aur"
+    ],
+    "origversion": "r1773.5c714bb-1",
+    "repo": "aur",
+    "srcname": "faugus-launcher-git",
+    "status": "rolling",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "r1773.5c714bb",
+    "visiblename": "faugus-launcher-git"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "maintainers": [
+      "fallback-mnt-exherbo@repology"
+    ],
+    "origversion": null,
+    "repo": "exherbo",
+    "srcname": "games-util/faugus-launcher",
+    "status": "newest",
+    "subrepo": "games",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "2.4.2",
+    "visiblename": "games-util/faugus-launcher"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "faugus-launcher",
+    "status": "outdated",
+    "summary": "Simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.10.4",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "faugus-launcher",
+    "status": "outdated",
+    "summary": "Simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.22.6",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "faugus-launcher",
+    "status": "outdated",
+    "summary": "Simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "2.3.0",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.1~22-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.1~22",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.1~23-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.1~23",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.1~24-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.1~24",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.2~1-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.2~1",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "azure.grade9592@eagereverest.com"
+    ],
+    "origversion": "1.4.4-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "faugus-launcher",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.4.4",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.1~22-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.1~22",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.1~23-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.1~23",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.1~24-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.1~24",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.2~1-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.2~1",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "vuatech@proton.me"
+    ],
+    "origversion": "2.1.0-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "faugus-launcher",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Lightweight launcher for Windows games via UMU-Launcher",
+    "version": "2.1.0",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.1~22-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.1~22",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.1~23-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.1~23",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.1~24-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.1~24",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.2~1-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "faugus-launcher",
+    "status": "legacy",
+    "subrepo": "main/release",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "1.2~1",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher"
+    ],
+    "categories": [
+      "Games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "vuatech@proton.me"
+    ],
+    "origversion": "2.1.0-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "faugus-launcher",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Lightweight launcher for Windows games via UMU-Launcher",
+    "version": "2.1.0",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binnames": [
+      "faugus-launcher",
+      "faugus-launcher-lang"
+    ],
+    "categories": [
+      "System/Emulators/PC"
+    ],
+    "licenses": [
+      "MIT and CC-BY-4.0"
+    ],
+    "origversion": "2.3.0-1.1",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "faugus-launcher",
+    "status": "outdated",
+    "subrepo": "src-oss",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "2.3.0",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binname": "faugus-launcher",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "jared@jaredcervantes.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "faugus-launcher",
+    "status": "outdated",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "2.4.1",
+    "visiblename": "faugus-launcher"
+  },
+  {
+    "binname": "faugus-launcher",
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "MIT"
+    ],
+    "maintainers": [
+      "cbrunofb@gmail.com"
+    ],
+    "origversion": "2.4.2-1.fcrawhide",
+    "repo": "terra_rawhide",
+    "srcname": "faugus-launcher",
+    "status": "newest",
+    "summary": "A simple and lightweight app for running Windows games using UMU-Launcher",
+    "version": "2.4.2",
+    "visiblename": "faugus-launcher"
+  }
+]

@@ -1,0 +1,1068 @@
+[
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "parrot",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "parrot/main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "parrot",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "parrot-updates/main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binname": "minigalaxy",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "saijin-naib_package-maintenance@outlook.com"
+    ],
+    "origversion": "1.4.1-r1",
+    "repo": "alpine_edge",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "testing",
+    "summary": "A simple GOG client for Linux",
+    "version": "1.4.1",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binname": "minigalaxy-pyc",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "saijin-naib_package-maintenance@outlook.com"
+    ],
+    "origversion": "1.4.1-r1",
+    "repo": "alpine_edge",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "testing",
+    "summary": "Precompiled Python bytecode for minigalaxy",
+    "version": "1.4.1",
+    "visiblename": "minigalaxy-pyc"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "shad@altlinux.org"
+    ],
+    "origversion": "1.4.2-alt2",
+    "repo": "alt_p11",
+    "srcname": "minigalaxy",
+    "status": "newest",
+    "summary": "A simple GOG client for Linux",
+    "version": "1.4.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "shad@altlinux.org"
+    ],
+    "origversion": "1.4.2-alt2",
+    "repo": "altsisyphus",
+    "srcname": "minigalaxy",
+    "status": "newest",
+    "summary": "A simple GOG client for Linux",
+    "version": "1.4.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binname": "minigalaxy",
+    "licenses": [
+      "GPL-3.0-or-later AND CC-BY-3.0"
+    ],
+    "maintainers": [
+      "yochananmarqos@aur"
+    ],
+    "origversion": "1.4.2-1",
+    "repo": "aur",
+    "srcname": "minigalaxy",
+    "status": "newest",
+    "summary": "A simple GOG client for Linux",
+    "version": "1.4.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binname": "minigalaxy-git",
+    "licenses": [
+      "GPL-3.0-or-later AND CC-BY-3.0"
+    ],
+    "maintainers": [
+      "fabiololix@aur"
+    ],
+    "origversion": "1.4.1.r72.g1127c95-2",
+    "repo": "aur",
+    "srcname": "minigalaxy-git",
+    "status": "rolling",
+    "summary": "A simple GOG client for Linux",
+    "version": "1.4.1.r72.g1127c95",
+    "visiblename": "minigalaxy-git"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@protonmail.com"
+    ],
+    "origversion": "1.0.2-1",
+    "repo": "debian_11",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "bullseye/main",
+    "version": "1.0.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "team+pkg-games@tracker.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.2-1",
+    "repo": "debian_12",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "bookworm/main",
+    "version": "1.2.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "debian_13",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "trixie/main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "debian_14",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "forky/main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "debian_unstable",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "sid/main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@protonmail.com"
+    ],
+    "origversion": "1.0.2-1",
+    "repo": "devuan_4_0",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "1.0.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "devuan_unstable",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "unstable/main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.3.2-1.el9",
+    "repo": "epel_9",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "summary": "GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.3.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv3+ and CC-BY"
+    ],
+    "origversion": "1.2.5-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "minigalaxy",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.2.5",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.3.0-1.fc39",
+    "repo": "fedora_39",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.3.0",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.2.6-3.fc40",
+    "repo": "fedora_40",
+    "srcname": "minigalaxy",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.3.2-1.fc40",
+    "repo": "fedora_40",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.3.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.3.0-3.fc41",
+    "repo": "fedora_41",
+    "srcname": "minigalaxy",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.3.0",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.3.2-1.fc41",
+    "repo": "fedora_41",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.3.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.4.0-2.fc42",
+    "repo": "fedora_42",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.4.0",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.3.2-1.fc42",
+    "repo": "fedora_42",
+    "srcname": "minigalaxy",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.3.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.3.2-6.fc43",
+    "repo": "fedora_43",
+    "srcname": "minigalaxy",
+    "status": "legacy",
+    "subrepo": "release",
+    "summary": "GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.3.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.4.1-3.fc43",
+    "repo": "fedora_43",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "updates",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.4.1",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.4.1-3.fc44",
+    "repo": "fedora_44",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "release",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.4.1",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later and CC-BY-3.0"
+    ],
+    "origversion": "1.4.1-5.fc45",
+    "repo": "fedora_rawhide",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "development",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.4.1",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3+"
+    ],
+    "maintainers": [
+      "guru@gentoo.org"
+    ],
+    "origversion": null,
+    "repo": "gentoo_ovl_guru",
+    "srcname": "games-util/minigalaxy",
+    "status": "outdated",
+    "summary": "A simple GOG client for Linux",
+    "version": "1.4.0",
+    "visiblename": "games-util/minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "kali_rolling",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "swamprabbit@mxlinux.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.1.0+git20211125-1~mx21+1",
+    "repo": "mx_21_testing",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "version": "1.1.0+git20211125",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "summary": "A simple GOG client for Linux",
+    "version": "1.2.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.3.0",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "fallback-mnt-nix@repology"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.3.1",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.4.0",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.4.1",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "minigalaxy",
+    "status": "newest",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.4.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.3.2-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "main/release",
+    "summary": "Unofficial GOG client for Linux",
+    "version": "1.3.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.4.2-1",
+    "repo": "openmandriva_rolling",
+    "srcname": "minigalaxy",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "Unofficial GOG client for Linux",
+    "version": "1.4.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPLv3+"
+    ],
+    "maintainers": [
+      "angrypenguinpoland@gmail.com"
+    ],
+    "origversion": "1.4.2-1",
+    "repo": "openmandriva_cooker",
+    "srcname": "minigalaxy",
+    "status": "newest",
+    "subrepo": "main/release",
+    "summary": "Unofficial GOG client for Linux",
+    "version": "1.4.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "1.2.2-bp155.1.5",
+    "repo": "opensuse_leap_15_5",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "A GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.2.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "1.2.5-bp156.1.1",
+    "repo": "opensuse_leap_15_6",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "main/oss",
+    "summary": "A GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.2.5",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "Amusements/Games/Other"
+    ],
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "origversion": "1.4.2-1.1",
+    "repo": "opensuse_tumbleweed",
+    "srcname": "minigalaxy",
+    "status": "newest",
+    "subrepo": "src-oss",
+    "summary": "A GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.4.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@protonmail.com"
+    ],
+    "origversion": "1.0.2-1",
+    "repo": "pardus_21",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.0.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@protonmail.com"
+    ],
+    "origversion": "1.0.2-1",
+    "repo": "pureos_byzantium",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "byzantium/main",
+    "version": "1.0.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "pureos_landing",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "landing/main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "team+pkg-games@tracker.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.2-1",
+    "repo": "raspbian_oldstable",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.2.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "raspbian_stable",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "raspbian_testing",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "main",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "henesy.dev@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/minigalaxy",
+    "status": "outdated",
+    "version": "1.3.0",
+    "visiblename": "games/minigalaxy"
+  },
+  {
+    "binname": "minigalaxy",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "harvey@getsol.us"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "minigalaxy",
+    "status": "newest",
+    "summary": "A simple GOG client for Linux that lets you download and play your GOG Linux games",
+    "version": "1.4.2",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "team+pkg-games@tracker.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.1.0-1",
+    "repo": "ubuntu_22_04",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "jammy/universe",
+    "version": "1.1.0",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "team+pkg-games@tracker.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-2",
+    "repo": "ubuntu_24_04",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "noble/universe",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "ubuntu_25_04",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "plucky/universe",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3",
+    "repo": "ubuntu_25_10",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "questing/universe",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3build1",
+    "repo": "ubuntu_26_04",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "resolute/universe",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binnames": [
+      "minigalaxy"
+    ],
+    "categories": [
+      "universe/misc"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "stephanlachnit@debian.org"
+    ],
+    "origversion": "1.2.6-3build1",
+    "repo": "ubuntu_26_10",
+    "srcname": "minigalaxy",
+    "status": "outdated",
+    "subrepo": "stonking/universe",
+    "version": "1.2.6",
+    "visiblename": "minigalaxy"
+  },
+  {
+    "binname": "minigalaxy",
+    "licenses": [
+      "GPL-3.0-or-later",
+      "CC-BY-3.0"
+    ],
+    "maintainers": [
+      "orphan@voidlinux.org"
+    ],
+    "origversion": "1.4.2_1",
+    "repo": "void_x86_64",
+    "srcname": "minigalaxy",
+    "status": "newest",
+    "subrepo": "x86_64",
+    "summary": "Simple GOG client for Linux",
+    "version": "1.4.2",
+    "visiblename": "minigalaxy"
+  }
+]

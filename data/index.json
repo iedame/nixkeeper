@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-03T00:51:47.070239+00:00",
+  "checkedAt": "2026-10-03T05:04:52.921419+00:00",
   "packages": [
     {
       "attrs": [
@@ -261,7 +261,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
+        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
         "community": true,
         "label": "www.barebones.com",
         "newer": false,
@@ -959,6 +959,59 @@
     },
     {
       "attrs": [
+        "faugus-launcher"
+      ],
+      "builds": [
+        {
+          "attr": "faugus-launcher",
+          "build": 347103161,
+          "name": "faugus-launcher-2.3.0",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "2.3.0"
+        },
+        {
+          "attr": "faugus-launcher",
+          "status": "notBuilt",
+          "system": "aarch64-linux"
+        }
+      ],
+      "dataFile": "faugus-launcher.json",
+      "devel": false,
+      "homepage": "https://github.com/Faugus/faugus-launcher",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "faugus-launcher",
+      "nixStatus": "outdated",
+      "nixVersion": "2.3.0",
+      "nixVulnerable": false,
+      "openIssues": 1,
+      "openPRs": 0,
+      "outdatedSince": "2026-10-03T05:04:52.921419+00:00",
+      "platforms": {
+        "darwin": false,
+        "linux": true
+      },
+      "project": "faugus-launcher",
+      "refVersion": "2.4.2",
+      "repoCount": 26,
+      "searchTerm": "faugus-launcher",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/fa/faugus-launcher/package.nix#L99",
+      "update": {
+        "attr": "faugus-launcher",
+        "date": "2026-09-23",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/faugus-launcher/2026-09-23.log",
+        "outcome": "noChange",
+        "parser": 1,
+        "to": "1",
+        "was": "faugus-launcher-2.3.0"
+      },
+      "updateFailure": false
+    },
+    {
+      "attrs": [
         "fheroes2"
       ],
       "builds": [
@@ -1355,13 +1408,74 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
+        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
         "community": true,
         "label": "versionhistory.googleapis.com",
         "newer": true,
         "url": "https://versionhistory.googleapis.com/v1/chrome/platforms/linux/channels/stable/versions",
         "version": "154.0.8037.97"
       }
+    },
+    {
+      "attrs": [
+        "goverlay"
+      ],
+      "builds": [
+        {
+          "attr": "goverlay",
+          "build": 347815546,
+          "name": "goverlay-1.9.2",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "1.9.2"
+        },
+        {
+          "attr": "goverlay",
+          "build": 347815544,
+          "name": "goverlay-1.9.2",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "1.9.2"
+        }
+      ],
+      "dataFile": "goverlay.json",
+      "devel": false,
+      "homepage": "https://github.com/benjamimgois/goverlay",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "goverlay",
+      "nixStatus": "outdated",
+      "nixVersion": "1.9.2",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "outdatedSince": "2026-10-03T05:04:52.921419+00:00",
+      "platforms": {
+        "darwin": false,
+        "linux": true
+      },
+      "project": "goverlay",
+      "refVersion": "1.9.3",
+      "repoCount": 67,
+      "searchTerm": "goverlay",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/go/goverlay/package.nix#L139",
+      "update": {
+        "attr": "goverlay",
+        "date": "2026-09-25",
+        "excerpt": [
+          "        at   $000000000053D974",
+          "[logic_tests] 0 failures, 6 errors",
+          "[test] FAILURES detected - preserved isolated HOME at: /build/goverlay_test_3999491089372"
+        ],
+        "from": "1.9.2",
+        "log": "https://nixpkgs-update-logs.nixos.org/goverlay/2026-09-25.log",
+        "outcome": "failed",
+        "parser": 1,
+        "to": "1.9.3",
+        "was": "1.9.2"
+      },
+      "updateFailure": true
     },
     {
       "attrs": [
@@ -1901,13 +2015,65 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
+        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
         "community": true,
         "label": "packages.microsoft.com",
         "newer": true,
         "url": "https://packages.microsoft.com/repos/edge/dists/stable/main/binary-amd64/Packages",
         "version": "154.0.4258.53"
       }
+    },
+    {
+      "attrs": [
+        "minigalaxy"
+      ],
+      "builds": [
+        {
+          "attr": "minigalaxy",
+          "build": 347161610,
+          "name": "minigalaxy-1.4.2",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "1.4.2"
+        },
+        {
+          "attr": "minigalaxy",
+          "status": "notBuilt",
+          "system": "aarch64-linux"
+        }
+      ],
+      "dataFile": "minigalaxy.json",
+      "devel": false,
+      "homepage": "https://sharkwouter.github.io/minigalaxy/",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "minigalaxy",
+      "nixStatus": "newest",
+      "nixVersion": "1.4.2",
+      "nixVulnerable": false,
+      "openIssues": 0,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": false,
+        "linux": true
+      },
+      "project": "minigalaxy",
+      "refVersion": "1.4.2",
+      "repoCount": 57,
+      "searchTerm": "minigalaxy",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/mi/minigalaxy/package.nix#L90",
+      "update": {
+        "attr": "minigalaxy",
+        "date": "2026-09-23",
+        "from": "0",
+        "log": "https://nixpkgs-update-logs.nixos.org/minigalaxy/2026-09-23.log",
+        "outcome": "noChange",
+        "parser": 1,
+        "to": "1",
+        "was": "minigalaxy-1.4.2"
+      },
+      "updateFailure": false
     },
     {
       "attrs": [
@@ -1949,7 +2115,7 @@
       "update": null,
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
+        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
         "community": true,
         "follows": "microsoft-edge",
         "newer": true,
@@ -2465,7 +2631,7 @@
       "nixVersion": "2018-05-16",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
@@ -2800,6 +2966,66 @@
     },
     {
       "attrs": [
+        "steamtinkerlaunch"
+      ],
+      "builds": [
+        {
+          "attr": "steamtinkerlaunch",
+          "build": 347278380,
+          "name": "steamtinkerlaunch-12.12-unstable-2025-07-14",
+          "status": "ok",
+          "system": "x86_64-linux",
+          "version": "12.12-unstable-2025-07-14"
+        },
+        {
+          "attr": "steamtinkerlaunch",
+          "build": 347278378,
+          "name": "steamtinkerlaunch-12.12-unstable-2025-07-14",
+          "status": "ok",
+          "system": "aarch64-linux",
+          "version": "12.12-unstable-2025-07-14"
+        }
+      ],
+      "dataFile": "steamtinkerlaunch.json",
+      "devel": false,
+      "homepage": "https://github.com/sonic2kk/steamtinkerlaunch",
+      "lists": [
+        "gaming-team"
+      ],
+      "name": "steamtinkerlaunch",
+      "nixStatus": "ignored",
+      "nixVersion": "12.12-unstable-2025-07-14",
+      "nixVulnerable": false,
+      "openIssues": 3,
+      "openPRs": 0,
+      "platforms": {
+        "darwin": false,
+        "linux": true
+      },
+      "project": "steamtinkerlaunch",
+      "refVersion": "12.12",
+      "repoCount": 20,
+      "searchTerm": "steamtinkerlaunch",
+      "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/st/steamtinkerlaunch/package.nix#L121",
+      "update": {
+        "attr": "steamtinkerlaunch",
+        "date": "2026-09-25",
+        "excerpt": [
+          "generic version rewriter does not support multiple hashes",
+          "Success",
+          "this derivation will be built:"
+        ],
+        "from": "12.12-unstable-2025-07-14",
+        "log": "https://nixpkgs-update-logs.nixos.org/steamtinkerlaunch/2026-09-25.log",
+        "outcome": "cantUpdate",
+        "parser": 1,
+        "to": "12.12",
+        "was": "12.12-unstable-2025-07-14"
+      },
+      "updateFailure": false
+    },
+    {
+      "attrs": [
         "stepmania"
       ],
       "builds": [
@@ -2855,7 +3081,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
+        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "community": true,
         "label": "stepmania/stepmania 5_1-new branch",
@@ -3095,7 +3321,7 @@
         "gaming-team"
       ],
       "name": "tetris",
-      "nixStatus": "unique",
+      "nixStatus": "newest",
       "nixVersion": "0.1.6",
       "nixVulnerable": false,
       "openIssues": 0,
@@ -3106,7 +3332,7 @@
       },
       "project": "tetris-samtay",
       "refVersion": "0.1.6",
-      "repoCount": 4,
+      "repoCount": 5,
       "searchTerm": "tetris",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/te/tetris/package.nix#L29",
       "update": {
@@ -3548,7 +3774,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T00:51:47.070239+00:00",
+        "checkedAt": "2026-10-03T05:04:52.921419+00:00",
         "community": true,
         "label": "wesnoth/wesnoth tags",
         "newer": false,
@@ -3607,7 +3833,7 @@
       "nixVersion": "1.3.7",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 1,
+      "openPRs": 0,
       "outdatedSince": "2026-09-28T03:09:58.527549+00:00",
       "platforms": {
         "darwin": true,

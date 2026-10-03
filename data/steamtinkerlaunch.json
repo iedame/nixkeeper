@@ -1,0 +1,361 @@
+[
+  {
+    "binnames": [
+      "steamtinkerlaunch"
+    ],
+    "categories": [
+      "Games/Other"
+    ],
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "minergenon@altlinux.org"
+    ],
+    "origversion": "12.12-alt1",
+    "repo": "altsisyphus",
+    "srcname": "steamtinkerlaunch",
+    "status": "newest",
+    "summary": "Steam Tinker Launch is a Linux wrapper tool for use with the Steam client",
+    "version": "12.12",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "binname": "steamtinkerlaunch",
+    "licenses": [
+      "GPL3"
+    ],
+    "maintainers": [
+      "sonic2kk@aur"
+    ],
+    "origversion": "12.12-1",
+    "repo": "aur",
+    "srcname": "steamtinkerlaunch",
+    "status": "newest",
+    "summary": "Wrapper script for Steam custom launch options",
+    "version": "12.12",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "binname": "steamtinkerlaunch-git",
+    "licenses": [
+      "GPL-3.0-only"
+    ],
+    "maintainers": [
+      "npil@aur"
+    ],
+    "origversion": "12.12.r278.g8550ab2-1",
+    "repo": "aur",
+    "srcname": "steamtinkerlaunch-git",
+    "status": "rolling",
+    "summary": "Wrapper script for Steam custom launch options",
+    "version": "12.12.r278.g8550ab2",
+    "visiblename": "steamtinkerlaunch-git"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "vincentahluwalia@protonmail.com"
+    ],
+    "origversion": null,
+    "repo": "gentoo_ovl_guru",
+    "srcname": "games-util/steamtinkerlaunch",
+    "status": "newest",
+    "summary": "Wrapper script for Steam custom launch options",
+    "version": "12.12",
+    "visiblename": "games-util/steamtinkerlaunch"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "vincentahluwalia@protonmail.com"
+    ],
+    "origversion": null,
+    "repo": "gentoo_ovl_guru",
+    "srcname": "games-util/steamtinkerlaunch",
+    "status": "rolling",
+    "summary": "Wrapper script for Steam custom launch options",
+    "version": "9999",
+    "visiblename": "games-util/steamtinkerlaunch"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "vincentahluwalia@protonmail.com"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-util/steamtinkerlaunch",
+    "status": "newest",
+    "summary": "Wrapper script for Steam custom launch options",
+    "version": "12.12",
+    "visiblename": "games-util/steamtinkerlaunch"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "vincentahluwalia@protonmail.com"
+    ],
+    "origversion": null,
+    "repo": "liguros_stable",
+    "srcname": "games-util/steamtinkerlaunch",
+    "status": "rolling",
+    "summary": "Wrapper script for Steam custom launch options",
+    "version": "9999",
+    "visiblename": "games-util/steamtinkerlaunch"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "vincentahluwalia@protonmail.com"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-util/steamtinkerlaunch",
+    "status": "rolling",
+    "summary": "Wrapper script for Steam custom launch options",
+    "version": "9999",
+    "visiblename": "games-util/steamtinkerlaunch"
+  },
+  {
+    "categories": [
+      "games-util"
+    ],
+    "licenses": [
+      "GPL-3"
+    ],
+    "maintainers": [
+      "vincentahluwalia@protonmail.com"
+    ],
+    "origversion": null,
+    "repo": "liguros_develop",
+    "srcname": "games-util/steamtinkerlaunch",
+    "status": "newest",
+    "summary": "Wrapper script for Steam custom launch options",
+    "version": "12.12",
+    "visiblename": "games-util/steamtinkerlaunch"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "colin@urandom.co.uk",
+      "nat@nekopon.pl"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_05",
+    "srcname": "steamtinkerlaunch",
+    "status": "ignored",
+    "summary": "Linux wrapper tool for use with the Steam client for custom launch options and 3rd party programs",
+    "version": "12.12-unstable-2024-05-03",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "colin@urandom.co.uk",
+      "nat@nekopon.pl"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "steamtinkerlaunch",
+    "status": "ignored",
+    "summary": "Linux wrapper tool for use with the Steam client for custom launch options and 3rd party programs",
+    "version": "12.12-unstable-2024-05-03",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "colin@urandom.co.uk",
+      "nat@nekopon.pl"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "steamtinkerlaunch",
+    "status": "ignored",
+    "summary": "Linux wrapper tool for use with the Steam client for custom launch options and 3rd party programs",
+    "version": "12.12-unstable-2025-02-21",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "colin@urandom.co.uk",
+      "nat@nekopon.pl"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_11",
+    "srcname": "steamtinkerlaunch",
+    "status": "ignored",
+    "summary": "Linux wrapper tool for use with the Steam client for custom launch options and 3rd party programs",
+    "version": "12.12-unstable-2025-07-14",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "nat@nekopon.pl"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_26_05",
+    "srcname": "steamtinkerlaunch",
+    "status": "ignored",
+    "summary": "Linux wrapper tool for use with the Steam client for custom launch options and 3rd party programs",
+    "version": "12.12-unstable-2025-07-14",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "licenses": [
+      "GPL-3.0"
+    ],
+    "maintainers": [
+      "nat@nekopon.pl",
+      "roguegreat@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "nix_unstable",
+    "srcname": "steamtinkerlaunch",
+    "status": "ignored",
+    "summary": "Linux wrapper tool for use with the Steam client for custom launch options and 3rd party programs",
+    "version": "12.12-unstable-2025-07-14",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "binname": "steamtinkerlaunch-git",
+    "maintainers": [
+      "echometer@disroot.org"
+    ],
+    "origversion": "8550ab26-1",
+    "repo": "pacstall",
+    "srcname": "steamtinkerlaunch-git",
+    "status": "rolling",
+    "summary": "Linux wrapper tool for use with the Steam client for custom launch options and 3rd party programs.",
+    "version": "8550ab26",
+    "visiblename": "steamtinkerlaunch-git"
+  },
+  {
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "jebrhansen+sbo@gmail.com"
+    ],
+    "origversion": null,
+    "repo": "slackbuilds",
+    "srcname": "games/steamtinkerlaunch",
+    "status": "newest",
+    "version": "12.12",
+    "visiblename": "games/steamtinkerlaunch"
+  },
+  {
+    "binname": "steamtinkerlaunch",
+    "categories": [
+      "games"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "malfisya.dev@hotmail.com"
+    ],
+    "origversion": null,
+    "repo": "solus",
+    "srcname": "steamtinkerlaunch",
+    "status": "newest",
+    "summary": "Wrapper tool for the Steam client",
+    "version": "12.12",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "binname": "steamtinkerlaunch",
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "rockgrub@disroot.org"
+    ],
+    "origversion": "12.12-1.fc40",
+    "repo": "terra_40",
+    "srcname": "steamtinkerlaunch",
+    "status": "newest",
+    "summary": "Wrapper tool for use with the Steam client for custom launch options",
+    "version": "12.12",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "binname": "steamtinkerlaunch",
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "rockgrub@disroot.org"
+    ],
+    "origversion": "12.12-1.fc41",
+    "repo": "terra_41",
+    "srcname": "steamtinkerlaunch",
+    "status": "newest",
+    "summary": "Wrapper tool for use with the Steam client for custom launch options",
+    "version": "12.12",
+    "visiblename": "steamtinkerlaunch"
+  },
+  {
+    "binname": "steamtinkerlaunch",
+    "categories": [
+      "Unspecified"
+    ],
+    "licenses": [
+      "GPL-3.0-or-later"
+    ],
+    "maintainers": [
+      "roachy@fyralabs.com"
+    ],
+    "origversion": "12.12-2.fcrawhide",
+    "repo": "terra_rawhide",
+    "srcname": "steamtinkerlaunch",
+    "status": "newest",
+    "summary": "Wrapper tool for use with the Steam client for custom launch options",
+    "version": "12.12",
+    "visiblename": "steamtinkerlaunch"
+  }
+]
