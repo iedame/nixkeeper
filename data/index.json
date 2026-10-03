@@ -1392,7 +1392,7 @@
       },
       "project": "google-chrome",
       "refVersion": "154.0.8037.97",
-      "repoCount": 65,
+      "repoCount": 63,
       "searchTerm": "google-chrome",
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/go/google-chrome/package.nix#L354",
       "unfree": true,
@@ -1408,7 +1408,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T13:28:29.715091+00:00",
+        "checkedAt": "2026-10-03T14:29:05.499661+00:00",
         "community": true,
         "label": "versionhistory.googleapis.com",
         "newer": true,
@@ -2045,7 +2045,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T13:28:29.715091+00:00",
+        "checkedAt": "2026-10-03T14:29:05.499661+00:00",
         "community": true,
         "label": "packages.microsoft.com",
         "newer": true,
@@ -2145,7 +2145,7 @@
       "update": null,
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T13:28:29.715091+00:00",
+        "checkedAt": "2026-10-03T14:29:05.499661+00:00",
         "community": true,
         "follows": "microsoft-edge",
         "newer": true,
@@ -3424,6 +3424,15 @@
       "nixVersion": "1.37",
       "nixVulnerable": false,
       "openIssues": 0,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "1.37",
+        "number": 569852,
+        "title": "the-legend-of-edgar: 1.37 -> 1.38, fix darwin build, adopt",
+        "to": "1.38,",
+        "url": "https://github.com/NixOS/nixpkgs/pull/569852"
+      },
       "openPRs": 0,
       "outdatedSince": "2026-09-30T04:50:05.979330+00:00",
       "platforms": {
