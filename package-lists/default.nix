@@ -33,6 +33,7 @@
   community = {
     updateChecks = true; # where to look for new releases
     ignoredUpdates = true; # bot failures that don't count
+    upToDate = true; # overrides for untrusted status
   };
 
   # Rules of this list's own, on top of the community's (and winning over
@@ -40,6 +41,7 @@
   # See each file for the format.
   updateChecks = import ./update-checks.nix;
   ignoredUpdates = import ./ignored-updates.nix;
+  upToDate = import ./up-to-date.nix;
 
   # The page's colours for visitors who haven't picked any in its Theme menu:
   # "classic" or "catppuccin" (Latte when light, Mocha when dark).

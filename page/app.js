@@ -885,19 +885,24 @@ async function fillDetail(pkg, el) {
           : 'Fix it in <span class="mono">package-lists/update-checks.nix</span>.'
       }</div>`
     : '';
+  const overrideNote = pkg.statusOverride
+    ? `<div class="stale-note" style="margin-bottom: 6px; background: var(--bg-alt);">ℹ Marked as up-to-date by a ${pkg.statusOverride === 'community' ? 'community ' : ''}rule.</div>`
+    : '';
   const nixLine =
     up?.newer && !fromMaster(pkg)
       ? upstreamLine()
       : st === 'missing'
         ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
         : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${
-            st === 'warn' && fromMaster(pkg)
-              ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
-              : st === 'warn'
-                ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${since}`
-                : st === 'neutral'
-                  ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
-                  : ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${others.length} other ${others.length === 1 ? 'repository' : 'repositories'}.`
+            pkg.statusOverride
+              ? ` — marked as up-to-date by a ${pkg.statusOverride === 'community' ? 'community ' : ''}rule.`
+              : st === 'warn' && fromMaster(pkg)
+                ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
+                : st === 'warn'
+                  ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${since}`
+                  : st === 'neutral'
+                    ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
+                    : ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${others.length} other ${others.length === 1 ? 'repository' : 'repositories'}.`
           }${
             up && !up.newer && !failing
               ? follows
