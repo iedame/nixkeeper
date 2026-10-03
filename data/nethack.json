@@ -1,87 +1,40 @@
 [
   {
-    "binname": "nethack",
-    "maintainers": [
-      "volkerdi@slackware.com"
+    "binnames": [
+      "nethack-common",
+      "nethack-console",
+      "nethack-x11",
+      "nethack-qt"
     ],
-    "origversion": null,
-    "repo": "slackware64_current",
-    "status": "newest",
-    "subrepo": "slackware64",
-    "version": "5.0.0",
-    "visiblename": "nethack"
-  },
-  {
-    "binname": "games/nethack",
     "categories": [
-      "Applications/Games"
+      "games"
     ],
-    "origversion": null,
-    "repo": "openindiana",
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jcowgill@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "3.6.7-4",
+    "repo": "devuan_unstable",
     "srcname": "nethack",
     "status": "outdated",
-    "subrepo": "hipster",
-    "summary": "A single-player dungeon exploration game",
+    "subrepo": "unstable/main",
     "version": "3.6.7",
     "visiblename": "nethack"
   },
   {
-    "categories": [
-      "Unspecified"
-    ],
     "licenses": [
-      "NGPL"
-    ],
-    "origversion": "3.6.7-1.el8",
-    "repo": "epel_8",
-    "srcname": "nethack",
-    "status": "outdated",
-    "summary": "A rogue-like single player dungeon exploration game",
-    "version": "3.6.7",
-    "visiblename": "nethack"
-  },
-  {
-    "binname": "nethack",
-    "licenses": [
-      "NGPL"
+      "nethack"
     ],
     "maintainers": [
-      "wpsinatra@gmail.com"
+      "ab@fmap.me"
     ],
-    "origversion": "3.6.7-r2",
-    "repo": "alpine_3_24",
+    "origversion": null,
+    "repo": "nix_stable_24_11",
     "srcname": "nethack",
     "status": "outdated",
-    "subrepo": "community",
-    "summary": "A single player dungeon exploration game",
+    "summary": "Rogue-like game",
     "version": "3.6.7",
-    "visiblename": "nethack"
-  },
-  {
-    "binname": "bin/net/hack",
-    "categories": [
-      "bin"
-    ],
-    "maintainers": [
-      "anton@samokhvalov.xyz"
-    ],
-    "origversion": null,
-    "repo": "stalix",
-    "srcname": "bin/net/hack",
-    "status": "newest",
-    "version": "5.0.0",
-    "visiblename": "bin/net/hack"
-  },
-  {
-    "categories": [
-      "Games"
-    ],
-    "origversion": null,
-    "repo": "serenityos",
-    "srcname": "nethack",
-    "status": "newest",
-    "summary": "Single-player roguelike game first released in 1987.",
-    "version": "5.0.0",
     "visiblename": "nethack"
   },
   {
@@ -289,6 +242,23 @@
     "visiblename": "nethack-doc"
   },
   {
+    "binname": "nethack",
+    "licenses": [
+      "NGPL"
+    ],
+    "maintainers": [
+      "wpsinatra@gmail.com"
+    ],
+    "origversion": "3.6.7-r2",
+    "repo": "alpine_3_24",
+    "srcname": "nethack",
+    "status": "outdated",
+    "subrepo": "community",
+    "summary": "A single player dungeon exploration game",
+    "version": "3.6.7",
+    "visiblename": "nethack"
+  },
+  {
     "binname": "nethack-doc",
     "licenses": [
       "NGPL"
@@ -338,6 +308,15 @@
     "summary": "A single player dungeon exploration game (documentation)",
     "version": "5.0.0",
     "visiblename": "nethack-doc"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "nethack",
+    "status": "newest",
+    "summary": "Single-player roguelike video game",
+    "version": "5.0.0",
+    "visiblename": "nethack"
   },
   {
     "binnames": [
@@ -431,28 +410,6 @@
   },
   {
     "binnames": [
-      "nethack"
-    ],
-    "categories": [
-      "Games/Adventure"
-    ],
-    "licenses": [
-      "Nethack GPL"
-    ],
-    "maintainers": [
-      "chrols@chrols.se"
-    ],
-    "origversion": "3.6.7-1",
-    "repo": "openmandriva_6_0",
-    "srcname": "nethack",
-    "status": "outdated",
-    "subrepo": "unsupported/release",
-    "summary": "A roguelike dungeon exploration game",
-    "version": "3.6.7",
-    "visiblename": "nethack"
-  },
-  {
-    "binnames": [
       "nethack-common",
       "nethack-console",
       "nethack-x11",
@@ -521,25 +478,17 @@
     "visiblename": "nethack"
   },
   {
-    "binnames": [
-      "nethack-common",
-      "nethack-console",
-      "nethack-x11",
-      "nethack-qt"
-    ],
     "categories": [
-      "games"
+      "Unspecified"
     ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "jcowgill@debian.org",
-      "vcheng@debian.org"
+    "licenses": [
+      "NGPL"
     ],
-    "origversion": "3.6.7-4",
-    "repo": "devuan_unstable",
+    "origversion": "3.6.7-1.el8",
+    "repo": "epel_8",
     "srcname": "nethack",
     "status": "outdated",
-    "subrepo": "unstable/main",
+    "summary": "A rogue-like single player dungeon exploration game",
     "version": "3.6.7",
     "visiblename": "nethack"
   },
@@ -600,22 +549,6 @@
     "summary": "Classic single-player dungeon exploration game",
     "version": "3.6.7",
     "visiblename": "games-roguelike/nethack"
-  },
-  {
-    "binname": "nethack-x11",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkgsrc-users@netbsd.org"
-    ],
-    "origversion": "3.6.7nb3",
-    "repo": "pkgsrc_2026_2",
-    "srcname": "games/nethack-x11",
-    "status": "outdated",
-    "summary": "The X11 and tty/curses version of NetHack",
-    "version": "3.6.7",
-    "visiblename": "games/nethack-x11"
   },
   {
     "binnames": [
@@ -679,6 +612,15 @@
     "subrepo": "release",
     "summary": "A rogue-like single player dungeon exploration game",
     "version": "3.6.7",
+    "visiblename": "nethack"
+  },
+  {
+    "origversion": null,
+    "repo": "homebrew",
+    "srcname": "nethack",
+    "status": "rolling",
+    "summary": "Single-player roguelike video game",
+    "version": "HEAD",
     "visiblename": "nethack"
   },
   {
@@ -761,16 +703,19 @@
     "visiblename": "nethack"
   },
   {
-    "binname": "nethack",
+    "licenses": [
+      "nethack"
+    ],
     "maintainers": [
-      "volkerdi@slackware.com"
+      "ab@fmap.me"
     ],
     "origversion": null,
-    "repo": "slackware_current",
-    "status": "newest",
-    "subrepo": "slackware",
-    "version": "5.0.0",
-    "visiblename": "nethack"
+    "repo": "nix_stable_24_11",
+    "srcname": "nethack-qt",
+    "status": "outdated",
+    "summary": "Rogue-like game",
+    "version": "3.6.7",
+    "visiblename": "nethack-qt"
   },
   {
     "binname": "nethack36-nox11",
@@ -841,6 +786,21 @@
     "visiblename": "games-roguelike/nethack"
   },
   {
+    "licenses": [
+      "nethack"
+    ],
+    "maintainers": [
+      "ab@fmap.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_24_11",
+    "srcname": "nethack-x11",
+    "status": "outdated",
+    "summary": "Rogue-like game",
+    "version": "3.6.7",
+    "visiblename": "nethack-x11"
+  },
+  {
     "categories": [
       "games-roguelike"
     ],
@@ -894,40 +854,6 @@
     "status": "newest",
     "summary": "Classic dungeon crawl game",
     "version": "5.0.0",
-    "visiblename": "nethack"
-  },
-  {
-    "binname": "nethack-all",
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkgsrc-users@netbsd.org"
-    ],
-    "origversion": "3.6.7nb3",
-    "repo": "pkgsrc_2026_3",
-    "srcname": "games/nethack",
-    "status": "outdated",
-    "summary": "Meta-package for NetHack with x11 and tty versions",
-    "version": "3.6.7",
-    "visiblename": "games/nethack"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew",
-    "srcname": "nethack",
-    "status": "newest",
-    "summary": "Single-player roguelike video game",
-    "version": "5.0.0",
-    "visiblename": "nethack"
-  },
-  {
-    "origversion": null,
-    "repo": "homebrew",
-    "srcname": "nethack",
-    "status": "rolling",
-    "summary": "Single-player roguelike video game",
-    "version": "HEAD",
     "visiblename": "nethack"
   },
   {
@@ -999,6 +925,21 @@
     "summary": "The ultimate old-school single player dungeon exploration game",
     "version": "3.6.7",
     "visiblename": "games-roguelike/nethack"
+  },
+  {
+    "licenses": [
+      "nethack"
+    ],
+    "maintainers": [
+      "ab@fmap.me"
+    ],
+    "origversion": null,
+    "repo": "nix_stable_25_05",
+    "srcname": "nethack",
+    "status": "outdated",
+    "summary": "Rogue-like game",
+    "version": "3.6.7",
+    "visiblename": "nethack"
   },
   {
     "categories": [
@@ -1231,66 +1172,6 @@
       "ab@fmap.me"
     ],
     "origversion": null,
-    "repo": "nix_stable_24_11",
-    "srcname": "nethack",
-    "status": "outdated",
-    "summary": "Rogue-like game",
-    "version": "3.6.7",
-    "visiblename": "nethack"
-  },
-  {
-    "licenses": [
-      "nethack"
-    ],
-    "maintainers": [
-      "ab@fmap.me"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_11",
-    "srcname": "nethack-qt",
-    "status": "outdated",
-    "summary": "Rogue-like game",
-    "version": "3.6.7",
-    "visiblename": "nethack-qt"
-  },
-  {
-    "licenses": [
-      "nethack"
-    ],
-    "maintainers": [
-      "ab@fmap.me"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_24_11",
-    "srcname": "nethack-x11",
-    "status": "outdated",
-    "summary": "Rogue-like game",
-    "version": "3.6.7",
-    "visiblename": "nethack-x11"
-  },
-  {
-    "licenses": [
-      "nethack"
-    ],
-    "maintainers": [
-      "ab@fmap.me"
-    ],
-    "origversion": null,
-    "repo": "nix_stable_25_05",
-    "srcname": "nethack",
-    "status": "outdated",
-    "summary": "Rogue-like game",
-    "version": "3.6.7",
-    "visiblename": "nethack"
-  },
-  {
-    "licenses": [
-      "nethack"
-    ],
-    "maintainers": [
-      "ab@fmap.me"
-    ],
-    "origversion": null,
     "repo": "nix_stable_25_05",
     "srcname": "nethack-qt",
     "status": "outdated",
@@ -1513,14 +1394,38 @@
     "visiblename": "games/nethack/5.0"
   },
   {
-    "binname": "nethack",
-    "licenses": [
-      "NGPL"
+    "binname": "games/nethack",
+    "categories": [
+      "Applications/Games"
     ],
     "origversion": null,
-    "repo": "scoop",
+    "repo": "openindiana",
+    "srcname": "nethack",
     "status": "outdated",
-    "subrepo": "games",
+    "subrepo": "hipster",
+    "summary": "A single-player dungeon exploration game",
+    "version": "3.6.7",
+    "visiblename": "nethack"
+  },
+  {
+    "binnames": [
+      "nethack"
+    ],
+    "categories": [
+      "Games/Adventure"
+    ],
+    "licenses": [
+      "Nethack GPL"
+    ],
+    "maintainers": [
+      "chrols@chrols.se"
+    ],
+    "origversion": "3.6.7-1",
+    "repo": "openmandriva_6_0",
+    "srcname": "nethack",
+    "status": "outdated",
+    "subrepo": "unsupported/release",
+    "summary": "A roguelike dungeon exploration game",
     "version": "3.6.7",
     "visiblename": "nethack"
   },
@@ -1662,7 +1567,7 @@
     "repo": "parrot",
     "srcname": "nethack",
     "status": "outdated",
-    "subrepo": "parrot/main",
+    "subrepo": "parrot-updates/main",
     "version": "3.6.7",
     "visiblename": "nethack"
   },
@@ -1685,7 +1590,7 @@
     "repo": "parrot",
     "srcname": "nethack",
     "status": "outdated",
-    "subrepo": "parrot-updates/main",
+    "subrepo": "parrot/main",
     "version": "3.6.7",
     "visiblename": "nethack"
   },
@@ -1738,6 +1643,38 @@
     "visiblename": "games/nethack-tty"
   },
   {
+    "binname": "nethack-x11",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "3.6.7nb3",
+    "repo": "pkgsrc_2026_2",
+    "srcname": "games/nethack-x11",
+    "status": "outdated",
+    "summary": "The X11 and tty/curses version of NetHack",
+    "version": "3.6.7",
+    "visiblename": "games/nethack-x11"
+  },
+  {
+    "binname": "nethack-all",
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkgsrc-users@netbsd.org"
+    ],
+    "origversion": "3.6.7nb3",
+    "repo": "pkgsrc_2026_3",
+    "srcname": "games/nethack",
+    "status": "outdated",
+    "summary": "Meta-package for NetHack with x11 and tty versions",
+    "version": "3.6.7",
+    "visiblename": "games/nethack"
+  },
+  {
     "binname": "nethack-lib",
     "categories": [
       "games"
@@ -1848,6 +1785,14 @@
     "summary": "The X11 and tty/curses version of NetHack",
     "version": "3.6.7",
     "visiblename": "games/nethack-x11"
+  },
+  {
+    "origversion": "5.0.0-1",
+    "repo": "pld",
+    "srcname": "nethack",
+    "status": "newest",
+    "version": "5.0.0",
+    "visiblename": "nethack"
   },
   {
     "binnames": [
@@ -1944,6 +1889,69 @@
     "visiblename": "nethack"
   },
   {
+    "binname": "nethack",
+    "licenses": [
+      "NGPL"
+    ],
+    "origversion": null,
+    "repo": "scoop",
+    "status": "outdated",
+    "subrepo": "games",
+    "version": "3.6.7",
+    "visiblename": "nethack"
+  },
+  {
+    "categories": [
+      "Games"
+    ],
+    "origversion": null,
+    "repo": "serenityos",
+    "srcname": "nethack",
+    "status": "newest",
+    "summary": "Single-player roguelike game first released in 1987.",
+    "version": "5.0.0",
+    "visiblename": "nethack"
+  },
+  {
+    "binname": "nethack",
+    "maintainers": [
+      "volkerdi@slackware.com"
+    ],
+    "origversion": null,
+    "repo": "slackware_current",
+    "status": "newest",
+    "subrepo": "slackware",
+    "version": "5.0.0",
+    "visiblename": "nethack"
+  },
+  {
+    "binname": "nethack",
+    "maintainers": [
+      "volkerdi@slackware.com"
+    ],
+    "origversion": null,
+    "repo": "slackware64_current",
+    "status": "newest",
+    "subrepo": "slackware64",
+    "version": "5.0.0",
+    "visiblename": "nethack"
+  },
+  {
+    "binname": "bin/net/hack",
+    "categories": [
+      "bin"
+    ],
+    "maintainers": [
+      "anton@samokhvalov.xyz"
+    ],
+    "origversion": null,
+    "repo": "stalix",
+    "srcname": "bin/net/hack",
+    "status": "newest",
+    "version": "5.0.0",
+    "visiblename": "bin/net/hack"
+  },
+  {
     "binname": "bin/net/hack",
     "categories": [
       "bin"
@@ -1973,6 +1981,29 @@
     "srcname": "nethack",
     "status": "outdated",
     "summary": "A single player dungeon exploration game",
+    "version": "3.6.7",
+    "visiblename": "nethack"
+  },
+  {
+    "binnames": [
+      "nethack-common",
+      "nethack-console",
+      "nethack-x11",
+      "nethack-qt"
+    ],
+    "categories": [
+      "universe/games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jcowgill@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "3.6.7-2build1",
+    "repo": "ubuntu_26_04",
+    "srcname": "nethack",
+    "status": "outdated",
+    "subrepo": "resolute/universe",
     "version": "3.6.7",
     "visiblename": "nethack"
   },
@@ -2011,15 +2042,6 @@
     "subrepo": "noble/universe",
     "version": "3.6.7",
     "visiblename": "nethack"
-  },
-  {
-    "origversion": "3.4.3-10",
-    "repo": "pld",
-    "srcname": "nethack",
-    "status": "outdated",
-    "version": "3.4.3",
-    "visiblename": "nethack",
-    "vulnerable": true
   },
   {
     "binnames": [
@@ -2082,29 +2104,6 @@
       "jcowgill@debian.org",
       "vcheng@debian.org"
     ],
-    "origversion": "3.6.7-2build1",
-    "repo": "ubuntu_26_04",
-    "srcname": "nethack",
-    "status": "outdated",
-    "subrepo": "resolute/universe",
-    "version": "3.6.7",
-    "visiblename": "nethack"
-  },
-  {
-    "binnames": [
-      "nethack-common",
-      "nethack-console",
-      "nethack-x11",
-      "nethack-qt"
-    ],
-    "categories": [
-      "universe/games"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "jcowgill@debian.org",
-      "vcheng@debian.org"
-    ],
     "origversion": "3.6.7-4",
     "repo": "ubuntu_26_10",
     "srcname": "nethack",
@@ -2143,28 +2142,65 @@
     "visiblename": "Q856904"
   },
   {
-    "binname": "nethack",
-    "maintainers": [
-      "volkerdi@slackware.com"
+    "categories": [
+      "Amusements/Games"
     ],
-    "origversion": null,
-    "repo": "slackwarearm_15_0",
+    "licenses": [
+      "NGPL"
+    ],
+    "origversion": "3.4.3-32.4.amzn1",
+    "repo": "amazon_1",
+    "srcname": "nethack",
     "status": "outdated",
-    "subrepo": "slackware",
-    "version": "3.6.6",
+    "subrepo": "main",
+    "summary": "A rogue-like single player dungeon exploration game",
+    "version": "3.4.3",
     "visiblename": "nethack",
     "vulnerable": true
   },
   {
-    "categories": [
-      "games-roguelike"
+    "binnames": [
+      "nethack-common",
+      "nethack-console",
+      "nethack-lisp",
+      "nethack-x11"
     ],
-    "origversion": null,
-    "repo": "haikuports_master",
-    "srcname": "games-roguelike/nethack",
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jcowgill@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "3.6.1-1",
+    "repo": "deepin_unstable",
+    "srcname": "nethack",
     "status": "outdated",
-    "version": "3.6.2",
-    "visiblename": "games-roguelike/nethack",
+    "subrepo": "main",
+    "version": "3.6.1",
+    "visiblename": "nethack",
+    "vulnerable": true
+  },
+  {
+    "binnames": [
+      "nethack-common",
+      "nethack-console",
+      "nethack-x11",
+      "nethack-qt"
+    ],
+    "categories": [
+      "games"
+    ],
+    "maintainers": [
+      "pkg-games-devel@lists.alioth.debian.org",
+      "jcowgill@debian.org",
+      "vcheng@debian.org"
+    ],
+    "origversion": "3.6.6-2",
+    "repo": "devuan_4_0",
+    "srcname": "nethack",
+    "status": "outdated",
+    "subrepo": "chimaera/main",
+    "version": "3.6.6",
+    "visiblename": "nethack",
     "vulnerable": true
   },
   {
@@ -2222,23 +2258,6 @@
     "srcname": "nethack",
     "status": "outdated",
     "summary": "Character Based RPG",
-    "version": "3.4.3",
-    "visiblename": "nethack",
-    "vulnerable": true
-  },
-  {
-    "categories": [
-      "Amusements/Games"
-    ],
-    "licenses": [
-      "NGPL"
-    ],
-    "origversion": "3.4.3-32.4.amzn1",
-    "repo": "amazon_1",
-    "srcname": "nethack",
-    "status": "outdated",
-    "subrepo": "main",
-    "summary": "A rogue-like single player dungeon exploration game",
     "version": "3.4.3",
     "visiblename": "nethack",
     "vulnerable": true
@@ -2326,51 +2345,6 @@
     "vulnerable": true
   },
   {
-    "binnames": [
-      "nethack-common",
-      "nethack-console",
-      "nethack-lisp",
-      "nethack-x11"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "jcowgill@debian.org",
-      "vcheng@debian.org"
-    ],
-    "origversion": "3.6.1-1",
-    "repo": "deepin_unstable",
-    "srcname": "nethack",
-    "status": "outdated",
-    "subrepo": "main",
-    "version": "3.6.1",
-    "visiblename": "nethack",
-    "vulnerable": true
-  },
-  {
-    "binnames": [
-      "nethack-common",
-      "nethack-console",
-      "nethack-x11",
-      "nethack-qt"
-    ],
-    "categories": [
-      "games"
-    ],
-    "maintainers": [
-      "pkg-games-devel@lists.alioth.debian.org",
-      "jcowgill@debian.org",
-      "vcheng@debian.org"
-    ],
-    "origversion": "3.6.6-2",
-    "repo": "devuan_4_0",
-    "srcname": "nethack",
-    "status": "outdated",
-    "subrepo": "chimaera/main",
-    "version": "3.6.6",
-    "visiblename": "nethack",
-    "vulnerable": true
-  },
-  {
     "binname": "nethack32",
     "categories": [
       "games"
@@ -2439,19 +2413,6 @@
     "vulnerable": true
   },
   {
-    "binname": "nethack",
-    "maintainers": [
-      "volkerdi@slackware.com"
-    ],
-    "origversion": null,
-    "repo": "slackware_15_0",
-    "status": "outdated",
-    "subrepo": "slackware",
-    "version": "3.6.6",
-    "visiblename": "nethack",
-    "vulnerable": true
-  },
-  {
     "binname": "nethack34",
     "categories": [
       "games"
@@ -2498,6 +2459,18 @@
     "categories": [
       "games-roguelike"
     ],
+    "origversion": null,
+    "repo": "haikuports_master",
+    "srcname": "games-roguelike/nethack",
+    "status": "outdated",
+    "version": "3.6.2",
+    "visiblename": "games-roguelike/nethack",
+    "vulnerable": true
+  },
+  {
+    "categories": [
+      "games-roguelike"
+    ],
     "licenses": [
       "nethack"
     ],
@@ -2511,19 +2484,6 @@
     "summary": "The ultimate old-school single player dungeon exploration game",
     "version": "3.6.6",
     "visiblename": "games-roguelike/nethack",
-    "vulnerable": true
-  },
-  {
-    "binname": "nethack",
-    "maintainers": [
-      "volkerdi@slackware.com"
-    ],
-    "origversion": null,
-    "repo": "slackware64_15_0",
-    "status": "outdated",
-    "subrepo": "slackware64",
-    "version": "3.6.6",
-    "visiblename": "nethack",
     "vulnerable": true
   },
   {
@@ -2798,6 +2758,45 @@
     "subrepo": "contrib/release",
     "summary": "A roguelike dungeon exploration game",
     "version": "3.4.3",
+    "visiblename": "nethack",
+    "vulnerable": true
+  },
+  {
+    "binname": "nethack",
+    "maintainers": [
+      "volkerdi@slackware.com"
+    ],
+    "origversion": null,
+    "repo": "slackware_15_0",
+    "status": "outdated",
+    "subrepo": "slackware",
+    "version": "3.6.6",
+    "visiblename": "nethack",
+    "vulnerable": true
+  },
+  {
+    "binname": "nethack",
+    "maintainers": [
+      "volkerdi@slackware.com"
+    ],
+    "origversion": null,
+    "repo": "slackware64_15_0",
+    "status": "outdated",
+    "subrepo": "slackware64",
+    "version": "3.6.6",
+    "visiblename": "nethack",
+    "vulnerable": true
+  },
+  {
+    "binname": "nethack",
+    "maintainers": [
+      "volkerdi@slackware.com"
+    ],
+    "origversion": null,
+    "repo": "slackwarearm_15_0",
+    "status": "outdated",
+    "subrepo": "slackware",
+    "version": "3.6.6",
     "visiblename": "nethack",
     "vulnerable": true
   },

@@ -1,5 +1,5 @@
 {
-  "checkedAt": "2026-10-03T11:10:50.393877+00:00",
+  "checkedAt": "2026-10-03T17:37:09.810592+00:00",
   "packages": [
     {
       "attrs": [
@@ -261,7 +261,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T11:10:50.393877+00:00",
+        "checkedAt": "2026-10-03T17:37:09.810592+00:00",
         "community": true,
         "label": "www.barebones.com",
         "newer": false,
@@ -561,7 +561,16 @@
       "nixVersion": "0-unstable-2025-03-04",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 0,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "0-unstable-2025-03-04",
+        "number": 569885,
+        "title": "countryguess: 0-unstable-2025-03-04 -> 0-unstable-2025-05-03",
+        "to": "0-unstable-2025-05-03",
+        "url": "https://github.com/NixOS/nixpkgs/pull/569885"
+      },
+      "openPRs": 1,
       "platforms": {
         "darwin": true,
         "linux": true
@@ -1408,7 +1417,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T14:29:05.499661+00:00",
+        "checkedAt": "2026-10-03T17:37:09.810592+00:00",
         "community": true,
         "label": "versionhistory.googleapis.com",
         "newer": true,
@@ -1458,7 +1467,7 @@
         "to": "1.9.3",
         "url": "https://github.com/NixOS/nixpkgs/pull/569881"
       },
-      "openPRs": 0,
+      "openPRs": 1,
       "outdatedSince": "2026-10-03T05:04:52.921419+00:00",
       "platforms": {
         "darwin": false,
@@ -2054,7 +2063,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T14:29:05.499661+00:00",
+        "checkedAt": "2026-10-03T17:37:09.810592+00:00",
         "community": true,
         "label": "packages.microsoft.com",
         "newer": true,
@@ -2104,9 +2113,9 @@
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/mi/minigalaxy/package.nix#L90",
       "update": {
         "attr": "minigalaxy",
-        "date": "2026-09-23",
+        "date": "2026-10-03",
         "from": "0",
-        "log": "https://nixpkgs-update-logs.nixos.org/minigalaxy/2026-09-23.log",
+        "log": "https://nixpkgs-update-logs.nixos.org/minigalaxy/2026-10-03.log",
         "outcome": "noChange",
         "parser": 1,
         "to": "1",
@@ -2154,7 +2163,7 @@
       "update": null,
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T14:29:05.499661+00:00",
+        "checkedAt": "2026-10-03T17:37:09.810592+00:00",
         "community": true,
         "follows": "microsoft-edge",
         "newer": true,
@@ -2506,15 +2515,12 @@
       "unfree": true,
       "update": {
         "attr": "opentyrian",
-        "date": "2026-09-23",
-        "excerpt": [
-          "generic version rewriter does not support multiple hashes",
-          "skipping because derivation has no updateScript"
-        ],
+        "date": "2026-10-03",
         "from": "2.1.20221123",
-        "log": "https://nixpkgs-update-logs.nixos.org/opentyrian/2026-09-23.log",
-        "outcome": "cantUpdate",
+        "log": "https://nixpkgs-update-logs.nixos.org/opentyrian/2026-10-03.log",
+        "outcome": "prExists",
         "parser": 1,
+        "pr": 567536,
         "to": "2.1.20260913",
         "was": "2.1.20221123"
       },
@@ -2670,7 +2676,7 @@
       "nixVersion": "2018-05-16",
       "nixVulnerable": false,
       "openIssues": 0,
-      "openPRs": 1,
+      "openPRs": 0,
       "platforms": {
         "darwin": true,
         "linux": true
@@ -3120,7 +3126,7 @@
       "updateFailure": false,
       "upstream": {
         "behind": 18,
-        "checkedAt": "2026-10-03T11:10:50.393877+00:00",
+        "checkedAt": "2026-10-03T17:37:09.810592+00:00",
         "commit": "825467bcd81c812b33ad684dc04dd151b2d5dec3",
         "community": true,
         "label": "stepmania/stepmania 5_1-new branch",
@@ -3376,7 +3382,6 @@
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/te/tetris/package.nix#L29",
       "update": {
         "attr": "tetris",
-        "community": true,
         "date": "2026-09-26",
         "excerpt": [
           "       Reason: 1 dependency failed.",
@@ -3385,15 +3390,12 @@
         ],
         "from": "0.1.6",
         "log": "https://nixpkgs-update-logs.nixos.org/tetris/2026-09-26.log",
-        "outcome": "superseded",
+        "outcome": "failed",
         "parser": 1,
-        "reason": "Incorrect version: AUR package with same name is a different project than nixpkgs.",
-        "supersededOn": "ignored",
-        "supersededOutcome": "failed",
         "to": "7.9.0",
         "was": "0.1.6"
       },
-      "updateFailure": false
+      "updateFailure": true
     },
     {
       "attrs": [
@@ -3508,9 +3510,9 @@
       "source": "https://github.com/NixOS/nixpkgs/blob/c59305bab2065cfecc4944690d9eedbb56f3a9fa/pkgs/by-name/to/tome4/package.nix#L140",
       "update": {
         "attr": "tome4",
-        "date": "2026-09-23",
+        "date": "2026-10-03",
         "from": "0",
-        "log": "https://nixpkgs-update-logs.nixos.org/tome4/2026-09-23.log",
+        "log": "https://nixpkgs-update-logs.nixos.org/tome4/2026-10-03.log",
         "outcome": "noChange",
         "parser": 1,
         "to": "1",
@@ -3854,7 +3856,7 @@
       },
       "updateFailure": false,
       "upstream": {
-        "checkedAt": "2026-10-03T11:10:50.393877+00:00",
+        "checkedAt": "2026-10-03T17:37:09.810592+00:00",
         "community": true,
         "label": "wesnoth/wesnoth tags",
         "newer": false,
