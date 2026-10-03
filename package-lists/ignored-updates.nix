@@ -4,13 +4,16 @@
 # for the attempt it already made.
 #
 # Keyed by the package's row name (its attribute, as on the page), then the
-# version the bot tried, with why it's ignored:
+# version the bot tried (or, when its updateScript failed before picking one
+# and the package isn't outdated, the version nixpkgs has), with why it's
+# ignored:
 #
 #   foo."1.2.3" = "Upstream tagged it by mistake; it was never released.";
 #
 # A failed attempt at that version shows as superseded, with the reason; a
-# failed attempt at any other version shows as failed again. When the bot's
-# latest attempt is at another version, the sync says the rule can go.
+# failed attempt at any other version (or once a newer release is out) shows
+# as failed again. When the bot's latest attempt is at another version, the
+# sync says the rule can go.
 #
 # This list's rules are all community rules (community/ in the repository,
 # turned on in default.nix), so this file is empty: add a rule here only for

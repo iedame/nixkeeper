@@ -67,6 +67,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   branch with a backport) "unique", which now counts. The newest version is
   also the highest of those Repology marks, not the first listed. Should no
   newer version be known, the page says "newer version unknown".
+- `ignoredUpdates` couldn't match a failed `updateScript` run, because the
+  bot's log header writes `0 -> 1` instead of the versions. When the script
+  wrote a diff before the build failed, nixkeeper now reads the versions from
+  that diff (so the page also shows `from → to` instead of `updateScript`).
+  When the script failed before picking a version (such as `nix-update`
+  mistaking an older tag for newer), a rule for the version nixpkgs has
+  ignores the failure while the package is up to date, and lets it show again
+  once a newer release is out. The community ignore rules have it for
+  blackvoxel 2.5.
 
 ## [0.9.0] - 2026-10-01
 

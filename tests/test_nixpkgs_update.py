@@ -49,16 +49,33 @@ attrpath: the-legend-of-edgar
 [updateScript] skipping because derivation has no updateScript
 The diff was empty after rewrites.
 """
-# An updateScript package: "0 -> 1", and nixpkgs' version only in the package
-# line (wesnoth-devel's failed 1.19.24 -> 1.19.28 attempt, 2026-09-22).
+# An updateScript package: "0 -> 1", nixpkgs' version in the package line, and
+# the version it updated to in the diff (wesnoth-devel's failed 1.19.24 ->
+# 1.19.28 attempt, 2026-09-22).
 UPDATE_SCRIPT_FAILED = f"""{HEAD}wesnoth-devel 0 -> 1
 attrpath: wesnoth-devel
 [updateScript] Success
 Going to be running update for following packages:
  - wesnoth-devel-1.19.24
 
+Diff after rewrites:
+--- a/pkgs/by-name/we/wesnoth/package.nix
++++ b/pkgs/by-name/we/wesnoth/package.nix
+-  version = if enableDevel then "1.19.24" else "1.18.8";
++  version = if enableDevel then "1.19.28" else "1.18.8";
+
 Received ExitFailure 1 when running
 -- Configuring incomplete, errors occurred!
+"""
+# An updateScript that fails before writing a diff: "0 -> 1", and only what
+# nixpkgs had in the package line (blackvoxel's 2026-09-27 attempt).
+UPDATE_SCRIPT_ERROR = f"""{HEAD}blackvoxel 0 -> 1
+attrpath: blackvoxel
+[updateScript] Failed with exit code 1
+Going to be running update for following packages:
+ - blackvoxel-2.5
+
+The update script for blackvoxel-2.5 failed with exit code 1
 """
 
 
@@ -138,10 +155,16 @@ class Parse(unittest.TestCase):
     def test_unrecognised(self):
         self.assertEqual(nixpkgs_update.parse(f"{HEAD}x 1 -> 2\n")["outcome"], "other")
 
-    def test_update_script_records_what_nixpkgs_had(self):
+    def test_update_script_records_what_nixpkgs_had_and_what_the_diff_tried(self):
         result = nixpkgs_update.parse(UPDATE_SCRIPT_FAILED)
         self.assertEqual(result["outcome"], "failed")
         self.assertEqual(result["was"], "wesnoth-devel-1.19.24")
+        self.assertEqual((result["from"], result["to"]), ("1.19.24", "1.19.28"))
+        # Without a diff (the script itself failed), "0 -> 1" stays.
+        error = nixpkgs_update.parse(UPDATE_SCRIPT_ERROR)
+        self.assertEqual(error["outcome"], "failed")
+        self.assertEqual(error["was"], "blackvoxel-2.5")
+        self.assertEqual((error["from"], error["to"]), ("0", "1"))
 
     def test_superseded_when_nixpkgs_moved_on(self):
         superseded = nixpkgs_update.superseded
@@ -234,10 +257,42 @@ class AddAttempts(unittest.TestCase):
         # Stale community rules are listed by community-check, not here.
         self.assertNotIn("the rule can go", self.stderr.getvalue())
 
+    def test_update_script_error_is_ignored_only_while_up_to_date(self):
+        """blackvoxel: nix-update fails at 2.5 (the newest), then 2.6 comes out."""
+        pages = {
+            "/blackvoxel/": listing("2026-09-27"),
+            "/blackvoxel/2026-09-27.log": UPDATE_SCRIPT_ERROR,
+        }
+        rules = {"blackvoxel": {"2.5": "Chases an older v2.42 tag."}}
+        row = {
+            "name": "blackvoxel",
+            "attrs": ["blackvoxel"],
+            "nixVersion": "2.5",
+            "nixStatus": "newest",
+        }
+        self.run_attempts(
+            [row], pages, ignored=rules, community={("blackvoxel", "2.5")}
+        )
+        self.assertEqual(row["update"]["outcome"], "superseded")
+        self.assertEqual(row["update"]["supersededOn"], "ignored")
+        self.assertTrue(row["update"]["community"])
+        self.assertFalse(row["updateFailure"])
+        self.assertNotIn("the rule can go", self.stderr.getvalue())
+        # Once 2.6 is out, the row is outdated and the failure counts again.
+        outdated = {**row, "nixStatus": "outdated", "refVersion": "2.6"}
+        self.run_attempts(
+            [outdated], pages, previous={"packages": [row]}, ignored=rules
+        )
+        self.assertEqual(outdated["update"]["outcome"], "failed")
+        self.assertTrue(outdated["updateFailure"])
+
     def test_only_failures_are_ignored(self):
         attempt = {"outcome": "prOpened", "to": "2.8.1"}
         self.assertIsNone(nixpkgs_update.ignored(attempt, {"2.8.1": "x"}))
         self.assertIsNone(nixpkgs_update.ignored({"outcome": "failed"}, None))
+        # The placeholder "1" of "0 -> 1" never matches a rule called "1".
+        script = {"outcome": "failed", "to": "1", "was": "blackvoxel-2.5"}
+        self.assertIsNone(nixpkgs_update.ignored(script, {"1": "x"}))
 
     def test_rows(self):
         rows = [

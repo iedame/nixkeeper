@@ -123,7 +123,7 @@ Only `failed` counts as a failure.
 | `attr`, `date` | the attribute it tried, and the day |
 | `log` | the attempt's log |
 | `outcome` | `failed`, `cantUpdate` (a newer version, but no way for the bot to update the package), `prOpened`, `prExists`, `noChange`, `superseded`, or `other` |
-| `from`, `to` | the versions it tried (`0` → `1` when the package's updateScript picks the version) |
+| `from`, `to` | the versions it tried (for an `updateScript` run, read from its diff, or `0` → `1` when it failed before writing one) |
 | `was` | what nixpkgs had then: a version, or a name-version (`wesnoth-devel-1.19.24`) |
 | `pr` | the PR it opened or found |
 | `excerpt` | why it failed or couldn't update: the last lines of the log, or the bot's reasons |
