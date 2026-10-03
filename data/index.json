@@ -1449,6 +1449,15 @@
       "nixVersion": "1.9.2",
       "nixVulnerable": false,
       "openIssues": 0,
+      "openPR": {
+        "base": "master",
+        "draft": false,
+        "from": "1.9.2",
+        "number": 569881,
+        "title": "goverlay: 1.9.2 -> 1.9.3",
+        "to": "1.9.3",
+        "url": "https://github.com/NixOS/nixpkgs/pull/569881"
+      },
       "openPRs": 0,
       "outdatedSince": "2026-10-03T05:04:52.921419+00:00",
       "platforms": {
@@ -3419,12 +3428,7 @@
       "lists": [
         "gaming-team"
       ],
-      "name": "the-legend-of-edgar",
-      "nixStatus": "outdated",
-      "nixVersion": "1.37",
-      "nixVulnerable": false,
-      "openIssues": 0,
-      "openPR": {
+      "masterPR": {
         "base": "master",
         "draft": false,
         "from": "1.37",
@@ -3433,6 +3437,11 @@
         "to": "1.38,",
         "url": "https://github.com/NixOS/nixpkgs/pull/569852"
       },
+      "name": "the-legend-of-edgar",
+      "nixStatus": "outdated",
+      "nixVersion": "1.37",
+      "nixVulnerable": false,
+      "openIssues": 0,
       "openPRs": 0,
       "outdatedSince": "2026-09-30T04:50:05.979330+00:00",
       "platforms": {
@@ -3453,8 +3462,10 @@
         ],
         "from": "1.37",
         "log": "https://nixpkgs-update-logs.nixos.org/the-legend-of-edgar/2026-09-26.log",
-        "outcome": "cantUpdate",
+        "outcome": "superseded",
         "parser": 1,
+        "supersededOn": "master",
+        "supersededOutcome": "cantUpdate",
         "to": "1.38",
         "was": "1.37"
       },
