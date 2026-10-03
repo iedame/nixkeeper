@@ -187,6 +187,7 @@ class Init(unittest.TestCase):
                 "default.nix",
                 "extra-packages.nix",
                 "ignored-updates.nix",
+                "up-to-date.nix",
                 "update-checks.nix",
             ],
         )

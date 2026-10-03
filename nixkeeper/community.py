@@ -33,6 +33,7 @@ _PACKAGED = resources.files("nixkeeper") / "community"
 _CHECKOUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "community")
 CHECKS = "update-checks.nix"
 IGNORES = "ignored-updates.nix"
+UP_TO_DATE = "up-to-date.nix"
 
 # The fields a community rule may have (as your own rules: github + tags,
 # github + branch (+ outdatedAfter), or url + pattern, and frequent).
@@ -103,6 +104,28 @@ def rules(file=None):
 def ignores(file=None):
     """{package name: {version: reason}}, the community's ignore rules."""
     return rules(file or path(IGNORES))
+
+
+def up_to_date(file=None):
+    """{package name: version}, the community's up-to-date rules."""
+    return rules(file or path(UP_TO_DATE))
+
+
+def merge_up_to_date(lists, tracked):
+    """The up-to-date rules to apply: your own, plus the community's.
+    Returns (rules, {name} of the community's)."""
+    own = lists.get("upToDate") or {}
+    if not opted(lists, "upToDate"):
+        return own, set()
+    merged = dict(own)
+    from_community = set()
+    for name, version in up_to_date().items():
+        if name not in set(tracked):
+            continue
+        if name not in merged:
+            merged[name] = version
+            from_community.add(name)
+    return merged, from_community
 
 
 def merge_ignores(lists, tracked):
@@ -277,15 +300,38 @@ def run(names=None, file=None):
 
 def sort_names(names, file=None):
     """Package names given by hand, sorted by the community rules they have:
-    (those with an update check, those with ignore rules, those with
+    (those with an update check, those with ignore/up-to-date rules, those with
     neither). A name can have both kinds. file: another update checks file,
     as for run()."""
-    with_checks, with_ignores = set(rules(file)), set(ignores())
+    with_checks = set(rules(file))
+    with_ignores = set(ignores()) | set(up_to_date())
     return (
         [n for n in names if n in with_checks],
         [n for n in names if n in with_ignores],
         [n for n in names if n not in with_checks and n not in with_ignores],
     )
+
+
+def stale_up_to_date(names=None, file=None):
+    """Community up-to-date rules that no longer do anything: the package's
+    nixVersion has moved on. Returns {name: (version, why)}."""
+    from .sources import nixpkgs as nixpkgs_source
+
+    found = {}
+    all_rules = up_to_date(file)
+    if not all_rules:
+        return found
+    index = nixpkgs_source.load_index()
+    for name, version in sorted(all_rules.items()):
+        if names is not None and name not in names:
+            continue
+        if name not in index:
+            found[name] = (version, "package not in nixpkgs' channel index")
+            continue
+        current = index[name].get("version")
+        if current != version:
+            found[name] = (version, f"nixpkgs is now at {current or '?'}")
+    return found
 
 
 def stale_ignores(names=None, file=None):
@@ -324,7 +370,7 @@ def stale_ignores(names=None, file=None):
     return found
 
 
-def report(results, stale=None):
+def report(results, stale=None, stale_up_to_date=None):
     """Print run()'s and stale_ignores()'s results, and as a GitHub Actions
     job summary when there is one. Returns how many update checks failed."""
     lines = ["| Package | Found | Problem |", "|---|---|---|"]
@@ -338,6 +384,10 @@ def report(results, stale=None):
         for version, why in versions:
             print(f"  ignore rule {name} {version}: can go ({why})")
             stale_lines.append(f"| {name} | {version} | {why} |")
+    stale_up_lines = []
+    for name, (version, why) in sorted((stale_up_to_date or {}).items()):
+        print(f"  up-to-date rule {name} {version}: can go ({why})")
+        stale_up_lines.append(f"| {name} | {version} | {why} |")
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a") as f:
@@ -350,20 +400,28 @@ def report(results, stale=None):
                     + "\n".join(stale_lines)
                     + "\n"
                 )
+            if stale_up_lines:
+                f.write(
+                    "## Community up-to-date rules that can go\n\n"
+                    "| Package | Version | Why |\n|---|---|---|\n"
+                    + "\n".join(stale_up_lines)
+                    + "\n"
+                )
     return failed
 
 
 def changed(base_dir):
     """The rules added or changed since base_dir (main's community/, for a
     pull request): only those are tried there, so a PR isn't failed by a rule
-    it didn't touch. Returns (update check names, ignore rule names)."""
+    it didn't touch. Returns (update check names, ignore/up-to-date rule names)."""
 
     def differ(name, current):
         base_file = os.path.join(base_dir, name)
         base = rules(base_file) if os.path.exists(base_file) else {}
-        return sorted(n for n, rule in current.items() if base.get(n) != rule)
+        return [n for n, rule in current.items() if base.get(n) != rule]
 
-    return differ(CHECKS, rules()), differ(IGNORES, ignores())
+    ignored = differ(IGNORES, ignores()) + differ(UP_TO_DATE, up_to_date())
+    return sorted(set(differ(CHECKS, rules()))), sorted(set(ignored))
 
 
 # The community rules' own status issue: which update checks are broken, since
@@ -389,7 +447,7 @@ def track(results, previous, now):
     return broken, newly, recovered
 
 
-def issue_body(results, broken, now, stale=None):
+def issue_body(results, broken, now, stale=None, stale_up_to_date=None):
     total = len(results)
     lines = [
         "The community rules (`community/`), checked weekly by the "
@@ -433,13 +491,30 @@ def issue_body(results, broken, now, stale=None):
         ]
     else:
         lines.append("**All still apply.**")
+
+    lines += ["", "### Up-to-date rules", ""]
+    if stale_up_to_date:
+        lines += [
+            "**These no longer do anything** (the package's version has moved on "
+            "in nixpkgs), so they can go from `community/up-to-date.nix`:",
+            "",
+            "| Package | Version | Why |",
+            "|---|---|---|",
+        ]
+        lines += [
+            f"| `{name}` | {version} | {why} |"
+            for name, (version, why) in sorted(stale_up_to_date.items())
+        ]
+    else:
+        lines.append("**All still apply.**")
+
     record = json.dumps(broken, sort_keys=True)
     lines += ["", f"_Last run: {now[:16].replace('T', ' ')} UTC._", ""]
     lines.append(f"<!-- nixkeeper-community-state {record} -->")
     return "\n".join(lines)
 
 
-def publish(results, stale=None, now=None):
+def publish(results, stale=None, stale_up_to_date=None, now=None):
     """Update the community checks' status issue with a run's results (in the
     repository NIXKEEPER_GITHUB_REPO or the workflow's own), commenting when a
     rule newly breaks or recovers. Needs a token given explicitly, never the
@@ -472,7 +547,7 @@ def publish(results, stale=None, now=None):
         repo,
         token,
         ISSUE_TITLE,
-        issue_body(results, broken, now, stale),
+        issue_body(results, broken, now, stale, stale_up_to_date),
         comment,
         label=ISSUE_LABEL,
         about="The community rules' status, kept up to date by nixkeeper",

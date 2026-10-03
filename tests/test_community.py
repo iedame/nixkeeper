@@ -155,6 +155,80 @@ class StaleIgnores(unittest.TestCase):
             self.assertEqual(community.stale_ignores(), {})
 
 
+class MergeUpToDate(unittest.TestCase):
+    COMMUNITY = {"pacvim": "2018-05-16", "steamtinkerlaunch": "12.12-unstable"}
+
+    def merge(self, lists, tracked=("pacvim", "unciv")):
+        with mock.patch.object(community, "up_to_date", return_value=self.COMMUNITY):
+            return community.merge_up_to_date(lists, list(tracked))
+
+    def test_off_unless_opted_in(self):
+        own = {"unciv": "4.0"}
+        for lists in (
+            {"upToDate": own},
+            {"upToDate": own, "community": {"updateChecks": True}},
+        ):
+            with self.subTest(lists=lists):
+                self.assertEqual(self.merge(lists), (own, set()))
+
+    def test_for_tracked_packages_your_reason_winning(self):
+        lists = {
+            "community": {"upToDate": True},
+            "upToDate": {
+                "pacvim": "my version",
+                "unciv": "4.0",
+            },
+        }
+        merged, from_community = self.merge(lists)
+        self.assertEqual(merged["pacvim"], "my version")
+        self.assertNotIn("steamtinkerlaunch", merged)  # not tracked
+        self.assertEqual(from_community, set())
+
+    def test_community_versions_added(self):
+        lists = {"community": {"upToDate": True}}
+        merged, from_community = self.merge(lists)
+        self.assertEqual(merged, {"pacvim": "2018-05-16"})
+        self.assertEqual(from_community, {"pacvim"})
+
+
+class StaleUpToDate(unittest.TestCase):
+    RULES = {"pacvim": "2018-05-16", "steamtinkerlaunch": "12.12"}
+
+    def stale(self, channel_versions, names=None):
+        def load_index():
+            return {
+                n: {"version": v} for n, v in channel_versions.items() if v is not None
+            }
+
+        with (
+            mock.patch.object(community, "up_to_date", return_value=self.RULES),
+            mock.patch(
+                "nixkeeper.sources.nixpkgs.load_index",
+                side_effect=load_index,
+            ),
+        ):
+            return community.stale_up_to_date(names)
+
+    def test_a_rule_that_still_applies(self):
+        found = self.stale(
+            {
+                "pacvim": "2018-05-16",
+                "steamtinkerlaunch": "12.12",
+            }
+        )
+        self.assertEqual(found, {})
+
+    def test_rules_that_can_go(self):
+        found = self.stale({"pacvim": "1.1.1-unstable", "steamtinkerlaunch": None})
+        self.assertEqual(
+            found,
+            {
+                "pacvim": ("2018-05-16", "nixpkgs is now at 1.1.1-unstable"),
+                "steamtinkerlaunch": ("12.12", "package not in nixpkgs' channel index"),
+            },
+        )
+
+
 class Limits(unittest.TestCase):
     def test_good_rules(self):
         for rule in (CHROME, WESNOTH, {"github": "a/b", "branch": "main"}):
@@ -307,10 +381,15 @@ class CheckByName(unittest.TestCase):
 
     CHECKS = {"google-chrome": CHROME, "both": CHROME}
     IGNORES = {"xskat": {"4.0-9": "Never released."}, "both": {"2.0": "No."}}
+    UP_TO_DATES = {"pacvim": "2018-05-16", "both": "1"}
 
     def check(self, *names):
         """(what it printed, whether it failed) for community-check names."""
-        index = {"google-chrome": {"version": "154.0.1"}, "both": {"version": "1"}}
+        index = {
+            "google-chrome": {"version": "154.0.1"},
+            "both": {"version": "1"},
+            "pacvim": {"version": "1.1.1"},
+        }
         attempts = {
             "xskat": {"to": "4.0-9", "outcome": "failed"},
             "both": {"to": "2.0", "outcome": "failed"},
@@ -319,6 +398,7 @@ class CheckByName(unittest.TestCase):
         with (
             mock.patch.object(community, "rules", return_value=self.CHECKS),
             mock.patch.object(community, "ignores", return_value=self.IGNORES),
+            mock.patch.object(community, "up_to_date", return_value=self.UP_TO_DATES),
             mock.patch("nixkeeper.sources.nixpkgs.load_index", return_value=index),
             mock.patch.object(http, "get", return_value='{"version": "154.0.2"}'),
             mock.patch(
@@ -348,14 +428,22 @@ class CheckByName(unittest.TestCase):
 
     def test_ignore_rules_only(self):
         out, failed = self.check("xskat")
-        self.assertIn("ignore rules for xskat: still apply", out)
+        self.assertIn("ignore/up-to-date rules for xskat: still apply", out)
         self.assertNotIn("no community rule", out)  # not tried as an update check
         self.assertFalse(failed)
 
     def test_both_kinds(self):
         out, failed = self.check("both")
         self.assertIn("both: 154.0.2", out)
-        self.assertIn("ignore rules for both: still apply", out)
+        self.assertIn("ignore/up-to-date rules for both: still apply", out)
+        self.assertFalse(failed)
+
+    def test_up_to_date_only(self):
+        out, failed = self.check("pacvim")
+        self.assertIn(
+            "up-to-date rule pacvim 2018-05-16: can go (nixpkgs is now at 1.1.1)", out
+        )
+        self.assertNotIn("no community rule", out)
         self.assertFalse(failed)
 
     def test_neither_is_a_typo(self):
@@ -405,6 +493,26 @@ class StatusIssue(unittest.TestCase):
             community.publish({"a": ("1.0", None)}, stale, now=self.NOW)
         body = update.call_args.args[3]
         self.assertIn("| `xskat` | 4.0-9 | the bot's latest attempt is at 4.1 |", body)
+
+    def test_up_to_date_rules_that_can_go(self):
+        stale_up = {"pacvim": ("2018-05-16", "nixpkgs is now at 1.1.1")}
+        env = {"GITHUB_TOKEN": "t", "GITHUB_REPOSITORY": "iedame/nixkeeper"}
+        with (
+            mock.patch.dict(os.environ, env, clear=True),
+            mock.patch("nixkeeper.sources.github.status_issue_body", return_value=None),
+            mock.patch(
+                "nixkeeper.sources.github.update_status_issue", return_value=7
+            ) as update,
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            community.publish(
+                {"a": ("1.0", None)},
+                stale=None,
+                stale_up_to_date=stale_up,
+                now=self.NOW,
+            )
+        body = update.call_args.args[3]
+        self.assertIn("| `pacvim` | 2018-05-16 | nixpkgs is now at 1.1.1 |", body)
 
     def test_a_rule_breaks_then_stays_broken_then_recovers(self):
         body, comment = self.publish({"a": ("1.0", None), "b": (None, "moved")})

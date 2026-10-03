@@ -12,6 +12,9 @@ the same format as your own lists:
 - **Ignore rules** ([`community/ignored-updates.nix`](../community/ignored-updates.nix)):
   failed nixpkgs-update attempts that shouldn't count as the bot's failure,
   such as a version upstream never really released.
+- **Up-to-date rules** ([`community/up-to-date.nix`](../community/up-to-date.nix)):
+  force a package to appear up to date, to suppress inaccurate Repology warnings
+  (e.g., untrusted or incorrect status) for a specific version.
 
 ## Using them
 
@@ -21,6 +24,7 @@ Opt in to each, in your package lists:
 community = {
   updateChecks = true;
   ignoredUpdates = true;
+  upToDate = true;
 };
 ```
 

@@ -232,15 +232,18 @@ def main(argv=None):
                 return
         results = community.run(checks, args.file)
         stale = community.stale_ignores(ignored) if ignored != [] else {}
-        failed = community.report(results, stale)
-        still = [name for name in ignored or [] if name not in stale]
+        stale_up = community.stale_up_to_date(ignored) if ignored != [] else {}
+        failed = community.report(results, stale, stale_up)
+        still = [
+            name for name in ignored or [] if name not in stale and name not in stale_up
+        ]
         if still:
-            print(f"  ignore rules for {', '.join(still)}: still apply")
+            print(f"  ignore/up-to-date rules for {', '.join(still)}: still apply")
         for name in unknown:  # a typo, most likely
             print(f"  {name}: no community rule of that name (check or ignore)")
         failed += len(unknown)
         if args.report_issue:
-            community.publish(results, stale)
+            community.publish(results, stale, stale_up)
             return
         # A pull request's ignore rule has to do something when it's added.
         if args.changed_from and stale:

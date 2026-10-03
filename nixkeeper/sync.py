@@ -33,6 +33,22 @@ def main():
     projects = lookup.collect_projects(wanted, previous)
     index_rows = rows.build_rows(projects, nixpkgs)
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
+
+    # Apply up-to-date overrides
+    up_to_date_rules, up_to_date_community = community.merge_up_to_date(
+        lists, [row["name"] for row in index_rows]
+    )
+    for row in index_rows:
+        if (
+            row["name"] in up_to_date_rules
+            and row.get("nixVersion") == up_to_date_rules[row["name"]]
+        ):
+            row["nixStatus"] = "newest"
+            row["statusOverride"] = (
+                "community" if row["name"] in up_to_date_community else "manual"
+            )
+            row.pop("refVersion", None)
+
     problems = listcheck.problems(lists, nixpkgs, [row["name"] for row in index_rows])
     listcheck.report(problems)
     revision = nixpkgs_source.channel_revision()
