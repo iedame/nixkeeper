@@ -147,6 +147,9 @@ UPDATE_LOGS_MAX_CONSECUTIVE_FAILURES = 3
 
 GITHUB_REPO = "NixOS/nixpkgs"
 GITHUB_SEARCH_BATCH = 20  # searches per GraphQL request
+# Repositories per GraphQL request for the update checks' tags and branches:
+# a request for all of them at once grows too big to answer with many rules.
+GITHUB_REPOS_BATCH = 50
 # nixpkgs PR/issue titles name packages in versioned sets by their alias
 # ("python3Packages.requests: 2.34 -> 2.35"), which the index doesn't carry.
 SEARCH_ALIASES = [

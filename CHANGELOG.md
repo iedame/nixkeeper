@@ -76,6 +76,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   page or pattern changes reads the page whole again. Checks record what
   they send (`upstream.page`).
 
+- Update checks too: one that found nothing newer runs every 3 days (a
+  third each day) instead of daily, unless it's `frequent`, which always
+  runs. It runs daily again once it finds a newer version, fails, its rule
+  is edited, or nixpkgs' version changes. Results record a fingerprint of
+  their rule (`upstream.rule`) to tell. Ready for update checks on most
+  packages, as are GitHub's: tags and branches are now asked 50
+  repositories per request (all of them in one request would grow too big),
+  and a request that fails only affects its own 50.
+
 ### Fixed
 
 - `repoCount` counted Repology's entries, so a repository listing a package

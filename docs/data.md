@@ -85,6 +85,7 @@ A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
 | `commit`, `behind`, `outdatedAfter` | branch checks: the newest commit, how many commits since nixpkgs' version, and the limits (`{ "days", "commits" }`) |
 | `checkedAt` | when it was last checked |
 | `community` | `true` when the check is a [community rule](community.md) |
+| `rule` | a short fingerprint of the rule that found it: an edited rule runs again at once |
 | `page` | page checks: the page's `etag` and `lastModified`, as its server gave them, and the `pattern` it was read with; next time the server is asked to send the page only if it changed, and if it didn't, `version` still holds |
 
 ### Master and update PRs

@@ -35,6 +35,10 @@
 # `nixkeeper frequent-check`, as often as you run it, not just by the daily
 # sync: for packages whose new releases matter within hours, like browsers'
 # security fixes.
+#
+# A check that found nothing newer runs every 3 days instead of daily (a
+# third of them each day), unless it's frequent. It runs daily again when it
+# finds a newer version, fails, its rule changes, or nixpkgs' version does.
 {
   # stepmania = {
   #   github = "stepmania/stepmania";

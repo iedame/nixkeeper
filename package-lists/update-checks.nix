@@ -36,6 +36,10 @@
 # releases matter within hours, like browsers' security fixes. (GitHub may
 # delay or skip scheduled runs, so expect gaps of a few hours at times.)
 #
+# A check that found nothing newer runs every 3 days instead of daily (a
+# third of them each day), unless it's frequent. It runs daily again when it
+# finds a newer version, fails, its rule changes, or nixpkgs' version does.
+#
 # This list's rules are all community rules (community/ in the repository,
 # turned on in default.nix), so this file is empty: add a rule here only for
 # something the community rules shouldn't have, or to override one.
