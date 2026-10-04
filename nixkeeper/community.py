@@ -3,20 +3,24 @@ any nixpkgs package, in the format of your own lists:
 
 - update checks (update-checks.nix), where to look for new releases;
 - ignored updates (ignored-updates.nix), failed nixpkgs-update attempts that
-  don't count (a version that was never really released).
+  don't count (a version that was never really released);
+- up-to-date rules (up-to-date.nix), versions Repology gets wrong
+  (nixkeeper/uptodate.py).
 
 Each is opt-in in the package lists:
 
-    community = { updateChecks = true; ignoredUpdates = true; };
+    community = { updateChecks = true; ignoredUpdates = true; upToDate = true; };
 
 Then each sync uses the community's rules for the packages it tracks, your
-own winning over the community's (for an update check, per package; for an
-ignore rule, per version). The rules come with nixkeeper (the version you
-have pinned): new ones arrive when you update it, never in between.
+own winning over the community's (for an update check or an up-to-date rule,
+per package; for an ignore rule, per version). The rules come with nixkeeper
+(the version you have pinned): new ones arrive when you update it, never in
+between.
 
 Community update checks run on every subscriber's machine, so they're held
 to limits your own aren't (safety(), and http.get's safe mode): an unsafe one
-is refused and reported, never fetched. Ignore rules fetch nothing."""
+is refused and reported, never fetched. Ignore and up-to-date rules fetch
+nothing."""
 
 import ipaddress
 import json
@@ -68,7 +72,7 @@ def path(name=CHECKS):
 
 def opted(lists, kind):
     """Whether the lists opt in to the community's kind of rules
-    ("updateChecks", "ignoredUpdates"): `community.<kind> = true;`."""
+    ("updateChecks", "ignoredUpdates", "upToDate"): `community.<kind> = true;`."""
     return (lists.get("community") or {}).get(kind) is True
 
 
@@ -107,13 +111,16 @@ def ignores(file=None):
 
 
 def up_to_date(file=None):
-    """{package name: version}, the community's up-to-date rules."""
+    """{package name: {"version", "newest"?, "reason"}}, the community's
+    up-to-date rules."""
     return rules(file or path(UP_TO_DATE))
 
 
 def merge_up_to_date(lists, tracked):
-    """The up-to-date rules to apply: your own, plus the community's.
-    Returns (rules, {name} of the community's)."""
+    """The up-to-date rules to apply: your own, plus the community's for
+    packages you track and have no rule of your own for (only with
+    `community.upToDate = true;`). Returns (rules, names of the community
+    ones)."""
     own = lists.get("upToDate") or {}
     if not opted(lists, "upToDate"):
         return own, set()
@@ -313,24 +320,50 @@ def sort_names(names, file=None):
 
 
 def stale_up_to_date(names=None, file=None):
-    """Community up-to-date rules that no longer do anything: the package's
-    nixVersion has moved on. Returns {name: (version, why)}."""
+    """Community up-to-date rules that no longer do anything (uptodate.why_not):
+    nixpkgs has moved on, or Repology now shows a newer version elsewhere.
+    Every rule (names None), or those named. Returns {name: (version, why)};
+    a package Repology can't be reached for is left out, not called stale."""
+    from . import rows, uptodate
+    from .output import data_file
     from .sources import nixpkgs as nixpkgs_source
+    from .sources import repology
 
-    found = {}
-    all_rules = up_to_date(file)
-    if not all_rules:
-        return found
+    chosen = {
+        name: rule
+        for name, rule in sorted(up_to_date(file).items())
+        if names is None or name in names
+    }
+    if not chosen:
+        return {}
     index = nixpkgs_source.load_index()
-    for name, version in sorted(all_rules.items()):
-        if names is not None and name not in names:
-            continue
+    found = {}
+    for name, rule in chosen.items():
+        version = rule.get("version")
         if name not in index:
-            found[name] = (version, "package not in nixpkgs' channel index")
+            found[name] = (version, "not in nixpkgs' channel index")
             continue
-        current = index[name].get("version")
-        if current != version:
-            found[name] = (version, f"nixpkgs is now at {current or '?'}")
+        # As a sync that tracks it would see it.
+        try:
+            project, entries = repology.resolve(
+                index[name].get("pname") or name, [name]
+            )
+        except (OSError, ValueError) as e:  # urllib's errors are OSErrors
+            print(f"  {name}: couldn't reach Repology ({e})", file=sys.stderr)
+            continue
+        if not project:
+            found[name] = (version, "Repology doesn't know this package")
+            continue
+        proj = {
+            "name": name,
+            "project": project,
+            "attrs": [name],
+            "entries": entries,
+            "dataFile": data_file(project),
+        }
+        (row,) = rows.project_rows(proj, index)  # one attribute: one row
+        if why := uptodate.why_not(row, rule):
+            found[name] = (version, why)
     return found
 
 
@@ -380,8 +413,9 @@ def stale_ignores(names=None, file=None):
 
 
 def report(results, stale=None, stale_up_to_date=None):
-    """Print run()'s and stale_ignores()'s results, and as a GitHub Actions
-    job summary when there is one. Returns how many update checks failed."""
+    """Print run()'s, stale_ignores()' and stale_up_to_date()'s results, and
+    as a GitHub Actions job summary when there is one. Returns how many
+    update checks failed."""
     lines = ["| Package | Found | Problem |", "|---|---|---|"]
     failed = 0
     for name, (version, why) in sorted(results.items()):
@@ -434,8 +468,8 @@ def changed(base_dir):
 
 
 # The community rules' own status issue: which update checks are broken, since
-# when, and which ignore rules can go. Found by its label (the title is only
-# used when it's opened).
+# when, and which ignore and up-to-date rules can go. Found by its label (the
+# title is only used when it's opened).
 ISSUE_LABEL = "nixkeeper-community-status"
 ISSUE_TITLE = "Community rules status"
 # The record of broken rules, kept in the issue's body between runs.
@@ -504,8 +538,9 @@ def issue_body(results, broken, now, stale=None, stale_up_to_date=None):
     lines += ["", "### Up-to-date rules", ""]
     if stale_up_to_date:
         lines += [
-            "**These no longer do anything** (the package's version has moved on "
-            "in nixpkgs), so they can go from `community/up-to-date.nix`:",
+            "**These no longer do anything** (nixpkgs has moved on, or Repology "
+            "now shows a newer version elsewhere), so they can go from "
+            "`community/up-to-date.nix`:",
             "",
             "| Package | Version | Why |",
             "|---|---|---|",

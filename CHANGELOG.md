@@ -20,6 +20,19 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   package followed has to be tracked too; no chains). The community update
   checks have it for msedgedriver.
 
+- Up-to-date rules (`package-lists/up-to-date.nix`, `upToDate` in the
+  lists), for a version nixpkgs has that Repology gets wrong: calls it
+  untrusted, incorrect or ignored, or compares it with a version that isn't
+  really newer. A rule names the version, the version Repology shows as
+  newest elsewhere, and why nixpkgs' is right; while nixpkgs has that version
+  and Repology shows nothing newer, the row counts as up to date, and its
+  details say why and what Repology said. A real new release or nixpkgs
+  moving on ends it, and the sync says the rule can go. Only Repology's
+  verdict changes: update checks and master still count. The community rules
+  have them too (`community.upToDate = true;`, `lists.community.upToDate` in
+  the modules), for asc, pacvim, steamtinkerlaunch and wesnoth-devel, and
+  `nixkeeper community-check` and the weekly run report the ones that can go.
+
 - Fewer requests to the nixpkgs-update logs: a sync no longer downloads the
   log of an attempt it read the day before (the bot tries each package about
   every ten days), and takes the previous reading instead, judged afresh

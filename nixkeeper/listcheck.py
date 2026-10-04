@@ -52,6 +52,7 @@ def problems(lists, nixpkgs, tracked):
     for what, entries in (
         ("updateChecks", lists.get("updateChecks") or {}),
         ("ignoredUpdates", lists.get("ignoredUpdates") or {}),
+        ("upToDate", lists.get("upToDate") or {}),
     ):
         for name in sorted(set(entries) - set(tracked)):
             found.append(f"{what}: {name} isn't a tracked package")

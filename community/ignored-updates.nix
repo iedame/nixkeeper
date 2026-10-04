@@ -19,8 +19,9 @@
 #   foo."1.2.3" = "Upstream tagged it by mistake; it was never released.";
 #
 # A rule only matters while the bot's latest attempt is a failure at that
-# version: once the bot tries another version (or a newer release comes out),
-# it does nothing, and the weekly community run lists it as one that can go.
+# version (for an updateScript failure, also only until a newer release comes
+# out): once the bot tries another version, it does nothing, and the weekly
+# community run lists it as one that can go.
 # So these are short-lived, and they're not the fix at the source: to stop the
 # bot trying a version, that's Repology's ignore rules or nixpkgs-update's
 # skiplist. A rule here only stops the failure it already made from showing.

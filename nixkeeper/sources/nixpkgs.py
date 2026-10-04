@@ -15,8 +15,9 @@ from .. import config
 
 def read_lists(path=None):
     """The package lists: {"maintainers": [...], "extraPackages": [...],
-    "updateChecks": {...}, "ignoredUpdates": {...}}. From a JSON file as is,
-    or from the Nix folder (package-lists/) by evaluating it."""
+    "updateChecks": {...}, "ignoredUpdates": {...}, "upToDate": {...}, ...}.
+    From a JSON file as is, or from the Nix folder (package-lists/) by
+    evaluating it."""
     path = path or config.LISTS
     if not os.path.exists(path):
         sys.exit(

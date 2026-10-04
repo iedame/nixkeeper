@@ -104,8 +104,9 @@ def parser():
         help="try the community rules for real (all, or those named)",
         description="Run the community update checks (community/update-checks.nix) "
         "for real, against nixpkgs' current versions, and say which community "
-        "ignore rules (community/ignored-updates.nix) no longer do anything: every "
-        "rule, or those named. Fails if an update check finds nothing. GitHub "
+        "ignore rules (community/ignored-updates.nix) and up-to-date rules "
+        "(community/up-to-date.nix) no longer do anything: every rule, or those "
+        "named. Fails if an update check finds nothing. GitHub "
         "rules need a token (GITHUB_TOKEN, or a gh login).",
         parents=[common],
     )
@@ -118,7 +119,7 @@ def parser():
         metavar="DIR",
         help="only the rules added or changed since this version of community/ "
         "(for a pull request); a new ignore rule must match the bot's latest "
-        "failed attempt",
+        "failed attempt, and a new up-to-date rule what Repology shows",
     )
     check.add_argument(
         "--report-issue",
@@ -220,7 +221,7 @@ def main(argv=None):
         )
         return
     if args.command == "community-check":
-        # Every rule of both kinds; or, named, each kind a name has a rule of.
+        # Every rule of every kind; or, named, each kind a name has a rule of.
         checks = ignored = None
         unknown = []
         if args.names:
@@ -234,20 +235,23 @@ def main(argv=None):
         stale = community.stale_ignores(ignored) if ignored != [] else {}
         stale_up = community.stale_up_to_date(ignored) if ignored != [] else {}
         failed = community.report(results, stale, stale_up)
-        still = [
-            name for name in ignored or [] if name not in stale and name not in stale_up
-        ]
-        if still:
-            print(f"  ignore/up-to-date rules for {', '.join(still)}: still apply")
+        for kind, have, gone in (
+            ("ignore rules", community.ignores(), stale),
+            ("up-to-date rules", community.up_to_date(), stale_up),
+        ):
+            still = [n for n in ignored or [] if n in have and n not in gone]
+            if still:
+                print(f"  {kind} for {', '.join(still)}: still apply")
         for name in unknown:  # a typo, most likely
-            print(f"  {name}: no community rule of that name (check or ignore)")
+            print(f"  {name}: no community rule of that name")
         failed += len(unknown)
         if args.report_issue:
             community.publish(results, stale, stale_up)
             return
-        # A pull request's ignore rule has to do something when it's added.
-        if args.changed_from and stale:
-            failed += sum(map(len, stale.values()))
+        # A pull request's ignore or up-to-date rule has to do something when
+        # it's added.
+        if args.changed_from:
+            failed += sum(map(len, stale.values())) + len(stale_up)
         if failed:
             sys.exit(f"{failed} community rule(s) don't work.")
         return

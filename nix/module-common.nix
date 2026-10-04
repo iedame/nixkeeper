@@ -47,6 +47,18 @@ rec {
               default = { };
               description = "nixpkgs-update attempts that don't count, as in package-lists/ignored-updates.nix.";
             };
+            upToDate = mkOption {
+              type = types.attrsOf (types.attrsOf types.str);
+              default = { };
+              example = {
+                pacvim = {
+                  version = "2018-05-16";
+                  newest = "1.1.1";
+                  reason = "A snapshot from after the 1.1.1 release.";
+                };
+              };
+              description = "Versions Repology gets wrong, counted as up to date, as in package-lists/up-to-date.nix.";
+            };
             community = {
               updateChecks = mkOption {
                 type = types.bool;
@@ -66,6 +78,16 @@ rec {
                   (community/ignored-updates.nix, shipped with nixkeeper) for
                   the packages you track. Your own ignoredUpdates win for the
                   same version.
+                '';
+              };
+              upToDate = mkOption {
+                type = types.bool;
+                default = false;
+                description = ''
+                  Also use the community up-to-date rules
+                  (community/up-to-date.nix, shipped with nixkeeper) for the
+                  packages you track. Your own upToDate win for the same
+                  package.
                 '';
               };
             };
@@ -194,7 +216,14 @@ rec {
     file == null
     || !(lib.hasSuffix ".json" (toString file))
     || cfg.listsPath != null
-    || (cfg.lists != null && (cfg.lists.community.updateChecks || cfg.lists.community.ignoredUpdates));
+    || (
+      cfg.lists != null
+      && (
+        cfg.lists.community.updateChecks
+        || cfg.lists.community.ignoredUpdates
+        || cfg.lists.community.upToDate
+      )
+    );
 
   # The jobs' NIXKEEPER_* variables. token: where they find the token file.
   environment =

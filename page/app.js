@@ -885,8 +885,15 @@ async function fillDetail(pkg, el) {
           : 'Fix it in <span class="mono">package-lists/update-checks.nix</span>.'
       }</div>`
     : '';
-  const overrideNote = pkg.statusOverride
-    ? `<div class="stale-note" style="margin-bottom: 6px; background: var(--bg-alt);">ℹ Marked as up-to-date by a ${pkg.statusOverride === 'community' ? 'community ' : ''}rule.</div>`
+  // An up-to-date rule: Repology gets this version wrong, so it counts as
+  // up to date. What Repology said, and why the rule says otherwise.
+  const rule = pkg.upToDate;
+  const ruleText = rule
+    ? ` — up to date by ${rule.community ? 'a community rule' : 'a manual rule'}: ${escapeHtml(rule.reason || '')} (Repology calls it <span class="mono">${escapeHtml(rule.status || '?')}</span>${
+        rule.newest
+          ? `, with <span class="mono">${escapeHtml(rule.newest)}</span> as the newest elsewhere`
+          : ''
+      }).`
     : '';
   const nixLine =
     up?.newer && !fromMaster(pkg)
@@ -894,8 +901,8 @@ async function fillDetail(pkg, el) {
       : st === 'missing'
         ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
         : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${
-            pkg.statusOverride
-              ? ` — marked as up-to-date by a ${pkg.statusOverride === 'community' ? 'community ' : ''}rule.`
+            rule
+              ? ruleText
               : st === 'warn' && fromMaster(pkg)
                 ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
                 : st === 'warn'

@@ -20,11 +20,12 @@
   # Where to look for new releases of some tracked packages, on top of
   # Repology. See the file for the format.
   # ┌──────────────────────────────────────────────────────────────────────┐
-  # │ LOOKING FOR THIS PAGE'S UPDATE CHECKS AND IGNORE RULES?              │
+  # │ LOOKING FOR THIS PAGE'S UPDATE CHECKS, IGNORE AND UP-TO-DATE RULES?  │
   # │                                                                      │
   # │ They're the COMMUNITY RULES, not in this folder:                     │
   # │   community/update-checks.nix    where to look for new releases      │
   # │   community/ignored-updates.nix  bot failures that don't count       │
+  # │   community/up-to-date.nix       versions Repology gets wrong        │
   # │                                                                      │
   # │ Anyone can contribute to them by pull request (docs/community.md),   │
   # │ and every nixkeeper can use them for the packages it tracks, by      │
@@ -33,7 +34,7 @@
   community = {
     updateChecks = true; # where to look for new releases
     ignoredUpdates = true; # bot failures that don't count
-    upToDate = true; # overrides for untrusted status
+    upToDate = true; # versions Repology gets wrong
   };
 
   # Rules of this list's own, on top of the community's (and winning over
