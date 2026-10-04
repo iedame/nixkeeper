@@ -65,6 +65,11 @@
     branch = "5_1-new";
   };
 
+  wesnoth = {
+    github = "wesnoth/wesnoth";
+    tags = "^(1\\.[0-9]*[02468]\\.[0-9]+)$";
+  };
+
   wesnoth-devel = {
     github = "wesnoth/wesnoth";
     tags = "^(1\\.19\\.[0-9]+)$";
