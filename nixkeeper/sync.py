@@ -13,6 +13,7 @@ from . import (
     community,
     follows,
     history,
+    inferred,
     listcheck,
     lookup,
     notify,
@@ -75,6 +76,9 @@ def main():
     rows.add_source_links(index_rows, nixpkgs, revision)
     checks, from_community = community.merge(lists, [row["name"] for row in index_rows])
     upstream.add_checks(index_rows, checks, previous, now, from_community)
+    # Not used yet: logs how checks worked out from nixpkgs' sources compare
+    # with Repology, before master or follows change the rows.
+    inferred.compare(index_rows, checks, revision)
     if not hydra_answers.done():
         print("Waiting for Hydra's answers...", file=sys.stderr)
     broken, fetched = hydra_answers.result()

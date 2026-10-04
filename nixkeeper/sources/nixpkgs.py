@@ -1,5 +1,6 @@
 """nixpkgs side: the package lists (Nix files), the channel's package index and
-revision, and where nixpkgs marks packages broken."""
+revision, where nixpkgs marks packages broken, and where their sources come
+from."""
 
 import json
 import os
@@ -78,6 +79,37 @@ BROKEN_EXPR = """pkgs: map (attr:
   in if r.success then r.value else null) (builtins.fromJSON ''{attrs}'')"""
 
 
+def evaluate(revision, system, expr, attrs):
+    """expr (a function of legacyPackages, with {attrs} for the attributes as
+    JSON) evaluated at the channel's revision for system: its JSON answer.
+    Raises with nix's last line of output if that fails."""
+    try:
+        out = subprocess.run(
+            [
+                "nix",
+                "eval",
+                "--extra-experimental-features",
+                "nix-command flakes",
+                "--json",
+                f"github:NixOS/nixpkgs/{revision}#legacyPackages.{system}",
+                "--apply",
+                expr.replace("{attrs}", json.dumps(attrs)),
+            ],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return json.loads(out.stdout)
+    except (subprocess.CalledProcessError, OSError, ValueError) as e:
+        # nix's last line of output says what went wrong.
+        lines = (getattr(e, "stderr", None) or "").strip().splitlines()
+        raise EvalError(lines[-1] if lines else str(e)) from e
+
+
+class EvalError(Exception):
+    """nixpkgs didn't evaluate (evaluate): the reason, from nix."""
+
+
 def broken(attrs, revision):
     """{attr: [systems where nixpkgs marks it broken]} at the channel's
     revision. The index can't say: it's evaluated for x86_64-linux only, and
@@ -88,28 +120,10 @@ def broken(attrs, revision):
     result = {}
     for system in config.HYDRA_SYSTEMS:
         try:
-            out = subprocess.run(
-                [
-                    "nix",
-                    "eval",
-                    "--extra-experimental-features",
-                    "nix-command flakes",
-                    "--json",
-                    f"github:NixOS/nixpkgs/{revision}#legacyPackages.{system}",
-                    "--apply",
-                    BROKEN_EXPR.replace("{attrs}", json.dumps(attrs)),
-                ],
-                capture_output=True,
-                text=True,
-                check=True,
-            )
-            values = json.loads(out.stdout)
-        except (subprocess.CalledProcessError, OSError, ValueError) as e:
-            # nix's last line of output says what went wrong.
-            lines = (getattr(e, "stderr", None) or "").strip().splitlines()
+            values = evaluate(revision, system, BROKEN_EXPR, attrs)
+        except EvalError as e:
             print(
-                f"::warning::Couldn't evaluate meta.broken on {system}: "
-                f"{lines[-1] if lines else e}",
+                f"::warning::Couldn't evaluate meta.broken on {system}: {e}",
                 file=sys.stderr,
             )
             return {}
@@ -117,6 +131,40 @@ def broken(attrs, revision):
             if is_broken:
                 result.setdefault(attr, []).append(system)
     return result
+
+
+# Where each attribute's source comes from: its version, and its src's
+# repository (fetchFromGitHub and the like), tag, rev and first URL; null for
+# a field it doesn't have, and for an attribute that doesn't evaluate.
+SOURCES_EXPR = """pkgs: map (attr:
+  let
+    lib = pkgs.lib;
+    pkg = lib.attrByPath (lib.splitString "." attr) { } pkgs;
+    text = s: f: let r = builtins.tryEval (s.${f} or null);
+      in if r.success && builtins.isString r.value then r.value else null;
+    srcTry = builtins.tryEval (pkg.src or null);
+    src = if srcTry.success && builtins.isAttrs srcTry.value then srcTry.value else { };
+    urls = builtins.tryEval (src.urls or [ ]);
+    found = {
+      version = text pkg "version";
+      gitRepoUrl = text src "gitRepoUrl";
+      tag = text src "tag";
+      rev = text src "rev";
+      url = if urls.success && builtins.isList urls.value && urls.value != [ ]
+        then builtins.head urls.value else text src "url";
+    };
+    r = builtins.tryEval (builtins.deepSeq found found);
+  in if r.success then r.value else null) (builtins.fromJSON ''{attrs}'')"""
+
+
+def sources(attrs, revision):
+    """{attr: {"version", "gitRepoUrl", "tag", "rev", "url"}} at the channel's
+    revision, for x86_64-linux (where sources come from doesn't depend on the
+    platform, as a rule); attributes that don't evaluate are left out. Raises
+    EvalError if nixpkgs doesn't evaluate."""
+    attrs = sorted(attrs)
+    values = evaluate(revision, "x86_64-linux", SOURCES_EXPR, attrs)
+    return {a: v for a, v in zip(attrs, values, strict=True) if v}
 
 
 def load_index():
