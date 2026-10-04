@@ -132,6 +132,10 @@ HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 # After this many lookups in a row fail, Hydra is likely down: the rest of the
 # run reuses the previous run's results instead of retrying each job.
 HYDRA_MAX_CONSECUTIVE_FAILURES = 3
+# A Hydra job with nothing going on (built OK, its package up to date and
+# unchanged) is asked about every this many days, not daily: a third of them
+# each day (hydra.due).
+HYDRA_QUIET_DAYS = 3
 
 # Logs of nixpkgs-update (the r-ryantm bot): one directory per attribute, one
 # log per attempt (<attr>/<YYYY-MM-DD>.log). It tries each package every ten

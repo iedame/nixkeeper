@@ -32,7 +32,13 @@ as long as asked, up to 5 minutes, before trying again. Hydra, the slowest
 (a request or more per package and platform), is asked in the background
 while the other sources are, so the sync takes about as long as Hydra
 rather than all of them in turn; each server still gets one request at a
-time. nixkeeper doesn't ask twice for what can't have changed: a package's
+time. Hydra is also asked less about what's quiet: a job that built fine,
+for a package that's up to date with nothing changed or pending, is asked
+every 3 days (a third of them each day) instead of daily, so a new build
+failure there can show up to 3 days late; anything failing, outdated,
+newly changed or with an update PR is asked daily. The builds panel says
+when they were last checked. nixkeeper doesn't ask twice for what can't
+have changed: a package's
 Repology project is the one the last sync found, a package whose bot logs
 haven't changed since (the log site's index says when each last changed)
 isn't listed again, and a log already read (the bot tries each package about

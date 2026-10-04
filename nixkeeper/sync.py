@@ -28,13 +28,14 @@ from .sources import github, hydra, nixpkgs_update, upstream
 from .sources import nixpkgs as nixpkgs_source
 
 
-def ask_hydra(attrs, nixpkgs, revision):
+def ask_hydra(attrs, nixpkgs, revision, previous, now):
     """Hydra's answers for attrs: (where nixpkgs marks them broken, fetch()'s
-    answers), for hydra.add_builds. Run in the background (main)."""
+    answers for the jobs due), for hydra.add_builds. Run in the background
+    (main)."""
     started = time.monotonic()
     broken = nixpkgs_source.broken(attrs, revision)
-    jobs = hydra.jobs(attrs, nixpkgs)
-    print(f"Hydra, in the background: {len(jobs)} jobs...", file=sys.stderr)
+    jobs = hydra.due_jobs(attrs, nixpkgs, previous, now, broken)
+    print(f"Hydra, in the background: {len(jobs)} jobs due...", file=sys.stderr)
     fetched = hydra.fetch(jobs, broken)
     minutes = (time.monotonic() - started) / 60
     print(f"Hydra, in the background: done in {minutes:.0f} min", file=sys.stderr)
@@ -54,7 +55,9 @@ def main():
     # Each server is still asked one request at a time; only the waiting
     # overlaps. Its answers are put together with the rest further down.
     tracked = sorted({a for attrs, _ in wanted.values() for a in attrs if a in nixpkgs})
-    hydra_answers = background.Background(ask_hydra, tracked, nixpkgs, revision)
+    hydra_answers = background.Background(
+        ask_hydra, tracked, nixpkgs, revision, previous, now
+    )
     projects = lookup.collect_projects(wanted, previous)
     index_rows = rows.build_rows(projects, nixpkgs)
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
