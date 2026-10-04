@@ -157,20 +157,64 @@ def master_version(row, pkgs):
     return None
 
 
-def add_builds(rows, nixpkgs, previous, now, broken=None):
+def jobs(attrs, nixpkgs):
+    """The Hydra jobs of attrs, [(attr, system)]: those in nixpkgs, not unfree,
+    on the platforms each claims (systems)."""
+    return [
+        (attr, system)
+        for attr in attrs
+        if attr in nixpkgs and not is_unfree(nixpkgs[attr])
+        for system in systems(nixpkgs[attr])
+    ]
+
+
+def fetch(wanted, broken=None):
+    """Ask Hydra about each job in wanted ([(attr, system)]), one at a time
+    (check). Returns {(attr, system): its result, or the error asking failed
+    with}. After HYDRA_MAX_CONSECUTIVE_FAILURES lookups in a row fail, Hydra
+    is likely down: the rest aren't asked (an OSError saying so). broken:
+    {attr: [systems]} nixpkgs marks broken. The network half of add_builds,
+    which the daily sync runs in the background (sync.py)."""
+    broken = broken or {}
+    results = {}
+    consecutive = 0
+    for attr, system in wanted:
+        if (attr, system) in results:
+            continue
+        if consecutive >= config.HYDRA_MAX_CONSECUTIVE_FAILURES:
+            results[attr, system] = OSError(
+                "not asked: it didn't answer earlier lookups"
+            )
+            continue
+        try:
+            results[attr, system] = check(attr, system, system in broken.get(attr, []))
+            consecutive = 0
+        except (urllib.error.URLError, OSError, ValueError) as e:
+            print(f"  {attr}.{system}: {e}", file=sys.stderr)
+            results[attr, system] = e
+            consecutive += 1
+    return results
+
+
+def add_builds(rows, nixpkgs, previous, now, broken=None, fetched=None):
     """Give every row in nixpkgs its Hydra results ("builds"), or mark it unfree
     ("unfree": true, no builds). broken: {attr: [systems]} nixpkgs marks
-    broken. A job whose lookup fails keeps the previous run's result, if there
-    is one, and the row is marked as not refreshed."""
+    broken. fetched: fetch()'s answers, if Hydra was asked already (any job
+    missing from them is asked now). A job whose lookup failed keeps the
+    previous run's result, if there is one, and the row is marked as not
+    refreshed."""
     broken = broken or {}
     print("Checking Hydra builds...", file=sys.stderr)
+    wanted = jobs([a for row in rows for a in row["attrs"]], nixpkgs)
+    fetched = dict(fetched or {})
+    fetched.update(fetch([j for j in wanted if j not in fetched], broken))
     before = {
         (b["attr"], b["system"]): b
         for row in previous["packages"]
         for b in row.get("builds") or []
     }
     before_rows = {row["name"]: row for row in previous["packages"]}
-    failed = consecutive = 0
+    failed = 0
     for row in rows:
         error = None
         pkgs = {a: nixpkgs[a] for a in row["attrs"] if a in nixpkgs}
@@ -184,26 +228,19 @@ def add_builds(rows, nixpkgs, previous, now, broken=None):
         builds = []
         for attr, pkg in free.items():
             for system in systems(pkg):
-                is_broken = system in broken.get(attr, [])
-                down = consecutive >= config.HYDRA_MAX_CONSECUTIVE_FAILURES
-                try:
-                    if down:
-                        raise OSError("not asked: it didn't answer earlier lookups")
-                    builds.append(add_versions(check(attr, system, is_broken), pkg))
-                    consecutive = 0
-                except (urllib.error.URLError, OSError, ValueError) as e:
-                    failed += 1
-                    consecutive += not down
-                    if not down:
-                        print(f"  {attr}.{system}: {e}", file=sys.stderr)
-                    error = error or str(e)
-                    build = dict(
-                        before.get((attr, system))
-                        or {"attr": attr, "system": system, "status": "unknown"}
-                    )
-                    if is_broken:
-                        build["status"] = "broken"
-                    builds.append(build)
+                result = fetched[attr, system]
+                if not isinstance(result, Exception):
+                    builds.append(add_versions(dict(result), pkg))
+                    continue
+                failed += 1
+                error = error or str(result)
+                build = dict(
+                    before.get((attr, system))
+                    or {"attr": attr, "system": system, "status": "unknown"}
+                )
+                if system in broken.get(attr, []):
+                    build["status"] = "broken"
+                builds.append(build)
         row["builds"] = builds
         if master := master_version(row, free):
             row["master"] = master

@@ -248,6 +248,92 @@ class AddBuilds(unittest.TestCase):
         self.assertNotIn("notRefreshed", rows[0])
 
 
+class Fetched(unittest.TestCase):
+    """The daily sync asks Hydra in the background (fetch), and puts its
+    answers together with the rows later (add_builds with fetched)."""
+
+    def setUp(self):
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch("time.sleep"),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    NIXPKGS = {
+        "ac-library": pkg("ac-library", ["x86_64-linux", "aarch64-darwin"]),
+        "hello": pkg("hello", ["x86_64-linux"]),
+    }
+
+    def test_jobs(self):
+        edge = pkg("microsoft-edge", ["x86_64-linux"])
+        edge["meta"]["license"] = {"free": False}
+        nixpkgs = {**self.NIXPKGS, "microsoft-edge": edge}
+        self.assertEqual(
+            hydra.jobs(["ac-library", "microsoft-edge", "gone", "hello"], nixpkgs),
+            [
+                ("ac-library", "x86_64-linux"),
+                ("ac-library", "aarch64-darwin"),
+                ("hello", "x86_64-linux"),
+            ],
+        )
+
+    def test_the_same_builds_as_asking_then(self):
+        latest = {"ac-library.x86_64-linux": OK, "ac-library.aarch64-darwin": FAILED}
+
+        def rows():
+            return [{"name": "ac-library", "attrs": ["ac-library"]}]
+
+        urlopen, _ = fake_hydra(latest)
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            asked_then = rows()
+            hydra.add_builds(asked_then, self.NIXPKGS, {"packages": []}, NOW)
+            fetched = hydra.fetch(hydra.jobs(["ac-library"], self.NIXPKGS))
+        from_fetched = rows()
+        with mock.patch("urllib.request.urlopen") as urlopen:
+            hydra.add_builds(
+                from_fetched, self.NIXPKGS, {"packages": []}, NOW, fetched=fetched
+            )
+        urlopen.assert_not_called()
+        self.assertEqual(from_fetched, asked_then)
+
+    def test_a_job_not_fetched_is_asked_then(self):
+        # A row with an attribute the background didn't know of.
+        urlopen, calls = fake_hydra({"hello.x86_64-linux": OK})
+        rows = [{"name": "hello", "attrs": ["hello"]}]
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            hydra.add_builds(rows, self.NIXPKGS, {"packages": []}, NOW, fetched={})
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(rows[0]["builds"][0]["status"], "ok")
+
+    def test_a_failed_answer_keeps_the_previous_build(self):
+        old = {"attr": "hello", "system": "x86_64-linux", "status": "ok", "build": 9}
+        rows = [{"name": "hello", "attrs": ["hello"]}]
+        fetched = {("hello", "x86_64-linux"): urllib.error.URLError("down")}
+        hydra.add_builds(
+            rows,
+            self.NIXPKGS,
+            {"packages": [{"name": "hello", "builds": [old]}]},
+            NOW,
+            fetched=fetched,
+        )
+        self.assertEqual(rows[0]["builds"], [old])
+        self.assertIn("down", rows[0]["notRefreshed"]["builds"]["reason"])
+
+    def test_fetch_stops_asking_a_hydra_thats_down(self):
+        jobs = [(f"p{i}", "x86_64-linux") for i in range(5)]
+        with (
+            mock.patch.object(config, "RETRY_DELAYS", []),
+            mock.patch(
+                "urllib.request.urlopen", side_effect=urllib.error.URLError("down")
+            ) as urlopen,
+        ):
+            fetched = hydra.fetch(jobs)
+        self.assertEqual(urlopen.call_count, config.HYDRA_MAX_CONSECUTIVE_FAILURES)
+        self.assertIn("down", str(fetched["p0", "x86_64-linux"]))
+        self.assertIn("not asked", str(fetched["p4", "x86_64-linux"]))
+
+
 class MasterVersion(unittest.TestCase):
     """What master has, from Hydra's build names, when it's ahead of the
     channel (a merged update the channel hasn't picked up yet)."""
