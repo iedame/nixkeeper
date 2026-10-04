@@ -93,7 +93,42 @@ def get(url, accept=None, safe=False, compressed=False):
     at most MAX_BYTES; UnsafeURL is raised at once, not retried. compressed:
     accept a gzipped answer, for big pages from sources nixkeeper trusts (not
     with safe: MAX_BYTES couldn't hold for what it unpacks to)."""
-    headers = {"User-Agent": config.user_agent()}
+    return _fetch(url, accept, safe, compressed)[0]
+
+
+# A page as last read: its server's tag for that version of it ("etag") and
+# when it last changed ("lastModified"), as the server gave them (either can
+# be missing).
+NOT_MODIFIED = 304
+
+
+def get_page(url, cached=None, safe=False):
+    """Like get, for a page read before: cached ({"etag", "lastModified"},
+    from the last time) lets the server answer that it hasn't changed since,
+    without sending it again. Returns (text, cached): text None on 404, or
+    NOT_MODIFIED when it hasn't changed; cached, what to send next time
+    ({} if the server gives neither)."""
+    headers = {}
+    if (cached or {}).get("etag"):
+        headers["If-None-Match"] = cached["etag"]
+    if (cached or {}).get("lastModified"):
+        headers["If-Modified-Since"] = cached["lastModified"]
+    text, answer = _fetch(url, safe=safe, extra=headers)
+    if text is NOT_MODIFIED:
+        return NOT_MODIFIED, dict(cached)
+    found = {
+        key: answer.get(header)
+        for key, header in (("etag", "ETag"), ("lastModified", "Last-Modified"))
+        if answer is not None and answer.get(header)
+    }
+    return text, found
+
+
+def _fetch(url, accept=None, safe=False, compressed=False, extra=None):
+    """get, also returning the answer's headers: (text, headers). text is
+    None on 404 (headers None), or NOT_MODIFIED when the server says the page
+    hasn't changed (for get_page's extra headers)."""
+    headers = {"User-Agent": config.user_agent(), **(extra or {})}
     if accept:
         headers["Accept"] = accept
     if compressed and not safe:
@@ -115,15 +150,17 @@ def get(url, accept=None, safe=False, compressed=False):
                     body = resp.read()
                     if resp.headers.get("Content-Encoding") == "gzip":
                         body = gzip.decompress(body)
-                    return body.decode(errors="replace")
+                    return body.decode(errors="replace"), resp.headers
                 body = resp.read(MAX_BYTES + 1)
                 if len(body) > MAX_BYTES:
                     raise UnsafeURL(f"{host} answered more than {MAX_BYTES} bytes")
-                return body.decode(errors="replace")
+                return body.decode(errors="replace"), resp.headers
         except urllib.error.HTTPError as e:
             e.close()  # an HTTP error is also an open response
             if e.code == 404:
-                return None
+                return None, None
+            if e.code == NOT_MODIFIED and extra:
+                return NOT_MODIFIED, e.headers
             print(f"  {host} answered {e.code}", file=sys.stderr)
             last_err = e
         except UnsafeURL:

@@ -87,7 +87,7 @@ class FrequentCheck(unittest.TestCase):
                 "project_by_name",
                 return_value=("google-chrome", entries(nix_version, newest)),
             ),
-            mock.patch.object(http, "get", return_value=page) as get,
+            mock.patch.object(http, "get_page", return_value=(page, {})) as get,
             mock.patch.object(notify, "notify") as notified,
             # Never a GitHub token (nor the local gh login) from the tests.
             mock.patch.object(github, "token", return_value=None),
@@ -106,7 +106,7 @@ class FrequentCheck(unittest.TestCase):
         self.assertEqual(index["packages"][1], before["packages"][1])  # untouched
         self.assertEqual(index["checkedAt"], before["checkedAt"])  # the full sync's
         get.assert_called_once_with(
-            CHECKS["google-chrome"]["url"], safe=False
+            CHECKS["google-chrome"]["url"], None, False
         )  # not bbedit's
         notified.assert_called_once()
         self.assertEqual(notified.call_args.args[0], before)  # compared with before

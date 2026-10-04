@@ -153,3 +153,59 @@ class Compressed(unittest.TestCase):
     def test_not_asked_otherwise(self):
         _, headers = self.fetch(b"index", None)
         self.assertNotIn("Accept-encoding", headers)
+
+
+class GetPage(unittest.TestCase):
+    """http.get_page: a page the server only sends if it changed."""
+
+    def answer(self, status_or_body, headers=None):
+        def urlopen(req, timeout):
+            urlopen.sent = dict(req.header_items())
+            if status_or_body == 304:
+                e = urllib.error.HTTPError(req.full_url, 304, "Not Modified", {}, None)
+                raise e
+            resp = mock.MagicMock()
+            resp.__enter__.return_value = resp
+            resp.read.return_value = status_or_body
+            resp.headers = headers or {}
+            return resp
+
+        return urlopen
+
+    def test_reads_it_and_what_to_send_next_time(self):
+        urlopen = self.answer(b"page", {"ETag": '"a"', "Last-Modified": "Fri"})
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            text, cached = http.get_page("https://example.org/")
+        self.assertEqual(
+            (text, cached), ("page", {"etag": '"a"', "lastModified": "Fri"})
+        )
+        self.assertNotIn("If-none-match", urlopen.sent)
+
+    def test_unchanged(self):
+        urlopen = self.answer(304)
+        cached = {"etag": '"a"', "lastModified": "Fri"}
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            text, again = http.get_page("https://example.org/", cached)
+        self.assertIs(text, http.NOT_MODIFIED)
+        self.assertEqual(again, cached)
+        self.assertEqual(urlopen.sent["If-none-match"], '"a"')
+        self.assertEqual(urlopen.sent["If-modified-since"], "Fri")
+
+    def test_unchanged_in_safe_mode_too(self):
+        urlopen = self.answer(304)
+        with (
+            mock.patch.object(http._safe_opener, "open", side_effect=urlopen),
+            mock.patch.object(http, "check_public"),
+        ):
+            text, _ = http.get_page("https://example.org/", {"etag": '"a"'}, safe=True)
+        self.assertIs(text, http.NOT_MODIFIED)
+
+    def test_a_304_not_asked_for_is_an_error(self):
+        urlopen = self.answer(304)
+        with (
+            mock.patch.object(config, "RETRY_DELAYS", []),
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch("urllib.request.urlopen", side_effect=urlopen),
+            self.assertRaises(urllib.error.HTTPError),
+        ):
+            http.get("https://example.org/")

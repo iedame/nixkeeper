@@ -55,6 +55,7 @@ def response(body, url="https://repology.org/api/v1/project/x"):
     resp.__enter__.return_value = resp
     resp.read.return_value = json.dumps(body).encode()
     resp.geturl.return_value = url
+    resp.headers = {}  # none of note (a page's ETag and Last-Modified, say)
     return resp
 
 
