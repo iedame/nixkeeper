@@ -27,6 +27,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   They cost one nixpkgs evaluation (seconds) and one GitHub request per 50
   repositories.
 
+- Search by maintainer: `@handle` in the search box lists the packages
+  nixpkgs gives that maintainer (their GitHub handle, in any case), and
+  `@none` those with no maintainer, so `?q=@yourhandle` is a link to a team
+  member's own packages. The details panel lists a package's maintainers,
+  each a search for theirs and a link to their GitHub profile. Rows get
+  `maintainers` from the nixpkgs index the sync already reads (no new
+  requests); the page finds them after the first sync with this version.
+
 - The details panel lists `nixkeeper` first among the repositories a
   package is compared against, with the version its update check found
   (highlighted when it's newer than nixpkgs', as the others are); hover it

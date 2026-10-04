@@ -97,7 +97,21 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
             (p["meta"].get("homepage") for p in pkgs if p["meta"].get("homepage")), None
         )
         row["homepage"] = homepage[0] if isinstance(homepage, list) else homepage
+        row["maintainers"] = maintainers(pkgs)
     return row
+
+
+def maintainers(pkgs):
+    """The GitHub handles in pkgs' meta.maintainers, each once (whatever its
+    case), in order; [] when none has any (a maintainer without a GitHub
+    handle can't be searched for)."""
+    found = {}
+    for p in pkgs:
+        for m in p["meta"].get("maintainers") or []:
+            handle = m.get("github") if isinstance(m, dict) else None
+            if isinstance(handle, str) and handle:
+                found.setdefault(handle.lower(), handle)
+    return list(found.values())
 
 
 def build_rows(projects, nixpkgs):

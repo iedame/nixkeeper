@@ -9,6 +9,7 @@ import {
   faviconKey,
   fromMaster,
   html,
+  matchesSearch,
   midway,
   nixkeeperEntry,
   onMaster,
@@ -1005,12 +1006,34 @@ async function fillDetail(pkg, el) {
     </div>`
         : ''
     }
+    ${
+      Array.isArray(pkg.maintainers)
+        ? html`<div class="other-label">Maintainers</div><div class="maintainers">${
+            pkg.maintainers.length
+              ? pkg.maintainers.map(
+                  (m) =>
+                    html`<span class="maintainer"><button type="button" class="maint-btn" data-handle="${m}" title="Their packages here">@${m}</button><a class="files-link" href="https://github.com/${encodeURIComponent(m)}" target="_blank" rel="noopener" aria-label="${m} on GitHub" title="${m} on GitHub">↗</a></span>`,
+                )
+              : html`<span class="none-note">none in nixpkgs (<button type="button" class="maint-btn" data-handle="none" title="Packages with no maintainer">@none</button>)</span>`
+          }</div>`
+        : ''
+    }
     <div class="detail-row">
       ${homepage ? html`<a class="files-link" href="${homepage}" target="_blank" rel="noopener">Homepage ↗</a>` : ''}
       ${safeUrl(pkg.source) ? html`<a class="files-link" href="${safeUrl(pkg.source)}" target="_blank" rel="noopener" title="Where nixpkgs defines this package">${sourceFileName(pkg.source)} ↗</a>` : ''}
       ${pkg.project ? html`<a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>` : ''}
     </div>
   `;
+  // A maintainer's packages: searches for them (the search box, so the
+  // address can be shared).
+  for (const btn of el.querySelectorAll('.maint-btn')) {
+    btn.addEventListener('click', () => {
+      const search = document.getElementById('search');
+      search.value = `@${btn.dataset.handle}`;
+      search.dispatchEvent(new Event('input'));
+      search.scrollIntoView({ block: 'nearest' });
+    });
+  }
   el.querySelector('.more-btn')?.addEventListener('click', (e) => {
     const btn = e.currentTarget;
     const open = btn.getAttribute('aria-expanded') !== 'true';
@@ -1027,13 +1050,9 @@ const COMPARED_SHOWN = 8;
 
 function currentFiltered() {
   writeViewToUrl();
-  const q = document.getElementById('search').value.trim().toLowerCase();
+  const q = document.getElementById('search').value;
   const list = packages.filter(
-    (p) =>
-      inPlatform(p) &&
-      inList(p) &&
-      FILTERS[activeFilter].test(p) &&
-      (!q || [p.name, p.project, ...(p.attrs || [])].some((n) => n?.toLowerCase().includes(q))),
+    (p) => inPlatform(p) && inList(p) && FILTERS[activeFilter].test(p) && matchesSearch(p, q),
   );
   return sortAZ
     ? list

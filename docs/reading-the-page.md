@@ -6,7 +6,11 @@ a version: hover it for where; links to its homepage and nixpkgs source), and
 clicking its build or update cell opens that instead. The counts at the top
 (tracked, outdated, failed, and flagged vulnerable when any are) filter the
 list, as do the list names beside them and a row's platform tags; the filters
-stay in the address, so a view can be shared.
+stay in the address, so a view can be shared. The search box matches names;
+`@handle` instead lists a maintainer's packages (their whole GitHub handle,
+as nixpkgs lists it in `meta.maintainers`), and `@none` the packages with no
+maintainer. The details panel lists each package's maintainers: clicking one
+searches for theirs, so `?q=@yourhandle` is a link to your own.
 
 **The dot** in front of each package (hover it for what it means, or open
 the `?` next to "checked" at the top for all of them):

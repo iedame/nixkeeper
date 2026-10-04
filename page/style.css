@@ -1128,6 +1128,36 @@ tbody tr.row.open td {
   align-items: center;
   flex-wrap: wrap;
 }
+/* A package's maintainers: each searches for their packages, with a link to
+   their GitHub profile. */
+.maintainers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  align-items: baseline;
+  margin-bottom: 10px;
+  font-size: 13px;
+}
+.maintainer {
+  display: inline-flex;
+  gap: 3px;
+  align-items: baseline;
+}
+.maint-btn {
+  font: inherit;
+  font-weight: 500;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  cursor: pointer;
+}
+.maint-btn:hover {
+  text-decoration: underline;
+}
+.none-note {
+  color: var(--ink-soft);
+}
 .files-link {
   font-size: 13px;
   color: var(--accent);
