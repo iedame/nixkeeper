@@ -27,11 +27,13 @@ with a note in the [changelog](../CHANGELOG.md).
 at the bottom). `checkedAt` is when the last full sync ran (the hourly
 checks update single rows without changing it). `packages` are the rows,
 sorted by name.
+
 `listProblems`, only when there are any, lists mistakes the sync found in the
 package lists, as sentences: a maintainer handle no package lists, an extra
-package nixpkgs doesn't have, an update check or ignore rule for a package
-that isn't tracked, or 500 packages or more (the cost of a sync). The page shows them above the table. `page`, only when
-the lists set it, holds the page's settings: `{ "theme": "catppuccin" }` is
+package nixpkgs doesn't have, an update check, ignore or up-to-date rule for
+a package that isn't tracked, or 500 packages or more (the cost of a sync).
+The page shows them above the table. `page`, only when the lists set it,
+holds the page's settings: `{ "theme": "catppuccin" }` is
 its default palette.
 
 ## A row
@@ -64,6 +66,7 @@ its default palette.
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
 | `staleSince` | Repology couldn't be reached for it: the version data is from this time |
 | `upstream` | nixkeeper's own update check, when it has one (below) |
+| `upToDate` | an [up-to-date rule](community.md#up-to-date-rules-until-something-changes) applies: Repology gets `nixVersion` wrong, so `nixStatus` is `newest` and there's no `refVersion`. `status` is what Repology said, `newest` the version it showed as newest elsewhere (when there was one), `reason` the rule's, and `community` is `true` for a community rule |
 
 A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
 `upstream.newer` is `true`.

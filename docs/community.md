@@ -13,8 +13,9 @@ the same format as your own lists:
   failed nixpkgs-update attempts that shouldn't count as the bot's failure,
   such as a version upstream never really released.
 - **Up-to-date rules** ([`community/up-to-date.nix`](../community/up-to-date.nix)):
-  force a package to appear up to date, to suppress inaccurate Repology warnings
-  (e.g., untrusted or incorrect status) for a specific version.
+  versions nixpkgs has that Repology gets wrong (calls them untrusted,
+  incorrect or ignored, or compares them with a version that isn't really
+  newer), so they count as up to date.
 
 ## Using them
 
@@ -30,18 +31,21 @@ community = {
 
 That's `package-lists/default.nix` for a dashboard of your own (and the
 lists `nixkeeper init` writes), or `lists.community` in the
-[NixOS](nixos.md) or [nix-darwin](darwin.md) module. Both are off unless
-you turn them on, and each works without the other: an ignore rule can hide
-a failure, so you might want shared update checks but not shared ignores.
+[NixOS](nixos.md) or [nix-darwin](darwin.md) module. Each is off unless
+you turn it on, and works without the others: an ignore or up-to-date rule
+can hide something, so you might want shared update checks but not the
+rest.
 
 Then each sync:
 
 - uses the community's rules **only for the packages you track**: the rest
   are never used, and an update check for them is never fetched;
-- lets **your own rules win**: your update check for a package replaces the
-  community's, and your ignore rule for a version replaces its reason;
+- lets **your own rules win**: your update check or up-to-date rule for a
+  package replaces the community's, and your ignore rule for a version
+  replaces its reason;
 - says on the page when a result comes from a community rule ("a community
-  update check found …", "a version ignored by a community rule").
+  update check found …", "a version ignored by a community rule", "up to
+  date by a community rule").
 
 The rules come with nixkeeper itself, so they're pinned like the rest of it:
 new ones arrive when you update nixkeeper (or move to a new
@@ -84,30 +88,53 @@ package that follows another. The same rule works in your own update
 checks.
 
 Your own update checks keep their freedom: they're yours, so a page on your
-own network is fine there. Ignore rules fetch nothing, so they need no
-limits.
+own network is fine there. Ignore and up-to-date rules fetch nothing, so
+they need no limits.
 
 ## Ignore rules: short-lived by design
 
 An ignore rule only matters while the bot's latest attempt for that package
 is a failure at that version (or, when an `updateScript` failed before
 picking a version, while the package is still up to date at the version
-nixpkgs had). Once the bot tries another version — or a newer release comes
-out — the rule does nothing, and the weekly run lists it as one that can go.
+nixpkgs had: a newer release ends it). Once the bot tries another version,
+the rule does nothing, and the weekly run lists it as one that can go.
 They're also not the fix at the source: to stop the bot trying a version
 again, that's Repology's ignore rules or nixpkgs-update's skiplist. A
 community ignore rule only stops the failure the bot already made from
 showing for everyone.
 
+## Up-to-date rules: until something changes
+
+An up-to-date rule names the version nixpkgs has, the version Repology shows
+as newest elsewhere (the row's details show it; left out when there's none),
+and why nixpkgs' version is right:
+
+```nix
+pacvim = {
+  version = "2018-05-16";
+  newest = "1.1.1";
+  reason = "A snapshot from after the 1.1.1 release.";
+};
+```
+
+It applies while nixpkgs has that version and Repology shows nothing newer
+than `newest` elsewhere. So a real new release still shows as one: once
+nixpkgs moves on or Repology shows a newer version, the rule does nothing,
+and the weekly run lists it as one that can go. It only changes Repology's
+verdict: nixkeeper's update checks and master can still make the row
+outdated. Where Repology is wrong about a version, reporting it there fixes
+it for everyone; a rule here covers the meantime.
+
 ## Adding a rule
 
-1. **Add it** to [`community/update-checks.nix`](../community/update-checks.nix)
-   or [`community/ignored-updates.nix`](../community/ignored-updates.nix), in
-   the same format as your own (each file's header shows it), keyed by the
-   package's nixpkgs attribute. A good update check follows what nixpkgs
-   packages (the stable series it tracks, the page its source comes from);
-   a good ignore rule says why the version doesn't count. Either way, say so
-   in a comment.
+1. **Add it** to [`community/update-checks.nix`](../community/update-checks.nix),
+   [`community/ignored-updates.nix`](../community/ignored-updates.nix) or
+   [`community/up-to-date.nix`](../community/up-to-date.nix), in the same
+   format as your own (each file's header shows it), keyed by the package's
+   nixpkgs attribute. A good update check follows what nixpkgs packages (the
+   stable series it tracks, the page its source comes from), and says so in
+   a comment; a good ignore or up-to-date rule says in its reason why the
+   version doesn't count, or is right.
 2. **Try it**, from your checkout:
 
    ```bash
@@ -115,15 +142,16 @@ showing for everyone.
    ```
 
    It runs the package's update check for real against nixpkgs' current
-   version and says what it found, and checks its ignore rules against the
-   bot's latest attempt. GitHub update checks need a token (`GITHUB_TOKEN`,
+   version and says what it found, checks its ignore rules against the bot's
+   latest attempt, and its up-to-date rule against nixpkgs and Repology. GitHub update checks need a token (`GITHUB_TOKEN`,
    or a `gh` login).
 3. **Open a pull request.** CI checks the files (`nix flake check`): every
    rule well formed, for a package in nixpkgs, update checks within the
    limits above with valid patterns. The "Community: update checks still
    work" workflow tries the rules your pull request adds or changes for real:
-   it fails if an update check finds nothing, or an ignore rule doesn't match
-   the bot's latest failed attempt (it would do nothing).
+   it fails if an update check finds nothing, an ignore rule doesn't match
+   the bot's latest failed attempt, or an up-to-date rule doesn't match what
+   nixpkgs and Repology show (either would do nothing).
 
 Rather describe an update check than write it? Use the
 ["Propose a community update check"](https://github.com/iedame/nixkeeper/issues/new?template=community-check.yml)
@@ -134,7 +162,7 @@ issue form.
 The same workflow runs every rule weekly and keeps the **"Community rules
 status"** issue up to date: which update checks are broken (a moved page, a
 renamed repository), why, and since when, with a comment when one breaks or
-works again; and which ignore rules can go. Neither fails the workflow; the
+works again; and which ignore and up-to-date rules can go. Neither fails the workflow; the
 issue is where they show. A broken update check only affects its own
 package: that row shows "check failing" for subscribers, and keeps its last
 result.

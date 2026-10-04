@@ -155,15 +155,32 @@ class StaleIgnores(unittest.TestCase):
             self.assertEqual(community.stale_ignores(), {})
 
 
+PACVIM = {"version": "2018-05-16", "newest": "1.1.1", "reason": "A snapshot."}
+STL = {"version": "12.12-unstable", "newest": "12.12", "reason": "A snapshot."}
+
+
+def repology_entries(nix_version, newest, name="pacvim"):
+    """Repology's entries for a project: nixpkgs' and another repository's."""
+    return [
+        {
+            "repo": "nix_unstable",
+            "srcname": name,
+            "version": nix_version,
+            "status": "untrusted",
+        },
+        {"repo": "arch", "srcname": name, "version": newest, "status": "newest"},
+    ]
+
+
 class MergeUpToDate(unittest.TestCase):
-    COMMUNITY = {"pacvim": "2018-05-16", "steamtinkerlaunch": "12.12-unstable"}
+    COMMUNITY = {"pacvim": PACVIM, "steamtinkerlaunch": STL}
 
     def merge(self, lists, tracked=("pacvim", "unciv")):
         with mock.patch.object(community, "up_to_date", return_value=self.COMMUNITY):
             return community.merge_up_to_date(lists, list(tracked))
 
     def test_off_unless_opted_in(self):
-        own = {"unciv": "4.0"}
+        own = {"unciv": {"version": "4.0", "reason": "x"}}
         for lists in (
             {"upToDate": own},
             {"upToDate": own, "community": {"updateChecks": True}},
@@ -171,62 +188,95 @@ class MergeUpToDate(unittest.TestCase):
             with self.subTest(lists=lists):
                 self.assertEqual(self.merge(lists), (own, set()))
 
-    def test_for_tracked_packages_your_reason_winning(self):
+    def test_for_tracked_packages_your_rule_winning(self):
+        mine = {"version": "2018-05-16", "reason": "mine"}
         lists = {
             "community": {"upToDate": True},
-            "upToDate": {
-                "pacvim": "my version",
-                "unciv": "4.0",
-            },
+            "upToDate": {"pacvim": mine, "unciv": {"version": "4.0", "reason": "x"}},
         }
         merged, from_community = self.merge(lists)
-        self.assertEqual(merged["pacvim"], "my version")
+        self.assertEqual(merged["pacvim"], mine)
         self.assertNotIn("steamtinkerlaunch", merged)  # not tracked
         self.assertEqual(from_community, set())
 
-    def test_community_versions_added(self):
+    def test_community_rules_added(self):
         lists = {"community": {"upToDate": True}}
         merged, from_community = self.merge(lists)
-        self.assertEqual(merged, {"pacvim": "2018-05-16"})
+        self.assertEqual(merged, {"pacvim": PACVIM})
         self.assertEqual(from_community, {"pacvim"})
 
 
 class StaleUpToDate(unittest.TestCase):
-    RULES = {"pacvim": "2018-05-16", "steamtinkerlaunch": "12.12"}
+    """community-check: which community up-to-date rules can go, from the
+    channel index and Repology, as a sync would see them."""
 
-    def stale(self, channel_versions, names=None):
-        def load_index():
-            return {
-                n: {"version": v} for n, v in channel_versions.items() if v is not None
-            }
+    RULES = {"pacvim": PACVIM, "steamtinkerlaunch": STL}
+
+    def stale(self, index, repology, names=None):
+        """repology: {name: (nix version, newest elsewhere)}, or an exception."""
+
+        def resolve(fallback, attrs):
+            found = repology[attrs[0]]
+            if isinstance(found, Exception):
+                raise found
+            if found is None:
+                return None, None
+            return attrs[0], repology_entries(*found, name=attrs[0])
 
         with (
             mock.patch.object(community, "up_to_date", return_value=self.RULES),
-            mock.patch(
-                "nixkeeper.sources.nixpkgs.load_index",
-                side_effect=load_index,
-            ),
+            mock.patch("nixkeeper.sources.nixpkgs.load_index", return_value=index),
+            mock.patch("nixkeeper.sources.repology.resolve", side_effect=resolve),
+            mock.patch("sys.stderr", io.StringIO()),
         ):
             return community.stale_up_to_date(names)
 
-    def test_a_rule_that_still_applies(self):
+    INDEX = {
+        "pacvim": {"version": "2018-05-16", "meta": {}},
+        "steamtinkerlaunch": {"version": "x", "meta": {}},
+    }
+
+    def test_rules_that_still_apply(self):
         found = self.stale(
+            self.INDEX,
             {
-                "pacvim": "2018-05-16",
-                "steamtinkerlaunch": "12.12",
-            }
+                "pacvim": ("2018-05-16", "1.1.1"),
+                "steamtinkerlaunch": ("12.12-unstable", "12.12"),
+            },
         )
         self.assertEqual(found, {})
 
-    def test_rules_that_can_go(self):
-        found = self.stale({"pacvim": "1.1.1-unstable", "steamtinkerlaunch": None})
+    def test_nixpkgs_moved_on(self):
+        found = self.stale(self.INDEX, {"pacvim": ("2018-06-01", "1.1.1")}, ["pacvim"])
+        self.assertEqual(
+            found, {"pacvim": ("2018-05-16", "nixpkgs is now at 2018-06-01")}
+        )
+
+    def test_a_newer_release_elsewhere(self):
+        found = self.stale(self.INDEX, {"pacvim": ("2018-05-16", "1.2.0")}, ["pacvim"])
+        self.assertEqual(
+            found,
+            {"pacvim": ("2018-05-16", "Repology now shows 1.2.0 as newest elsewhere")},
+        )
+
+    def test_gone_from_nixpkgs_or_repology(self):
+        found = self.stale(
+            {"steamtinkerlaunch": {"version": "x"}}, {"steamtinkerlaunch": None}
+        )
         self.assertEqual(
             found,
             {
-                "pacvim": ("2018-05-16", "nixpkgs is now at 1.1.1-unstable"),
-                "steamtinkerlaunch": ("12.12", "package not in nixpkgs' channel index"),
+                "pacvim": ("2018-05-16", "not in nixpkgs' channel index"),
+                "steamtinkerlaunch": (
+                    "12.12-unstable",
+                    "Repology doesn't know this package",
+                ),
             },
         )
+
+    def test_repology_down_isnt_stale(self):
+        found = self.stale(self.INDEX, {"pacvim": OSError("down")}, ["pacvim"])
+        self.assertEqual(found, {})
 
 
 class Limits(unittest.TestCase):
@@ -376,19 +426,21 @@ class RunForReal(unittest.TestCase):
 
 class CheckByName(unittest.TestCase):
     """`nixkeeper community-check NAME...`: each name is tried for the kinds
-    of rule it has, update check or ignore rules, and a name with neither is
+    of rule it has (update check, ignore rules, up-to-date rule), and a name
+    with none is
     reported (a typo)."""
 
     CHECKS = {"google-chrome": CHROME, "both": CHROME}
     IGNORES = {"xskat": {"4.0-9": "Never released."}, "both": {"2.0": "No."}}
-    UP_TO_DATES = {"pacvim": "2018-05-16", "both": "1"}
+    UP_TO_DATES = {"pacvim": PACVIM}
 
-    def check(self, *names):
-        """(what it printed, whether it failed) for community-check names."""
+    def check(self, *names, pacvim="1.1.1"):
+        """(what it printed, whether it failed) for community-check names;
+        pacvim: the version nixpkgs has."""
         index = {
             "google-chrome": {"version": "154.0.1"},
             "both": {"version": "1"},
-            "pacvim": {"version": "1.1.1"},
+            "pacvim": {"version": pacvim, "meta": {}},
         }
         attempts = {
             "xskat": {"to": "4.0-9", "outcome": "failed"},
@@ -400,6 +452,10 @@ class CheckByName(unittest.TestCase):
             mock.patch.object(community, "ignores", return_value=self.IGNORES),
             mock.patch.object(community, "up_to_date", return_value=self.UP_TO_DATES),
             mock.patch("nixkeeper.sources.nixpkgs.load_index", return_value=index),
+            mock.patch(
+                "nixkeeper.sources.repology.resolve",
+                return_value=("pacvim", repology_entries(pacvim, "1.1.1")),
+            ),
             mock.patch.object(http, "get", return_value='{"version": "154.0.2"}'),
             mock.patch(
                 "nixkeeper.sources.nixpkgs_update.latest_attempt",
@@ -428,14 +484,20 @@ class CheckByName(unittest.TestCase):
 
     def test_ignore_rules_only(self):
         out, failed = self.check("xskat")
-        self.assertIn("ignore/up-to-date rules for xskat: still apply", out)
+        self.assertIn("ignore rules for xskat: still apply", out)
         self.assertNotIn("no community rule", out)  # not tried as an update check
         self.assertFalse(failed)
 
     def test_both_kinds(self):
         out, failed = self.check("both")
         self.assertIn("both: 154.0.2", out)
-        self.assertIn("ignore/up-to-date rules for both: still apply", out)
+        self.assertIn("ignore rules for both: still apply", out)
+        self.assertFalse(failed)
+
+    def test_an_up_to_date_rule_that_applies(self):
+        out, failed = self.check("pacvim", pacvim="2018-05-16")
+        self.assertIn("up-to-date rules for pacvim: still apply", out)
+        self.assertNotIn("ignore rules", out)
         self.assertFalse(failed)
 
     def test_up_to_date_only(self):
@@ -443,6 +505,7 @@ class CheckByName(unittest.TestCase):
         self.assertIn(
             "up-to-date rule pacvim 2018-05-16: can go (nixpkgs is now at 1.1.1)", out
         )
+        self.assertNotIn("still apply", out)
         self.assertNotIn("no community rule", out)
         self.assertFalse(failed)
 

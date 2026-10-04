@@ -23,15 +23,16 @@
   # community = {
   #   updateChecks = true;   # where to look for new releases
   #   ignoredUpdates = true; # bot failures that don't count
-  #   upToDate = true;       # overrides for untrusted status
+  #   upToDate = true;       # versions Repology gets wrong
   # };
 
   # Versions nixpkgs-update tried and failed that don't count as its failure
   # (never really released, say). See the file for the format.
   ignoredUpdates = import ./ignored-updates.nix;
 
-  # Packages whose current version is correct, but upstream sources (like
-  # Repology) classify as untrusted or incorrect. See the file for the format.
+  # Versions nixpkgs has that Repology gets wrong (untrusted, incorrect, or
+  # compared with one that isn't really newer), counted as up to date. See
+  # the file for the format.
   upToDate = import ./up-to-date.nix;
 
   # The page's colours for visitors who haven't picked any in its Theme menu:

@@ -44,6 +44,7 @@ class Problems(unittest.TestCase):
             lists(
                 updateChecks={"unciv": {}, "stepmania": {}},
                 ignoredUpdates={"xskat": {"4.0-9": "never released"}},
+                upToDate={"pacvim": {"version": "2018-05-16", "reason": "x"}},
             )
         )
         self.assertEqual(
@@ -51,6 +52,7 @@ class Problems(unittest.TestCase):
             [
                 "updateChecks: stepmania isn't a tracked package",
                 "ignoredUpdates: xskat isn't a tracked package",
+                "upToDate: pacvim isn't a tracked package",
             ],
         )
 

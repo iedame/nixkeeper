@@ -59,10 +59,11 @@ found through `maintainers`. `?list=gaming-team` in the address is a page of
 just that list, to share with the people it's for.
 
 Update checks (`package-lists/update-checks.nix`) look for new releases
-Repology doesn't count yet, and ignore rules (`package-lists/ignored-updates.nix`)
-mark failed nixpkgs-update attempts that don't count. With `community = { ... }`,
-the lists also use the [community rules](community.md) of either kind, which
-anyone can add to, for the packages they track.
+Repology doesn't count yet, ignore rules (`package-lists/ignored-updates.nix`)
+mark failed nixpkgs-update attempts that don't count, and up-to-date rules
+(`package-lists/up-to-date.nix`) mark versions Repology gets wrong. With
+`community = { ... }`, the lists also use the [community rules](community.md)
+of each kind, which anyone can add to, for the packages they track.
 
 To set the lists up for a dashboard of your own, see
 [your own instance](your-own-instance.md); the data each sync writes is

@@ -12,7 +12,7 @@ the `?` next to "checked" at the top for all of them):
 
 | Dot | Means |
 |---|---|
-| green | up to date: nixpkgs has the newest version (for a devel package, the newest devel one), or is the only one packaging it |
+| green | up to date: nixpkgs has the newest version (for a devel package, the newest devel one), or is the only one packaging it, or an [up-to-date rule](community.md#up-to-date-rules-until-something-changes) says Repology gets its version wrong (the details say why) |
 | orange | outdated: Repology or nixkeeper's own update check knows a newer version |
 | violet | outdated, but the update is already merged on master, waiting for nixos-unstable (usually a few days). Master having a newer version than the channel counts too, even before Repology or an update check knows of it |
 | pink | not in nixpkgs unstable (counted as failed) |

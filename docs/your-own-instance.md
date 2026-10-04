@@ -9,7 +9,8 @@ gaming team's. To get a dashboard of your own:
 2. **Say what to track** in `package-lists/`:
    - `default.nix`: your GitHub handle under `maintainers`, and your own
      named lists under `extraPackages` (or none);
-   - `update-checks.nix` and `ignored-updates.nix`: empty them (`{ }`) or
+   - `update-checks.nix`, `ignored-updates.nix` and `up-to-date.nix`: empty
+     them (`{ }`) or
      replace the entries. They name this instance's packages, and
      `nix flake check` fails on entries for packages you don't track.
 3. **Turn on GitHub Pages**: Settings → Pages → Source: **GitHub Actions**.
@@ -21,10 +22,11 @@ gaming team's. To get a dashboard of your own:
    (labelled `nixkeeper-status`) that the syncs keep up to date. The page
    finds the data by itself; from then on the sync runs daily at 06:00 UTC,
    and the hourly workflow looks for update PRs.
-5. **Optionally**, add your own [update checks](../package-lists/update-checks.nix)
-   and [ignore rules](../package-lists/ignored-updates.nix), each documented in
-   its file, or opt in to the [community rules](community.md)
-   (`community = { updateChecks = true; ignoredUpdates = true; };` in
+5. **Optionally**, add your own [update checks](../package-lists/update-checks.nix),
+   [ignore rules](../package-lists/ignored-updates.nix) and
+   [up-to-date rules](../package-lists/up-to-date.nix), each documented in its
+   file, or opt in to the [community rules](community.md)
+   (`community = { updateChecks = true; ignoredUpdates = true; upToDate = true; };` in
    `default.nix`), pick the page's default colours (`page.theme =
    "catppuccin";`; visitors can still pick their own), and update the
    README's badges to point at your instance.

@@ -290,6 +290,9 @@
                 map (p: p // { entry = "update-checks.nix: ${p.entry}"; }) (listsChecker.communityProblems rules)
                 ++ map (p: p // { entry = "ignored-updates.nix: ${p.entry}"; }) (
                   listsChecker.communityIgnoreProblems (import ./community/ignored-updates.nix)
+                )
+                ++ map (p: p // { entry = "up-to-date.nix: ${p.entry}"; }) (
+                  listsChecker.communityUpToDateProblems (import ./community/up-to-date.nix)
                 );
             in
             if found != [ ] then
@@ -361,6 +364,22 @@
                     wesnoth."1.18.9" = "";
                     lincity = { };
                   };
+                  upToDate = {
+                    opentyrian = {
+                      version = "2.1.20220318";
+                      reason = "fine";
+                    };
+                    hello = {
+                      version = "1";
+                      reason = "not tracked";
+                    };
+                    wesnoth = "1.18.8"; # the old format
+                    lincity = {
+                      version = "1";
+                      newest = "";
+                      why = "typo";
+                    };
+                  };
                 }
               );
               expected = [
@@ -377,6 +396,11 @@
                 "ignoredUpdates.hello" # not tracked
                 "ignoredUpdates.lincity" # no versions
                 "ignoredUpdates.wesnoth" # empty reason
+                "upToDate.hello" # not tracked
+                "upToDate.lincity" # no reason
+                "upToDate.lincity" # empty newest
+                "upToDate.lincity" # unknown field "why"
+                "upToDate.wesnoth" # not { version, reason }
               ];
               # Named lists: on two lists is fine, twice in one isn't, and
               # "maintained" is taken.

@@ -184,6 +184,41 @@ let
           builtins.filter (v: !(builtins.isString rules.${v} && rules.${v} != "")) (builtins.attrNames rules)
         )
     );
+
+  # upToDate.<name> = { version = "<nixpkgs' version>"; newest = "<Repology's
+  # newest elsewhere>"; reason = "why"; } (newest left out when there's none).
+  upToDateProblems =
+    lists: name: rule:
+    let
+      at = reason: {
+        entry = "upToDate.${name}";
+        inherit reason;
+      };
+      nonEmpty = field: builtins.isString (rule.${field} or null) && rule.${field} != "";
+    in
+    lib.optional (!isTracked lists name) (at "not a tracked package (use its row name, the attribute)")
+    ++ (
+      if !builtins.isAttrs rule then
+        [ (at ''must be { version = "..."; newest = "..."; reason = "..."; }'') ]
+      else
+        lib.optional (!nonEmpty "version") (
+          at "version must be the version nixpkgs has: a non-empty string"
+        )
+        ++ lib.optional (!nonEmpty "reason") (at "needs a reason: a non-empty string")
+        ++ lib.optional (rule ? newest && !nonEmpty "newest") (
+          at "newest must be the version Repology shows as newest elsewhere (or left out when it shows none)"
+        )
+        ++ map (k: at "unknown field ${k} (version, newest, reason)") (
+          builtins.filter (
+            k:
+            !builtins.elem k [
+              "version"
+              "newest"
+              "reason"
+            ]
+          ) (builtins.attrNames rule)
+        )
+    );
 in
 rec {
   # [ { entry, reason } ] for the community update checks
@@ -237,6 +272,30 @@ rec {
       ) rules
     );
 
+  # [ { entry, reason } ] for the community up-to-date rules
+  # (community/up-to-date.nix), checked like communityProblems.
+  communityUpToDateProblems =
+    rules:
+    lib.concatLists (
+      lib.mapAttrsToList (
+        name: rule:
+        if !isAttribute name then
+          [
+            {
+              entry = name;
+              reason = "not a nixpkgs attribute (rules are keyed by the package's attribute)";
+            }
+          ]
+        else
+          map (p: p // { entry = name; }) (
+            upToDateProblems {
+              maintainers = [ ];
+              extraPackages = [ name ];
+            } name rule
+          )
+      ) rules
+    );
+
   # [ { entry, reason } ] for everything the sync would get wrong.
   problems =
     lists:
@@ -279,6 +338,7 @@ rec {
     }) unknown
     ++ lib.concatLists (lib.mapAttrsToList (checkProblems lists) (lists.updateChecks or { }))
     ++ lib.concatLists (lib.mapAttrsToList (ignoredProblems lists) (lists.ignoredUpdates or { }))
+    ++ lib.concatLists (lib.mapAttrsToList (upToDateProblems lists) (lists.upToDate or { }))
     ++ lib.optional (!(builtins.elem ((lists.page or { }).theme or "classic") themes)) {
       entry = "page.theme";
       reason = "not one of the page's themes (${lib.concatStringsSep ", " themes})";

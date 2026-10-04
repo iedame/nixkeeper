@@ -22,12 +22,13 @@ happen. For what nixkeeper does and how to set up your own, see the
   modules share: the options for the lists, the token and notifications
 - `nix/package-lists.nix`: `nix flake check` validates the package lists
   against nixpkgs (typos, aliases like `python3Packages`, unknown maintainer
-  handles, duplicates, malformed update checks and ignore rules)
+  handles, duplicates, malformed update checks, ignore and up-to-date rules)
 - `package-lists/`: what this instance tracks (see
   [how it works](docs/how-it-works.md#what-gets-tracked))
 - `community/update-checks.nix`: the community update checks, rules anyone
-  can add by PR, and `community/ignored-updates.nix`, the community ignore
-  rules ([docs/community.md](docs/community.md))
+  can add by PR; `community/ignored-updates.nix`, the community ignore
+  rules; and `community/up-to-date.nix`, the community up-to-date rules
+  ([docs/community.md](docs/community.md))
 - `docs/`: the documentation, one page per topic ([docs/README.md](docs/README.md)
   lists them); `README.md`, `CONTRIBUTING.md`, `SECURITY.md`,
   `CHANGELOG.md` and `LICENSE` stay at the root, where GitHub looks for them

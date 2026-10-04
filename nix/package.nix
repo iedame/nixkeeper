@@ -36,7 +36,8 @@ python3Packages.buildPythonApplication (finalAttrs: {
 
   # The page goes in the Python package (nixkeeper page and nixkeeper serve
   # find it there), and in share/ for anything else that wants it. So do the
-  # community rules (community.updateChecks, .ignoredUpdates in the lists).
+  # community rules (community.updateChecks, .ignoredUpdates, .upToDate in the
+  # lists).
   preBuild = ''
     cp -r page nixkeeper/page
     mkdir -p nixkeeper/community
