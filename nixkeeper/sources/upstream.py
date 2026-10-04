@@ -6,6 +6,8 @@ only counts as newest on Repology once repositories it trusts package it (the
 AUR alone doesn't), so without this a fresh release leaves nixpkgs looking up
 to date."""
 
+import hashlib
+import json
 import re
 import sys
 import urllib.error
@@ -13,7 +15,7 @@ import urllib.parse
 from datetime import UTC, datetime, timedelta
 
 from .. import community as community_rules
-from .. import history
+from .. import config, history, schedule
 from ..versions import is_newer, version_key
 from . import github, http
 
@@ -88,6 +90,33 @@ def apply(row, found):
         row["refVersion"] = found["version"]
 
 
+def fingerprint(check):
+    """A short id of an update check's rule, recorded with its result: a rule
+    edited since (another page, pattern, branch, ...) is due at once."""
+    text = json.dumps(check, sort_keys=True)
+    return hashlib.sha256(text.encode()).hexdigest()[:12]
+
+
+def due(name, check, row, before, now):
+    """Whether an update check should run now. A frequent one always does
+    (it's meant to be quick: browsers' security fixes). The rest run daily
+    while something's going on: never run, edited since, failed last time,
+    found a newer version, or nixpkgs' version changed since. Otherwise, with
+    nothing new found, every QUIET_DAYS (schedule.due). before: the row at
+    the last sync (None if new)."""
+    last = (before or {}).get("upstream") or {}
+    if (
+        check.get("frequent")
+        or not last.get("checkedAt")
+        or last.get("rule") != fingerprint(check)
+        or "upstream" in ((before or {}).get("notRefreshed") or {})
+        or last.get("newer")
+        or (before or {}).get("nixVersion") != row.get("nixVersion")
+    ):
+        return True
+    return schedule.due(name, last["checkedAt"], now)
+
+
 def add_checks(rows, checks, previous, now, community=frozenset()):
     """Run the update checks for rows that have one. A check that can't run,
     GitHub or web page alike, keeps the previous run's result and marks the
@@ -104,8 +133,26 @@ def add_checks(rows, checks, previous, now, community=frozenset()):
     }
     if not wanted:
         return
-    print(f"Running {len(wanted)} update checks...", file=sys.stderr)
     before = {row["name"]: row for row in previous["packages"]}
+    # Those not due keep what they found last time (due).
+    quiet = [
+        n for n, c in wanted.items() if not due(n, c, by_name[n], before.get(n), now)
+    ]
+    for name in quiet:
+        apply(by_name[name], before[name]["upstream"])
+        del wanted[name]
+    print(
+        f"Running {len(wanted)} update checks"
+        + (
+            f" ({len(quiet)} found nothing new in the last {config.QUIET_DAYS} days)"
+            if quiet
+            else ""
+        )
+        + "...",
+        file=sys.stderr,
+    )
+    if not wanted:
+        return
 
     def keep_previous(name, why):
         # Said so, for the page: a community rule is fixed in nixkeeper.
@@ -123,6 +170,7 @@ def add_checks(rows, checks, previous, now, community=frozenset()):
         else:
             if name in community:
                 extra["community"] = True
+            extra["rule"] = fingerprint(checks[name])
             apply(by_name[name], {"version": version, "checkedAt": now, **extra})
 
     # A community rule beyond its limits is refused, never run.
@@ -159,17 +207,23 @@ def check_github(checks, versions, now, keep_previous, found):
 
 
 def check_tags(token, checks, keep_previous, found):
-    """Checks against a repository's tags."""
-    try:
-        tags = github.latest_tags(token, sorted({c["github"] for c in checks.values()}))
-    except (urllib.error.URLError, OSError, ValueError) as e:
-        if isinstance(e, urllib.error.HTTPError):
-            e.close()
-        for name in checks:
-            keep_previous(name, f"GitHub request failed ({e})")
-        return
+    """Checks against a repository's tags, GITHUB_REPOS_BATCH repositories per
+    request (a request that fails only affects its own)."""
+    repos = sorted({c["github"] for c in checks.values()})
+    tags, failed = {}, {}
+    for start in range(0, len(repos), config.GITHUB_REPOS_BATCH):
+        batch = repos[start : start + config.GITHUB_REPOS_BATCH]
+        try:
+            tags.update(github.latest_tags(token, batch))
+        except (urllib.error.URLError, OSError, ValueError) as e:
+            if isinstance(e, urllib.error.HTTPError):
+                e.close()
+            failed.update(dict.fromkeys(batch, e))
     for name, check in checks.items():
         repo = check["github"]
+        if repo in failed:
+            keep_previous(name, f"GitHub request failed ({failed[repo]})")
+            continue
         if repo not in tags:
             keep_previous(
                 name, f"couldn't read the tags of {repo} (renamed or deleted?)"
@@ -222,17 +276,22 @@ def check_branches(token, checks, versions, now, keep_previous, found):
         )
     if not queries:
         return
-    try:
-        results = github.branch_commits(token, list(queries.values()))
-    except (urllib.error.URLError, OSError, ValueError) as e:
-        if isinstance(e, urllib.error.HTTPError):
-            e.close()
-        for name in queries:
-            keep_previous(name, f"GitHub request failed ({e})")
-        return
-    for (name, (repo, branch, _, until)), head in zip(
-        queries.items(), results, strict=True
-    ):
+    # GITHUB_REPOS_BATCH per request: one that fails only affects its own.
+    names = list(queries)
+    results = {}
+    for start in range(0, len(names), config.GITHUB_REPOS_BATCH):
+        batch = names[start : start + config.GITHUB_REPOS_BATCH]
+        try:
+            answers = github.branch_commits(token, [queries[n] for n in batch])
+        except (urllib.error.URLError, OSError, ValueError) as e:
+            if isinstance(e, urllib.error.HTTPError):
+                e.close()
+            for name in batch:
+                keep_previous(name, f"GitHub request failed ({e})")
+            continue
+        results.update(zip(batch, answers, strict=True))
+    for name, head in results.items():
+        repo, branch, _, until = queries[name]
         if head is None:
             keep_previous(
                 name, f"couldn't read branch {branch} of {repo} (renamed or deleted?)"

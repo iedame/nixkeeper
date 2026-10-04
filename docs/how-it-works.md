@@ -39,7 +39,8 @@ failure there can show up to 3 days late; anything failing, outdated,
 newly changed or with an update PR is asked daily. The builds panel says
 when they were last checked. The same goes for the open PR and issue
 counts: a package with none open, and not outdated, is counted every 3
-days. nixkeeper doesn't ask twice for what can't have changed: a package's
+days; and for update checks that found nothing newer, unless they're marked
+`frequent`. nixkeeper doesn't ask twice for what can't have changed: a package's
 Repology project is the one the last sync found, a package whose bot logs
 haven't changed since (the log site's index says when each last changed)
 isn't listed again, a release page whose server says it hasn't changed

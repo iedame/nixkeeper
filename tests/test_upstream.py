@@ -2,11 +2,12 @@ import io
 import json
 import unittest
 import urllib.error
+from datetime import datetime, timedelta
 from unittest import mock
 
-from nixkeeper import config
+from nixkeeper import config, schedule
 from nixkeeper.changes import is_outdated
-from nixkeeper.sources import github, upstream
+from nixkeeper.sources import github, http, upstream
 from tests.helpers import http_error, response
 
 NOW = "2026-09-30T06:00:00+00:00"
@@ -96,6 +97,7 @@ class AddChecks(unittest.TestCase):
                 "url": "https://github.com/wesnoth/wesnoth/tags",
                 "newer": True,
                 "checkedAt": NOW,
+                "rule": upstream.fingerprint(CHECK),
             },
         )
         self.assertNotIn("upstream", rows[1])  # no check for it
@@ -207,6 +209,7 @@ class PageChecks(unittest.TestCase):
                 "url": BBEDIT["url"],
                 "newer": True,
                 "checkedAt": NOW,
+                "rule": upstream.fingerprint(BBEDIT),
             },
         )
         self.assertEqual(rows[0]["refVersion"], "16.0.3")
@@ -315,6 +318,7 @@ class UnstableVersions(unittest.TestCase):
                 "url": "https://github.com/stepmania/stepmania/commits/5_1-new",
                 "commit": "825467bcd81c",
                 "checkedAt": NOW,
+                "rule": upstream.fingerprint(STEPMANIA),
             },
         )
         self.assertEqual(r["refVersion"], "5.1.0-b2-unstable-2026-08-22")
@@ -531,3 +535,132 @@ class UnchangedPages(unittest.TestCase):
             )
         self.assertNotIn("page", rows[0]["upstream"])
         self.assertNotIn("If-none-match", urlopen.sent)
+
+
+class QuietChecks(unittest.TestCase):
+    """Update checks that found nothing new run every QUIET_DAYS (schedule.py);
+    frequent ones, and those with something going on, every time."""
+
+    def setUp(self):
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch.object(github, "token", return_value="t"),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def not_its_day(self, name="bbedit"):
+        when = datetime.fromisoformat(NOW)
+        while schedule.slot(name, when):
+            when += timedelta(days=1)
+        return when.isoformat()
+
+    def last(self, now, check=BBEDIT, **changes):
+        """bbedit's row as a sync a day before now left it: nothing new."""
+        upstream_ = {
+            "version": "16.0.2",
+            "label": "www.barebones.com",
+            "url": check["url"],
+            "newer": False,
+            "checkedAt": (datetime.fromisoformat(now) - timedelta(days=1)).isoformat(),
+            "rule": upstream.fingerprint(check),
+        }
+        before = {"name": "bbedit", "nixVersion": "16.0.2", "upstream": upstream_}
+        for key, value in changes.items():
+            (upstream_ if key in upstream_ else before)[key] = value
+        return before
+
+    def check(self, check, before, now, nix="16.0.2"):
+        """(the row after the checks, whether the page was asked for)."""
+        rows = [row("bbedit", nix, "newest", nix)]
+        page = BBEDIT_PAGE.replace("16.0.3", "16.0.2")
+        with mock.patch.object(http, "get_page", return_value=(page, {})) as get:
+            upstream.add_checks(
+                rows, {"bbedit": check}, {"packages": [before] if before else []}, now
+            )
+        return rows[0], get.called
+
+    def test_nothing_new_lately_isnt_run(self):
+        now = self.not_its_day()
+        before = self.last(now)
+        r, asked = self.check(BBEDIT, before, now)
+        self.assertFalse(asked)
+        self.assertEqual(r["upstream"], before["upstream"])
+        self.assertNotIn("notRefreshed", r)
+
+    def test_frequent_always_runs(self):
+        now = self.not_its_day()
+        check = {**BBEDIT, "frequent": True}
+        _, asked = self.check(check, self.last(now, check), now)
+        self.assertTrue(asked)
+
+    def test_something_going_on_runs(self):
+        now = self.not_its_day()
+        for name, before, nix in (
+            ("new", None, "16.0.2"),
+            ("never run", self.last(now, checkedAt=None), "16.0.2"),
+            ("rule edited", self.last(now, rule="something else"), "16.0.2"),
+            ("found a newer one", self.last(now, newer=True), "16.0.2"),
+            ("nixpkgs moved", self.last(now), "16.0.3"),
+            (
+                "failed last time",
+                self.last(now, notRefreshed={"upstream": {"since": NOW}}),
+                "16.0.2",
+            ),
+        ):
+            with self.subTest(name):
+                _, asked = self.check(BBEDIT, before, now, nix)
+                self.assertTrue(asked)
+
+    def test_three_days_on_it_runs(self):
+        now = self.not_its_day()
+        before = self.last(now)
+        before["upstream"]["checkedAt"] = (
+            datetime.fromisoformat(now) - timedelta(days=3)
+        ).isoformat()
+        r, asked = self.check(BBEDIT, before, now)
+        self.assertTrue(asked)
+        self.assertEqual(r["upstream"]["checkedAt"], now)
+
+
+class BatchedRepositories(unittest.TestCase):
+    """Tags and branches are asked GITHUB_REPOS_BATCH repositories at a time;
+    a request that fails only affects its own."""
+
+    def setUp(self):
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch.object(github, "token", return_value="t"),
+            mock.patch.object(config, "GITHUB_REPOS_BATCH", 2),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_tags(self):
+        names = [f"p{i}" for i in range(5)]
+        checks = {n: {"github": f"o/{n}", "tags": r"^v?([0-9.]+)$"} for n in names}
+        rows = [row(n, "1.0", "newest", "1.0") for n in names]
+
+        def latest_tags(token, repos):
+            if "o/p2" in repos:
+                raise urllib.error.URLError("down")
+            return {r: ["2.0"] for r in repos}
+
+        with mock.patch.object(github, "latest_tags", side_effect=latest_tags) as asked:
+            upstream.add_checks(rows, checks, {"packages": []}, NOW)
+        self.assertEqual([len(c.args[1]) for c in asked.call_args_list], [2, 2, 1])
+        failed = [r["name"] for r in rows if "notRefreshed" in r]
+        self.assertEqual(failed, ["p2", "p3"])  # their request, not the others
+        self.assertEqual(rows[0]["upstream"]["version"], "2.0")
+        self.assertEqual(rows[4]["upstream"]["version"], "2.0")
+
+    def test_branches(self):
+        names = [f"p{i}" for i in range(3)]
+        checks = {n: {"github": f"o/{n}", "branch": "main"} for n in names}
+        rows = [row(n, UNSTABLE, "newest", UNSTABLE) for n in names]
+        with mock.patch.object(
+            github, "branch_commits", side_effect=lambda t, b: [head()] * len(b)
+        ) as asked:
+            upstream.add_checks(rows, checks, {"packages": []}, NOW)
+        self.assertEqual([len(c.args[1]) for c in asked.call_args_list], [2, 1])
+        self.assertTrue(all(r["upstream"]["commit"] for r in rows))
