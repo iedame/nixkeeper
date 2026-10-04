@@ -207,7 +207,9 @@ class AddAttempts(unittest.TestCase):
             nixpkgs_update.add_attempts(
                 rows, nixpkgs, previous or {"packages": []}, NOW, ignored, community
             )
-        return calls
+        # Without the site's index ("/", not served here, so every package
+        # is listed): see LogIndex.
+        return [c for c in calls if c != "/"]
 
     def test_cant_update_is_not_a_failure_until_nixpkgs_moves_on(self):
         rows = [{"name": "edgar", "attrs": ["edgar"], "nixVersion": "1.37"}]
@@ -398,8 +400,10 @@ class AddAttempts(unittest.TestCase):
             nixpkgs_update.add_attempts(rows, nixpkgs, previous, NOW)
         self.assertEqual((rows[0]["update"], rows[0]["updateFailure"]), (old, True))
         self.assertIsNone(rows[4]["update"])
+        # The site's index first (it fails: every package is listed), then
+        # the listings until it stops asking.
         self.assertEqual(
-            urlopen.call_count, config.UPDATE_LOGS_MAX_CONSECUTIVE_FAILURES
+            urlopen.call_count, 1 + config.UPDATE_LOGS_MAX_CONSECUTIVE_FAILURES
         )
         self.assertIn(
             "::warning::5 nixpkgs-update log lookups failed", self.stderr.getvalue()
@@ -435,7 +439,7 @@ class ReuseLogs(unittest.TestCase):
             nixpkgs_update.add_attempts(
                 rows, nixpkgs, {"packages": previous or []}, NOW, ignored, community
             )
-        return rows[0], calls
+        return rows[0], [c for c in calls if c != "/"]  # as in run_attempts
 
     def test_the_same_attempt_isnt_downloaded_again(self):
         first, calls = self.sync()
@@ -538,3 +542,149 @@ class ReuseLogs(unittest.TestCase):
         second["update"]["outcome"] = "changed"
         self.assertEqual(first["update"]["excerpt"], excerpt)
         self.assertEqual(first["update"]["outcome"], "failed")
+
+
+def index_page(dirs):
+    """The log site's front page, as nginx writes it: {directory: when}."""
+    return "".join(
+        f'<a href="{name}/">{name}/</a>{" " * 20}{when}{" " * 19}-\n'
+        for name, when in dirs.items()
+    )
+
+
+class LogIndex(unittest.TestCase):
+    """The site's index says when each package's logs last changed: a package
+    whose logs haven't changed since the last sync listed them isn't listed
+    again (one request for the index instead of one per package)."""
+
+    BEFORE = "2026-09-29T06:00:00+00:00"  # the last sync
+    OLD = "28-Sep-2026 14:02"  # changed before it
+    NEW = "29-Sep-2026 09:15"  # and after
+
+    def setUp(self):
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch("time.sleep"),
+            mock.patch.object(nixpkgs_update, "MIN_DIRECTORIES", 1),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def first(self, pages):
+        """A first sync (no index), to have a previous row as a sync makes it."""
+        rows = [{"name": "egoboo", "attrs": ["egoboo"], "nixVersion": "2.7.3"}]
+        urlopen, _ = fake_site(pages)
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            nixpkgs_update.add_attempts(
+                rows, {"egoboo": pkg("egoboo")}, {"packages": []}, self.BEFORE
+            )
+        return rows[0]
+
+    def sync(self, previous_rows, dirs, pages=None, rows=None):
+        rows = rows or [{"name": "egoboo", "attrs": ["egoboo"], "nixVersion": "2.7.3"}]
+        nixpkgs = {a: pkg(a) for row in rows for a in row["attrs"]}
+        urlopen, calls = fake_site({"/": index_page(dirs), **(pages or {})})
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            nixpkgs_update.add_attempts(
+                rows,
+                nixpkgs,
+                {"checkedAt": self.BEFORE, "packages": previous_rows},
+                NOW,
+            )
+        return rows, calls
+
+    EGOBOO = {"/egoboo/": listing("2026-09-15"), "/egoboo/2026-09-15.log": FAILED}
+
+    def test_unchanged_logs_arent_listed(self):
+        before = self.first(self.EGOBOO)
+        (row,), calls = self.sync([before], {"egoboo": self.OLD})
+        self.assertEqual(calls, ["/"])
+        self.assertEqual(row["update"], before["update"])
+        self.assertTrue(row["updateFailure"])
+
+    def test_and_judged_afresh(self):
+        # Nothing asked, but nixpkgs has moved on since: superseded now.
+        before = self.first(self.EGOBOO)
+        rows = [{"name": "egoboo", "attrs": ["egoboo"], "nixVersion": "2.8.1"}]
+        (row,), calls = self.sync([before], {"egoboo": self.OLD}, rows=rows)
+        self.assertEqual(calls, ["/"])
+        self.assertEqual(row["update"]["outcome"], "superseded")
+        self.assertFalse(row["updateFailure"])
+
+    def test_changed_logs_are_listed(self):
+        before = self.first(self.EGOBOO)
+        pages = {
+            "/egoboo/": listing("2026-09-15", "2026-09-29"),
+            "/egoboo/2026-09-29.log": CANT_UPDATE,
+        }
+        (row,), calls = self.sync([before], {"egoboo": self.NEW}, pages)
+        self.assertEqual(calls, ["/", "/egoboo/", "/egoboo/2026-09-29.log"])
+        self.assertEqual(row["update"]["date"], "2026-09-29")
+
+    def test_a_change_the_minute_before_counts(self):
+        # The index only shows minutes: 05:59 could be 05:59:59.
+        before = self.first(self.EGOBOO)
+        _, calls = self.sync([before], {"egoboo": "29-Sep-2026 05:59"}, self.EGOBOO)
+        self.assertIn("/egoboo/", calls)
+
+    def test_no_logs_nothing_asked(self):
+        (row,), calls = self.sync([], {"something-else": self.OLD})
+        self.assertEqual(calls, ["/"])
+        self.assertIsNone(row["update"])
+
+    def test_new_packages_are_listed(self):
+        _, calls = self.sync([], {"egoboo": self.OLD}, self.EGOBOO)
+        self.assertEqual(calls, ["/", "/egoboo/", "/egoboo/2026-09-15.log"])
+
+    def test_after_a_failed_read_listed_again(self):
+        before = self.first(self.EGOBOO)
+        before["notRefreshed"] = {"update": {"since": self.BEFORE, "reason": "down"}}
+        _, calls = self.sync([before], {"egoboo": self.OLD}, self.EGOBOO)
+        self.assertIn("/egoboo/", calls)
+
+    def test_another_attribute_of_the_row_is_listed(self):
+        # The previous attempt is egoboo's: egoboo-data's own isn't known.
+        before = self.first(self.EGOBOO)
+        rows = [
+            {
+                "name": "egoboo",
+                "attrs": ["egoboo", "egoboo-data"],
+                "nixVersion": "2.7.3",
+            }
+        ]
+        _, calls = self.sync(
+            [before],
+            {"egoboo": self.OLD, "egoboo-data": self.OLD},
+            {**self.EGOBOO, "/egoboo-data/": listing("2026-09-01")},
+            rows=rows,
+        )
+        self.assertNotIn("/egoboo/", calls)
+        self.assertIn("/egoboo-data/", calls)
+
+    def test_a_page_too_short_to_be_the_index_isnt_used(self):
+        before = self.first(self.EGOBOO)
+        with mock.patch.object(nixpkgs_update, "MIN_DIRECTORIES", 1000):
+            _, calls = self.sync([before], {"egoboo": self.OLD}, self.EGOBOO)
+        self.assertIn("/egoboo/", calls)
+
+    def test_reads_the_real_format(self):
+        # As the site writes it (the padding shortened), with a log file
+        # among the directories, which isn't one.
+        page = (
+            '<a href="ArchiSteamFarm/">ArchiSteamFarm/</a>          '
+            "04-Oct-2026 00:00                   -\n"
+            '<a href="python3Packages.requests/">python3Packages.requests/</a> '
+            "26-Sep-2026 01:05                   -\n"
+            '<a href="2026-01-10.log">2026-01-10.log</a>                    '
+            "10-Jan-2026 09:27                5841\n"
+        )
+        urlopen, _ = fake_site({"/": page})
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            dates = nixpkgs_update.directory_dates()
+        self.assertEqual(
+            {k: v.isoformat() for k, v in dates.items()},
+            {
+                "ArchiSteamFarm": "2026-10-04T00:00:00+00:00",
+                "python3Packages.requests": "2026-09-26T01:05:00+00:00",
+            },
+        )

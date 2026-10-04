@@ -1,6 +1,7 @@
 """Slowing down when a server asks (Retry-After, GitHub's rate limits):
 sources/http.py, and its use in Repology's and GitHub's requests."""
 
+import gzip
 import io
 import unittest
 import urllib.error
@@ -126,3 +127,29 @@ class GitHubRateLimit(Case):
         ):
             github.graphql("token", "query", {})
         sleep.assert_not_called()
+
+
+class Compressed(unittest.TestCase):
+    """compressed=True: a big page from a trusted source comes gzipped."""
+
+    def fetch(self, body, encoding, **kwargs):
+        resp = mock.MagicMock()
+        resp.__enter__.return_value = resp
+        resp.read.return_value = body
+        resp.headers = {"Content-Encoding": encoding} if encoding else {}
+        with mock.patch("urllib.request.urlopen", return_value=resp) as urlopen:
+            text = http.get("https://example.org/", **kwargs)
+        return text, urlopen.call_args.args[0].headers
+
+    def test_asks_for_gzip_and_unpacks_it(self):
+        text, headers = self.fetch(gzip.compress(b"index"), "gzip", compressed=True)
+        self.assertEqual(text, "index")
+        self.assertEqual(headers.get("Accept-encoding"), "gzip")
+
+    def test_a_plain_answer_too(self):
+        text, _ = self.fetch(b"index", None, compressed=True)
+        self.assertEqual(text, "index")
+
+    def test_not_asked_otherwise(self):
+        _, headers = self.fetch(b"index", None)
+        self.assertNotIn("Accept-encoding", headers)

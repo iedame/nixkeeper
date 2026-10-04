@@ -145,3 +145,72 @@ class Trimmed(unittest.TestCase):
             name, entries = repology.project_by_name("xournalpp")
         self.assertEqual(name, "xournalpp")
         self.assertEqual(entries, repology.trimmed([self.FULL]))
+
+
+class KnownProject(unittest.TestCase):
+    """resolve() asks for the project the last run found first: one request
+    instead of two."""
+
+    def resolve(self, attrs, known, answers):
+        """answers: path prefix -> Repology's answer. Returns (result, the
+        paths asked for)."""
+        asked = []
+
+        def get(path):
+            asked.append(path)
+            for prefix, answer in answers.items():
+                if path.startswith(prefix):
+                    return answer
+            return [], None
+
+        with (
+            mock.patch.object(repology, "get", side_effect=get),
+            mock.patch("time.sleep"),
+        ):
+            return repology.resolve(attrs[0] if attrs else "x", attrs, known), asked
+
+    UNCIV = [nix("unciv", "4.22.1", "outdated")]
+
+    def test_one_request_while_it_still_has_the_package(self):
+        result, asked = self.resolve(
+            ["unciv"], "unciv", {"/api/v1/project/unciv": (self.UNCIV, None)}
+        )
+        self.assertEqual(result, ("unciv", repology.trimmed(self.UNCIV)))
+        self.assertEqual(asked, ["/api/v1/project/unciv"])
+
+    def test_looked_up_by_attribute_once_it_doesnt(self):
+        # Repology moved the package to another project.
+        moved = [nix("unciv", "4.22.1", "outdated")]
+        result, asked = self.resolve(
+            ["unciv"],
+            "unciv-old",
+            {
+                "/api/v1/project/unciv-old": ([nix("something", "1", "newest")], None),
+                "/tools/project-by": (
+                    moved,
+                    "https://repology.org/api/v1/project/unciv",
+                ),
+            },
+        )
+        self.assertEqual(result, ("unciv", repology.trimmed(moved)))
+        self.assertEqual(len(asked), 2)
+        self.assertTrue(asked[1].startswith("/tools/project-by"))
+
+    def test_without_one_by_attribute(self):
+        _, asked = self.resolve(
+            ["unciv"],
+            None,
+            {
+                "/tools/project-by": (
+                    self.UNCIV,
+                    "https://repology.org/api/v1/project/unciv",
+                )
+            },
+        )
+        self.assertEqual(len(asked), 1)
+        self.assertTrue(asked[0].startswith("/tools/project-by"))
+
+    def test_not_for_a_package_nixpkgs_doesnt_have(self):
+        # No attributes: asked for by name anyway, once.
+        _, asked = self.resolve([], "x", {"/api/v1/project/x": (self.UNCIV, None)})
+        self.assertEqual(asked, ["/api/v1/project/x"])

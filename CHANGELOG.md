@@ -33,6 +33,21 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   less to download for the details panels. If you read these files yourself,
   the other fields are gone.
 
+- Fewer requests to the sources, for the same results:
+  - Repology: each package is looked up by the project the last sync found
+    for it, one request instead of two (asking by attribute is answered
+    with a redirect to the project). If Repology has moved the package to
+    another project, it's looked up by attribute as before.
+  - nixpkgs-update's logs: the log site's index (one request, compressed)
+    says when each package's logs last changed, so a package whose logs
+    haven't changed since the last sync isn't listed again, and one with no
+    logs isn't asked about. For 72 attributes, a sync now made 3 requests
+    instead of at least 72, with the same results.
+
+  At 1,500 packages that's about 2,800 fewer requests a day. The time
+  estimate at the start of a sync doesn't count it yet: it'll be measured
+  from real runs first.
+
 ### Fixed
 
 - `repoCount` counted Repology's entries, so a repository listing a package

@@ -104,10 +104,28 @@ def project_by_name(name):
     return (name, trimmed(entries)) if entries else (None, None)
 
 
-def resolve(fallback, attrs):
+def has_attrs(entries, attrs):
+    """Whether Repology's entries include nixpkgs packaging one of attrs."""
+    return any(
+        e.get("repo") == config.NIX_REPO and e.get("srcname") in attrs for e in entries
+    )
+
+
+def resolve(fallback, attrs, known=None):
     """Find the Repology project for tracked nixpkgs attrs, else for fallback
     as a project name. Returns (project, entries), (None, None) if Repology
-    doesn't know it; raises on failure."""
+    doesn't know it; raises on failure.
+
+    known: the project the last run found for them. Asked for directly, it
+    takes one request, where asking by attribute takes two (Repology answers
+    with a redirect to the project). Used while it still has one of attrs in
+    nixpkgs; otherwise (Repology renamed or split the project) they're looked
+    up by attribute as before."""
+    if known and attrs:
+        project, entries = project_by_name(known)
+        time.sleep(1)
+        if project and has_attrs(entries, attrs):
+            return project, entries
     for attr in attrs:
         project, entries = project_for_attr(attr)
         time.sleep(1)  # be polite to Repology's API

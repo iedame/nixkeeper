@@ -8,6 +8,8 @@ import re
 import sys
 import time
 import urllib.error
+import urllib.parse
+from datetime import UTC, datetime, timedelta
 
 from .. import config, history
 from ..changes import is_outdated, on_master
@@ -58,6 +60,55 @@ EXCERPT_LINES = 3
 
 def attempts_url(attr):
     return f"{config.NIXPKGS_UPDATE_LOGS_URL}/{search_term(attr)}/"
+
+
+# The log site's front page lists every package's directory with when it
+# last changed (nginx, in UTC): "<a href="unciv/">unciv/</a>   03-Oct-2026 00:00".
+DIRECTORY = re.compile(
+    r'<a href="([^"/]+)/">[^<]*</a>\s+(\d{2}-[A-Z][a-z]{2}-\d{4} \d{2}:\d{2})'
+)
+# Fewer than this many directories: not the page it should be.
+MIN_DIRECTORIES = 1000
+
+
+def directory_dates():
+    """{directory: when it last changed} for every package the bot has logs
+    for, from the site's front page: one request instead of one listing per
+    package (see unchanged). None if it can't be read, so every package is
+    listed as before. A directory also changes when old logs are cleaned up,
+    so a change doesn't mean a new attempt; no change means none."""
+    try:
+        page = http.get(f"{config.NIXPKGS_UPDATE_LOGS_URL}/", compressed=True)
+    except (urllib.error.URLError, OSError) as e:
+        print(f"  the log site's index: {e}; listing every package", file=sys.stderr)
+        return None
+    time.sleep(1)  # be polite
+    found = {
+        urllib.parse.unquote(name): datetime.strptime(when, "%d-%b-%Y %H:%M").replace(
+            tzinfo=UTC
+        )
+        for name, when in DIRECTORY.findall(page or "")
+    }
+    if len(found) < MIN_DIRECTORIES:
+        print(
+            f"  the log site's index lists {len(found)} packages: not used",
+            file=sys.stderr,
+        )
+        return None
+    return found
+
+
+def unchanged(attr, dates, since):
+    """Whether the bot's logs for attr can't have changed since since (an ISO
+    time, when they were last listed): its directory, by dates
+    (directory_dates), last changed before then, or it has none (the bot has
+    never tried). A minute's margin: the index only shows minutes."""
+    if dates is None or not since:
+        return False
+    changed = dates.get(search_term(attr))
+    return changed is None or changed < datetime.fromisoformat(since) - timedelta(
+        minutes=1
+    )
 
 
 def latest_date(attr):
@@ -145,11 +196,18 @@ def parse(log):
     return result
 
 
-def latest_attempt(attr, known=None):
+def latest_attempt(attr, known=None, same=False):
     """The bot's latest attempt at attr: {"attr", "date", "outcome", ...}, or
     None if it never tried. known: an attempt read before (the previous
     run's); if it's this same one, read with the same rules, its reading is
-    taken (as_read) instead of downloading the log again."""
+    taken (as_read) instead of downloading the log again. same: known is
+    still the latest, as the logs haven't changed since it was read
+    (unchanged): then nothing is asked at all."""
+    if same:
+        if known is None:
+            return None  # it hadn't tried, and still hasn't
+        if reused := as_read(known, attr, known.get("date")):
+            return reused
     date = latest_date(attr)
     if date is None:
         return None
@@ -266,6 +324,10 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=(
     ignored_updates = ignored_updates or {}
     print("Checking nixpkgs-update logs...", file=sys.stderr)
     before = {row["name"]: row for row in previous["packages"]}
+    # When each package's logs last changed, in one request: those that
+    # haven't since the last sync listed them aren't listed again.
+    dates = directory_dates()
+    since = previous.get("checkedAt")
     failed = consecutive = 0
     for row in rows:
         attrs = [a for a in row["attrs"] if a in nixpkgs]
@@ -275,8 +337,25 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=(
         try:
             if down:
                 raise OSError("not asked: it didn't answer earlier lookups")
-            known = before.get(row["name"], {}).get("update")
-            attempts = [a for a in (latest_attempt(a, known) for a in attrs) if a]
+            old = before.get(row["name"])
+            known = (old or {}).get("update")
+            # Read fine last time: what it found still holds while the logs
+            # haven't changed.
+            refreshed = old is not None and "update" not in (
+                old.get("notRefreshed") or {}
+            )
+            attempts = []
+            for attr in attrs:
+                if dates is not None and search_term(attr) not in dates:
+                    continue  # no logs at all: the bot has never tried it
+                mine = known if (known or {}).get("attr") == attr else None
+                same = (
+                    refreshed
+                    and unchanged(attr, dates, since)
+                    and (mine is not None or known is None)
+                )
+                if attempt := latest_attempt(attr, mine if same else known, same):
+                    attempts.append(attempt)
             consecutive = 0
         except (urllib.error.URLError, OSError) as e:
             failed += 1

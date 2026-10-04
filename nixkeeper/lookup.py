@@ -16,13 +16,23 @@ def collect_projects(wanted, previous, resolve=repology.resolve, out_dir=None):
     -> {"name", "project", "attrs", "entries", "dataFile"[, "staleSince"]}, or
     exits if too many lookups failed."""
     out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
+    # The project each attribute had last run: asked for directly, it saves
+    # a request (repology.resolve).
+    known = {
+        attr: row["project"]
+        for row in previous["packages"]
+        if row.get("project")
+        for attr in row.get("attrs") or []
+    }
     projects = {}
     failed = []
     for pname, (attrs, fallback) in sorted(wanted.items()):
         print(f"Resolving {pname}...", file=sys.stderr)
         stale_since = None
         try:
-            project, entries = resolve(fallback, attrs)
+            project, entries = resolve(
+                fallback, attrs, next((known[a] for a in attrs if a in known), None)
+            )
         except (urllib.error.URLError, OSError, ValueError) as e:
             failed.append(pname)
             reused = history.previous_project(previous, pname, attrs, out_dir)

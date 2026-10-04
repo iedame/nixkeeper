@@ -18,6 +18,7 @@ class CollectProjects(unittest.TestCase):
         self.addCleanup(patcher.stop)
         self.dir = tempfile.TemporaryDirectory()
         self.addCleanup(self.dir.cleanup)
+        self.known = {}  # fallback name -> the known project resolve was given
 
     def write_previous(
         self, packages, checked_at="2026-09-20T06:00:00+00:00", files=None
@@ -32,7 +33,8 @@ class CollectProjects(unittest.TestCase):
     def collect(self, wanted, previous, answers):
         """answers: fallback name -> (project, entries), or an exception."""
 
-        def resolve(fallback, attrs):
+        def resolve(fallback, attrs, known=None):
+            self.known[fallback] = known
             answer = answers[fallback]
             if isinstance(answer, Exception):
                 raise answer
@@ -52,6 +54,31 @@ class CollectProjects(unittest.TestCase):
         )
         self.assertEqual(list(projects), ["wesnoth"])
         self.assertEqual(projects["wesnoth"]["attrs"], ["wesnoth", "wesnoth-devel"])
+
+    def test_the_last_runs_project_is_passed_on(self):
+        previous = {
+            "packages": [
+                {"name": "wesnoth", "project": "wesnoth", "attrs": ["wesnoth"]},
+                {"name": "nope", "project": None, "attrs": []},
+            ]
+        }
+        entries = [nix("wesnoth", "1.18.8", "newest")]
+        self.collect(
+            {
+                "wesnoth": (["wesnoth"], "wesnoth"),
+                "unciv": (["unciv"], "unciv"),
+                "nope": ([], "nope"),
+            },
+            previous,
+            {
+                "wesnoth": ("wesnoth", entries),
+                "unciv": ("unciv", [nix("unciv", "4", "newest")]),
+                "nope": (None, None),
+            },
+        )
+        self.assertEqual(
+            self.known, {"wesnoth": "wesnoth", "unciv": None, "nope": None}
+        )
 
     def test_unknown_to_repology_keyed_by_name(self):
         projects = self.collect(

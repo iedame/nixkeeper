@@ -2,6 +2,7 @@
 its own: it also falls back between domains)."""
 
 import email.utils
+import gzip
 import ipaddress
 import socket
 import sys
@@ -85,14 +86,18 @@ def retry_wait(planned, err, host):
     return max(planned, asked)
 
 
-def get(url, accept=None, safe=False):
+def get(url, accept=None, safe=False, compressed=False):
     """The body of url as text, retrying after RETRY_DELAYS seconds. Returns
     None on 404; raises once every attempt has failed. safe (community
     update checks): https to public addresses only, redirects included, and
-    at most MAX_BYTES; UnsafeURL is raised at once, not retried."""
+    at most MAX_BYTES; UnsafeURL is raised at once, not retried. compressed:
+    accept a gzipped answer, for big pages from sources nixkeeper trusts (not
+    with safe: MAX_BYTES couldn't hold for what it unpacks to)."""
     headers = {"User-Agent": config.user_agent()}
     if accept:
         headers["Accept"] = accept
+    if compressed and not safe:
+        headers["Accept-Encoding"] = "gzip"
     host = urllib.parse.urlsplit(url).netloc
     last_err = None
     for attempt, delay in enumerate([0, *config.RETRY_DELAYS]):
@@ -107,7 +112,10 @@ def get(url, accept=None, safe=False):
             open_url = _safe_opener.open if safe else urllib.request.urlopen
             with open_url(request, timeout=20) as resp:
                 if not safe:
-                    return resp.read().decode(errors="replace")
+                    body = resp.read()
+                    if resp.headers.get("Content-Encoding") == "gzip":
+                        body = gzip.decompress(body)
+                    return body.decode(errors="replace")
                 body = resp.read(MAX_BYTES + 1)
                 if len(body) > MAX_BYTES:
                     raise UnsafeURL(f"{host} answered more than {MAX_BYTES} bytes")
