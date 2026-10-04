@@ -391,7 +391,7 @@ class RunForReal(unittest.TestCase):
         with (
             mock.patch.object(community, "rules", return_value=rules),
             mock.patch("nixkeeper.sources.nixpkgs.load_index", return_value=index),
-            mock.patch.object(http, "get", return_value=page),
+            mock.patch.object(http, "get_page", return_value=(page, {})),
             mock.patch("sys.stderr", io.StringIO()),
         ):
             return community.run(names)
@@ -456,7 +456,9 @@ class CheckByName(unittest.TestCase):
                 "nixkeeper.sources.repology.resolve",
                 return_value=("pacvim", repology_entries(pacvim, "1.1.1")),
             ),
-            mock.patch.object(http, "get", return_value='{"version": "154.0.2"}'),
+            mock.patch.object(
+                http, "get_page", return_value=('{"version": "154.0.2"}', {})
+            ),
             mock.patch(
                 "nixkeeper.sources.nixpkgs_update.latest_attempt",
                 side_effect=lambda name: attempts.get(name),
@@ -649,7 +651,7 @@ class InTheChecks(unittest.TestCase):
     def test_a_community_rule_is_fetched_safely_and_marked(self):
         rows = self.rows()
         page = '{"version": "154.0.2"}'
-        with mock.patch.object(http, "get", return_value=page) as get:
+        with mock.patch.object(http, "get_page", return_value=(page, {})) as get:
             upstream.add_checks(
                 rows,
                 {"google-chrome": CHROME},
@@ -657,22 +659,22 @@ class InTheChecks(unittest.TestCase):
                 NOW,
                 {"google-chrome"},
             )
-        get.assert_called_once_with(CHROME["url"], safe=True)
+        get.assert_called_once_with(CHROME["url"], None, True)
         self.assertEqual(rows[0]["upstream"]["version"], "154.0.2")
         self.assertTrue(rows[0]["upstream"]["community"])
 
     def test_your_own_rule_isnt_held_to_the_limits(self):
         rows = self.rows()
         local = {"url": "http://192.168.1.10/versions", "pattern": "([0-9.]+)"}
-        with mock.patch.object(http, "get", return_value="154.0.2") as get:
+        with mock.patch.object(http, "get_page", return_value=("154.0.2", {})) as get:
             upstream.add_checks(rows, {"google-chrome": local}, {"packages": []}, NOW)
-        get.assert_called_once_with(local["url"], safe=False)
+        get.assert_called_once_with(local["url"], None, False)
         self.assertNotIn("community", rows[0]["upstream"])
 
     def test_an_unsafe_community_rule_is_refused_unfetched(self):
         rows = self.rows()
         bad = {"url": "http://192.168.1.10/versions", "pattern": "([0-9.]+)"}
-        with mock.patch.object(http, "get") as get:
+        with mock.patch.object(http, "get_page") as get:
             upstream.add_checks(
                 rows, {"google-chrome": bad}, {"packages": []}, NOW, {"google-chrome"}
             )

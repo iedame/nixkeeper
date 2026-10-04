@@ -42,7 +42,8 @@ counts: a package with none open, and not outdated, is counted every 3
 days. nixkeeper doesn't ask twice for what can't have changed: a package's
 Repology project is the one the last sync found, a package whose bot logs
 haven't changed since (the log site's index says when each last changed)
-isn't listed again, and a log already read (the bot tries each package about
+isn't listed again, a release page whose server says it hasn't changed
+isn't downloaded again, and a log already read (the bot tries each package about
 every ten days) is taken from the previous sync instead of downloaded
 again.
 

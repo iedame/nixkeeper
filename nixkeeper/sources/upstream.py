@@ -137,7 +137,8 @@ def add_checks(rows, checks, previous, now, community=frozenset()):
         check_github(github_checks, versions, now, keep_previous, found)
     for name, check in wanted.items():
         if "url" in check:
-            check_page(name, check, keep_previous, found, safe=name in community)
+            last = (before.get(name) or {}).get("upstream")
+            check_page(name, check, keep_previous, found, name in community, last)
 
 
 def check_github(checks, versions, now, keep_previous, found):
@@ -260,16 +261,35 @@ def check_branches(token, checks, versions, now, keep_previous, found):
         )
 
 
-def check_page(name, check, keep_previous, found, safe=False):
+def check_page(name, check, keep_previous, found, safe=False, last=None):
     """A check against a web page, e.g. a vendor's release notes. safe: a
-    community rule's page (http.get's safe mode)."""
-    url = check["url"]
+    community rule's page (http.get's safe mode). last: the row's last
+    result ("upstream"). If it read this same page with the same pattern,
+    the server is asked to send it only if it changed since (http.get_page):
+    if it hasn't, what was found then still holds, without downloading it
+    again (the Edge check's page is 1 MB, hourly)."""
+    url, pattern = check["url"], check["pattern"]
+    last = last or {}
+    cached = last.get("page") or {}
+    if last.get("url") != url or cached.get("pattern") != pattern:
+        cached = None  # read another way: nothing to compare with
     try:
-        text = http.get(url, safe=safe)
+        text, page = http.get_page(url, cached and last.get("version") and cached, safe)
         if text is None:
             keep_previous(name, f"{url} answered 404 (moved?)")
             return
-        version = latest_on_page(text, check["pattern"])
+        if text is http.NOT_MODIFIED:
+            found(
+                name,
+                last["version"],
+                url,
+                pattern,
+                label=urllib.parse.urlsplit(url).netloc,
+                url=url,
+                page=cached,
+            )
+            return
+        version = latest_on_page(text, pattern)
     except http.UnsafeURL as e:
         keep_previous(name, f"community rule refused: {e.reason}")
         return
@@ -279,11 +299,14 @@ def check_page(name, check, keep_previous, found, safe=False):
     except re.error as e:
         keep_previous(name, f"invalid pattern ({e})")
         return
+    # What to send next time, and the pattern it goes with.
+    extra = {"page": {**page, "pattern": pattern}} if page else {}
     found(
         name,
         version,
         url,
-        check["pattern"],
+        pattern,
         label=urllib.parse.urlsplit(url).netloc,
         url=url,
+        **extra,
     )

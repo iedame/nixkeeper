@@ -69,6 +69,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   (`countedAt`), and the buttons' tooltips say so when it wasn't today.
   Update PRs for outdated packages are still searched daily and hourly.
 
+- Update checks against a web page ask its server to send it only if it
+  changed since the last check (the page's `ETag` and `Last-Modified`),
+  and keep what they found when it didn't. The microsoft-edge check, hourly,
+  read a 1 MB file each time: now only when Edge has changed. A rule whose
+  page or pattern changes reads the page whole again. Checks record what
+  they send (`upstream.page`).
+
 ### Fixed
 
 - `repoCount` counted Repology's entries, so a repository listing a package

@@ -426,3 +426,108 @@ class LatestTags(unittest.TestCase):
             body["variables"], {"o0": "a", "n0": "one", "o1": "b", "n1": "missing"}
         )
         self.assertIn("TAG_COMMIT_DATE", body["query"])
+
+
+class UnchangedPages(unittest.TestCase):
+    """A page check asks the server to send the page only if it changed since
+    the last time (its ETag and Last-Modified): if it didn't, what was found
+    then still holds."""
+
+    ETAG = '"0x8DF20DCB9D18510"'
+    MODIFIED = "Fri, 02 Oct 2026 23:27:29 GMT"
+
+    def setUp(self):
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch("time.sleep"),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def check(self, answer, previous=None, check=BBEDIT):
+        """Run the bbedit check against a server answering answer (a body, or
+        304). Returns (the row, the request's headers)."""
+        sent = []
+
+        def urlopen(req, timeout):
+            sent.append(dict(req.header_items()))
+            if answer == 304:
+                e = http_error(304)
+                e.headers = {}
+                raise e
+            resp = response("x")
+            resp.read.return_value = answer.encode()
+            resp.headers = {"ETag": self.ETAG, "Last-Modified": self.MODIFIED}
+            return resp
+
+        rows = [row("bbedit", "16.0.2", "newest", "16.0.2")]
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            upstream.add_checks(
+                rows, {"bbedit": check}, {"packages": previous or []}, NOW
+            )
+        return rows[0], sent[-1]
+
+    def first(self):
+        """A row as the first check leaves it, and the request it sent."""
+        return self.check(BBEDIT_PAGE)
+
+    def test_the_first_read_remembers_the_page(self):
+        first, sent = self.first()
+        self.assertNotIn("If-none-match", sent)
+        self.assertEqual(
+            first["upstream"]["page"],
+            {
+                "etag": self.ETAG,
+                "lastModified": self.MODIFIED,
+                "pattern": BBEDIT["pattern"],
+            },
+        )
+
+    def test_unchanged_keeps_what_was_found(self):
+        first, _ = self.first()
+        before = {**first["upstream"], "checkedAt": "2026-09-29T06:00:00+00:00"}
+        again, sent = self.check(304, [{"name": "bbedit", "upstream": before}])
+        self.assertEqual(sent.get("If-none-match"), self.ETAG)
+        self.assertEqual(sent.get("If-modified-since"), self.MODIFIED)
+        self.assertEqual(again["upstream"]["version"], "16.0.3")
+        self.assertEqual(again["upstream"]["checkedAt"], NOW)
+        self.assertEqual(again["upstream"]["page"], before["page"])
+        self.assertTrue(again["upstream"]["newer"])
+        self.assertNotIn("notRefreshed", again)
+
+    def test_changed_is_read_again(self):
+        first, _ = self.first()
+        page = BBEDIT_PAGE.replace("16.0.3", "16.0.4")
+        again, sent = self.check(
+            page, [{"name": "bbedit", "upstream": first["upstream"]}]
+        )
+        self.assertEqual(sent.get("If-none-match"), self.ETAG)
+        self.assertEqual(again["upstream"]["version"], "16.0.4")
+
+    def test_a_changed_rule_reads_it_whole(self):
+        first, _ = self.first()
+        previous = [{"name": "bbedit", "upstream": first["upstream"]}]
+        for name, check in (
+            ("pattern", {**BBEDIT, "pattern": r"BBEdit ([0-9.]+)"}),
+            ("url", {**BBEDIT, "url": BBEDIT["url"] + "?new"}),
+        ):
+            with self.subTest(name):
+                _, sent = self.check(BBEDIT_PAGE, previous, check)
+                self.assertNotIn("If-none-match", sent)
+                self.assertNotIn("If-modified-since", sent)
+
+    def test_a_server_that_gives_neither_isnt_asked(self):
+        def urlopen(req, timeout):
+            urlopen.sent = dict(req.header_items())
+            resp = response("x")
+            resp.read.return_value = BBEDIT_PAGE.encode()
+            return resp  # no ETag, no Last-Modified
+
+        rows = [row("bbedit", "16.0.2", "newest", "16.0.2")]
+        with mock.patch("urllib.request.urlopen", side_effect=urlopen):
+            upstream.add_checks(rows, {"bbedit": BBEDIT}, {"packages": []}, NOW)
+            upstream.add_checks(
+                rows, {"bbedit": BBEDIT}, {"packages": [dict(rows[0])]}, NOW
+            )
+        self.assertNotIn("page", rows[0]["upstream"])
+        self.assertNotIn("If-none-match", urlopen.sent)
