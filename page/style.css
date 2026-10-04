@@ -1071,6 +1071,12 @@ tbody tr.row.open td {
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
+/* How old the comparison is, when Repology wasn't asked today. */
+.other-label .since {
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
 .repo-chips {
   display: flex;
   flex-wrap: wrap;

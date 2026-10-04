@@ -107,6 +107,8 @@ def build_rows(projects, nixpkgs):
         for row in project_rows(proj, nixpkgs):
             if proj.get("staleSince"):
                 row["staleSince"] = proj["staleSince"]  # when its data was last fetched
+            if proj.get("checkedAt"):
+                row["repologyCheckedAt"] = proj["checkedAt"]
             rows.append(row)
     return sorted(rows, key=lambda p: p["name"].lower())
 

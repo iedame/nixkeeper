@@ -58,7 +58,7 @@ def main():
     hydra_answers = background.Background(
         ask_hydra, tracked, nixpkgs, revision, previous, now
     )
-    projects = lookup.collect_projects(wanted, previous)
+    projects = lookup.collect_projects(wanted, previous, nixpkgs=nixpkgs, now=now)
     index_rows = rows.build_rows(projects, nixpkgs)
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
 

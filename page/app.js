@@ -839,6 +839,13 @@ async function fillDetail(pkg, el) {
   const loaded = Array.isArray(entries);
 
   const others = loaded ? comparedRepos(entries.filter((e) => e.repo !== NIX_REPO)) : [];
+  // Repology is asked every few days for packages with nothing going on
+  // (nixkeeper/lookup.py): how old its data is, if it isn't from today.
+  const repologyDays = pkg.repologyCheckedAt && daysText(pkg.repologyCheckedAt);
+  const repologyAge =
+    repologyDays && repologyDays !== 'today'
+      ? html` <span class="since" title="${new Date(pkg.repologyCheckedAt).toLocaleString()}">· ${repologyDays} ago</span>`
+      : '';
   const homepage = safeUrl(pkg.homepage);
 
   const st = computeStatus(pkg);
@@ -966,7 +973,7 @@ async function fillDetail(pkg, el) {
     }
     ${
       others.length
-        ? html`<div class="other-label">Compared against</div><div class="repo-chips">
+        ? html`<div class="other-label">Compared against${repologyAge}</div><div class="repo-chips">
       ${others.map((e, i) => html`<span class="repo-chip ${e.status === 'newest' && e.version !== pkg.nixVersion ? 'ahead' : ''}"${i >= COMPARED_SHOWN ? raw(' hidden') : ''}>${e.repo} <span class="v mono">${e.version || '?'}</span></span>`)}${
         others.length > COMPARED_SHOWN
           ? html`<button type="button" class="more-btn" aria-expanded="false">Show all ${others.length}</button>`

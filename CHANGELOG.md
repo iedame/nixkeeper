@@ -85,6 +85,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   repositories per request (all of them in one request would grow too big),
   and a request that fails only affects its own 50.
 
+- And Repology: a package that's up to date, not flagged vulnerable and
+  unchanged in nixpkgs is looked up every 3 days (a third each day) instead
+  of daily, keeping the last sync's data in between; outdated, vulnerable,
+  changed or new packages, and those whose lookup failed, still daily. Its
+  new releases can show up to 3 days late. Rows record when (`repologyCheckedAt`),
+  and the details say how old the comparison is when it isn't from today.
+
 ### Fixed
 
 - `repoCount` counted Repology's entries, so a repository listing a package

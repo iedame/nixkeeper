@@ -20,31 +20,38 @@ def load_previous_run(out_dir=None):
         return {"packages": []}
 
 
+def previous_rows(previous, pname, attrs):
+    """The last run's rows for a tracked pname (by name, or any of attrs)."""
+    return [
+        row
+        for row in previous["packages"]
+        if pname in (row.get("searchTerm"), row["name"])
+        or set(attrs) & set(row.get("attrs") or [])
+    ]
+
+
 def previous_project(previous, pname, attrs, out_dir=None):
-    """Reuse the last run's data for a pname whose lookup failed. Returns
-    (project, entries, stale_since), or None if there's nothing to reuse."""
+    """Reuse the last run's data for a pname (its lookup failed, or isn't due).
+    Returns (project, entries, stale_since), or None if there's nothing to
+    reuse."""
     out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
-    for row in previous["packages"]:
-        if pname in (row.get("searchTerm"), row["name"]) or set(attrs) & set(
-            row.get("attrs") or []
-        ):
-            entries = []
-            if row.get("project"):
-                try:
-                    with open(
-                        os.path.join(
-                            out_dir, row.get("dataFile") or f"{row['project']}.json"
-                        )
-                    ) as f:
-                        # A file from before trimming has all of Repology's.
-                        entries = repology.trimmed(json.load(f))
-                except (OSError, ValueError):
-                    return None
-            return (
-                row.get("project"),
-                entries,
-                row.get("staleSince") or previous.get("checkedAt"),
+    for row in previous_rows(previous, pname, attrs):
+        entries = []
+        if row.get("project"):
+            path = os.path.join(
+                out_dir, row.get("dataFile") or f"{row['project']}.json"
             )
+            try:
+                with open(path) as f:
+                    # A file from before trimming has all of Repology's.
+                    entries = repology.trimmed(json.load(f))
+            except (OSError, ValueError):
+                return None
+        return (
+            row.get("project"),
+            entries,
+            row.get("staleSince") or previous.get("checkedAt"),
+        )
     return None
 
 

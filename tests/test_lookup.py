@@ -4,11 +4,14 @@ import os
 import tempfile
 import unittest
 import urllib.error
+from datetime import datetime, timedelta
 from unittest import mock
 
+from nixkeeper import schedule
 from nixkeeper.history import load_previous_run
 from nixkeeper.lookup import collect_projects
-from tests.helpers import nix
+from nixkeeper.rows import build_rows
+from tests.helpers import nix, other
 
 
 class CollectProjects(unittest.TestCase):
@@ -175,3 +178,146 @@ class CollectProjects(unittest.TestCase):
             {"a": OSError(), "b": OSError(), "c": ("c", []), "d": ("d", [])},
         )
         self.assertEqual(sorted(projects), ["c", "d"])
+
+
+class QuietLookups(unittest.TestCase):
+    """Packages with nothing going on are looked up on Repology every
+    QUIET_DAYS (schedule.py), keeping the last run's data in between."""
+
+    NOW = "2026-10-05T06:00:00+00:00"
+
+    def setUp(self):
+        patcher = mock.patch("sys.stderr", io.StringIO())
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.dir.cleanup)
+
+    def not_its_day(self, name="unciv"):
+        when = datetime.fromisoformat(self.NOW)
+        while schedule.slot(name, when):
+            when += timedelta(days=1)
+        return when.isoformat()
+
+    def previous(self, now, **row):
+        """unciv as a sync a day before now left it, with its Repology file."""
+        entries = [nix("unciv", "4.22.1", "newest"), other("arch", "4.22.1", "newest")]
+        with open(os.path.join(self.dir.name, "unciv.json"), "w") as f:
+            json.dump(entries, f)
+        checked = (datetime.fromisoformat(now) - timedelta(days=1)).isoformat()
+        return {
+            "packages": [
+                {
+                    "name": "unciv",
+                    "attrs": ["unciv"],
+                    "project": "unciv",
+                    "dataFile": "unciv.json",
+                    "nixVersion": "4.22.1",
+                    "nixStatus": "newest",
+                    "repologyCheckedAt": checked,
+                    **row,
+                }
+            ]
+        }
+
+    def collect(self, previous, now, version="4.22.1", wanted=None):
+        """(projects, the pnames looked up)."""
+        asked = []
+        fresh = [nix("unciv", version, "newest"), other("arch", "4.22.6", "newest")]
+
+        def resolve(fallback, attrs, known=None):
+            asked.append(fallback)
+            return "unciv", fresh
+
+        nixpkgs = {
+            "unciv": {"version": version},
+            "unciv-unwrapped": {"version": version},
+        }
+        projects = collect_projects(
+            wanted or {"unciv": (["unciv"], "unciv")},
+            previous,
+            resolve,
+            self.dir.name,
+            nixpkgs=nixpkgs,
+            now=now,
+        )
+        return projects, asked
+
+    def test_nothing_going_on_isnt_looked_up(self):
+        now = self.not_its_day()
+        previous = self.previous(now)
+        projects, asked = self.collect(previous, now)
+        self.assertEqual(asked, [])
+        unciv = projects["unciv"]
+        self.assertEqual(
+            unciv["checkedAt"], previous["packages"][0]["repologyCheckedAt"]
+        )
+        self.assertEqual([e["version"] for e in unciv["entries"]], ["4.22.1", "4.22.1"])
+        self.assertNotIn("staleSince", unciv)
+
+    def test_something_going_on_is_looked_up(self):
+        now = self.not_its_day()
+        for name, row, version in (
+            ("never dated", {"repologyCheckedAt": None}, "4.22.1"),
+            ("failed last time", {"staleSince": now}, "4.22.1"),
+            ("outdated", {"nixStatus": "outdated"}, "4.22.1"),
+            ("vulnerable", {"nixVulnerable": True}, "4.22.1"),
+            ("nixpkgs moved", {}, "4.22.5"),
+        ):
+            with self.subTest(name):
+                projects, asked = self.collect(self.previous(now, **row), now, version)
+                self.assertEqual(asked, ["unciv"])
+                self.assertEqual(projects["unciv"]["checkedAt"], now)
+
+    def test_new_packages_are_looked_up(self):
+        _, asked = self.collect({"packages": []}, self.NOW)
+        self.assertEqual(asked, ["unciv"])
+
+    def test_three_days_on_it_is_looked_up(self):
+        now = self.not_its_day()
+        checked = (datetime.fromisoformat(now) - timedelta(days=3)).isoformat()
+        _, asked = self.collect(self.previous(now, repologyCheckedAt=checked), now)
+        self.assertEqual(asked, ["unciv"])
+
+    def test_without_its_file_its_looked_up(self):
+        now = self.not_its_day()
+        previous = self.previous(now)
+        os.remove(os.path.join(self.dir.name, "unciv.json"))
+        _, asked = self.collect(previous, now)
+        self.assertEqual(asked, ["unciv"])
+
+    def test_one_project_takes_its_freshest_lookup(self):
+        # unciv quiet, unciv-unwrapped new: the same project, looked up fresh.
+        now = self.not_its_day()
+        projects, asked = self.collect(
+            self.previous(now),
+            now,
+            wanted={
+                "unciv": (["unciv"], "unciv"),
+                "unciv-unwrapped": (["unciv-unwrapped"], "unciv-unwrapped"),
+            },
+        )
+        self.assertEqual(asked, ["unciv-unwrapped"])
+        unciv = projects["unciv"]
+        self.assertEqual(unciv["attrs"], ["unciv", "unciv-unwrapped"])
+        self.assertEqual(unciv["checkedAt"], now)
+        self.assertIn("4.22.6", [e["version"] for e in unciv["entries"]])
+
+    def test_without_the_time_everything_is_looked_up(self):
+        # As before the schedule (and in community-check).
+        previous = self.previous(self.NOW)
+        asked = []
+
+        def resolve(fallback, attrs, known=None):
+            asked.append(fallback)
+            return "unciv", []
+
+        collect_projects(
+            {"unciv": (["unciv"], "unciv")}, previous, resolve, self.dir.name
+        )
+        self.assertEqual(asked, ["unciv"])
+
+    def test_rows_say_when(self):
+        projects, _ = self.collect({"packages": []}, self.NOW)
+        (row,) = build_rows(projects, {})
+        self.assertEqual(row["repologyCheckedAt"], self.NOW)
