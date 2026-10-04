@@ -5,10 +5,9 @@ import sys
 import time
 import urllib.error
 import urllib.parse
-import zlib
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 
-from .. import config, history
+from .. import config, history, schedule
 from ..changes import is_outdated
 from ..versions import is_newer, version_key
 from . import http
@@ -171,19 +170,8 @@ def jobs(attrs, nixpkgs):
 
 
 # A job in one of these states has nothing going on (Hydra built it, or has
-# never built it on that platform): asked every HYDRA_QUIET_DAYS (due).
+# never built it on that platform): asked every QUIET_DAYS (due).
 QUIET = {"ok", "notBuilt"}
-# The time of day a sync runs varies a little: a job checked a bit less than
-# HYDRA_QUIET_DAYS ago counts as due.
-QUIET_SLACK = timedelta(hours=6)
-
-
-def slot(attr, when):
-    """Whether when (a datetime) is attr's day to be asked, as a quiet job:
-    one day in HYDRA_QUIET_DAYS, by a hash of its name, so each day has about
-    the same share of them (as nixpkgs-update orders its queue)."""
-    days = config.HYDRA_QUIET_DAYS
-    return zlib.crc32(attr.encode()) % days == when.date().toordinal() % days
 
 
 def due(job, nixpkgs, before, now, broken=None):
@@ -192,14 +180,13 @@ def due(job, nixpkgs, before, now, broken=None):
     that platform), not newly marked broken, the package's version in the
     channel the same as the one Hydra built, and at the last sync not
     outdated, not ahead on master, with no update PR, and read fine. Those
-    are asked every HYDRA_QUIET_DAYS: on their slot day, or once that long
-    has passed (a missed sync). before: the last run's (builds by job, rows
-    by attribute), from last_run."""
+    are asked every QUIET_DAYS (schedule.due). before: the last run's
+    (builds by job, rows by attribute), from last_run."""
     attr, system = job
     builds, rows = before
     old, row = builds.get(job), rows.get(attr)
-    if old is None or row is None or not old.get("checkedAt"):
-        return True  # new, or from before this schedule
+    if old is None or row is None:
+        return True  # new
     version = old.get("version")
     if (
         old.get("status") not in QUIET
@@ -210,10 +197,7 @@ def due(job, nixpkgs, before, now, broken=None):
         or any(row.get(k) for k in ("master", "openPR", "masterPR"))
     ):
         return True
-    when = datetime.fromisoformat(now)
-    since = when - datetime.fromisoformat(old["checkedAt"])
-    days = timedelta(days=config.HYDRA_QUIET_DAYS)
-    return since >= days - QUIET_SLACK or slot(attr, when)
+    return schedule.due(attr, old.get("checkedAt"), now)
 
 
 def last_run(previous):
@@ -278,7 +262,7 @@ def add_builds(rows, nixpkgs, previous, now, broken=None, fetched=None):
     asking = due_jobs(attrs, nixpkgs, previous, now, broken)
     print(
         f"  {len(asking)} of {len(wanted)} jobs due; the rest were checked in the "
-        f"last {config.HYDRA_QUIET_DAYS} days, with nothing going on",
+        f"last {config.QUIET_DAYS} days, with nothing going on",
         file=sys.stderr,
     )
     fetched = dict(fetched or {})

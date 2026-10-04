@@ -4,7 +4,7 @@ import urllib.error
 from datetime import datetime, timedelta
 from unittest import mock
 
-from nixkeeper import config
+from nixkeeper import config, schedule
 from nixkeeper.sources import hydra
 from tests.helpers import http_error, pkg, response
 
@@ -337,7 +337,7 @@ class Fetched(unittest.TestCase):
 
 class Schedule(unittest.TestCase):
     """Which Hydra jobs a sync asks about (due): those with something going
-    on, daily; the quiet ones every HYDRA_QUIET_DAYS, a third a day."""
+    on, daily; the quiet ones every QUIET_DAYS, a third a day."""
 
     NOW = "2026-10-05T06:00:00+00:00"
     NIXPKGS = {"hello": {**pkg("hello", ["x86_64-linux"]), "version": "2.12"}}
@@ -373,7 +373,7 @@ class Schedule(unittest.TestCase):
         """A time on a day that isn't hello's slot, a day after NOW's sync."""
         for days in range(1, 4):
             when = datetime.fromisoformat(self.NOW) + timedelta(days=days - 1)
-            if not hydra.slot("hello", when):
+            if not schedule.slot("hello", when):
                 return when.isoformat()
         raise AssertionError("every day is its slot")
 
@@ -385,7 +385,7 @@ class Schedule(unittest.TestCase):
     def test_quiet_on_its_slot_day_is_due(self):
         for days in range(3):
             when = datetime.fromisoformat(self.NOW) + timedelta(days=days)
-            if hydra.slot("hello", when):
+            if schedule.slot("hello", when):
                 checked = (when - timedelta(days=1)).isoformat()
                 self.assertTrue(
                     self.due(self.previous({"checkedAt": checked}), when.isoformat())
@@ -435,7 +435,7 @@ class Schedule(unittest.TestCase):
         attrs = [f"pkg{i}" for i in range(3000)]
         start = datetime.fromisoformat(self.NOW)
         per_day = [
-            sum(hydra.slot(a, start + timedelta(days=d)) for a in attrs)
+            sum(schedule.slot(a, start + timedelta(days=d)) for a in attrs)
             for d in range(3)
         ]
         self.assertEqual(sum(per_day), 3000)  # each exactly once in 3 days

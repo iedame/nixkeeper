@@ -93,7 +93,7 @@ def main():
     nixpkgs_update.add_attempts(
         index_rows, nixpkgs, previous, now, ignored, ignored_by_community
     )
-    github.add_counts(index_rows)  # and open update PRs
+    github.add_counts(index_rows, previous, now)  # and open update PRs
     outdated = [row for row in index_rows if is_outdated(row)]
     github.add_update_prs(outdated, open_prs=False)  # merged into master
     follows.apply_prs(index_rows, following)  # theirs are the same PRs

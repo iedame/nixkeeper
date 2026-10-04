@@ -94,6 +94,7 @@ A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
 | `openPR` | an open update PR in nixpkgs (below) |
 | `masterPR` | an update PR merged into master that the channel doesn't have yet |
 | `openPRs`, `openIssues` | how many open nixpkgs PRs and issues have `searchTerm` in their title |
+| `countedAt` | when those were last counted: daily while there are any (or the package is outdated), otherwise every 3 days |
 
 `openPR` and `masterPR`: `number`, `title`, `url`, `draft`, `base` (the
 branch it targets), and `from` / `to` (the versions in its title,
