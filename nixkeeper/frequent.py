@@ -49,6 +49,7 @@ def refresh_repology(row, previous, now):
     for key in ("nixVersion", "nixStatus", "nixVulnerable", "refVersion", "repoCount"):
         row[key] = fresh[key]
     row.pop("staleSince", None)
+    row["repologyCheckedAt"] = now
     return entries
 
 

@@ -22,12 +22,13 @@ def load():
 
 def meaningful(packages):
     """packages without what changes every run anyway (when an update check
-    last succeeded, and its rule's fingerprint), to tell whether anything
-    worth publishing changed."""
+    last succeeded and its rule's fingerprint, when Repology was asked), to
+    tell whether anything worth publishing changed."""
     packages = copy.deepcopy(packages)
     for row in packages:
         (row.get("upstream") or {}).pop("checkedAt", None)
         (row.get("upstream") or {}).pop("rule", None)
+        row.pop("repologyCheckedAt", None)
     return packages
 
 
