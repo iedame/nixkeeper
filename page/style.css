@@ -1267,6 +1267,13 @@ tbody tr.row.open td {
     gap: 4px 6px;
     padding: 12px 6px;
     border-bottom: 1px solid var(--hairline);
+    /* Cards off screen aren't laid out until scrolled near: with thousands
+       of packages, a redraw takes a third of the time. (Real table rows, on
+       wider screens, can't skip their layout this way.) Find in page still
+       finds them. 72px is about a card's height inside its padding, so the
+       scrollbar is about right before they're drawn. */
+    content-visibility: auto;
+    contain-intrinsic-size: auto 72px;
   }
   tbody tr.row.open {
     border-bottom-color: transparent;

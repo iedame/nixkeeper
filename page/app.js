@@ -466,97 +466,99 @@ function renderLists() {
   })}`;
 }
 
+// The packages the table shows, in order: a row's data-i is its place here.
+let shown = [];
+
+const CHEVRON = raw(
+  '<svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+);
+
+function rowHtml(pkg, i) {
+  const st = computeStatus(pkg);
+  return html`<tr class="row" tabindex="0" data-i="${i}">
+      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${pkg.name}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
+      <td class="c-ver ver mono">${versionCell(pkg, st)}</td>
+      <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
+      <td class="c-build">${buildCell(pkg)}</td>
+      <td class="c-update">${updateCell(pkg)}</td>
+      <td class="c-chev"><span class="chev" aria-hidden="true">${CHEVRON}</span></td>
+    </tr>`;
+}
+
+// The whole table at once, as one piece of markup: thousands of rows draw
+// far faster that way than one by one. Each row's panel is only made when
+// it's first opened (toggle), and the table's clicks are handled once, for
+// every row (below).
 function render(list) {
   renderStats();
   const content = document.getElementById('content');
+  shown = list;
   if (!list.length) {
     content.innerHTML = html`<div class="empty">No packages match${activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}.</div>`;
     return;
   }
-  content.innerHTML = `<div class="wrap"><table>
+  content.innerHTML = html`<div class="wrap"><table>
     <thead><tr>
       <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>Open on GitHub</th><th>Build failures</th><th>Update failures</th><th aria-hidden="true"></th>
     </tr></thead>
-    <tbody id="rows"></tbody>
+    <tbody id="rows">${list.map(rowHtml)}</tbody>
   </table></div>`;
+}
 
-  const rowsEl = document.getElementById('rows');
-  list.forEach((pkg) => {
-    const st = computeStatus(pkg);
-    const verCell = versionCell(pkg, st);
-
-    const tr = document.createElement('tr');
-    tr.className = 'row';
-    tr.tabIndex = 0;
-    tr.innerHTML = html`
-      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${pkg.name}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
-      <td class="c-ver ver mono">${verCell}</td>
-      <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
-      <td class="c-build">${buildCell(pkg)}</td>
-      <td class="c-update">${updateCell(pkg)}</td>
-      <td class="c-chev"><span class="chev" aria-hidden="true"><svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span></td>
-    `;
-
-    const detail = document.createElement('tr');
+// One panel under the row, showing the package details (clicking the row),
+// its builds or its latest update attempt (clicking those cells). Clicking
+// what's shown closes it; clicking something else switches.
+async function toggle(tr, mode) {
+  const pkg = shown[tr.dataset.i];
+  let detail = tr.nextElementSibling;
+  if (!detail?.classList.contains('detail')) {
+    detail = document.createElement('tr');
     detail.className = 'detail';
     detail.innerHTML = `<td colspan="6"><div class="detail-inner">
       <div class="nix-line">Loading detail…</div>
     </div></td>`;
-
-    // One panel under the row, showing the package details (clicking the
-    // row), its builds or its latest update attempt (clicking those cells).
-    // Clicking what's shown closes it; clicking something else switches.
-    const inner = detail.querySelector('.detail-inner');
-    const panelBtns = tr.querySelectorAll('.failure-btn');
-    const toggle = async (mode) => {
-      const closing = tr.classList.contains('open') && detail.dataset.mode === mode;
-      tr.classList.toggle('open', !closing);
-      detail.classList.toggle('open', !closing);
-      detail.dataset.mode = closing ? '' : mode;
-      for (const btn of panelBtns) {
-        btn.setAttribute('aria-expanded', !closing && btn.dataset.kind === mode);
-      }
-      if (closing) return;
-      if (mode === 'build') fillBuilds(pkg, inner);
-      else if (mode === 'update') fillUpdate(pkg, inner);
-      else await fillDetail(pkg, inner);
-    };
-
-    for (const btn of panelBtns) {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation(); // not the row's own click
-        toggle(btn.dataset.kind);
-      });
-    }
-
-    for (const a of tr.querySelectorAll('.gh-btn, a.badge')) {
-      a.addEventListener('click', (e) => e.stopPropagation()); // open the link, not the row
-    }
-    tr.querySelector('.vcopy')?.addEventListener('click', (e) => {
-      e.stopPropagation(); // copy, don't expand the row
-      copyTitle(e.currentTarget);
-    });
-    for (const btn of tr.querySelectorAll('button.plat')) {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation(); // don't expand the row
-        // Clicking the active platform again shows all platforms.
-        platformFilter = platformFilter === btn.dataset.platform ? null : btn.dataset.platform;
-        render(currentFiltered());
-      });
-    }
-
-    tr.addEventListener('click', () => toggle('info'));
-    tr.addEventListener('keydown', (e) => {
-      if (e.target === tr && (e.key === 'Enter' || e.key === ' ')) {
-        e.preventDefault();
-        tr.click();
-      }
-    });
-
-    rowsEl.appendChild(tr);
-    rowsEl.appendChild(detail);
-  });
+    tr.after(detail);
+  }
+  const inner = detail.querySelector('.detail-inner');
+  const closing = tr.classList.contains('open') && detail.dataset.mode === mode;
+  tr.classList.toggle('open', !closing);
+  detail.classList.toggle('open', !closing);
+  detail.dataset.mode = closing ? '' : mode;
+  for (const btn of tr.querySelectorAll('.failure-btn')) {
+    btn.setAttribute('aria-expanded', !closing && btn.dataset.kind === mode);
+  }
+  if (closing) return;
+  if (mode === 'build') fillBuilds(pkg, inner);
+  else if (mode === 'update') fillUpdate(pkg, inner);
+  else await fillDetail(pkg, inner);
 }
+
+// The table's clicks, for every row: a link opens (and nothing else), the
+// versions copy the update's title, a platform filters by it, the build and
+// update cells open their panel, and anywhere else the details.
+document.getElementById('content').addEventListener('click', (e) => {
+  const tr = e.target.closest('tr.row');
+  if (!tr || e.target.closest('a')) return;
+  const copy = e.target.closest('.vcopy');
+  if (copy) {
+    copyTitle(copy);
+    return;
+  }
+  const plat = e.target.closest('button.plat');
+  if (plat) {
+    // Clicking the active platform again shows all platforms.
+    platformFilter = platformFilter === plat.dataset.platform ? null : plat.dataset.platform;
+    render(currentFiltered());
+    return;
+  }
+  toggle(tr, e.target.closest('.failure-btn')?.dataset.kind || 'info');
+});
+document.getElementById('content').addEventListener('keydown', (e) => {
+  if (e.target.matches('tr.row') && (e.key === 'Enter' || e.key === ' ')) {
+    e.preventDefault();
+    e.target.click();
+  }
+});
 
 // A source the last sync couldn't refresh ("builds", "update", "upstream"):
 // what's shown is from before `since`. null if it refreshed fine.
@@ -1009,7 +1011,13 @@ document.getElementById('lists').addEventListener('click', (e) => {
   render(currentFiltered());
 });
 
-document.getElementById('search').addEventListener('input', () => render(currentFiltered()));
+// Typing redraws the table once it pauses (150 ms), not at every key: with
+// thousands of packages, each redraw takes a moment.
+let searchTimer;
+document.getElementById('search').addEventListener('input', () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => render(currentFiltered()), 150);
+});
 document.getElementById('sortBtn').addEventListener('click', (e) => {
   sortAZ = !sortAZ;
   e.currentTarget.setAttribute('aria-pressed', sortAZ);
@@ -1024,6 +1032,7 @@ document.addEventListener('keydown', (e) => {
     search.focus();
   } else if (e.key === 'Escape' && e.target === search && search.value) {
     search.value = '';
+    clearTimeout(searchTimer);
     render(currentFiltered());
   }
 });
