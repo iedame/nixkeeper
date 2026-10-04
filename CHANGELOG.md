@@ -54,6 +54,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   For 71 packages, the other sources were done before Hydra's 5 minutes
   were up, and the data came out the same as asking in turn.
 
+- Hydra is asked daily only about builds with something going on: failing
+  or not finished, newly marked broken, a new version in the channel, or a
+  package outdated, ahead on master or with an update PR. The rest, which
+  built fine and have nothing pending (most of them), are asked every 3
+  days, a third each day, as nixpkgs-update spreads its queue. A new build
+  failure there can show up to 3 days late; the builds panel says when they
+  were last checked, and each build records it (`checkedAt`). The first sync
+  after updating asks about everything once, to date them.
+
 ### Fixed
 
 - `repoCount` counted Repology's entries, so a repository listing a package

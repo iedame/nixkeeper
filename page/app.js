@@ -750,7 +750,18 @@ function fillBuilds(pkg, el) {
     body = html`<div class="nix-line">Hydra doesn't build this package (nixpkgs may exclude it with <span class="mono">hydraPlatforms</span>).</div>`;
   } else {
     const darwin = pkg.platforms === null || pkg.platforms?.darwin;
-    body = html`<div class="nix-line">Hydra builds of nixpkgs master (jobset ${jobset})</div>
+    // Builds with nothing going on are checked every few days, not daily
+    // (nixkeeper/sources/hydra.py): when the oldest was, if it isn't today.
+    const checked = pkg.builds
+      .map((b) => b.checkedAt)
+      .filter(Boolean)
+      .sort()[0];
+    const age = checked && daysText(checked);
+    const when =
+      checked && age !== 'today'
+        ? html`, <span title="${new Date(checked).toLocaleString()}">checked ${age} ago</span>`
+        : '';
+    body = html`<div class="nix-line">Hydra builds of nixpkgs master (jobset ${jobset})${when}</div>
       <div class="build-list">${pkg.builds.map((b) => buildLine(pkg, b))}</div>
       ${darwin ? html`<div class="build-note">x86_64-darwin is no longer built by nixpkgs.</div>` : ''}`;
   }

@@ -5,9 +5,11 @@ import sys
 import time
 import urllib.error
 import urllib.parse
-from datetime import UTC, datetime
+import zlib
+from datetime import UTC, datetime, timedelta
 
 from .. import config, history
+from ..changes import is_outdated
 from ..versions import is_newer, version_key
 from . import http
 
@@ -168,6 +170,71 @@ def jobs(attrs, nixpkgs):
     ]
 
 
+# A job in one of these states has nothing going on (Hydra built it, or has
+# never built it on that platform): asked every HYDRA_QUIET_DAYS (due).
+QUIET = {"ok", "notBuilt"}
+# The time of day a sync runs varies a little: a job checked a bit less than
+# HYDRA_QUIET_DAYS ago counts as due.
+QUIET_SLACK = timedelta(hours=6)
+
+
+def slot(attr, when):
+    """Whether when (a datetime) is attr's day to be asked, as a quiet job:
+    one day in HYDRA_QUIET_DAYS, by a hash of its name, so each day has about
+    the same share of them (as nixpkgs-update orders its queue)."""
+    days = config.HYDRA_QUIET_DAYS
+    return zlib.crc32(attr.encode()) % days == when.date().toordinal() % days
+
+
+def due(job, nixpkgs, before, now, broken=None):
+    """Whether Hydra should be asked about job (attr, system) now. Every
+    sync, unless the job has nothing going on: built OK (or never built on
+    that platform), not newly marked broken, the package's version in the
+    channel the same as the one Hydra built, and at the last sync not
+    outdated, not ahead on master, with no update PR, and read fine. Those
+    are asked every HYDRA_QUIET_DAYS: on their slot day, or once that long
+    has passed (a missed sync). before: the last run's (builds by job, rows
+    by attribute), from last_run."""
+    attr, system = job
+    builds, rows = before
+    old, row = builds.get(job), rows.get(attr)
+    if old is None or row is None or not old.get("checkedAt"):
+        return True  # new, or from before this schedule
+    version = old.get("version")
+    if (
+        old.get("status") not in QUIET
+        or system in (broken or {}).get(attr, [])
+        or (version and version != nixpkgs[attr].get("version"))
+        or "builds" in (row.get("notRefreshed") or {})
+        or is_outdated(row)
+        or any(row.get(k) for k in ("master", "openPR", "masterPR"))
+    ):
+        return True
+    when = datetime.fromisoformat(now)
+    since = when - datetime.fromisoformat(old["checkedAt"])
+    days = timedelta(days=config.HYDRA_QUIET_DAYS)
+    return since >= days - QUIET_SLACK or slot(attr, when)
+
+
+def last_run(previous):
+    """From the last run's data: ({(attr, system): build}, {attr: its row})."""
+    packages = previous["packages"]
+    return (
+        {
+            (b["attr"], b["system"]): b
+            for row in packages
+            for b in row.get("builds") or []
+        },
+        {a: row for row in packages for a in row.get("attrs") or []},
+    )
+
+
+def due_jobs(attrs, nixpkgs, previous, now, broken=None):
+    """The jobs of attrs (jobs) that are due now (due)."""
+    before = last_run(previous)
+    return [j for j in jobs(attrs, nixpkgs) if due(j, nixpkgs, before, now, broken)]
+
+
 def fetch(wanted, broken=None):
     """Ask Hydra about each job in wanted ([(attr, system)]), one at a time
     (check). Returns {(attr, system): its result, or the error asking failed
@@ -197,22 +264,26 @@ def fetch(wanted, broken=None):
 
 
 def add_builds(rows, nixpkgs, previous, now, broken=None, fetched=None):
-    """Give every row in nixpkgs its Hydra results ("builds"), or mark it unfree
-    ("unfree": true, no builds). broken: {attr: [systems]} nixpkgs marks
-    broken. fetched: fetch()'s answers, if Hydra was asked already (any job
-    missing from them is asked now). A job whose lookup failed keeps the
-    previous run's result, if there is one, and the row is marked as not
-    refreshed."""
+    """Give every row in nixpkgs its Hydra results ("builds", each with when
+    Hydra was asked, "checkedAt"), or mark it unfree ("unfree": true, no
+    builds). broken: {attr: [systems]} nixpkgs marks broken. Only jobs that
+    are due (due) are asked; the rest keep the last run's result. fetched:
+    fetch()'s answers, if Hydra was asked already (a due job missing from
+    them is asked now). A job whose lookup failed keeps the previous run's
+    result, if there is one, and the row is marked as not refreshed."""
     broken = broken or {}
     print("Checking Hydra builds...", file=sys.stderr)
-    wanted = jobs([a for row in rows for a in row["attrs"]], nixpkgs)
+    attrs = [a for row in rows for a in row["attrs"]]
+    wanted = jobs(attrs, nixpkgs)
+    asking = due_jobs(attrs, nixpkgs, previous, now, broken)
+    print(
+        f"  {len(asking)} of {len(wanted)} jobs due; the rest were checked in the "
+        f"last {config.HYDRA_QUIET_DAYS} days, with nothing going on",
+        file=sys.stderr,
+    )
     fetched = dict(fetched or {})
-    fetched.update(fetch([j for j in wanted if j not in fetched], broken))
-    before = {
-        (b["attr"], b["system"]): b
-        for row in previous["packages"]
-        for b in row.get("builds") or []
-    }
+    fetched.update(fetch([j for j in asking if j not in fetched], broken))
+    before = last_run(previous)[0]
     before_rows = {row["name"]: row for row in previous["packages"]}
     failed = 0
     for row in rows:
@@ -228,9 +299,12 @@ def add_builds(rows, nixpkgs, previous, now, broken=None, fetched=None):
         builds = []
         for attr, pkg in free.items():
             for system in systems(pkg):
+                if (attr, system) not in fetched:  # not due: as last checked
+                    builds.append(dict(before[attr, system]))
+                    continue
                 result = fetched[attr, system]
                 if not isinstance(result, Exception):
-                    builds.append(add_versions(dict(result), pkg))
+                    builds.append({**add_versions(dict(result), pkg), "checkedAt": now})
                     continue
                 failed += 1
                 error = error or str(result)

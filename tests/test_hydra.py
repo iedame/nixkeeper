@@ -1,6 +1,7 @@
 import io
 import unittest
 import urllib.error
+from datetime import datetime, timedelta
 from unittest import mock
 
 from nixkeeper import config
@@ -332,6 +333,140 @@ class Fetched(unittest.TestCase):
         self.assertEqual(urlopen.call_count, config.HYDRA_MAX_CONSECUTIVE_FAILURES)
         self.assertIn("down", str(fetched["p0", "x86_64-linux"]))
         self.assertIn("not asked", str(fetched["p4", "x86_64-linux"]))
+
+
+class Schedule(unittest.TestCase):
+    """Which Hydra jobs a sync asks about (due): those with something going
+    on, daily; the quiet ones every HYDRA_QUIET_DAYS, a third a day."""
+
+    NOW = "2026-10-05T06:00:00+00:00"
+    NIXPKGS = {"hello": {**pkg("hello", ["x86_64-linux"]), "version": "2.12"}}
+
+    def previous(self, build=None, **row):
+        build = {
+            "attr": "hello",
+            "system": "x86_64-linux",
+            "status": "ok",
+            "version": "2.12",
+            "checkedAt": "2026-10-04T06:00:00+00:00",  # yesterday
+            **(build or {}),
+        }
+        return {
+            "packages": [
+                {
+                    "name": "hello",
+                    "attrs": ["hello"],
+                    "nixStatus": "newest",
+                    "builds": [build],
+                    **row,
+                }
+            ]
+        }
+
+    def due(self, previous, now=None, broken=None):
+        before = hydra.last_run(previous)
+        return hydra.due(
+            ("hello", "x86_64-linux"), self.NIXPKGS, before, now or self.NOW, broken
+        )
+
+    def not_its_day(self):
+        """A time on a day that isn't hello's slot, a day after NOW's sync."""
+        for days in range(1, 4):
+            when = datetime.fromisoformat(self.NOW) + timedelta(days=days - 1)
+            if not hydra.slot("hello", when):
+                return when.isoformat()
+        raise AssertionError("every day is its slot")
+
+    def test_quiet_and_checked_recently_isnt_due(self):
+        now = self.not_its_day()
+        checked = (datetime.fromisoformat(now) - timedelta(days=1)).isoformat()
+        self.assertFalse(self.due(self.previous({"checkedAt": checked}), now))
+
+    def test_quiet_on_its_slot_day_is_due(self):
+        for days in range(3):
+            when = datetime.fromisoformat(self.NOW) + timedelta(days=days)
+            if hydra.slot("hello", when):
+                checked = (when - timedelta(days=1)).isoformat()
+                self.assertTrue(
+                    self.due(self.previous({"checkedAt": checked}), when.isoformat())
+                )
+                return
+        self.fail("no slot day in 3 days")
+
+    def test_quiet_but_three_days_old_is_due(self):
+        now = self.not_its_day()
+        for age, expected in (
+            (timedelta(days=3), True),
+            (timedelta(days=2, hours=19), True),  # a sync a little earlier
+            (timedelta(days=2), False),
+        ):
+            with self.subTest(age=age):
+                checked = (datetime.fromisoformat(now) - age).isoformat()
+                self.assertEqual(
+                    self.due(self.previous({"checkedAt": checked}), now), expected
+                )
+
+    def test_something_going_on_is_due_daily(self):
+        now = self.not_its_day()
+        checked = (datetime.fromisoformat(now) - timedelta(hours=20)).isoformat()
+        quiet = {"checkedAt": checked}
+        self.assertFalse(self.due(self.previous(quiet), now))
+        for name, previous, broken in (
+            ("failing", self.previous({**quiet, "status": "failed"}), None),
+            ("unfinished", self.previous({**quiet, "status": "unfinished"}), None),
+            ("newly broken", self.previous(quiet), {"hello": ["x86_64-linux"]}),
+            ("new version", self.previous({**quiet, "version": "2.11"}), None),
+            ("outdated", self.previous(quiet, nixStatus="outdated"), None),
+            ("ahead on master", self.previous(quiet, master="2.13"), None),
+            ("update PR", self.previous(quiet, openPR={"number": 1}), None),
+            ("merged PR", self.previous(quiet, masterPR={"number": 1}), None),
+            (
+                "not read last time",
+                self.previous(quiet, notRefreshed={"builds": {"since": checked}}),
+                None,
+            ),
+            ("never checked", self.previous({"checkedAt": None}), None),
+            ("new", {"packages": []}, None),
+        ):
+            with self.subTest(name):
+                self.assertTrue(self.due(previous, now, broken))
+
+    def test_a_third_of_the_quiet_ones_each_day(self):
+        attrs = [f"pkg{i}" for i in range(3000)]
+        start = datetime.fromisoformat(self.NOW)
+        per_day = [
+            sum(hydra.slot(a, start + timedelta(days=d)) for a in attrs)
+            for d in range(3)
+        ]
+        self.assertEqual(sum(per_day), 3000)  # each exactly once in 3 days
+        for n in per_day:
+            self.assertAlmostEqual(n / 3000, 1 / 3, delta=0.03)
+
+    def test_add_builds_keeps_what_isnt_due(self):
+        now = self.not_its_day()
+        checked = (datetime.fromisoformat(now) - timedelta(days=1)).isoformat()
+        previous = self.previous({"checkedAt": checked, "build": 7})
+        rows = [{"name": "hello", "attrs": ["hello"]}]
+        with (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch("urllib.request.urlopen") as urlopen,
+        ):
+            hydra.add_builds(rows, self.NIXPKGS, previous, now)
+        urlopen.assert_not_called()
+        self.assertEqual(rows[0]["builds"], previous["packages"][0]["builds"])
+        self.assertNotIn("notRefreshed", rows[0])
+
+    def test_add_builds_dates_what_it_asks(self):
+        rows = [{"name": "hello", "attrs": ["hello"]}]
+        urlopen, calls = fake_hydra({"hello.x86_64-linux": OK})
+        with (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch("time.sleep"),
+            mock.patch("urllib.request.urlopen", side_effect=urlopen),
+        ):
+            hydra.add_builds(rows, self.NIXPKGS, {"packages": []}, self.NOW)
+        self.assertEqual(len(calls), 1)
+        self.assertEqual(rows[0]["builds"][0]["checkedAt"], self.NOW)
 
 
 class MasterVersion(unittest.TestCase):
