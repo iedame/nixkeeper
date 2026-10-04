@@ -1,7 +1,9 @@
 # The data
 
 Everything the page shows comes from plain JSON files, which each sync
-rewrites and commits to the `data` branch, under `data/`:
+rewrites and commits to the `data` branch, under `data/`. That branch is
+always `main` plus one commit with the latest data: each run replaces it, so
+it keeps no history.
 
 - `index.json`: every tracked package, one row each (below)
 - `<project>.json`: each Repology project's raw data, as Repology returns it

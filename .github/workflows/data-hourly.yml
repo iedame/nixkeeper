@@ -39,17 +39,12 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: main
-          fetch-depth: 0   # full history so the rebase below has something to work with
 
-      - name: Prepare data branch
-        run: |
-          git config user.name "nixkeeper-bot"
-          git config user.email "nixkeeper-bot@users.noreply.github.com"
-          # Same as the daily sync: the data branch, replayed on top of main,
-          # so this runs main's current code against the last published data.
-          git fetch origin data
-          git checkout -b data origin/data
-          git rebase origin/main
+      # Same as the daily sync: main's current code, with the last published
+      # data (which the daily sync has to have made first).
+      - name: Restore the last published data, on main
+        id: restore
+        run: bash scripts/data-branch.sh restore --required
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
@@ -68,13 +63,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR searches, status issue
           NIXKEEPER_NOTIFY: github-issue
 
-      - name: Commit and push if anything changed
-        if: ${{ !cancelled() }}
+      - name: Publish the data if it changed
+        # After a failed check too, but never without the restored data.
+        if: ${{ !cancelled() && steps.restore.outcome == 'success' }}
         run: |
-          git add -f data/
-          if git diff --cached --quiet; then
-            echo "Nothing changed."
-            exit 0
-          fi
-          git commit -m "hourly: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          git push --force-with-lease origin data
+          bash scripts/data-branch.sh publish "hourly: $(date -u +%Y-%m-%dT%H:%M:%SZ)"

@@ -1,7 +1,8 @@
 name: "Data: daily sync"
 
 # Updates the package data the page shows (the data branch): everything, from
-# every source (nixkeeper/sync.py). Also posts to the status issue.
+# every source (nixkeeper/sync.py). Also posts to the status issue. The data
+# branch is main plus one commit with the data (scripts/data-branch.sh).
 
 on:
   schedule:
@@ -30,23 +31,9 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: main
-          fetch-depth: 0   # full history so the rebase below has something to work with
 
-      - name: Prepare data branch
-        run: |
-          git config user.name "nixkeeper-bot"
-          git config user.email "nixkeeper-bot@users.noreply.github.com"
-
-          if git ls-remote --exit-code --heads origin data > /dev/null 2>&1; then
-            # data branch exists: bring its accumulated history forward,
-            # replayed on top of main's current tip.
-            git fetch origin data
-            git checkout -b data origin/data
-            git rebase origin/main
-          else
-            # first run: nothing to rebase yet, just branch off main.
-            git checkout -B data
-          fi
+      - name: Restore the last published data, on main
+        run: bash scripts/data-branch.sh restore
 
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
@@ -57,12 +44,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR/issue counts and the status issue
           NIXKEEPER_NOTIFY: github-issue  # the status issue; local runs don't notify
 
-      - name: Commit and push if anything changed
+      - name: Publish the data if it changed
         run: |
-          git add -f data/
-          if git diff --cached --quiet; then
-            echo "No package changes since last run."
-            exit 0
-          fi
-          git commit -m "sync: package data $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          git push --force-with-lease origin data
+          bash scripts/data-branch.sh publish "sync: package data $(date -u +%Y-%m-%dT%H:%M:%SZ)"

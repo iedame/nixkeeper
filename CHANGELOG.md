@@ -19,6 +19,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   half a second to redraw on a fast computer: about a quarter of a second at
   1,500 packages.
 
+- The `data` branch no longer piles up a commit for every sync and hourly
+  update: each run publishes `main` plus one commit with the latest data,
+  replacing the last (the history was never read). The first run after
+  updating does this to the existing branch, keeping its data. If GitHub
+  can't say whether the branch exists, the run now stops at once, instead of
+  carrying on as if it were the first run (against no previous data).
+
 ## [0.10.0] - 2026-10-04
 
 ### Added
