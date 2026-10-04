@@ -132,9 +132,10 @@ it for everyone; a rule here covers the meantime.
    [`community/up-to-date.nix`](../community/up-to-date.nix), in the same
    format as your own (each file's header shows it), keyed by the package's
    nixpkgs attribute. A good update check follows what nixpkgs packages (the
-   stable series it tracks, the page its source comes from), and says so in
-   a comment; a good ignore or up-to-date rule says in its reason why the
-   version doesn't count, or is right.
+   stable series it tracks, the page its source comes from); the pull
+   request that adds it says so (the rules themselves have no comments: the
+   file stays a plain list, sorted by package). A good ignore or up-to-date
+   rule says in its reason why the version doesn't count, or is right.
 2. **Try it**, from your checkout:
 
    ```bash
@@ -145,10 +146,12 @@ it for everyone; a rule here covers the meantime.
    version and says what it found, checks its ignore rules against the bot's
    latest attempt, and its up-to-date rule against nixpkgs and Repology. GitHub update checks need a token (`GITHUB_TOKEN`,
    or a `gh` login).
-3. **Open a pull request.** CI checks the files (`nix flake check`): every
-   rule well formed, for a package in nixpkgs, update checks within the
-   limits above with valid patterns. The "Community: update checks still
-   work" workflow tries the rules your pull request adds or changes for real:
+3. **Open a pull request**, saying for an update check where the version
+   comes from and why the rule looks there. CI checks the files
+   (`nix flake check`): every rule well formed, for a package in nixpkgs,
+   update checks within the limits above with valid patterns. The
+   "Community: update checks still work" workflow tries the rules your pull
+   request adds or changes for real:
    it fails if an update check finds nothing, an ignore rule doesn't match
    the bot's latest failed attempt, or an up-to-date rule doesn't match what
    nixpkgs and Repology show (either would do nothing).

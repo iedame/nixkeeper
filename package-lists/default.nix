@@ -2,7 +2,9 @@
   # GitHub handles; every nixpkgs package listing one of these in
   # meta.maintainers is tracked automatically (the page's "maintained" list).
   maintainers = [
+    # keep-sorted start
     "iedame"
+    # keep-sorted end
   ];
 
   # More packages to track, as named lists: each name becomes a filter on the

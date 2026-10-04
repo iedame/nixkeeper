@@ -26,6 +26,7 @@
 # bot trying a version, that's Repology's ignore rules or nixpkgs-update's
 # skiplist. A rule here only stops the failure it already made from showing.
 {
+  # keep-sorted start newline_separated=yes
   blackvoxel."2.5" = "Temporary: v prefix removal at 2.5 causes update error.";
 
   countryguess."0-unstable-2025-03-04" = "Open PR: update with fix incoming.";
@@ -35,4 +36,5 @@
   tetris."7.9.0" = "Incorrect version: package name collision, reported to Repology.";
 
   xskat."4.0-9" = "Never released: an upstream versioning mistake. Repology ignores it too.";
+  # keep-sorted end
 }

@@ -66,6 +66,9 @@
           projectRootFile = "flake.nix";
           programs = {
             nixfmt.enable = true;
+            # Keeps marked parts of files sorted (between its start and end
+            # comments): the package lists and the community rules.
+            keep-sorted.enable = true;
             ruff-format.enable = true;
             ruff-check.enable = true; # safe auto-fixes, e.g. import order
             biome = {
