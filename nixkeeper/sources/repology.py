@@ -1,4 +1,5 @@
-"""Repology API client: project lookups with domain fallback and retries."""
+"""Repology API client: project lookups with retries, and fallback between
+domains when there are several (config.REPOLOGY_URLS)."""
 
 import json
 import sys
@@ -15,7 +16,7 @@ from . import http
 FIELDS = ("repo", "srcname", "version", "status", "vulnerable")
 
 # The domain that last answered: tried first for the rest of the run, so an
-# unreachable repology.org costs one failed connection, not one per lookup.
+# unreachable first domain costs one failed connection, not one per lookup.
 _working = None
 
 
