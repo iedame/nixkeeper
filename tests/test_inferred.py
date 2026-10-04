@@ -120,7 +120,7 @@ class Verdict(unittest.TestCase):
         )
         self.assertEqual(
             inferred.verdict(row, "1.3", rule=True),
-            ("disagree", "1.3, its rule 1.2"),
+            ("rule differs", "1.3, its rule 1.2"),
         )
 
 
@@ -201,7 +201,8 @@ class WorkOut(unittest.TestCase):
         out = self.stderr.getvalue()
         self.assertIn(
             "::group::Worked-out update checks: 3 of 4 packages (2 used, 1 with "
-            "a rule), 1 agree with Repology or their rule, 1 don't, 1 failed",
+            "a rule), 1 agree with Repology or their rule, 1 don't, 0 differ "
+            "from their rule (the rule is used), 1 failed",
             out,
         )
         self.assertIn("Not worked out: 1 not from GitHub", out)
@@ -209,3 +210,17 @@ class WorkOut(unittest.TestCase):
         self.assertIn("  a 1.0: 1.0, as its rule  (o/a)", out)
         self.assertIn("Failed (left to Repology):\n  d: couldn't read the tags", out)
         self.assertTrue(out.rstrip().endswith("::endgroup::"))
+
+    def test_report_a_rule_that_differs(self):
+        rules = {"a": {"github": "o/a", "tags": "^v(0\\.[0-9.]+)$"}}
+        worked, _ = self.work_out(rules=rules)
+        rows = [dict(r) for r in self.ROWS]
+        rows[0]["upstream"] = {"version": "0.9"}  # a's rule: another series
+        with mock.patch.object(github, "latest_tags", return_value={"o/a": ["v1.1"]}):
+            inferred.report(worked, rows, rules, {})
+        out = self.stderr.getvalue()
+        self.assertIn("0 don't, 1 differ from their rule (the rule is used)", out)
+        self.assertIn(
+            "Disagree:\nRule differs (the rule is used):\n  a 1.0: 1.1, its rule 0.9",
+            out,
+        )
