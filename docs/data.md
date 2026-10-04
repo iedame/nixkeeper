@@ -118,7 +118,7 @@ branch it targets), and `from` / `to` (the versions in its title,
 | `name`, `version` | what that build built (`wesnoth-devel-1.19.28`), and its version |
 | `lastSuccess` | when it last built successfully, when the latest build didn't; `null` if it never did |
 | `lastSuccessBuild`, `lastSuccessName`, `lastSuccessVersion` | that successful build |
-| `checkedAt` | when Hydra was last asked about this job: daily while something's going on, otherwise every 3 days (see [how it works](how-it-works.md)) |
+| `checkedAt` | when this job was last read: daily from nixkeeper-hydra's digest; asked of Hydra itself, daily while something's going on, otherwise every 3 days (see [how it works](how-it-works.md)) |
 
 Only `failed` counts as a failure.
 

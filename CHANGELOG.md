@@ -42,6 +42,19 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- Hydra's builds come from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra)
+  first: a digest of every job in Hydra's newest evaluation of nixpkgs
+  master, kept up to date hourly by its own workflow. One download (about
+  2.6 MB) answers most jobs, every day, instead of a request or two per job
+  every few days: a new build failure shows up the next day for every
+  package. Hydra is still asked about the jobs the digest can't answer
+  (missing from it, not built yet, or failing with no known last success),
+  and about every job, as before, when the digest isn't current (from an
+  older evaluation and over 12 hours old) or can't be downloaded.
+  `NIXKEEPER_HYDRA_DIGEST` points elsewhere, or empty turns it off. Hydra's
+  newest evaluation is read from its list of evaluations, not from
+  `latest-eval`, which is the newest whose builds have all finished.
+
 - New sizes, now that quiet packages are asked every few days (below): the
   list check warns from 1,500 packages instead of 500, and the sync refuses
   to start above 5,000 instead of 2,000 (`maxPackages` to go beyond). The
