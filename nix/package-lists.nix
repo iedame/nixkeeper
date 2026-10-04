@@ -14,15 +14,25 @@ let
   # python3Packages (an alias for the default version) no.
   indexed = set: (builtins.tryEval (pkgs.${set}.recurseForDerivations or false)).value == true;
 
+  # A package: what the channel index lists. An attribute that's a set of
+  # packages (cataclysmDDA: stable, git, ...) isn't one, nor is one that
+  # throws when evaluated.
+  isPackage = value: (builtins.tryEval (lib.isDerivation value)).value == true;
+
+  # An attribute name the sync can find in the channel index: a package, at
+  # the top level or in a set the index covers.
   isAttribute =
     name:
     let
       path = lib.splitString "." name;
     in
-    if builtins.length path == 1 then
-      pkgs ? ${name}
-    else
-      indexed (builtins.head path) && lib.hasAttrByPath path pkgs;
+    (
+      if builtins.length path == 1 then
+        pkgs ? ${name}
+      else
+        indexed (builtins.head path) && lib.hasAttrByPath path pkgs
+    )
+    && isPackage (lib.attrByPath path null pkgs);
 
   # Only evaluated when some entry isn't an attribute name: scanning every
   # top-level package takes ~10 s.
@@ -318,7 +328,9 @@ rec {
         let
           path = lib.splitString "." e;
         in
-        if builtins.length path > 1 && lib.hasAttrByPath path pkgs then
+        if lib.hasAttrByPath path pkgs && !isPackage (lib.attrByPath path null pkgs) then
+          "a set of packages, not a package: list the one you mean (its attribute or pname)"
+        else if builtins.length path > 1 && lib.hasAttrByPath path pkgs then
           "${builtins.head path} is an alias the sync can't see; use the versioned set (e.g. python313Packages)"
         else
           "not a nixpkgs attribute or top-level pname";

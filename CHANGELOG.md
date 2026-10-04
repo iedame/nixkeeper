@@ -108,6 +108,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- The package lists' check (`nix flake check`) accepted an entry that names
+  a set of packages rather than a package (`cataclysmDDA`, which holds
+  `stable`, `git`, ...): it passed CI, then the sync couldn't find it and
+  the page showed a list problem. Entries, update checks and rules now have
+  to name a package, and a set of packages is reported as such.
 - `repoCount` counted Repology's entries, so a repository listing a package
   more than once (subpackages) counted more than once. It now counts
   repositories, as documented.

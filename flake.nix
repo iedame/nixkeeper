@@ -334,6 +334,7 @@
                     "python313Packages.requests"
                     "python3Packages.requests"
                     "nosuchpkg-nixkeeper"
+                    "cataclysmDDA" # a set of packages, not a package
                     "opentyrian"
                   ];
                   updateChecks = {
@@ -387,6 +388,7 @@
                 "opentyrian"
                 "python3Packages.requests"
                 "nosuchpkg-nixkeeper"
+                "cataclysmDDA"
                 "updateChecks.haskellPackages.pandoc" # both github and url
                 "updateChecks.hello" # not tracked
                 "updateChecks.hello" # github isn't owner/repo
@@ -424,6 +426,17 @@
               ];
             in
             assert lib.assertMsg (found == expected) "package-lists checker found ${builtins.toJSON found}";
+            # A set of packages says what's wrong (it passed this check before, and
+            # the sync found nothing: iedame/nixkeeper's cataclysmDDA).
+            assert lib.assertMsg (
+              (lib.findFirst (p: p.entry == "cataclysmDDA") { } (
+                listsChecker.problems {
+                  maintainers = [ ];
+                  extraPackages = [ "cataclysmDDA" ];
+                }
+              )).reason or ""
+              == "a set of packages, not a package: list the one you mean (its attribute or pname)"
+            ) "package-lists checker: a set of packages should say so";
             assert lib.assertMsg (
               foundNamed == expectedNamed
             ) "package-lists checker found ${builtins.toJSON foundNamed} (named lists)";
