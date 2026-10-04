@@ -84,7 +84,8 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         "refVersion": (devel and newest("devel"))
         or newest("newest")
         or newest("unique"),
-        "repoCount": len(others),
+        # Repositories, not entries: one can list a package several times.
+        "repoCount": len({e.get("repo") for e in others}),
         # A devel variant of a split project, or a version Repology itself
         # classifies as devel (lincity).
         "devel": devel or (nix or {}).get("status") == "devel",

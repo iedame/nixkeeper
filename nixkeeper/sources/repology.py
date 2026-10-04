@@ -10,6 +10,10 @@ import urllib.request
 from .. import config
 from . import http
 
+# What nixkeeper reads of a Repology entry (rows.py, and the page's details):
+# the rest (summaries, licenses, maintainers, ...) only made data/ bigger.
+FIELDS = ("repo", "srcname", "version", "status", "vulnerable")
+
 # The domain that last answered: tried first for the rest of the run, so an
 # unreachable repology.org costs one failed connection, not one per lookup.
 _working = None
@@ -63,6 +67,20 @@ def get(path):
     raise last_err
 
 
+def trimmed(entries):
+    """entries with only FIELDS, each once: Repology lists a package once per
+    binary package (xournalpp, xournalpp-doc, ...), which then read the same.
+    In Repology's order."""
+    seen, kept = set(), []
+    for entry in entries or []:
+        entry = {k: entry[k] for k in FIELDS if k in entry}
+        key = json.dumps(entry, sort_keys=True)
+        if key not in seen:
+            seen.add(key)
+            kept.append(entry)
+    return kept
+
+
 def project_for_attr(attr):
     """Resolve a nixpkgs attribute to its Repology project. Returns
     (project, entries), or (None, None) if Repology doesn't know it."""
@@ -77,13 +95,13 @@ def project_for_attr(attr):
     entries, url = get(f"/tools/project-by?{query}")
     if entries is None:
         return None, None
-    return urllib.parse.unquote(url.rstrip("/").rsplit("/", 1)[-1]), entries
+    return urllib.parse.unquote(url.rstrip("/").rsplit("/", 1)[-1]), trimmed(entries)
 
 
 def project_by_name(name):
     entries, _ = get(f"/api/v1/project/{urllib.parse.quote(name)}")
     # Repology answers an unknown project with an empty list, not a 404.
-    return (name, entries) if entries else (None, None)
+    return (name, trimmed(entries)) if entries else (None, None)
 
 
 def resolve(fallback, attrs):

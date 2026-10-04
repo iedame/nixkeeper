@@ -805,19 +805,25 @@ function sourceFileName(url) {
 async function fillDetail(pkg, el) {
   // Raw Repology data is stored per project, under a file-name-safe version
   // of its name (python:requests -> python_requests.json).
+  // null when it couldn't be loaded (the network, say): the panel says so,
+  // rather than "compared with 0 other repositories", and isn't kept, so
+  // opening it again tries again.
   const file = pkg.dataFile || `${pkg.project || pkg.name}.json`;
-  let entries = detailCache.get(file);
+  let entries = detailCache.get(file) || null;
   if (!entries) {
     try {
       const res = await fetch(dataUrl(encodeURIComponent(file)), { cache: 'no-store' });
-      entries = res.ok ? await res.json() : [];
-      detailCache.set(file, entries);
+      if (res.ok) {
+        entries = await res.json();
+        detailCache.set(file, entries);
+      }
     } catch {
-      entries = [];
+      // stays null
     }
   }
+  const loaded = Array.isArray(entries);
 
-  const others = comparedRepos(entries.filter((e) => e.repo !== NIX_REPO));
+  const others = loaded ? comparedRepos(entries.filter((e) => e.repo !== NIX_REPO)) : [];
   const homepage = safeUrl(pkg.homepage);
 
   const st = computeStatus(pkg);
@@ -900,7 +906,9 @@ async function fillDetail(pkg, el) {
                   ? html`, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion || '?'}</span>${since}`
                   : st === 'neutral'
                     ? html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
-                    : ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${others.length} other ${others.length === 1 ? 'repository' : 'repositories'}.`
+                    : loaded
+                      ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${others.length} other ${others.length === 1 ? 'repository' : 'repositories'}.`
+                      : ` — the newest ${pkg.devel ? 'devel ' : ''}version.`
           }${
             up && !up.newer && !failing
               ? follows
@@ -919,8 +927,12 @@ async function fillDetail(pkg, el) {
     .filter(Boolean)
     .flatMap((part, i) => (i ? [', ', part] : [part]));
 
+  const unloaded = loaded
+    ? ''
+    : html`<div class="stale-note">⚠ Couldn't load Repology's details for this package, so the repositories it's compared with aren't shown. Close and reopen it to try again.</div>`;
+
   el.innerHTML = html`
-    <div class="nix-line">${nixLine}</div>${
+    <div class="nix-line">${nixLine}</div>${unloaded}${
       onMaster(pkg)
         ? html`<div class="master-note">master already has <span class="mono">${onMaster(pkg)}</span> (${masterSaid})${
             waitingForChannel(pkg)

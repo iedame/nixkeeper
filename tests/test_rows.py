@@ -28,6 +28,23 @@ class Rows(unittest.TestCase):
             ("wesnoth-devel", "1.19.24", True),
         )
 
+    def test_repo_count_counts_repositories(self):
+        # A repository listing the package twice (two subpackages) counts once.
+        (row,) = self.rows(
+            project(
+                "unciv",
+                ["unciv"],
+                [
+                    nix("unciv", "4.22.1", "outdated"),
+                    other("debian", "4.22.6", "newest"),
+                    other("debian", "4.22.6", "newest"),
+                    other("arch", "4.22.6", "newest"),
+                ],
+                "unciv",
+            )
+        )
+        self.assertEqual(row["repoCount"], 2)
+
     def test_devel_row_compares_against_devel_versions(self):
         stable, devel = self.rows(
             project("wesnoth", ["wesnoth", "wesnoth-devel"], self.WESNOTH, "wesnoth")
