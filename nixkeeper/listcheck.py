@@ -66,6 +66,11 @@ def problems(lists, nixpkgs, tracked):
             f"maxPackages: {most!r} isn't a positive whole number (using "
             f"{scale.MAX_PACKAGES:,})"
         )
+    worked_out = lists.get("workedOutChecks")
+    if worked_out is not None and not isinstance(worked_out, bool):
+        found.append(
+            f"workedOutChecks: {worked_out!r} isn't true or false (using true)"
+        )
     theme = (lists.get("page") or {}).get("theme")
     if theme is not None and theme not in THEMES:
         found.append(

@@ -41,7 +41,8 @@ For each package it tracks, nixkeeper shows on one static page (`page/`):
 
 - **New releases**: whether nixpkgs unstable is behind, per
   [Repology](https://repology.org) and nixkeeper's own update checks (a
-  project's tags or release page, or for unstable versions its branch;
+  project's tags, worked out from nixpkgs for those it fetches from GitHub,
+  or a release page, or for unstable versions its branch;
   about hourly for the ones marked frequent)
 - **Build failures**: [Hydra](https://hydra.nixos.org)'s latest builds on
   x86_64-linux, aarch64-linux and aarch64-darwin, and where nixpkgs marks it

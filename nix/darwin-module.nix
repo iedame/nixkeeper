@@ -20,9 +20,9 @@ let
   inherit (lib) mkOption types;
   common = import ./module-common.nix { inherit self lib pkgs; };
 
-  # launchd starts agents with a bare PATH: where Nix (for lists in a Nix
-  # folder) and gh (a token from the local login) usually are, then macOS's
-  # own tools. Whole bin folders: nix-darwin passes strings on as they are.
+  # launchd starts agents with a bare PATH: where Nix (to evaluate nixpkgs,
+  # and lists in a Nix folder) and gh (a token from the local login) usually
+  # are, then macOS's own tools. Whole bin folders: nix-darwin passes strings on as they are.
   path = [
     "/etc/profiles/per-user/${config.system.primaryUser}/bin"
     "/run/current-system/sw/bin"

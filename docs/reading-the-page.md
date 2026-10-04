@@ -1,7 +1,8 @@
 # Reading the page
 
 Each row is a package; clicking it opens its details (every repository
-Repology compares it with, links to its homepage and nixpkgs source), and
+Repology compares it with, after `nixkeeper` first when an update check found
+a version: hover it for where; links to its homepage and nixpkgs source), and
 clicking its build or update cell opens that instead. The counts at the top
 (tracked, outdated, failed, and flagged vulnerable when any are) filter the
 list, as do the list names beside them and a row's platform tags; the filters

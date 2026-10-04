@@ -117,12 +117,17 @@ def due(name, check, row, before, now):
     return schedule.due(name, last["checkedAt"], now)
 
 
-def add_checks(rows, checks, previous, now, community=frozenset()):
+def add_checks(
+    rows, checks, previous, now, community=frozenset(), inferred=frozenset()
+):
     """Run the update checks for rows that have one. A check that can't run,
     GitHub or web page alike, keeps the previous run's result and marks the
     row as not refreshed: usually the check itself needs fixing (a moved page,
     a changed tag scheme). community: the names whose check is a community
-    rule (community.py), held to its limits and fetched in safe mode."""
+    rule (community.py), held to its limits and fetched in safe mode.
+    inferred: the names whose check was worked out from nixpkgs (inferred.py):
+    nobody wrote those to fix, so one that can't run only leaves the row to
+    Repology, without a warning. Returns {name: why} for those."""
     by_name = {row["name"]: row for row in rows}
     # Checks for untracked packages: reported with the lists (listcheck.py).
     # follows has nothing to fetch: follows.py applies it after master.
@@ -131,8 +136,9 @@ def add_checks(rows, checks, previous, now, community=frozenset()):
         for name, check in checks.items()
         if name in by_name and "follows" not in check
     }
+    failed = {}
     if not wanted:
-        return
+        return failed
     before = {row["name"]: row for row in previous["packages"]}
     # Those not due keep what they found last time (due).
     quiet = [
@@ -152,9 +158,12 @@ def add_checks(rows, checks, previous, now, community=frozenset()):
         file=sys.stderr,
     )
     if not wanted:
-        return
+        return failed
 
     def keep_previous(name, why):
+        if name in inferred:
+            failed[name] = why
+            return
         # Said so, for the page: a community rule is fixed in nixkeeper.
         if name in community and not why.startswith("community rule"):
             why = f"community rule: {why}"
@@ -170,6 +179,8 @@ def add_checks(rows, checks, previous, now, community=frozenset()):
         else:
             if name in community:
                 extra["community"] = True
+            elif name in inferred:
+                extra["inferred"] = True
             extra["rule"] = fingerprint(checks[name])
             apply(by_name[name], {"version": version, "checkedAt": now, **extra})
 
@@ -187,6 +198,7 @@ def add_checks(rows, checks, previous, now, community=frozenset()):
     for name in interleaved(pages):
         last = (before.get(name) or {}).get("upstream")
         check_page(name, pages[name], keep_previous, found, name in community, last)
+    return failed
 
 
 def check_github(checks, versions, now, keep_previous, found):

@@ -63,6 +63,13 @@ class Problems(unittest.TestCase):
             ["page.theme: mocha isn't one of the page's themes (classic, catppuccin)"],
         )
 
+    def test_worked_out_checks_switch(self):
+        self.assertEqual(self.check(lists(workedOutChecks=False)), [])
+        self.assertEqual(
+            self.check(lists(workedOutChecks="no")),
+            ["workedOutChecks: 'no' isn't true or false (using true)"],
+        )
+
     def test_a_plain_extra_list(self):
         found = self.check(lists(extraPackages=["nosuchpkg"]))
         self.assertIn("extraPackages.extra: nosuchpkg", found[0])

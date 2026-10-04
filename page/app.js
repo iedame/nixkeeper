@@ -10,6 +10,7 @@ import {
   fromMaster,
   html,
   midway,
+  nixkeeperEntry,
   onMaster,
   onPlatform,
   attentionRank as rankOn,
@@ -850,6 +851,28 @@ async function fillDetail(pkg, el) {
 
   const st = computeStatus(pkg);
   const up = pkg.upstream;
+  // nixkeeper's update check, and whether it was worked out from nixpkgs.
+  const ours = up?.inferred
+    ? "nixkeeper's update check (worked out from nixpkgs' source)"
+    : "nixkeeper's update check";
+  // The repositories it's compared against, nixkeeper's update check first.
+  const mine = nixkeeperEntry(pkg);
+  const checkedDays = up?.checkedAt && daysText(up.checkedAt);
+  const chips = [
+    ...(mine
+      ? [
+          {
+            ...mine,
+            title: `${mine.kind}${mine.where ? `: ${mine.where}` : ''}${checkedDays && checkedDays !== 'today' ? `, checked ${checkedDays} ago` : ''}`,
+          },
+        ]
+      : []),
+    ...others.map((e) => ({
+      repo: e.repo,
+      version: e.version,
+      ahead: e.status === 'newest' && e.version !== pkg.nixVersion,
+    })),
+  ];
   // "in the wesnoth/wesnoth tags" or "on www.barebones.com".
   const upLabel = up ? up.label || `${up.repo} tags` : '';
   const upLink = up
@@ -881,7 +904,7 @@ async function fillDetail(pkg, el) {
   const upstreamLine = () =>
     follows
       ? html`nixpkgs unstable has <span class="mono" style="font-weight:600">${pkg.nixVersion}</span>, behind <span class="mono" style="font-weight:600;color:var(--warn)">${up.version}</span>: it's ${follows}${since}.`
-      : html`nixpkgs unstable has <span class="mono" style="font-weight:600">${pkg.nixVersion}</span>; ${communityCheck(pkg) ? 'a community update check' : "nixkeeper's update check"} found <span class="mono" style="font-weight:600;color:var(--warn)">${up.version}</span> ${upLink}${
+      : html`nixpkgs unstable has <span class="mono" style="font-weight:600">${pkg.nixVersion}</span>; ${communityCheck(pkg) ? 'a community update check' : ours} found <span class="mono" style="font-weight:600;color:var(--warn)">${up.version}</span> ${upLink}${
           pkg.refVersion !== up.version
             ? html`; Repology's newest is <span class="mono">${pkg.refVersion}</span>`
             : repologyOutdated
@@ -936,8 +959,8 @@ async function fillDetail(pkg, el) {
               ? follows
                 ? html` It's ${follows}.`
                 : up.behind
-                  ? html` nixkeeper's update check: ${behind} ${upLink} (up to <span class="mono">${up.version}</span>), not counted as outdated until ${limits}.`
-                  : html` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${up.version}</span>.`
+                  ? html` ${ours}: ${behind} ${upLink} (up to <span class="mono">${up.version}</span>), not counted as outdated until ${limits}.`
+                  : html` ${ours} ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${up.version}</span>.`
               : ''
           }`;
   // Where master is: the PR that brought it, and whether Hydra built it.
@@ -972,11 +995,11 @@ async function fillDetail(pkg, el) {
         : ''
     }
     ${
-      others.length
+      chips.length
         ? html`<div class="other-label">Compared against${repologyAge}</div><div class="repo-chips">
-      ${others.map((e, i) => html`<span class="repo-chip ${e.status === 'newest' && e.version !== pkg.nixVersion ? 'ahead' : ''}"${i >= COMPARED_SHOWN ? raw(' hidden') : ''}>${e.repo} <span class="v mono">${e.version || '?'}</span></span>`)}${
-        others.length > COMPARED_SHOWN
-          ? html`<button type="button" class="more-btn" aria-expanded="false">Show all ${others.length}</button>`
+      ${chips.map((e, i) => html`<span class="repo-chip ${e.ahead ? 'ahead' : ''}"${e.title ? html` title="${e.title}"` : ''}${i >= COMPARED_SHOWN ? raw(' hidden') : ''}>${e.repo} <span class="v mono">${e.version || '?'}</span></span>`)}${
+        chips.length > COMPARED_SHOWN
+          ? html`<button type="button" class="more-btn" aria-expanded="false">Show all ${chips.length}</button>`
           : ''
       }
     </div>`
@@ -995,7 +1018,7 @@ async function fillDetail(pkg, el) {
       chip.hidden = !open && i >= COMPARED_SHOWN;
     });
     btn.setAttribute('aria-expanded', open);
-    btn.textContent = open ? 'Show fewer' : `Show all ${others.length}`;
+    btn.textContent = open ? 'Show fewer' : `Show all ${chips.length}`;
   });
 }
 

@@ -35,6 +35,11 @@
   # the file for the format.
   upToDate = import ./up-to-date.nix;
 
+  # Packages without an update check of their own (or the community's) are
+  # checked against the GitHub repository nixpkgs fetches them from, in the
+  # tag scheme nixpkgs uses. To leave them to Repology alone:
+  # workedOutChecks = false;
+
   # The page's colours for visitors who haven't picked any in its Theme menu:
   # "classic" or "catppuccin" (Latte when light, Mocha when dark).
   # page.theme = "catppuccin";

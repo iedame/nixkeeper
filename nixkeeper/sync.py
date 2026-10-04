@@ -75,10 +75,16 @@ def main():
     listcheck.report(problems)
     rows.add_source_links(index_rows, nixpkgs, revision)
     checks, from_community = community.merge(lists, [row["name"] for row in index_rows])
-    upstream.add_checks(index_rows, checks, previous, now, from_community)
-    # Not used yet: logs how checks worked out from nixpkgs' sources compare
-    # with Repology, before master or follows change the rows.
-    inferred.compare(index_rows, checks, revision)
+    # Checks worked out from nixpkgs' sources, for packages without a rule
+    # (inferred.py): run with the rest, then compared with Repology (logged),
+    # before master or follows change the rows.
+    worked = inferred.work_out(lists, index_rows, checks, revision)
+    to_run = worked.to_run(checks) if worked else {}
+    failed = upstream.add_checks(
+        index_rows, {**to_run, **checks}, previous, now, from_community, set(to_run)
+    )
+    if worked:
+        inferred.report(worked, index_rows, checks, failed)
     if not hydra_answers.done():
         print("Waiting for Hydra's answers...", file=sys.stderr)
     broken, fetched = hydra_answers.result()

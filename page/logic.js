@@ -107,6 +107,27 @@ export function communityCheck(pkg) {
   );
 }
 
+// nixkeeper's own entry among the repositories a package is compared
+// against, first: its update check's version (your rule, a community rule,
+// or worked out from nixpkgs' source), "ahead" when it counts as newer than
+// nixpkgs', as a repository's newest version is. kind and where (the tags,
+// the page) say where it came from. null without a result.
+export function nixkeeperEntry(pkg) {
+  const up = pkg.upstream;
+  if (!up?.version) return null;
+  return {
+    repo: 'nixkeeper',
+    version: up.version,
+    ahead: Boolean(up.newer),
+    kind: up.community
+      ? 'A community update check'
+      : up.inferred
+        ? "Worked out from nixpkgs' source"
+        : 'Your update check',
+    where: up.label || (up.repo ? `${up.repo} tags` : ''),
+  };
+}
+
 // The version an update would bring.
 export function targetVersion(pkg) {
   return fromMaster(pkg) ? pkg.master : pkg.refVersion;
