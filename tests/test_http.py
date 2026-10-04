@@ -209,3 +209,52 @@ class GetPage(unittest.TestCase):
             self.assertRaises(urllib.error.HTTPError),
         ):
             http.get("https://example.org/")
+
+
+class SitePause(unittest.TestCase):
+    """Update checks' pages: one request a second to the same site at most
+    (http.pace); different sites don't wait for each other."""
+
+    def setUp(self):
+        self.now = 1000.0
+        self.slept = []
+
+        def sleep(seconds):
+            self.slept.append(round(seconds, 3))
+            self.now += seconds
+
+        for patcher in (
+            mock.patch.object(config, "SITE_PAUSE_SECONDS", 1),
+            mock.patch.object(http, "_last_asked", {}),
+            mock.patch("time.monotonic", side_effect=lambda: self.now),
+            mock.patch("time.sleep", side_effect=sleep),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_the_same_site_waits(self):
+        http.pace("https://pypi.org/pypi/a/json")
+        self.now += 0.25
+        http.pace("https://PyPI.org/pypi/b/json")  # the same site, any case
+        self.assertEqual(self.slept, [0.75])
+
+    def test_other_sites_dont(self):
+        http.pace("https://pypi.org/pypi/a/json")
+        http.pace("https://www.barebones.com/updates.html")
+        self.assertEqual(self.slept, [])
+
+    def test_after_a_while_no_wait(self):
+        http.pace("https://pypi.org/pypi/a/json")
+        self.now += 5
+        http.pace("https://pypi.org/pypi/b/json")
+        self.assertEqual(self.slept, [])
+
+    def test_get_page_is_paced(self):
+        resp = mock.MagicMock()
+        resp.__enter__.return_value = resp
+        resp.read.return_value = b"page"
+        resp.headers = {}
+        with mock.patch("urllib.request.urlopen", return_value=resp):
+            http.get_page("https://pypi.org/pypi/a/json")
+            http.get_page("https://pypi.org/pypi/b/json")
+        self.assertEqual(self.slept, [1.0])

@@ -150,6 +150,9 @@ GITHUB_SEARCH_BATCH = 20  # searches per GraphQL request
 # Repositories per GraphQL request for the update checks' tags and branches:
 # a request for all of them at once grows too big to answer with many rules.
 GITHUB_REPOS_BATCH = 50
+# Update checks' pages: at most one request this often to the same site
+# (http.pace); different sites follow one another freely.
+SITE_PAUSE_SECONDS = 1
 # nixpkgs PR/issue titles name packages in versioned sets by their alias
 # ("python3Packages.requests: 2.34 -> 2.35"), which the index doesn't carry.
 SEARCH_ALIASES = [

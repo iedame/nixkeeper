@@ -664,3 +664,19 @@ class BatchedRepositories(unittest.TestCase):
             upstream.add_checks(rows, checks, {"packages": []}, NOW)
         self.assertEqual([len(c.args[1]) for c in asked.call_args_list], [2, 1])
         self.assertTrue(all(r["upstream"]["commit"] for r in rows))
+
+
+class Interleaved(unittest.TestCase):
+    def test_takes_turns_between_sites(self):
+        pages = {
+            "a1": {"url": "https://pypi.org/a"},
+            "a2": {"url": "https://pypi.org/b"},
+            "a3": {"url": "https://PYPI.org/c"},
+            "b1": {"url": "https://example.org/x"},
+            "c1": {"url": "https://www.barebones.com/y"},
+            "b2": {"url": "https://example.org/z"},
+        }
+        self.assertEqual(
+            upstream.interleaved(pages), ["a1", "b1", "c1", "a2", "b2", "a3"]
+        )
+        self.assertEqual(upstream.interleaved({}), [])

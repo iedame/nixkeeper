@@ -183,10 +183,10 @@ def add_checks(rows, checks, previous, now, community=frozenset()):
     if github_checks:
         versions = {n: by_name[n].get("nixVersion") for n in github_checks}
         check_github(github_checks, versions, now, keep_previous, found)
-    for name, check in wanted.items():
-        if "url" in check:
-            last = (before.get(name) or {}).get("upstream")
-            check_page(name, check, keep_previous, found, name in community, last)
+    pages = {n: c for n, c in wanted.items() if "url" in c}
+    for name in interleaved(pages):
+        last = (before.get(name) or {}).get("upstream")
+        check_page(name, pages[name], keep_previous, found, name in community, last)
 
 
 def check_github(checks, versions, now, keep_previous, found):
@@ -318,6 +318,20 @@ def check_branches(token, checks, versions, now, keep_previous, found):
             url=f"https://github.com/{repo}/commits/{branch}",
             commit=head["oid"],
         )
+
+
+def interleaved(pages):
+    """The names of page checks ({name: check}) in an order that takes turns
+    between sites: one from each, then the next from each, ... so a site with
+    many rules isn't waited on back to back (http.pace)."""
+    by_site = {}
+    for name, check in pages.items():
+        site = urllib.parse.urlsplit(check["url"]).netloc.lower()
+        by_site.setdefault(site, []).append(name)
+    order = []
+    for turn in range(max(map(len, by_site.values()), default=0)):
+        order += [names[turn] for names in by_site.values() if turn < len(names)]
+    return order
 
 
 def check_page(name, check, keep_previous, found, safe=False, last=None):

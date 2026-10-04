@@ -21,6 +21,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   job's 6 hours (about 5,000 new packages at once), which would publish
   nothing: big lists are best added in stages.
 
+- Update checks against web pages ask each site at most once a second, and
+  take turns between sites, so many rules on one site (PyPI, a vendor's)
+  don't arrive back to back. The other sources already paced themselves.
+
 - The page stays responsive with big lists. With 3,000 packages, redrawing
   the list on a phone or tablet takes about a third of the time it did (cards
   off screen are only laid out when scrolled near), searching redraws once

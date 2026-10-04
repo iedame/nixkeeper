@@ -6,6 +6,7 @@ import gzip
 import ipaddress
 import socket
 import sys
+import threading
 import time
 import urllib.error
 import urllib.parse
@@ -102,12 +103,31 @@ def get(url, accept=None, safe=False, compressed=False):
 NOT_MODIFIED = 304
 
 
+# When each site was last asked, for pace().
+_last_asked = {}
+_pacing = threading.Lock()
+
+
+def pace(url):
+    """Wait, if need be, so url's site (its host) is asked at most once every
+    SITE_PAUSE_SECONDS: update checks can have many pages on one site (PyPI,
+    a vendor's), and they shouldn't arrive back to back."""
+    host = urllib.parse.urlsplit(url).netloc.lower()
+    with _pacing:
+        wait = _last_asked.get(host, float("-inf")) + config.SITE_PAUSE_SECONDS
+        wait -= time.monotonic()
+        if wait > 0:
+            time.sleep(wait)
+        _last_asked[host] = time.monotonic()
+
+
 def get_page(url, cached=None, safe=False):
     """Like get, for a page read before: cached ({"etag", "lastModified"},
     from the last time) lets the server answer that it hasn't changed since,
     without sending it again. Returns (text, cached): text None on 404, or
     NOT_MODIFIED when it hasn't changed; cached, what to send next time
     ({} if the server gives neither)."""
+    pace(url)
     headers = {}
     if (cached or {}).get("etag"):
         headers["If-None-Match"] = cached["etag"]
