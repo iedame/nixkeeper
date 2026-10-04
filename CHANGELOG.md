@@ -9,6 +9,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Changed
+
+- The page stays responsive with big lists. With 3,000 packages, redrawing
+  the list on a phone or tablet takes about a third of the time it did (cards
+  off screen are only laid out when scrolled near), searching redraws once
+  typing pauses instead of at every key, and a row's panel is only made when
+  it's first opened. On wide screens, a table of that size still takes about
+  half a second to redraw on a fast computer: about a quarter of a second at
+  1,500 packages.
+
 ## [0.10.0] - 2026-10-04
 
 ### Added
