@@ -18,10 +18,11 @@ import {
   fromMaster,
   githubRepo,
   hasFailure,
-  href,
+  html,
   midway,
   onMaster,
   onPlatform,
+  raw,
   safeUrl,
   shortAge,
   targetVersion,
@@ -314,12 +315,28 @@ describe('links and markup from data', () => {
     assert.equal(safeUrl('not a url'), '');
     assert.equal(safeUrl(undefined), '');
   });
-  test('href escapes what it keeps', () => {
+  test('html escapes everything put in it', () => {
+    const title = `<img src=x onerror="alert(1)">'&'`;
     assert.equal(
-      href('https://example.org/?a="b"&c'),
-      'https://example.org/?a=&quot;b&quot;&amp;c',
+      String(html`<b title="${title}">${title}</b>`),
+      '<b title="&lt;img src=x onerror=&quot;alert(1)&quot;&gt;&#39;&amp;&#39;">' +
+        '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;&#39;&amp;&#39;</b>',
     );
-    assert.equal(href('javascript:alert(1)'), '');
+    // Links: safeUrl, then escaped like the rest.
+    assert.equal(
+      String(html`<a href="${safeUrl('https://example.org/?a="b"&c')}">`),
+      '<a href="https://example.org/?a=&quot;b&quot;&amp;c">',
+    );
+  });
+  test('html keeps markup made with html or raw', () => {
+    const name = '<i>x</i>';
+    const inner = html`<i>${name}</i>`;
+    assert.equal(String(html`<b>${inner}</b>`), '<b><i>&lt;i&gt;x&lt;/i&gt;</i></b>');
+    assert.equal(String(html`${raw('<br>')}`), '<br>');
+  });
+  test('html joins arrays, and leaves out null and undefined only', () => {
+    assert.equal(String(html`${['<a>', html`<b>`]}`), '&lt;a&gt;<b>');
+    assert.equal(String(html`${null}${undefined}|${0}|${false}`), '|0|false');
   });
 });
 
@@ -339,6 +356,29 @@ describe('where the data is', () => {
     assert.equal(
       githubRepo(...at('https://iedame.github.io/nixkeeper/?owner=someone&repo=their-keeper')),
       'someone/their-keeper',
+    );
+  });
+  test('only names GitHub allows', () => {
+    for (const [owner, repo] of [
+      ['a"b', 'x'],
+      ['someone', '../../evil'],
+      ['someone', '..'],
+      ['-someone', 'x'],
+      ['some/one', 'x'],
+      ['someone', 'a b'],
+      ['someone', '<script>'],
+    ]) {
+      const q = new URLSearchParams({ owner, repo });
+      assert.equal(
+        githubRepo(...at(`https://iedame.github.io/nixkeeper/?${q}`)),
+        null,
+        `${owner}/${repo}`,
+      );
+    }
+    assert.equal(githubRepo(...at('https://iedame.github.io/%3Cscript%3E/')), null);
+    assert.equal(
+      githubRepo(...at('https://iedame.github.io/nixkeeper/?owner=a-b&repo=c.d_e-f')),
+      'a-b/c.d_e-f',
     );
   });
   test('anywhere else, no repository', () => {
