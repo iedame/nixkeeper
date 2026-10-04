@@ -3,7 +3,7 @@ import os
 import tempfile
 import unittest
 
-from nixkeeper.history import add_outdated_since, previous_project
+from nixkeeper.history import add_outdated_since, new_packages, previous_project
 
 
 class OutdatedSince(unittest.TestCase):
@@ -88,3 +88,28 @@ class PreviousProject(unittest.TestCase):
             ],
         )
         self.assertEqual(since, "2026-10-03T06:00:00+00:00")
+
+
+class NewPackages(unittest.TestCase):
+    """How many tracked packages the last run didn't have (the estimate's
+    expensive ones)."""
+
+    def test_by_name_or_attribute(self):
+        previous = {
+            "packages": [
+                {"name": "wesnoth", "attrs": ["wesnoth"]},
+                {
+                    "name": "heroic",
+                    "searchTerm": "heroic",
+                    "attrs": ["heroic-unwrapped"],
+                },
+            ]
+        }
+        wanted = {
+            "wesnoth": (["wesnoth"], "wesnoth"),  # by name
+            "heroic-unwrapped": (["heroic-unwrapped"], "heroic"),  # by attribute
+            "unciv": (["unciv"], "unciv"),  # new
+            "gone": ([], "gone"),  # new, not in nixpkgs
+        }
+        self.assertEqual(new_packages(previous, wanted), 2)
+        self.assertEqual(new_packages({"packages": []}, wanted), 4)

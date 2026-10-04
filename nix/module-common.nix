@@ -94,13 +94,13 @@ rec {
             maxPackages = mkOption {
               type = types.nullOr types.ints.positive;
               default = null;
-              example = 3000;
+              example = 6000;
               description = ''
-                The most packages a sync may track (default 2000). Each costs
-                about 8 requests to public services and 7 seconds per sync:
-                above the limit the sync refuses to start, so a big team or
-                a typo can't send thousands of requests by accident. Raise
-                it only to track that many on purpose.
+                The most packages a sync may track (default 5000): above the
+                limit the sync refuses to start, so a big team or a typo
+                can't send thousands of requests by accident. Each costs
+                about 2 requests to public services on a typical day, 6 its
+                first time. Raise it only to track that many on purpose.
               '';
             };
             page.theme = mkOption {

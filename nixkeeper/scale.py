@@ -5,22 +5,36 @@ check warns from WARN_PACKAGES packages; above MAX_PACKAGES the sync refuses
 to start unless the lists raise the limit (maxPackages), so a big team or a
 typo can't send thousands of requests by accident.
 
-The costs are measured from nixkeeper's own daily runs: about 7 minutes for
-47 packages, on GitHub Actions."""
+The costs are measured from real syncs (71 packages, October 2026). A package
+new to the data costs the most, the first time: everything is asked about.
+After that, quiet ones are asked every few days (schedule.py), and a typical
+day costs much less. Hydra, asked in the background, is the slowest source,
+so it sets the time. To be checked against syncs of bigger lists."""
 
 import os
 import sys
 
-SECONDS_PER_PACKAGE = 7  # one request at a time, with a pause after each
-REQUESTS_PER_PACKAGE = 8  # Repology 1-2, Hydra 3+, the bot's logs 2, GitHub
-FIXED_SECONDS = 60  # the package index, the channel, GitHub's batches
-WARN_PACKAGES = 500
-MAX_PACKAGES = 2000
+# Per package: (seconds, requests).
+FIRST = (4.2, 6)  # the first sync it's in: Repology by attribute, every job, every log
+TYPICAL = (1.7, 1.6)  # a typical day after, with the quiet ones not asked
+FIXED_SECONDS = 35  # the package index, the evaluations, GitHub's batches, ...
+# Raised from 500 once quiet packages were asked every few days: a typical day
+# for 1,500 now costs less than 500 did.
+WARN_PACKAGES = 1500
+# A safety net (a typo, a huge team), raised from 2,000 with the schedule.
+MAX_PACKAGES = 5000
+# GitHub Actions stops a job after 6 hours, publishing nothing: a sync that
+# should take longer is warned about (check).
+GITHUB_ACTIONS_SECONDS = 6 * 3600
 
 
-def estimate(count):
-    """(seconds, requests) a sync of count packages takes, roughly."""
-    return FIXED_SECONDS + count * SECONDS_PER_PACKAGE, count * REQUESTS_PER_PACKAGE
+def estimate(count, new=0):
+    """(seconds, requests) a sync of count packages takes, roughly, new of
+    them new to the data (asked about whole, the first time)."""
+    new = min(new, count)
+    known = count - new
+    seconds = FIXED_SECONDS + known * TYPICAL[0] + new * FIRST[0]
+    return seconds, round(known * TYPICAL[1] + new * FIRST[1])
 
 
 def duration(seconds):
@@ -32,12 +46,19 @@ def duration(seconds):
     return f"about {hours} h" + (f" {minutes} min" if minutes else "")
 
 
+def about(requests):
+    """A number of requests, rounded as an estimate: 2,400, not 2,397."""
+    return f"{round(requests, -2 if requests >= 1000 else -1):,}"
+
+
 def describe(count):
-    """count packages, and what syncing them costs, as a phrase."""
-    seconds, requests = estimate(count)
+    """count packages, and what syncing them costs, as a phrase: a typical
+    day, and the first sync (all of them new)."""
+    typical, first = estimate(count), estimate(count, count)
     return (
-        f"{count:,} packages: a sync takes {duration(seconds)} and makes about "
-        f"{requests:,} requests to public services"
+        f"{count:,} packages: a sync takes {duration(typical[0])} and makes about "
+        f"{about(typical[1])} requests to public services on a typical day "
+        f"({duration(first[0])} and {about(first[1])} the first time)"
     )
 
 
@@ -50,9 +71,11 @@ def limit(lists):
     return MAX_PACKAGES
 
 
-def check(lists, count):
+def check(lists, count, new=0):
     """Exit if count packages is over the lists' limit; otherwise say how long
-    the sync should take (and, on GitHub Actions, in the run's summary)."""
+    this sync should take, new of them being new to the data (and, on GitHub
+    Actions, in the run's summary, with a warning if it may outlast the job's
+    6 hours)."""
     most = limit(lists)
     if count > most:
         sys.exit(
@@ -62,8 +85,25 @@ def check(lists, count):
             "NixOS or nix-darwin module); or track fewer (smaller teams, "
             "shorter lists)."
         )
-    message = f"Tracking {describe(count)}."
+    seconds, requests = estimate(count, new)
+    message = (
+        f"Tracking {count:,} packages"
+        + (f" ({new:,} new: asked about whole, the first time)" if new else "")
+        + f": this sync should take {duration(seconds)} and make about "
+        f"{about(requests)} requests to public services."
+    )
     print(message, file=sys.stderr)
+    if (
+        os.environ.get("GITHUB_ACTIONS") == "true"
+        and seconds > GITHUB_ACTIONS_SECONDS * 0.9
+    ):
+        print(
+            f"::warning::This sync may outlast GitHub Actions' 6-hour limit, and "
+            f"publish nothing: {new:,} packages are new to the data. Add big "
+            "lists in stages (only new packages cost this much), or run this "
+            "first sync somewhere without the limit.",
+            file=sys.stderr,
+        )
     summary = os.environ.get("GITHUB_STEP_SUMMARY")
     if summary:
         with open(summary, "a") as f:

@@ -18,10 +18,23 @@ class Estimate(unittest.TestCase):
 
     def test_describe(self):
         self.assertEqual(
-            scale.describe(500),
-            "500 packages: a sync takes about 1 h and makes about 4,000 "
-            "requests to public services",
+            scale.describe(1500),
+            "1,500 packages: a sync takes about 43 min and makes about 2,400 "
+            "requests to public services on a typical day (about 1 h 50 min "
+            "and 9,000 the first time)",
         )
+
+    def test_new_packages_cost_more(self):
+        typical, _ = scale.estimate(1000)
+        some_new, _ = scale.estimate(1000, 200)
+        all_new, _ = scale.estimate(1000, 1000)
+        self.assertLess(typical, some_new)
+        self.assertLess(some_new, all_new)
+        self.assertEqual(scale.estimate(10, 50), scale.estimate(10, 10))
+
+    def test_requests_read_as_estimates(self):
+        self.assertEqual(scale.about(2397), "2,400")
+        self.assertEqual(scale.about(113), "110")
 
 
 class Limit(unittest.TestCase):
@@ -45,10 +58,26 @@ class Check(unittest.TestCase):
 
     def test_says_how_long_it_takes(self):
         with mock.patch.dict(os.environ, {}, clear=True):
-            scale.check({}, 47)
+            scale.check({}, 300, 50)
         self.assertIn(
-            "Tracking 47 packages: a sync takes about 6 min", self.stderr.getvalue()
+            "Tracking 300 packages (50 new: asked about whole, the first time): "
+            "this sync should take about 11 min",
+            self.stderr.getvalue(),
         )
+
+    def test_warns_when_it_may_outlast_github(self):
+        env = {"GITHUB_ACTIONS": "true"}
+        with mock.patch.dict(os.environ, env, clear=True):
+            scale.check({}, 4000, 100)
+        self.assertNotIn("6-hour", self.stderr.getvalue())
+        with mock.patch.dict(os.environ, env, clear=True):
+            scale.check({}, 5000, 5000)
+        self.assertIn("::warning::This sync may outlast", self.stderr.getvalue())
+
+    def test_not_off_github(self):
+        with mock.patch.dict(os.environ, {}, clear=True):
+            scale.check({}, 5000, 5000)
+        self.assertNotIn("6-hour", self.stderr.getvalue())
 
     def test_and_in_the_github_summary(self):
         with tempfile.NamedTemporaryFile("r") as summary:
@@ -58,12 +87,12 @@ class Check(unittest.TestCase):
 
     def test_refuses_past_the_limit(self):
         with self.assertRaises(SystemExit) as stop:
-            scale.check({}, 2001)
-        self.assertIn("maxPackages = 2001;", str(stop.exception.code))
+            scale.check({}, 5001)
+        self.assertIn("maxPackages = 5001;", str(stop.exception.code))
 
     def test_unless_the_lists_raise_it(self):
         with mock.patch.dict(os.environ, {}, clear=True):
-            scale.check({"maxPackages": 2500}, 2001)  # no exit
+            scale.check({"maxPackages": 6000}, 5001)  # no exit
 
 
 class ListCheck(unittest.TestCase):
@@ -71,14 +100,14 @@ class ListCheck(unittest.TestCase):
         tracked = [f"p{i}" for i in range(count)]
         return listcheck.problems({"maintainers": [], **lists}, {}, tracked)
 
-    def test_warns_from_500(self):
-        self.assertEqual(self.problems({}, 499), [])
-        found = self.problems({}, 500)
+    def test_warns_from_1500(self):
+        self.assertEqual(self.problems({}, 1499), [])
+        found = self.problems({}, 1500)
         self.assertEqual(len(found), 1)
-        self.assertIn("500 packages", found[0])
+        self.assertIn("1,500 packages", found[0])
 
     def test_a_bad_limit(self):
         self.assertIn(
-            "maxPackages: 'lots' isn't a positive whole number (using 2,000)",
+            "maxPackages: 'lots' isn't a positive whole number (using 5,000)",
             self.problems({"maxPackages": "lots"}, 1),
         )

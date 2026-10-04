@@ -47,8 +47,9 @@ def main():
     nixpkgs = nixpkgs_source.load_index()
     lists = nixpkgs_source.read_lists()
     wanted = tracking.tracked_packages(lists, nixpkgs)
-    scale.check(lists, len(wanted))  # how long it'll take; refuses past the limit
     previous = history.load_previous_run()
+    # How long it'll take (new packages cost the most); refuses past the limit.
+    scale.check(lists, len(wanted), history.new_packages(previous, wanted))
     revision = nixpkgs_source.channel_revision()
     # Hydra is the slowest source (a request or more per package and
     # platform): asked from here, in the background, while the others are.
