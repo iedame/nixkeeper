@@ -52,6 +52,7 @@ its default palette.
 | `project`, `dataFile` | its Repology project, and that project's file in `data/` |
 | `platforms` | `{ "linux": bool, "darwin": bool }` from `meta.platforms`; `null` when nixpkgs doesn't restrict them |
 | `homepage` | `meta.homepage` |
+| `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it |
 | `source` | where nixpkgs defines it, on GitHub at the channel's commit and line |
 | `unfree` | `true` when every attribute is unfree (Hydra doesn't build those) |
 

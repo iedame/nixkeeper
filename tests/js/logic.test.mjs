@@ -19,6 +19,7 @@ import {
   githubRepo,
   hasFailure,
   html,
+  matchesSearch,
   midway,
   nixkeeperEntry,
   onMaster,
@@ -160,6 +161,30 @@ describe('communityCheck', () => {
     const failing = { upstream: { since: 'x', reason: 'nothing matches' } };
     assert.equal(communityCheck(pkg({ notRefreshed: failing })), false);
     assert.equal(communityCheck(pkg()), false);
+  });
+});
+
+describe('matchesSearch', () => {
+  const heroic = pkg({
+    name: 'heroic',
+    attrs: ['heroic', 'heroic-unwrapped'],
+    maintainers: ['TomaSajt', 'iedame'],
+  });
+  test('names, projects and attributes contain the text', () => {
+    assert.equal(matchesSearch(heroic, ' Unwrapped '), true);
+    assert.equal(matchesSearch(heroic, ''), true);
+    assert.equal(matchesSearch(heroic, 'tomas'), false); // handles only with @
+  });
+  test('@handle: the whole handle, in any case', () => {
+    assert.equal(matchesSearch(heroic, '@tomasajt'), true);
+    assert.equal(matchesSearch(heroic, '@TomaS'), false);
+    assert.equal(matchesSearch(heroic, '@'), true); // still typing
+    assert.equal(matchesSearch(pkg(), '@iedame'), false); // not synced yet
+  });
+  test('@none: no maintainer, not unknown', () => {
+    assert.equal(matchesSearch(pkg({ maintainers: [] }), '@none'), true);
+    assert.equal(matchesSearch(heroic, '@none'), false);
+    assert.equal(matchesSearch(pkg(), '@none'), false);
   });
 });
 

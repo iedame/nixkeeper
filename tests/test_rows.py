@@ -1,7 +1,7 @@
 import unittest
 
 from nixkeeper.rows import add_source_links, build_rows, search_term, source_url
-from tests.helpers import NIXPKGS, nix, other, project
+from tests.helpers import NIXPKGS, nix, other, pkg, project
 
 
 class Rows(unittest.TestCase):
@@ -133,6 +133,7 @@ class Rows(unittest.TestCase):
         )
         self.assertNotIn("platforms", row)  # not "any platform"
         self.assertNotIn("homepage", row)
+        self.assertNotIn("maintainers", row)  # unknown, not none
 
     def test_platforms(self):
         def plat(attr):
@@ -157,6 +158,26 @@ class Rows(unittest.TestCase):
             )
         )
         self.assertEqual(row["homepage"], "https://heroic.example")
+
+    def test_maintainers_of_all_attributes_once(self):
+        nixpkgs = {
+            "heroic": pkg("heroic", maintainers=["iedame", "TomaSajt"]),
+            "heroic-unwrapped": pkg("heroic", maintainers=["tomasajt", "aidalgol"]),
+            "orphan": pkg("orphan"),
+        }
+        nixpkgs["heroic"]["meta"]["maintainers"].append({"name": "No Handle"})
+        entries = [nix("heroic", "1", "newest"), nix("orphan", "1", "newest")]
+        heroic, orphan = build_rows(
+            {
+                "heroic": project(
+                    "heroic", ["heroic", "heroic-unwrapped"], entries[:1]
+                ),
+                "orphan": project("orphan", ["orphan"], entries[1:]),
+            },
+            nixpkgs,
+        )
+        self.assertEqual(heroic["maintainers"], ["iedame", "TomaSajt", "aidalgol"])
+        self.assertEqual(orphan["maintainers"], [])  # none: searchable as @none
 
     def test_versioned_python_sets_search_by_alias(self):
         entries = [nix("python313Packages.requests", "2.34.2", "newest")]

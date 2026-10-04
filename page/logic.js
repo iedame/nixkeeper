@@ -128,6 +128,22 @@ export function nixkeeperEntry(pkg) {
   };
 }
 
+// Whether pkg matches a search: its name, project or an attribute contains
+// it; or for "@handle", nixpkgs lists that maintainer for it (the whole
+// GitHub handle, in any case), and "@none", no maintainer with a handle.
+// Rows from before maintainers were synced have none to match.
+export function matchesSearch(pkg, query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return true;
+  if (q.startsWith('@')) {
+    const handle = q.slice(1);
+    if (!handle) return true; // only "@" typed so far
+    if (handle === 'none') return Array.isArray(pkg.maintainers) && pkg.maintainers.length === 0;
+    return (pkg.maintainers || []).some((m) => m.toLowerCase() === handle);
+  }
+  return [pkg.name, pkg.project, ...(pkg.attrs || [])].some((n) => n?.toLowerCase().includes(q));
+}
+
 // The version an update would bring.
 export function targetVersion(pkg) {
   return fromMaster(pkg) ? pkg.master : pkg.refVersion;
