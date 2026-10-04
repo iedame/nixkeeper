@@ -20,6 +20,7 @@ import {
   hasFailure,
   html,
   midway,
+  nixkeeperEntry,
   onMaster,
   onPlatform,
   raw,
@@ -159,6 +160,28 @@ describe('communityCheck', () => {
     const failing = { upstream: { since: 'x', reason: 'nothing matches' } };
     assert.equal(communityCheck(pkg({ notRefreshed: failing })), false);
     assert.equal(communityCheck(pkg()), false);
+  });
+});
+
+describe('nixkeeperEntry', () => {
+  test("its update check's version, ahead when newer", () => {
+    const up = { version: '0.48.0', newer: true, inferred: true, repo: 'o/r' };
+    assert.deepEqual(nixkeeperEntry(pkg({ upstream: up })), {
+      repo: 'nixkeeper',
+      version: '0.48.0',
+      ahead: true,
+      kind: "Worked out from nixpkgs' source",
+      where: 'o/r tags',
+    });
+    const page = { version: '16.0', newer: false, community: true, label: 'www.barebones.com' };
+    const entry = nixkeeperEntry(pkg({ upstream: page }));
+    assert.equal(entry.ahead, false);
+    assert.equal(entry.kind, 'A community update check');
+    assert.equal(entry.where, 'www.barebones.com');
+    assert.equal(nixkeeperEntry(pkg({ upstream: { version: '2' } })).kind, 'Your update check');
+  });
+  test('none without a result', () => {
+    assert.equal(nixkeeperEntry(pkg()), null);
   });
 });
 

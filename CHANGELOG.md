@@ -11,14 +11,26 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
-- A first step towards relying less on Repology: update checks worked out
-  from nixpkgs itself. A package nixpkgs fetches from a GitHub tag is checked
+- Update checks worked out from nixpkgs itself, a first step towards
+  relying less on Repology. A package without an update check of its own
+  (or a community rule) that nixpkgs fetches from a GitHub tag is checked
   against that repository's tags, in the scheme its own tag shows (`v1.2.3`,
-  `release-1.2.3`, ...), plain versions only. They aren't used yet: each
-  daily sync lists in its log, in a collapsed group, where they and Repology
-  (or a package's own update check) disagree, to judge them by before they
-  count. It costs one nixpkgs evaluation (seconds) and one GitHub request per
-  50 repositories.
+  `release-1.2.3`, ...), plain versions only: a newer one there makes it
+  outdated, as any update check's does, so new releases show before
+  Repology counts them. On by default; `workedOutChecks = false;` in the
+  lists (`lists.workedOutChecks` in the modules) leaves those packages to
+  Repology. One that fails (a renamed repository, no matching tag) leaves
+  its package to Repology without a warning: nobody wrote it to fix. A
+  rule of your own or the community's wins, for a package these get wrong
+  (Wesnoth's stable series has one now). Each daily sync's log compares
+  them with Repology and with the packages' rules, in a collapsed group.
+  They cost one nixpkgs evaluation (seconds) and one GitHub request per 50
+  repositories.
+
+- The details panel lists `nixkeeper` first among the repositories a
+  package is compared against, with the version its update check found
+  (highlighted when it's newer than nixpkgs', as the others are); hover it
+  for where that came from.
 
 ### Changed
 
@@ -118,6 +130,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   and the details say how old the comparison is when it isn't from today.
 
 ### Fixed
+
+- The NixOS module always puts Nix on the jobs' path: the sync evaluates
+  nixpkgs, for worked-out update checks and where nixpkgs marks packages
+  broken. Before, with lists set in the configuration and no community
+  rules, it had no Nix, and skipped `meta.broken` with a warning.
 
 - The package lists' check (`nix flake check`) accepted an entry that names
   a set of packages rather than a package (`cataclysmDDA`, which holds

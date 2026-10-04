@@ -30,7 +30,9 @@ let
     inherit description;
     after = [ "network-online.target" ];
     wants = [ "network-online.target" ];
-    path = lib.optional (common.listsNeedNix cfg) config.nix.package;
+    # Nix: the sync evaluates nixpkgs (meta.broken, where sources come
+    # from), and reads lists in a Nix folder.
+    path = [ config.nix.package ];
     environment = common.environment cfg "%d/github-token" // {
       NIXKEEPER_DATA_DIR = dataDir;
       # nix eval's cache, when the lists are a Nix folder.

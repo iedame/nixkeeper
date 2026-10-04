@@ -69,7 +69,7 @@ its default palette.
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
 | `staleSince` | Repology couldn't be reached for it: the version data is from this time |
 | `repologyCheckedAt` | when Repology was last asked about it: daily while it's outdated, flagged vulnerable, changed in nixpkgs or new, otherwise every 3 days |
-| `upstream` | nixkeeper's own update check, when it has one (below) |
+| `upstream` | nixkeeper's own update check, when it has one (below): a rule of yours or the community's, or one worked out from nixpkgs |
 | `upToDate` | an [up-to-date rule](community.md#up-to-date-rules-until-something-changes) applies: Repology gets `nixVersion` wrong, so `nixStatus` is `newest` and there's no `refVersion`. `status` is what Repology said, `newest` the version it showed as newest elsewhere (when there was one), `reason` the rule's, and `community` is `true` for a community rule |
 
 A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
@@ -86,6 +86,7 @@ A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
 | `commit`, `behind`, `outdatedAfter` | branch checks: the newest commit, how many commits since nixpkgs' version, and the limits (`{ "days", "commits" }`) |
 | `checkedAt` | when it was last checked |
 | `community` | `true` when the check is a [community rule](community.md) |
+| `inferred` | `true` when the check was worked out from nixpkgs' source (the GitHub tags it fetches from), for a package without a rule |
 | `rule` | a short fingerprint of the rule that found it: an edited rule runs again at once |
 | `page` | page checks: the page's `etag` and `lastModified`, as its server gave them, and the `pattern` it was read with; next time the server is asked to send the page only if it changed, and if it didn't, `version` still holds |
 

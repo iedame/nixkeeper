@@ -1,9 +1,10 @@
-"""Update checks worked out from nixpkgs itself, side by side with Repology:
-a package fetched from a GitHub tag (fetchFromGitHub, a release download)
-is checked against that repository's tags, with the tag scheme its own tag
-shows ("v" + version, ...). Not used for the data yet: each daily sync logs
-where these and Repology disagree, so they can be judged before anyone relies
-on them."""
+"""Update checks worked out from nixpkgs itself: a package fetched from a
+GitHub tag (fetchFromGitHub, a release download) is checked against that
+repository's tags, with the tag scheme its own tag shows ("v" + version,
+...). They run with the other update checks (upstream.py), for packages
+without a rule of their own or the community's (which win), unless the
+lists turn them off (`workedOutChecks = false;`). Each daily sync also logs
+how they compare with Repology, and with the packages' rules."""
 
 import collections
 import re
@@ -101,32 +102,65 @@ def verdict(row, version, rule):
     return "disagree", f"Repology {ref}, GitHub {version}"
 
 
-def compare(rows, checks, revision):
-    """Work out the checks for rows, ask GitHub, and log how they compare
-    (a log group in the sync's output). checks: the update checks the lists
-    and community rules give (own rules are compared with too). Changes no
-    row; anything that fails only skips this."""
-    token = github.token()
-    if not token:
+def enabled(lists):
+    """Whether the lists use worked-out checks: unless they turn them off with
+    `workedOutChecks = false;`."""
+    return (lists or {}).get("workedOutChecks") is not False
+
+
+class WorkedOut:
+    """The checks worked out for a sync's rows ({name: check}), why the rest
+    have none (a Counter), and each row's newest version by Repology before
+    the update checks change it ({name: refVersion}), to compare with."""
+
+    def __init__(self, checks, not_worked, repology):
+        self.checks, self.not_worked, self.repology = checks, not_worked, repology
+
+    def to_run(self, rules):
+        """The worked-out checks to run: those of packages without a rule."""
+        return {n: c for n, c in self.checks.items() if n not in rules}
+
+
+def work_out(lists, rows, rules, revision):
+    """WorkedOut for rows, or None (says why): turned off, no GitHub token to
+    run them with, or nixpkgs didn't evaluate. rules: the update checks the
+    lists and the community give."""
+    if not enabled(lists):
+        return None
+    if not github.token():
         print("Worked-out update checks: skipped (no GITHUB_TOKEN)", file=sys.stderr)
-        return
+        return None
     rows = [row for row in rows if row.get("nixVersion")]
     try:
         attrs = {a for row in rows for a in row.get("attrs") or [row["name"]]}
         sources = nixpkgs_source.sources(attrs, revision)
     except nixpkgs_source.EvalError as e:
         print(f"Worked-out update checks: skipped ({e})", file=sys.stderr)
-        return
-    worked, not_worked = {}, collections.Counter()
+        return None
+    checks, not_worked = {}, collections.Counter()
     for row in rows:
-        if "follows" in checks.get(row["name"], {}):
+        if "follows" in rules.get(row["name"], {}):
             continue
         check, why = for_row(row, sources)
         if check:
-            worked[row["name"]] = check
+            checks[row["name"]] = check
         else:
             not_worked[why] += 1
-    failed, found = {}, {}
+    repology = {row["name"]: row.get("refVersion") for row in rows}
+    return WorkedOut(checks, not_worked, repology)
+
+
+def report(worked, rows, rules, failed):
+    """Log how the worked-out checks compare (a log group in the sync's
+    output): those that ran, from their rows (after upstream.add_checks;
+    failed: its {name: why} for them) against Repology; those of packages
+    with a rule, asked here (only for this) against the rule's result."""
+    by_name = {row["name"]: row for row in rows}
+    failed, found = dict(failed), {}
+    for name in worked.to_run(rules):
+        up = by_name[name].get("upstream") or {}
+        if up.get("inferred"):
+            found[name] = up["version"]
 
     def keep_previous(name, why):
         failed[name] = why
@@ -137,32 +171,36 @@ def compare(rows, checks, revision):
         else:
             found[name] = version
 
-    # The same requests as the tags checks: GITHUB_REPOS_BATCH repositories
-    # each.
-    upstream.check_tags(token, worked, keep_previous, add)
-    by_name = {row["name"]: row for row in rows}
+    ruled = {n: c for n, c in worked.checks.items() if n in rules}
+    if ruled:
+        # The same requests as the tags checks: GITHUB_REPOS_BATCH
+        # repositories each.
+        upstream.check_tags(github.token(), ruled, keep_previous, add)
     lines = collections.defaultdict(list)
     for name in sorted(found):
-        row = by_name[name]
-        kind, what = verdict(row, found[name], name in checks)
+        # Repology's view as it was before the update checks.
+        row = {**by_name[name], "refVersion": worked.repology.get(name)}
+        kind, what = verdict(row, found[name], name in rules)
         lines[kind].append(
-            f"  {name} {row['nixVersion']}: {what}  ({worked[name]['github']})"
+            f"  {name} {row['nixVersion']}: {what}  ({worked.checks[name]['github']})"
         )
     agree, disagree = len(lines["agree"]), len(lines["disagree"])
+    used = len(worked.to_run(rules))
     print(
-        f"::group::Worked-out update checks (not used yet): {len(worked)} of "
-        f"{len(rows)} packages, {agree} agree with Repology or their rule, "
-        f"{disagree} don't, {len(failed)} failed",
+        f"::group::Worked-out update checks: {len(worked.checks)} of "
+        f"{len(worked.repology)} packages ({used} used, {len(ruled)} with a "
+        f"rule), {agree} agree with Repology or their rule, {disagree} don't, "
+        f"{len(failed)} failed",
         file=sys.stderr,
     )
     print(
         "Not worked out: "
-        + ", ".join(f"{n} {why}" for why, n in not_worked.most_common()),
+        + ", ".join(f"{n} {why}" for why, n in worked.not_worked.most_common()),
         file=sys.stderr,
     )
     for title, kind in (("Disagree", "disagree"), ("Agree", "agree")):
         print(f"{title}:", *lines[kind], sep="\n", file=sys.stderr)
-    print("Failed:", file=sys.stderr)
+    print("Failed (left to Repology):", file=sys.stderr)
     for name in sorted(failed):
         print(f"  {name}: {failed[name]}", file=sys.stderr)
     print("::endgroup::", file=sys.stderr)

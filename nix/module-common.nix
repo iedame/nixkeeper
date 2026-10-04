@@ -91,6 +91,16 @@ rec {
                 '';
               };
             };
+            workedOutChecks = mkOption {
+              type = types.bool;
+              default = true;
+              description = ''
+                Check packages without an update check of their own (or the
+                community's) against the GitHub repository nixpkgs fetches
+                them from, in the tag scheme nixpkgs uses (worked out from
+                its source). false: leave those to Repology.
+              '';
+            };
             maxPackages = mkOption {
               type = types.nullOr types.ints.positive;
               default = null;
@@ -205,25 +215,6 @@ rec {
       pkgs.writeText "nixkeeper-lists.json" (builtins.toJSON cfg.lists)
     else
       cfg.listsPath;
-
-  # Whether the jobs need Nix: to read lists in a folder of Nix files, or the
-  # community rules (lists from listsPath may opt in to them too).
-  listsNeedNix =
-    cfg:
-    let
-      file = listsFile cfg;
-    in
-    file == null
-    || !(lib.hasSuffix ".json" (toString file))
-    || cfg.listsPath != null
-    || (
-      cfg.lists != null
-      && (
-        cfg.lists.community.updateChecks
-        || cfg.lists.community.ignoredUpdates
-        || cfg.lists.community.upToDate
-      )
-    );
 
   # The jobs' NIXKEEPER_* variables. token: where they find the token file.
   environment =

@@ -83,9 +83,15 @@ found through `maintainers`. `?list=gaming-team` in the address is a page of
 just that list, to share with the people it's for.
 
 Update checks (`package-lists/update-checks.nix`) look for new releases
-Repology doesn't count yet, ignore rules (`package-lists/ignored-updates.nix`)
-mark failed nixpkgs-update attempts that don't count, and up-to-date rules
-(`package-lists/up-to-date.nix`) mark versions Repology gets wrong. With
+Repology doesn't count yet. A package without one of its own (or a community
+rule) gets one worked out from nixpkgs: fetched from a GitHub tag, it's
+checked against that repository's tags, in the scheme nixpkgs' tag shows
+(`v1.2.3`, ...), plain versions only, and is left to Repology when that
+check fails; `workedOutChecks = false;` turns these off. The daily sync's
+log compares them with Repology ("Worked-out update checks"). Ignore rules
+(`package-lists/ignored-updates.nix`) mark failed nixpkgs-update attempts
+that don't count, and up-to-date rules (`package-lists/up-to-date.nix`) mark
+versions Repology gets wrong. With
 `community = { ... }`, the lists also use the [community rules](community.md)
 of each kind, which anyone can add to, for the packages they track.
 

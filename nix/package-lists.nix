@@ -351,6 +351,10 @@ rec {
     ++ lib.concatLists (lib.mapAttrsToList (checkProblems lists) (lists.updateChecks or { }))
     ++ lib.concatLists (lib.mapAttrsToList (ignoredProblems lists) (lists.ignoredUpdates or { }))
     ++ lib.concatLists (lib.mapAttrsToList (upToDateProblems lists) (lists.upToDate or { }))
+    ++ lib.optional (!builtins.isBool (lists.workedOutChecks or true)) {
+      entry = "workedOutChecks";
+      reason = "must be true or false";
+    }
     ++ lib.optional (!(builtins.elem ((lists.page or { }).theme or "classic") themes)) {
       entry = "page.theme";
       reason = "not one of the page's themes (${lib.concatStringsSep ", " themes})";

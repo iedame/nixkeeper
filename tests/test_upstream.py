@@ -80,6 +80,28 @@ class AddChecks(unittest.TestCase):
             upstream.add_checks(rows, checks, previous or {"packages": []}, NOW)
         return latest_tags
 
+    def test_worked_out_checks_are_marked_and_fail_quietly(self):
+        rows = [row(), row("gone", "1.0", "newest", "1.0")]
+        gone = {"github": "o/gone", "tags": "^([0-9.]+)$"}
+        with mock.patch.object(
+            github, "latest_tags", return_value={"wesnoth/wesnoth": WESNOTH_TAGS}
+        ):
+            failed = upstream.add_checks(
+                rows,
+                {"wesnoth-devel": CHECK, "gone": gone},
+                {"packages": []},
+                NOW,
+                inferred={"wesnoth-devel", "gone"},
+            )
+        self.assertIs(rows[0]["upstream"]["inferred"], True)
+        # Nobody wrote it to fix: left to Repology, no warning, not stale.
+        self.assertEqual(
+            failed, {"gone": "couldn't read the tags of o/gone (renamed or deleted?)"}
+        )
+        self.assertNotIn("upstream", rows[1])
+        self.assertNotIn("notRefreshed", rows[1])
+        self.assertNotIn("::warning::", self.stderr.getvalue())
+
     def test_check(self):
         rows = [row(), row("wesnoth", "1.18.8", "newest", "1.18.8")]
         latest_tags = self.run_checks(

@@ -124,7 +124,7 @@ class Verdict(unittest.TestCase):
         )
 
 
-class Compare(unittest.TestCase):
+class WorkOut(unittest.TestCase):
     ROWS = [
         {"name": "a", "attrs": ["a"], "nixVersion": "1.0", "nixStatus": "newest"},
         {"name": "b", "attrs": ["b"], "nixVersion": "2.0", "nixStatus": "newest"},
@@ -139,51 +139,73 @@ class Compare(unittest.TestCase):
         "d": src("1.0", gitRepoUrl="https://github.com/o/d.git", tag="1.0"),
     }
 
-    def compare(self, checks=None, token="t", sources=None, tags=None):
-        out = io.StringIO()
-        with (
-            mock.patch("sys.stderr", out),
-            mock.patch.object(github, "token", return_value=token),
-            mock.patch.object(
-                nixpkgs_source, "sources", **(sources or {"return_value": self.SOURCES})
-            ) as get_sources,
-            mock.patch.object(
-                github,
-                "latest_tags",
-                return_value=tags or {"o/a": ["v1.0", "v1.1rc1"], "o/b": ["2.1"]},
-            ) as latest_tags,
+    def setUp(self):
+        self.stderr = io.StringIO()
+        for patcher in (
+            mock.patch("sys.stderr", self.stderr),
+            mock.patch.object(github, "token", return_value="t"),
         ):
-            rows = [dict(r) for r in self.ROWS]
-            inferred.compare(rows, checks or {}, "abc123")
-        self.assertEqual(rows, self.ROWS)  # changes no row
-        return out.getvalue(), get_sources, latest_tags
+            patcher.start()
+            self.addCleanup(patcher.stop)
 
-    def test_logs_how_they_compare(self):
-        out, get_sources, latest_tags = self.compare()
+    def work_out(self, lists=None, rules=None, sources=None):
+        with mock.patch.object(
+            nixpkgs_source, "sources", **(sources or {"return_value": self.SOURCES})
+        ) as get_sources:
+            worked = inferred.work_out(lists or {}, self.ROWS, rules or {}, "abc123")
+        return worked, get_sources
+
+    def test_works_out_checks(self):
+        worked, get_sources = self.work_out()
         # Packages nixpkgs doesn't have aren't evaluated.
         get_sources.assert_called_once_with({"a", "b", "c", "d"}, "abc123")
-        latest_tags.assert_called_once_with("t", ["o/a", "o/b", "o/d"])
+        self.assertEqual(sorted(worked.checks), ["a", "b", "d"])
+        self.assertEqual(dict(worked.not_worked), {"not from GitHub": 1})
+        self.assertEqual(worked.repology, dict.fromkeys("abcd"))
+
+    def test_rules_win_and_follows_is_left_out(self):
+        rules = {"a": {"github": "o/a", "tags": "x"}, "b": {"follows": "a"}}
+        worked, _ = self.work_out(rules=rules)
+        self.assertEqual(sorted(worked.checks), ["a", "d"])
+        self.assertEqual(sorted(worked.to_run(rules)), ["d"])
+
+    def test_off_without_a_token_or_an_evaluation(self):
+        worked, get_sources = self.work_out(lists={"workedOutChecks": False})
+        self.assertIsNone(worked)
+        get_sources.assert_not_called()
+        with mock.patch.object(github, "token", return_value=None):
+            self.assertIsNone(self.work_out()[0])
+        error = nixpkgs_source.EvalError("error: boom")
+        self.assertIsNone(self.work_out(sources={"side_effect": error})[0])
+        self.assertEqual(
+            self.stderr.getvalue(),
+            "Worked-out update checks: skipped (no GITHUB_TOKEN)\n"
+            "Worked-out update checks: skipped (error: boom)\n",
+        )
+
+    def test_report(self):
+        rules = {"a": {"github": "o/a", "tags": "^v([0-9.]+)$"}}
+        worked, _ = self.work_out(rules=rules)
+        rows = [dict(r) for r in self.ROWS]
+        # What the update checks did: b's ran and found 2.1 (Repology's view
+        # is what it was before), d's failed.
+        rows[1]["upstream"] = {"version": "2.1", "inferred": True}
+        rows[1]["refVersion"] = "2.1"
+        rows[0]["upstream"] = {"version": "1.0"}  # a's own rule
+        with mock.patch.object(
+            github, "latest_tags", return_value={"o/a": ["v1.0", "v1.1rc1"]}
+        ) as latest_tags:
+            inferred.report(worked, rows, rules, {"d": "couldn't read the tags"})
+        # Only the worked-out checks of packages with a rule are asked here.
+        latest_tags.assert_called_once_with("t", ["o/a"])
+        out = self.stderr.getvalue()
         self.assertIn(
-            "::group::Worked-out update checks (not used yet): 3 of 4 packages, "
-            "1 agree with Repology or their rule, 1 don't, 1 failed",
+            "::group::Worked-out update checks: 3 of 4 packages (2 used, 1 with "
+            "a rule), 1 agree with Repology or their rule, 1 don't, 1 failed",
             out,
         )
         self.assertIn("Not worked out: 1 not from GitHub", out)
         self.assertIn("  b 2.0: GitHub 2.1, Repology up to date  (o/b)", out)
-        self.assertIn("  a 1.0: up to date  (o/a)", out)
-        self.assertIn("  d: couldn't read the tags of o/d", out)
+        self.assertIn("  a 1.0: 1.0, as its rule  (o/a)", out)
+        self.assertIn("Failed (left to Repology):\n  d: couldn't read the tags", out)
         self.assertTrue(out.rstrip().endswith("::endgroup::"))
-
-    def test_follows_is_left_out(self):
-        out, _, latest_tags = self.compare(checks={"b": {"follows": "a"}})
-        latest_tags.assert_called_once_with("t", ["o/a", "o/d"])
-        self.assertIn("2 of 4 packages", out)
-
-    def test_skipped_without_a_token_or_an_evaluation(self):
-        out, get_sources, _ = self.compare(token=None)
-        get_sources.assert_not_called()
-        self.assertEqual(out, "Worked-out update checks: skipped (no GITHUB_TOKEN)\n")
-        error = nixpkgs_source.EvalError("error: boom")
-        out, _, latest_tags = self.compare(sources={"side_effect": error})
-        latest_tags.assert_not_called()
-        self.assertEqual(out, "Worked-out update checks: skipped (error: boom)\n")
