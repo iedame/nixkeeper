@@ -44,6 +44,19 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- Repology's data comes from [nixkeeper-versions](https://github.com/iedame/nixkeeper-versions)
+  first: a digest of every nixpkgs project on Repology, which its own
+  workflow reads in bulk daily, as nixpkgs-update does (outdated projects
+  every day, the rest every week; about 200 requests a day for all of
+  nixpkgs, within Repology's API rules). One download (about 12 MB, read a
+  project at a time, so little memory) answers most tracked packages: a
+  sync of 224 packages looked up 2 instead of about 180. Repology is still
+  asked about packages missing from the digest (new in nixpkgs) or with
+  another version there than the channel's (changed since), and about
+  every package, as before, when the digest is more than 36 hours old or
+  can't be read. `NIXKEEPER_VERSIONS_DIGEST` points elsewhere, or empty
+  turns it off.
+
 - Hydra's builds come from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra)
   first: a digest of every job in Hydra's newest evaluation of nixpkgs
   master, kept up to date hourly by its own workflow. One download (about
