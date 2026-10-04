@@ -53,6 +53,26 @@ class Broken(unittest.TestCase):
         )
 
 
+class Sources(unittest.TestCase):
+    def test_sources(self):
+        answer = [{"version": "1.0", "tag": "v1.0"}, None]  # null: didn't evaluate
+        done = subprocess.CompletedProcess("nix", 0, stdout=json.dumps(answer))
+        with mock.patch("subprocess.run", return_value=done) as run:
+            result = nixpkgs.sources({"b", "a"}, "abc123")
+        self.assertEqual(result, {"a": {"version": "1.0", "tag": "v1.0"}})
+        cmd = run.call_args.args[0]
+        self.assertIn("github:NixOS/nixpkgs/abc123#legacyPackages.x86_64-linux", cmd)
+        self.assertIn('["a", "b"]', cmd[-1])
+
+    def test_eval_failure_raises(self):
+        error = subprocess.CalledProcessError(1, "nix", stderr="…\nerror: boom\n")
+        with (
+            mock.patch("subprocess.run", side_effect=error),
+            self.assertRaisesRegex(nixpkgs.EvalError, "^error: boom$"),
+        ):
+            nixpkgs.sources({"a"}, "abc123")
+
+
 class ChannelRevision(unittest.TestCase):
     def test_revision(self):
         resp = response("x")

@@ -9,6 +9,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- A first step towards relying less on Repology: update checks worked out
+  from nixpkgs itself. A package nixpkgs fetches from a GitHub tag is checked
+  against that repository's tags, in the scheme its own tag shows (`v1.2.3`,
+  `release-1.2.3`, ...), plain versions only. They aren't used yet: each
+  daily sync lists in its log, in a collapsed group, where they and Repology
+  (or a package's own update check) disagree, to judge them by before they
+  count. It costs one nixpkgs evaluation (seconds) and one GitHub request per
+  50 repositories.
+
 ### Changed
 
 - New sizes, now that quiet packages are asked every few days (below): the
