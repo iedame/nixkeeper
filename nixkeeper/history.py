@@ -30,6 +30,18 @@ def previous_rows(previous, pname, attrs):
     ]
 
 
+def new_packages(previous, wanted):
+    """How many of wanted ({pname: (attrs, fallback)}, tracking.py) the last
+    run didn't have."""
+    names = {
+        n for row in previous["packages"] for n in (row["name"], row.get("searchTerm"))
+    }
+    attrs = {a for row in previous["packages"] for a in row.get("attrs") or []}
+    return sum(
+        1 for p, (a, _) in wanted.items() if p not in names and not set(a) & attrs
+    )
+
+
 def previous_project(previous, pname, attrs, out_dir=None):
     """Reuse the last run's data for a pname (its lookup failed, or isn't due).
     Returns (project, entries, stale_since), or None if there's nothing to
