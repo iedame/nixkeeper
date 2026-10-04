@@ -15,9 +15,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   relying less on Repology. A package without an update check of its own
   (or a community rule) that nixpkgs fetches from a GitHub tag is checked
   against that repository's tags, in the scheme its own tag shows (`v1.2.3`,
-  `release-1.2.3`, ...), plain versions only: a newer one there makes it
-  outdated, as any update check's does, so new releases show before
-  Repology counts them. On by default; `workedOutChecks = false;` in the
+  `release-1.2.3`, ...), plain versions only, shaped like nixpkgs' (a dotted
+  version doesn't take a lone number such as a `20240214` date tag) and, for
+  a versioned attribute (`tracy_0_11`, `gcc13`, `python313`), in its series
+  only: a newer one there makes it outdated, as any update check's does, so
+  new releases show before Repology counts them. On by default; `workedOutChecks = false;` in the
   lists (`lists.workedOutChecks` in the modules) leaves those packages to
   Repology. One that fails (a renamed repository, no matching tag) leaves
   its package to Repology without a warning: nobody wrote it to fix. A

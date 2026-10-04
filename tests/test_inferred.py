@@ -25,7 +25,7 @@ class GithubCheck(unittest.TestCase):
             )
         )
         self.assertEqual(check["github"], "wesnoth/wesnoth")
-        self.assertEqual(check["tags"], r"^([0-9]+(?:[\.][0-9]+)*)$")
+        self.assertEqual(check["tags"], r"^([0-9]+(?:[\.][0-9]+)+)$")
 
     def test_prefix_from_the_tag(self):
         check, _ = self.check(
@@ -52,9 +52,9 @@ class GithubCheck(unittest.TestCase):
             src("3.0", url="https://github.com/a/b/archive/refs/tags/release-3.0.zip")
         )
         self.assertEqual(
-            release, {"github": "a/b", "tags": r"^v([0-9]+(?:[\.][0-9]+)*)$"}
+            release, {"github": "a/b", "tags": r"^v([0-9]+(?:[\.][0-9]+)+)$"}
         )
-        self.assertEqual(archive["tags"], r"^release\-([0-9]+(?:[\.][0-9]+)*)$")
+        self.assertEqual(archive["tags"], r"^release\-([0-9]+(?:[\.][0-9]+)+)$")
 
     def test_separators_follow_the_version(self):
         check, _ = self.check(
@@ -62,6 +62,46 @@ class GithubCheck(unittest.TestCase):
         )
         self.assertEqual(re.search(check["tags"], "R7_3").group(1), "7_3")
         self.assertIsNone(re.search(check["tags"], "R7.3"))
+
+    def test_dotted_versions_skip_single_number_tags(self):
+        # vassal and xcpc have old date tags (20240214) beside their releases.
+        check, _ = self.check(
+            src("3.7.28", gitRepoUrl="https://github.com/a/b.git", tag="3.7.28")
+        )
+        self.assertIsNone(re.search(check["tags"], "20240214"))
+        self.assertEqual(re.search(check["tags"], "3.7.29").group(1), "3.7.29")
+        # A version that's a single number keeps taking single numbers.
+        build, _ = self.check(
+            src("4065", gitRepoUrl="https://github.com/a/b.git", tag="4065")
+        )
+        self.assertEqual(re.search(build["tags"], "4119").group(1), "4119")
+
+    def test_versioned_attributes_keep_their_series(self):
+        tracy = src(
+            "0.11.1", gitRepoUrl="https://github.com/w/tracy.git", tag="v0.11.1"
+        )
+        pinned, _ = inferred.github_check(tracy, "tracy_0_11")
+        self.assertEqual(re.search(pinned["tags"], "v0.11.2").group(1), "0.11.2")
+        self.assertIsNone(re.search(pinned["tags"], "v0.14.1"))
+        self.assertIsNone(re.search(pinned["tags"], "v0.110.1"))
+        # Without the suffix: the newest of all.
+        newest, _ = inferred.github_check(tracy, "tracy")
+        self.assertEqual(re.search(newest["tags"], "v0.14.1").group(1), "0.14.1")
+
+    def test_series(self):
+        cases = {
+            ("tracy_0_11", "0.11.1"): "0.11",
+            ("gcc13", "13.2.0"): "13",
+            ("python313", "3.13.7"): "3.13",
+            ("lua5_4", "5.4.6"): "5.4",
+            ("x16", "48"): None,  # not its version
+            ("wine64", "10.16"): None,
+            ("uhexen2", "1.5.10"): None,
+            ("foo2", "2"): None,  # the whole version: no series to keep
+            ("tracy", "0.13.1"): None,
+        }
+        for (attr, version), expected in cases.items():
+            self.assertEqual(inferred.series(attr, version), expected, attr)
 
     def test_not_worked_out(self):
         gh = "https://github.com/a/b.git"

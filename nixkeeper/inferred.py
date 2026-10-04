@@ -22,6 +22,26 @@ ARCHIVE = re.compile(r"/archive/(?:refs/tags/)?(.+?)\.(?:tar\.gz|zip)$")
 # worked out this way looks for. Others (betas, unstable versions) are left
 # to Repology for now.
 PLAIN = re.compile(r"[0-9]+(?:[._-][0-9]+)*")
+# A versioned attribute, kept for one series of its program: its name ends in
+# that series' numbers (tracy_0_11, gcc13, python313).
+SUFFIX = re.compile(r"(?<![0-9])([0-9]+(?:_[0-9]+)*)$")
+
+
+def series(attr, version):
+    """The series a versioned attribute keeps, as the start of its version
+    (tracy_0_11 with 0.11.1: "0.11"), or None: the digits its name ends in
+    are the version's first parts, with underscores between them or run
+    together (python313 with 3.13.7: "3.13"), short of the whole version."""
+    m = SUFFIX.search(attr or "")
+    if not m:
+        return None
+    parts = re.split(r"[._-]", version)
+    for k in range(1, len(parts)):
+        if m.group(1) in ("_".join(parts[:k]), "".join(parts[:k])):
+            # The version's text up to the end of its k-th part (separators
+            # are one character each).
+            return version[: sum(map(len, parts[:k])) + k - 1]
+    return None
 
 
 def tag_of(src):
@@ -37,9 +57,12 @@ def tag_of(src):
     return rev or None
 
 
-def github_check(src):
-    """(check, None): the GitHub tags check src's package would have, as an
-    update check ({"github", "tags"}); or (None, why not)."""
+def github_check(src, attr=None):
+    """(check, None): the GitHub tags check src's package (attr) would have,
+    as an update check ({"github", "tags"}); or (None, why not). The tags it
+    takes look like nixpkgs' version: the same prefix and separators, and
+    for a version with separators (1.2.3), at least one (not 20240214, a
+    date); for a versioned attribute (series), only that series'."""
     m = GITHUB.match(src.get("gitRepoUrl") or "") or GITHUB.match(src.get("url") or "")
     if not m:
         return None, "not from GitHub"
@@ -54,8 +77,13 @@ def github_check(src):
         return None, "tag doesn't end with the version"
     # The separators the version uses (dots, as a rule), so 1.2.3 doesn't
     # match 1_2_3-style tags of another scheme.
-    seps = "".join(sorted(set(re.sub("[0-9]", "", version)))) or "."
-    number = f"[0-9]+(?:[{re.escape(seps)}][0-9]+)*"
+    seps = "".join(sorted(set(re.sub("[0-9]", "", version))))
+    if not seps:  # a single number (4065): a single number, or more parts
+        number = r"[0-9]+(?:[.][0-9]+)*"
+    elif kept := series(attr, version):
+        number = f"{re.escape(kept)}(?:[{re.escape(seps)}][0-9]+)+"
+    else:
+        number = f"[0-9]+(?:[{re.escape(seps)}][0-9]+)+"
     prefix = re.escape(tag.removesuffix(version))
     return {
         "github": f"{m.group(1)}/{m.group(2)}",
@@ -70,7 +98,7 @@ def for_row(row, sources):
     for attr in row.get("attrs") or [row["name"]]:
         if attr not in sources:
             continue
-        check, reason = github_check(sources[attr])
+        check, reason = github_check(sources[attr], attr)
         if check:
             return check, None
         if why == "no source":
