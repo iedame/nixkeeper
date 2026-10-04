@@ -260,12 +260,13 @@ def add_builds(rows, nixpkgs, previous, now, broken=None, fetched=None):
     attrs = [a for row in rows for a in row["attrs"]]
     wanted = jobs(attrs, nixpkgs)
     asking = due_jobs(attrs, nixpkgs, previous, now, broken)
+    fetched = dict(fetched or {})
+    fresh = {j for j in wanted if j in fetched} | set(asking)
     print(
-        f"  {len(asking)} of {len(wanted)} jobs due; the rest were checked in the "
-        f"last {config.QUIET_DAYS} days, with nothing going on",
+        f"  {len(fresh)} of {len(wanted)} jobs read fresh; the rest were checked "
+        f"in the last {config.QUIET_DAYS} days, with nothing going on",
         file=sys.stderr,
     )
-    fetched = dict(fetched or {})
     fetched.update(fetch([j for j in asking if j not in fetched], broken))
     before = last_run(previous)[0]
     before_rows = {row["name"]: row for row in previous["packages"]}

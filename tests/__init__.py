@@ -10,3 +10,7 @@ from nixkeeper import config
 # Fake sites answer at once: no waiting between their pages (http.pace), but
 # for tests of the pause itself (test_http.py).
 config.SITE_PAUSE_SECONDS = 0
+# No nixkeeper-hydra digest: tests of the Hydra step ask (fake) Hydra about
+# each job, as before, unless they give a digest of their own
+# (test_hydra_digest.py).
+config.HYDRA_DIGEST_URL = ""

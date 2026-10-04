@@ -29,12 +29,20 @@ as not refreshed, and the status issue says so; the rest of the sync goes
 on. nixkeeper asks each source one thing at a time, with a pause between
 requests (update checks' pages: one a second per site, taking turns between
 sites), and when a source says to slow down (a `Retry-After`), it waits
-as long as asked, up to 5 minutes, before trying again. Hydra, the slowest
-(a request or more per package and platform), is asked in the background
-while the other sources are, so the sync takes about as long as Hydra
-rather than all of them in turn; each server still gets one request at a
-time. Hydra is also asked less about what's quiet: a job that built fine,
-for a package that's up to date with nothing changed or pending, is asked
+as long as asked, up to 5 minutes, before trying again. Hydra's builds
+come first from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra),
+a digest of every job in Hydra's newest evaluation of master that its own
+workflow keeps up to date hourly: one download answers most jobs, every day.
+The digest is used when it's from Hydra's newest evaluation, or was read in
+the last 12 hours; otherwise (or when it can't be downloaded) Hydra is asked
+about each job, as it is for the jobs the digest can't answer: missing from
+it, not built yet, or failing with no known last success. Asked that way,
+Hydra is the slowest source (a request or more per package and platform):
+it's asked in the background while the other sources are, and the sync
+takes about as long as Hydra rather than all of them in turn; each server
+still gets one request at a time. It's also asked less about what's quiet:
+a job that built fine, for a package that's up to date with nothing changed
+or pending, is asked
 every 3 days (a third of them each day) instead of daily, so a new build
 failure there can show up to 3 days late; anything failing, outdated,
 newly changed or with an update PR is asked daily. The builds panel says

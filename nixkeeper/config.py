@@ -127,6 +127,17 @@ OUTDATED_STATUSES = {"outdated", "legacy"}
 HYDRA_URL = "https://hydra.nixos.org"
 HYDRA_PROJECT = "nixpkgs"
 HYDRA_JOBSET = "unstable"
+# nixkeeper-hydra's digest of Hydra's builds (sources/hydra_digest.py): every
+# job of the newest evaluation in one download, instead of a request or two
+# per job. NIXKEEPER_HYDRA_DIGEST="" turns it off (Hydra is then asked about
+# each job, as it is whenever the digest isn't current).
+HYDRA_DIGEST_URL = os.environ.get(
+    "NIXKEEPER_HYDRA_DIGEST",
+    "https://raw.githubusercontent.com/iedame/nixkeeper-hydra/data/data/",
+)
+# A digest behind Hydra's newest evaluation is still used when it was read
+# this recently (its workflow runs hourly); older, it isn't.
+HYDRA_DIGEST_MAX_AGE_HOURS = 12
 # Platforms nixpkgs builds; x86_64-darwin is no longer one of them.
 HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 # After this many lookups in a row fail, Hydra is likely down: the rest of the

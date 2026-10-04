@@ -97,6 +97,12 @@ def get(url, accept=None, safe=False, compressed=False):
     return _fetch(url, accept, safe, compressed)[0]
 
 
+def get_bytes(url):
+    """The body of url as it is (a compressed file, say), retrying as get
+    does. Returns None on 404."""
+    return _fetch(url, raw=True)[0]
+
+
 # A page as last read: its server's tag for that version of it ("etag") and
 # when it last changed ("lastModified"), as the server gave them (either can
 # be missing).
@@ -144,10 +150,11 @@ def get_page(url, cached=None, safe=False):
     return text, found
 
 
-def _fetch(url, accept=None, safe=False, compressed=False, extra=None):
+def _fetch(url, accept=None, safe=False, compressed=False, extra=None, raw=False):
     """get, also returning the answer's headers: (text, headers). text is
     None on 404 (headers None), or NOT_MODIFIED when the server says the page
-    hasn't changed (for get_page's extra headers)."""
+    hasn't changed (for get_page's extra headers). raw: the body's bytes
+    instead of text (get_bytes)."""
     headers = {"User-Agent": config.user_agent(), **(extra or {})}
     if accept:
         headers["Accept"] = accept
@@ -166,6 +173,8 @@ def _fetch(url, accept=None, safe=False, compressed=False, extra=None):
                 check_public(url)
             open_url = _safe_opener.open if safe else urllib.request.urlopen
             with open_url(request, timeout=20) as resp:
+                if raw:
+                    return resp.read(), resp.headers
                 if not safe:
                     body = resp.read()
                     if resp.headers.get("Content-Encoding") == "gzip":

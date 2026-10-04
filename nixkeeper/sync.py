@@ -25,19 +25,32 @@ from . import (
     version,
 )
 from .changes import count_master, is_outdated
-from .sources import github, hydra, nixpkgs_update, upstream
+from .sources import github, hydra, hydra_digest, nixpkgs_update, upstream
 from .sources import nixpkgs as nixpkgs_source
 
 
 def ask_hydra(attrs, nixpkgs, revision, previous, now):
-    """Hydra's answers for attrs: (where nixpkgs marks them broken, fetch()'s
-    answers for the jobs due), for hydra.add_builds. Run in the background
-    (main)."""
+    """Hydra's answers for attrs: (where nixpkgs marks them broken, answers
+    by job), for hydra.add_builds. From nixkeeper-hydra's digest for the jobs
+    it can answer (hydra_digest), and from Hydra itself for the rest that
+    are due, or for all of them when the digest isn't current. Run in the
+    background (main)."""
     started = time.monotonic()
     broken = nixpkgs_source.broken(attrs, revision)
-    jobs = hydra.due_jobs(attrs, nixpkgs, previous, now, broken)
-    print(f"Hydra, in the background: {len(jobs)} jobs due...", file=sys.stderr)
-    fetched = hydra.fetch(jobs, broken)
+    found, ask = {}, []
+    if (digest := hydra_digest.load(now)) is not None:
+        before = hydra.last_run(previous)[0]
+        found, ask = hydra_digest.answers(
+            digest, hydra.jobs(attrs, nixpkgs), broken, before
+        )
+    due = hydra.due_jobs(attrs, nixpkgs, previous, now, broken)
+    jobs = ask + [j for j in due if j not in found and j not in ask]
+    print(
+        f"Hydra, in the background: {len(found)} jobs from the digest, "
+        f"{len(jobs)} to ask Hydra about...",
+        file=sys.stderr,
+    )
+    fetched = {**found, **hydra.fetch(jobs, broken)}
     minutes = (time.monotonic() - started) / 60
     print(f"Hydra, in the background: done in {minutes:.0f} min", file=sys.stderr)
     return broken, fetched
