@@ -80,14 +80,16 @@ def for_row(row, sources):
 
 def verdict(row, version, rule):
     """How a worked-out check's version compares with what the sync has:
-    ("agree" or "disagree", what to say). rule: the row's own update check,
-    when it has one: it's compared with that instead of Repology."""
+    ("agree", "disagree" or "rule differs", what to say). rule: the row's
+    own update check, when it has one: it's compared with that instead of
+    Repology, and where they differ, the rule is what the row uses (a series
+    the worked-out check can't tell, say), so that's no disagreement."""
     nix = row.get("nixVersion")
     if rule:
         theirs = (row.get("upstream") or {}).get("version")
         if theirs is None or theirs == version:
             return "agree", f"{version}, as its rule"
-        return "disagree", f"{version}, its rule {theirs}"
+        return "rule differs", f"{version}, its rule {theirs}"
     by_github = is_newer(version, nix)
     by_repology = row.get("nixStatus") in ("outdated", "legacy")
     ref = row.get("refVersion")
@@ -185,12 +187,13 @@ def report(worked, rows, rules, failed):
             f"  {name} {row['nixVersion']}: {what}  ({worked.checks[name]['github']})"
         )
     agree, disagree = len(lines["agree"]), len(lines["disagree"])
+    differ = len(lines["rule differs"])
     used = len(worked.to_run(rules))
     print(
         f"::group::Worked-out update checks: {len(worked.checks)} of "
         f"{len(worked.repology)} packages ({used} used, {len(ruled)} with a "
         f"rule), {agree} agree with Repology or their rule, {disagree} don't, "
-        f"{len(failed)} failed",
+        f"{differ} differ from their rule (the rule is used), {len(failed)} failed",
         file=sys.stderr,
     )
     print(
@@ -198,7 +201,11 @@ def report(worked, rows, rules, failed):
         + ", ".join(f"{n} {why}" for why, n in worked.not_worked.most_common()),
         file=sys.stderr,
     )
-    for title, kind in (("Disagree", "disagree"), ("Agree", "agree")):
+    for title, kind in (
+        ("Disagree", "disagree"),
+        ("Rule differs (the rule is used)", "rule differs"),
+        ("Agree", "agree"),
+    ):
         print(f"{title}:", *lines[kind], sep="\n", file=sys.stderr)
     print("Failed (left to Repology):", file=sys.stderr)
     for name in sorted(failed):
