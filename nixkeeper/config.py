@@ -100,13 +100,11 @@ NIXPKGS_REVISION_URL = "https://channels.nixos.org/nixos-unstable/git-revision"
 NIXPKGS_BRANCH = "nixos-unstable"  # link target if the revision can't be fetched
 NIXPKGS_SOURCE_URL = "https://github.com/NixOS/nixpkgs/blob/{revision}/{path}"
 
-# repology.org has occasionally been unreachable; repology.amdmi3.ru (the
-# author's own domain) has served as a working fallback. Tried in order;
-# set REPOLOGY_BASE_URL to force a single one instead.
+# Repology's addresses, tried in order (repology.py). Only repology.org now:
+# repology.amdmi3.ru, the fallback while repology.org was down, is
+# discontinued on 2026-10-09. REPOLOGY_BASE_URL sets another one instead.
 _override = os.environ.get("REPOLOGY_BASE_URL")
-REPOLOGY_URLS = (
-    [_override] if _override else ["https://repology.org", "https://repology.amdmi3.ru"]
-)
+REPOLOGY_URLS = [_override] if _override else ["https://repology.org"]
 RETRY_DELAYS = [5, 15]  # seconds before each retry of a failed Repology request
 # A server that answers "too many requests" or "unavailable" may say how long
 # to wait (Retry-After): nixkeeper waits that long, up to this many seconds.

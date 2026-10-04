@@ -154,6 +154,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- Repology is asked at `repology.org` only: its mirror `repology.amdmi3.ru`,
+  which nixkeeper fell back to when `repology.org` failed, is discontinued
+  on 2026-10-09. A failing `repology.org` is retried as before, and
+  `REPOLOGY_BASE_URL` still sets another address.
+
 - The NixOS module always puts Nix on the jobs' path: the sync evaluates
   nixpkgs, for worked-out update checks and where nixpkgs marks packages
   broken. Before, with lists set in the configuration and no community
