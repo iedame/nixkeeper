@@ -90,6 +90,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   once a newer release is out. The community ignore rules have it for
   blackvoxel 2.5.
 
+### Security
+
+- The page builds its markup with an `html` template tag that escapes every
+  value from the data (package names, PR titles, rule reasons, ...) unless
+  it's markup the page writes itself, instead of an `escapeHtml` call at
+  each of about 50 places: a value can't add markup by a forgotten escape.
+  Nothing on the page looks different. And `?owner=&repo=`, which points the
+  page at another repository's data, now only takes names GitHub allows.
+
 ## [0.9.0] - 2026-10-01
 
 ### Added

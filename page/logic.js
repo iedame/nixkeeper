@@ -195,19 +195,49 @@ export function safeUrl(url) {
   }
 }
 
-// safeUrl, ready for an href.
-export function href(url) {
-  return escapeHtml(safeUrl(url));
+// Markup, built with the html`...` tag: every ${...} in it is escaped,
+// unless it's markup itself (another html`...`, or raw() for markup the page
+// writes itself), so text from the data can't add markup, even where an
+// escape would have been forgotten. Arrays are joined; null and undefined
+// give nothing (and the rest prints as in a template string: false as
+// "false", for aria-pressed). The result goes into innerHTML as is.
+class Markup {
+  constructor(text) {
+    this.text = text;
+  }
+  toString() {
+    return this.text;
+  }
 }
+const piece = (v) =>
+  v instanceof Markup
+    ? v.text
+    : Array.isArray(v)
+      ? v.map(piece).join('')
+      : v == null
+        ? ''
+        : escapeHtml(String(v));
+export function html(strings, ...values) {
+  return new Markup(strings.reduce((out, s, i) => out + piece(values[i - 1]) + s));
+}
+// Markup the page writes itself, as is. Never for text from the data.
+export const raw = (text) => new Markup(String(text));
 
 // "owner/repo" from ?owner=&repo=, or from a GitHub Pages project site's
-// address (a location: its hostname and pathname).
+// address (a location: its hostname and pathname). Only names GitHub allows
+// (null otherwise): the page loads that repository's data, so a link can't
+// make it build a URL out of anything else.
+const GITHUB_OWNER = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/;
+const GITHUB_NAME = /^(?!\.\.?$)[A-Za-z0-9._-]{1,100}$/;
 export function githubRepo(params, { hostname, pathname }) {
-  if (params.get('owner') && params.get('repo'))
-    return `${params.get('owner')}/${params.get('repo')}`;
-  const owner = hostname.endsWith('.github.io') ? hostname.split('.')[0] : null;
-  const seg = pathname.split('/').filter(Boolean)[0] || null;
-  return owner && seg ? `${owner}/${seg}` : null;
+  const asked = params.get('owner') && params.get('repo');
+  const owner = asked
+    ? params.get('owner')
+    : hostname.endsWith('.github.io')
+      ? hostname.split('.')[0]
+      : null;
+  const name = asked ? params.get('repo') : pathname.split('/').filter(Boolean)[0];
+  return GITHUB_OWNER.test(owner || '') && GITHUB_NAME.test(name || '') ? `${owner}/${name}` : null;
 }
 
 // The page's look: a palette and light or dark. The visitor's choice (the

@@ -5,15 +5,15 @@ import {
   compareVersions,
   computeStatus,
   daysText,
-  escapeHtml,
   hasFailure as failureOn,
   faviconKey,
   fromMaster,
-  href,
+  html,
   midway,
   onMaster,
   onPlatform,
   attentionRank as rankOn,
+  raw,
   githubRepo as repoFrom,
   safeUrl,
   shortAge,
@@ -135,8 +135,8 @@ const FILTERS = {
 // update PR (green; grey while a draft). A link to the PR when it's known.
 const badge = (cls, text, title, pr) =>
   pr
-    ? ` <a class="badge ${cls}" href="${href(pr.url)}" target="_blank" rel="noopener" title="${escapeHtml(title)}">${text}</a>`
-    : ` <span class="badge ${cls}" title="${escapeHtml(title)}">${text}</span>`;
+    ? html` <a class="badge ${cls}" href="${safeUrl(pr.url)}" target="_blank" rel="noopener" title="${title}">${text}</a>`
+    : html` <span class="badge ${cls}" title="${title}">${text}</span>`;
 
 // The update's badge: on master when that's all it waits for, else its PR.
 function prBadge(pkg) {
@@ -179,14 +179,15 @@ function openPrBadge(pkg) {
 // sentence instead. Both versions are one button: it copies the update's
 // title as nixpkgs writes it ("unciv: 4.22.1 -> 4.22.6").
 function versionCell(pkg, st) {
-  if (st === 'missing') return `<span class="badge missing">not packaged</span>`;
-  const now = escapeHtml(pkg.nixVersion);
-  const failing = notRefreshed(pkg, 'upstream')
-    ? `<span class="badge neutral" title="${escapeHtml(staleText(notRefreshed(pkg, 'upstream'), "nixkeeper's update check failing"))}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
+  if (st === 'missing') return html`<span class="badge missing">not packaged</span>`;
+  const now = pkg.nixVersion;
+  const stale = notRefreshed(pkg, 'upstream');
+  const failing = stale
+    ? html`<span class="badge neutral" title="${staleText(stale, "nixkeeper's update check failing")}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
     : '';
-  const about = `${st === 'neutral' ? `<span class="badge neutral">${escapeHtml(pkg.nixStatus)}</span>` : ''}${pkg.devel ? `<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? '<span class="badge vuln">vulnerable</span>' : ''}${pkg.staleSince ? `<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${escapeHtml(new Date(pkg.staleSince).toLocaleString())}">not refreshed</span>` : ''}`;
+  const about = html`${st === 'neutral' ? html`<span class="badge neutral">${pkg.nixStatus}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : ''}`;
   if (st !== 'warn')
-    return `<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
+    return html`<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
   const merged = waitingForChannel(pkg);
   const title = updateTitle(pkg);
@@ -197,23 +198,23 @@ function versionCell(pkg, st) {
     // Outdated, but no newer version known (Repology says outdated without
     // one): say so, rather than a bare "?".
     if (!to)
-      return `<span class="${cls}" aria-hidden="true"><span class="arrow">→</span><span class="unknown">newer version unknown</span></span>`;
-    return `<span class="${cls}" aria-hidden="true" title="${escapeHtml(to)}"><span class="arrow">→</span><span class="same">${escapeHtml(d.same)}</span><span class="ref${colour}">${escapeHtml(d.to)}</span></span>`;
+      return html`<span class="${cls}" aria-hidden="true"><span class="arrow">→</span><span class="unknown">newer version unknown</span></span>`;
+    return html`<span class="${cls}" aria-hidden="true" title="${to}"><span class="arrow">→</span><span class="same">${d.same}</span><span class="ref${colour}">${d.to}</span></span>`;
   };
   // Master partway there: its own line, with its badge, between the two.
   const mid = midway(pkg);
   const steps = mid
-    ? `${step('v-mid', pkg.nixVersion, mid, ' merged')}${step('v-next', mid, target, '')}`
+    ? html`${step('v-mid', pkg.nixVersion, mid, ' merged')}${step('v-next', mid, target, '')}`
     : step('v-next', pkg.nixVersion, target, merged ? ' merged' : '');
   const said = mid
-    ? `${now}, on master ${escapeHtml(mid)}, newest ${escapeHtml(target || 'unknown')}`
-    : `${now}, newest ${escapeHtml(target || 'unknown')}`;
-  return `<div class="vcell${mid ? ' three' : ''}">
-    <button type="button" class="vcopy" data-copy="${escapeHtml(title || '')}" title="Copy “${escapeHtml(title || '')}”">
+    ? `${now}, on master ${mid}, newest ${target || 'unknown'}`
+    : `${now}, newest ${target || 'unknown'}`;
+  return html`<div class="vcell${mid ? ' three' : ''}">
+    <button type="button" class="vcopy" data-copy="${title || ''}" title="Copy “${title || ''}”">
     <span class="v-now"><span class="v" aria-hidden="true">${now}</span><span class="sr-only">${said}</span></span>
     ${steps}
     </button>
-    <span class="v-tags top">${about}</span>${mid ? `<span class="v-tags mid">${masterBadge(pkg)}</span>` : ''}
+    <span class="v-tags top">${about}</span>${mid ? html`<span class="v-tags mid">${masterBadge(pkg)}</span>` : ''}
     <span class="v-tags bottom">${mid ? openPrBadge(pkg) : prBadge(pkg)}${failing}</span>
   </div>`;
 }
@@ -222,7 +223,7 @@ function versionCell(pkg, st) {
 // or violet when the update is merged and waiting for the channel.
 function ageTag(pkg, st) {
   if (st !== 'warn' || !pkg.outdatedSince) return '';
-  return `<span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${escapeHtml(longDate(pkg.outdatedSince))}">${shortAge(pkg.outdatedSince)}</span>`;
+  return html`<span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${longDate(pkg.outdatedSince)}">${shortAge(pkg.outdatedSince)}</span>`;
 }
 
 // Copies an update's title, and says so on the button for a moment. The
@@ -351,8 +352,8 @@ function showListProblems(problems) {
   if (!el) return;
   el.hidden = problems.length === 0;
   el.innerHTML = problems.length
-    ? `⚠ ${problems.length === 1 ? 'A problem' : `${problems.length} problems`} in the package lists, found by the last sync:
-      <ul>${problems.map((p) => `<li>${escapeHtml(p)}</li>`).join('')}</ul>`
+    ? html`⚠ ${problems.length === 1 ? 'A problem' : `${problems.length} problems`} in the package lists, found by the last sync:
+      <ul>${problems.map((p) => html`<li>${p}</li>`)}</ul>`
     : '';
 }
 
@@ -382,8 +383,8 @@ async function loadIndex() {
     document.getElementById('search').disabled = false;
     render(currentFiltered());
   } catch {
-    content.innerHTML = `<div class="error">
-      Couldn't load <code>${escapeHtml(dataUrl('index.json'))}</code>.<br>
+    content.innerHTML = html`<div class="error">
+      Couldn't load <code>${dataUrl('index.json')}</code>.<br>
       Check that the sync has run at least once (and, on GitHub, that the repo is public).
     </div>`;
   }
@@ -410,23 +411,21 @@ function renderStats() {
   const base = packages.filter((p) => inPlatform(p) && inList(p));
   setFavicon(base);
   renderLists();
-  const buttons = Object.entries(FILTERS)
-    .map(([key, f]) => {
-      const count = base.filter(f.test).length;
-      // "vulnerable" only shows up when something is actually flagged.
-      if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
-      const pressed = activeFilter === key;
-      return `<button class="stat-btn" data-filter="${key}" aria-pressed="${pressed}"
-      ${!count && key !== 'all' && !pressed ? 'disabled' : ''}>
-      <b${f.color ? ` style="color:${f.color}"` : ''}>${count}</b> ${f.label}</button>`;
-    })
-    .join('');
+  const buttons = Object.entries(FILTERS).map(([key, f]) => {
+    const count = base.filter(f.test).length;
+    // "vulnerable" only shows up when something is actually flagged.
+    if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
+    const pressed = activeFilter === key;
+    return html`<button class="stat-btn" data-filter="${key}" aria-pressed="${pressed}"
+      ${!count && key !== 'all' && !pressed ? raw('disabled') : ''}>
+      <b${f.color ? html` style="color:${f.color}"` : ''}>${count}</b> ${f.label}</button>`;
+  });
   const stale =
     !checkedAt || Date.now() - new Date(checkedAt).getTime() > STALE_AFTER_HOURS * 3600e3;
   const platformChip = platformFilter
-    ? `<button class="plat-filter" title="Show all platforms">${PLATFORMS[platformFilter].label} only ✕</button>`
+    ? html`<button class="plat-filter" title="Show all platforms">${PLATFORMS[platformFilter].label} only ✕</button>`
     : '';
-  document.getElementById('stats').innerHTML = `${buttons}${platformChip}`;
+  document.getElementById('stats').innerHTML = html`${buttons}${platformChip}`;
   const checked = document.getElementById('checked');
   checked.classList.toggle('stale', stale);
   // The exact time on hover: "checked 4h ago" is friendly, but vague.
@@ -458,22 +457,20 @@ function renderLists() {
     return;
   }
   const base = packages.filter(inPlatform);
-  el.innerHTML = `<span class="lists-label">lists</span>${names
-    .map((name) => {
-      const pressed = listFilter === name;
-      const count = base.filter((p) => (p.lists || []).includes(name)).length;
-      return `<button class="stat-btn" type="button" data-list="${escapeHtml(name)}" aria-pressed="${pressed}"
-        title="${pressed ? 'Show every list' : `Show only the ${escapeHtml(name)} list (shareable: it's in the address)`}">
-        <b>${count}</b> ${escapeHtml(name)}</button>`;
-    })
-    .join('')}`;
+  el.innerHTML = html`<span class="lists-label">lists</span>${names.map((name) => {
+    const pressed = listFilter === name;
+    const count = base.filter((p) => (p.lists || []).includes(name)).length;
+    return html`<button class="stat-btn" type="button" data-list="${name}" aria-pressed="${pressed}"
+        title="${pressed ? 'Show every list' : `Show only the ${name} list (shareable: it's in the address)`}">
+        <b>${count}</b> ${name}</button>`;
+  })}`;
 }
 
 function render(list) {
   renderStats();
   const content = document.getElementById('content');
   if (!list.length) {
-    content.innerHTML = `<div class="empty">No packages match${activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}.</div>`;
+    content.innerHTML = html`<div class="empty">No packages match${activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}.</div>`;
     return;
   }
   content.innerHTML = `<div class="wrap"><table>
@@ -491,8 +488,8 @@ function render(list) {
     const tr = document.createElement('tr');
     tr.className = 'row';
     tr.tabIndex = 0;
-    tr.innerHTML = `
-      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${escapeHtml(pkg.name)}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
+    tr.innerHTML = html`
+      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${pkg.name}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
       <td class="c-ver ver mono">${verCell}</td>
       <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
       <td class="c-build">${buildCell(pkg)}</td>
@@ -568,18 +565,18 @@ const staleText = (info, what) =>
   `${what} since ${longDate(info.since)} (${daysText(info.since)}): ${info.reason}`;
 // The same, as a line at the top of a panel.
 const staleNote = (info, what, after) =>
-  info ? `<div class="stale-note">⚠ ${escapeHtml(staleText(info, what))}. ${after}</div>` : '';
+  info ? html`<div class="stale-note">⚠ ${staleText(info, what)}. ${after}</div>` : '';
 
 // quiet: nothing that needs attention, so it's drawn muted, without a dot
 // ("none reported" as a dash), and the phone layout leaves it out. Only
 // what needs a look keeps its colour.
-function failureButton(kind, dot, text, extra = '', stale = null, quiet = false) {
+function failureButton(kind, dot, text, title, stale = null, quiet = false) {
   const calm = quiet && !stale;
-  const shown = calm && text === 'none reported' ? '<span aria-hidden="true">—</span>' : text;
-  return `<button class="failure-btn${dot === 'missing' ? ' failing' : ''}${calm ? ' calm' : ''}" type="button" data-kind="${kind}"${calm ? ` data-quiet aria-label="${kind}: ${text}"` : ''} ${extra}>
+  const shown = calm && text === 'none reported' ? html`<span aria-hidden="true">—</span>` : text;
+  return html`<button class="failure-btn${dot === 'missing' ? ' failing' : ''}${calm ? ' calm' : ''}" type="button" data-kind="${kind}"${calm ? html` data-quiet aria-label="${kind}: ${text}"` : ''} aria-expanded="false" title="${title}">
     <span class="status-dot ${dot}"></span><span class="cell-label">${kind}:</span>${shown}${
       stale
-        ? ` <span class="stale-tag" title="${escapeHtml(staleText(stale, 'Not refreshed'))}">not refreshed</span>`
+        ? html` <span class="stale-tag" title="${staleText(stale, 'Not refreshed')}">not refreshed</span>`
         : ''
     }</button>`;
 }
@@ -591,16 +588,9 @@ function hydraBuildsIt(pkg) {
 }
 
 function buildCell(pkg) {
-  if (!pkg.builds) return '<span class="failure-na" title="Not in nixpkgs">—</span>';
+  if (!pkg.builds) return html`<span class="failure-na" title="Not in nixpkgs">—</span>`;
   const button = (dot, text, quiet = false) =>
-    failureButton(
-      'build',
-      dot,
-      text,
-      'aria-expanded="false" title="Show Hydra builds"',
-      notRefreshed(pkg, 'builds'),
-      quiet,
-    );
+    failureButton('build', dot, text, 'Show Hydra builds', notRefreshed(pkg, 'builds'), quiet);
   if (failedBuilds(pkg).length) return button('missing', 'failure reported');
   // Known failures: shown, but not counted as failed.
   if (buildsWith(pkg, 'broken').length) return button('caution', 'marked broken');
@@ -611,13 +601,14 @@ function buildCell(pkg) {
 // nixpkgs-update's latest attempt. `update` is null when the bot never tried
 // and missing for packages not in nixpkgs.
 function updateCell(pkg) {
-  if (pkg.update === undefined) return '<span class="failure-na" title="Not in nixpkgs">—</span>';
+  if (pkg.update === undefined)
+    return html`<span class="failure-na" title="Not in nixpkgs">—</span>`;
   const button = (dot, text, quiet = false) =>
     failureButton(
       'update',
       dot,
       text,
-      'aria-expanded="false" title="Show the latest nixpkgs-update attempt"',
+      'Show the latest nixpkgs-update attempt',
       notRefreshed(pkg, 'update'),
       quiet,
     );
@@ -633,7 +624,7 @@ function updateCell(pkg) {
 }
 
 const prLink = (n, text) =>
-  `<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${n}" target="_blank" rel="noopener">${text}</a>`;
+  html`<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${n}" target="_blank" rel="noopener">${text}</a>`;
 const UPDATE_OUTCOME = {
   failed: { dot: 'missing', text: () => 'failed' },
   // nixpkgs has moved on since the attempt (updated another way): in the
@@ -646,10 +637,10 @@ const UPDATE_OUTCOME = {
       const what = u.supersededOutcome === 'cantUpdate' ? "couldn't update it" : 'failed';
       const version = u.to === '1' ? pkg.nixVersion : u.to;
       return u.supersededOn === 'ignored'
-        ? `failed trying <span class="mono">${escapeHtml(version)}</span>, a version ignored by ${u.community ? 'a community rule' : 'a manual rule'}: ${escapeHtml(u.reason)}`
+        ? html`failed trying <span class="mono">${version}</span>, a version ignored by ${u.community ? 'a community rule' : 'a manual rule'}: ${u.reason}`
         : u.supersededOn === 'master'
-          ? `${what}, but master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (merged, waiting for nixos-unstable)`
-          : `${what}, but nixpkgs has moved on to <span class="mono">${escapeHtml(pkg.nixVersion)}</span> since`;
+          ? html`${what}, but master already has <span class="mono">${onMaster(pkg)}</span> (merged, waiting for nixos-unstable)`
+          : html`${what}, but nixpkgs has moved on to <span class="mono">${pkg.nixVersion}</span> since`;
     },
   },
   // Every way the bot has of updating a package declined (the excerpt says
@@ -659,10 +650,10 @@ const UPDATE_OUTCOME = {
     text: () =>
       "couldn't update it: none of the bot's ways of updating a package apply here. Update it by hand, or give the package an updateScript so the bot can next time",
   },
-  prOpened: { dot: 'ok', text: (u) => `opened ${prLink(u.pr, `PR #${u.pr} ↗`)}` },
+  prOpened: { dot: 'ok', text: (u) => html`opened ${prLink(u.pr, `PR #${u.pr} ↗`)}` },
   prExists: {
     dot: 'ok',
-    text: (u) => `a PR was already open${u.pr ? ` (${prLink(u.pr, `#${u.pr} ↗`)})` : ''}`,
+    text: (u) => html`a PR was already open${u.pr ? html` (${prLink(u.pr, `#${u.pr} ↗`)})` : ''}`,
   },
   noChange: { dot: 'ok', text: () => 'nothing to update' },
   other: { dot: 'neutral', text: () => 'finished without a recognisable result' },
@@ -676,7 +667,7 @@ function fillUpdate(pkg, el) {
     'Showing the last known attempt.',
   );
   if (!u) {
-    el.innerHTML = `${stale}<div class="nix-line">nixpkgs-update hasn't tried to update this package (it may have no update source it understands).</div>`;
+    el.innerHTML = html`${stale}<div class="nix-line">nixpkgs-update hasn't tried to update this package (it may have no update source it understands).</div>`;
     return;
   }
   const dir = u.log.slice(0, u.log.lastIndexOf('/') + 1); // every attempt's log
@@ -685,18 +676,18 @@ function fillUpdate(pkg, el) {
   // "0 -> 1" means the package's updateScript picks the version.
   const versions =
     u.from && !(u.from === '0' && u.to === '1')
-      ? ` · <span class="mono">${escapeHtml(u.from)} → ${escapeHtml(u.to)}</span>`
+      ? html` · <span class="mono">${u.from} → ${u.to}</span>`
       : '';
   const o = UPDATE_OUTCOME[u.outcome] || UPDATE_OUTCOME.other;
-  el.innerHTML = `${stale}
-    <div class="nix-line">Latest nixpkgs-update attempt${(pkg.attrs || []).length > 1 ? ` at <span class="mono">${escapeHtml(u.attr)}</span>` : ''} · ${escapeHtml(longDate(day))} (${shortAge(day)} ago)${versions}</div>
+  el.innerHTML = html`${stale}
+    <div class="nix-line">Latest nixpkgs-update attempt${(pkg.attrs || []).length > 1 ? html` at <span class="mono">${u.attr}</span>` : ''} · ${longDate(day)} (${shortAge(day)} ago)${versions}</div>
     <div class="build-list"><div class="build-line">
       <span class="status-dot ${o.dot}"></span><span class="st ${o.dot}">${o.text(u, pkg)}</span>
     </div></div>
-    ${u.excerpt?.length ? `<pre class="log-excerpt mono">${u.excerpt.map(escapeHtml).join('\n')}</pre>` : ''}
+    ${u.excerpt?.length ? html`<pre class="log-excerpt mono">${u.excerpt.join('\n')}</pre>` : ''}
     <div class="detail-row">
-      <a class="files-link" href="${href(u.log)}" target="_blank" rel="noopener">log ↗</a>
-      <a class="files-link" href="${href(dir)}" target="_blank" rel="noopener">all attempts ↗</a>
+      <a class="files-link" href="${safeUrl(u.log)}" target="_blank" rel="noopener">log ↗</a>
+      <a class="files-link" href="${safeUrl(dir)}" target="_blank" rel="noopener">all attempts ↗</a>
     </div>`;
 }
 
@@ -717,63 +708,62 @@ function buildLine(pkg, b) {
   // The versions only when they differ: the same version means something else
   // broke it (a dependency, the toolchain), not the update.
   const versionsDiffer = b.version && b.lastSuccessVersion && b.version !== b.lastSuccessVersion;
-  const at = versionsDiffer && b.status === 'failed' ? ` at ${escapeHtml(b.version)}` : '';
+  const at = versionsDiffer && b.status === 'failed' ? ` at ${b.version}` : '';
   let lastGood = '';
   if (versionsDiffer) {
-    const v = escapeHtml(b.lastSuccessVersion);
+    const v = b.lastSuccessVersion;
     lastGood = b.lastSuccessBuild
-      ? ` at <a href="${HYDRA}/build/${b.lastSuccessBuild}" target="_blank" rel="noopener">${v} ↗</a>,`
+      ? html` at <a href="${HYDRA}/build/${b.lastSuccessBuild}" target="_blank" rel="noopener">${v} ↗</a>,`
       : ` at ${v},`;
   }
   const since =
     'lastSuccess' in b
-      ? `<span class="since">${b.lastSuccess ? `last succeeded${lastGood} ${escapeHtml(longDate(b.lastSuccess))} (${shortAge(b.lastSuccess)} ago)` : 'never built successfully'}</span>`
+      ? html`<span class="since">${b.lastSuccess ? html`last succeeded${lastGood} ${longDate(b.lastSuccess)} (${shortAge(b.lastSuccess)} ago)` : 'never built successfully'}</span>`
       : '';
   let links = '';
   if (b.status === 'failed') {
-    links = `<a class="files-link" href="${HYDRA}/build/${b.build}/log" target="_blank" rel="noopener">log ↗</a>${since}`;
+    links = html`<a class="files-link" href="${HYDRA}/build/${b.build}/log" target="_blank" rel="noopener">log ↗</a>${since}`;
   } else if (b.status === 'dependency' || b.status === 'unfinished') {
-    links = `<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>${since}`;
+    links = html`<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>${since}`;
   } else if (b.status === 'broken') {
     // Where to fix it: the package's source, at the line nixpkgs points to.
-    links = `${since}${safeUrl(pkg.source) ? `<a class="files-link" href="${href(pkg.source)}" target="_blank" rel="noopener">source ↗</a>` : ''}`;
+    links = html`${since}${safeUrl(pkg.source) ? html`<a class="files-link" href="${safeUrl(pkg.source)}" target="_blank" rel="noopener">source ↗</a>` : ''}`;
   } else if (b.build) {
-    links = `<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>`;
+    links = html`<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>`;
   }
-  return `<div class="build-line">
+  return html`<div class="build-line">
     <span class="status-dot ${s.dot}"></span>
-    <span class="mono sys">${escapeHtml(b.system)}</span>
-    ${multi ? `<span class="mono attr">${escapeHtml(b.attr)}</span>` : ''}
+    <span class="mono sys">${b.system}</span>
+    ${multi ? html`<span class="mono attr">${b.attr}</span>` : ''}
     <span class="st ${s.dot}">${s.text}${at}</span>${links}
   </div>`;
 }
 
 function fillBuilds(pkg, el) {
-  const jobset = `<span class="mono">nixpkgs/unstable</span>`;
+  const jobset = html`<span class="mono">nixpkgs/unstable</span>`;
   let body;
   if (pkg.unfree) {
-    body = `<div class="nix-line">Hydra doesn't build unfree packages, so there are no build results for this one.</div>`;
+    body = html`<div class="nix-line">Hydra doesn't build unfree packages, so there are no build results for this one.</div>`;
   } else if (!hydraBuildsIt(pkg)) {
-    body = `<div class="nix-line">Hydra doesn't build this package (nixpkgs may exclude it with <span class="mono">hydraPlatforms</span>).</div>`;
+    body = html`<div class="nix-line">Hydra doesn't build this package (nixpkgs may exclude it with <span class="mono">hydraPlatforms</span>).</div>`;
   } else {
     const darwin = pkg.platforms === null || pkg.platforms?.darwin;
-    body = `<div class="nix-line">Hydra builds of nixpkgs master (jobset ${jobset})</div>
-      <div class="build-list">${pkg.builds.map((b) => buildLine(pkg, b)).join('')}</div>
-      ${darwin ? '<div class="build-note">x86_64-darwin is no longer built by nixpkgs.</div>' : ''}`;
+    body = html`<div class="nix-line">Hydra builds of nixpkgs master (jobset ${jobset})</div>
+      <div class="build-list">${pkg.builds.map((b) => buildLine(pkg, b))}</div>
+      ${darwin ? html`<div class="build-note">x86_64-darwin is no longer built by nixpkgs.</div>` : ''}`;
   }
   const jobLinks = (pkg.builds || [])
     .filter((b) => b.status !== 'notBuilt')
     .map(
       (b) =>
-        `<a class="files-link" href="${HYDRA}/job/nixpkgs/unstable/${encodeURIComponent(`${b.attr}.${b.system}`)}" target="_blank" rel="noopener">${escapeHtml(pkg.attrs.length > 1 ? `${b.attr}.${b.system}` : b.system)} job ↗</a>`,
-    )
-    .join('');
+        html`<a class="files-link" href="${HYDRA}/job/nixpkgs/unstable/${encodeURIComponent(`${b.attr}.${b.system}`)}" target="_blank" rel="noopener">${pkg.attrs.length > 1 ? `${b.attr}.${b.system}` : b.system} job ↗</a>`,
+    );
   const stale = staleNote(
     notRefreshed(pkg, 'builds'),
     'Not refreshed',
     'Showing the last known results.',
   );
-  el.innerHTML = `${stale}${body}${jobLinks ? `<div class="detail-row">${jobLinks}</div>` : ''}`;
+  el.innerHTML = html`${stale}${body}${jobLinks.length ? html`<div class="detail-row">${jobLinks}</div>` : ''}`;
 }
 
 // From nixpkgs meta.platforms; null means nixpkgs doesn't restrict it.
@@ -781,17 +771,16 @@ function platformTags(pkg) {
   const pl = pkg.platforms;
   if (pl === undefined) return '';
   if (pl === null)
-    return `<span class="plats"><span class="plat any" title="nixpkgs doesn't restrict its platforms">any platform</span></span>`;
+    return html`<span class="plats"><span class="plat any" title="nixpkgs doesn't restrict its platforms">any platform</span></span>`;
   const tags = Object.entries(PLATFORMS)
     .filter(([key]) => pl[key])
     .map(
       ([key, p]) =>
-        `<button class="plat" type="button" data-platform="${key}" aria-pressed="${platformFilter === key}"
+        html`<button class="plat" type="button" data-platform="${key}" aria-pressed="${platformFilter === key}"
       title="${platformFilter === key ? 'Show all platforms' : `Show only packages available on ${p.label}`}">${p.label}</button>`,
-    )
-    .join('');
+    );
   // Together, so they wrap as one.
-  return tags && `<span class="plats">${tags}</span>`;
+  return tags.length ? html`<span class="plats">${tags}</span>` : '';
 }
 
 // Open nixpkgs PRs / issues with the package's attribute name in the title. Counts come from
@@ -800,10 +789,10 @@ function githubLinks(pkg) {
   const term = pkg.searchTerm || pkg.name;
   const link = (kind, path, label, count) => {
     const q = encodeURIComponent(`is:${kind} state:open in:title ${term}`);
-    return `<a class="gh-btn" href="https://github.com/NixOS/nixpkgs/${path}?q=${q}" target="_blank" rel="noopener"
-      title="Open nixpkgs ${label} with ${escapeHtml(term)} in the title"${count === 0 ? ' data-zero' : ''}>${label}${count != null ? ` <b>${count}</b>` : ''}</a>`;
+    return html`<a class="gh-btn" href="https://github.com/NixOS/nixpkgs/${path}?q=${q}" target="_blank" rel="noopener"
+      title="Open nixpkgs ${label} with ${term} in the title"${count === 0 ? raw(' data-zero') : ''}>${label}${count != null ? html` <b>${count}</b>` : ''}</a>`;
   };
-  return `<span class="gh-links">${link('pr', 'pulls', 'PRs', pkg.openPRs)}${link('issue', 'issues', 'issues', pkg.openIssues)}</span>`;
+  return html`<span class="gh-links">${link('pr', 'pulls', 'PRs', pkg.openPRs)}${link('issue', 'issues', 'issues', pkg.openIssues)}</span>`;
 }
 
 // "…/pkgs/by-name/we/wesnoth/package.nix#L147" -> "package.nix"
@@ -832,12 +821,12 @@ async function fillDetail(pkg, el) {
   const st = computeStatus(pkg);
   const up = pkg.upstream;
   // "in the wesnoth/wesnoth tags" or "on www.barebones.com".
-  const upLabel = up ? escapeHtml(up.label || `${up.repo} tags`) : '';
+  const upLabel = up ? up.label || `${up.repo} tags` : '';
   const upLink = up
-    ? `${up.repo ? 'in the' : 'on'} ${safeUrl(up.url) ? `<a class="files-link" href="${href(up.url)}" target="_blank" rel="noopener">${upLabel} ↗</a>` : upLabel}`
+    ? html`${up.repo ? 'in the' : 'on'} ${safeUrl(up.url) ? html`<a class="files-link" href="${safeUrl(up.url)}" target="_blank" rel="noopener">${upLabel} ↗</a>` : upLabel}`
     : '';
   const since = pkg.outdatedSince
-    ? ` — outdated since ${escapeHtml(longDate(pkg.outdatedSince))} (${daysText(pkg.outdatedSince)})`
+    ? ` — outdated since ${longDate(pkg.outdatedSince)} (${daysText(pkg.outdatedSince)})`
     : '';
   const repologyOutdated = ['outdated', 'legacy'].includes(pkg.nixStatus);
   // A branch check (unstable versions): how many commits nixpkgs is behind,
@@ -855,16 +844,16 @@ async function fillDetail(pkg, el) {
   // A package updated together with another (follows): which, and that its
   // newest version and update PRs are that package's.
   const follows = up?.follows
-    ? `updated together with <b>${escapeHtml(up.follows)}</b> (${communityCheck(pkg) ? 'a community rule' : 'your update checks'}): its newest version and update PRs count for this package too`
+    ? html`updated together with <b>${up.follows}</b> (${communityCheck(pkg) ? 'a community rule' : 'your update checks'}): its newest version and update PRs count for this package too`
     : '';
   // When the update check is what makes it outdated, say where the newer
   // version came from, and how it compares with Repology.
   const upstreamLine = () =>
     follows
-      ? `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>, behind <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span>: it's ${follows}${since}.`
-      : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>; ${communityCheck(pkg) ? 'a community update check' : "nixkeeper's update check"} found <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(up.version)}</span> ${upLink}${
+      ? html`nixpkgs unstable has <span class="mono" style="font-weight:600">${pkg.nixVersion}</span>, behind <span class="mono" style="font-weight:600;color:var(--warn)">${up.version}</span>: it's ${follows}${since}.`
+      : html`nixpkgs unstable has <span class="mono" style="font-weight:600">${pkg.nixVersion}</span>; ${communityCheck(pkg) ? 'a community update check' : "nixkeeper's update check"} found <span class="mono" style="font-weight:600;color:var(--warn)">${up.version}</span> ${upLink}${
           pkg.refVersion !== up.version
-            ? `; Repology's newest is <span class="mono">${escapeHtml(pkg.refVersion)}</span>`
+            ? html`; Repology's newest is <span class="mono">${pkg.refVersion}</span>`
             : repologyOutdated
               ? ''
               : up.commit
@@ -875,23 +864,23 @@ async function fillDetail(pkg, el) {
   // so plainly, with the last result it's still using.
   const failing = notRefreshed(pkg, 'upstream');
   const checkNote = failing
-    ? `<div class="stale-note">⚠ ${escapeHtml(staleText(failing, "nixkeeper's update check has been failing"))}.${
+    ? html`<div class="stale-note">⚠ ${staleText(failing, "nixkeeper's update check has been failing")}.${
         up
-          ? ` Still using its last result: <span class="mono">${escapeHtml(up.version)}</span>${up.checkedAt ? ` (${escapeHtml(longDate(up.checkedAt))})` : ''}.`
+          ? html` Still using its last result: <span class="mono">${up.version}</span>${up.checkedAt ? ` (${longDate(up.checkedAt)})` : ''}.`
           : ' It has no result yet.'
       } ${
         communityCheck(pkg)
-          ? `It's a community rule (<span class="mono">community/update-checks.nix</span> in nixkeeper): report it there, or give this package a rule of your own in your update checks.`
-          : 'Fix it in <span class="mono">package-lists/update-checks.nix</span>.'
+          ? html`It's a community rule (<span class="mono">community/update-checks.nix</span> in nixkeeper): report it there, or give this package a rule of your own in your update checks.`
+          : html`Fix it in <span class="mono">package-lists/update-checks.nix</span>.`
       }</div>`
     : '';
   // An up-to-date rule: Repology gets this version wrong, so it counts as
   // up to date. What Repology said, and why the rule says otherwise.
   const rule = pkg.upToDate;
   const ruleText = rule
-    ? ` — up to date by ${rule.community ? 'a community rule' : 'a manual rule'}: ${escapeHtml(rule.reason || '')} (Repology calls it <span class="mono">${escapeHtml(rule.status || '?')}</span>${
+    ? html` — up to date by ${rule.community ? 'a community rule' : 'a manual rule'}: ${rule.reason || ''} (Repology calls it <span class="mono">${rule.status || '?'}</span>${
         rule.newest
-          ? `, with <span class="mono">${escapeHtml(rule.newest)}</span> as the newest elsewhere`
+          ? html`, with <span class="mono">${rule.newest}</span> as the newest elsewhere`
           : ''
       }).`
     : '';
@@ -899,37 +888,39 @@ async function fillDetail(pkg, el) {
     up?.newer && !fromMaster(pkg)
       ? upstreamLine()
       : st === 'missing'
-        ? `Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
-        : `nixpkgs unstable has <span class="mono" style="font-weight:600">${escapeHtml(pkg.nixVersion)}</span>${
+        ? html`Not found in <span class="mono">nix_unstable</span> — nixpkgs doesn't currently package this.`
+        : html`nixpkgs unstable has <span class="mono" style="font-weight:600">${pkg.nixVersion}</span>${
             rule
               ? ruleText
               : st === 'warn' && fromMaster(pkg)
                 ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
                 : st === 'warn'
-                  ? `, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${escapeHtml(pkg.refVersion || '?')}</span>${since}`
+                  ? html`, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion || '?'}</span>${since}`
                   : st === 'neutral'
-                    ? ` — Repology classifies this version as <span class="mono">${escapeHtml(pkg.nixStatus)}</span>.`
+                    ? html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
                     : ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${others.length} other ${others.length === 1 ? 'repository' : 'repositories'}.`
           }${
             up && !up.newer && !failing
               ? follows
-                ? ` It's ${follows}.`
+                ? html` It's ${follows}.`
                 : up.behind
-                  ? ` nixkeeper's update check: ${behind} ${upLink} (up to <span class="mono">${escapeHtml(up.version)}</span>), not counted as outdated until ${limits}.`
-                  : ` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${escapeHtml(up.version)}</span>.`
+                  ? html` nixkeeper's update check: ${behind} ${upLink} (up to <span class="mono">${up.version}</span>), not counted as outdated until ${limits}.`
+                  : html` nixkeeper's update check ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${up.version}</span>.`
               : ''
           }`;
+  // Where master is: the PR that brought it, and whether Hydra built it.
+  const masterSaid = [
+    pkg.masterPR &&
+      html`merged in <a class="files-link" href="${safeUrl(pkg.masterPR.url)}" target="_blank" rel="noopener">#${pkg.masterPR.number} ↗</a>`,
+    pkg.master ? 'built by Hydra' : 'not built by Hydra yet',
+  ]
+    .filter(Boolean)
+    .flatMap((part, i) => (i ? [', ', part] : [part]));
 
-  el.innerHTML = `
+  el.innerHTML = html`
     <div class="nix-line">${nixLine}</div>${
       onMaster(pkg)
-        ? `<div class="master-note">master already has <span class="mono">${escapeHtml(onMaster(pkg))}</span> (${[
-            pkg.masterPR &&
-              `merged in <a class="files-link" href="${href(pkg.masterPR.url)}" target="_blank" rel="noopener">#${pkg.masterPR.number} ↗</a>`,
-            pkg.master ? 'built by Hydra' : 'not built by Hydra yet',
-          ]
-            .filter(Boolean)
-            .join(', ')})${
+        ? html`<div class="master-note">master already has <span class="mono">${onMaster(pkg)}</span> (${masterSaid})${
             waitingForChannel(pkg)
               ? ': the update is merged, and reaches nixos-unstable when the channel next advances, usually within a few days.'
               : ', not in nixos-unstable yet.'
@@ -937,28 +928,28 @@ async function fillDetail(pkg, el) {
         : ''
     }${checkNote}${
       pkg.nixVulnerable
-        ? `<div class="vuln-note">⚠ Repology flags nixpkgs' version <span class="mono">${escapeHtml(pkg.nixVersion)}</span> as vulnerable.${
+        ? html`<div class="vuln-note">⚠ Repology flags nixpkgs' version <span class="mono">${pkg.nixVersion}</span> as vulnerable.${
             pkg.project
-              ? ` <a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/cves" target="_blank" rel="noopener">Known CVEs ↗</a>`
+              ? html` <a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/cves" target="_blank" rel="noopener">Known CVEs ↗</a>`
               : ''
           }</div>`
         : ''
     }
     ${
       others.length
-        ? `<div class="other-label">Compared against</div><div class="repo-chips">
-      ${others.map((e, i) => `<span class="repo-chip ${e.status === 'newest' && e.version !== pkg.nixVersion ? 'ahead' : ''}"${i >= COMPARED_SHOWN ? ' hidden' : ''}>${escapeHtml(e.repo)} <span class="v mono">${escapeHtml(e.version || '?')}</span></span>`).join('')}${
+        ? html`<div class="other-label">Compared against</div><div class="repo-chips">
+      ${others.map((e, i) => html`<span class="repo-chip ${e.status === 'newest' && e.version !== pkg.nixVersion ? 'ahead' : ''}"${i >= COMPARED_SHOWN ? raw(' hidden') : ''}>${e.repo} <span class="v mono">${e.version || '?'}</span></span>`)}${
         others.length > COMPARED_SHOWN
-          ? `<button type="button" class="more-btn" aria-expanded="false">Show all ${others.length}</button>`
+          ? html`<button type="button" class="more-btn" aria-expanded="false">Show all ${others.length}</button>`
           : ''
       }
     </div>`
         : ''
     }
     <div class="detail-row">
-      ${homepage ? `<a class="files-link" href="${href(homepage)}" target="_blank" rel="noopener">Homepage ↗</a>` : ''}
-      ${safeUrl(pkg.source) ? `<a class="files-link" href="${href(pkg.source)}" target="_blank" rel="noopener" title="Where nixpkgs defines this package">${escapeHtml(sourceFileName(pkg.source))} ↗</a>` : ''}
-      ${pkg.project ? `<a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>` : ''}
+      ${homepage ? html`<a class="files-link" href="${homepage}" target="_blank" rel="noopener">Homepage ↗</a>` : ''}
+      ${safeUrl(pkg.source) ? html`<a class="files-link" href="${safeUrl(pkg.source)}" target="_blank" rel="noopener" title="Where nixpkgs defines this package">${sourceFileName(pkg.source)} ↗</a>` : ''}
+      ${pkg.project ? html`<a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">View on Repology ↗</a>` : ''}
     </div>
   `;
   el.querySelector('.more-btn')?.addEventListener('click', (e) => {
