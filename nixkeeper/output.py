@@ -9,13 +9,13 @@ from . import config
 
 
 def data_file(key):
-    """File name for a project's raw data: Repology names like python:requests
+    """File name for a project's Repology data: names like python:requests
     contain characters that don't belong in file names or URLs."""
     return re.sub(r"[^A-Za-z0-9._+-]", "_", key) + ".json"
 
 
 def write(projects, index, out_dir=None):
-    """Write each project's raw Repology data plus index.json. Built from
+    """Write each project's Repology data plus index.json. Built from
     scratch in a temporary folder and only then swapped in for out_dir, so
     removed packages disappear and a failed run leaves the previous data intact."""
     out_dir = out_dir or config.OUT_DIR  # the setting now, not at import

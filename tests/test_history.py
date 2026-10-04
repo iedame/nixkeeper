@@ -1,6 +1,9 @@
+import json
+import os
+import tempfile
 import unittest
 
-from nixkeeper.history import add_outdated_since
+from nixkeeper.history import add_outdated_since, previous_project
 
 
 class OutdatedSince(unittest.TestCase):
@@ -46,3 +49,42 @@ class OutdatedSince(unittest.TestCase):
             self.run_with("outdated", {"name": "unciv", "nixStatus": "outdated"}),
             self.NOW,
         )
+
+
+class PreviousProject(unittest.TestCase):
+    """A failed Repology lookup reuses the last run's file for the project."""
+
+    def test_a_file_from_before_trimming_comes_back_trimmed(self):
+        full = {
+            "repo": "arch",
+            "srcname": "unciv",
+            "binname": "unciv",
+            "version": "4.22.6",
+            "status": "newest",
+            "summary": "Civ V clone",
+        }
+        previous = {
+            "checkedAt": "2026-10-03T06:00:00+00:00",
+            "packages": [
+                {"name": "unciv", "project": "unciv", "dataFile": "unciv.json"}
+            ],
+        }
+        with tempfile.TemporaryDirectory() as out:
+            with open(os.path.join(out, "unciv.json"), "w") as f:
+                json.dump([full, {**full, "binname": "unciv-doc"}], f)
+            project, entries, since = previous_project(
+                previous, "unciv", ["unciv"], out
+            )
+        self.assertEqual(project, "unciv")
+        self.assertEqual(
+            entries,
+            [
+                {
+                    "repo": "arch",
+                    "srcname": "unciv",
+                    "version": "4.22.6",
+                    "status": "newest",
+                }
+            ],
+        )
+        self.assertEqual(since, "2026-10-03T06:00:00+00:00")

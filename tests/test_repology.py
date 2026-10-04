@@ -93,3 +93,55 @@ class Repology(unittest.TestCase):
             [c.args[0].full_url for c in urlopen.call_args_list],
             ["https://b/x", "https://a/x"],
         )
+
+
+class Trimmed(unittest.TestCase):
+    """data/ keeps only what nixkeeper reads of Repology's entries."""
+
+    FULL = {
+        "repo": "alpine_edge",
+        "srcname": "xournalpp",
+        "binname": "xournalpp",
+        "visiblename": "xournalpp",
+        "version": "1.2.8",
+        "origversion": "1.2.8-r0",
+        "status": "newest",
+        "summary": "Handwriting notetaking software",
+        "licenses": ["GPL-2.0-or-later"],
+        "maintainers": ["someone@example.org"],
+    }
+
+    def test_only_the_fields_read(self):
+        self.assertEqual(
+            repology.trimmed([self.FULL, {**self.FULL, "vulnerable": True}]),
+            [
+                {
+                    "repo": "alpine_edge",
+                    "srcname": "xournalpp",
+                    "version": "1.2.8",
+                    "status": "newest",
+                },
+                {
+                    "repo": "alpine_edge",
+                    "srcname": "xournalpp",
+                    "version": "1.2.8",
+                    "status": "newest",
+                    "vulnerable": True,
+                },
+            ],
+        )
+
+    def test_each_once_in_repologys_order(self):
+        doc = {**self.FULL, "binname": "xournalpp-doc", "summary": "Docs"}
+        arch = {**self.FULL, "repo": "arch"}
+        trimmed = repology.trimmed([self.FULL, doc, arch, self.FULL])
+        self.assertEqual([e["repo"] for e in trimmed], ["alpine_edge", "arch"])
+
+    def test_lookups_return_them_trimmed(self):
+        doc = {**self.FULL, "binname": "xournalpp-doc"}
+        with mock.patch(
+            "urllib.request.urlopen", return_value=response([self.FULL, doc])
+        ):
+            name, entries = repology.project_by_name("xournalpp")
+        self.assertEqual(name, "xournalpp")
+        self.assertEqual(entries, repology.trimmed([self.FULL]))

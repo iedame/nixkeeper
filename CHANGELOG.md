@@ -26,6 +26,22 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   can't say whether the branch exists, the run now stops at once, instead of
   carrying on as if it were the first run (against no previous data).
 
+- Each package's Repology file in `data/` keeps only what nixkeeper reads
+  (`repo`, `srcname`, `version`, `status`, `vulnerable`), each entry once,
+  instead of everything Repology returns: about 4 times smaller (1.4 MB to
+  0.35 MB for 70 packages, about 30 MB to 7 MB at 1,500), and about 3 times
+  less to download for the details panels. If you read these files yourself,
+  the other fields are gone.
+
+### Fixed
+
+- `repoCount` counted Repology's entries, so a repository listing a package
+  more than once (subpackages) counted more than once. It now counts
+  repositories, as documented.
+- When a package's Repology file couldn't be loaded (a network hiccup, say),
+  its details said "compared with 0 other repositories". They now say the
+  file couldn't be loaded, and opening the package again tries again.
+
 ## [0.10.0] - 2026-10-04
 
 ### Added

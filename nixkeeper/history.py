@@ -7,6 +7,7 @@ import os
 
 from . import config
 from .changes import is_outdated
+from .sources import repology
 
 
 def load_previous_run(out_dir=None):
@@ -35,7 +36,8 @@ def previous_project(previous, pname, attrs, out_dir=None):
                             out_dir, row.get("dataFile") or f"{row['project']}.json"
                         )
                     ) as f:
-                        entries = json.load(f)
+                        # A file from before trimming has all of Repology's.
+                        entries = repology.trimmed(json.load(f))
                 except (OSError, ValueError):
                     return None
             return (

@@ -6,9 +6,10 @@ always `main` plus one commit with the latest data: each run replaces it, so
 it keeps no history.
 
 - `index.json`: every tracked package, one row each (below)
-- `<project>.json`: each Repology project's raw data, as Repology returns it
-  (a list of one entry per repository that packages it: `repo`, `version`,
-  `status`, `srcname`, ...); a row's `dataFile` names its file
+- `<project>.json`: each Repology project's packages, as Repology lists
+  them: one entry per repository and package, with only what nixkeeper reads
+  (`repo`, `srcname`, `version`, `status`, and `vulnerable` when flagged),
+  each once; a row's `dataFile` names its file
 
 On GitHub they're at
 `https://raw.githubusercontent.com/<owner>/<repo>/data/data/index.json`.
@@ -62,7 +63,7 @@ its default palette.
 | `nixStatus` | Repology's status for it: `newest`, `outdated`, `devel`, `unique`, `legacy`, `untrusted`, `rolling`, `noscheme`, `incorrect`, ..., or `missing` when nixpkgs doesn't have it |
 | `refVersion` | the newest version seen elsewhere (for a devel row, the newest devel one), or what nixkeeper's update check found, or what master has (`master`), whichever is newest |
 | `refFromMaster` | `true` when `refVersion` is master's: newer than anything Repology or an update check knows of |
-| `repoCount` | how many other repositories Repology compares it with |
+| `repoCount` | how many other repositories Repology compares it with (each counted once) |
 | `devel` | a development variant of a split project (`wesnoth-devel`), or a version Repology calls devel |
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
