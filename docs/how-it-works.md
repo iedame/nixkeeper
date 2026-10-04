@@ -37,8 +37,9 @@ for a package that's up to date with nothing changed or pending, is asked
 every 3 days (a third of them each day) instead of daily, so a new build
 failure there can show up to 3 days late; anything failing, outdated,
 newly changed or with an update PR is asked daily. The builds panel says
-when they were last checked. nixkeeper doesn't ask twice for what can't
-have changed: a package's
+when they were last checked. The same goes for the open PR and issue
+counts: a package with none open, and not outdated, is counted every 3
+days. nixkeeper doesn't ask twice for what can't have changed: a package's
 Repology project is the one the last sync found, a package whose bot logs
 haven't changed since (the log site's index says when each last changed)
 isn't listed again, and a log already read (the bot tries each package about

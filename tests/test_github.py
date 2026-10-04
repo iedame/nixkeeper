@@ -1,8 +1,9 @@
 import io
 import unittest
+from datetime import datetime, timedelta
 from unittest import mock
 
-from nixkeeper import config
+from nixkeeper import config, schedule
 from nixkeeper.sources import github
 from tests.helpers import http_error, response
 
@@ -215,3 +216,119 @@ class UpdatePRs(unittest.TestCase):
         query = urlopen.call_args.args[0].data.decode()
         self.assertIn("first: 20", query)
         self.assertIn("isDraft", query)
+
+
+class QuietCounts(unittest.TestCase):
+    """Packages with no open PRs or issues and nothing pending are searched
+    every QUIET_DAYS (schedule.py), not daily."""
+
+    NOW = "2026-10-05T06:00:00+00:00"
+
+    def setUp(self):
+        patcher = mock.patch("sys.stderr", io.StringIO())
+        patcher.start()
+        self.addCleanup(patcher.stop)
+
+    def count(self, rows, previous, now=None, answer=(0, 0)):
+        """add_counts with every search answering answer (PRs, issues):
+        (the names searched)."""
+        searched = []
+
+        def search_batch(token, searches):
+            out = []
+            for q, _ in searches:
+                name = q.split("in:title ")[1].split(" ")[0]
+                if name not in searched:
+                    searched.append(name)
+                out.append((answer[1] if "is:issue" in q else answer[0], []))
+            return out
+
+        with (
+            mock.patch.object(github, "token", return_value="t"),
+            mock.patch.object(github, "search_batch", side_effect=search_batch),
+        ):
+            github.add_counts(rows, {"packages": previous}, now or self.NOW)
+        return searched
+
+    def row(self, name="hello", **extra):
+        return {"name": name, "searchTerm": name, "nixStatus": "newest", **extra}
+
+    def counted(self, name="hello", days=1, prs=0, issues=0):
+        when = datetime.fromisoformat(self.NOW) - timedelta(days=days)
+        return {
+            "name": name,
+            "openPRs": prs,
+            "openIssues": issues,
+            "countedAt": when.isoformat(),
+        }
+
+    def not_its_day(self, name="hello"):
+        when = datetime.fromisoformat(self.NOW)
+        while schedule.slot(name, when):
+            when += timedelta(days=1)
+        return when.isoformat()
+
+    def test_quiet_and_counted_recently_isnt_searched(self):
+        now = self.not_its_day()
+        before = self.counted(days=1)
+        before["countedAt"] = (
+            datetime.fromisoformat(now) - timedelta(days=1)
+        ).isoformat()
+        rows = [self.row()]
+        self.assertEqual(self.count(rows, [before], now), [])
+        self.assertEqual(
+            (rows[0]["openPRs"], rows[0]["openIssues"], rows[0]["countedAt"]),
+            (0, 0, before["countedAt"]),
+        )
+
+    def test_quiet_but_three_days_old_is_searched(self):
+        now = self.not_its_day()
+        before = self.counted()
+        before["countedAt"] = (
+            datetime.fromisoformat(now) - timedelta(days=3)
+        ).isoformat()
+        rows = [self.row()]
+        self.assertEqual(self.count(rows, [before], now), ["hello"])
+        self.assertEqual(rows[0]["countedAt"], now)
+
+    def test_something_going_on_is_searched_daily(self):
+        now = self.not_its_day()
+        recent = (datetime.fromisoformat(now) - timedelta(hours=20)).isoformat()
+        for name, row, before in (
+            ("open PRs", self.row(), {**self.counted(prs=2), "countedAt": recent}),
+            (
+                "open issues",
+                self.row(),
+                {**self.counted(issues=1), "countedAt": recent},
+            ),
+            (
+                "outdated",
+                self.row(nixStatus="outdated"),
+                {**self.counted(), "countedAt": recent},
+            ),
+            ("never counted", self.row(), {**self.counted(), "countedAt": None}),
+            ("a failed search", self.row(), {**self.counted(prs=None)}),
+        ):
+            with self.subTest(name):
+                self.assertEqual(self.count([row], [before], now), ["hello"])
+
+    def test_new_packages_are_searched(self):
+        self.assertEqual(self.count([self.row()], []), ["hello"])
+
+    def test_a_failed_search_isnt_dated(self):
+        rows = [self.row()]
+        self.count(rows, [], answer=(None, 0))
+        self.assertNotIn("countedAt", rows[0])
+
+    def test_without_the_last_run_everything_is_searched(self):
+        # As before the schedule: no previous data, no time.
+        rows = [self.row()]
+        with (
+            mock.patch.object(github, "token", return_value="t"),
+            mock.patch.object(
+                github, "search_batch", return_value=[(0, []), (0, [])]
+            ) as search,
+        ):
+            github.add_counts(rows)
+        search.assert_called_once()
+        self.assertNotIn("countedAt", rows[0])

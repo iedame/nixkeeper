@@ -800,10 +800,14 @@ function platformTags(pkg) {
 // the fetch script's GitHub search; without them the buttons are plain links.
 function githubLinks(pkg) {
   const term = pkg.searchTerm || pkg.name;
+  // Packages with none open are counted every few days, not daily
+  // (nixkeeper/sources/github.py): when, if it wasn't today.
+  const age = pkg.countedAt && daysText(pkg.countedAt);
+  const counted = age && age !== 'today' ? ` (counted ${age} ago)` : '';
   const link = (kind, path, label, count) => {
     const q = encodeURIComponent(`is:${kind} state:open in:title ${term}`);
     return html`<a class="gh-btn" href="https://github.com/NixOS/nixpkgs/${path}?q=${q}" target="_blank" rel="noopener"
-      title="Open nixpkgs ${label} with ${term} in the title"${count === 0 ? raw(' data-zero') : ''}>${label}${count != null ? html` <b>${count}</b>` : ''}</a>`;
+      title="Open nixpkgs ${label} with ${term} in the title${counted}"${count === 0 ? raw(' data-zero') : ''}>${label}${count != null ? html` <b>${count}</b>` : ''}</a>`;
   };
   return html`<span class="gh-links">${link('pr', 'pulls', 'PRs', pkg.openPRs)}${link('issue', 'issues', 'issues', pkg.openIssues)}</span>`;
 }

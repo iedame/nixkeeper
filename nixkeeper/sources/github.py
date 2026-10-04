@@ -11,7 +11,8 @@ import time
 import urllib.error
 import urllib.request
 
-from .. import config
+from .. import config, schedule
+from ..changes import is_outdated
 from ..versions import is_newer, version_key
 
 
@@ -276,10 +277,25 @@ def run_searches(tok, searches, handle):
             handle(row, what, count, nodes)
 
 
-def add_counts(rows):
+def quiet(row, before):
+    """Whether row's counts have nothing going on: none open at the last
+    sync (no PRs, no issues) and the package isn't outdated. Those are
+    searched every QUIET_DAYS (schedule.due), not daily."""
+    return (
+        before is not None
+        and before.get("openPRs") == 0
+        and before.get("openIssues") == 0
+        and not is_outdated(row)
+    )
+
+
+def add_counts(rows, previous=None, now=None):
     """Open nixpkgs PRs and issues with each row's attribute name in the title
     (the same searches the page links to), and "openPR": the open update PR
-    among them, if any (their titles come with the same search)."""
+    among them, if any (their titles come with the same search). With the
+    last run's data (previous) and the time (now), a package with none of
+    either and nothing pending keeps them until it's due (quiet); counted
+    ones are dated ("countedAt")."""
     tok = token()
     if not tok:
         print(
@@ -287,9 +303,20 @@ def add_counts(rows):
             file=sys.stderr,
         )
         return
+    before = {row["name"]: row for row in (previous or {}).get("packages", [])}
     searches = []
+    searched = []
     for row in rows:
+        old = before.get(row.get("name"))
         row.pop("openPR", None)  # found again below, if still there
+        if (
+            now
+            and quiet(row, old)
+            and not schedule.due(row["name"], old.get("countedAt"), now)
+        ):
+            row.update(openPRs=0, openIssues=0, countedAt=old["countedAt"])
+            continue
+        searched.append(row)
         searches.append((row, "openPRs", query(row, "pr state:open"), PR_CANDIDATES))
         searches.append((row, "openIssues", query(row, "issue state:open"), 0))
 
@@ -298,8 +325,22 @@ def add_counts(rows):
         if what == "openPRs" and (pr := open_update_pr(row, nodes)):
             row["openPR"] = pr
 
-    print(f"Searching open PRs/issues ({len(searches)} searches)...", file=sys.stderr)
+    kept = len(rows) - len(searched)
+    print(
+        f"Searching open PRs/issues ({len(searches)} searches"
+        + (
+            f"; {kept} packages with none open were counted in the last "
+            f"{config.QUIET_DAYS} days)"
+            if kept
+            else ")"
+        )
+        + "...",
+        file=sys.stderr,
+    )
     run_searches(tok, searches, handle)
+    for row in searched:
+        if now and row.get("openPRs") is not None and row.get("openIssues") is not None:
+            row["countedAt"] = now
     for warning in count_warnings(rows):
         print(f"::warning::{warning}", file=sys.stderr)
 

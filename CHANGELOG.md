@@ -63,6 +63,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   were last checked, and each build records it (`checkedAt`). The first sync
   after updating asks about everything once, to date them.
 
+- The same for the open PR and issue counts: a package with none open and
+  not outdated is counted every 3 days, a third each day, instead of daily;
+  one with any open, or outdated, still daily. Each row records when
+  (`countedAt`), and the buttons' tooltips say so when it wasn't today.
+  Update PRs for outdated packages are still searched daily and hourly.
+
 ### Fixed
 
 - `repoCount` counted Repology's entries, so a repository listing a package
