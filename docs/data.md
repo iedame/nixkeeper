@@ -69,7 +69,7 @@ its default palette.
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
 | `staleSince` | Repology couldn't be reached for it: the version data is from this time |
-| `repologyCheckedAt` | when Repology was last asked about it: daily while it's outdated, flagged vulnerable, changed in nixpkgs or new, otherwise every 3 days |
+| `repologyCheckedAt` | when its Repology data was read: the day nixkeeper-versions' digest read it (daily for outdated projects, weekly for the rest), or when Repology was asked directly (daily while it's outdated, flagged vulnerable, changed in nixpkgs or new, otherwise every 3 days) |
 | `upstream` | nixkeeper's own update check, when it has one (below): a rule of yours or the community's, or one worked out from nixpkgs |
 | `upToDate` | an [up-to-date rule](community.md#up-to-date-rules-until-something-changes) applies: Repology gets `nixVersion` wrong, so `nixStatus` is `newest` and there's no `refVersion`. `status` is what Repology said, `newest` the version it showed as newest elsewhere (when there was one), `reason` the rule's, and `community` is `true` for a community rule |
 

@@ -5,7 +5,7 @@ import urllib.error
 
 from . import config, history, schedule
 from .output import data_file
-from .sources import repology
+from .sources import repology, versions_digest
 
 
 def due(pname, rows, nixpkgs, now):
@@ -34,11 +34,20 @@ def due(pname, rows, nixpkgs, now):
 
 
 def collect_projects(
-    wanted, previous, resolve=repology.resolve, out_dir=None, nixpkgs=None, now=None
+    wanted,
+    previous,
+    resolve=repology.resolve,
+    out_dir=None,
+    nixpkgs=None,
+    now=None,
+    digest=None,
 ):
     """Look up every tracked package on Repology, falling back to the previous
-    run's data (in out_dir) when a lookup fails. With nixpkgs and now, only
-    those due (due); the rest keep the last run's data. Several attrs
+    run's data (in out_dir) when a lookup fails. digest: nixkeeper-versions'
+    projects by attribute (versions_digest.load), for the packages it can
+    answer (versions_digest.answer), with no lookup. With nixpkgs and now,
+    only the rest that are due (due) are looked up; the others keep the last
+    run's data. Several attrs
     (wesnoth / wesnoth-devel, heroic / heroic-unwrapped) can map to one
     project; those are merged here and split into rows by rows.project_rows.
     Returns project -> {"name", "project", "attrs", "entries", "dataFile"[,
@@ -54,10 +63,26 @@ def collect_projects(
     }
     projects = {}
     failed = []
-    kept = 0
+    kept = from_digest = 0
     for pname, (attrs, fallback) in sorted(wanted.items()):
         stale_since = None
         checked_at = now
+        if (
+            digest
+            and nixpkgs is not None
+            and (found := versions_digest.answer(digest, attrs, nixpkgs))
+        ):
+            project, entries, day = found
+            from_digest += 1
+            add(
+                projects,
+                pname,
+                project,
+                repology.trimmed(entries),
+                attrs,
+                f"{day}T00:00:00+00:00",  # the day the digest read it
+            )
+            continue
         rows = history.previous_rows(previous, pname, attrs)
         reused = (
             nixpkgs is not None
@@ -93,6 +118,11 @@ def collect_projects(
                 file=sys.stderr,
             )
         add(projects, pname, project, entries, attrs, checked_at, stale_since)
+    if from_digest:
+        print(
+            f"  {from_digest} packages from the versions digest, without a lookup",
+            file=sys.stderr,
+        )
     if kept:
         print(
             f"  {kept} packages not looked up again: nothing going on, looked up "

@@ -136,6 +136,17 @@ HYDRA_DIGEST_URL = os.environ.get(
 # A digest behind Hydra's newest evaluation is still used when it was read
 # this recently (its workflow runs hourly); older, it isn't.
 HYDRA_DIGEST_MAX_AGE_HOURS = 12
+# nixkeeper-versions' digest of Repology (sources/versions_digest.py): every
+# nixpkgs project, read in bulk daily, instead of a lookup per package.
+# NIXKEEPER_VERSIONS_DIGEST="" turns it off (Repology is then asked about
+# each package, as it is whenever the digest isn't current).
+VERSIONS_DIGEST_URL = os.environ.get(
+    "NIXKEEPER_VERSIONS_DIGEST",
+    "https://raw.githubusercontent.com/iedame/nixkeeper-versions/data/data/",
+)
+# The digest is used while its outdated projects were read this recently
+# (its workflow runs daily, at 04:07 UTC).
+VERSIONS_DIGEST_MAX_AGE_HOURS = 36
 # Platforms nixpkgs builds; x86_64-darwin is no longer one of them.
 HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 # After this many lookups in a row fail, Hydra is likely down: the rest of the

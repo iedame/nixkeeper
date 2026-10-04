@@ -52,8 +52,17 @@ days; for update checks that found nothing newer, unless they're marked
 `frequent`; and for Repology: a package that's up to date, not flagged
 vulnerable and unchanged in nixpkgs is looked up every 3 days, so its new
 releases can show up to 3 days late (most packages are updated by
-nixpkgs-update, which comes round about every ten days anyway). nixkeeper doesn't ask twice for what can't have changed: a package's
-Repology project is the one the last sync found, a package whose bot logs
+nixpkgs-update, which comes round about every ten days anyway). Most
+packages don't need Repology asked at all, though: their projects come from
+[nixkeeper-versions](https://github.com/iedame/nixkeeper-versions), a digest
+of every nixpkgs project that its own workflow reads in bulk daily, the way
+nixpkgs-update reads Repology (outdated projects every day, the rest every
+week). Repology is still asked about a package that isn't in the digest
+(new in nixpkgs) or has another version there than the channel's (changed
+since), and about every package, as above, when the digest is more than 36
+hours old or can't be read. nixkeeper doesn't ask twice for what can't have
+changed: a package's Repology project is the one the last sync found, a
+package whose bot logs
 haven't changed since (the log site's index says when each last changed)
 isn't listed again, a release page whose server says it hasn't changed
 isn't downloaded again, and a log already read (the bot tries each package about

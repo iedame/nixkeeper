@@ -25,7 +25,14 @@ from . import (
     version,
 )
 from .changes import count_master, is_outdated
-from .sources import github, hydra, hydra_digest, nixpkgs_update, upstream
+from .sources import (
+    github,
+    hydra,
+    hydra_digest,
+    nixpkgs_update,
+    upstream,
+    versions_digest,
+)
 from .sources import nixpkgs as nixpkgs_source
 
 
@@ -73,7 +80,11 @@ def main():
     hydra_answers = background.Background(
         ask_hydra, tracked, nixpkgs, revision, previous, now
     )
-    projects = lookup.collect_projects(wanted, previous, nixpkgs=nixpkgs, now=now)
+    # Repology, from nixkeeper-versions' digest first (versions_digest).
+    digest = versions_digest.load(tracked, now)
+    projects = lookup.collect_projects(
+        wanted, previous, nixpkgs=nixpkgs, now=now, digest=digest
+    )
     index_rows = rows.build_rows(projects, nixpkgs)
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
 

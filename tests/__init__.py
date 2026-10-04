@@ -14,3 +14,5 @@ config.SITE_PAUSE_SECONDS = 0
 # each job, as before, unless they give a digest of their own
 # (test_hydra_digest.py).
 config.HYDRA_DIGEST_URL = ""
+# Nor a nixkeeper-versions digest: Repology is asked about each package.
+config.VERSIONS_DIGEST_URL = ""
