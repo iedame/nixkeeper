@@ -1,11 +1,15 @@
 """One sync: nixpkgs index + package lists -> tracked packages -> Repology ->
 rows -> update checks -> meta.broken + Hydra builds -> nixpkgs-update logs ->
-GitHub counts and update PRs -> data/ -> status issue. `nixkeeper sync`
+GitHub counts and update PRs -> data/ -> status issue. Hydra, the slowest,
+is asked in the background from the start (background.py). `nixkeeper sync`
 (nixkeeper/cli.py); from a checkout, `nix run .#sync`."""
 
+import sys
+import time
 from datetime import UTC, datetime
 
 from . import (
+    background,
     community,
     follows,
     history,
@@ -24,6 +28,19 @@ from .sources import github, hydra, nixpkgs_update, upstream
 from .sources import nixpkgs as nixpkgs_source
 
 
+def ask_hydra(attrs, nixpkgs, revision):
+    """Hydra's answers for attrs: (where nixpkgs marks them broken, fetch()'s
+    answers), for hydra.add_builds. Run in the background (main)."""
+    started = time.monotonic()
+    broken = nixpkgs_source.broken(attrs, revision)
+    jobs = hydra.jobs(attrs, nixpkgs)
+    print(f"Hydra, in the background: {len(jobs)} jobs...", file=sys.stderr)
+    fetched = hydra.fetch(jobs, broken)
+    minutes = (time.monotonic() - started) / 60
+    print(f"Hydra, in the background: done in {minutes:.0f} min", file=sys.stderr)
+    return broken, fetched
+
+
 def main():
     now = datetime.now(UTC).isoformat()
     nixpkgs = nixpkgs_source.load_index()
@@ -31,6 +48,13 @@ def main():
     wanted = tracking.tracked_packages(lists, nixpkgs)
     scale.check(lists, len(wanted))  # how long it'll take; refuses past the limit
     previous = history.load_previous_run()
+    revision = nixpkgs_source.channel_revision()
+    # Hydra is the slowest source (a request or more per package and
+    # platform): asked from here, in the background, while the others are.
+    # Each server is still asked one request at a time; only the waiting
+    # overlaps. Its answers are put together with the rest further down.
+    tracked = sorted({a for attrs, _ in wanted.values() for a in attrs if a in nixpkgs})
+    hydra_answers = background.Background(ask_hydra, tracked, nixpkgs, revision)
     projects = lookup.collect_projects(wanted, previous)
     index_rows = rows.build_rows(projects, nixpkgs)
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
@@ -44,13 +68,13 @@ def main():
 
     problems = listcheck.problems(lists, nixpkgs, [row["name"] for row in index_rows])
     listcheck.report(problems)
-    revision = nixpkgs_source.channel_revision()
     rows.add_source_links(index_rows, nixpkgs, revision)
     checks, from_community = community.merge(lists, [row["name"] for row in index_rows])
     upstream.add_checks(index_rows, checks, previous, now, from_community)
-    in_nixpkgs = {a for row in index_rows for a in row["attrs"] if a in nixpkgs}
-    broken = nixpkgs_source.broken(in_nixpkgs, revision)
-    hydra.add_builds(index_rows, nixpkgs, previous, now, broken)
+    if not hydra_answers.done():
+        print("Waiting for Hydra's answers...", file=sys.stderr)
+    broken, fetched = hydra_answers.result()
+    hydra.add_builds(index_rows, nixpkgs, previous, now, broken, fetched)
     # After the update checks and Hydra, before outdated-since: each can make
     # a row outdated (master, by having a newer version than the channel).
     for row in index_rows:

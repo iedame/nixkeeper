@@ -48,6 +48,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   estimate at the start of a sync doesn't count it yet: it'll be measured
   from real runs first.
 
+- The daily sync asks Hydra, its slowest source, in the background from the
+  start, while it asks the others, instead of after them: it takes about as
+  long as Hydra alone. Each server is still asked one request at a time.
+  For 71 packages, the other sources were done before Hydra's 5 minutes
+  were up, and the data came out the same as asking in turn.
+
 ### Fixed
 
 - `repoCount` counted Repology's entries, so a repository listing a package

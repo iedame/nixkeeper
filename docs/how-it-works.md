@@ -28,10 +28,16 @@ When a source can't be reached, the row keeps its last known result, marked
 as not refreshed, and the status issue says so; the rest of the sync goes
 on. nixkeeper asks each source one thing at a time, with a pause between
 requests, and when a source says to slow down (a `Retry-After`), it waits
-as long as asked, up to 5 minutes, before trying again. It doesn't ask
-twice for what can't have changed: the bot's log of an attempt it has
-already read (the bot tries each package about every ten days) is taken from
-the previous sync instead of downloaded again.
+as long as asked, up to 5 minutes, before trying again. Hydra, the slowest
+(a request or more per package and platform), is asked in the background
+while the other sources are, so the sync takes about as long as Hydra
+rather than all of them in turn; each server still gets one request at a
+time. nixkeeper doesn't ask twice for what can't have changed: a package's
+Repology project is the one the last sync found, a package whose bot logs
+haven't changed since (the log site's index says when each last changed)
+isn't listed again, and a log already read (the bot tries each package about
+every ten days) is taken from the previous sync instead of downloaded
+again.
 
 ## How much it tracks
 
