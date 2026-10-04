@@ -1,11 +1,14 @@
 [
+  # keep-sorted start
   "anarch"
   "asc"
   "berk76-tetris"
   "blackvoxel"
   "bolt-launcher"
+  "bs-manager"
   "cataclysm-dda"
   "countryguess"
+  "deadlock-mod-manager"
   "dustracing2d"
   "egoboo"
   "exult"
@@ -54,4 +57,5 @@
   "xskat"
   "yetris"
   "zztgo"
+  # keep-sorted end
 ]
