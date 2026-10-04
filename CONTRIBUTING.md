@@ -124,7 +124,7 @@ nix run .#frequent-check  # only the frequent update checks, against data/ (hour
 nix run .#pr-check        # outdated packages' update PRs, against data/ (hourly in CI)
 nix run .#sync -- --help  # the command's flags (each app passes its arguments on)
 nix run . -- paths        # the command as installed: your own folders, not the checkout's
-nix fmt                   # format everything (Nix, Python, the page)
+nix fmt                   # format everything (Nix, Python, the page), and sort the lists
 nix flake check           # tests, formatting, linters, package-list checks
 nix develop -c python3 -m unittest discover -s tests -t .   # tests, quickly
 nix develop -c node --test 'tests/js/*.test.mjs'            # the page's tests
@@ -135,6 +135,12 @@ nix run .#brand           # regenerate assets/brand/ and the page's favicon
 ```
 
 New files must be `git add`ed before Nix sees them.
+
+The package lists and the community rules (update checks, ignore and
+up-to-date rules) are kept sorted by `nix fmt` (keep-sorted), so a
+package's rule is easy to find: add an entry anywhere between the
+`keep-sorted` comments, and `nix fmt` moves it into place; `nix flake check`
+fails on a list out of order.
 
 ## Changes
 

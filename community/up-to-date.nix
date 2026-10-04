@@ -28,6 +28,7 @@
 # as one that can go. Where Repology itself is wrong, the fix at the source
 # is a report to Repology; a rule here only stops it from showing meanwhile.
 {
+  # keep-sorted start block=yes newline_separated=yes
   asc = {
     version = "2.6.3.0";
     newest = "2.6.1.0";
@@ -51,4 +52,5 @@
     newest = "1.19.24";
     reason = "The newest development release; Repology ignores it, and the other repositories that package devel releases are behind.";
   };
+  # keep-sorted end
 }

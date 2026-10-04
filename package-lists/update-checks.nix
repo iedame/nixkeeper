@@ -43,4 +43,7 @@
 # This list's rules are all community rules (community/ in the repository,
 # turned on in default.nix), so this file is empty: add a rule here only for
 # something the community rules shouldn't have, or to override one.
-{ }
+{
+  # keep-sorted start block=yes newline_separated=yes
+  # keep-sorted end
+}
