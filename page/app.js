@@ -281,7 +281,8 @@ function writeViewToUrl() {
   set('sort', sortAZ ? 'az' : '');
   set('platform', platformFilter && PLATFORMS[platformFilter].param);
   set('list', listFilter);
-  const query = params.toString();
+  // "@" is fine in a query: ?q=@handle reads better in a shared link.
+  const query = params.toString().replaceAll('%40', '@');
   // replaceState, not pushState: typing a search shouldn't fill the history.
   history.replaceState(null, '', location.pathname + (query ? `?${query}` : '') + location.hash);
 }
