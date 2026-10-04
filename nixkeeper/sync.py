@@ -27,6 +27,7 @@ from . import (
 from .changes import count_master, is_outdated
 from .sources import (
     github,
+    github_bulk,
     hydra,
     hydra_digest,
     nixpkgs_update,
@@ -129,6 +130,9 @@ def main():
         index_rows, nixpkgs, previous, now, ignored, ignored_by_community
     )
     github.add_counts(index_rows, previous, now)  # and open update PRs
+    # Not used yet: logs how a bulk listing of all open PRs and issues
+    # compares with those searches (github_bulk).
+    github_bulk.compare(index_rows, now)
     outdated = [row for row in index_rows if is_outdated(row)]
     github.add_update_prs(outdated, open_prs=False)  # merged into master
     follows.apply_prs(index_rows, following)  # theirs are the same PRs
