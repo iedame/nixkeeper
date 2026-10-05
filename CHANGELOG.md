@@ -25,6 +25,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   first, with page links under it and `?page=` in the address. Drawing stays
   fast however many packages there are; changing a filter, the search or the
   order goes back to the first page.
+- Packages' nixpkgs teams (`meta.teams`): in the data (`teams`), in the
+  details panel, and as a filter (`?team=gaming`, or a team's name in the
+  panel).
 
 ### Changed
 

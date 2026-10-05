@@ -107,6 +107,13 @@ const attentionRank = (pkg) => rankOn(pkg, platformFilter);
 // ?list=gaming-team is a page of just that list's packages, to share.
 let listFilter = null;
 const inList = (pkg) => !listFilter || (pkg.lists || []).includes(listFilter);
+// null, or a nixpkgs team (meta.teams, by its short name; any case):
+// ?team=gaming is a page of the team's packages here.
+let teamFilter = null;
+const isTeam = (name) => name.toLowerCase() === teamFilter.toLowerCase();
+const inTeam = (pkg) => !teamFilter || (pkg.teams || []).some(isTeam);
+// The team's name as nixpkgs writes it ("Qt-KDE"), or as the address has it.
+const teamName = () => packages.flatMap((p) => p.teams || []).find(isTeam) || teamFilter;
 // Every list some package is on: "maintained" first, as the sync sorts them.
 function allLists() {
   const seen = [];
@@ -283,6 +290,7 @@ function readViewFromUrl() {
     Object.keys(PLATFORMS).find((k) => PLATFORMS[k].param === params.get('platform')) || null;
   // Any name: which lists exist is only known once the data has loaded.
   listFilter = params.get('list') || null;
+  teamFilter = params.get('team') || null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
 }
@@ -297,6 +305,7 @@ function viewQuery(page = pageNum) {
   set('sort', sortAZ ? 'az' : '');
   set('platform', platformFilter && PLATFORMS[platformFilter].param);
   set('list', listFilter);
+  set('team', teamFilter);
   set('page', page > 1 ? page : '');
   // "@" is fine in a query: ?q=@handle reads better in a shared link.
   const query = params.toString().replaceAll('%40', '@');
@@ -494,7 +503,7 @@ function setFavicon(base) {
 function renderStats() {
   // Counts follow the platform and list filters, so "outdated" means
   // outdated on macOS, or on the gaming-team list, while that's selected.
-  const base = packages.filter((p) => inPlatform(p) && inList(p));
+  const base = packages.filter((p) => inPlatform(p) && inList(p) && inTeam(p));
   setFavicon(base);
   renderLists();
   const buttons = Object.entries(FILTERS).map(([key, f]) => {
@@ -509,9 +518,12 @@ function renderStats() {
   const stale =
     !checkedAt || Date.now() - new Date(checkedAt).getTime() > STALE_AFTER_HOURS * 3600e3;
   const platformChip = platformFilter
-    ? html`<button class="plat-filter" title="Show all platforms">${PLATFORMS[platformFilter].label} only ✕</button>`
+    ? html`<button class="plat-filter" data-clear="platform" title="Show all platforms">${PLATFORMS[platformFilter].label} only ✕</button>`
     : '';
-  document.getElementById('stats').innerHTML = html`${buttons}${platformChip}`;
+  const teamChip = teamFilter
+    ? html`<button class="plat-filter" data-clear="team" title="Show every team's packages">team: ${teamName()} ✕</button>`
+    : '';
+  document.getElementById('stats').innerHTML = html`${buttons}${platformChip}${teamChip}`;
   const checked = document.getElementById('checked');
   checked.classList.toggle('stale', stale);
   // The exact time on hover: "checked 4h ago" is friendly, but vague.
@@ -542,7 +554,7 @@ function renderLists() {
     el.innerHTML = '';
     return;
   }
-  const base = packages.filter(inPlatform);
+  const base = packages.filter((p) => inPlatform(p) && inTeam(p));
   el.innerHTML = html`<span class="lists-label">lists</span>${names.map((name) => {
     const pressed = listFilter === name;
     const count = base.filter((p) => (p.lists || []).includes(name)).length;
@@ -1128,6 +1140,14 @@ function fillDetail(pkg, el, entries) {
           }</div>`
         : ''
     }
+    ${
+      pkg.teams?.length
+        ? html`<div class="other-label">Teams</div><div class="maintainers">${pkg.teams.map(
+            (t) =>
+              html`<button type="button" class="maint-btn team-btn" data-team="${t}" title="The team's packages here">${t}</button>`,
+          )}</div>`
+        : ''
+    }
     <div class="detail-row">
       ${homepage ? html`<a class="files-link" href="${homepage}" target="_blank" rel="noopener">Homepage ↗</a>` : ''}
       ${safeUrl(pkg.source) ? html`<a class="files-link" href="${safeUrl(pkg.source)}" target="_blank" rel="noopener" title="Where nixpkgs defines this package">${sourceFileName(pkg.source)} ↗</a>` : ''}
@@ -1136,7 +1156,15 @@ function fillDetail(pkg, el, entries) {
   `;
   // A maintainer's packages: searches for them (the search box, so the
   // address can be shared).
-  for (const btn of el.querySelectorAll('.maint-btn')) {
+  // A team's packages: the team filter (?team=, shareable too).
+  for (const btn of el.querySelectorAll('.team-btn')) {
+    btn.addEventListener('click', () => {
+      teamFilter = btn.dataset.team;
+      render(currentFiltered());
+      document.getElementById('stats').scrollIntoView({ block: 'nearest' });
+    });
+  }
+  for (const btn of el.querySelectorAll('.maint-btn:not(.team-btn)')) {
     btn.addEventListener('click', () => {
       const search = document.getElementById('search');
       search.value = `@${btn.dataset.handle}`;
@@ -1161,7 +1189,12 @@ const COMPARED_SHOWN = 8;
 function currentFiltered() {
   const q = document.getElementById('search').value;
   const list = packages.filter(
-    (p) => inPlatform(p) && inList(p) && FILTERS[activeFilter].test(p) && matchesSearch(p, q),
+    (p) =>
+      inPlatform(p) &&
+      inList(p) &&
+      inTeam(p) &&
+      FILTERS[activeFilter].test(p) &&
+      matchesSearch(p, q),
   );
   return sortAZ
     ? list
@@ -1176,8 +1209,10 @@ function currentFiltered() {
 }
 
 document.getElementById('stats').addEventListener('click', (e) => {
-  if (e.target.closest('.plat-filter')) {
-    platformFilter = null;
+  const clear = e.target.closest('.plat-filter');
+  if (clear) {
+    if (clear.dataset.clear === 'team') teamFilter = null;
+    else platformFilter = null;
     render(currentFiltered());
     return;
   }

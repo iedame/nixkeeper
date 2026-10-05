@@ -10,7 +10,10 @@ stay in the address, so a view can be shared. The search box matches names;
 `@handle` instead lists a maintainer's packages (their whole GitHub handle,
 as nixpkgs lists it in `meta.maintainers`), and `@none` the packages with no
 maintainer. The details panel lists each package's maintainers: clicking one
-searches for theirs, so `?q=@yourhandle` is a link to your own.
+searches for theirs, so `?q=@yourhandle` is a link to your own. Its teams
+(nixpkgs' `meta.teams`), when it has any, are listed too: clicking one shows
+only that team's packages, as `?team=` does in the address
+(`?team=gaming`, in any case).
 
 The list shows 200 packages at a time, most in need of attention first;
 the page links under it go through the rest (the page is in the address

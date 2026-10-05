@@ -98,6 +98,8 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         )
         row["homepage"] = homepage[0] if isinstance(homepage, list) else homepage
         row["maintainers"] = maintainers(pkgs)
+        if found := teams(pkgs):
+            row["teams"] = found
     return row
 
 
@@ -112,6 +114,18 @@ def maintainers(pkgs):
             if isinstance(handle, str) and handle:
                 found.setdefault(handle.lower(), handle)
     return list(found.values())
+
+
+def teams(pkgs):
+    """The nixpkgs teams in pkgs' meta.teams (maintainers/team-list.nix), by
+    their shortName ("Gaming", "Qt-KDE"), each once, in order."""
+    found = []
+    for p in pkgs:
+        for team in p["meta"].get("teams") or []:
+            name = team.get("shortName") if isinstance(team, dict) else None
+            if isinstance(name, str) and name and name not in found:
+                found.append(name)
+    return found
 
 
 def build_rows(projects, nixpkgs):
