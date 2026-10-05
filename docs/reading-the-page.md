@@ -12,6 +12,12 @@ as nixpkgs lists it in `meta.maintainers`), and `@none` the packages with no
 maintainer. The details panel lists each package's maintainers: clicking one
 searches for theirs, so `?q=@yourhandle` is a link to your own.
 
+The list shows 200 packages at a time, most in need of attention first;
+the page links under it go through the rest (the page is in the address
+too, `?page=2`). Changing a filter, the search or the order goes back to the
+first page. The browser's find (Ctrl+F) only sees the page shown: the search
+box looks through every package.
+
 **The dot** in front of each package (hover it for what it means, or open
 the `?` next to "checked" at the top for all of them):
 

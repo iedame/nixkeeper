@@ -25,6 +25,7 @@ import {
   nixkeeperEntry,
   onMaster,
   onPlatform,
+  pageLinks,
   raw,
   safeUrl,
   shardOf,
@@ -547,5 +548,21 @@ describe('shards', () => {
   test('shardOf', () => {
     assert.equal(shardOf('pkg0', 4), 1);
     assert.equal(shardOf('wesnoth', 1), 0);
+  });
+});
+
+describe('pageLinks', () => {
+  test('few pages: all of them', () => {
+    assert.deepEqual(pageLinks(1, 1), [1]);
+    assert.deepEqual(pageLinks(2, 2), [1, 2]);
+    assert.deepEqual(pageLinks(1, 6), [1, 2, 3, 4, 5, 6]);
+  });
+  test('gaps around the current page', () => {
+    assert.deepEqual(pageLinks(1, 20), [1, 2, 3, null, 20]);
+    assert.deepEqual(pageLinks(10, 20), [1, null, 8, 9, 10, 11, 12, null, 20]);
+    assert.deepEqual(pageLinks(20, 20), [1, null, 18, 19, 20]);
+  });
+  test('a gap of one page shows the page', () => {
+    assert.deepEqual(pageLinks(5, 20), [1, 2, 3, 4, 5, 6, 7, null, 20]);
   });
 });

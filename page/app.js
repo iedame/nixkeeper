@@ -14,6 +14,7 @@ import {
   nixkeeperEntry,
   onMaster,
   onPlatform,
+  pageLinks,
   attentionRank as rankOn,
   raw,
   githubRepo as repoFrom,
@@ -91,6 +92,11 @@ let packages = [];
 let checkedAt = null;
 let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
 let sortAZ = false; // default order puts what needs attention first
+// The table shows PAGE_SIZE rows at a time: drawing stays fast whatever the
+// data's size, and the page keeps working with Ctrl+F and screen readers
+// (no virtual scrolling). ?page= in the address, past the first.
+const PAGE_SIZE = 200;
+let pageNum = 1;
 let platformFilter = null; // null | 'linux' | 'darwin', combined with activeFilter
 // The rules that follow the platform filter (logic.js), on the selected one.
 const hasFailure = (pkg) => failureOn(pkg, platformFilter);
@@ -277,10 +283,12 @@ function readViewFromUrl() {
     Object.keys(PLATFORMS).find((k) => PLATFORMS[k].param === params.get('platform')) || null;
   // Any name: which lists exist is only known once the data has loaded.
   listFilter = params.get('list') || null;
+  pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
 }
 
-function writeViewToUrl() {
+// The address for the current view, on page `page`.
+function viewQuery(page = pageNum) {
   const params = new URLSearchParams(location.search);
   const q = document.getElementById('search').value.trim();
   const set = (k, v) => (v ? params.set(k, v) : params.delete(k));
@@ -289,10 +297,14 @@ function writeViewToUrl() {
   set('sort', sortAZ ? 'az' : '');
   set('platform', platformFilter && PLATFORMS[platformFilter].param);
   set('list', listFilter);
+  set('page', page > 1 ? page : '');
   // "@" is fine in a query: ?q=@handle reads better in a shared link.
   const query = params.toString().replaceAll('%40', '@');
+  return location.pathname + (query ? `?${query}` : '');
+}
+function writeViewToUrl() {
   // replaceState, not pushState: typing a search shouldn't fill the history.
-  history.replaceState(null, '', location.pathname + (query ? `?${query}` : '') + location.hash);
+  history.replaceState(null, '', viewQuery() + location.hash);
 }
 
 // The Theme menu. theme.js applied the saved choice before the page drew;
@@ -455,7 +467,7 @@ async function loadIndex() {
     showListProblems(data.listProblems || []);
     setSitePalette(data.page?.theme || null);
     document.getElementById('search').disabled = false;
-    render(currentFiltered());
+    render(currentFiltered(), { keepPage: true });
   } catch {
     content.innerHTML = html`<div class="error">
       Couldn't load <code>${dataUrl('index.json')}</code>.<br>
@@ -559,14 +571,37 @@ function rowHtml(pkg, i) {
     </tr>`;
 }
 
-// The whole table at once, as one piece of markup: thousands of rows draw
+// The pages of the list, when there's more than one: "1–200 of 241" and
+// links to the others (real links, so one can open in a new tab).
+function pagerHtml(total, pages) {
+  if (pages < 2) return '';
+  const first = (pageNum - 1) * PAGE_SIZE + 1;
+  const last = Math.min(pageNum * PAGE_SIZE, total);
+  const link = (p, text, label) =>
+    p === pageNum
+      ? html`<span class="page-btn" aria-current="page">${text}</span>`
+      : html`<a class="page-btn" href="${viewQuery(p)}" data-page="${p}"${label ? html` aria-label="${label}"` : ''}>${text}</a>`;
+  return html`<nav class="pager" aria-label="Pages">
+    <span class="page-count">${first.toLocaleString()}–${last.toLocaleString()} of ${total.toLocaleString()}</span>
+    ${pageNum > 1 ? link(pageNum - 1, '‹', 'Previous page') : ''}
+    ${pageLinks(pageNum, pages).map((p) => (p === null ? html`<span class="page-gap" aria-hidden="true">…</span>` : link(p, String(p), `Page ${p}`)))}
+    ${pageNum < pages ? link(pageNum + 1, '›', 'Next page') : ''}
+  </nav>`;
+}
+
+// One page of the table at once, as one piece of markup: many rows draw
 // far faster that way than one by one. Each row's panel is only made when
 // it's first opened (toggle), and the table's clicks are handled once, for
-// every row (below).
-function render(list) {
+// every row (below). The list changed (a filter, the search, the order):
+// back to the first page, unless keepPage (loading a shared address,
+// following a page link).
+function render(list, { keepPage = false } = {}) {
   renderStats();
   const content = document.getElementById('content');
-  shown = list;
+  const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  pageNum = keepPage ? Math.min(pageNum, pages) : 1;
+  writeViewToUrl();
+  shown = list.slice((pageNum - 1) * PAGE_SIZE, pageNum * PAGE_SIZE);
   if (!list.length) {
     content.innerHTML = html`<div class="empty">No packages match${activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}.</div>`;
     return;
@@ -575,8 +610,8 @@ function render(list) {
     <thead><tr>
       <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>Open on GitHub</th><th>Build failures</th><th>Update failures</th><th aria-hidden="true"></th>
     </tr></thead>
-    <tbody id="rows">${list.map(rowHtml)}</tbody>
-  </table></div>`;
+    <tbody id="rows">${shown.map(rowHtml)}</tbody>
+  </table></div>${pagerHtml(list.length, pages)}`;
 }
 
 // One panel under the row, showing the package details (clicking the row),
@@ -617,6 +652,19 @@ async function toggle(tr, mode) {
 // versions copy the update's title, a platform filters by it, the build and
 // update cells open their panel, and anywhere else the details.
 document.getElementById('content').addEventListener('click', (e) => {
+  // A page link: that page, from its top (a click with a modifier opens it
+  // elsewhere, as links do).
+  const pageLink = e.target.closest('a.page-btn');
+  if (pageLink && !(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button)) {
+    e.preventDefault();
+    pageNum = Number(pageLink.dataset.page);
+    render(currentFiltered(), { keepPage: true });
+    // Back to the table's top, the keyboard on its first row.
+    const content = document.getElementById('content');
+    if (content.getBoundingClientRect().top < 0) content.scrollIntoView();
+    content.querySelector('tr.row')?.focus({ preventScroll: true });
+    return;
+  }
   const tr = e.target.closest('tr.row');
   if (!tr || e.target.closest('a')) return;
   const copy = e.target.closest('.vcopy');
@@ -1111,7 +1159,6 @@ function fillDetail(pkg, el, entries) {
 const COMPARED_SHOWN = 8;
 
 function currentFiltered() {
-  writeViewToUrl();
   const q = document.getElementById('search').value;
   const list = packages.filter(
     (p) => inPlatform(p) && inList(p) && FILTERS[activeFilter].test(p) && matchesSearch(p, q),

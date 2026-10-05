@@ -21,6 +21,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   `summary.json` (about a third of the download), and a package's full row
   from its shard when one of its panels opens (once a shard). It still reads
   the first format, so it works with data from before.
+- The list is paged: 200 packages at a time, most in need of attention
+  first, with page links under it and `?page=` in the address. Drawing stays
+  fast however many packages there are; changing a filter, the search or the
+  order goes back to the first page.
 
 ### Changed
 
