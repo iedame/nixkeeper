@@ -40,10 +40,13 @@ Hydra's builds only, no update attempts or GitHub counts, and left out of
 
 ## The page
 
-It starts from the counts for all of nixpkgs and what needs attention
-(failing or outdated), and shows one view at a time: a maintainer's
-packages (`?q=@handle`), a team's, a list's, a generated set's, or one
-package (`?pkg=`); see [reading the page](reading-the-page.md).
+It starts from an overview of all of nixpkgs: the fully checked packages'
+outdated, failing, vulnerable and broken counts with their trends (from
+`history.json`, a point a daily sync), the generated sets, a search, and
+the newest and longest-standing failures. Each opens a list: what needs
+attention, a maintainer's packages (`?q=@handle`), a team's, a generated
+set's, or one package (`?pkg=`); visitors can keep their own handle and
+team, in their browser. See [reading the page](reading-the-page.md).
 
 ## What it costs
 

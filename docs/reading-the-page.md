@@ -16,17 +16,37 @@ only that team's packages, as `?team=` does in the address
 (`?team=gaming`, in any case).
 
 On a page tracking [every package](all-packages.md) (a community
-instance), the page shows one view of nixpkgs at a time: what needs
-attention (failing or outdated) to start with, a maintainer's packages
-(`?q=@handle`, `@none` for those with none), a team's (the team picker, or
-`?team=`), a list's, a generated set's (pending: only Repology's versions
-and Hydra's builds, linked from the line at the top with the counts for all
-of nixpkgs), or one package alone (`?pkg=firefox`). The filters, search and
-order then work within it, as on any page; a search also lists the packages
-beyond the view whose names match, closest first. "not on Repology" is a
-package Repology doesn't know, and "not read" an update attempt the sync
-didn't read (with every package, attempts come from a digest of the bot's,
-which hasn't read that one yet).
+instance), the page starts from an **overview** of nixpkgs, with no list:
+
+- how many packages nixpkgs has, how many are **fully checked** and how many
+  are in **generated sets** (pending: only Repology's versions and Hydra's
+  builds);
+- four cards for the fully checked ones: outdated, failing (with how many
+  Hydra builds fail in all, as [zh.fail](https://zh.fail/) counts them:
+  every job on every platform, a dependency's failure counted for each
+  package it stops), vulnerable and marked broken, each with its change over
+  the last week and a month's trend once there's a week of daily syncs; each
+  opens its list;
+- the generated sets, each with how many of it fail or are marked broken;
+- a search box (a package's name, or `@handle`) and a team picker;
+- the newest and longest-standing build failures, outdated packages and
+  update failures (a switch on each), and "show all" for the whole list.
+
+At the top, "needs attention" (failing, outdated or flagged vulnerable,
+worst first) opens that list from anywhere; "Your packages" (your GitHub
+handle) and "Your team" open yours, once given (they're kept in your
+browser only, and ✎ changes them). A list says what it is under
+"Showing" (✕ goes back to the overview): what needs attention, marked
+broken, a maintainer's packages (`?q=@handle`, `@none` for those with
+none), a team's (`?team=`), a generated set's (`?set=`), one package alone
+(`?pkg=firefox`), or one of the instance's lists (`?list=`, by address
+only). Its tiles (outdated, failing, vulnerable, marked broken) count it and
+filter it, as the counts at the top do on other pages; the search and order
+work within it too, and a search also lists the packages beyond it whose
+names match, closest first. "not on Repology" is a package Repology doesn't
+know, and "not read" an update attempt the sync didn't read (with every
+package, attempts come from a digest of the bot's, which hasn't read that
+one yet).
 
 The list shows 200 packages at a time, most in need of attention first;
 the page links under it go through the rest (the page is in the address
@@ -72,7 +92,10 @@ commit or a PR: `unciv: 4.22.1 -> 4.22.6` (from master's version when it's
 partway there).
 
 How long a package has been outdated shows after its name (`3 d`; violet
-when the update is merged and waiting for the channel).
+when the update is merged and waiting for the channel), and how long it's
+been failing, in red, when it fails (its builds since their last success,
+its update attempts since the first failed one nixkeeper read). Failing
+packages come longest first, as outdated ones do.
 
 **At the right of the versions**: beside nixpkgs' version, the badges
 about it (`devel`, `vulnerable`, ...); beside the newest, the update's

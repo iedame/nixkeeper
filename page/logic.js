@@ -63,18 +63,41 @@ export const viewSlug = (name) =>
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-|-$/g, '');
 
-// The view to load, as a path under data/ ("views/attention.json"), or
-// "pkg:<name>" for one package (?pkg=): one package, else a maintainer's
-// (?q=@handle; @none those without), a team's, a list's, a generated set's,
-// else what needs attention.
-export function viewPath({ pkg = null, query = '', team = null, list = null, set = null } = {}) {
+// The view to load, as a path under data/ ("views/attention.json"),
+// "pkg:<name>" for one package (?pkg=), or "overview" for none (the start
+// page: all of nixpkgs in numbers, and the ways in): one package, else a
+// maintainer's (?q=@handle; @none those without), a team's, a list's, a
+// generated set's, a list by name (?view=attention, ?view=broken), else the
+// overview.
+export const VIEWS = { attention: 'views/attention.json', broken: 'views/broken.json' };
+export function viewPath({
+  pkg = null,
+  query = '',
+  team = null,
+  list = null,
+  set = null,
+  view = null,
+} = {}) {
   if (pkg) return `pkg:${pkg}`;
   const q = query.trim().toLowerCase();
   if (q.startsWith('@') && q.length > 1) return `views/maintainer/${q.slice(1)}.json`;
   if (team) return `views/team/${viewSlug(team)}.json`;
   if (list) return `views/list/${viewSlug(list)}.json`;
   if (set) return `views/set/${set}.json`;
-  return 'views/attention.json';
+  return VIEWS[view] || 'overview';
+}
+
+// A count's change over the last week, from history.json's points (oldest
+// first, a point a day): the newest point's value less the value of the
+// newest point at least 7 days older; null without one.
+export function weekChange(points, key) {
+  const last = points.at(-1);
+  if (!last) return null;
+  const week = new Date(Date.parse(`${last.day}T00:00:00Z`) - 7 * 86400e3)
+    .toISOString()
+    .slice(0, 10);
+  const before = points.filter((p) => p.day <= week).at(-1);
+  return before ? last[key] - before[key] : null;
 }
 
 // The names index's status letters (status in datastore.py) as the dot

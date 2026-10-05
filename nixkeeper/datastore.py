@@ -23,9 +23,10 @@ import os
 import re
 import shutil
 import zlib
+from datetime import datetime
 
 from . import config
-from .changes import failures, is_outdated, waiting_for_channel
+from .changes import broken_builds, failures, is_outdated, waiting_for_channel
 
 FORMAT = 2
 # Rows a shard holds, about: a shard is what a details panel loads.
@@ -172,9 +173,16 @@ def summary_entry(row):
     return entry
 
 
-def files(index, entries):
+# Days of counts history.json keeps (with every package).
+HISTORY_DAYS = 365
+
+
+def files(index, entries, history=None):
     """Every file of data/ for index (its rows in "packages") and entries
-    (Repology's, by dataFile): {path in data/: data}."""
+    (Repology's, by dataFile): {path in data/: data}. history: with every
+    package, the last run's history.json points (read_history), to which
+    this run's counts are added; None leaves history.json out (a partial
+    run keeps the one on disk)."""
     run = index.get("checkedAt")
     given = [elided(row, run) for row in index["packages"]]  # format 1's order
     rows = sorted(given, key=lambda row: row["name"])
@@ -198,6 +206,10 @@ def files(index, entries):
         # (no page old enough to need it reads a community instance's data).
         del manifest["packages"]
         manifest.update(views(rows, out))
+        if history is not None:
+            out["history.json"] = {
+                "points": with_point(history, run, manifest["counts"])
+            }
     else:
         out.update(entries)  # format 1's per-project files
         manifest["packages"] = given
@@ -206,6 +218,61 @@ def files(index, entries):
     for n, shard in enumerate(shards):
         out[f"rows/{n}.json"] = {"packages": shard}
     return out
+
+
+def with_point(history, run, counts):
+    """history (a list of {"day", counts...}, oldest first) with this run's
+    counts of the fully checked rows as the day's point (a second sync the
+    same day replaces the first), the last HISTORY_DAYS days."""
+    day = (run or "")[:10]
+    point = {"day": day, **{k: counts[k] for k in HISTORY_COUNTS}}
+    kept = [p for p in history if p.get("day") != day]
+    return sorted([*kept, point], key=lambda p: p["day"])[-HISTORY_DAYS:]
+
+
+# Hydra statuses of a build that didn't succeed: counted as failing builds
+# (the manifest's failingBuilds), as zh.fail does; only "failed" makes a
+# package fail on the page.
+FAILING_BUILDS = {"failed", "dependency", "unfinished"}
+# What history.json records each day: the fully checked rows' counts.
+HISTORY_COUNTS = ("tracked", "outdated", "failed", "vulnerable", "broken")
+
+
+def read_history(out_dir=None):
+    """The last run's history.json points, or [] if there are none."""
+    out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
+    try:
+        return _load(os.path.join(out_dir, "history.json")).get("points") or []
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
+# The overview's lists (views' highlights), from each row's date.
+AGES = {
+    "failing": "failingSince",
+    "outdated": "outdatedSince",
+    "updateFailing": "updateFailingSince",
+}
+# How many of each the overview shows, newest and oldest.
+HIGHLIGHTS = 8
+
+
+def highlights(found):
+    """{"count", "newest", "oldest"} of (since, name, status) found: how
+    many there are, and the HIGHLIGHTS most recent and longest-standing, each
+    [name, since, status] (ties by name)."""
+
+    def since(f):
+        return datetime.fromisoformat(f[0]).timestamp()
+
+    def pick(chosen):
+        return [[name, at, letter] for at, name, letter in chosen[:HIGHLIGHTS]]
+
+    return {
+        "count": len(found),
+        "newest": pick(sorted(found, key=lambda f: (-since(f), f[1]))),
+        "oldest": pick(sorted(found, key=lambda f: (since(f), f[1]))),
+    }
 
 
 def status(row):
@@ -237,14 +304,16 @@ def views(rows, out):
     """With every package: the views the page starts from instead of a
     summary of every row (each {"packages": [summary entries]}, sorted by
     name), added to out, and what the manifest says of them:
-      views/attention.json: failing or outdated (not pending)
+      views/attention.json: failing, outdated or flagged vulnerable (not
+        pending)
+      views/broken.json: marked broken in nixpkgs (not pending)
       views/maintainer/<handle>.json: a maintainer's (lowercase handle),
         and none.json those with no maintainer (not pending)
       views/team/<slug>.json, views/list/<slug>.json, views/set/<name>.json
       names.json: every row's name and status (status), and its set when
         pending: what a search looks through
-    Returns {"counts": {...}, "views": {"attention", "teams", "lists",
-    "sets": {name: count}}}."""
+    Returns {"counts": {...}, "views": {"attention", "teams", "lists":
+    {name: count}, "sets": {name: {"packages", "failed", "broken"}}}}."""
     found = {}
 
     def put(path, row):
@@ -252,6 +321,8 @@ def views(rows, out):
 
     counts = dict.fromkeys(
         (
+            "broken",
+            "failingBuilds",
             "tracked",
             "outdated",
             "failed",
@@ -264,8 +335,16 @@ def views(rows, out):
     )
     teams, lists, sets = {}, {}, {}
     names = []
+    # Since when each fully checked row has been failing, outdated, failing
+    # its update attempts: the overview's newest and oldest of each.
+    ages = {"failing": [], "outdated": [], "updateFailing": []}
     for row in rows:
         letter = status(row)
+        # Hydra jobs that didn't build, on every platform, of every row
+        # (pending ones too): failing builds as zh.fail counts them.
+        counts["failingBuilds"] += sum(
+            b["status"] in FAILING_BUILDS for b in row.get("builds") or []
+        )
         names.append(
             [row["name"], letter, row["set"]]
             if row.get("pending")
@@ -281,7 +360,12 @@ def views(rows, out):
             lists[name] = lists.get(name, 0) + 1
         if row.get("pending"):
             put(f"views/set/{row['set']}.json", row)
-            sets[row["set"]] = sets.get(row["set"], 0) + 1
+            found_set = sets.setdefault(
+                row["set"], {"packages": 0, "failed": 0, "broken": 0}
+            )
+            found_set["packages"] += 1
+            found_set["failed"] += letter.startswith("f")
+            found_set["broken"] += bool(row.get("markedBroken") or broken_builds(row))
             counts["pending"] += 1
             continue
         if row.get("maintainers") == []:
@@ -292,15 +376,25 @@ def views(rows, out):
         counts["outdated"] += is_outdated(row)
         counts["vulnerable"] += letter.endswith("v")
         counts["updateFailures"] += bool(row.get("updateFailure"))
-        if letter[0] in "fmo":
+        for kind, field in AGES.items():
+            if row.get(field):
+                ages[kind].append((row[field], row["name"], letter))
+        if row.get("markedBroken") or broken_builds(row):
+            counts["broken"] += 1
+            put("views/broken.json", row)
+        if letter[0] in "fmo" or letter.endswith("v"):
             put("views/attention.json", row)
     for path, members in found.items():
         out[path] = {"packages": [summary_entry(row) for row in members]}
     out["names.json"] = {"names": names}
     return {
         "counts": counts,
+        "highlights": {kind: highlights(found) for kind, found in ages.items()},
         "views": {
             "attention": len(found.get("views/attention.json", [])),
+            "broken": len(found.get("views/broken.json", [])),
+            # (In the file, by name with capitals first, as its keys sort: the
+            # page sorts them its way.)
             "teams": dict(sorted(teams.items())),
             "lists": dict(sorted(lists.items())),
             "sets": dict(sorted(sets.items())),
@@ -315,15 +409,16 @@ def _write_file(path, text):
     os.replace(path + ".tmp", path)
 
 
-def write(index, entries, out_dir=None):
-    """Write data/ for index and entries (files). Built from scratch in a
-    temporary folder and only then swapped in for out_dir, so removed
-    packages disappear and a failed run leaves the previous data intact."""
+def write(index, entries, out_dir=None, history=None):
+    """Write data/ for index and entries (files; history: the counts
+    history so far, read_history). Built from scratch in a temporary folder
+    and only then swapped in for out_dir, so removed packages disappear and
+    a failed run leaves the previous data intact."""
     out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
     tmp_dir = out_dir + ".tmp"
     shutil.rmtree(tmp_dir, ignore_errors=True)  # leftover from a failed run
     os.makedirs(tmp_dir)
-    for name, data in files(index, entries).items():
+    for name, data in files(index, entries, history).items():
         _write_file(os.path.join(tmp_dir, name), dumps(data))
     shutil.rmtree(out_dir, ignore_errors=True)
     os.rename(tmp_dir, out_dir)

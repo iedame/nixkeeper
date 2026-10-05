@@ -99,17 +99,32 @@ would be too much to load), no `packages` in `index.json` and no
 lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 
 - `counts` in `index.json`: `tracked`, `outdated`, `failed`, `vulnerable`,
-  `updateFailures`, `waiting` (outdated, the update merged on master) of the
-  rows not pending, and `pending`;
-- `views` in `index.json`: how many rows `attention` has, and the `teams`,
-  `lists` and `sets` with their counts (`{ "Gaming": 12, ... }`);
+  `broken` (marked broken), `updateFailures`, `waiting` (outdated, the
+  update merged on master) of the rows not pending; `pending`; and
+  `failingBuilds`, every Hydra job of every row that didn't build (failed,
+  a dependency failed, or unfinished), on every platform;
+- `highlights` in `index.json`: for `failing` (builds), `outdated` and
+  `updateFailing`, of the rows not pending, `{ "count", "newest", "oldest" }`:
+  how many there are, and the 8 most recent and 8 longest-standing, each
+  `[name, since, status]` (from `failingSince`, `outdatedSince`,
+  `updateFailingSince`; `status` as in `names.json`);
+- `views` in `index.json`: how many rows `attention` and `broken` have, the `teams` and
+  `lists` with their counts (`{ "Gaming": 12, ... }`), and the `sets`
+  with how many packages each has, how many of them fail, and how many
+  nixpkgs marks broken
+  (`{ "haskellPackages": { "packages": 19423, "failed": 83, "broken": 7600 }, ... }`);
 - `views/`, each `{ "packages": [ ... ] }` of summary entries, sorted by
-  name: `attention.json` (failing or outdated, not pending),
+  name: `attention.json` (failing, outdated or flagged vulnerable, not
+  pending), `broken.json` (marked broken, not pending),
   `maintainer/<handle>.json` (the handle in lowercase; `none.json`: no
   maintainer, not pending), `team/<slug>.json` and `list/<slug>.json` (the
   name in lowercase, each run of other characters than letters and digits
   a `-`: `Security review` is `security-review`), `set/<name>.json` (a
   generated set's pending rows);
+- `history.json`: `{ "points": [ { "day", "tracked", "outdated", "failed",
+  "vulnerable", "broken" }, ... ] }`, the counts of the rows not pending at
+  each daily sync (the last 365 days; a second sync the same day replaces
+  the first): the overview's trends;
 - `names.json`: `{ "names": [ [name, status], ... ] }` for every row, with
   its set as a third element when it's pending. `status` is a letter as the
   page's dot: `f` failed, `m` outdated but merged on master, `o` outdated,
@@ -129,6 +144,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `platforms` | `{ "linux": bool, "darwin": bool }` from `meta.platforms`; `null` when nixpkgs doesn't restrict them |
 | `homepage` | `meta.homepage` |
 | `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it |
+| `markedBroken` | `true` when nixpkgs marks one of its attributes broken (`meta.broken` in the package index, evaluated for x86_64-linux), even with no Hydra job to say so (a broken package often has none) |
 | `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); missing when it has none |
 | `pending`, `set` | with every package: `true` and its set for a row of a generated set (`haskellPackages`, ...) that no list has: only Repology's versions and Hydra's builds ([every package](all-packages.md)) |
 | `unread` | with every package: the sources this sync didn't read for the row and kept as they were (`["update"]`: its nixpkgs-update attempt, which nixkeeper-updates' digest hasn't read yet) |
@@ -147,6 +163,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `devel` | a development variant of a split project (`wesnoth-devel`), or a version Repology calls devel |
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
+| `failingSince` | since when a build of it has been failing (its own build, not a dependency's): kept from sync to sync while it fails, gone once it doesn't; first seen, it's the failed builds' last success (the failing began after it), or then |
+| `updateFailingSince` | since when its nixpkgs-update attempts have been failing, the same way; first seen, the failed attempt's day |
 | `staleSince` | Repology couldn't be reached for it: the version data is from this time |
 | `repologyCheckedAt` | when its Repology data was read: the day nixkeeper-versions' digest read it (daily for outdated projects, weekly for the rest), or when Repology was asked directly (daily while it's outdated, flagged vulnerable, changed in nixpkgs or new, otherwise every 3 days) |
 | `upstream` | nixkeeper's own update check, when it has one (below): a rule of yours or the community's, or one worked out from nixpkgs |

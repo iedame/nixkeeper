@@ -94,3 +94,26 @@ def add_outdated_since(rows, previous, now):
             row["outdatedSince"] = (
                 before.get(row["name"], {}).get("outdatedSince") or now
             )
+
+
+def add_failing_since(rows, previous, now):
+    """Mark since when each row's builds have been failing ("failingSince")
+    and its update attempts ("updateFailingSince"), carried from run to run
+    as outdatedSince is: kept while it lasts, dropped once it's fixed. New
+    to a failure, a row starts from what's known: its failed builds' last
+    success (the failing began after it), else now; the failed attempt's
+    day, else now."""
+    before = {row["name"]: row for row in previous["packages"]}
+    for row in rows:
+        old = before.get(row["name"], {})
+        failed = [b for b in row.get("builds") or [] if b["status"] == "failed"]
+        row.pop("failingSince", None)
+        if failed:
+            last = [b["lastSuccess"] for b in failed if b.get("lastSuccess")]
+            row["failingSince"] = old.get("failingSince") or min(last, default=now)
+        row.pop("updateFailingSince", None)
+        if row.get("updateFailure"):
+            day = (row.get("update") or {}).get("date")
+            row["updateFailingSince"] = old.get("updateFailingSince") or (
+                f"{day}T00:00:00+00:00" if day else now
+            )
