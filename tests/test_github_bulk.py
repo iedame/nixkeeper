@@ -31,6 +31,34 @@ ISSUES = [
 ]
 
 
+class Words(unittest.TestCase):
+    def test_as_githubs_search_matched_them(self):
+        # Checked against GitHub's answers on 2026-10-05.
+        self.assertIn("trigger", github_bulk.title_words("nixos: enable led triggers"))
+        self.assertIn(
+            "velocity", github_bulk.title_words("MidiMonster: above certain velocities")
+        )
+        self.assertTrue(
+            {"wine", "bin"} <= github_bulk.title_words("make WINE_BIN work")
+        )
+        self.assertEqual(github_bulk.words("_1password-gui"), {"_1password", "gui"})
+        self.assertNotIn(
+            "_1password", github_bulk.title_words("nixos/1password-gui: x")
+        )
+
+    def test_stem(self):
+        for word, stemmed in {
+            "velocities": "velocity",
+            "triggers": "trigger",
+            "patches": "patch",
+            "class": "class",
+            "nixos": "nixo",  # consistently on both sides, so still a match
+            "us": "us",
+            "status": "status",
+        }.items():
+            self.assertEqual(github_bulk.stem(word), stemmed, word)
+
+
 class Listing(unittest.TestCase):
     listing = github_bulk.Listing(PRS, ISSUES)
 
