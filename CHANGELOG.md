@@ -9,6 +9,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Changed
+
+- The files in `data/` are written as compact JSON, without indentation:
+  about a third smaller for the browser to read (a few percent smaller to
+  download, as servers send it gzipped). The data is the same: tools that
+  parse JSON aren't affected.
+
 ## [0.11.0] - 2026-10-05
 
 Ready for big lists: Hydra's builds, Repology's data and GitHub's PRs and
