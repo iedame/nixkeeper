@@ -21,16 +21,20 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
 - how many packages nixpkgs has, how many are **fully checked** and how many
   are in **generated sets** (pending: only Repology's versions and Hydra's
   builds);
-- four cards for the fully checked ones: outdated, failing (with how many
+- four cards for the fully checked ones: outdated (fewer than Repology's
+  nixpkgs page counts: that includes the generated sets, counts every
+  attribute of a package, and takes any newer version it knows of, where
+  nixkeeper's own update checks overrule it), failing (with how many
   Hydra builds fail in all, as [zh.fail](https://zh.fail/) counts them:
   every job on every platform, a dependency's failure counted for each
   package it stops), vulnerable and marked broken, each with its change over
   the last week and a month's trend once there's a week of daily syncs; each
   opens its list;
-- the generated sets, each with how many of it fail or are marked broken;
 - a search box (a package's name, or `@handle`) and a team picker;
 - the newest and longest-standing build failures, outdated packages and
-  update failures (a switch on each), and "show all" for the whole list.
+  update failures (a switch on each), and "show all" for the whole list;
+- the generated sets, each with its size and how much of it is marked
+  broken or failing (a bar).
 
 At the top, "needs attention" (failing, outdated or flagged vulnerable,
 worst first) opens that list from anywhere; "Your packages" (your GitHub

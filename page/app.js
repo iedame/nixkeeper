@@ -27,6 +27,7 @@ import {
   themeFor,
   timeAgo,
   updateTitle,
+  VIEWS,
   versionDiff,
   viewPath,
   viewSlug,
@@ -536,6 +537,12 @@ async function ensureView() {
     set: setFilter,
     view: viewParam,
   });
+  // Something else shown instead (a package, a maintainer...): ?set= and
+  // ?view= no longer apply, and nothing on the page would take them off
+  // again (a set's filter would hide every row: the other views leave out
+  // what's pending).
+  if (setFilter && path !== `views/set/${setFilter}.json`) setFilter = null;
+  if (viewParam && path !== VIEWS[viewParam]) viewParam = null;
   if (path === shownView) return;
   wantedView = path;
   let found;
@@ -914,9 +921,13 @@ const teamPicker = (label) => {
     a.localeCompare(b, undefined, { sensitivity: 'base' }),
   );
   return teams.length
-    ? html`<label class="team-pick">Team <select id="teamPick"><option value="">${label}</option>${teams.map(([t, count]) => html`<option value="${t}"${teamFilter && t.toLowerCase() === teamFilter.toLowerCase() ? raw(' selected') : ''}>${t} (${fmt(count)})</option>`)}</select></label>`
+    ? html`<label class="team-pick"><span class="team-pick-label">Team</span> <select id="teamPick"><option value="">${label}</option>${teams.map(([t, count]) => html`<option value="${t}"${teamFilter && t.toLowerCase() === teamFilter.toLowerCase() ? raw(' selected') : ''}>${t} (${fmt(count)})</option>`)}</select></label>`
     : '';
 };
+
+// A magnifying glass, for the overview's search (currentColor).
+const SEARCH_ICON =
+  '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="7" cy="7" r="4.75"/><path d="m10.5 10.5 3.5 3.5"/></svg>';
 
 // The overview's cards: the manifest's count, which list they open
 // (?view=, ?filter=), and history.json's key.
@@ -935,34 +946,36 @@ const CARDS = [
 // The overview's lists of the newest and longest-standing (the manifest's
 // highlights), and which of the two each shows.
 const HIGHLIGHTS = [
-  { key: 'failing', label: 'Build failures', filter: 'failed' },
-  { key: 'outdated', label: 'Outdated', filter: 'warn' },
-  { key: 'updateFailing', label: 'Update failures', filter: 'failed' },
+  { key: 'failing', label: 'Build failures', filter: 'failed', color: 'var(--danger)' },
+  { key: 'outdated', label: 'Outdated', filter: 'warn', color: 'var(--warn)' },
+  { key: 'updateFailing', label: 'Update failures', filter: 'failed', color: 'var(--caution)' },
 ];
 const highlightShown = { failing: 'newest', outdated: 'newest', updateFailing: 'newest' };
 
 function highlightsHtml() {
   const found = manifest.highlights;
   if (!found) return '';
-  const columns = HIGHLIGHTS.map(({ key, label, filter }) => {
+  const columns = HIGHLIGHTS.map(({ key, label, filter, color }) => {
     const h = found[key] || { count: 0, newest: [], oldest: [] };
     const mode = highlightShown[key];
     const items = h[mode] || [];
     const toggle = (m, text) =>
       html`<button type="button" class="hl-mode" data-hl="${key}" data-mode="${m}" aria-pressed="${mode === m}">${text}</button>`;
-    return html`<div class="hl-col">
-      <div class="hl-head"><span class="hl-title">${label} <b>${fmt(h.count)}</b></span>
-        <span class="hl-modes">${toggle('newest', 'Newest')}${toggle('oldest', 'Oldest')}</span></div>
+    return html`<section class="hl-card" style="--hl:${color}" aria-label="${label}">
+      <div class="hl-head">
+        <div class="hl-title"><span class="hl-label">${label}</span><span class="hl-n">${fmt(h.count)}</span></div>
+        <div class="hl-modes" role="group" aria-label="${label}: show">${toggle('newest', 'Newest')}${toggle('oldest', 'Oldest')}</div>
+      </div>
       ${
         items.length
           ? html`<ol class="hl-list">${items.map(
               ([name, since, letter]) =>
-                html`<li><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}"></span><a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a><span class="hl-age" title="Since ${longDate(since)}">${shortAge(since)}</span></li>`,
+                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}"></span><span class="hl-name mono">${name}</span><span class="hl-age" title="Since ${longDate(since)}">${shortAge(since)}</span></a></li>`,
             )}</ol>`
-          : html`<p class="scope-hint">None.</p>`
+          : html`<p class="hl-none">None right now.</p>`
       }
-      ${h.count ? html`<a class="files-link hl-all" href="${scopeHref({ view: 'attention', filter })}" data-card-view="attention" data-card-filter="${filter}">Show all ›</a>` : ''}
-    </div>`;
+      ${h.count ? html`<a class="hl-all" href="${scopeHref({ view: 'attention', filter })}" data-card-view="attention" data-card-filter="${filter}">Show all ${fmt(h.count)} <span aria-hidden="true">→</span></a>` : ''}
+    </section>`;
   });
   return html`<p class="scope-label">Newest and longest-standing · fully checked</p>
     <div class="hl-cols">${columns}</div>`;
@@ -1010,7 +1023,9 @@ function overviewHtml() {
       ${
         card.key === 'failed' && c.failingBuilds
           ? html`<span class="card-sub" title="Every Hydra job that didn't build, on every platform, in all of nixpkgs: as zh.fail counts them, with a dependency's failure counted for each package it stops, and timeouts. A package counts as failing here only when its own build failed.">${fmt(c.failingBuilds)} failing builds on Hydra</span>`
-          : ''
+          : card.key === 'outdated'
+            ? html`<span class="card-sub" title="Each package counted once, its other attributes left out, and the generated sets (Haskell, R and the others) left out: with nixkeeper's own update checks, which can overrule a newer version listed elsewhere (a development series, a version upstream withdrew). Counts of every attribute in nixpkgs come out higher.">Unique, non-generated packages</span>`
+            : ''
       }
       ${trends ? sparkline(points, card.key, card.color) : ''}
     </a>`;
@@ -1027,17 +1042,34 @@ function overviewHtml() {
     <p class="scope-label">Fully checked${trends ? `, last ${TREND_DAYS} days` : ''} · each opens its list${trends ? '' : html` <span class="scope-hint">(trends after a week of daily syncs)</span>`}</p>
     <div class="cards">${cards}</div>
 
-    <p class="scope-label">Generated sets</p>
-    <div class="set-pills">${sets.map(
-      ([s, v]) =>
-        html`<a class="set-pill" href="${scopeHref({ set: s })}" data-scope-set="${s}">${s} <b>${fmt(v.packages)}</b>${v.failed ? html` <span class="set-failed">· ${fmt(v.failed)} failing</span>` : ''}${v.broken ? html` <span class="set-broken">· ${fmt(v.broken)} broken</span>` : ''}</a>`,
-    )}</div>
-    <p class="scope-label">Find packages</p>
-    <div class="scope-view find">
-      <input type="search" id="overviewSearch" class="find-input" placeholder="firefox, or @maintainer" aria-label="Find a package, or @maintainer" value="${document.getElementById('search').value}">
-      ${teamPicker('Pick a team')}
+    <div class="find" role="search">
+      <label class="find-box"><span class="find-icon" aria-hidden="true">${raw(SEARCH_ICON)}</span>
+        <input type="search" id="overviewSearch" class="find-input" placeholder="Find a package, or @maintainer" aria-label="Find a package, or @maintainer" value="${document.getElementById('search').value}"></label>
+      ${teamPicker('Browse a team…')}
     </div>
-    ${highlightsHtml()}`;
+    ${highlightsHtml()}
+    ${setsHtml(sets)}`;
+}
+
+// The overview's generated sets: each one's size, and how much of it is
+// marked broken or failing (a bar, in their colours).
+function setsHtml(sets) {
+  if (!sets.length) return '';
+  const pct = (n, of) => (of ? Math.min(100, (100 * n) / of) : 0).toFixed(1);
+  const cards = sets.map(([s, v]) => {
+    const problems = [
+      v.broken ? html`<span class="set-broken">${fmt(v.broken)} broken</span>` : '',
+      v.failed ? html`<span class="set-failed">${fmt(v.failed)} failing</span>` : '',
+    ].filter(Boolean);
+    return html`<a class="set-card" href="${scopeHref({ set: s })}" data-scope-set="${s}">
+      <span class="set-name mono">${s}</span>
+      <span class="set-n">${fmt(v.packages)} <span class="set-unit">packages</span></span>
+      <span class="set-bar" aria-hidden="true"><span class="set-bar-broken" style="width:${pct(v.broken, v.packages)}%"></span><span class="set-bar-failed" style="width:${pct(v.failed, v.packages)}%"></span></span>
+      <span class="set-meta">${problems.length ? problems.map((p, i) => html`${i ? ' · ' : ''}${p}`) : 'None broken or failing'}</span>
+    </a>`;
+  });
+  return html`<p class="scope-label">Generated sets <span class="set-pending" title="Generated from CRAN, Hackage and the like by their own tooling: only Repology's versions and Hydra's builds for now">pending</span> <span class="scope-hint">versions and builds only, for now</span></p>
+    <div class="set-grid">${cards}</div>`;
 }
 
 function listHeaderHtml() {
@@ -1074,7 +1106,10 @@ function listHeaderHtml() {
       ${path.startsWith('views/set/') ? html`<span class="scope-hint">A generated set: only Repology's versions and Hydra's builds, for now</span>` : ''}
       ${teamPicker('Any team')}
     </div>
-    <div class="tiles">${tiles}</div>`;
+    ${
+      // One package: its row says it all, the tiles would only count to 1.
+      path.startsWith('pkg:') ? '' : html`<div class="tiles">${tiles}</div>`
+    }`;
 }
 
 // The address of a view (scopeHref({ set }), { pkg }, {} for what needs

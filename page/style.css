@@ -651,30 +651,48 @@ a:focus-visible {
 }
 .hl-cols {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 8px 16px;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 8px;
 }
-.hl-col {
+.hl-card {
   display: grid;
-  align-content: start;
-  gap: 6px;
+  grid-template-rows: auto 1fr auto;
+  grid-template-columns: minmax(0, 1fr);
   min-width: 0;
+  background: color-mix(in srgb, var(--ink) 4%, var(--surface));
+  border-radius: 8px;
+  padding: 10px 6px 6px;
+  border-top: 2px solid color-mix(in srgb, var(--hl) 70%, transparent);
 }
 .hl-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  padding: 0 6px 8px;
 }
 .hl-title {
-  color: var(--ink);
-  font-weight: 500;
+  display: grid;
+  gap: 1px;
+}
+.hl-label {
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.hl-n {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--hl);
+  font-variant-numeric: tabular-nums;
 }
 .hl-modes {
   display: inline-flex;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  overflow: hidden;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 7px;
+  background: color-mix(in srgb, var(--ink) 6%, var(--surface));
 }
 .hl-mode {
   font: inherit;
@@ -682,54 +700,134 @@ a:focus-visible {
   color: var(--ink-faint);
   background: none;
   border: 0;
-  padding: 1px 8px;
+  border-radius: 5px;
+  padding: 2px 9px;
   cursor: pointer;
 }
+.hl-mode:hover {
+  color: var(--ink);
+}
 .hl-mode[aria-pressed="true"] {
-  color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: var(--ink);
+  background: var(--surface);
+  box-shadow: 0 1px 2px color-mix(in srgb, #000 25%, transparent);
+}
+.hl-mode:focus-visible,
+.hl-row:focus-visible,
+.hl-all:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 .hl-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: grid;
-  gap: 3px;
 }
-.hl-list li {
+.hl-list > * + * {
+  border-top: 1px solid color-mix(in srgb, var(--hairline) 60%, transparent);
+}
+.hl-row {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   min-width: 0;
+  padding: 5px 6px;
+  border-radius: 5px;
+  color: var(--ink);
+  text-decoration: none;
 }
-.hl-list a {
+.hl-row:hover {
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+}
+.hl-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  font-size: 13px;
+}
+.hl-row:hover .hl-name {
+  color: var(--accent);
 }
 .hl-age {
   margin-left: auto;
-  color: var(--ink-faint);
-  font-size: 12px;
+  flex: none;
+  font-size: 11.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
   white-space: nowrap;
+  color: var(--hl);
+  background: color-mix(in srgb, var(--hl) 12%, transparent);
+  border-radius: 999px;
+  padding: 1px 7px;
+}
+.hl-none {
+  margin: 0;
+  padding: 6px;
+  color: var(--ink-faint);
+  font-size: 13px;
 }
 .hl-all {
   justify-self: start;
+  margin: 4px 0 0;
+  padding: 4px 6px;
+  border-radius: 5px;
   font-size: 12.5px;
+  color: var(--accent);
+  text-decoration: none;
+}
+.hl-all:hover {
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+/* The overview's search: large and centred, the team picker beside it. */
+.find {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  width: min(100%, 720px);
+  margin: 14px auto 10px;
+}
+.find-box {
+  position: relative;
+  flex: 3 1 320px;
+  display: flex;
+  align-items: center;
+}
+.find-icon {
+  position: absolute;
+  left: 14px;
+  display: flex;
+  color: var(--ink-faint);
+  pointer-events: none;
 }
 .find-input {
-  flex: 1;
-  min-width: 12em;
+  width: 100%;
+  height: 44px;
   font: inherit;
+  font-size: 15px;
   color: var(--ink);
   background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: 6px;
-  padding: 5px 9px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 10px;
+  padding: 0 14px 0 40px;
+  box-shadow: 0 1px 2px color-mix(in srgb, #000 12%, transparent);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+.find-input::placeholder {
+  color: var(--ink-faint);
+}
+.find-input:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--hairline-strong));
 }
 .find-input:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 1px;
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.find-box:focus-within .find-icon {
+  color: var(--accent);
 }
 .tiles {
   display: grid;
@@ -768,30 +866,82 @@ a:focus-visible {
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
-.set-pills {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
+.set-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 }
-.set-pill {
-  font-size: 12px;
-  color: var(--ink-soft);
+@media (max-width: 560px) {
+  .set-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+.set-card {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  color: inherit;
   text-decoration: none;
-  border: 1px solid var(--hairline);
-  border-radius: 999px;
-  padding: 2px 10px;
+  background: color-mix(in srgb, var(--ink) 4%, var(--surface));
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 9px 12px 10px;
 }
-.set-pill:hover {
+.set-card:hover {
   border-color: var(--hairline-strong);
-  color: var(--ink);
 }
-.set-pill[aria-current="true"] {
+.set-card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.set-name {
+  font-size: 12.5px;
+  color: var(--ink-soft);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.set-card:hover .set-name {
   color: var(--accent);
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--hairline-strong));
 }
-.set-pill b {
+.set-n {
+  font-size: 17px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.set-unit {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--ink-faint);
+}
+.set-bar {
+  display: flex;
+  height: 4px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--hairline);
+}
+.set-bar-broken {
+  background: var(--caution);
+}
+.set-bar-failed {
+  background: var(--danger);
+}
+.set-meta {
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+.set-pending {
+  font-size: 10.5px;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-soft);
+  border: 1px solid var(--hairline-strong);
+  border-radius: 999px;
+  padding: 0 6px;
+  margin: 0 4px;
+  vertical-align: 1px;
 }
 .set-failed {
   color: var(--danger);
@@ -840,6 +990,37 @@ a:focus-visible {
   border-radius: 6px;
   padding: 2px 6px;
   max-width: 14em;
+}
+.find .team-pick {
+  flex: 1 1 200px;
+  margin: 0;
+}
+.find .team-pick-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.find .team-pick select {
+  width: 100%;
+  max-width: none;
+  height: 44px;
+  font-size: 14px;
+  border: 1px solid var(--hairline-strong);
+  border-radius: 10px;
+  padding: 0 12px;
+  box-shadow: 0 1px 2px color-mix(in srgb, #000 12%, transparent);
+  cursor: pointer;
+}
+.find .team-pick select:hover {
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--hairline-strong));
+}
+.find .team-pick select:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
 }
 /* With every package, under a search: matching names beyond the view. */
 .more-matches {

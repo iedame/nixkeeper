@@ -41,15 +41,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   (`docs/data.md`). The page then starts from an overview of all of
   nixpkgs (fully checked, and in generated sets): cards for the outdated,
   failing, vulnerable and broken packages with their weekly change and
-  trend (`history.json`, from the first sync on), the generated sets with
-  their failing and broken packages, a search, and the newest and
-  longest-standing failures; each opens a list (what needs attention,
-  marked broken, a maintainer's, a team's, a generated set's, one
-  package's), whose tiles count and filter it. Visitors can keep their own
-  GitHub handle and team (in their browser) for "Your packages" and "Your
-  team"; the instance's own lists open by address only. A search also
-  lists matching names beyond the list shown.
-  not read say so.
+  trend (`history.json`, from the first sync on), a search with a team
+  picker, the newest and longest-standing build failures, outdated
+  packages and update failures, and the generated sets with how much of
+  each is marked broken or failing; each opens a list (what needs
+  attention, marked broken, a maintainer's, a team's, a generated set's,
+  one package's), whose tiles count and filter it. Visitors can keep their
+  own GitHub handle and team (in their browser) for "Your packages" and
+  "Your team"; the instance's own lists open by address only. A search
+  also lists matching names beyond the list shown.
 
 - A second format for the data, beside the first: `summary.json`, a short
   entry per package with what the page's list needs (about a third of
