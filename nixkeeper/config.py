@@ -83,9 +83,11 @@ GENERATED_SETS = [
 ]
 # With every package: how many packages not on the lists a sync reads the
 # nixpkgs-update logs of (those whose logs changed since the last sync; one
-# or two requests each, about 15 minutes in all), the outdated and failing
-# first; the rest wait for a later sync.
-UPDATE_LOGS_BUDGET = 500
+# or two requests each), the outdated and failing first. None for now: about
+# 4,000 log folders change a day, more than a sync can read politely, so
+# only the lists' packages are read (the rest keep the attempt last read,
+# marked unread) until there's a way to read them all in bulk.
+UPDATE_LOGS_BUDGET = 0
 # With every package: the other repositories kept for a row not on the
 # lists (the newest, one entry each): what its details show first. The rest
 # are on Repology, linked from there.

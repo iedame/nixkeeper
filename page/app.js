@@ -957,9 +957,9 @@ function updateCell(pkg) {
   // A newer version the bot has no way to update to: not a failure, but it
   // needs a manual update (or an updateScript).
   if (pkg.update?.outcome === 'cantUpdate') return button('caution', "can't update");
-  // With every package, the logs are read up to a budget a sync: its turn
-  // hasn't come yet (with no attempt read before).
-  if (pkg.unread?.includes('update') && !pkg.update) return button('neutral', 'not read yet', true);
+  // With every package, only the lists' packages' logs are read (with no
+  // attempt read before).
+  if (pkg.unread?.includes('update') && !pkg.update) return button('neutral', 'not read', true);
   if (pkg.update === null) return button('neutral', 'not attempted', true);
   return button('ok', 'none reported', true);
 }
@@ -1003,7 +1003,7 @@ const UPDATE_OUTCOME = {
 function fillUpdate(pkg, el) {
   const u = pkg.update;
   const unread = pkg.unread?.includes('update')
-    ? html`<div class="stale-note">Not read on the last sync: with every package, nixpkgs-update's logs are read for a few hundred packages a sync, outdated and failing ones first, and this one's turn hasn't come.${u ? ' Showing the last attempt read.' : ''}</div>`
+    ? html`<div class="stale-note">Not read on the last sync: with every package, nixpkgs-update's logs are only read for the packages on this instance's lists, for now.${u ? ' Showing the last attempt read.' : ''}</div>`
     : '';
   if (unread && !u) {
     el.innerHTML = unread;

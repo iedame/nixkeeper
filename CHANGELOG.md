@@ -16,8 +16,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   nixpkgs package, not only the lists', for a community instance
   (`docs/all-packages.md`). The lists' packages are read as always and are
   the only ones in the status issue; the rest only from the digests and
-  bulk listings, with nothing asked per package (nixpkgs-update: up to 500
-  a sync). Generated sets (R, Haskell, Emacs, Typst, TeX Live, SBCL) are
+  bulk listings, with nothing asked per package (nixpkgs-update's logs:
+  the lists' packages only, for now). Generated sets (R, Haskell, Emacs, Typst, TeX Live, SBCL) are
   pending: only Repology's versions and Hydra's builds. The data then has
   views (needs attention, per maintainer, team, list and set), a name
   index and counts, instead of one summary of every package
@@ -26,7 +26,7 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   maintainer's, a team's from a picker, a list's, a generated set's, one
   package's with `?pkg=`), and a search also lists matching names beyond
   the view. Pending packages, those not on Repology and update attempts
-  not read yet say so.
+  not read say so.
 
 - A second format for the data, beside the first: `summary.json`, a short
   entry per package with what the page's list needs (about a third of

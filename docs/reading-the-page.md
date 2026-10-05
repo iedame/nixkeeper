@@ -24,8 +24,9 @@ and Hydra's builds, linked from the line at the top with the counts for all
 of nixpkgs), or one package alone (`?pkg=firefox`). The filters, search and
 order then work within it, as on any page; a search also lists the packages
 beyond the view whose names match, closest first. "not on Repology" is a
-package Repology doesn't know, and "not read yet" an update attempt whose
-turn hasn't come (the bot's logs are read for a few hundred packages a sync).
+package Repology doesn't know, and "not read" an update attempt the sync
+didn't read (with every package, the bot's logs are read for the lists'
+packages only, for now).
 
 The list shows 200 packages at a time, most in need of attention first;
 the page links under it go through the rest (the page is in the address

@@ -29,7 +29,7 @@ asked package by package:
 | Hydra | from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra)'s digest; a queued job keeps its last result |
 | `meta.broken` | the package index's (x86_64-linux), not evaluated per platform |
 | Update checks | your own and the community's rules; none worked out from nixpkgs |
-| nixpkgs-update | the logs that changed since the last sync, at most 500 packages a sync, outdated and failing ones first; the others keep their last attempt and say they weren't read (`unread`) |
+| nixpkgs-update | not read for now (about 4,000 packages' logs change a day, more than a sync can read politely): a package keeps the attempt last read, if any, and says it wasn't read (`unread`) |
 | GitHub | PR and issue counts and update PRs from the bulk listings only |
 
 Packages of **generated sets** (rPackages, haskellPackages, emacsPackages,
@@ -47,8 +47,7 @@ package (`?pkg=`); see [reading the page](reading-the-page.md).
 
 ## What it costs
 
-No requests beyond the bulk ones a list-based instance makes, plus the
-nixpkgs-update budget. The data is a few hundred MB (about 30 MB gzipped),
+No requests beyond the bulk ones a list-based instance makes. The data is a few hundred MB (about 30 MB gzipped),
 written as [views](data.md#every-package) the page starts from instead of
 one summary of every package. The sync holds every row at once: a few GB
 of memory.

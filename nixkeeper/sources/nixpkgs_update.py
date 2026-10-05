@@ -494,6 +494,6 @@ def add_attempts(
     if bulk:
         print(
             f"  {len(turns):,} packages not on the lists read (at most "
-            f"{config.UPDATE_LOGS_BUDGET:,} a sync); {waited:,} wait for a later sync",
+            f"{config.UPDATE_LOGS_BUDGET:,} a sync); {waited:,} not read",
             file=sys.stderr,
         )

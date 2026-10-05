@@ -216,12 +216,21 @@ class UpdateLogs(unittest.TestCase):
         unread = {"a": {"name": "a", "update": None, "unread": ["update"]}}
         read = {"a": {"name": "a", "update": None}}
         for before, turns in ((unread, {"a"}), (read, set())):
-            self.assertEqual(
-                nixpkgs_update.bulk_turns(
-                    rows, nixpkgs, before, {"a": long_ago}, NOW, {"a"}
-                ),
-                turns,
-            )
+            with mock.patch.object(config, "UPDATE_LOGS_BUDGET", 1):
+                self.assertEqual(
+                    nixpkgs_update.bulk_turns(
+                        rows, nixpkgs, before, {"a": long_ago}, NOW, {"a"}
+                    ),
+                    turns,
+                )
+
+    def test_none_read_beyond_the_lists_for_now(self):
+        nixpkgs = {"a": pkg("a")}
+        rows = [{"name": "a", "attrs": ["a"], "nixStatus": "outdated"}]
+        dates = {"a": nixpkgs_update.datetime.now(nixpkgs_update.UTC)}
+        self.assertEqual(
+            nixpkgs_update.bulk_turns(rows, nixpkgs, {}, dates, NOW, {"a"}), set()
+        )
 
     def test_no_turns_without_the_sites_index(self):
         rows = [{"name": "a", "attrs": ["a"]}]
