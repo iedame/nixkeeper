@@ -20,6 +20,10 @@ from a row means none (no open update PR, never outdated, ...). Dates are ISO
 the source only has that. New fields may be added; existing ones change only
 with a note in the [changelog](../CHANGELOG.md).
 
+The files are compact JSON (no indentation) with keys sorted, so a file
+whose data didn't change keeps the same bytes. Format them to read them by
+hand (`jq . index.json`).
+
 ## `index.json`
 
 ```json

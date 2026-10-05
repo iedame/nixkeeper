@@ -33,3 +33,12 @@ class Output(unittest.TestCase):
             self.assertFalse(os.path.exists(out + ".tmp"))
             with open(os.path.join(out, "wesnoth.json")) as f:
                 self.assertEqual(json.load(f), [{"repo": "x"}])
+
+    def test_written_compact_with_sorted_keys(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "data")
+            write({}, {"packages": [{"name": "a"}], "checkedAt": "now"}, out)
+            with open(os.path.join(out, "index.json")) as f:
+                self.assertEqual(
+                    f.read(), '{"checkedAt":"now","packages":[{"name":"a"}]}'
+                )
