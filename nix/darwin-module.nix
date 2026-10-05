@@ -71,6 +71,7 @@ in
       githubRepo
       pageUrl
       contact
+      allPackages
       ;
 
     dataDir = mkOption {

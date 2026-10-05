@@ -13,6 +13,12 @@ def search_term(attr):
     return attr
 
 
+def row_name(attrs):
+    """The attribute a row is named after: the first top-level one, else the
+    first (cmake, not azure-sdk-for-cpp.cmake, a set passing it on)."""
+    return min(attrs, key=lambda a: ("." in a, a))
+
+
 def project_rows(proj, nixpkgs):
     """Rows for one Repology project: normally one, but one per version when
     the tracked nixpkgs variants differ (wesnoth / wesnoth-devel). Variants
@@ -30,7 +36,7 @@ def project_rows(proj, nixpkgs):
         attrs = sorted(proj["attrs"])
         # Named after its nixpkgs attribute, like the lists and GitHub searches;
         # the list entry itself when nixpkgs doesn't have it.
-        name = attrs[0] if attrs else proj["name"]
+        name = row_name(attrs) if attrs else proj["name"]
         return [
             make_row(
                 proj, name, attrs, nix[0] if nix else None, others, nixpkgs, devel=False
@@ -51,7 +57,9 @@ def project_rows(proj, nixpkgs):
     for i, group in enumerate(ordered):
         attrs = sorted(e["srcname"] for e in group)
         rows.append(
-            make_row(proj, attrs[0], attrs, group[0], others, nixpkgs, devel=i > 0)
+            make_row(
+                proj, row_name(attrs), attrs, group[0], others, nixpkgs, devel=i > 0
+            )
         )
     return rows
 
@@ -70,7 +78,7 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         "name": name,
         # The attribute name, which unlike the pname tells variants apart
         # (_1password-gui and _1password-gui-beta are both pname "1password").
-        "searchTerm": search_term(attrs[0]) if attrs else name,
+        "searchTerm": search_term(name) if attrs else name,
         "project": proj["project"],
         "dataFile": proj["dataFile"],
         "attrs": attrs,
@@ -91,6 +99,11 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         "devel": devel or (nix or {}).get("status") == "devel",
     }
     pkgs = [nixpkgs[a] for a in attrs if a in nixpkgs]
+    if proj.get("unlisted") and pkgs and not nix:
+        # In nixpkgs, but not on Repology (read in bulk, with every package):
+        # nixpkgs' version, and nothing to compare it with.
+        row["nixVersion"] = pkgs[0].get("version")
+        row["nixStatus"] = "unlisted"
     if pkgs:  # not in nixpkgs: nothing to say about platforms or homepage
         row["platforms"] = platforms(pkgs)
         homepage = next(

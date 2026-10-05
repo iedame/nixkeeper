@@ -194,6 +194,17 @@ rec {
       example = "https://nixkeeper.example.org/";
       description = "Where the page is, for links in notifications.";
     };
+
+    allPackages = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Track every nixpkgs package, not only the lists' (about 120,000
+        rows; the community instance's mode). The lists' packages are read as
+        always; the rest only from the digests and bulk listings, with no
+        lookups per package. The data grows to a few hundred MB.
+      '';
+    };
   };
 
   assertions = cfg: [
@@ -226,5 +237,6 @@ rec {
     // lib.optionalAttrs (cfg.githubTokenFile != null) { NIXKEEPER_GITHUB_TOKEN_FILE = token; }
     // lib.optionalAttrs (cfg.githubRepo != null) { NIXKEEPER_GITHUB_REPO = cfg.githubRepo; }
     // lib.optionalAttrs (cfg.pageUrl != null) { NIXKEEPER_PAGE_URL = cfg.pageUrl; }
-    // lib.optionalAttrs (cfg.contact != null) { NIXKEEPER_CONTACT = cfg.contact; };
+    // lib.optionalAttrs (cfg.contact != null) { NIXKEEPER_CONTACT = cfg.contact; }
+    // lib.optionalAttrs cfg.allPackages { NIXKEEPER_ALL_PACKAGES = "1"; };
 }

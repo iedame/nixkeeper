@@ -25,8 +25,10 @@ def page_settings(lists):
     return {"theme": theme} if theme in THEMES else {}
 
 
-def problems(lists, nixpkgs, tracked):
-    """What's wrong with lists, as sentences. tracked: the rows' names."""
+def problems(lists, nixpkgs, tracked, listed=None):
+    """What's wrong with lists, as sentences. tracked: the rows' names;
+    listed: how many of them the lists track (all of them unless every
+    package is tracked), what their size is checked against."""
     found = []
     handles = {
         (m.get("github") or "").lower()
@@ -57,7 +59,7 @@ def problems(lists, nixpkgs, tracked):
         for name in sorted(set(entries) - set(tracked)):
             found.append(f"{what}: {name} isn't a tracked package")
     found += follows_problems(lists.get("updateChecks") or {}, tracked)
-    big = scale.problem(len(tracked), lists)
+    big = scale.problem(len(tracked) if listed is None else listed, lists)
     if big:
         found.append(big)
     most = lists.get("maxPackages")

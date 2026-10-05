@@ -179,6 +179,18 @@ class Rows(unittest.TestCase):
         self.assertEqual(heroic["maintainers"], ["iedame", "TomaSajt", "aidalgol"])
         self.assertEqual(orphan["maintainers"], [])  # none: searchable as @none
 
+    def test_named_after_a_top_level_attribute(self):
+        entries = [
+            nix("azure-sdk-for-cpp.cmake", "4", "newest"),
+            nix("cmake", "4", "newest"),
+        ]
+        nixpkgs = {"cmake": pkg("cmake"), "azure-sdk-for-cpp.cmake": pkg("cmake")}
+        (row,) = build_rows(
+            {"cmake": project("cmake", ["azure-sdk-for-cpp.cmake", "cmake"], entries)},
+            nixpkgs,
+        )
+        self.assertEqual((row["name"], row["searchTerm"]), ("cmake", "cmake"))
+
     def test_teams_of_all_attributes_once(self):
         nixpkgs = {
             "steam": pkg("steam"),

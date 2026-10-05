@@ -11,6 +11,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Every package: `NIXKEEPER_ALL_PACKAGES=1` (a repository variable on
+  GitHub, `allPackages` in the modules, `sync --all-packages`) tracks every
+  nixpkgs package, not only the lists', for a community instance
+  (`docs/all-packages.md`). The lists' packages are read as always and are
+  the only ones in the status issue; the rest only from the digests and
+  bulk listings, with nothing asked per package (nixpkgs-update: up to 500
+  a sync). Generated sets (R, Haskell, Emacs, Typst, TeX Live, SBCL) are
+  pending: only Repology's versions and Hydra's builds. The data then has
+  views (needs attention, per maintainer, team, list and set), a name
+  index and counts, instead of one summary of every package
+  (`docs/data.md`). The page's side comes next.
+
 - A second format for the data, beside the first: `summary.json`, a short
   entry per package with what the page's list needs (about a third of
   `index.json` today), and `rows/<n>.json`, the packages in full with their

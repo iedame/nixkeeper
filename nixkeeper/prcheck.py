@@ -16,7 +16,13 @@ from .sources import github, nixpkgs_update
 def main():
     now = datetime.now(UTC).isoformat()
     previous, packages = partial.load()
-    outdated = [row for row in packages if is_outdated(row)]
+    # With every package, the lists' own: searched per package, the rest of
+    # nixpkgs' update PRs wait for the daily sync's listing.
+    outdated = [
+        row
+        for row in packages
+        if is_outdated(row) and (row.get("lists") or not previous.get("allPackages"))
+    ]
     if not outdated:
         print("Nothing outdated: no update PRs to look for.", file=sys.stderr)
         return

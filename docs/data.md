@@ -90,6 +90,31 @@ a hash of their name: a row is in shard `crc32(name) % shardCount` (CRC-32
 of the name's UTF-8 bytes, as zlib computes it), so a new package changes
 only its own shard.
 
+## Every package
+
+With [every package](all-packages.md) tracked, `index.json` says
+`"allPackages": true` and there's no `summary.json` (every package's entry
+would be too much to load), no `packages` in `index.json` and no
+`<project>.json` files (the shards hold the entries; for packages not on the
+lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
+
+- `counts` in `index.json`: `tracked`, `outdated`, `failed`, `vulnerable`,
+  `updateFailures`, `waiting` (outdated, the update merged on master) of the
+  rows not pending, and `pending`;
+- `views` in `index.json`: how many rows `attention` has, and the `teams`,
+  `lists` and `sets` with their counts (`{ "Gaming": 12, ... }`);
+- `views/`, each `{ "packages": [ ... ] }` of summary entries, sorted by
+  name: `attention.json` (failing or outdated, not pending),
+  `maintainer/<handle>.json` (the handle in lowercase; `none.json`: no
+  maintainer, not pending), `team/<slug>.json` and `list/<slug>.json` (the
+  name in lowercase, each run of other characters than letters and digits
+  a `-`: `Security review` is `security-review`), `set/<name>.json` (a
+  generated set's pending rows);
+- `names.json`: `{ "names": [ [name, status], ... ] }` for every row, with
+  its set as a third element when it's pending. `status` is a letter as the
+  page's dot: `f` failed, `m` outdated but merged on master, `o` outdated,
+  `u` up to date, `n` can't be compared; then `v` when flagged vulnerable.
+
 ## A row
 
 ### What it is
@@ -105,6 +130,8 @@ only its own shard.
 | `homepage` | `meta.homepage` |
 | `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it |
 | `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); missing when it has none |
+| `pending`, `set` | with every package: `true` and its set for a row of a generated set (`haskellPackages`, ...) that no list has: only Repology's versions and Hydra's builds ([every package](all-packages.md)) |
+| `unread` | with every package: the sources this sync didn't read for the row and kept as they were (`["update"]`: its nixpkgs-update attempt, past the sync's budget) |
 | `source` | where nixpkgs defines it, on GitHub at the channel's commit and line |
 | `unfree` | `true` when every attribute is unfree (Hydra doesn't build those) |
 
@@ -113,7 +140,7 @@ only its own shard.
 | Field | Meaning |
 |---|---|
 | `nixVersion` | the version in nixos-unstable |
-| `nixStatus` | Repology's status for it: `newest`, `outdated`, `devel`, `unique`, `legacy`, `untrusted`, `rolling`, `noscheme`, `incorrect`, ..., or `missing` when nixpkgs doesn't have it |
+| `nixStatus` | Repology's status for it: `newest`, `outdated`, `devel`, `unique`, `legacy`, `untrusted`, `rolling`, `noscheme`, `incorrect`, ..., or `missing` when nixpkgs doesn't have it; with every package, `unlisted` for one Repology doesn't know (`nixVersion` is then nixpkgs') |
 | `refVersion` | the newest version seen elsewhere (for a devel row, the newest devel one), or what nixkeeper's update check found, or what master has (`master`), whichever is newest |
 | `refFromMaster` | `true` when `refVersion` is master's: newer than anything Repology or an update check knows of |
 | `repoCount` | how many other repositories Repology compares it with (each counted once) |

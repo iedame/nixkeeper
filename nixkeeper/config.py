@@ -20,6 +20,8 @@ import re
 # NIXKEEPER_NOTIFY (--notify): how to report what changed (notify.py).
 # NIXKEEPER_CONTACT: how the people who run this copy can be reached (an
 #   email or a URL), added to the User-Agent; see user_agent().
+# NIXKEEPER_ALL_PACKAGES (sync --all-packages): track every nixpkgs package,
+#   not only the lists'; see all_packages().
 
 
 def _xdg(variable, fallback):
@@ -52,6 +54,42 @@ OUT_DIR = os.environ.get("NIXKEEPER_DATA_DIR") or DEFAULTS["OUT_DIR"]
 LISTS = os.environ.get("NIXKEEPER_LISTS") or DEFAULTS["LISTS"]
 NOTIFY = None  # set by the command; otherwise NIXKEEPER_NOTIFY, read when used
 NIX_REPO = "nix_unstable"
+ALL_PACKAGES = None  # set by the command; otherwise NIXKEEPER_ALL_PACKAGES
+
+
+def all_packages():
+    """Whether the sync tracks every nixpkgs package (the community
+    instance), not only the lists' (docs/all-packages.md): the lists' own
+    packages are read as always, the rest only in bulk (the digests and
+    listings), each source with no per-package lookups. Off unless the
+    command or NIXKEEPER_ALL_PACKAGES (1, true, yes) turns it on: never from
+    the lists, which forks copy."""
+    if ALL_PACKAGES is not None:
+        return ALL_PACKAGES
+    value = os.environ.get("NIXKEEPER_ALL_PACKAGES", "")
+    return value.strip().lower() in ("1", "true", "yes")
+
+
+# Package sets generated from another ecosystem's index (CRAN, Hackage, ...)
+# by their own tooling: with every package, their rows are "pending", with
+# only what the digests and the package index say (set by set, more later).
+GENERATED_SETS = [
+    "emacsPackages",
+    "haskellPackages",
+    "rPackages",
+    "sbclPackages",
+    "texlivePackages",
+    "typstPackages",
+]
+# With every package: how many packages not on the lists a sync reads the
+# nixpkgs-update logs of (those whose logs changed since the last sync; one
+# or two requests each, about 15 minutes in all), the outdated and failing
+# first; the rest wait for a later sync.
+UPDATE_LOGS_BUDGET = 500
+# With every package: the other repositories kept for a row not on the
+# lists (the newest, one entry each): what its details show first. The rest
+# are on Repology, linked from there.
+REPOLOGY_ENTRIES_KEPT = 8
 UPSTREAM_URL = "https://github.com/iedame/nixkeeper"
 CONTACT_MAX = 100  # characters of NIXKEEPER_CONTACT kept in the User-Agent
 

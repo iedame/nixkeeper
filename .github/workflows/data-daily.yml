@@ -43,6 +43,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR/issue counts and the status issue
           NIXKEEPER_NOTIFY: github-issue  # the status issue; local runs don't notify
+          # Every nixpkgs package, not only the lists' (the community
+          # instance): a repository variable, so forks don't inherit it.
+          NIXKEEPER_ALL_PACKAGES: ${{ vars.NIXKEEPER_ALL_PACKAGES }}
 
       - name: Publish the data if it changed
         run: |
