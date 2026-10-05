@@ -8,7 +8,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from nixkeeper import config, datastore, tracking
+from nixkeeper import config, datastore, history, tracking
 from nixkeeper.lookup import collect_projects
 from nixkeeper.rows import build_rows
 from nixkeeper.sources import hydra_digest, nixpkgs_update
@@ -285,8 +285,13 @@ class Data(unittest.TestCase):
             row("b", nixStatus="outdated", maintainers=[]),
             row("c", updateFailure=True, maintainers=["iedame"]),
             row(
-                "haskellPackages.d", pending=True, set="haskellPackages", maintainers=[]
+                "haskellPackages.d",
+                pending=True,
+                set="haskellPackages",
+                maintainers=[],
+                markedBroken=True,
             ),
+            row("e", nixVulnerable=True, maintainers=["someone"]),  # up to date
         ]
         datastore.write(
             {"checkedAt": NOW, "allPackages": True, "packages": rows},
@@ -308,6 +313,7 @@ class Data(unittest.TestCase):
                 "views/list/gaming-team.json",
                 "views/maintainer/iedame.json",
                 "views/maintainer/none.json",
+                "views/maintainer/someone.json",
                 "views/set/haskellPackages.json",
                 "views/team/gaming.json",
             },
@@ -317,10 +323,12 @@ class Data(unittest.TestCase):
         self.assertEqual(
             index["counts"],
             {
-                "tracked": 3,
+                "broken": 0,
+                "failingBuilds": 0,
+                "tracked": 4,
                 "outdated": 1,
                 "failed": 1,
-                "vulnerable": 0,
+                "vulnerable": 1,
                 "updateFailures": 1,
                 "waiting": 0,
                 "pending": 1,
@@ -329,14 +337,15 @@ class Data(unittest.TestCase):
         self.assertEqual(
             index["views"],
             {
-                "attention": 2,
+                "attention": 3,
+                "broken": 0,
                 "teams": {"Gaming": 1},
                 "lists": {"gaming-team": 1},
-                "sets": {"haskellPackages": 1},
+                "sets": {"haskellPackages": {"packages": 1, "failed": 0, "broken": 1}},
             },
         )
         names = lambda path: [p["name"] for p in self.read(path)["packages"]]  # noqa: E731
-        self.assertEqual(names("views/attention.json"), ["b", "c"])
+        self.assertEqual(names("views/attention.json"), ["b", "c", "e"])
         self.assertEqual(names("views/maintainer/iedame.json"), ["a", "c"])
         self.assertEqual(names("views/maintainer/none.json"), ["b"])  # not pending
         self.assertEqual(
@@ -345,17 +354,89 @@ class Data(unittest.TestCase):
                 ["a", "u"],
                 ["b", "o"],
                 ["c", "f"],
+                ["e", "uv"],
                 ["haskellPackages.d", "u", "haskellPackages"],
             ],
         )
         # The rows in full, and loaded back as usual.
         self.assertEqual(
             [r["name"] for r in datastore.load(self.out)["packages"]],
-            ["a", "b", "c", "haskellPackages.d"],
+            ["a", "b", "c", "e", "haskellPackages.d"],
         )
         self.assertEqual(
             datastore.entries(rows[0], self.out), [nix("a", "1", "newest")]
         )
+
+    def test_history_a_point_a_day(self):
+        rows = [row("a"), row("b", nixStatus="outdated", markedBroken=True)]
+        before = [
+            {
+                "day": "2026-10-04",
+                "tracked": 2,
+                "outdated": 0,
+                "failed": 0,
+                "vulnerable": 0,
+                "broken": 0,
+            },
+            {
+                "day": "2026-10-05",
+                "tracked": 9,
+                "outdated": 9,
+                "failed": 9,
+                "vulnerable": 9,
+                "broken": 9,
+            },  # an earlier sync today: replaced
+        ]
+        datastore.write(
+            {"checkedAt": NOW, "allPackages": True, "packages": rows},
+            {},
+            self.out,
+            history=before,
+        )
+        self.assertEqual(
+            self.read("history.json")["points"],
+            [
+                before[0],
+                {
+                    "day": "2026-10-05",
+                    "tracked": 2,
+                    "outdated": 1,
+                    "failed": 0,
+                    "vulnerable": 0,
+                    "broken": 1,
+                },
+            ],
+        )
+        self.assertEqual(
+            datastore.read_history(self.out), self.read("history.json")["points"]
+        )
+        self.assertEqual(datastore.read_history(self.dir.name), [])
+        self.assertEqual(
+            [p["name"] for p in self.read("views/broken.json")["packages"]], ["b"]
+        )
+
+    def test_failing_builds_every_job(self):
+        def builds(*statuses):
+            return [
+                {"attr": "x", "status": st, "system": "x86_64-linux"} for st in statuses
+            ]
+
+        rows = [
+            row("a", builds=builds("failed", "dependency", "ok")),
+            row("b", builds=builds("unfinished", "broken")),
+            row(
+                "haskellPackages.c",
+                pending=True,
+                set="haskellPackages",
+                builds=builds("failed"),
+            ),
+        ]
+        datastore.write(
+            {"checkedAt": NOW, "allPackages": True, "packages": rows}, {}, self.out
+        )
+        counts = self.read("index.json")["counts"]
+        self.assertEqual(counts["failingBuilds"], 4)  # pending rows' too
+        self.assertEqual(counts["failed"], 1)  # packages: their own build failed
 
     def test_newest_repos_kept(self):
         entries = [
@@ -387,3 +468,83 @@ class Data(unittest.TestCase):
         kept = datastore.kept_entries(projects, rows)
         self.assertEqual(len(kept["a.json"]), 21)
         self.assertEqual(len(kept["b.json"]), 1 + config.REPOLOGY_ENTRIES_KEPT)
+
+
+class FailingSince(unittest.TestCase):
+    def build(self, status, last=None):
+        b = {"attr": "a", "system": "x86_64-linux", "status": status}
+        if last is not None:
+            b["lastSuccess"] = last
+        return b
+
+    def test_new_failures_start_from_what_is_known(self):
+        rows = [
+            {
+                "name": "a",
+                "builds": [
+                    self.build("failed", "2026-07-07T09:45:16+00:00"),
+                    self.build("failed", "2026-09-01T00:00:00+00:00"),
+                ],
+            },
+            {"name": "b", "builds": [self.build("failed")]},  # never built
+            {"name": "c", "updateFailure": True, "update": {"date": "2026-10-02"}},
+            {"name": "d", "builds": [self.build("dependency")]},  # not its own
+        ]
+        history.add_failing_since(rows, {"packages": []}, NOW)
+        self.assertEqual(rows[0]["failingSince"], "2026-07-07T09:45:16+00:00")
+        self.assertEqual(rows[1]["failingSince"], NOW)
+        self.assertEqual(rows[2]["updateFailingSince"], "2026-10-02T00:00:00+00:00")
+        self.assertNotIn("failingSince", rows[3])
+
+    def test_carried_over_then_dropped(self):
+        previous = {
+            "packages": [
+                {
+                    "name": "a",
+                    "failingSince": "2026-01-01T00:00:00+00:00",
+                    "updateFailingSince": "2026-02-01T00:00:00+00:00",
+                }
+            ]
+        }
+        still = [{"name": "a", "builds": [self.build("failed")], "updateFailure": True}]
+        history.add_failing_since(still, previous, NOW)
+        self.assertEqual(still[0]["failingSince"], "2026-01-01T00:00:00+00:00")
+        self.assertEqual(still[0]["updateFailingSince"], "2026-02-01T00:00:00+00:00")
+        fixed = [{"name": "a", "builds": [self.build("ok")], "failingSince": "x"}]
+        history.add_failing_since(fixed, previous, NOW)
+        self.assertNotIn("failingSince", fixed[0])
+        self.assertNotIn("updateFailingSince", fixed[0])
+
+
+class Highlights(unittest.TestCase):
+    def test_newest_and_oldest(self):
+        found = [
+            ("2026-10-01T00:00:00+00:00", "b", "f"),
+            ("2026-09-01T00:00:00+00:00", "a", "f"),
+            ("2026-10-01T00:00:00+00:00", "a2", "f"),
+        ]
+        got = datastore.highlights(found)
+        self.assertEqual(got["count"], 3)
+        self.assertEqual([n for n, _, _ in got["newest"]], ["a2", "b", "a"])
+        self.assertEqual([n for n, _, _ in got["oldest"]], ["a", "a2", "b"])
+
+    def test_in_the_manifest_fully_checked_only(self):
+        rows = [
+            row("old", nixStatus="outdated", outdatedSince="2026-01-01T00:00:00+00:00"),
+            row(
+                "haskellPackages.x",
+                pending=True,
+                set="haskellPackages",
+                failingSince="2026-01-01T00:00:00+00:00",
+            ),
+        ]
+        with tempfile.TemporaryDirectory() as d:
+            datastore.write(
+                {"checkedAt": NOW, "allPackages": True, "packages": rows}, {}, d
+            )
+            with open(os.path.join(d, "index.json")) as f:
+                found = json.load(f)["highlights"]
+        self.assertEqual(
+            found["outdated"]["oldest"], [["old", "2026-01-01T00:00:00+00:00", "o"]]
+        )
+        self.assertEqual(found["failing"]["count"], 0)  # pending: left out

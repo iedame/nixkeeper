@@ -11,6 +11,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- How long a package has been failing: `failingSince` (its builds, since
+  their last success when first seen) and `updateFailingSince` (its update
+  attempts), carried from sync to sync like `outdatedSince`; a red age tag
+  after the name, and failing packages listed longest first.
+- Packages nixpkgs marks broken show "marked broken" even when Hydra has no
+  job for them (`markedBroken`, from the package index's `meta.broken`):
+  until now, a broken package with no Hydra job (as hackage2nix makes them)
+  only said "not built by Hydra".
 - nixpkgs-update's attempts from
   [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates), a digest
   of the bot's latest attempt at every package (its log read with
@@ -19,7 +27,6 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   hasn't read the latest attempt, or isn't current
   (`NIXKEEPER_UPDATES_DIGEST`). With every package, every package gets its
   attempt this way.
-
 - Every package: `NIXKEEPER_ALL_PACKAGES=1` (a repository variable on
   GitHub, `allPackages` in the modules, `sync --all-packages`) tracks every
   nixpkgs package, not only the lists', for a community instance
@@ -28,14 +35,20 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   bulk listings, with nothing asked per package (nixpkgs-update's attempts
   from nixkeeper-updates' digest, above). Generated sets (R, Haskell,
   Emacs, Typst, TeX Live, SBCL) are pending: only Repology's versions and
-  Hydra's builds. The data then has
-  views (needs attention, per maintainer, team, list and set), a name
-  index and counts, instead of one summary of every package
-  (`docs/data.md`). The page then starts from the counts for all of
-  nixpkgs and what needs attention, loads one view at a time (a
-  maintainer's, a team's from a picker, a list's, a generated set's, one
-  package's with `?pkg=`), and a search also lists matching names beyond
-  the view. Pending packages, those not on Repology and update attempts
+  Hydra's builds. The data then has views (needs attention, marked broken,
+  per maintainer, team, list and set), a name index, counts and their
+  history, instead of one summary of every package
+  (`docs/data.md`). The page then starts from an overview of all of
+  nixpkgs (fully checked, and in generated sets): cards for the outdated,
+  failing, vulnerable and broken packages with their weekly change and
+  trend (`history.json`, from the first sync on), the generated sets with
+  their failing and broken packages, a search, and the newest and
+  longest-standing failures; each opens a list (what needs attention,
+  marked broken, a maintainer's, a team's, a generated set's, one
+  package's), whose tiles count and filter it. Visitors can keep their own
+  GitHub handle and team (in their browser) for "Your packages" and "Your
+  team"; the instance's own lists open by address only. A search also
+  lists matching names beyond the list shown.
   not read say so.
 
 - A second format for the data, beside the first: `summary.json`, a short

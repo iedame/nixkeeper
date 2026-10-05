@@ -29,7 +29,9 @@ import {
   updateTitle,
   versionDiff,
   viewPath,
+  viewSlug,
   waitingForChannel,
+  weekChange,
   withRunStamps,
   withSlash,
 } from './logic.js';
@@ -100,8 +102,12 @@ let shownView = null; // the path of the view in `packages`
 let wantedView = null; // the one being loaded (the newest asked for wins)
 let names = null; // the name index (names.json), once loaded: [[name, status, set?]]
 let namesLoading = null;
-// ?pkg=: one package alone (with every package); ?set=: a generated set.
+// ?pkg=: one package alone (with every package); ?set=: a generated set;
+// ?view=: a list by name (attention, broken).
 let pkgParam = null;
+let viewParam = null;
+let trendPoints = null; // history.json's points, once loaded (the overview's trends)
+let historyLoading = false;
 let setFilter = null;
 const inSet = (pkg) => !setFilter || pkg.set === setFilter;
 const shardCache = new Map(); // n -> Promise of Map(name -> full row)
@@ -134,7 +140,14 @@ const teamName = () => packages.flatMap((p) => p.teams || []).find(isTeam) || te
 // Every list some package is on: "maintained" first, as the sync sorts them.
 function allLists() {
   // With every package, the view has only some: the manifest has them all.
-  if (community) return Object.keys(manifest.views?.lists || {});
+  if (community)
+    return Object.keys(manifest.views?.lists || {}).sort((a, b) =>
+      a === 'maintained'
+        ? -1
+        : b === 'maintained'
+          ? 1
+          : a.localeCompare(b, undefined, { sensitivity: 'base' }),
+    );
   const seen = [];
   for (const p of packages) for (const l of p.lists || []) if (!seen.includes(l)) seen.push(l);
   return seen.sort((a, b) =>
@@ -170,6 +183,21 @@ const FILTERS = {
     color: 'var(--danger)',
     test: (p) => p.nixVulnerable,
   },
+  // With every package only (tiles of the header, renderScope).
+  broken: {
+    label: 'marked broken',
+    param: 'broken',
+    color: 'var(--caution)',
+    test: (p) => p.markedBroken || buildsWith(p, 'broken').length > 0,
+  },
+};
+// With every package, the header's tiles (renderScope): these filters, by
+// these names, instead of the count chips.
+const TILES = {
+  warn: 'Outdated',
+  failed: 'Failing',
+  vuln: 'Vulnerable',
+  broken: 'Marked broken',
 };
 
 // Where the package's update stands on GitHub, in GitHub's own colors:
@@ -263,7 +291,16 @@ function versionCell(pkg, st) {
 
 // How long an outdated package has been outdated, after its name: orange,
 // or violet when the update is merged and waiting for the channel.
+// Since when a row's builds or update attempts have been failing: the
+// earlier of the two (failingSince, updateFailingSince), or null.
+const failingSince = (pkg) =>
+  [pkg.failingSince, pkg.updateFailingSince].filter(Boolean).sort()[0] || null;
+
 function ageTag(pkg, st) {
+  // Failing first: how long it's been broken, in the failure's colour.
+  const failing = hasFailure(pkg) && failingSince(pkg);
+  if (failing)
+    return html`<span class="age failing" title="Failing since ${longDate(failing)}">${shortAge(failing)}</span>`;
   if (st !== 'warn' || !pkg.outdatedSince) return '';
   return html`<span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${longDate(pkg.outdatedSince)}">${shortAge(pkg.outdatedSince)}</span>`;
 }
@@ -312,6 +349,7 @@ function readViewFromUrl() {
   teamFilter = params.get('team') || null;
   setFilter = params.get('set') || null;
   pkgParam = params.get('pkg') || null;
+  viewParam = params.get('view') || null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
 }
@@ -329,6 +367,7 @@ function viewQuery(page = pageNum) {
   set('team', teamFilter);
   set('set', setFilter);
   set('pkg', pkgParam);
+  set('view', viewParam);
   set('page', page > 1 ? page : '');
   // "@" is fine in a query: ?q=@handle reads better in a shared link.
   const query = params.toString().replaceAll('%40', '@');
@@ -495,11 +534,15 @@ async function ensureView() {
     team: teamFilter,
     list: listFilter,
     set: setFilter,
+    view: viewParam,
   });
   if (path === shownView) return;
   wantedView = path;
   let found;
-  if (path.startsWith('pkg:')) {
+  if (path === 'overview') {
+    found = []; // the overview lists nothing (renderScope)
+    loadHistory();
+  } else if (path.startsWith('pkg:')) {
     const row = await fullRow({ name: path.slice(4) });
     found = row ? [row] : [];
   } else {
@@ -510,6 +553,23 @@ async function ensureView() {
   if (wantedView !== path) return; // another view was asked for meanwhile
   packages = found.map((p) => withRunStamps(p, checkedAt));
   shownView = path;
+}
+
+// history.json's points, for the overview's trends: loaded once, then the
+// overview is drawn again. Without it (data from before, or not yet), the
+// cards have no line.
+function loadHistory() {
+  if (historyLoading) return;
+  historyLoading = true;
+  fetch(dataUrl('history.json'), { cache: 'no-store' })
+    .then((res) => (res.ok ? res.json() : { points: [] }))
+    .then((data) => {
+      trendPoints = data.points || [];
+      if (shownView === 'overview') renderScope();
+    })
+    .catch(() => {
+      trendPoints = [];
+    });
 }
 
 // The name index, for searches beyond the view shown: loaded once, when a
@@ -563,6 +623,9 @@ async function loadIndex() {
     if (data.allPackages) {
       community = true;
       manifest = data;
+      myHandle = stored('nixkeeper-handle');
+      myTeam = stored('nixkeeper-team');
+      loadMyCount();
       format = 2;
       shardCount = data.shardCount;
     } else {
@@ -606,7 +669,16 @@ function renderStats() {
   const base = packages.filter((p) => inPlatform(p) && inList(p) && inTeam(p));
   setFavicon(base);
   renderLists();
-  const buttons = Object.entries(FILTERS).map(([key, f]) => {
+  // With every package, the counts are the list's tiles (renderScope), and
+  // the bar's chip is the way into what needs attention.
+  const attention = shownView === 'views/attention.json';
+  const attentionChip = community
+    ? html`<button class="stat-btn" data-view="attention" aria-pressed="${attention}"
+        title="${attention ? 'Back to the overview' : 'Failing, outdated or vulnerable, worst first'}">
+        <b style="color:var(--warn)">${fmt(manifest.views?.attention)}</b> needs attention</button>`
+    : '';
+  const buttons = Object.entries(community ? {} : FILTERS).map(([key, f]) => {
+    if (key === 'broken') return ''; // with every package only
     const count = base.filter(f.test).length;
     // "vulnerable" only shows up when something is actually flagged.
     if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
@@ -620,10 +692,13 @@ function renderStats() {
   const platformChip = platformFilter
     ? html`<button class="plat-filter" data-clear="platform" title="Show all platforms">${PLATFORMS[platformFilter].label} only ✕</button>`
     : '';
-  const teamChip = teamFilter
-    ? html`<button class="plat-filter" data-clear="team" title="Show every team's packages">team: ${teamName()} ✕</button>`
-    : '';
-  document.getElementById('stats').innerHTML = html`${buttons}${platformChip}${teamChip}`;
+  // With every package, the list header says which team ("Showing").
+  const teamChip =
+    teamFilter && !community
+      ? html`<button class="plat-filter" data-clear="team" title="Show every team's packages">team: ${teamName()} ✕</button>`
+      : '';
+  document.getElementById('stats').innerHTML =
+    html`${attentionChip}${buttons}${platformChip}${teamChip}`;
   const checked = document.getElementById('checked');
   checked.classList.toggle('stale', stale);
   // The exact time on hover: "checked 4h ago" is friendly, but vague.
@@ -646,8 +721,77 @@ function renderStats() {
 // The lists from package-lists/, as more filters after the counts (a
 // divider between). Hidden when there's only one (or data from before lists
 // existed).
+// With every package: the visitor's own GitHub handle, for "Your packages"
+// (kept in their browser only, nixkeeper-handle), and how many packages
+// list them, once their view is loaded.
+let myHandle = null;
+let myCount = null;
+let editingHandle = false;
+// And the visitor's team (nixkeeper-team), for "Your team".
+let myTeam = null;
+let editingTeam = false;
+const isMyTeam = () =>
+  Boolean(myTeam) &&
+  shownView === `views/team/${viewSlug(myTeam)}.json` &&
+  !document.getElementById('search').value.trim().startsWith('@');
+const isMine = () =>
+  Boolean(myHandle) &&
+  document.getElementById('search').value.trim().toLowerCase() === `@${myHandle.toLowerCase()}`;
+
+function loadMyCount() {
+  if (!myHandle) return;
+  const handle = myHandle;
+  fetch(dataUrl(`views/maintainer/${handle.toLowerCase()}.json`), { cache: 'no-store' })
+    .then((res) => (res.ok ? res.json() : { packages: [] }))
+    .then((data) => {
+      if (handle !== myHandle) return; // changed meanwhile
+      myCount = (data.packages || []).length;
+      renderLists();
+    })
+    .catch(() => {});
+}
+
+// "Your packages": the visitor's handle (a chip opening their packages,
+// ✎ to change it), or a field to give it.
+function mineHtml() {
+  if (editingHandle)
+    return html`<form class="mine-form" id="mineForm">
+      <input id="mineInput" name="handle" placeholder="your GitHub handle" aria-label="Your GitHub handle" autocomplete="off" spellcheck="false" value="${myHandle || ''}">
+      <button class="stat-btn" type="submit">Show</button>
+    </form>`;
+  if (!myHandle)
+    return html`<button class="stat-btn" type="button" data-mine-edit title="Give your GitHub handle to find your packages (kept in this browser only)">Your packages…</button>`;
+  return html`<button class="stat-btn" type="button" data-mine aria-pressed="${isMine()}"
+      title="${isMine() ? 'Back to the overview' : 'The packages that list you as a maintainer'}">${myCount != null ? html`<b>${fmt(myCount)}</b> ` : ''}@${myHandle}</button><button type="button" class="mine-edit" data-mine-edit aria-label="Change your GitHub handle" title="Change your GitHub handle">✎</button>`;
+}
+
+// "Your team": the visitor's team (a chip opening its packages, ✎ to change
+// it), or a picker to choose it.
+function myTeamHtml() {
+  const teams = Object.keys(manifest.views?.teams || {}).sort((a, b) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' }),
+  );
+  if (!teams.length) return '';
+  if (editingTeam)
+    return html`<form class="mine-form" id="teamForm">
+      <select id="teamInput" name="team" aria-label="Your team"><option value="">No team</option>${teams.map((t) => html`<option value="${t}"${t === myTeam ? raw(' selected') : ''}>${t}</option>`)}</select>
+      <button class="stat-btn" type="submit">Show</button>
+    </form>`;
+  if (!myTeam || !manifest.views.teams[myTeam])
+    return html`<button class="stat-btn" type="button" data-team-edit title="Choose your nixpkgs team to find its packages (kept in this browser only)">Your team…</button>`;
+  return html`<button class="stat-btn" type="button" data-my-team aria-pressed="${isMyTeam()}"
+      title="${isMyTeam() ? 'Back to the overview' : "The team's packages"}"><b>${fmt(manifest.views.teams[myTeam])}</b> ${myTeam} team</button><button type="button" class="mine-edit" data-team-edit aria-label="Change your team" title="Change your team">✎</button>`;
+}
+
 function renderLists() {
   const el = document.getElementById('lists');
+  if (community) {
+    // The visitor's own: their packages and their team. This instance's
+    // lists ("maintained", its named lists) mean little to them: not shown,
+    // though their addresses (?list=) still work.
+    el.innerHTML = html`${mineHtml()}${myTeamHtml()}`;
+    return;
+  }
   const names = allLists();
   if (listFilter && !names.includes(listFilter)) names.push(listFilter); // e.g. a renamed list
   if (names.length < 2) {
@@ -719,6 +863,12 @@ function render(list, { keepPage = false } = {}) {
   pageNum = keepPage ? Math.min(pageNum, pages) : 1;
   writeViewToUrl();
   shown = list.slice((pageNum - 1) * PAGE_SIZE, pageNum * PAGE_SIZE);
+  if (community && shownView === 'overview') {
+    // The overview lists nothing: its header has the ways in (renderScope),
+    // and a search finds packages in all of nixpkgs.
+    content.innerHTML = moreMatchesHtml();
+    return;
+  }
   if (!list.length) {
     content.innerHTML = html`<div class="empty">No packages match${activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}${community ? ' here' : ''}.</div>${moreMatchesHtml()}`;
     return;
@@ -731,69 +881,225 @@ function render(list, { keepPage = false } = {}) {
   </table></div>${pagerHtml(list.length, pages)}${moreMatchesHtml()}`;
 }
 
-// With every package: what the page shows, out of all of nixpkgs. The
-// counts of it all (the manifest's), the generated sets (pending), the view
-// shown and the way back to what needs attention, and a team picker.
+// With every package, the header. The overview (no list chosen): all of
+// nixpkgs, split into the fully checked and the generated sets; cards for
+// the fully checked ones' outdated, failing, vulnerable and broken (their
+// count, its change over a week, a month's trend), each opening its list;
+// the generated sets; and ways to find packages (what needs attention is
+// the filter bar's chip, renderStats, on every view). A
+// list: what it is ("Showing", ✕ back to the overview), tiles counting and
+// filtering it, and the team picker.
 function renderScope() {
   const el = document.getElementById('scope');
   if (!el) return;
   el.hidden = !community;
   if (!community) return;
+  if (shownView !== 'overview') {
+    el.dataset.drawn = '';
+    el.innerHTML = listHeaderHtml();
+    return;
+  }
+  // Drawn again only when it changes (its history arrives, a team is
+  // picked), not while someone types in its search box.
+  const drawn = `${trendPoints?.length ?? -1}:${teamFilter || ''}:${Object.values(highlightShown)}`;
+  if (el.dataset.drawn === drawn) return;
+  el.dataset.drawn = drawn;
+  el.innerHTML = overviewHtml();
+}
+
+const fmt = (x) => (x || 0).toLocaleString();
+const teamPicker = (label) => {
+  // By name, whatever its case (the data's keys sort capitals first).
+  const teams = Object.entries(manifest.views?.teams || {}).sort(([a], [b]) =>
+    a.localeCompare(b, undefined, { sensitivity: 'base' }),
+  );
+  return teams.length
+    ? html`<label class="team-pick">Team <select id="teamPick"><option value="">${label}</option>${teams.map(([t, count]) => html`<option value="${t}"${teamFilter && t.toLowerCase() === teamFilter.toLowerCase() ? raw(' selected') : ''}>${t} (${fmt(count)})</option>`)}</select></label>`
+    : '';
+};
+
+// The overview's cards: the manifest's count, which list they open
+// (?view=, ?filter=), and history.json's key.
+const CARDS = [
+  { key: 'outdated', label: 'Outdated', view: 'attention', filter: 'warn', color: 'var(--warn)' },
+  { key: 'failed', label: 'Failing', view: 'attention', filter: 'failed', color: 'var(--danger)' },
+  {
+    key: 'vulnerable',
+    label: 'Vulnerable',
+    view: 'attention',
+    filter: 'vuln',
+    color: 'var(--danger)',
+  },
+  { key: 'broken', label: 'Marked broken', view: 'broken', filter: null, color: 'var(--caution)' },
+];
+// The overview's lists of the newest and longest-standing (the manifest's
+// highlights), and which of the two each shows.
+const HIGHLIGHTS = [
+  { key: 'failing', label: 'Build failures', filter: 'failed' },
+  { key: 'outdated', label: 'Outdated', filter: 'warn' },
+  { key: 'updateFailing', label: 'Update failures', filter: 'failed' },
+];
+const highlightShown = { failing: 'newest', outdated: 'newest', updateFailing: 'newest' };
+
+function highlightsHtml() {
+  const found = manifest.highlights;
+  if (!found) return '';
+  const columns = HIGHLIGHTS.map(({ key, label, filter }) => {
+    const h = found[key] || { count: 0, newest: [], oldest: [] };
+    const mode = highlightShown[key];
+    const items = h[mode] || [];
+    const toggle = (m, text) =>
+      html`<button type="button" class="hl-mode" data-hl="${key}" data-mode="${m}" aria-pressed="${mode === m}">${text}</button>`;
+    return html`<div class="hl-col">
+      <div class="hl-head"><span class="hl-title">${label} <b>${fmt(h.count)}</b></span>
+        <span class="hl-modes">${toggle('newest', 'Newest')}${toggle('oldest', 'Oldest')}</span></div>
+      ${
+        items.length
+          ? html`<ol class="hl-list">${items.map(
+              ([name, since, letter]) =>
+                html`<li><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}"></span><a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a><span class="hl-age" title="Since ${longDate(since)}">${shortAge(since)}</span></li>`,
+            )}</ol>`
+          : html`<p class="scope-hint">None.</p>`
+      }
+      ${h.count ? html`<a class="files-link hl-all" href="${scopeHref({ view: 'attention', filter })}" data-card-view="attention" data-card-filter="${filter}">Show all ›</a>` : ''}
+    </div>`;
+  });
+  return html`<p class="scope-label">Newest and longest-standing · fully checked</p>
+    <div class="hl-cols">${columns}</div>`;
+}
+
+// Days of history the cards draw, and how many points before they do.
+const TREND_DAYS = 30;
+const TREND_MIN_POINTS = 7;
+
+function sparkline(points, key, color) {
+  const values = points.map((p) => p[key] ?? 0);
+  const lo = Math.min(...values);
+  const span = Math.max(...values) - lo || 1;
+  const step = 100 / Math.max(1, values.length - 1);
+  const xy = values.map(
+    (v, i) => `${(i * step).toFixed(1)},${(20 - (18 * (v - lo)) / span).toFixed(1)}`,
+  );
+  return raw(
+    `<svg class="spark" viewBox="0 0 100 22" preserveAspectRatio="none" aria-hidden="true"><polyline points="${xy.join(' ')}" fill="none" stroke="${color}" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`,
+  );
+}
+
+function overviewHtml() {
   const c = manifest.counts || {};
-  const n = (x) => (x || 0).toLocaleString();
   const views = manifest.views || {};
+  const sets = Object.entries(views.sets || {}).map(([name, v]) => [
+    name,
+    typeof v === 'number' ? { packages: v, failed: 0, broken: 0 } : v,
+  ]);
+  const total = (c.tracked || 0) + (c.pending || 0);
+  const share = total ? (100 * (c.tracked || 0)) / total : 0;
+  const points = (trendPoints || []).slice(-TREND_DAYS);
+  const trends = points.length >= TREND_MIN_POINTS;
+  const cards = CARDS.map((card) => {
+    const change = trends ? weekChange(points, card.key) : null;
+    const said =
+      change == null
+        ? ''
+        : change === 0
+          ? html`<span class="card-change">no change</span>`
+          : html`<span class="card-change ${change > 0 ? 'worse' : 'better'}" title="Over the last 7 days">${change > 0 ? '↑' : '↓'} ${fmt(Math.abs(change))}</span>`;
+    return html`<a class="card" href="${scopeHref({ view: card.view, filter: card.filter })}" data-card-view="${card.view}" data-card-filter="${card.filter || ''}">
+      <span class="card-label">${card.label}<span class="card-go" aria-hidden="true">›</span></span>
+      <span class="card-row"><span class="card-n" style="color:${card.color}">${fmt(c[card.key])}</span>${said}</span>
+      ${
+        card.key === 'failed' && c.failingBuilds
+          ? html`<span class="card-sub" title="Every Hydra job that didn't build, on every platform, in all of nixpkgs: as zh.fail counts them, with a dependency's failure counted for each package it stops, and timeouts. A package counts as failing here only when its own build failed.">${fmt(c.failingBuilds)} failing builds on Hydra</span>`
+          : ''
+      }
+      ${trends ? sparkline(points, card.key, card.color) : ''}
+    </a>`;
+  });
+  return html`<div class="scope-head">
+      <span class="scope-label">All of nixpkgs</span>
+      <span class="scope-total">${fmt(total)} packages</span>
+    </div>
+    <div class="scope-bar" aria-hidden="true"><span style="width:${share.toFixed(1)}%"></span></div>
+    <div class="scope-split">
+      <span><i class="swatch full"></i><b>${fmt(c.tracked)}</b> fully checked</span>
+      <span title="Generated from CRAN, Hackage and the like by their own tooling: only Repology's versions and Hydra's builds for now"><i class="swatch gen"></i><b>${fmt(c.pending)}</b> in generated sets · versions and builds only</span>
+    </div>
+    <p class="scope-label">Fully checked${trends ? `, last ${TREND_DAYS} days` : ''} · each opens its list${trends ? '' : html` <span class="scope-hint">(trends after a week of daily syncs)</span>`}</p>
+    <div class="cards">${cards}</div>
+
+    <p class="scope-label">Generated sets</p>
+    <div class="set-pills">${sets.map(
+      ([s, v]) =>
+        html`<a class="set-pill" href="${scopeHref({ set: s })}" data-scope-set="${s}">${s} <b>${fmt(v.packages)}</b>${v.failed ? html` <span class="set-failed">· ${fmt(v.failed)} failing</span>` : ''}${v.broken ? html` <span class="set-broken">· ${fmt(v.broken)} broken</span>` : ''}</a>`,
+    )}</div>
+    <p class="scope-label">Find packages</p>
+    <div class="scope-view find">
+      <input type="search" id="overviewSearch" class="find-input" placeholder="firefox, or @maintainer" aria-label="Find a package, or @maintainer" value="${document.getElementById('search').value}">
+      ${teamPicker('Pick a team')}
+    </div>
+    ${highlightsHtml()}`;
+}
+
+function listHeaderHtml() {
   const handle = document.getElementById('search').value.trim().replace(/^@/, '');
   const path = shownView || '';
+  // The tiles count the view shown, with the platform, list and team
+  // filters, as the count chips do (renderStats).
+  const base = packages.filter((p) => inPlatform(p) && inList(p) && inTeam(p) && inSet(p));
+  const tiles = Object.entries(TILES).map(([key, label]) => {
+    const count = base.filter(FILTERS[key].test).length;
+    const pressed = activeFilter === key;
+    return html`<button type="button" class="tile" data-filter="${key}" aria-pressed="${pressed}"
+      title="${pressed ? 'Show them all again' : `Show only these (${label.toLowerCase()})`}">
+      <span class="tile-label">${label}</span><span class="tile-n" style="color:${FILTERS[key].color}">${fmt(count)}</span></button>`;
+  });
   const what = path.startsWith('pkg:')
-    ? html`<b class="mono">${path.slice(4)}</b>`
+    ? html`<span class="mono">${path.slice(4)}</span>`
     : path.startsWith('views/maintainer/')
       ? handle === 'none'
-        ? html`packages <b>with no maintainer</b>`
-        : html`<b>@${handle}</b>'s packages`
+        ? 'No maintainer'
+        : `@${handle}`
       : path.startsWith('views/team/')
-        ? html`the <b>${teamName()}</b> team's packages`
+        ? `${teamName()} team`
         : path.startsWith('views/list/')
-          ? html`the <b>${listFilter}</b> list`
+          ? `${listFilter} list`
           : path.startsWith('views/set/')
-            ? html`<b>${setFilter}</b>, a generated set (pending: only Repology's versions and Hydra's builds for now)`
-            : html`what <b>needs attention</b> (${n(views.attention)}: failing or outdated)`;
-  const teams = Object.entries(views.teams || {});
-  el.innerHTML = html`<div class="scope-all">Every nixpkgs package: <b>${n(c.tracked)}</b>, of which
-      <b>${n(c.outdated)}</b> outdated, <b>${n(c.failed)}</b> failed${c.vulnerable ? html`, <b>${n(c.vulnerable)}</b> flagged vulnerable` : ''};
-      and <b>${n(c.pending)}</b> in generated sets, pending:
-      ${Object.entries(views.sets || {}).map(([s, count], i) => html`${i ? ', ' : ''}<a class="files-link" href="${scopeHref({ set: s })}" data-scope-set="${s}">${s}</a> (${n(count)})`)}.</div>
-    <div class="scope-view"><span>Showing ${what}.</span>${
-      path === 'views/attention.json'
-        ? ''
-        : html` <a class="files-link" href="${scopeHref({})}" data-scope-home>Back to what needs attention</a>`
-    }
-      ${
-        teams.length
-          ? html`<label class="team-pick">Team <select id="teamPick"><option value="">—</option>${teams.map(([t, count]) => html`<option value="${t}"${teamFilter && t.toLowerCase() === teamFilter.toLowerCase() ? raw(' selected') : ''}>${t} (${n(count)})</option>`)}</select></label>`
-          : ''
-      }</div>`;
+            ? setFilter
+            : path === 'views/broken.json'
+              ? 'Marked broken'
+              : 'Needs attention';
+  return html`<div class="scope-view">
+      <span class="scope-label">Showing</span>
+      <span class="view-chip">${what} · ${fmt(base.length)}<a class="view-x" href="${scopeHref({})}" data-scope-home aria-label="Back to the overview" title="Back to the overview">✕</a></span>
+      ${path.startsWith('views/set/') ? html`<span class="scope-hint">A generated set: only Repology's versions and Hydra's builds, for now</span>` : ''}
+      ${teamPicker('Any team')}
+    </div>
+    <div class="tiles">${tiles}</div>`;
 }
 
 // The address of a view (scopeHref({ set }), { pkg }, {} for what needs
 // attention): the others' parameters cleared, the data's own kept.
-function scopeHref({ set = null, pkg = null }) {
+function scopeHref({ set = null, pkg = null, view = null, filter = null }) {
   const params = new URLSearchParams(location.search);
-  for (const k of ['filter', 'q', 'sort', 'platform', 'list', 'team', 'set', 'pkg', 'page'])
+  for (const k of ['filter', 'q', 'sort', 'platform', 'list', 'team', 'set', 'pkg', 'page', 'view'])
     params.delete(k);
   if (set) params.set('set', set);
   if (pkg) params.set('pkg', pkg);
+  if (view) params.set('view', view);
+  if (filter && FILTERS[filter]?.param) params.set('filter', FILTERS[filter].param);
   const query = params.toString();
   return location.pathname + (query ? `?${query}` : '');
 }
 
 // Show a view: set (a generated set), pkg (one package), neither: what needs
 // attention. The search, filters and page start over.
-function showView({ set = null, pkg = null }) {
+function showView({ set = null, pkg = null, view = null, filter = null }) {
   setFilter = set;
   pkgParam = pkg;
+  viewParam = view;
   teamFilter = null;
   listFilter = null;
-  activeFilter = 'all';
+  activeFilter = filter || 'all';
   document.getElementById('search').value = '';
   update();
   document.getElementById('scope')?.scrollIntoView({ block: 'nearest' });
@@ -812,7 +1118,7 @@ function moreMatchesHtml() {
   const { found, total } = nameMatches(names, query, new Set(packages.map((p) => p.name)));
   if (!total) return '';
   return html`<div class="more-matches">
-    <div class="other-label">${total.toLocaleString()} more ${total === 1 ? 'package matches' : 'packages match'} in all of nixpkgs${total > found.length ? html`, the first ${found.length}` : ''}</div>
+    <div class="other-label">${total.toLocaleString()} ${shownView === 'overview' ? '' : 'more '}${total === 1 ? 'package matches' : 'packages match'} in all of nixpkgs${total > found.length ? html`, the first ${found.length}` : ''}</div>
     <ul>${found.map(
       ([name, letter, set]) =>
         html`<li><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}"></span><a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a>${set ? html` <span class="badge neutral" title="A generated set: only Repology's versions and Hydra's builds for now">pending</span>` : ''}${letter.endsWith('v') ? html` <span class="badge vuln">vulnerable</span>` : ''}</li>`,
@@ -929,7 +1235,10 @@ function buildCell(pkg) {
     failureButton('build', dot, text, 'Show Hydra builds', notRefreshed(pkg, 'builds'), quiet);
   if (failedBuilds(pkg).length) return button('missing', 'failure reported');
   // Known failures: shown, but not counted as failed.
-  if (buildsWith(pkg, 'broken').length) return button('caution', 'marked broken');
+  // Hydra's builds say where; a broken package often has no Hydra job at
+  // all, and then only meta.broken does (markedBroken).
+  if (buildsWith(pkg, 'broken').length || pkg.markedBroken)
+    return button('caution', 'marked broken');
   if (!hydraBuildsIt(pkg)) return button('neutral', 'not built by Hydra', true);
   return button('ok', 'none reported', true);
 }
@@ -1092,6 +1401,8 @@ function fillBuilds(pkg, el) {
   let body;
   if (pkg.unfree) {
     body = html`<div class="nix-line">Hydra doesn't build unfree packages, so there are no build results for this one.</div>`;
+  } else if (!hydraBuildsIt(pkg) && pkg.markedBroken) {
+    body = html`<div class="nix-line">nixpkgs marks this package broken (<span class="mono">meta.broken</span>), so Hydra doesn't build it.${safeUrl(pkg.source) ? html` <a class="files-link" href="${safeUrl(pkg.source)}" target="_blank" rel="noopener">source ↗</a>` : ''}</div>`;
   } else if (!hydraBuildsIt(pkg)) {
     body = html`<div class="nix-line">Hydra doesn't build this package (nixpkgs may exclude it with <span class="mono">hydraPlatforms</span>).</div>`;
   } else {
@@ -1423,10 +1734,13 @@ function currentFiltered() {
     : list.sort(
         (a, b) =>
           attentionRank(a) - attentionRank(b) ||
-          // ISO dates in UTC compare correctly as strings; undated ones go last.
+          // Longest first. ISO dates in UTC compare correctly as strings;
+          // undated ones go last.
           (attentionRank(a) === 1
             ? (a.outdatedSince || '~').localeCompare(b.outdatedSince || '~')
-            : 0),
+            : attentionRank(a) === 0
+              ? (failingSince(a) || '~').localeCompare(failingSince(b) || '~')
+              : 0),
       );
 }
 
@@ -1440,13 +1754,53 @@ document.getElementById('stats').addEventListener('click', (e) => {
   }
   const btn = e.target.closest('.stat-btn');
   if (!btn) return;
+  if (btn.dataset.view) {
+    // With every package: the list, or (pressed) back to the overview.
+    showView({ view: btn.getAttribute('aria-pressed') === 'true' ? null : btn.dataset.view });
+    return;
+  }
   // Clicking the active filter again goes back to showing everything.
   activeFilter = btn.dataset.filter === activeFilter ? 'all' : btn.dataset.filter;
   update();
 });
 
+// With every package, the header's tiles: filters, as the count chips are.
+document.getElementById('scope')?.addEventListener('click', (e) => {
+  // The overview's lists: newest or longest-standing.
+  const mode = e.target.closest('button.hl-mode');
+  if (mode) {
+    highlightShown[mode.dataset.hl] = mode.dataset.mode;
+    renderScope();
+    return;
+  }
+  const tile = e.target.closest('button.tile');
+  if (!tile) return;
+  activeFilter = tile.dataset.filter === activeFilter ? 'all' : tile.dataset.filter;
+  update();
+});
+
 document.getElementById('lists').addEventListener('click', (e) => {
-  const btn = e.target.closest('.stat-btn');
+  if (e.target.closest('[data-mine-edit]')) {
+    editingHandle = true;
+    renderLists();
+    document.getElementById('mineInput')?.focus();
+    return;
+  }
+  if (e.target.closest('[data-mine]')) {
+    showMine(!isMine());
+    return;
+  }
+  if (e.target.closest('[data-team-edit]')) {
+    editingTeam = true;
+    renderLists();
+    document.getElementById('teamInput')?.focus();
+    return;
+  }
+  if (e.target.closest('[data-my-team]')) {
+    showMyTeam(!isMyTeam());
+    return;
+  }
+  const btn = e.target.closest('.stat-btn[data-list]');
   if (!btn) return;
   // Clicking the active list again shows every list.
   listFilter = btn.dataset.list === listFilter ? null : btn.dataset.list;
@@ -1471,10 +1825,73 @@ document.getElementById('sortBtn').addEventListener('click', (e) => {
 // package, back to what needs attention) and the team picker. A click with
 // a modifier opens the link elsewhere, as links do.
 document.addEventListener('click', (e) => {
-  const a = e.target.closest('a[data-scope-set], a[data-scope-pkg], a[data-scope-home]');
+  const a = e.target.closest(
+    'a[data-scope-set], a[data-scope-pkg], a[data-scope-home], a[data-card-view]',
+  );
   if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button) return;
   e.preventDefault();
-  showView({ set: a.dataset.scopeSet || null, pkg: a.dataset.scopePkg || null });
+  showView({
+    set: a.dataset.scopeSet || null,
+    pkg: a.dataset.scopePkg || null,
+    view: a.dataset.cardView || null,
+    filter: a.dataset.cardFilter || null,
+  });
+});
+// The visitor's packages (their maintainer view), or (show false) back to
+// the overview.
+function showMine(show) {
+  showView({});
+  if (!show) return;
+  const search = document.getElementById('search');
+  search.value = `@${myHandle}`;
+  search.dispatchEvent(new Event('input'));
+}
+// The visitor's team's packages, or (show false) back to the overview.
+function showMyTeam(show) {
+  showView({});
+  if (!show) return;
+  teamFilter = myTeam;
+  update();
+}
+document.getElementById('lists').addEventListener('submit', (e) => {
+  if (e.target.id !== 'teamForm') return;
+  e.preventDefault();
+  myTeam = e.target.team.value || null;
+  editingTeam = false;
+  store('nixkeeper-team', myTeam);
+  if (myTeam) showMyTeam(true);
+  else renderLists();
+});
+document.getElementById('lists').addEventListener('submit', (e) => {
+  if (e.target.id !== 'mineForm') return;
+  e.preventDefault();
+  const handle = e.target.handle.value.trim().replace(/^@/, '');
+  myHandle = handle || null;
+  myCount = null;
+  editingHandle = false;
+  store('nixkeeper-handle', myHandle);
+  if (myHandle) {
+    loadMyCount();
+    showMine(true);
+  } else renderLists();
+});
+document.getElementById('lists').addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && e.target.id === 'mineInput') {
+    editingHandle = false;
+    renderLists();
+  }
+  if (e.key === 'Escape' && e.target.id === 'teamInput') {
+    editingTeam = false;
+    renderLists();
+  }
+});
+
+// The overview's own search box: the page's search, from there.
+document.addEventListener('input', (e) => {
+  if (e.target.id !== 'overviewSearch') return;
+  const search = document.getElementById('search');
+  search.value = e.target.value;
+  search.dispatchEvent(new Event('input'));
 });
 document.addEventListener('change', (e) => {
   if (e.target.id !== 'teamPick') return;
@@ -1482,6 +1899,7 @@ document.addEventListener('change', (e) => {
   teamFilter = e.target.value || null;
   setFilter = null;
   pkgParam = null;
+  viewParam = null;
   update();
 });
 

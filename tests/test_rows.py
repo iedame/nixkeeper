@@ -191,6 +191,20 @@ class Rows(unittest.TestCase):
         )
         self.assertEqual((row["name"], row["searchTerm"]), ("cmake", "cmake"))
 
+    def test_marked_broken_from_the_index(self):
+        nixpkgs = {"a": pkg("a"), "b": pkg("b")}
+        nixpkgs["a"]["meta"]["broken"] = True
+        entries = [nix("a", "1", "newest"), nix("b", "1", "newest")]
+        a, b = build_rows(
+            {
+                "a": project("a", ["a"], entries[:1]),
+                "b": project("b", ["b"], entries[1:]),
+            },
+            nixpkgs,
+        )
+        self.assertTrue(a["markedBroken"])
+        self.assertNotIn("markedBroken", b)
+
     def test_teams_of_all_attributes_once(self):
         nixpkgs = {
             "steam": pkg("steam"),

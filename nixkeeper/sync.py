@@ -188,6 +188,8 @@ def main():
         )
     follows.apply_prs(index_rows, following)  # theirs are the same PRs
     nixpkgs_update.recheck_superseded(outdated)
+    # Since when builds and update attempts have been failing (carried over).
+    history.add_failing_since(index_rows, previous, now)
     # version: the nixkeeper that made this data, for the page's footer.
     index = {"checkedAt": now, "packages": index_rows, "version": version()}
     if everything:
@@ -196,7 +198,12 @@ def main():
         index["listProblems"] = problems
     if page := listcheck.page_settings(lists):
         index["page"] = page  # the page's default theme
-    datastore.write(index, datastore.kept_entries(projects, index_rows))
+    datastore.write(
+        index,
+        datastore.kept_entries(projects, index_rows),
+        # With every package, the counts' history carries over, a point a day.
+        history=datastore.read_history() if everything else None,
+    )
     # With every package, what changed for the lists' own packages only.
     notify.notify(
         {**previous, "packages": [r for r in previous["packages"] if r.get("lists")]}

@@ -113,6 +113,11 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         row["maintainers"] = maintainers(pkgs)
         if found := teams(pkgs):
             row["teams"] = found
+        # meta.broken, as the package index has it (x86_64-linux): Hydra's
+        # builds say where it's broken, but a broken package often has no
+        # Hydra job at all (hydraPlatforms = [], as hackage2nix sets it).
+        if any(p["meta"].get("broken") for p in pkgs):
+            row["markedBroken"] = True
     return row
 
 

@@ -39,6 +39,7 @@ import {
   viewPath,
   viewSlug,
   waitingForChannel,
+  weekChange,
   withRunStamps,
   withSlash,
 } from '../../page/logic.js';
@@ -602,11 +603,14 @@ describe('views (every package)', () => {
     assert.equal(viewSlug('gaming-team'), 'gaming-team');
   });
   test('viewPath: the narrowest the address asks for', () => {
-    assert.equal(viewPath(), 'views/attention.json');
-    assert.equal(viewPath({ query: 'firefox' }), 'views/attention.json');
+    assert.equal(viewPath(), 'overview');
+    assert.equal(viewPath({ query: 'firefox' }), 'overview');
+    assert.equal(viewPath({ view: 'attention' }), 'views/attention.json');
+    assert.equal(viewPath({ view: 'broken' }), 'views/broken.json');
+    assert.equal(viewPath({ view: 'nonsense' }), 'overview');
     assert.equal(viewPath({ query: '@Iedame', team: 'Gaming' }), 'views/maintainer/iedame.json');
     assert.equal(viewPath({ query: '@none' }), 'views/maintainer/none.json');
-    assert.equal(viewPath({ query: '@' }), 'views/attention.json');
+    assert.equal(viewPath({ query: '@' }), 'overview');
     assert.equal(
       viewPath({ team: 'Security review', list: 'x' }),
       'views/team/security-review.json',
@@ -646,5 +650,17 @@ describe('views (every package)', () => {
         'python3Packages.firefox',
       ],
     );
+  });
+});
+
+describe('weekChange', () => {
+  const day = (d, failed) => ({ day: d, failed });
+  test('against the newest point a week or more before', () => {
+    const points = [day('2026-09-25', 100), day('2026-09-28', 110), day('2026-10-05', 150)];
+    assert.equal(weekChange(points, 'failed'), 40);
+  });
+  test('null without a week of points', () => {
+    assert.equal(weekChange([day('2026-10-01', 1), day('2026-10-05', 2)], 'failed'), null);
+    assert.equal(weekChange([], 'failed'), null);
   });
 });
