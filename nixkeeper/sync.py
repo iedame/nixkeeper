@@ -11,13 +11,13 @@ from datetime import UTC, datetime
 from . import (
     background,
     community,
+    datastore,
     follows,
     history,
     inferred,
     listcheck,
     lookup,
     notify,
-    output,
     rows,
     scale,
     tracking,
@@ -145,5 +145,5 @@ def main():
         index["listProblems"] = problems
     if page := listcheck.page_settings(lists):
         index["page"] = page  # the page's default theme
-    output.write(projects, index)
+    datastore.write(index, {p["dataFile"]: p["entries"] for p in projects.values()})
     notify.notify(previous, index_rows, now)

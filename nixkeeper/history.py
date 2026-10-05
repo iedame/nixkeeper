@@ -2,22 +2,14 @@
 when each package became outdated, and since when a source couldn't be
 refreshed."""
 
-import json
-import os
-
-from . import config
+from . import config, datastore
 from .changes import is_outdated
 from .sources import repology
 
 
 def load_previous_run(out_dir=None):
     """The last successful run's index, or an empty one."""
-    out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
-    try:
-        with open(os.path.join(out_dir, "index.json")) as f:
-            return json.load(f)
-    except (OSError, ValueError):
-        return {"packages": []}
+    return datastore.load(out_dir)
 
 
 def previous_rows(previous, pname, attrs):
@@ -50,13 +42,9 @@ def previous_project(previous, pname, attrs, out_dir=None):
     for row in previous_rows(previous, pname, attrs):
         entries = []
         if row.get("project"):
-            path = os.path.join(
-                out_dir, row.get("dataFile") or f"{row['project']}.json"
-            )
             try:
-                with open(path) as f:
-                    # A file from before trimming has all of Repology's.
-                    entries = repology.trimmed(json.load(f))
+                # A file from before trimming has all of Repology's.
+                entries = repology.trimmed(datastore.entries(row, out_dir))
             except (OSError, ValueError):
                 return None
         return (

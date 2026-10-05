@@ -4,7 +4,7 @@ import sys
 import urllib.error
 
 from . import config, history, schedule
-from .output import data_file
+from .datastore import data_file
 from .sources import repology, versions_digest
 
 
