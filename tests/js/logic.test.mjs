@@ -12,6 +12,7 @@ import {
   comparedRepos,
   compareVersions,
   computeStatus,
+  crc32,
   daysText,
   escapeHtml,
   faviconKey,
@@ -26,6 +27,7 @@ import {
   onPlatform,
   raw,
   safeUrl,
+  shardOf,
   shortAge,
   targetVersion,
   themeFor,
@@ -531,5 +533,19 @@ describe('midway', () => {
     );
     assert.equal(midway(outdated({ nixVersion: '1.0', refVersion: '1.1' })), null);
     assert.equal(midway(pkg({ nixVersion: '1.1', masterPR: { to: '1.1' } })), null);
+  });
+});
+
+describe('shards', () => {
+  // The same as Python's zlib.crc32 (nixkeeper/datastore.py), or a panel
+  // would look for a package in the wrong shard.
+  test('crc32 matches zlib', () => {
+    assert.equal(crc32(''), 0);
+    assert.equal(crc32('wesnoth'), 3265293464);
+    assert.equal(crc32('python3.13-ï'), 2328554205); // UTF-8 bytes
+  });
+  test('shardOf', () => {
+    assert.equal(shardOf('pkg0', 4), 1);
+    assert.equal(shardOf('wesnoth', 1), 0);
   });
 });

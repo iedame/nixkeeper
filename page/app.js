@@ -18,6 +18,7 @@ import {
   raw,
   githubRepo as repoFrom,
   safeUrl,
+  shardOf,
   shortAge,
   targetVersion,
   themeFor,
@@ -32,7 +33,7 @@ const NIX_REPO = 'nix_unstable';
 
 const githubRepo = (params) => repoFrom(params, location);
 
-// Where the data (index.json and the per-project files) lives, as a URL
+// Where the data (index.json, summary.json, the shards) lives, as a URL
 // ending in "/". First of:
 //   1. ?data=<url> in the address: for testing; same site only, so a link
 //      can't point someone's page at data from elsewhere
@@ -78,7 +79,14 @@ addListsLink();
 
 let dataBase = null; // set by loadIndex
 const dataUrl = (path) => new URL(path, dataBase).href;
-const detailCache = new Map(); // name -> parsed per-package Repology JSON
+const detailCache = new Map(); // file -> a Repology project's entries (format 1)
+// The data's format (docs/data.md). 2: the list from summary.json (a short
+// entry per package), each package's full row from its shard
+// (rows/<n>.json), loaded when a panel opens. 1 (0.11.0 and before):
+// index.json has every row in full, and each Repology project its own file.
+let format = 1;
+let shardCount = 1;
+const shardCache = new Map(); // n -> Promise of Map(name -> full row)
 let packages = [];
 let checkedAt = null;
 let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
@@ -360,6 +368,69 @@ function showListProblems(problems) {
     : '';
 }
 
+// Format 2's summary entries, or null to use index.json's rows (format 1,
+// or a summary that couldn't be loaded while index.json still has them).
+async function summaryOf(data) {
+  if (!(data.format >= 2 && data.shardCount)) return null;
+  try {
+    const res = await fetch(dataUrl('summary.json'), { cache: 'no-store' });
+    if (!res.ok) throw new Error(res.status);
+    const summary = await res.json();
+    format = 2;
+    shardCount = data.shardCount;
+    return summary.packages || [];
+  } catch (e) {
+    if (data.packages) return null;
+    throw e;
+  }
+}
+
+// A package's full row (what its panels show): its shard's in format 2,
+// loaded once (a failed load isn't kept, so opening it again tries again);
+// in format 1, the row itself. null if it couldn't be loaded.
+async function fullRow(pkg) {
+  if (format < 2) return pkg;
+  const n = shardOf(pkg.name, shardCount);
+  if (!shardCache.has(n)) {
+    shardCache.set(
+      n,
+      fetch(dataUrl(`rows/${n}.json`), { cache: 'no-store' })
+        .then((res) => {
+          if (!res.ok) throw new Error(res.status);
+          return res.json();
+        })
+        .then((shard) => new Map(shard.packages.map((row) => [row.name, row]))),
+    );
+  }
+  try {
+    return (await shardCache.get(n)).get(pkg.name) || null;
+  } catch {
+    shardCache.delete(n);
+    return null;
+  }
+}
+
+// A row's Repology entries (the repositories it's compared against): in its
+// shard's row (format 2), else its project's file. null when they couldn't
+// be loaded (the network, say): the panel says so, rather than "compared
+// with 0 other repositories", and isn't kept, so opening it again tries again.
+async function repologyEntries(row) {
+  if (format >= 2) return row.repology || [];
+  // Stored per project, under a file-name-safe version of its name
+  // (python:requests -> python_requests.json).
+  const file = row.dataFile || `${row.project || row.name}.json`;
+  if (detailCache.has(file)) return detailCache.get(file);
+  try {
+    const res = await fetch(dataUrl(encodeURIComponent(file)), { cache: 'no-store' });
+    if (!res.ok) return null;
+    const entries = await res.json();
+    detailCache.set(file, entries);
+    return entries;
+  } catch {
+    return null;
+  }
+}
+
 async function loadIndex() {
   const content = document.getElementById('content');
   dataBase = dataBase || (await findDataBase());
@@ -376,7 +447,7 @@ async function loadIndex() {
     const res = await fetch(dataUrl('index.json'), { cache: 'no-store' });
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
-    packages = data.packages || [];
+    packages = (await summaryOf(data)) || data.packages || [];
     checkedAt = data.checkedAt || null;
     // The nixkeeper that made the data, in the footer (older data has none).
     document.getElementById('version').textContent =
@@ -531,9 +602,15 @@ async function toggle(tr, mode) {
     btn.setAttribute('aria-expanded', !closing && btn.dataset.kind === mode);
   }
   if (closing) return;
-  if (mode === 'build') fillBuilds(pkg, inner);
-  else if (mode === 'update') fillUpdate(pkg, inner);
-  else await fillDetail(pkg, inner);
+  // The panel needs the full row (the list has the summary's entry).
+  const row = await fullRow(pkg);
+  const entries = row && mode === 'info' ? await repologyEntries(row) : null;
+  if (detail.dataset.mode !== mode) return; // switched or closed meanwhile
+  if (!row) {
+    inner.innerHTML = html`<div class="nix-line">Couldn't load this package's details. Open it again to retry.</div>`;
+  } else if (mode === 'build') fillBuilds(row, inner);
+  else if (mode === 'update') fillUpdate(row, inner);
+  else fillDetail(row, inner, entries);
 }
 
 // The table's clicks, for every row: a link opens (and nothing else), the
@@ -820,25 +897,9 @@ function sourceFileName(url) {
   return url.split('#')[0].split('/').pop();
 }
 
-async function fillDetail(pkg, el) {
-  // Raw Repology data is stored per project, under a file-name-safe version
-  // of its name (python:requests -> python_requests.json).
-  // null when it couldn't be loaded (the network, say): the panel says so,
-  // rather than "compared with 0 other repositories", and isn't kept, so
-  // opening it again tries again.
-  const file = pkg.dataFile || `${pkg.project || pkg.name}.json`;
-  let entries = detailCache.get(file) || null;
-  if (!entries) {
-    try {
-      const res = await fetch(dataUrl(encodeURIComponent(file)), { cache: 'no-store' });
-      if (res.ok) {
-        entries = await res.json();
-        detailCache.set(file, entries);
-      }
-    } catch {
-      // stays null
-    }
-  }
+// entries: the row's Repology entries, or null if they couldn't be loaded
+// (repologyEntries).
+function fillDetail(pkg, el, entries) {
   const loaded = Array.isArray(entries);
 
   const others = loaded ? comparedRepos(entries.filter((e) => e.repo !== NIX_REPO)) : [];

@@ -19,7 +19,8 @@ it keeps no history.
 
 `packages` in `index.json` and the `<project>.json` files are the data's
 first format, which pages from 0.11.0 and before read; format 2 (`summary.json`
-and the shards) is what lets the page load only what it shows. Both are
+and the shards) is what lets the page load only what it shows, and what it
+reads since 0.12.0 (it still reads the first format, for data from before). Both are
 written for now; the first format will be dropped in a later release, with a
 note in the changelog.
 

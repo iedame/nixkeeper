@@ -10,6 +10,22 @@ const DAY = 86400e3;
 
 export const withSlash = (url) => (url.endsWith('/') ? url : `${url}/`);
 
+// CRC-32 of a text's UTF-8 bytes, as zlib.crc32 computes it in Python.
+const CRC_TABLE = Array.from({ length: 256 }, (_, n) => {
+  let c = n;
+  for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1;
+  return c >>> 0;
+});
+export function crc32(text) {
+  let c = 0xffffffff;
+  for (const byte of new TextEncoder().encode(text)) c = CRC_TABLE[(c ^ byte) & 0xff] ^ (c >>> 8);
+  return (c ^ 0xffffffff) >>> 0;
+}
+
+// The shard (data/rows/<n>.json) holding a package's full row: a hash of its
+// name (shard_of in nixkeeper/datastore.py).
+export const shardOf = (name, count) => crc32(name) % count;
+
 // "any platform" (no restriction in nixpkgs) counts as both.
 export function onPlatform(pkg, key) {
   return pkg.platforms === null || Boolean(pkg.platforms?.[key]);
