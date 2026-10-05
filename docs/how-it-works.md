@@ -72,18 +72,20 @@ the previous sync instead of downloaded again.
 
 ## How much it tracks
 
-A package costs the most the first time it's synced: everything about it is
-asked, about 6 requests to public services (Repology, Hydra, the
-nixpkgs-update logs, GitHub) and 4 seconds. After that, with quiet packages
-asked every few days, a typical day costs about 2 requests and 2 seconds a
-package: 1,500 packages take about 45 minutes. A sync starts by saying how
-long it should take, counting the packages new to it (on GitHub, in the
-run's summary too). From 1,500 packages, the list check warns on the page
+Most of a sync's cost is the same whatever the lists' size: the package
+index, the digests of Hydra's builds and Repology's data, and the listings
+of nixpkgs' open and merged PRs (about 150 requests and 2 minutes). On top
+of that, a package costs about 0.3 requests and half a second on a typical
+day (the Hydra jobs the digest can't answer, its update-log folder when it
+changed), and about 3 requests and 3 seconds the first time it's synced
+(its update-log folder read whole): 1,500 packages take about 12 minutes a
+day. A sync starts by saying how long it should take, counting the packages
+new to it (on GitHub, in the run's summary too). From 1,500 packages, the list check warns on the page
 and in the status issue; above 5,000, the sync refuses to start, so a big
 team or a typo can't send thousands of requests by accident. To track more
 on purpose, raise the limit in the lists: `maxPackages = 6000;`
 (`lists.maxPackages` in the modules). On GitHub Actions, a sync has to
-finish within 6 hours, or nothing is published: about 5,000 new packages
+finish within 6 hours, or nothing is published: about 8,000 new packages
 at once. Add big lists in stages, since only new packages cost that much;
 the sync warns when one may run that long. If most Repology lookups fail,
 the sync stops and leaves the published data as it was.

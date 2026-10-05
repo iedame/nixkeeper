@@ -19,9 +19,9 @@ class Estimate(unittest.TestCase):
     def test_describe(self):
         self.assertEqual(
             scale.describe(1500),
-            "1,500 packages: a sync takes about 43 min and makes about 2,400 "
-            "requests to public services on a typical day (about 1 h 50 min "
-            "and 9,000 the first time)",
+            "1,500 packages: a sync takes about 12 min and makes about 600 "
+            "requests to public services on a typical day (about 1 h and 4,600 "
+            "the first time)",
         )
 
     def test_new_packages_cost_more(self):
@@ -61,7 +61,7 @@ class Check(unittest.TestCase):
             scale.check({}, 300, 50)
         self.assertIn(
             "Tracking 300 packages (50 new: asked about whole, the first time): "
-            "this sync should take about 11 min",
+            "this sync should take about 6 min and make about 380 requests",
             self.stderr.getvalue(),
         )
 
@@ -70,8 +70,10 @@ class Check(unittest.TestCase):
         with mock.patch.dict(os.environ, env, clear=True):
             scale.check({}, 4000, 100)
         self.assertNotIn("6-hour", self.stderr.getvalue())
+        # Only some 8,000 new packages at once take that long now (raised
+        # past the limit with maxPackages).
         with mock.patch.dict(os.environ, env, clear=True):
-            scale.check({}, 5000, 5000)
+            scale.check({"maxPackages": 9000}, 9000, 9000)
         self.assertIn("::warning::This sync may outlast", self.stderr.getvalue())
 
     def test_not_off_github(self):

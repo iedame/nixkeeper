@@ -109,7 +109,7 @@ rec {
                 The most packages a sync may track (default 5000): above the
                 limit the sync refuses to start, so a big team or a typo
                 can't send thousands of requests by accident. Each costs
-                about 2 requests to public services on a typical day, 6 its
+                about 0.3 requests to public services on a typical day, 3 its
                 first time. Raise it only to track that many on purpose.
               '';
             };

@@ -88,12 +88,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - New sizes, now that quiet packages are asked every few days (below): the
   list check warns from 1,500 packages instead of 500, and the sync refuses
   to start above 5,000 instead of 2,000 (`maxPackages` to go beyond). The
-  estimate a sync starts with is measured anew: a package costs about 6
-  requests and 4 seconds the first time it's synced, then about 2 and 2 on a
-  typical day (1,500 packages: about 45 minutes), and counts the packages
-  new to this sync. On GitHub Actions it warns when a sync may outlast the
-  job's 6 hours (about 5,000 new packages at once), which would publish
-  nothing: big lists are best added in stages.
+  estimate a sync starts with is measured anew, with the digests and
+  listings below: about 150 requests and 2 minutes whatever the lists'
+  size, then per package about 0.3 requests and half a second on a typical
+  day, about 3 and 3 seconds the first time it's synced (1,500 packages:
+  about 12 minutes a day), and it counts the packages new to this sync. On
+  GitHub Actions it warns when a sync may outlast the job's 6 hours (about
+  8,000 new packages at once), which would publish nothing: big lists are
+  best added in stages.
 
 - Update checks against web pages ask each site at most once a second, and
   take turns between sites, so many rules on one site (PyPI, a vendor's)
