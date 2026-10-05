@@ -204,3 +204,70 @@ class Output(unittest.TestCase):
             after = os.stat(os.path.join(self.out, f"rows/{n}.json")).st_mtime_ns
             self.assertEqual(after != before[n], n == shard, n)
         self.assertEqual(datastore.load(self.out)["packages"][0]["nixVersion"], "2")
+
+
+RUN = "2026-10-05T06:00:00+00:00"
+EARLIER = "2026-10-03T06:00:00+00:00"
+
+
+def stamped(name, when=RUN):
+    """A row with this run's stamps (or when's): a build, an update check,
+    counts."""
+    return {
+        "name": name,
+        "builds": [
+            {"status": "ok", "system": "x86_64-linux", "checkedAt": when},
+            {"status": "ok", "system": "aarch64-linux", "checkedAt": EARLIER},
+        ],
+        "upstream": {"version": "2", "checkedAt": when},
+        "openPRs": 0,
+        "openIssues": 0,
+        "countedAt": when,
+    }
+
+
+class RunStamps(unittest.TestCase):
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.dir.cleanup)
+        self.out = os.path.join(self.dir.name, "data")
+
+    def written(self, rows, run=RUN):
+        write({"checkedAt": run, "packages": rows}, {}, self.out)
+        with open(os.path.join(self.out, "rows/0.json")) as f:
+            return json.load(f)["packages"]
+
+    def test_this_runs_stamps_left_out(self):
+        (row,) = self.written([stamped("a")])
+        self.assertNotIn("countedAt", row)
+        self.assertNotIn("checkedAt", row["upstream"])
+        self.assertNotIn("checkedAt", row["builds"][0])
+        self.assertEqual(row["builds"][1]["checkedAt"], EARLIER)  # older: kept
+
+    def test_older_stamps_kept(self):
+        (row,) = self.written([stamped("a", EARLIER)])
+        self.assertEqual(row["countedAt"], EARLIER)
+        self.assertEqual(row["upstream"]["checkedAt"], EARLIER)
+
+    def test_everywhere_written(self):
+        self.written([stamped("a")])
+        for name in ("index.json", "summary.json"):
+            with open(os.path.join(self.out, name)) as f:
+                self.assertNotIn(RUN, json.load(f)["packages"][0].values())
+
+    def test_load_puts_them_back(self):
+        rows = [stamped("a"), stamped("b", EARLIER)]
+        self.written(rows)
+        self.assertEqual(datastore.load(self.out)["packages"], rows)
+
+    def test_nothing_added_where_nothing_was(self):
+        bare = {"name": "a", "nixVersion": "1"}  # no builds, check or counts
+        self.written([bare])
+        self.assertEqual(datastore.load(self.out)["packages"], [bare])
+
+    def test_unchanged_rows_keep_their_bytes(self):
+        first = self.written([stamped("a")])
+        second = self.written(
+            [stamped("a", "2026-10-06T06:00:00+00:00")], run="2026-10-06T06:00:00+00:00"
+        )
+        self.assertEqual(first, second)

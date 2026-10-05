@@ -41,6 +41,18 @@ export function pageLinks(current, total) {
   return out;
 }
 
+// A row with the dates the data leaves out when they're the sync's own
+// (restored in nixkeeper/datastore.py): each build's and its update check's
+// checkedAt, its countedAt. Each is always there otherwise, so a missing one
+// was `run` (index.json's checkedAt). Changes row in place, and returns it.
+export function withRunStamps(row, run) {
+  if (!run) return row;
+  for (const b of row.builds || []) b.checkedAt ??= run;
+  if (row.upstream) row.upstream.checkedAt ??= run;
+  if ('openPRs' in row) row.countedAt ??= run;
+  return row;
+}
+
 // The shard (data/rows/<n>.json) holding a package's full row: a hash of its
 // name (shard_of in nixkeeper/datastore.py).
 export const shardOf = (name, count) => crc32(name) % count;

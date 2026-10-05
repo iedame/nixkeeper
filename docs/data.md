@@ -34,7 +34,12 @@ the source only has that. New fields may be added; existing ones change only
 with a note in the [changelog](../CHANGELOG.md).
 
 The files are compact JSON (no indentation) with keys sorted, so a file
-whose data didn't change keeps the same bytes. Format them to read them by
+whose data didn't change keeps the same bytes. For the same reason, three
+dates are left out when they're the sync's own (`checkedAt` in
+`index.json`): a row's `countedAt`, its update check's `checkedAt` and each
+build's `checkedAt`. Each is always there otherwise, so a missing one means
+"at `checkedAt`"; a package nothing new happened to then reads the same from
+one sync to the next. Format them to read them by
 hand (`jq . index.json`).
 
 ## `index.json`
@@ -132,7 +137,7 @@ A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
 | `label`, `url` | where it looked: `wesnoth/wesnoth tags`, `www.barebones.com`, ... |
 | `repo` | the GitHub repository, for GitHub checks |
 | `commit`, `behind`, `outdatedAfter` | branch checks: the newest commit, how many commits since nixpkgs' version, and the limits (`{ "days", "commits" }`) |
-| `checkedAt` | when it was last checked |
+| `checkedAt` | when it was last checked (left out: at `checkedAt`) |
 | `community` | `true` when the check is a [community rule](community.md) |
 | `inferred` | `true` when the check was worked out from nixpkgs' source (the GitHub tags it fetches from), for a package without a rule |
 | `rule` | a short fingerprint of the rule that found it: an edited rule runs again at once |
@@ -146,7 +151,7 @@ A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
 | `openPR` | an open update PR in nixpkgs (below) |
 | `masterPR` | an update PR merged into master that the channel doesn't have yet |
 | `openPRs`, `openIssues` | how many open nixpkgs PRs and issues have `searchTerm` in their title |
-| `countedAt` | when those were last counted: daily, from a listing of all of nixpkgs' open PRs and issues (searched per package instead when that fails: then every 3 days for a package with none open and not outdated) |
+| `countedAt` | when those were last counted (left out: at `checkedAt`): daily, from a listing of all of nixpkgs' open PRs and issues (searched per package instead when that fails: then every 3 days for a package with none open and not outdated) |
 
 `openPR` and `masterPR`: `number`, `title`, `url`, `draft`, `base` (the
 branch it targets), and `from` / `to` (the versions in its title,
@@ -165,7 +170,7 @@ branch it targets), and `from` / `to` (the versions in its title,
 | `name`, `version` | what that build built (`wesnoth-devel-1.19.28`), and its version |
 | `lastSuccess` | when it last built successfully, when the latest build didn't; `null` if it never did |
 | `lastSuccessBuild`, `lastSuccessName`, `lastSuccessVersion` | that successful build |
-| `checkedAt` | when this job was last read: daily from nixkeeper-hydra's digest; asked of Hydra itself, daily while something's going on, otherwise every 3 days (see [how it works](how-it-works.md)) |
+| `checkedAt` | when this job was last read (left out: at `checkedAt`): daily from nixkeeper-hydra's digest; asked of Hydra itself, daily while something's going on, otherwise every 3 days (see [how it works](how-it-works.md)) |
 
 Only `failed` counts as a failure.
 
