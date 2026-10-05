@@ -29,14 +29,45 @@ QUERY = """query($owner: String!, $name: String!, $prs: String, $issues: String,
   }
 }"""
 
-# GitHub's title search matches whole words: a title's words are its runs
-# of letters and digits, in any case ("wine" doesn't match "winetricks: ...",
-# but does "... WINE_BIN ...": underscores split words too).
-WORD = re.compile(r"[^\W_]+")
+# GitHub's title search matches whole words, in any case, the way checked
+# against its answers: "wine" doesn't match "winetricks: ...", but does
+# "... WINE_BIN ..." (a title's words are also split at underscores), while
+# "_1password-gui" matches "_1password-gui: ..." and not "1password-gui:
+# ..." (a search's words keep theirs). And it stems English words: "trigger"
+# matches "... triggers", "velocity" "... velocities" (plurals here; GitHub
+# goes further, "zoom" matching "zoomer", which isn't copied).
+WORD = re.compile(r"\w+")
+PART = re.compile(r"[^\W_]+")
+
+
+def stem(word):
+    """word without a plural ending: velocities -> velocity, triggers ->
+    trigger, patches -> patch, class -> class."""
+    if len(word) > 4 and word.endswith("ies"):
+        return word[:-3] + "y"
+    if len(word) > 4 and word.endswith(("sses", "xes", "zes", "ches", "shes")):
+        return word[:-2]
+    if len(word) > 3 and word.endswith("s") and not word.endswith(("ss", "us")):
+        return word[:-1]
+    return word
 
 
 def words(text):
-    return {w.lower() for w in WORD.findall(text or "")}
+    """A search's words: each run of letters, digits and underscores, stemmed,
+    in lower case."""
+    return {stem(w.lower()) for w in WORD.findall(text or "")}
+
+
+def title_words(text):
+    """A title's words: as a search's, and also each part between
+    underscores (WINE_BIN: wine_bin, wine, bin)."""
+    found = set()
+    for word in WORD.findall(text or ""):
+        word = word.lower()
+        found.add(stem(word))
+        if "_" in word:
+            found.update(stem(part) for part in PART.findall(word))
+    return found
 
 
 def list_open(token):
@@ -94,7 +125,7 @@ class Listing:
     def _index(nodes):
         index = {}
         for i, node in enumerate(nodes):
-            for word in words(node.get("title")):
+            for word in title_words(node.get("title")):
                 index.setdefault(word, set()).add(i)
         return index
 

@@ -15,8 +15,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   replacing the open PR and issue searches (two or three per package) with
   about 60 requests for all of them, however many packages are tracked.
   Not used yet: each daily sync lists them, finds each package's counts and
-  update PR in the titles locally (whole words, as GitHub's title search
-  matches them), and logs where that differs from the searches, in a
+  update PR in the titles locally (whole words, plurals included, the way
+  GitHub's title search was checked to match them), and logs where that differs from the searches, in a
   collapsed group, to check the matching before the searches go.
 
 - Update checks worked out from nixpkgs itself, a first step towards
