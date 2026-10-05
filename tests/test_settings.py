@@ -11,7 +11,7 @@ import threading
 import unittest
 from unittest import mock
 
-from nixkeeper import config, history, lock, notify, output
+from nixkeeper import config, datastore, history, lock, notify
 from nixkeeper.sources import github
 from nixkeeper.sources import nixpkgs as nixpkgs_source
 
@@ -27,9 +27,9 @@ class Paths(unittest.TestCase):
     def test_data_dir_is_read_at_call_time(self):
         data = os.path.join(self.dir.name, "state", "data")
         with mock.patch.object(config, "OUT_DIR", data):
-            output.write({}, {"packages": ROWS})
+            datastore.write({"packages": ROWS}, {})
             self.assertEqual(history.load_previous_run()["packages"], ROWS)
-            output.update({"index.json": {"packages": []}})
+            datastore.update({"packages": []}, {})
             self.assertEqual(history.load_previous_run()["packages"], [])
         self.assertTrue(os.path.exists(os.path.join(data, "index.json")))
 

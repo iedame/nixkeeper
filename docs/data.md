@@ -5,11 +5,23 @@ rewrites and commits to the `data` branch, under `data/`. That branch is
 always `main` plus one commit with the latest data: each run replaces it, so
 it keeps no history.
 
-- `index.json`: every tracked package, one row each (below)
+- `index.json`: the sync's details (when, which version, list problems),
+  the counts of rows and shards, and, for now, every row (`packages`)
+- `summary.json`: a short entry per row, with what the page's list needs
+  (below)
+- `rows/<n>.json`: the rows in full, with their Repology entries, in shards
+  (below)
 - `<project>.json`: each Repology project's packages, as Repology lists
   them: one entry per repository and package, with only what nixkeeper reads
   (`repo`, `srcname`, `version`, `status`, and `vulnerable` when flagged),
-  each once; a row's `dataFile` names its file
+  each once; a row's `dataFile` names its file. For now: the shards hold
+  the same entries
+
+`packages` in `index.json` and the `<project>.json` files are the data's
+first format, which pages from 0.11.0 and before read; format 2 (`summary.json`
+and the shards) is what lets the page load only what it shows. Both are
+written for now; the first format will be dropped in a later release, with a
+note in the changelog.
 
 On GitHub they're at
 `https://raw.githubusercontent.com/<owner>/<repo>/data/data/index.json`.
@@ -27,13 +39,16 @@ hand (`jq . index.json`).
 ## `index.json`
 
 ```json
-{ "checkedAt": "2026-09-30T06:00:00+00:00", "version": "0.9.0", "packages": [ ... ] }
+{ "format": 2, "checkedAt": "2026-09-30T06:00:00+00:00", "version": "0.12.0",
+  "packageCount": 241, "shardCount": 1, "packages": [ ... ] }
 ```
 
-`version` is the nixkeeper that ran the last full sync (the page shows it
-at the bottom). `checkedAt` is when the last full sync ran (the hourly
-checks update single rows without changing it). `packages` are the rows,
-sorted by name.
+`format` is the data's format (2; missing in data from before). `version`
+is the nixkeeper that ran the last full sync (the page shows it at the
+bottom). `checkedAt` is when the last full sync ran (the hourly checks update
+single rows without changing it). `packageCount` is how many rows there are,
+`shardCount` how many shards hold them. `packages` are the rows, sorted by
+name (the first format, for now).
 
 `listProblems`, only when there are any, lists mistakes the sync found in the
 package lists, as sentences: a maintainer handle no package lists, an extra
@@ -42,6 +57,32 @@ a package that isn't tracked, or 1,500 packages or more (the cost of a sync).
 The page shows them above the table. `page`, only when the lists set it,
 holds the page's settings: `{ "theme": "catppuccin" }` is
 its default palette.
+
+## `summary.json`
+
+```json
+{ "packages": [ ... ] }
+```
+
+One entry per row, sorted by name: the row (below) without what only its
+details show (`dataFile`, `homepage`, `repoCount`, `repologyCheckedAt`,
+`source`), its builds with only `status` and `system`, its `update` with only
+`outcome` (still `null` when the bot never tried, missing when it isn't in
+nixpkgs), and its `upstream` with only `version`, `newer`, `community` and
+`inferred`.
+
+## `rows/<n>.json`
+
+```json
+{ "packages": [ ... ] }
+```
+
+The rows in full, sorted by name, each with its Repology project's entries
+in `repology` (as in `<project>.json`; missing when there are none). Rows
+are spread over `shardCount` shards (a power of two, about 500 rows each) by
+a hash of their name: a row is in shard `crc32(name) % shardCount` (CRC-32
+of the name's UTF-8 bytes, as zlib computes it), so a new package changes
+only its own shard.
 
 ## A row
 

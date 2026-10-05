@@ -9,6 +9,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- A second format for the data, beside the first: `summary.json`, a short
+  entry per package with what the page's list needs (about a third of
+  `index.json` today), and `rows/<n>.json`, the packages in full with their
+  Repology data, split by a hash of the name. `index.json` says
+  `"format": 2` and how many packages and shards there are. Nothing reads
+  it on the page yet; the first format is still written, unchanged
+  (`docs/data.md`).
+
 ### Changed
 
 - The files in `data/` are written as compact JSON, without indentation:

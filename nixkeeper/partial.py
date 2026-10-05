@@ -5,7 +5,7 @@ changed. Most hours nothing does, so nothing is written, committed or posted."""
 import copy
 import sys
 
-from . import config, history, notify, output
+from . import config, datastore, history, notify
 
 
 def load():
@@ -33,14 +33,23 @@ def meaningful(packages):
 
 
 def publish(previous, packages, now, data_files=None):
-    """Write packages (and data_files) and notify, if anything changed.
+    """Write packages (and data_files: Repology entries by dataFile, for the
+    rows refreshed) and notify, if anything changed.
     checkedAt stays the daily sync's: the page's staleness warning, and every
     source these checks don't touch, go by it. Returns whether it wrote."""
     if meaningful(packages) == meaningful(previous["packages"]):
         print("Nothing changed.", file=sys.stderr)
         return False
-    output.update(
-        {**(data_files or {}), "index.json": {**previous, "packages": packages}}
+    # Every row's entries, for the shards: the last run's, or refreshed.
+    entries = {}
+    for row in packages:
+        if row.get("dataFile") and row["dataFile"] not in entries:
+            try:
+                entries[row["dataFile"]] = datastore.entries(row)
+            except (OSError, ValueError):
+                entries[row["dataFile"]] = []
+    datastore.update(
+        {**previous, "packages": packages}, {**entries, **(data_files or {})}
     )
     print("Changes written.", file=sys.stderr)
     notify.notify(previous, packages, now)

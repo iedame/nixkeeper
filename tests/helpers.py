@@ -5,7 +5,7 @@ import json
 import urllib.error
 from unittest import mock
 
-from nixkeeper.output import data_file
+from nixkeeper.datastore import data_file
 
 
 def pkg(pname, platforms=None, maintainers=(), homepage=None, version=None):

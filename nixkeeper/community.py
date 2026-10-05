@@ -325,7 +325,7 @@ def stale_up_to_date(names=None, file=None):
     Every rule (names None), or those named. Returns {name: (version, why)};
     a package Repology can't be reached for is left out, not called stale."""
     from . import rows, uptodate
-    from .output import data_file
+    from .datastore import data_file
     from .sources import nixpkgs as nixpkgs_source
     from .sources import repology
 
