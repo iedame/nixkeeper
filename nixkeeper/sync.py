@@ -129,12 +129,14 @@ def main():
     nixpkgs_update.add_attempts(
         index_rows, nixpkgs, previous, now, ignored, ignored_by_community
     )
-    github.add_counts(index_rows, previous, now)  # and open update PRs
-    # Not used yet: logs how a bulk listing of all open PRs and issues
-    # compares with those searches (github_bulk).
-    github_bulk.compare(index_rows, now)
+    # Open PR/issue counts and open update PRs: from one listing of all of
+    # nixpkgs' open ones (github_bulk), else searched per package.
+    if not github_bulk.add_counts(index_rows, now):
+        github.add_counts(index_rows, previous, now)
     outdated = [row for row in index_rows if is_outdated(row)]
-    github.add_update_prs(outdated, open_prs=False)  # merged into master
+    # Update PRs merged into master, not in the channel yet: likewise.
+    if not github_bulk.add_master_prs(outdated, revision, now):
+        github.add_update_prs(outdated, open_prs=False)
     follows.apply_prs(index_rows, following)  # theirs are the same PRs
     nixpkgs_update.recheck_superseded(outdated)
     # version: the nixkeeper that made this data, for the page's footer.

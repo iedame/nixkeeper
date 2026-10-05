@@ -119,67 +119,119 @@ class ListOpen(unittest.TestCase):
             github_bulk.list_open("t")
 
 
-class Compare(unittest.TestCase):
+class AddCounts(unittest.TestCase):
     NOW = "2026-10-05T06:00:00+00:00"
 
-    def compare(self, rows):
-        out = io.StringIO()
+    def test_counts_every_row(self):
+        rows = [
+            {"name": "wine", "searchTerm": "wine", "nixVersion": "10.15"},
+            {"name": "winetricks", "searchTerm": "winetricks", "openPR": {"number": 9}},
+        ]
         with (
             mock.patch.object(github, "token", return_value="t"),
             mock.patch.object(github_bulk, "list_open", return_value=(PRS, ISSUES)),
-            mock.patch("sys.stderr", out),
+            mock.patch("sys.stderr", io.StringIO()),
         ):
-            github_bulk.compare(rows, self.NOW)
-        return out.getvalue()
+            self.assertTrue(github_bulk.add_counts(rows, self.NOW))
+        wine, winetricks = rows
+        self.assertEqual((wine["openPRs"], wine["openIssues"]), (3, 1))
+        self.assertEqual(wine["openPR"]["number"], 1)
+        self.assertEqual(wine["countedAt"], self.NOW)
+        self.assertEqual((winetricks["openPRs"], winetricks["openIssues"]), (2, 1))
+        # Found again: its open update PR now, not the one it had.
+        self.assertEqual(winetricks["openPR"]["number"], 2)
 
-    def test_logs_differences_and_changes_nothing(self):
-        rows = [
-            {
-                "name": "wine",
-                "searchTerm": "wine",
-                "openPRs": 3,
-                "openIssues": 1,
-                "countedAt": self.NOW,
-                "nixVersion": "10.15",
-                "openPR": {"number": 1},
-            },
-            {
-                "name": "winetricks",
-                "searchTerm": "winetricks",
-                "openPRs": 3,
-                "openIssues": 1,
-                "countedAt": self.NOW,
-                "nixVersion": "20260125",
-            },
-            {
-                "name": "quiet",
-                "searchTerm": "quiet",
-                "openPRs": 0,
-                "openIssues": 0,
-                "countedAt": "2026-10-03T06:00:00+00:00",
-            },
-        ]
-        before = [dict(r) for r in rows]
-        out = self.compare(rows)
-        self.assertEqual(rows, before)
-        self.assertIn(
-            "7 open PRs and 2 issues; 2 packages counted by search today, "
-            "1 agree, 1 differ",
-            out,
-        )
-        self.assertIn(
-            "winetricks (winetricks): search 3 PRs, 1 issues, update PR #None; "
-            "listing 2, 1, #None",
-            out,
-        )
-        self.assertIn("      winetricks: 20250102 -> 20260125", out)
-
-    def test_failure_only_skips_it(self):
+    def test_failure_changes_nothing(self):
+        rows = [{"name": "wine", "searchTerm": "wine", "openPRs": 5}]
         out = io.StringIO()
         with (
             mock.patch.object(github, "token", return_value="t"),
             mock.patch.object(github_bulk, "list_open", side_effect=OSError("down")),
             mock.patch("sys.stderr", out),
         ):
-            github_bulk.compare([], self.NOW)
-        self.assertEqual(out.getvalue(), "Bulk PR/issue listing: skipped (down)\n")
+            self.assertFalse(github_bulk.add_counts(rows, self.NOW))
+        self.assertEqual(rows, [{"name": "wine", "searchTerm": "wine", "openPRs": 5}])
+        self.assertIn("searching per package", out.getvalue())
+        with mock.patch.object(github, "token", return_value=None):
+            self.assertFalse(github_bulk.add_counts(rows, self.NOW))
+
+
+class MasterPRs(unittest.TestCase):
+    NOW = "2026-10-05T06:00:00+00:00"
+
+    def search(self, nodes, more=False, count=None):
+        return {
+            "search": {
+                "issueCount": len(nodes) if count is None else count,
+                "pageInfo": {"hasNextPage": more, "endCursor": "c"},
+                "nodes": nodes,
+            }
+        }
+
+    def test_windows_and_pages(self):
+        answers = [
+            self.search([pr(1, "a: 1 -> 2")], more=True),
+            self.search([pr(2, "b: 1 -> 2")]),
+            self.search([pr(3, "c: 1 -> 2")]),
+        ]
+        with mock.patch.object(github, "graphql", side_effect=answers) as graphql:
+            found = github_bulk.list_merged("t", "2026-10-04T12:00:00Z", self.NOW)
+        self.assertEqual([p["number"] for p in found], [1, 2, 3])
+        queries = [c.args[2]["q"] for c in graphql.call_args_list]
+        self.assertTrue(
+            queries[0].endswith("merged:2026-10-04T12:00:00Z..2026-10-05T00:00:00Z")
+        )
+        self.assertEqual(graphql.call_args_list[1].args[2]["after"], "c")
+        self.assertTrue(
+            queries[2].endswith("merged:2026-10-05T00:00:00Z..2026-10-05T06:00:00Z")
+        )
+        self.assertIn("is:pr is:merged base:master", queries[0])
+
+    def test_over_searchs_limit_fails(self):
+        with (
+            mock.patch.object(
+                github, "graphql", return_value=self.search([], count=1001)
+            ),
+            self.assertRaises(ValueError),
+        ):
+            github_bulk.list_merged("t", "2026-10-05T00:00:00Z", self.NOW)
+
+    def test_add_master_prs(self):
+        rows = [
+            {
+                "name": "wesnoth-devel",
+                "searchTerm": "wesnoth-devel",
+                "nixVersion": "1.19.24",
+            },
+            {
+                "name": "x",
+                "searchTerm": "x",
+                "nixVersion": "1",
+                "masterPR": {"number": 1},
+            },
+        ]
+        merged = [pr(4, "wesnoth-devel: 1.19.24 -> 1.19.29"), pr(5, "wesnoth: 1 -> 2")]
+        with (
+            mock.patch.object(github, "token", return_value="t"),
+            mock.patch.object(
+                github_bulk, "channel_date", return_value="2026-10-03T17:36:20Z"
+            ),
+            mock.patch.object(
+                github_bulk, "list_merged", return_value=merged
+            ) as listed,
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            self.assertTrue(github_bulk.add_master_prs(rows, "a7868a7", self.NOW))
+        listed.assert_called_once_with("t", "2026-10-03T17:36:20Z", self.NOW)
+        self.assertEqual(rows[0]["masterPR"]["number"], 4)
+        self.assertNotIn("masterPR", rows[1])  # found again, or not at all
+
+    def test_failure_changes_nothing(self):
+        rows = [{"name": "x", "searchTerm": "x", "masterPR": {"number": 1}}]
+        with (
+            mock.patch.object(github, "token", return_value="t"),
+            mock.patch.object(github_bulk, "channel_date", return_value=None),
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            self.assertFalse(github_bulk.add_master_prs(rows, "rev", self.NOW))
+        self.assertEqual(rows[0]["masterPR"], {"number": 1})
