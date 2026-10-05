@@ -99,6 +99,7 @@ only its own shard.
 | `platforms` | `{ "linux": bool, "darwin": bool }` from `meta.platforms`; `null` when nixpkgs doesn't restrict them |
 | `homepage` | `meta.homepage` |
 | `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it |
+| `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); missing when it has none |
 | `source` | where nixpkgs defines it, on GitHub at the channel's commit and line |
 | `unfree` | `true` when every attribute is unfree (Hydra doesn't build those) |
 

@@ -179,6 +179,29 @@ class Rows(unittest.TestCase):
         self.assertEqual(heroic["maintainers"], ["iedame", "TomaSajt", "aidalgol"])
         self.assertEqual(orphan["maintainers"], [])  # none: searchable as @none
 
+    def test_teams_of_all_attributes_once(self):
+        nixpkgs = {
+            "steam": pkg("steam"),
+            "steam-unwrapped": pkg("steam"),
+            "orphan": pkg("orphan"),
+        }
+        nixpkgs["steam"]["meta"]["teams"] = [{"shortName": "Steam", "scope": "x"}]
+        nixpkgs["steam-unwrapped"]["meta"]["teams"] = [
+            {"shortName": "Steam"},
+            {"shortName": "Gaming"},
+            {"scope": "no short name"},
+        ]
+        entries = [nix("steam", "1", "newest"), nix("orphan", "1", "newest")]
+        orphan, steam = build_rows(
+            {
+                "steam": project("steam", ["steam", "steam-unwrapped"], entries[:1]),
+                "orphan": project("orphan", ["orphan"], entries[1:]),
+            },
+            nixpkgs,
+        )
+        self.assertEqual(steam["teams"], ["Steam", "Gaming"])
+        self.assertNotIn("teams", orphan)  # none: left out
+
     def test_versioned_python_sets_search_by_alias(self):
         entries = [nix("python313Packages.requests", "2.34.2", "newest")]
         [row] = self.rows(
