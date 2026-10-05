@@ -14,7 +14,7 @@ from datetime import UTC, datetime, timedelta
 from .. import config, history
 from ..changes import is_outdated, on_master
 from ..rows import search_term
-from . import http
+from . import http, updates_digest
 
 LOG_NAME = re.compile(r'href="(\d{4}-\d{2}-\d{2})\.log"')
 # The version of parse()'s rules, stored with each attempt ("parser"). A sync
@@ -312,6 +312,39 @@ def ignored(attempt, rules, outdated=False):
     return None
 
 
+def read_attempts(attrs, old, dates, since, digest=None):
+    """The bot's latest attempt at each of attrs it has tried, and how many
+    came from the digest: from it where it can say (updates_digest.attempt),
+    else from the logs, reusing the last sync's reading (old: its row) of a
+    log that hasn't changed since (since; dates: directory_dates). Raises
+    when the logs can't be read."""
+    known = (old or {}).get("update")
+    # Read fine last time: what it found still holds while the logs haven't
+    # changed.
+    refreshed = read_last_time(old)
+    attempts, taken = [], 0
+    for attr in attrs:
+        if digest is not None:
+            entry = digest.get(search_term(attr))
+            if entry is None:
+                continue  # the bot has never tried it
+            if found := updates_digest.attempt(entry, attr, PARSER):
+                attempts.append(found)
+                taken += 1
+                continue  # else read it: an attempt the digest hasn't
+        if dates is not None and search_term(attr) not in dates:
+            continue  # no logs at all: the bot has never tried it
+        mine = known if (known or {}).get("attr") == attr else None
+        same = (
+            refreshed
+            and unchanged(attr, dates, since)
+            and (mine is not None or known is None)
+        )
+        if attempt := latest_attempt(attr, mine if same else known, same):
+            attempts.append(attempt)
+    return attempts, taken
+
+
 def read_last_time(old):
     """Whether the last sync read the row's attempts (old: its row then):
     not if it couldn't (notRefreshed), nor if its turn hadn't come (unread,
@@ -373,6 +406,7 @@ def add_attempts(
     ignored_updates=None,
     community=(),
     bulk=frozenset(),
+    digest=None,
 ):
     """Give every row in nixpkgs the bot's latest attempt ("update", None if
     it never tried) and whether that failed ("updateFailure"). With several
@@ -381,11 +415,12 @@ def add_attempts(
     ignored_updates: {row name: {version: reason}}, versions whose failed
     attempts count as superseded (a version that was never really released,
     say). community: the (row name, version) of those that are community
-    rules (community.py), marked so on the attempt. bulk: with every
-    package, the rows not on the lists: pending ones get no attempt at all,
-    the others are read within a budget (bulk_turns); one whose turn hasn't
-    come keeps its last attempt, and says it wasn't read ("unread":
-    ["update"])."""
+    rules (community.py), marked so on the attempt. digest: nixkeeper-
+    updates' (updates_digest.load), the attempts it can answer taken from
+    it instead of the logs. bulk: with every package, the rows not on the
+    lists: pending ones get no attempt at all, the others the digest's last
+    read attempt (without one, they're read within a budget: bulk_turns);
+    one with none says it wasn't read ("unread": ["update"])."""
     ignored_updates = ignored_updates or {}
     print("Checking nixpkgs-update logs...", file=sys.stderr)
     before = {row["name"]: row for row in previous["packages"]}
@@ -393,17 +428,34 @@ def add_attempts(
     # haven't since the last sync listed them aren't listed again.
     dates = directory_dates()
     since = previous.get("checkedAt")
-    turns = bulk_turns(rows, nixpkgs, before, dates, since, bulk) if bulk else set()
-    failed = consecutive = waited = 0
+    turns = (
+        bulk_turns(rows, nixpkgs, before, dates, since, bulk)
+        if bulk and digest is None
+        else set()
+    )
+    failed = consecutive = waited = from_digest = 0
     for row in rows:
         attrs = [a for a in row["attrs"] if a in nixpkgs]
         if not attrs:
             continue  # not in nixpkgs: nothing for the bot to update
+        attempts = None
         if row["name"] in bulk:
             if row.get("pending"):
                 continue  # generated sets: not read for now
             old = before.get(row["name"])
-            if row["name"] not in turns and (
+            if digest is not None:
+                # The digest's last read attempts, whatever it hasn't read yet.
+                entries = [(a, digest.get(search_term(a))) for a in attrs]
+                attempts = [
+                    found
+                    for a, entry in entries
+                    if entry and (found := updates_digest.known(entry, a))
+                ]
+                from_digest += bool(attempts)
+                if not attempts and any(entry for _, entry in entries):
+                    waited += 1
+                    row["unread"] = ["update"]
+            elif row["name"] not in turns and (
                 dates is None or to_read(row, attrs, old, dates, since)
             ):
                 waited += 1
@@ -411,40 +463,32 @@ def add_attempts(
                 row["updateFailure"] = bool((old or {}).get("updateFailure"))
                 row["unread"] = ["update"]
                 continue
-        down = consecutive >= config.UPDATE_LOGS_MAX_CONSECUTIVE_FAILURES
-        try:
-            if down:
-                raise OSError("not asked: it didn't answer earlier lookups")
-            old = before.get(row["name"])
-            known = (old or {}).get("update")
-            # Read fine last time: what it found still holds while the logs
-            # haven't changed.
-            refreshed = read_last_time(old)
-            attempts = []
-            for attr in attrs:
-                if dates is not None and search_term(attr) not in dates:
-                    continue  # no logs at all: the bot has never tried it
-                mine = known if (known or {}).get("attr") == attr else None
-                same = (
-                    refreshed
-                    and unchanged(attr, dates, since)
-                    and (mine is not None or known is None)
+        if attempts is None:
+            down = consecutive >= config.UPDATE_LOGS_MAX_CONSECUTIVE_FAILURES
+            try:
+                if down:
+                    raise OSError("not asked: it didn't answer earlier lookups")
+                attempts, taken = read_attempts(
+                    attrs, before.get(row["name"]), dates, since, digest
                 )
-                if attempt := latest_attempt(attr, mine if same else known, same):
-                    attempts.append(attempt)
-            consecutive = 0
-        except (urllib.error.URLError, OSError) as e:
-            failed += 1
-            consecutive += not down
-            if not down:
-                print(f"  {row['name']}: {e}", file=sys.stderr)
-            old = before.get(row["name"], {})
-            row["update"] = old.get("update")
-            row["updateFailure"] = bool(old.get("updateFailure"))
-            history.not_refreshed(
-                row, "update", f"couldn't read the nixpkgs-update logs ({e})", old, now
-            )
-            continue
+                from_digest += taken
+                consecutive = 0
+            except (urllib.error.URLError, OSError) as e:
+                failed += 1
+                consecutive += not down
+                if not down:
+                    print(f"  {row['name']}: {e}", file=sys.stderr)
+                old = before.get(row["name"], {})
+                row["update"] = old.get("update")
+                row["updateFailure"] = bool(old.get("updateFailure"))
+                history.not_refreshed(
+                    row,
+                    "update",
+                    f"couldn't read the nixpkgs-update logs ({e})",
+                    old,
+                    now,
+                )
+                continue
         attempt = max(attempts, key=lambda a: a["date"], default=None)
         if (
             attempt
@@ -491,7 +535,13 @@ def add_attempts(
             "the previous run's result",
             file=sys.stderr,
         )
-    if bulk:
+    if digest is not None:
+        print(
+            f"  {from_digest:,} attempts from the updates digest"
+            + (f"; {waited:,} packages not read yet there" if waited else ""),
+            file=sys.stderr,
+        )
+    elif bulk:
         print(
             f"  {len(turns):,} packages not on the lists read (at most "
             f"{config.UPDATE_LOGS_BUDGET:,} a sync); {waited:,} not read",

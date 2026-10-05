@@ -11,14 +11,24 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- nixpkgs-update's attempts from
+  [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates), a digest
+  of the bot's latest attempt at every package (its log read with
+  nixkeeper's own rules, every 3 hours, from the bot's state), instead of
+  reading each package's logs; still read per package when the digest
+  hasn't read the latest attempt, or isn't current
+  (`NIXKEEPER_UPDATES_DIGEST`). With every package, every package gets its
+  attempt this way.
+
 - Every package: `NIXKEEPER_ALL_PACKAGES=1` (a repository variable on
   GitHub, `allPackages` in the modules, `sync --all-packages`) tracks every
   nixpkgs package, not only the lists', for a community instance
   (`docs/all-packages.md`). The lists' packages are read as always and are
   the only ones in the status issue; the rest only from the digests and
-  bulk listings, with nothing asked per package (nixpkgs-update's logs:
-  the lists' packages only, for now). Generated sets (R, Haskell, Emacs, Typst, TeX Live, SBCL) are
-  pending: only Repology's versions and Hydra's builds. The data then has
+  bulk listings, with nothing asked per package (nixpkgs-update's attempts
+  from nixkeeper-updates' digest, above). Generated sets (R, Haskell,
+  Emacs, Typst, TeX Live, SBCL) are pending: only Repology's versions and
+  Hydra's builds. The data then has
   views (needs attention, per maintainer, team, list and set), a name
   index and counts, instead of one summary of every package
   (`docs/data.md`). The page then starts from the counts for all of

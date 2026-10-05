@@ -25,8 +25,8 @@ of nixpkgs), or one package alone (`?pkg=firefox`). The filters, search and
 order then work within it, as on any page; a search also lists the packages
 beyond the view whose names match, closest first. "not on Repology" is a
 package Repology doesn't know, and "not read" an update attempt the sync
-didn't read (with every package, the bot's logs are read for the lists'
-packages only, for now).
+didn't read (with every package, attempts come from a digest of the bot's,
+which hasn't read that one yet).
 
 The list shows 200 packages at a time, most in need of attention first;
 the page links under it go through the rest (the page is in the address
