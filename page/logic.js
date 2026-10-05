@@ -22,6 +22,25 @@ export function crc32(text) {
   return (c ^ 0xffffffff) >>> 0;
 }
 
+// The page links to show among `total` pages, on page `current`: the first
+// and last, and two either side of the current one, with null for each gap
+// ("1 … 4 5 6 7 8 … 20"). A gap of one page shows that page instead; up to
+// 7 pages, all of them.
+export function pageLinks(current, total) {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1);
+  const near = new Set([1, total]);
+  for (let p = current - 2; p <= current + 2; p++) if (p >= 1 && p <= total) near.add(p);
+  const pages = [...near].sort((a, b) => a - b);
+  const out = [];
+  for (const p of pages) {
+    const last = out.at(-1);
+    if (last != null && p - last === 2) out.push(last + 1);
+    else if (last != null && p - last > 2) out.push(null);
+    out.push(p);
+  }
+  return out;
+}
+
 // The shard (data/rows/<n>.json) holding a package's full row: a hash of its
 // name (shard_of in nixkeeper/datastore.py).
 export const shardOf = (name, count) => crc32(name) % count;
