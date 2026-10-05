@@ -71,6 +71,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- The daily sync workflow runs again at 14:00 UTC as a catch-up: it only
+  syncs if the last sync is over 20 hours old (GitHub skipped or badly
+  delayed the 06:00 one), and otherwise stops at once.
 - The files in `data/` are written as compact JSON, without indentation:
   about a third smaller for the browser to read (a few percent smaller to
   download, as servers send it gzipped). The data is the same: tools that

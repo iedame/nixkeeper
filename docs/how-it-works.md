@@ -7,14 +7,15 @@ There's no server: nixkeeper is a program that gathers data, and a static
 page that shows it.
 
 - **The daily sync** (`nix run .#sync`, run by the "Data: daily sync"
-  workflow at 06:00 UTC) works out which packages to track from
-  `package-lists/` and the nixos-unstable channel's package index, then asks
-  each source about them: Repology for versions, nixkeeper's own update
-  checks, Hydra for builds (and nixpkgs for where it marks them broken), the
-  nixpkgs-update logs for the bot's latest attempt, and GitHub for open PRs,
-  issues and update PRs. It writes everything as JSON to the `data` branch
-  ([data.md](data.md)) and rewrites the status issue, commenting when
-  something newly needs attention.
+  workflow at 06:00 UTC, with a catch-up at 14:00 should GitHub skip it)
+  works out which packages to track from `package-lists/` and the
+  nixos-unstable channel's package index, then asks each source about them:
+  Repology for versions, nixkeeper's own update checks, Hydra for builds
+  (and nixpkgs for where it marks them broken), the nixpkgs-update logs for
+  the bot's latest attempt, and GitHub for open PRs, issues and update PRs.
+  It writes everything as JSON to the `data` branch ([data.md](data.md)) and
+  rewrites the status issue, commenting when something newly needs
+  attention.
 - **The hourly checks** ("Data: hourly updates") refresh a few rows of the
   last published data: the update checks marked `frequent` (browsers, for
   their security fixes) and outdated packages' update PRs. They commit only

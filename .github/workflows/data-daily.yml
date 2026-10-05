@@ -7,6 +7,9 @@ name: "Data: daily sync"
 on:
   schedule:
     - cron: '0 6 * * *'   # daily at 06:00 UTC
+    # A catch-up: syncs only when the last sync is over 20 hours old (GitHub
+    # skipped or badly delayed the one at 06:00); otherwise it stops at once.
+    - cron: '0 14 * * *'
   workflow_dispatch: {}    # lets you trigger a run manually from the Actions tab
 
 # The hourly updates (data-hourly.yml) also push to the data branch: never at
@@ -39,7 +42,7 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
       - name: Sync package data
-        run: nix run .#sync
+        run: nix run .#sync -- ${{ github.event.schedule == '0 14 * * *' && '--if-older 20' || '' }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR/issue counts and the status issue
           NIXKEEPER_NOTIFY: github-issue  # the status issue; local runs don't notify

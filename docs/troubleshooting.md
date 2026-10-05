@@ -31,7 +31,7 @@ The workflows run in the repository's **Actions** tab:
 
 | Workflow | When | What to look for |
 |---|---|---|
-| Data: daily sync | daily, 06:00 UTC | a green run each day; it commits to the `data` branch when something changed |
+| Data: daily sync | daily, 06:00 UTC; again at 14:00 UTC, which only syncs if the last sync is over 20 hours old (GitHub skipped or delayed the morning one) and otherwise stops at once | a green run each day; it commits to the `data` branch when something changed |
 | Data: hourly updates | about hourly | GitHub runs scheduled workflows on a best-effort basis: gaps of a few hours are normal |
 | Pages: publish the page | when the page changes on `main` | a green run after each page change |
 | CI: tests and lint | every push and PR | green before merging |
