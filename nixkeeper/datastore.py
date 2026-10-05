@@ -60,6 +60,43 @@ def shard_of(name, count):
     return zlib.crc32(name.encode()) % count
 
 
+def elided(row, run):
+    """row as written: its stamps from this run (each build's and its update
+    check's "checkedAt", its "countedAt") left out when they're run, the
+    index's checkedAt, so a row nothing new happened to keeps its bytes from
+    run to run. restored() puts them back."""
+    if not run:
+        return row
+    row = dict(row)
+    if row.get("countedAt") == run:
+        del row["countedAt"]
+    if (row.get("upstream") or {}).get("checkedAt") == run:
+        row["upstream"] = {k: v for k, v in row["upstream"].items() if k != "checkedAt"}
+    if "builds" in row:
+        row["builds"] = [
+            {k: v for k, v in b.items() if k != "checkedAt"}
+            if b.get("checkedAt") == run
+            else b
+            for b in row["builds"]
+        ]
+    return row
+
+
+def restored(row, run):
+    """row as elided() wrote it, with its stamps back: each is always there
+    when what it dates is (every build and update check has one, and counts
+    have theirs), so a missing one was run's."""
+    if not run:
+        return row
+    for build in row.get("builds") or []:
+        build.setdefault("checkedAt", run)
+    if row.get("upstream"):
+        row["upstream"].setdefault("checkedAt", run)
+    if "openPRs" in row:
+        row.setdefault("countedAt", run)
+    return row
+
+
 def summary_entry(row):
     """row's entry in summary.json: what the list, the counts, filters,
     search and sorting need. Builds are reduced to their status and
@@ -81,7 +118,9 @@ def summary_entry(row):
 def files(index, entries):
     """Every file of data/ for index (its rows in "packages") and entries
     (Repology's, by dataFile): {path in data/: data}."""
-    rows = sorted(index["packages"], key=lambda row: row["name"])
+    run = index.get("checkedAt")
+    given = [elided(row, run) for row in index["packages"]]  # format 1's order
+    rows = sorted(given, key=lambda row: row["name"])
     count = shard_count(len(rows))
     shards = [[] for _ in range(count)]
     for row in rows:
@@ -92,6 +131,7 @@ def files(index, entries):
     out = {name: data for name, data in entries.items()}  # format 1
     out["index.json"] = {
         **index,
+        "packages": given,
         "format": FORMAT,
         "packageCount": len(rows),
         "shardCount": count,
@@ -181,6 +221,8 @@ def load(out_dir=None):
                 key=lambda row: row["name"],
             )
     index.setdefault("packages", [])
+    for row in index["packages"]:
+        restored(row, index.get("checkedAt"))
     return index
 
 

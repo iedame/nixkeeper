@@ -36,6 +36,7 @@ import {
   updateTitle,
   versionDiff,
   waitingForChannel,
+  withRunStamps,
   withSlash,
 } from '../../page/logic.js';
 
@@ -564,5 +565,29 @@ describe('pageLinks', () => {
   });
   test('a gap of one page shows the page', () => {
     assert.deepEqual(pageLinks(5, 20), [1, 2, 3, 4, 5, 6, 7, null, 20]);
+  });
+});
+
+describe('withRunStamps', () => {
+  const RUN = '2026-10-05T06:00:00+00:00';
+  test('puts back the dates left out', () => {
+    const row = withRunStamps(
+      {
+        builds: [{ status: 'ok' }, { status: 'ok', checkedAt: '2026-10-03' }],
+        upstream: { version: '2' },
+        openPRs: 0,
+      },
+      RUN,
+    );
+    assert.deepEqual(
+      row.builds.map((b) => b.checkedAt),
+      [RUN, '2026-10-03'],
+    );
+    assert.equal(row.upstream.checkedAt, RUN);
+    assert.equal(row.countedAt, RUN);
+  });
+  test('adds nothing where nothing was', () => {
+    assert.deepEqual(withRunStamps({ name: 'a' }, RUN), { name: 'a' });
+    assert.deepEqual(withRunStamps({ name: 'a' }, null), { name: 'a' });
   });
 });

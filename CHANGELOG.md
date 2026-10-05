@@ -35,6 +35,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   about a third smaller for the browser to read (a few percent smaller to
   download, as servers send it gzipped). The data is the same: tools that
   parse JSON aren't affected.
+- Dates that are the sync's own time are left out of the data: a package's
+  `countedAt`, its update check's `checkedAt` and each build's `checkedAt`,
+  when they equal `checkedAt` in `index.json` (a missing one means that).
+  A package nothing new happened to now reads the same from one sync to the
+  next (222 of 224 rows on today's data), instead of every row changing
+  every day.
 
 ## [0.11.0] - 2026-10-05
 

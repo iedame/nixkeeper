@@ -27,6 +27,7 @@ import {
   updateTitle,
   versionDiff,
   waitingForChannel,
+  withRunStamps,
   withSlash,
 } from './logic.js';
 
@@ -420,7 +421,10 @@ async function fullRow(pkg) {
           if (!res.ok) throw new Error(res.status);
           return res.json();
         })
-        .then((shard) => new Map(shard.packages.map((row) => [row.name, row]))),
+        .then(
+          (shard) =>
+            new Map(shard.packages.map((row) => [row.name, withRunStamps(row, checkedAt)])),
+        ),
     );
   }
   try {
@@ -468,8 +472,10 @@ async function loadIndex() {
     const res = await fetch(dataUrl('index.json'), { cache: 'no-store' });
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
-    packages = (await summaryOf(data)) || data.packages || [];
     checkedAt = data.checkedAt || null;
+    packages = ((await summaryOf(data)) || data.packages || []).map((p) =>
+      withRunStamps(p, checkedAt),
+    );
     // The nixkeeper that made the data, in the footer (older data has none).
     document.getElementById('version').textContent =
       data.version && data.version !== 'unknown' ? ` ${data.version}` : '';
