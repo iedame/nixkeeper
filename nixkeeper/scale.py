@@ -5,19 +5,26 @@ check warns from WARN_PACKAGES packages; above MAX_PACKAGES the sync refuses
 to start unless the lists raise the limit (maxPackages), so a big team or a
 typo can't send thousands of requests by accident.
 
-The costs are measured from real syncs (71 packages, October 2026). A package
-new to the data costs the most, the first time: everything is asked about.
-After that, quiet ones are asked every few days (schedule.py), and a typical
-day costs much less. Hydra, asked in the background, is the slowest source,
-so it sets the time. To be checked against syncs of bigger lists."""
+The costs are measured from a real sync (241 packages, 2026-10-05), with
+Hydra's and Repology's data from the digests (nixkeeper-hydra,
+nixkeeper-versions) and GitHub's from bulk listings: most of a sync's cost
+is now fixed (the listings, the digests, the package index), whatever the
+lists' size. Per package, what's left is the Hydra jobs the digest can't
+answer, changed nixpkgs-update log folders and the update checks. A package
+new to the data costs more the first time: its update-log folder is read
+whole. Without the digests (turned off, or not current) and listings
+(failing), the sync falls back to asking per package, and takes much
+longer than this says."""
 
 import os
 import sys
 
 # Per package: (seconds, requests).
-FIRST = (4.2, 6)  # the first sync it's in: Repology by attribute, every job, every log
-TYPICAL = (1.7, 1.6)  # a typical day after, with the quiet ones not asked
-FIXED_SECONDS = 35  # the package index, the evaluations, GitHub's batches, ...
+FIRST = (2.5, 3)  # the first sync it's in: its update-log folder, Hydra's gaps
+TYPICAL = (0.4, 0.3)  # a typical day after: Hydra's gaps, changed log folders
+# The package index, the digests, the meta.broken evaluations' start, the
+# listing of all open PRs and issues (about 120 requests, 80 s), merged PRs.
+FIXED = (120, 150)
 # Raised from 500 once quiet packages were asked every few days: a typical day
 # for 1,500 now costs less than 500 did.
 WARN_PACKAGES = 1500
@@ -33,8 +40,8 @@ def estimate(count, new=0):
     them new to the data (asked about whole, the first time)."""
     new = min(new, count)
     known = count - new
-    seconds = FIXED_SECONDS + known * TYPICAL[0] + new * FIRST[0]
-    return seconds, round(known * TYPICAL[1] + new * FIRST[1])
+    seconds = FIXED[0] + known * TYPICAL[0] + new * FIRST[0]
+    return seconds, round(FIXED[1] + known * TYPICAL[1] + new * FIRST[1])
 
 
 def duration(seconds):
