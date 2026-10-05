@@ -29,7 +29,7 @@ asked package by package:
 | Hydra | from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra)'s digest; a queued job keeps its last result |
 | `meta.broken` | the package index's (x86_64-linux), not evaluated per platform |
 | Update checks | your own and the community's rules; none worked out from nixpkgs |
-| nixpkgs-update | not read for now (about 4,000 packages' logs change a day, more than a sync can read politely): a package keeps the attempt last read, if any, and says it wasn't read (`unread`) |
+| nixpkgs-update | from [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates)' digest, its last read attempt; a package whose attempts it hasn't read yet says so (`unread`). Without the digest, not read (about 4,000 packages' logs change a day, more than a sync can read politely) |
 | GitHub | PR and issue counts and update PRs from the bulk listings only |
 
 Packages of **generated sets** (rPackages, haskellPackages, emacsPackages,

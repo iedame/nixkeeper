@@ -1,0 +1,88 @@
+"""nixkeeper-updates' digest of nixpkgs-update (https://github.com/iedame/
+nixkeeper-updates): the bot's latest attempt at every package, its log read
+with these same rules (nixpkgs_update.parse), refreshed every 3 hours. The
+daily sync takes attempts from it instead of reading each package's logs
+(nixpkgs_update.add_attempts), and still reads the logs of the lists'
+packages it can't answer: an attempt it hasn't read yet ("pending"), or
+read with other rules (another PARSER); and all of them when it isn't
+current or can't be read."""
+
+import gzip
+import io
+import json
+import sys
+import urllib.error
+from datetime import datetime, timedelta
+
+from .. import config
+from . import http
+
+FORMAT = 1
+
+
+def current(meta, now):
+    """Whether the digest is recent enough: made within
+    UPDATES_DIGEST_MAX_AGE_HOURS (the workflow runs every 3 hours)."""
+    age = datetime.fromisoformat(now) - datetime.fromisoformat(meta["fetchedAt"])
+    return age <= timedelta(hours=config.UPDATES_DIGEST_MAX_AGE_HOURS)
+
+
+def load(now):
+    """{bot's attribute: entry} (python3Packages.requests, as the logs name
+    it: rows.search_term), or None (saying why) when it's turned off, not
+    current or can't be read."""
+    base = config.UPDATES_DIGEST_URL
+    if not base:
+        return None
+    try:
+        meta = json.loads(http.get(base + "meta.json") or "null")
+        if not meta or meta.get("format") != FORMAT:
+            raise ValueError(f"no digest in a format this nixkeeper reads ({base})")
+        if not current(meta, now):
+            print(
+                f"::warning::Updates digest: not used, it's from {meta['fetchedAt']}; "
+                "reading the logs per package",
+                file=sys.stderr,
+            )
+            return None
+        body = http.get_bytes(base + "attempts.jsonl.gz")
+        if body is None:
+            raise ValueError("its attempts.jsonl.gz is missing")
+        found = {}
+        with gzip.open(io.BytesIO(body), "rt") as lines:
+            for line in lines:
+                entry = json.loads(line)
+                found[entry.pop("attr")] = entry
+    except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+        print(
+            f"::warning::Updates digest: couldn't use it ({e}); reading the logs "
+            "per package",
+            file=sys.stderr,
+        )
+        return None
+    print(
+        f"Updates digest: {len(found):,} packages, made {meta['fetchedAt']} "
+        f"({meta.get('pending', 0):,} attempts not read yet)",
+        file=sys.stderr,
+    )
+    return found
+
+
+def attempt(entry, attr, parser):
+    """The latest attempt at attr (nixkeeper's attribute) from its digest
+    entry, as nixpkgs_update.latest_attempt reads it, or None when the
+    digest can't say: a newer attempt it hasn't read ("pending"), or read
+    with other rules than parser."""
+    found = entry.get("attempt")
+    if not found or "pending" in entry or found.get("parser") != parser:
+        return None
+    return {**{k: v for k, v in found.items() if k != "started"}, "attr": attr}
+
+
+def known(entry, attr):
+    """The attempt the digest last read for attr, whatever it says about a
+    newer one (for packages read in bulk only), or None."""
+    found = entry.get("attempt")
+    if not found:
+        return None
+    return {**{k: v for k, v in found.items() if k != "started"}, "attr": attr}

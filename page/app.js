@@ -1003,7 +1003,7 @@ const UPDATE_OUTCOME = {
 function fillUpdate(pkg, el) {
   const u = pkg.update;
   const unread = pkg.unread?.includes('update')
-    ? html`<div class="stale-note">Not read on the last sync: with every package, nixpkgs-update's logs are only read for the packages on this instance's lists, for now.${u ? ' Showing the last attempt read.' : ''}</div>`
+    ? html`<div class="stale-note">Not read on the last sync: with every package, nixpkgs-update's attempts come from a digest of them, which hasn't read this package's yet.${u ? ' Showing the last attempt read.' : ''}</div>`
     : '';
   if (unread && !u) {
     el.innerHTML = unread;

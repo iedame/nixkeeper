@@ -81,12 +81,12 @@ GENERATED_SETS = [
     "texlivePackages",
     "typstPackages",
 ]
-# With every package: how many packages not on the lists a sync reads the
-# nixpkgs-update logs of (those whose logs changed since the last sync; one
-# or two requests each), the outdated and failing first. None for now: about
-# 4,000 log folders change a day, more than a sync can read politely, so
-# only the lists' packages are read (the rest keep the attempt last read,
-# marked unread) until there's a way to read them all in bulk.
+# With every package and no updates digest (it isn't current): how many
+# packages not on the lists a sync reads the nixpkgs-update logs of (those
+# whose logs changed since the last sync; one or two requests each), the
+# outdated and failing first. None: about 4,000 log folders change a day,
+# more than a sync can read politely, so they keep the attempt last read,
+# marked unread, until the digest is back.
 UPDATE_LOGS_BUDGET = 0
 # With every package: the other repositories kept for a row not on the
 # lists (the newest, one entry each): what its details show first. The rest
@@ -187,6 +187,18 @@ VERSIONS_DIGEST_URL = os.environ.get(
 # The digest is used while its outdated projects were read this recently
 # (its workflow runs daily, at 04:07 UTC).
 VERSIONS_DIGEST_MAX_AGE_HOURS = 36
+# nixkeeper-updates' digest of nixpkgs-update (sources/updates_digest.py):
+# the bot's latest attempt at every package, read with nixkeeper's own rules,
+# instead of reading each package's logs. NIXKEEPER_UPDATES_DIGEST="" turns
+# it off (the logs are then read per package, as they are whenever the
+# digest isn't current).
+UPDATES_DIGEST_URL = os.environ.get(
+    "NIXKEEPER_UPDATES_DIGEST",
+    "https://raw.githubusercontent.com/iedame/nixkeeper-updates/data/data/",
+)
+# The digest is used while it was made this recently (its workflow runs
+# every 3 hours).
+UPDATES_DIGEST_MAX_AGE_HOURS = 12
 # Platforms nixpkgs builds; x86_64-darwin is no longer one of them.
 HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 # After this many lookups in a row fail, Hydra is likely down: the rest of the

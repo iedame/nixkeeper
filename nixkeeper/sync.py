@@ -32,6 +32,7 @@ from .sources import (
     hydra,
     hydra_digest,
     nixpkgs_update,
+    updates_digest,
     upstream,
     versions_digest,
 )
@@ -163,8 +164,16 @@ def main():
     ignored, ignored_by_community = community.merge_ignores(
         lists, [row["name"] for row in index_rows]
     )
+    # nixpkgs-update's attempts, from nixkeeper-updates' digest first.
     nixpkgs_update.add_attempts(
-        index_rows, nixpkgs, previous, now, ignored, ignored_by_community, in_bulk
+        index_rows,
+        nixpkgs,
+        previous,
+        now,
+        ignored,
+        ignored_by_community,
+        in_bulk,
+        updates_digest.load(now),
     )
     # Open PR/issue counts and open update PRs: from one listing of all of
     # nixpkgs' open ones (github_bulk), else searched per package (the

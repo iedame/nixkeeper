@@ -131,7 +131,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it |
 | `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); missing when it has none |
 | `pending`, `set` | with every package: `true` and its set for a row of a generated set (`haskellPackages`, ...) that no list has: only Repology's versions and Hydra's builds ([every package](all-packages.md)) |
-| `unread` | with every package: the sources this sync didn't read for the row and kept as they were (`["update"]`: its nixpkgs-update attempt, read for the lists' packages only) |
+| `unread` | with every package: the sources this sync didn't read for the row and kept as they were (`["update"]`: its nixpkgs-update attempt, which nixkeeper-updates' digest hasn't read yet) |
 | `source` | where nixpkgs defines it, on GitHub at the channel's commit and line |
 | `unfree` | `true` when every attribute is unfree (Hydra doesn't build those) |
 

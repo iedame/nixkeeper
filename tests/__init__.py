@@ -16,3 +16,5 @@ config.SITE_PAUSE_SECONDS = 0
 config.HYDRA_DIGEST_URL = ""
 # Nor a nixkeeper-versions digest: Repology is asked about each package.
 config.VERSIONS_DIGEST_URL = ""
+# Nor a nixkeeper-updates digest: the bot's logs are read per package.
+config.UPDATES_DIGEST_URL = ""

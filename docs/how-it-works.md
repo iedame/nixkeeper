@@ -58,7 +58,12 @@ nixpkgs-update reads Repology (outdated projects every day, the rest every
 week). Repology is still asked about a package that isn't in the digest (new
 in nixpkgs) or has another version there than the channel's (changed since),
 and about every package, as above, when the digest is more than 36 hours old
-or can't be read. GitHub's open PRs and issues aren't searched package by
+or can't be read. nixpkgs-update's attempts likewise come from
+[nixkeeper-updates](https://github.com/iedame/nixkeeper-updates), a digest
+of the bot's latest attempt at every package, its log read with nixkeeper's
+own rules, made every 3 hours from the bot's state; a package's logs are
+still read when the digest hasn't read its latest attempt yet, or is more
+than 12 hours old. GitHub's open PRs and issues aren't searched package by
 package: each sync lists all of nixpkgs' open ones (about 120 requests) and
 the PRs merged into master since the channel's commit (about 10), and finds
 each package's counts and update PRs in their titles, every package daily
