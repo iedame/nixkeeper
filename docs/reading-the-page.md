@@ -15,6 +15,18 @@ searches for theirs, so `?q=@yourhandle` is a link to your own. Its teams
 only that team's packages, as `?team=` does in the address
 (`?team=gaming`, in any case).
 
+On a page tracking [every package](all-packages.md) (a community
+instance), the page shows one view of nixpkgs at a time: what needs
+attention (failing or outdated) to start with, a maintainer's packages
+(`?q=@handle`, `@none` for those with none), a team's (the team picker, or
+`?team=`), a list's, a generated set's (pending: only Repology's versions
+and Hydra's builds, linked from the line at the top with the counts for all
+of nixpkgs), or one package alone (`?pkg=firefox`). The filters, search and
+order then work within it, as on any page; a search also lists the packages
+beyond the view whose names match, closest first. "not on Repology" is a
+package Repology doesn't know, and "not read yet" an update attempt whose
+turn hasn't come (the bot's logs are read for a few hundred packages a sync).
+
 The list shows 200 packages at a time, most in need of attention first;
 the page links under it go through the rest (the page is in the address
 too, `?page=2`). Changing a filter, the search or the order goes back to the

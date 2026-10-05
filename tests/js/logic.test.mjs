@@ -22,6 +22,7 @@ import {
   html,
   matchesSearch,
   midway,
+  nameMatches,
   nixkeeperEntry,
   onMaster,
   onPlatform,
@@ -35,6 +36,8 @@ import {
   timeAgo,
   updateTitle,
   versionDiff,
+  viewPath,
+  viewSlug,
   waitingForChannel,
   withRunStamps,
   withSlash,
@@ -589,5 +592,59 @@ describe('withRunStamps', () => {
   test('adds nothing where nothing was', () => {
     assert.deepEqual(withRunStamps({ name: 'a' }, RUN), { name: 'a' });
     assert.deepEqual(withRunStamps({ name: 'a' }, null), { name: 'a' });
+  });
+});
+
+describe('views (every package)', () => {
+  test('viewSlug as datastore.slug', () => {
+    assert.equal(viewSlug('Security review'), 'security-review');
+    assert.equal(viewSlug('Qt-KDE'), 'qt-kde');
+    assert.equal(viewSlug('gaming-team'), 'gaming-team');
+  });
+  test('viewPath: the narrowest the address asks for', () => {
+    assert.equal(viewPath(), 'views/attention.json');
+    assert.equal(viewPath({ query: 'firefox' }), 'views/attention.json');
+    assert.equal(viewPath({ query: '@Iedame', team: 'Gaming' }), 'views/maintainer/iedame.json');
+    assert.equal(viewPath({ query: '@none' }), 'views/maintainer/none.json');
+    assert.equal(viewPath({ query: '@' }), 'views/attention.json');
+    assert.equal(
+      viewPath({ team: 'Security review', list: 'x' }),
+      'views/team/security-review.json',
+    );
+    assert.equal(viewPath({ list: 'gaming-team' }), 'views/list/gaming-team.json');
+    assert.equal(viewPath({ set: 'rPackages' }), 'views/set/rPackages.json');
+    assert.equal(viewPath({ pkg: 'zlib', query: '@x' }), 'pkg:zlib');
+  });
+  test('nameMatches leaves out the view shown', () => {
+    const names = [
+      ['firefox', 'u'],
+      ['firefox-esr', 'o'],
+      ['thunderbird', 'u'],
+    ];
+    assert.deepEqual(nameMatches(names, 'FIRE', new Set(['firefox'])), {
+      found: [['firefox-esr', 'o']],
+      total: 1,
+    });
+    assert.deepEqual(nameMatches(names, '@fire', new Set()), { found: [], total: 0 });
+    assert.equal(nameMatches(names, 'f', new Set(), 1).found.length, 1);
+  });
+  test('nameMatches: the closest first', () => {
+    const names = [
+      ['emacsPackages.helm-firefox', 'u'],
+      ['firefox-esr', 'u'],
+      ['librewolf-firefox', 'u'],
+      ['firefox', 'u'],
+      ['python3Packages.firefox', 'u'],
+    ];
+    assert.deepEqual(
+      nameMatches(names, 'firefox', new Set()).found.map(([n]) => n),
+      [
+        'firefox',
+        'firefox-esr',
+        'librewolf-firefox',
+        'emacsPackages.helm-firefox',
+        'python3Packages.firefox',
+      ],
+    );
   });
 });

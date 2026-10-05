@@ -11,6 +11,8 @@ import {
   html,
   matchesSearch,
   midway,
+  NAME_DOTS,
+  nameMatches,
   nixkeeperEntry,
   onMaster,
   onPlatform,
@@ -26,6 +28,7 @@ import {
   timeAgo,
   updateTitle,
   versionDiff,
+  viewPath,
   waitingForChannel,
   withRunStamps,
   withSlash,
@@ -88,6 +91,19 @@ const detailCache = new Map(); // file -> a Repology project's entries (format 1
 // index.json has every row in full, and each Repology project its own file.
 let format = 1;
 let shardCount = 1;
+// With every package (a community instance: index.json's allPackages), the
+// page shows one view of the data at a time (viewPath): `packages` is that
+// view's, `manifest` index.json, with the counts of all of nixpkgs.
+let community = false;
+let manifest = null;
+let shownView = null; // the path of the view in `packages`
+let wantedView = null; // the one being loaded (the newest asked for wins)
+let names = null; // the name index (names.json), once loaded: [[name, status, set?]]
+let namesLoading = null;
+// ?pkg=: one package alone (with every package); ?set=: a generated set.
+let pkgParam = null;
+let setFilter = null;
+const inSet = (pkg) => !setFilter || pkg.set === setFilter;
 const shardCache = new Map(); // n -> Promise of Map(name -> full row)
 let packages = [];
 let checkedAt = null;
@@ -117,6 +133,8 @@ const inTeam = (pkg) => !teamFilter || (pkg.teams || []).some(isTeam);
 const teamName = () => packages.flatMap((p) => p.teams || []).find(isTeam) || teamFilter;
 // Every list some package is on: "maintained" first, as the sync sorts them.
 function allLists() {
+  // With every package, the view has only some: the manifest has them all.
+  if (community) return Object.keys(manifest.views?.lists || {});
   const seen = [];
   for (const p of packages) for (const l of p.lists || []) if (!seen.includes(l)) seen.push(l);
   return seen.sort((a, b) =>
@@ -209,7 +227,7 @@ function versionCell(pkg, st) {
   const failing = stale
     ? html`<span class="badge neutral" title="${staleText(stale, "nixkeeper's update check failing")}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
     : '';
-  const about = html`${st === 'neutral' ? html`<span class="badge neutral">${pkg.nixStatus}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : ''}`;
+  const about = html`${pkg.pending ? html`<span class="badge neutral" title="${PENDING_TITLE} (${pkg.set})">pending</span>` : ''}${st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : ''}`;
   if (st !== 'warn')
     return html`<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
@@ -292,6 +310,8 @@ function readViewFromUrl() {
   // Any name: which lists exist is only known once the data has loaded.
   listFilter = params.get('list') || null;
   teamFilter = params.get('team') || null;
+  setFilter = params.get('set') || null;
+  pkgParam = params.get('pkg') || null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
 }
@@ -307,6 +327,8 @@ function viewQuery(page = pageNum) {
   set('platform', platformFilter && PLATFORMS[platformFilter].param);
   set('list', listFilter);
   set('team', teamFilter);
+  set('set', setFilter);
+  set('pkg', pkgParam);
   set('page', page > 1 ? page : '');
   // "@" is fine in a query: ?q=@handle reads better in a shared link.
   const query = params.toString().replaceAll('%40', '@');
@@ -360,6 +382,13 @@ function setSitePalette(palette) {
 }
 
 // The row's dot, on hover (the legend popover lists them all).
+// Repology's statuses as the page says them, where the code isn't clear
+// ("unlisted": with every package, one Repology doesn't know).
+const STATUS_LABEL = { unlisted: 'not on Repology' };
+const statusLabel = (status) => STATUS_LABEL[status] || status;
+const PENDING_TITLE =
+  "A generated package set: only Repology's versions and Hydra's builds for now";
+
 const DOT_TITLE = {
   ok: 'Up to date: nixpkgs has the newest version',
   warn: 'Outdated: a newer release is out',
@@ -456,6 +485,64 @@ async function repologyEntries(row) {
   }
 }
 
+// With every package: load the view the address asks for (viewPath) into
+// `packages`, unless it's there already. A maintainer, team or list with no
+// file has no packages here. Throws if a view can't be loaded.
+async function ensureView() {
+  const path = viewPath({
+    pkg: pkgParam,
+    query: document.getElementById('search').value,
+    team: teamFilter,
+    list: listFilter,
+    set: setFilter,
+  });
+  if (path === shownView) return;
+  wantedView = path;
+  let found;
+  if (path.startsWith('pkg:')) {
+    const row = await fullRow({ name: path.slice(4) });
+    found = row ? [row] : [];
+  } else {
+    const res = await fetch(dataUrl(path), { cache: 'no-store' });
+    if (!res.ok && res.status !== 404) throw new Error(res.status);
+    found = res.ok ? (await res.json()).packages : [];
+  }
+  if (wantedView !== path) return; // another view was asked for meanwhile
+  packages = found.map((p) => withRunStamps(p, checkedAt));
+  shownView = path;
+}
+
+// The name index, for searches beyond the view shown: loaded once, when a
+// search first needs it, then the list is drawn again.
+function loadNames() {
+  if (namesLoading) return;
+  namesLoading = fetch(dataUrl('names.json'), { cache: 'no-store' })
+    .then((res) => (res.ok ? res.json() : { names: [] }))
+    .then((data) => {
+      names = data.names || [];
+      update({ keepPage: true });
+    })
+    .catch(() => {
+      namesLoading = null; // tried again with the next search
+    });
+}
+
+// Draw the list again after the view's state changed (a filter, the search,
+// the address): with every package, its view loaded first. keepPage: as
+// render's.
+async function update({ keepPage = false } = {}) {
+  if (community) {
+    try {
+      await ensureView();
+    } catch {
+      document.getElementById('content').innerHTML = html`<div class="error">
+        Couldn't load these packages' data. Reload the page to try again.</div>`;
+      return;
+    }
+  }
+  render(currentFiltered(), { keepPage });
+}
+
 async function loadIndex() {
   const content = document.getElementById('content');
   dataBase = dataBase || (await findDataBase());
@@ -473,16 +560,23 @@ async function loadIndex() {
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     checkedAt = data.checkedAt || null;
-    packages = ((await summaryOf(data)) || data.packages || []).map((p) =>
-      withRunStamps(p, checkedAt),
-    );
+    if (data.allPackages) {
+      community = true;
+      manifest = data;
+      format = 2;
+      shardCount = data.shardCount;
+    } else {
+      packages = ((await summaryOf(data)) || data.packages || []).map((p) =>
+        withRunStamps(p, checkedAt),
+      );
+    }
     // The nixkeeper that made the data, in the footer (older data has none).
     document.getElementById('version').textContent =
       data.version && data.version !== 'unknown' ? ` ${data.version}` : '';
     showListProblems(data.listProblems || []);
     setSitePalette(data.page?.theme || null);
     document.getElementById('search').disabled = false;
-    render(currentFiltered(), { keepPage: true });
+    await update({ keepPage: true });
   } catch {
     content.innerHTML = html`<div class="error">
       Couldn't load <code>${dataUrl('index.json')}</code>.<br>
@@ -519,7 +613,7 @@ function renderStats() {
     const pressed = activeFilter === key;
     return html`<button class="stat-btn" data-filter="${key}" aria-pressed="${pressed}"
       ${!count && key !== 'all' && !pressed ? raw('disabled') : ''}>
-      <b${f.color ? html` style="color:${f.color}"` : ''}>${count}</b> ${f.label}</button>`;
+      <b${f.color ? html` style="color:${f.color}"` : ''}>${count}</b> ${key === 'all' && community ? 'here' : f.label}</button>`;
   });
   const stale =
     !checkedAt || Date.now() - new Date(checkedAt).getTime() > STALE_AFTER_HOURS * 3600e3;
@@ -561,9 +655,13 @@ function renderLists() {
     return;
   }
   const base = packages.filter((p) => inPlatform(p) && inTeam(p));
+  const listCount = (name) =>
+    community
+      ? manifest.views.lists[name] || 0
+      : base.filter((p) => (p.lists || []).includes(name)).length;
   el.innerHTML = html`<span class="lists-label">lists</span>${names.map((name) => {
     const pressed = listFilter === name;
-    const count = base.filter((p) => (p.lists || []).includes(name)).length;
+    const count = listCount(name);
     return html`<button class="stat-btn" type="button" data-list="${name}" aria-pressed="${pressed}"
         title="${pressed ? 'Show every list' : `Show only the ${name} list (shareable: it's in the address)`}">
         <b>${count}</b> ${name}</button>`;
@@ -615,13 +713,14 @@ function pagerHtml(total, pages) {
 // following a page link).
 function render(list, { keepPage = false } = {}) {
   renderStats();
+  renderScope();
   const content = document.getElementById('content');
   const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   pageNum = keepPage ? Math.min(pageNum, pages) : 1;
   writeViewToUrl();
   shown = list.slice((pageNum - 1) * PAGE_SIZE, pageNum * PAGE_SIZE);
   if (!list.length) {
-    content.innerHTML = html`<div class="empty">No packages match${activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}.</div>`;
+    content.innerHTML = html`<div class="empty">No packages match${activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}${community ? ' here' : ''}.</div>${moreMatchesHtml()}`;
     return;
   }
   content.innerHTML = html`<div class="wrap"><table>
@@ -629,7 +728,96 @@ function render(list, { keepPage = false } = {}) {
       <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>Open on GitHub</th><th>Build failures</th><th>Update failures</th><th aria-hidden="true"></th>
     </tr></thead>
     <tbody id="rows">${shown.map(rowHtml)}</tbody>
-  </table></div>${pagerHtml(list.length, pages)}`;
+  </table></div>${pagerHtml(list.length, pages)}${moreMatchesHtml()}`;
+}
+
+// With every package: what the page shows, out of all of nixpkgs. The
+// counts of it all (the manifest's), the generated sets (pending), the view
+// shown and the way back to what needs attention, and a team picker.
+function renderScope() {
+  const el = document.getElementById('scope');
+  if (!el) return;
+  el.hidden = !community;
+  if (!community) return;
+  const c = manifest.counts || {};
+  const n = (x) => (x || 0).toLocaleString();
+  const views = manifest.views || {};
+  const handle = document.getElementById('search').value.trim().replace(/^@/, '');
+  const path = shownView || '';
+  const what = path.startsWith('pkg:')
+    ? html`<b class="mono">${path.slice(4)}</b>`
+    : path.startsWith('views/maintainer/')
+      ? handle === 'none'
+        ? html`packages <b>with no maintainer</b>`
+        : html`<b>@${handle}</b>'s packages`
+      : path.startsWith('views/team/')
+        ? html`the <b>${teamName()}</b> team's packages`
+        : path.startsWith('views/list/')
+          ? html`the <b>${listFilter}</b> list`
+          : path.startsWith('views/set/')
+            ? html`<b>${setFilter}</b>, a generated set (pending: only Repology's versions and Hydra's builds for now)`
+            : html`what <b>needs attention</b> (${n(views.attention)}: failing or outdated)`;
+  const teams = Object.entries(views.teams || {});
+  el.innerHTML = html`<div class="scope-all">Every nixpkgs package: <b>${n(c.tracked)}</b>, of which
+      <b>${n(c.outdated)}</b> outdated, <b>${n(c.failed)}</b> failed${c.vulnerable ? html`, <b>${n(c.vulnerable)}</b> flagged vulnerable` : ''};
+      and <b>${n(c.pending)}</b> in generated sets, pending:
+      ${Object.entries(views.sets || {}).map(([s, count], i) => html`${i ? ', ' : ''}<a class="files-link" href="${scopeHref({ set: s })}" data-scope-set="${s}">${s}</a> (${n(count)})`)}.</div>
+    <div class="scope-view"><span>Showing ${what}.</span>${
+      path === 'views/attention.json'
+        ? ''
+        : html` <a class="files-link" href="${scopeHref({})}" data-scope-home>Back to what needs attention</a>`
+    }
+      ${
+        teams.length
+          ? html`<label class="team-pick">Team <select id="teamPick"><option value="">—</option>${teams.map(([t, count]) => html`<option value="${t}"${teamFilter && t.toLowerCase() === teamFilter.toLowerCase() ? raw(' selected') : ''}>${t} (${n(count)})</option>`)}</select></label>`
+          : ''
+      }</div>`;
+}
+
+// The address of a view (scopeHref({ set }), { pkg }, {} for what needs
+// attention): the others' parameters cleared, the data's own kept.
+function scopeHref({ set = null, pkg = null }) {
+  const params = new URLSearchParams(location.search);
+  for (const k of ['filter', 'q', 'sort', 'platform', 'list', 'team', 'set', 'pkg', 'page'])
+    params.delete(k);
+  if (set) params.set('set', set);
+  if (pkg) params.set('pkg', pkg);
+  const query = params.toString();
+  return location.pathname + (query ? `?${query}` : '');
+}
+
+// Show a view: set (a generated set), pkg (one package), neither: what needs
+// attention. The search, filters and page start over.
+function showView({ set = null, pkg = null }) {
+  setFilter = set;
+  pkgParam = pkg;
+  teamFilter = null;
+  listFilter = null;
+  activeFilter = 'all';
+  document.getElementById('search').value = '';
+  update();
+  document.getElementById('scope')?.scrollIntoView({ block: 'nearest' });
+}
+
+// With every package, under a plain search: the packages beyond the view
+// shown whose names match, from the name index (loaded on first use), each
+// opening on its own (?pkg=).
+function moreMatchesHtml() {
+  const query = document.getElementById('search').value;
+  if (!community || pkgParam || query.trim().length < 2 || query.trim().startsWith('@')) return '';
+  if (!names) {
+    loadNames();
+    return html`<div class="more-matches"><div class="other-label">Searching all of nixpkgs…</div></div>`;
+  }
+  const { found, total } = nameMatches(names, query, new Set(packages.map((p) => p.name)));
+  if (!total) return '';
+  return html`<div class="more-matches">
+    <div class="other-label">${total.toLocaleString()} more ${total === 1 ? 'package matches' : 'packages match'} in all of nixpkgs${total > found.length ? html`, the first ${found.length}` : ''}</div>
+    <ul>${found.map(
+      ([name, letter, set]) =>
+        html`<li><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}"></span><a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a>${set ? html` <span class="badge neutral" title="A generated set: only Repology's versions and Hydra's builds for now">pending</span>` : ''}${letter.endsWith('v') ? html` <span class="badge vuln">vulnerable</span>` : ''}</li>`,
+    )}</ul>
+  </div>`;
 }
 
 // One panel under the row, showing the package details (clicking the row),
@@ -676,7 +864,7 @@ document.getElementById('content').addEventListener('click', (e) => {
   if (pageLink && !(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button)) {
     e.preventDefault();
     pageNum = Number(pageLink.dataset.page);
-    render(currentFiltered(), { keepPage: true });
+    update({ keepPage: true });
     // Back to the table's top, the keyboard on its first row.
     const content = document.getElementById('content');
     if (content.getBoundingClientRect().top < 0) content.scrollIntoView();
@@ -694,7 +882,7 @@ document.getElementById('content').addEventListener('click', (e) => {
   if (plat) {
     // Clicking the active platform again shows all platforms.
     platformFilter = platformFilter === plat.dataset.platform ? null : plat.dataset.platform;
-    render(currentFiltered());
+    update();
     return;
   }
   toggle(tr, e.target.closest('.failure-btn')?.dataset.kind || 'info');
@@ -749,6 +937,8 @@ function buildCell(pkg) {
 // nixpkgs-update's latest attempt. `update` is null when the bot never tried
 // and missing for packages not in nixpkgs.
 function updateCell(pkg) {
+  if (pkg.pending)
+    return html`<span class="failure-na" title="${PENDING_TITLE}: nixpkgs-update's attempts aren't read">—</span>`;
   if (pkg.update === undefined)
     return html`<span class="failure-na" title="Not in nixpkgs">—</span>`;
   const button = (dot, text, quiet = false) =>
@@ -767,6 +957,9 @@ function updateCell(pkg) {
   // A newer version the bot has no way to update to: not a failure, but it
   // needs a manual update (or an updateScript).
   if (pkg.update?.outcome === 'cantUpdate') return button('caution', "can't update");
+  // With every package, the logs are read up to a budget a sync: its turn
+  // hasn't come yet (with no attempt read before).
+  if (pkg.unread?.includes('update') && !pkg.update) return button('neutral', 'not read yet', true);
   if (pkg.update === null) return button('neutral', 'not attempted', true);
   return button('ok', 'none reported', true);
 }
@@ -809,11 +1002,18 @@ const UPDATE_OUTCOME = {
 
 function fillUpdate(pkg, el) {
   const u = pkg.update;
-  const stale = staleNote(
+  const unread = pkg.unread?.includes('update')
+    ? html`<div class="stale-note">Not read on the last sync: with every package, nixpkgs-update's logs are read for a few hundred packages a sync, outdated and failing ones first, and this one's turn hasn't come.${u ? ' Showing the last attempt read.' : ''}</div>`
+    : '';
+  if (unread && !u) {
+    el.innerHTML = unread;
+    return;
+  }
+  const stale = html`${unread}${staleNote(
     notRefreshed(pkg, 'update'),
     'Not refreshed',
     'Showing the last known attempt.',
-  );
+  )}`;
   if (!u) {
     el.innerHTML = html`${stale}<div class="nix-line">nixpkgs-update hasn't tried to update this package (it may have no update source it understands).</div>`;
     return;
@@ -969,6 +1169,13 @@ function fillDetail(pkg, el, entries) {
   const loaded = Array.isArray(entries);
 
   const others = loaded ? comparedRepos(entries.filter((e) => e.repo !== NIX_REPO)) : [];
+  // With every package, a row no list has keeps the newest repositories
+  // only (nixkeeper/datastore.py, kept_entries): the rest are on Repology.
+  const notKept =
+    community && !pkg.lists?.length && pkg.repoCount > others.length
+      ? pkg.repoCount - others.length
+      : 0;
+  const compared = others.length + notKept;
   // Repology is asked every few days for packages with nothing going on
   // (nixkeeper/lookup.py): how old its data is, if it isn't from today.
   const repologyDays = pkg.repologyCheckedAt && daysText(pkg.repologyCheckedAt);
@@ -1079,9 +1286,11 @@ function fillDetail(pkg, el, entries) {
                 : st === 'warn'
                   ? html`, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion || '?'}</span>${since}`
                   : st === 'neutral'
-                    ? html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
+                    ? pkg.nixStatus === 'unlisted'
+                      ? " — Repology doesn't list this package, so there's nothing to compare it with."
+                      : html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
                     : loaded
-                      ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${others.length} other ${others.length === 1 ? 'repository' : 'repositories'}.`
+                      ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${compared} other ${compared === 1 ? 'repository' : 'repositories'}.`
                       : ` — the newest ${pkg.devel ? 'devel ' : ''}version.`
           }${
             up && !up.newer && !failing
@@ -1104,9 +1313,11 @@ function fillDetail(pkg, el, entries) {
   const unloaded = loaded
     ? ''
     : html`<div class="stale-note">⚠ Couldn't load Repology's details for this package, so the repositories it's compared with aren't shown. Close and reopen it to try again.</div>`;
-
+  const pending = pkg.pending
+    ? html`<div class="stale-note">From a generated package set (<span class="mono">${pkg.set}</span>): only Repology's versions and Hydra's builds for now; update checks, nixpkgs-update's attempts and GitHub counts aren't collected for it yet.</div>`
+    : '';
   el.innerHTML = html`
-    <div class="nix-line">${nixLine}</div>${unloaded}${
+    <div class="nix-line">${nixLine}</div>${pending}${unloaded}${
       onMaster(pkg)
         ? html`<div class="master-note">master already has <span class="mono">${onMaster(pkg)}</span> (${masterSaid})${
             waitingForChannel(pkg)
@@ -1129,6 +1340,10 @@ function fillDetail(pkg, el, entries) {
       ${chips.map((e, i) => html`<span class="repo-chip ${e.ahead ? 'ahead' : ''}"${e.title ? html` title="${e.title}"` : ''}${i >= COMPARED_SHOWN ? raw(' hidden') : ''}>${e.repo} <span class="v mono">${e.version || '?'}</span></span>`)}${
         chips.length > COMPARED_SHOWN
           ? html`<button type="button" class="more-btn" aria-expanded="false">Show all ${chips.length}</button>`
+          : ''
+      }${
+        notKept && pkg.project
+          ? html` <a class="files-link" href="https://repology.org/project/${encodeURIComponent(pkg.project)}/versions" target="_blank" rel="noopener">${notKept} more on Repology ↗</a>`
           : ''
       }
     </div>`
@@ -1166,7 +1381,7 @@ function fillDetail(pkg, el, entries) {
   for (const btn of el.querySelectorAll('.team-btn')) {
     btn.addEventListener('click', () => {
       teamFilter = btn.dataset.team;
-      render(currentFiltered());
+      update();
       document.getElementById('stats').scrollIntoView({ block: 'nearest' });
     });
   }
@@ -1199,6 +1414,7 @@ function currentFiltered() {
       inPlatform(p) &&
       inList(p) &&
       inTeam(p) &&
+      inSet(p) &&
       FILTERS[activeFilter].test(p) &&
       matchesSearch(p, q),
   );
@@ -1219,14 +1435,14 @@ document.getElementById('stats').addEventListener('click', (e) => {
   if (clear) {
     if (clear.dataset.clear === 'team') teamFilter = null;
     else platformFilter = null;
-    render(currentFiltered());
+    update();
     return;
   }
   const btn = e.target.closest('.stat-btn');
   if (!btn) return;
   // Clicking the active filter again goes back to showing everything.
   activeFilter = btn.dataset.filter === activeFilter ? 'all' : btn.dataset.filter;
-  render(currentFiltered());
+  update();
 });
 
 document.getElementById('lists').addEventListener('click', (e) => {
@@ -1234,22 +1450,41 @@ document.getElementById('lists').addEventListener('click', (e) => {
   if (!btn) return;
   // Clicking the active list again shows every list.
   listFilter = btn.dataset.list === listFilter ? null : btn.dataset.list;
-  render(currentFiltered());
+  update();
 });
 
 // Typing redraws the table once it pauses (150 ms), not at every key: with
 // thousands of packages, each redraw takes a moment.
 let searchTimer;
 document.getElementById('search').addEventListener('input', () => {
+  pkgParam = null; // a search leaves a package shown alone (?pkg=)
   clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => render(currentFiltered()), 150);
+  searchTimer = setTimeout(() => update(), 150);
 });
 document.getElementById('sortBtn').addEventListener('click', (e) => {
   sortAZ = !sortAZ;
   e.currentTarget.setAttribute('aria-pressed', sortAZ);
-  if (packages.length) render(currentFiltered());
+  if (packages.length || community) update();
   else writeViewToUrl();
 });
+// With every package: the links between views (a generated set, one
+// package, back to what needs attention) and the team picker. A click with
+// a modifier opens the link elsewhere, as links do.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[data-scope-set], a[data-scope-pkg], a[data-scope-home]');
+  if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button) return;
+  e.preventDefault();
+  showView({ set: a.dataset.scopeSet || null, pkg: a.dataset.scopePkg || null });
+});
+document.addEventListener('change', (e) => {
+  if (e.target.id !== 'teamPick') return;
+  // A team's packages, from all of nixpkgs (not within a set or a package).
+  teamFilter = e.target.value || null;
+  setFilter = null;
+  pkgParam = null;
+  update();
+});
+
 // "/" jumps to the filter, as on GitHub; Escape in it clears it.
 document.addEventListener('keydown', (e) => {
   const search = document.getElementById('search');
@@ -1259,7 +1494,7 @@ document.addEventListener('keydown', (e) => {
   } else if (e.key === 'Escape' && e.target === search && search.value) {
     search.value = '';
     clearTimeout(searchTimer);
-    render(currentFiltered());
+    update();
   }
 });
 

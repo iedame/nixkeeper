@@ -21,7 +21,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   pending: only Repology's versions and Hydra's builds. The data then has
   views (needs attention, per maintainer, team, list and set), a name
   index and counts, instead of one summary of every package
-  (`docs/data.md`). The page's side comes next.
+  (`docs/data.md`). The page then starts from the counts for all of
+  nixpkgs and what needs attention, loads one view at a time (a
+  maintainer's, a team's from a picker, a list's, a generated set's, one
+  package's with `?pkg=`), and a search also lists matching names beyond
+  the view. Pending packages, those not on Repology and update attempts
+  not read yet say so.
 
 - A second format for the data, beside the first: `summary.json`, a short
   entry per package with what the page's list needs (about a third of

@@ -53,6 +53,52 @@ export function withRunStamps(row, run) {
   return row;
 }
 
+// With every package (a community instance), the page loads one view of the
+// data at a time (nixkeeper/datastore.py, views): which one the address
+// asks for, narrowest first. A team's or list's name as its file's
+// (slug in datastore.py): "Security review" -> "security-review".
+export const viewSlug = (name) =>
+  name
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+
+// The view to load, as a path under data/ ("views/attention.json"), or
+// "pkg:<name>" for one package (?pkg=): one package, else a maintainer's
+// (?q=@handle; @none those without), a team's, a list's, a generated set's,
+// else what needs attention.
+export function viewPath({ pkg = null, query = '', team = null, list = null, set = null } = {}) {
+  if (pkg) return `pkg:${pkg}`;
+  const q = query.trim().toLowerCase();
+  if (q.startsWith('@') && q.length > 1) return `views/maintainer/${q.slice(1)}.json`;
+  if (team) return `views/team/${viewSlug(team)}.json`;
+  if (list) return `views/list/${viewSlug(list)}.json`;
+  if (set) return `views/set/${set}.json`;
+  return 'views/attention.json';
+}
+
+// The names index's status letters (status in datastore.py) as the dot
+// they stand for.
+export const NAME_DOTS = { f: 'missing', m: 'merged', o: 'warn', u: 'ok', n: 'neutral' };
+
+// The names index's entries ([name, status, set?]) whose name contains the
+// search (any case), leaving out those in `shown` (a Set of names): at most
+// `limit` of them, and how many there are. The closest first: the name
+// itself, then names starting with it, then top-level packages before those
+// in sets, then by name.
+export function nameMatches(names, query, shown, limit = 50) {
+  const q = query.trim().toLowerCase();
+  if (!q || q.startsWith('@')) return { found: [], total: 0 };
+  const rank = (name) => {
+    const n = name.toLowerCase();
+    return (n === q ? 0 : 4) + (n.startsWith(q) ? 0 : 2) + (n.includes('.') ? 1 : 0);
+  };
+  const all = names
+    .filter(([name]) => name.toLowerCase().includes(q) && !shown.has(name))
+    .sort((a, b) => rank(a[0]) - rank(b[0]) || (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
+  return { found: all.slice(0, limit), total: all.length };
+}
+
 // The shard (data/rows/<n>.json) holding a package's full row: a hash of its
 // name (shard_of in nixkeeper/datastore.py).
 export const shardOf = (name, count) => crc32(name) % count;
