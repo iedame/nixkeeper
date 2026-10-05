@@ -9,6 +9,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+Ready for big lists: Hydra's builds, Repology's data and GitHub's PRs and
+issues now come in bulk, at about the same cost whatever the lists' size (a
+daily sync of 1,500 packages is estimated at about 12 minutes, down from
+about 45; 241 take under 4); update checks are worked out from nixpkgs for
+packages without a rule; and team members can find their own packages on the
+page.
+
 ### Added
 
 - Update checks worked out from nixpkgs itself, a first step towards
@@ -19,15 +26,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   version doesn't take a lone number such as a `20240214` date tag) and, for
   a versioned attribute (`tracy_0_11`, `gcc13`, `python313`), in its series
   only: a newer one there makes it outdated, as any update check's does, so
-  new releases show before Repology counts them. On by default; `workedOutChecks = false;` in the
-  lists (`lists.workedOutChecks` in the modules) leaves those packages to
-  Repology. One that fails (a renamed repository, no matching tag) leaves
-  its package to Repology without a warning: nobody wrote it to fix. A
-  rule of your own or the community's wins, for a package these get wrong
-  (Wesnoth's stable series has one now). Each daily sync's log compares
-  them with Repology and with the packages' rules, in a collapsed group.
-  They cost one nixpkgs evaluation (seconds) and one GitHub request per 50
-  repositories.
+  new releases show before Repology counts them. On by default;
+  `workedOutChecks = false;` in the lists (`lists.workedOutChecks` in the
+  modules) leaves those packages to Repology. One that fails (a renamed
+  repository, no matching tag) leaves its package to Repology without a
+  warning: nobody wrote it to fix. A rule of your own or the community's
+  wins, for a package these get wrong (Wesnoth's stable series has one now).
+  Each daily sync's log compares them with Repology and with the packages'
+  rules, in a collapsed group. They cost one nixpkgs evaluation (seconds)
+  and one GitHub request per 50 repositories.
 
 - Search by maintainer: `@handle` in the search box lists the packages
   nixpkgs gives that maintainer (their GitHub handle, in any case), and
@@ -44,20 +51,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
-- Open PR and issue counts and update PRs come from bulk listings instead
-  of two or three GitHub searches per package: every open nixpkgs PR and
-  issue (about 120 GraphQL requests, 100 of each per request) and the PRs
-  merged into master since the channel's commit (about 10 more), however
-  many packages are tracked, with each package's counts and update PRs
-  found in the titles locally. A sync of 241 packages made 300 searches
-  before. Counts match GitHub's title search (whole words, plurals included,
-  checked side by side: 126 of 128 packages agreed, and every update PR);
-  its deeper stemming isn't copied, so a package named like an English word
-  can count a few fewer ("trigger" doesn't count "triggered"). Every
-  package is counted daily now, not every 3 days when nothing's open. When
-  a listing fails, or there's no token for it, the sync searches per
-  package as before; the hourly update-PR check, for a few packages, still
-  searches.
+- Hydra's builds come from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra)
+  first: a digest of every job in Hydra's newest evaluation of nixpkgs
+  master, kept up to date hourly by its own workflow. One download (about
+  2.6 MB) answers most jobs, every day, instead of a request or two per job:
+  a new build failure shows up the next day for every package. Hydra is
+  still asked about the jobs the digest can't answer (missing from it, not
+  built yet, or failing with no known last success), and about every job
+  when the digest isn't current (from an older evaluation and over 12 hours
+  old) or can't be downloaded. `NIXKEEPER_HYDRA_DIGEST` points elsewhere, or
+  empty turns it off. Hydra's newest evaluation is read from its list of
+  evaluations, not from `latest-eval`, which is the newest whose builds have
+  all finished.
 
 - Repology's data comes from [nixkeeper-versions](https://github.com/iedame/nixkeeper-versions)
   first: a digest of every nixpkgs project on Repology, which its own
@@ -65,49 +70,86 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   every day, the rest every week; about 200 requests a day for all of
   nixpkgs, within Repology's API rules). One download (about 12 MB, read a
   project at a time, so little memory) answers most tracked packages: a
-  sync of 224 packages looked up 2 instead of about 180. Repology is still
+  sync of 241 packages looked up 2 of them. Repology is still
   asked about packages missing from the digest (new in nixpkgs) or with
   another version there than the channel's (changed since), and about
-  every package, as before, when the digest is more than 36 hours old or
-  can't be read. `NIXKEEPER_VERSIONS_DIGEST` points elsewhere, or empty
-  turns it off.
+  every package when the digest is more than 36 hours old or can't be read.
+  `NIXKEEPER_VERSIONS_DIGEST` points elsewhere, or empty turns it off.
 
-- Hydra's builds come from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra)
-  first: a digest of every job in Hydra's newest evaluation of nixpkgs
-  master, kept up to date hourly by its own workflow. One download (about
-  2.6 MB) answers most jobs, every day, instead of a request or two per job
-  every few days: a new build failure shows up the next day for every
-  package. Hydra is still asked about the jobs the digest can't answer
-  (missing from it, not built yet, or failing with no known last success),
-  and about every job, as before, when the digest isn't current (from an
-  older evaluation and over 12 hours old) or can't be downloaded.
-  `NIXKEEPER_HYDRA_DIGEST` points elsewhere, or empty turns it off. Hydra's
-  newest evaluation is read from its list of evaluations, not from
-  `latest-eval`, which is the newest whose builds have all finished.
+- Open PR and issue counts and update PRs come from bulk listings instead
+  of two or three GitHub searches per package: every open nixpkgs PR and
+  issue (about 120 GraphQL requests, 100 of each per request) and the PRs
+  merged into master since the channel's commit (about 10 more), however
+  many packages are tracked, with each package's counts and update PRs
+  found in the titles locally. A sync of 241 packages made about 300
+  searches before. Counts match GitHub's title search (whole words, plurals
+  included, checked side by side: 126 of 128 packages agreed, and every
+  update PR); its deeper stemming isn't copied, so a package named like an
+  English word can count a few fewer ("trigger" doesn't count "triggered").
+  Every package is counted daily. When a listing fails, or there's no token
+  for it, the sync searches per package; the hourly update-PR check, for a
+  few packages, still searches.
 
-- New sizes, now that quiet packages are asked every few days (below): the
-  list check warns from 1,500 packages instead of 500, and the sync refuses
-  to start above 5,000 instead of 2,000 (`maxPackages` to go beyond). The
-  estimate a sync starts with is measured anew, with the digests and
-  listings below: about 150 requests and 2 minutes whatever the lists'
-  size, then per package about 0.3 requests and half a second on a typical
-  day, about 3 and 3 seconds the first time it's synced (1,500 packages:
-  about 12 minutes a day), and it counts the packages new to this sync. On
-  GitHub Actions it warns when a sync may outlast the job's 6 hours (about
-  8,000 new packages at once), which would publish nothing: big lists are
-  best added in stages.
+- When nixkeeper asks per package (the digests or listings aren't
+  available, or for what they can't answer), it asks less about what's
+  quiet, as nixpkgs-update spreads its queue: a Hydra job that built fine
+  with nothing pending, an update check that found nothing newer (unless
+  it's `frequent`), a Repology lookup for a package that's up to date, not
+  vulnerable and unchanged in nixpkgs, and the PR and issue searches of a
+  package with none open, each every 3 days (a third each day) instead of
+  daily. Anything failing, outdated, newly changed, with an update PR, or
+  whose lookup failed is still asked daily, and so is everything the first
+  time. Each result records when it was read (`builds[].checkedAt`,
+  `upstream.checkedAt`, `repologyCheckedAt`, `countedAt`), and the details
+  say how old it is when it isn't from today. An update check also runs
+  again at once when its rule is edited (`upstream.rule`, a fingerprint of
+  it).
+
+- New sizes: the list check warns from 1,500 packages instead of 500, and
+  the sync refuses to start above 5,000 instead of 2,000 (`maxPackages` to
+  go beyond). The estimate a sync starts with is measured anew: about 150
+  requests and 2 minutes whatever the lists' size, then per package about
+  0.3 requests and half a second on a typical day, about 3 and 3 seconds the
+  first time it's synced (1,500 packages: about 12 minutes a day), and it
+  counts the packages new to this sync. On GitHub Actions it warns when a
+  sync may outlast the job's 6 hours (about 8,000 new packages at once),
+  which would publish nothing: big lists are best added in stages.
+
+- The daily sync asks Hydra in the background from the start, while it
+  asks the other sources, instead of after them. Each server is still asked
+  one request at a time.
+
+- Fewer requests to the sources, for the same results:
+  - Repology: a package looked up directly is looked up by the project the
+    last sync found for it, one request instead of two (asking by attribute
+    is answered with a redirect to the project). If Repology has moved the
+    package to another project, it's looked up by attribute as before.
+  - nixpkgs-update's logs: the log site's index (one request, compressed)
+    says when each package's logs last changed, so a package whose logs
+    haven't changed since the last sync isn't listed again, and one with no
+    logs isn't asked about. For 72 attributes, a sync made 3 requests
+    instead of at least 72, with the same results.
+  - Update checks against a web page ask its server to send it only if it
+    changed since the last check (the page's `ETag` and `Last-Modified`),
+    and keep what they found when it didn't: the hourly microsoft-edge
+    check read a 1 MB file each time, now only when Edge has changed. A rule
+    whose page or pattern changes reads the page whole again
+    (`upstream.page` records what's sent).
+  - Update checks against GitHub ask about tags and branches 50
+    repositories per request, and a request that fails only affects its
+    own 50.
 
 - Update checks against web pages ask each site at most once a second, and
   take turns between sites, so many rules on one site (PyPI, a vendor's)
   don't arrive back to back. The other sources already paced themselves.
 
 - The page stays responsive with big lists. With 3,000 packages, redrawing
-  the list on a phone or tablet takes about a third of the time it did (cards
-  off screen are only laid out when scrolled near), searching redraws once
-  typing pauses instead of at every key, and a row's panel is only made when
-  it's first opened. On wide screens, a table of that size still takes about
-  half a second to redraw on a fast computer: about a quarter of a second at
-  1,500 packages.
+  the list on a phone or tablet takes about a third of the time it did
+  (cards off screen are only laid out when scrolled near), searching redraws
+  once typing pauses instead of at every key, and a row's panel is only made
+  when it's first opened. On wide screens, a table of that size still takes
+  about half a second to redraw on a fast computer: about a quarter of a
+  second at 1,500 packages.
 
 - The `data` branch no longer piles up a commit for every sync and hourly
   update: each run publishes `main` plus one commit with the latest data,
@@ -123,64 +165,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   less to download for the details panels. If you read these files yourself,
   the other fields are gone.
 
-- Fewer requests to the sources, for the same results:
-  - Repology: each package is looked up by the project the last sync found
-    for it, one request instead of two (asking by attribute is answered
-    with a redirect to the project). If Repology has moved the package to
-    another project, it's looked up by attribute as before.
-  - nixpkgs-update's logs: the log site's index (one request, compressed)
-    says when each package's logs last changed, so a package whose logs
-    haven't changed since the last sync isn't listed again, and one with no
-    logs isn't asked about. For 72 attributes, a sync now made 3 requests
-    instead of at least 72, with the same results.
-
-  At 1,500 packages that's about 2,800 fewer requests a day. The time
-  estimate at the start of a sync doesn't count it yet: it'll be measured
-  from real runs first.
-
-- The daily sync asks Hydra, its slowest source, in the background from the
-  start, while it asks the others, instead of after them: it takes about as
-  long as Hydra alone. Each server is still asked one request at a time.
-  For 71 packages, the other sources were done before Hydra's 5 minutes
-  were up, and the data came out the same as asking in turn.
-
-- Hydra is asked daily only about builds with something going on: failing
-  or not finished, newly marked broken, a new version in the channel, or a
-  package outdated, ahead on master or with an update PR. The rest, which
-  built fine and have nothing pending (most of them), are asked every 3
-  days, a third each day, as nixpkgs-update spreads its queue. A new build
-  failure there can show up to 3 days late; the builds panel says when they
-  were last checked, and each build records it (`checkedAt`). The first sync
-  after updating asks about everything once, to date them.
-
-- The same for the open PR and issue counts: a package with none open and
-  not outdated is counted every 3 days, a third each day, instead of daily;
-  one with any open, or outdated, still daily. Each row records when
-  (`countedAt`), and the buttons' tooltips say so when it wasn't today.
-  Update PRs for outdated packages are still searched daily and hourly.
-
-- Update checks against a web page ask its server to send it only if it
-  changed since the last check (the page's `ETag` and `Last-Modified`),
-  and keep what they found when it didn't. The microsoft-edge check, hourly,
-  read a 1 MB file each time: now only when Edge has changed. A rule whose
-  page or pattern changes reads the page whole again. Checks record what
-  they send (`upstream.page`).
-
-- Update checks too: one that found nothing newer runs every 3 days (a
-  third each day) instead of daily, unless it's `frequent`, which always
-  runs. It runs daily again once it finds a newer version, fails, its rule
-  is edited, or nixpkgs' version changes. Results record a fingerprint of
-  their rule (`upstream.rule`) to tell. Ready for update checks on most
-  packages, as are GitHub's: tags and branches are now asked 50
-  repositories per request (all of them in one request would grow too big),
-  and a request that fails only affects its own 50.
-
-- And Repology: a package that's up to date, not flagged vulnerable and
-  unchanged in nixpkgs is looked up every 3 days (a third each day) instead
-  of daily, keeping the last sync's data in between; outdated, vulnerable,
-  changed or new packages, and those whose lookup failed, still daily. Its
-  new releases can show up to 3 days late. Rows record when (`repologyCheckedAt`),
-  and the details say how old the comparison is when it isn't from today.
+- For readers of the data (`docs/data.md`): rows have new fields,
+  `maintainers`, `repologyCheckedAt` and `countedAt`; builds have
+  `checkedAt`; update checks have `rule`, `page` and `inferred` (worked out
+  from nixpkgs). `repoCount` now counts repositories
+  (below).
 
 ### Fixed
 
@@ -199,9 +188,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   `stable`, `git`, ...): it passed CI, then the sync couldn't find it and
   the page showed a list problem. Entries, update checks and rules now have
   to name a package, and a set of packages is reported as such.
+
 - `repoCount` counted Repology's entries, so a repository listing a package
   more than once (subpackages) counted more than once. It now counts
   repositories, as documented.
+
 - When a package's Repology file couldn't be loaded (a network hiccup, say),
   its details said "compared with 0 other repositories". They now say the
   file couldn't be loaded, and opening the package again tries again.
