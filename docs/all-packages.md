@@ -38,6 +38,13 @@ them from CRAN, Hackage and so on) are **pending**: Repology's versions and
 Hydra's builds only, no update attempts or GitHub counts, and left out of
 "needs attention" and the counts at the top. More may come set by set.
 
+## The page
+
+It starts from the counts for all of nixpkgs and what needs attention
+(failing or outdated), and shows one view at a time: a maintainer's
+packages (`?q=@handle`), a team's, a list's, a generated set's, or one
+package (`?pkg=`); see [reading the page](reading-the-page.md).
+
 ## What it costs
 
 No requests beyond the bulk ones a list-based instance makes, plus the
