@@ -312,7 +312,68 @@ def ignored(attempt, rules, outdated=False):
     return None
 
 
-def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=()):
+def read_last_time(old):
+    """Whether the last sync read the row's attempts (old: its row then):
+    not if it couldn't (notRefreshed), nor if its turn hadn't come (unread,
+    with every package)."""
+    return (
+        old is not None
+        and "update" not in (old.get("notRefreshed") or {})
+        and "update" not in (old.get("unread") or [])
+    )
+
+
+def to_read(row, attrs, old, dates, since):
+    """Whether reading row's attempts takes a request: one of attrs has logs
+    whose directory changed since the last sync read them (or that sync
+    couldn't read them)."""
+    known = (old or {}).get("update")
+    refreshed = read_last_time(old)
+    for attr in attrs:
+        if dates is not None and search_term(attr) not in dates:
+            continue  # no logs: nothing to read
+        mine = known if (known or {}).get("attr") == attr else None
+        if not (
+            refreshed
+            and unchanged(attr, dates, since)
+            and (mine is not None or known is None)
+        ):
+            return True
+    return False
+
+
+def bulk_turns(rows, nixpkgs, before, dates, since, bulk):
+    """With every package: the names of the rows in bulk (not on the lists,
+    not pending) whose attempts are read this sync, at most
+    UPDATE_LOGS_BUDGET of those that take a request (to_read): outdated or
+    failing ones first, then those waiting longest (the rest keep their last
+    attempt until a later sync). None of them when the log site's index
+    can't be read (each would take a request)."""
+    if dates is None:
+        return set()
+    waiting = []
+    for row in rows:
+        if row["name"] not in bulk or row.get("pending"):
+            continue
+        attrs = [a for a in row["attrs"] if a in nixpkgs]
+        old = before.get(row["name"])
+        if attrs and to_read(row, attrs, old, dates, since):
+            urgent = is_outdated(row) or bool((old or {}).get("updateFailure"))
+            read = ((old or {}).get("update") or {}).get("date") or ""
+            waiting.append((not urgent, read, row["name"]))
+    waiting.sort()
+    return {name for _, _, name in waiting[: config.UPDATE_LOGS_BUDGET]}
+
+
+def add_attempts(
+    rows,
+    nixpkgs,
+    previous,
+    now,
+    ignored_updates=None,
+    community=(),
+    bulk=frozenset(),
+):
     """Give every row in nixpkgs the bot's latest attempt ("update", None if
     it never tried) and whether that failed ("updateFailure"). With several
     attrs, the most recently attempted one counts. A row whose lookup fails
@@ -320,7 +381,11 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=(
     ignored_updates: {row name: {version: reason}}, versions whose failed
     attempts count as superseded (a version that was never really released,
     say). community: the (row name, version) of those that are community
-    rules (community.py), marked so on the attempt."""
+    rules (community.py), marked so on the attempt. bulk: with every
+    package, the rows not on the lists: pending ones get no attempt at all,
+    the others are read within a budget (bulk_turns); one whose turn hasn't
+    come keeps its last attempt, and says it wasn't read ("unread":
+    ["update"])."""
     ignored_updates = ignored_updates or {}
     print("Checking nixpkgs-update logs...", file=sys.stderr)
     before = {row["name"]: row for row in previous["packages"]}
@@ -328,11 +393,24 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=(
     # haven't since the last sync listed them aren't listed again.
     dates = directory_dates()
     since = previous.get("checkedAt")
-    failed = consecutive = 0
+    turns = bulk_turns(rows, nixpkgs, before, dates, since, bulk) if bulk else set()
+    failed = consecutive = waited = 0
     for row in rows:
         attrs = [a for a in row["attrs"] if a in nixpkgs]
         if not attrs:
             continue  # not in nixpkgs: nothing for the bot to update
+        if row["name"] in bulk:
+            if row.get("pending"):
+                continue  # generated sets: not read for now
+            old = before.get(row["name"])
+            if row["name"] not in turns and (
+                dates is None or to_read(row, attrs, old, dates, since)
+            ):
+                waited += 1
+                row["update"] = (old or {}).get("update")
+                row["updateFailure"] = bool((old or {}).get("updateFailure"))
+                row["unread"] = ["update"]
+                continue
         down = consecutive >= config.UPDATE_LOGS_MAX_CONSECUTIVE_FAILURES
         try:
             if down:
@@ -341,9 +419,7 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=(
             known = (old or {}).get("update")
             # Read fine last time: what it found still holds while the logs
             # haven't changed.
-            refreshed = old is not None and "update" not in (
-                old.get("notRefreshed") or {}
-            )
+            refreshed = read_last_time(old)
             attempts = []
             for attr in attrs:
                 if dates is not None and search_term(attr) not in dates:
@@ -413,5 +489,11 @@ def add_attempts(rows, nixpkgs, previous, now, ignored_updates=None, community=(
         print(
             f"::warning::{failed} nixpkgs-update log lookups failed; those show "
             "the previous run's result",
+            file=sys.stderr,
+        )
+    if bulk:
+        print(
+            f"  {len(turns):,} packages not on the lists read (at most "
+            f"{config.UPDATE_LOGS_BUDGET:,} a sync); {waited:,} wait for a later sync",
             file=sys.stderr,
         )

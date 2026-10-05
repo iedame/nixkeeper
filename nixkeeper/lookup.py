@@ -41,6 +41,7 @@ def collect_projects(
     nixpkgs=None,
     now=None,
     digest=None,
+    bulk=frozenset(),
 ):
     """Look up every tracked package on Repology, falling back to the previous
     run's data (in out_dir) when a lookup fails. digest: nixkeeper-versions'
@@ -50,8 +51,13 @@ def collect_projects(
     run's data. Several attrs
     (wesnoth / wesnoth-devel, heroic / heroic-unwrapped) can map to one
     project; those are merged here and split into rows by rows.project_rows.
+    bulk: the pnames (with every package tracked: those not on the lists)
+    read from the digest only, never looked up: as the digest has them (even
+    when the channel has moved on: Repology itself would say the same), else
+    as the last run had them, else not on Repology ("unlisted": true).
     Returns project -> {"name", "project", "attrs", "entries", "dataFile"[,
-    "checkedAt"][, "staleSince"]}, or exits if too many lookups failed."""
+    "checkedAt"][, "staleSince"][, "unlisted"]}, or exits if too many
+    lookups failed."""
     out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
     # The project each attribute had last run: asked for directly, it saves
     # a request (repology.resolve).
@@ -82,6 +88,9 @@ def collect_projects(
                 attrs,
                 f"{day}T00:00:00+00:00",  # the day the digest read it
             )
+            continue
+        if pname in bulk:
+            from_digest += add_bulk(projects, pname, attrs, digest, previous, out_dir)
             continue
         rows = history.previous_rows(previous, pname, attrs)
         reused = (
@@ -130,12 +139,48 @@ def collect_projects(
             file=sys.stderr,
         )
 
-    if len(failed) > config.MAX_FAILED_SHARE * len(wanted):
+    if len(failed) > config.MAX_FAILED_SHARE * (len(wanted) - len(bulk)):
         sys.exit(
             f"Repology lookups failed for {len(failed)} of {len(wanted)} packages; "
             f"keeping the previous data. Failed: {', '.join(failed)}"
         )
     return projects
+
+
+def add_bulk(projects, pname, attrs, digest, previous, out_dir):
+    """Add a pname read in bulk (collect_projects' bulk), with no lookup.
+    Returns 1 if the digest had it, else 0."""
+    found = digest and versions_digest.answer(digest, attrs, {})
+    if found:
+        project, entries, day = found
+        add(
+            projects,
+            pname,
+            project,
+            repology.trimmed(entries),
+            attrs,
+            f"{day}T00:00:00+00:00",
+        )
+        return 1
+    reused = previous["packages"] and history.previous_project(
+        previous, pname, attrs, out_dir
+    )
+    if reused and reused[0]:
+        project, entries, stale_since = reused
+        add(projects, pname, project, entries, attrs, None, stale_since)
+        return 0
+    # Its own entry, never joined to a Repology project of the same name
+    # (add would: that's how one project's attributes come together).
+    key = f"unlisted:{pname}"
+    projects[key] = {
+        "name": pname,
+        "project": None,
+        "attrs": attrs,
+        "entries": [],
+        "dataFile": data_file(key),
+        "unlisted": True,
+    }
+    return 0
 
 
 def add(projects, pname, project, entries, attrs, checked_at=None, stale_since=None):

@@ -45,6 +45,7 @@ choose others; a flag wins over its variable:
 | | `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issue lives |
 | | `NIXKEEPER_PAGE_URL` | the GitHub Pages site | the page link in notifications |
 | | `NIXKEEPER_CONTACT` | – | how you can be reached (an email or a URL), added to the User-Agent nixkeeper sends to the sources; see below |
+| `--all-packages` (sync) | `NIXKEEPER_ALL_PACKAGES` | – | `1` to track every nixpkgs package, not only the lists' ([every package](all-packages.md)) |
 | | `NIXKEEPER_VERSIONS_DIGEST` | nixkeeper-versions' `data` branch | where the [digest of Repology's nixpkgs projects](how-it-works.md) is (its folder's address, ending in `/`); empty to look each package up on Repology |
 | | `NIXKEEPER_HYDRA_DIGEST` | nixkeeper-hydra's `data` branch | where the [digest of Hydra's builds](how-it-works.md) is (its folder's address, ending in `/`); empty to ask Hydra about each job |
 | | `REPOLOGY_BASE_URL` | – | another Repology address to use instead of `repology.org` |

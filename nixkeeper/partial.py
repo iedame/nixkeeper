@@ -52,5 +52,15 @@ def publish(previous, packages, now, data_files=None):
         {**previous, "packages": packages}, {**entries, **(data_files or {})}
     )
     print("Changes written.", file=sys.stderr)
-    notify.notify(previous, packages, now)
+    if previous.get("allPackages"):  # what changed for the lists' own only
+        notify.notify(
+            {
+                **previous,
+                "packages": [r for r in previous["packages"] if r.get("lists")],
+            },
+            [r for r in packages if r.get("lists")],
+            now,
+        )
+    else:
+        notify.notify(previous, packages, now)
     return True

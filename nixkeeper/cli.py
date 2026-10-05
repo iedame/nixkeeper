@@ -87,6 +87,13 @@ def parser():
         )
         if name == "sync":
             command.add_argument(
+                "--all-packages",
+                action="store_true",
+                default=None,
+                help="track every nixpkgs package, not only the lists' "
+                "(NIXKEEPER_ALL_PACKAGES): the community instance's mode",
+            )
+            command.add_argument(
                 "--if-older",
                 metavar="HOURS",
                 type=float,
@@ -263,6 +270,8 @@ def main(argv=None):
     if args.command == "serve":
         page.serve(args.port, args.bind)
         return
+    if getattr(args, "all_packages", None):
+        config.ALL_PACKAGES = True
     with lock.held():
         if getattr(args, "if_older", None) is not None:
             age = last_sync_age()

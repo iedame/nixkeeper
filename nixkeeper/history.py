@@ -13,13 +13,29 @@ def load_previous_run(out_dir=None):
 
 
 def previous_rows(previous, pname, attrs):
-    """The last run's rows for a tracked pname (by name, or any of attrs)."""
-    return [
-        row
-        for row in previous["packages"]
-        if pname in (row.get("searchTerm"), row["name"])
-        or set(attrs) & set(row.get("attrs") or [])
-    ]
+    """The last run's rows for a tracked pname (by name, or any of attrs), in
+    their order there."""
+    index = _by_key(previous["packages"])
+    found = {i for key in (pname, *attrs) for i in index.get(key, ())}
+    return [previous["packages"][i] for i in sorted(found)]
+
+
+_index = (None, None)
+
+
+def _by_key(packages):
+    """{name, searchTerm or attribute: the indexes of the rows with it} for
+    the last run's rows, made once (with every package there are over
+    100,000 to look through)."""
+    global _index
+    if _index[0] is not packages:
+        index = {}
+        for i, row in enumerate(packages):
+            keys = {row["name"], row.get("searchTerm"), *(row.get("attrs") or [])}
+            for key in keys - {None}:
+                index.setdefault(key, []).append(i)
+        _index = (packages, index)
+    return _index[1]
 
 
 def new_packages(previous, wanted):

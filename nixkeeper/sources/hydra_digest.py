@@ -152,3 +152,44 @@ def answers(digest, wanted, broken, before):
         else:
             found[attr, system] = result
     return found, ask
+
+
+def bulk_answers(digest, wanted, broken, before):
+    """{job: result} for every job in wanted, without asking Hydra (with every
+    package tracked, the jobs of packages not on the lists): the digest's
+    answer (answers); a finished build whose last success it can't say,
+    without one; a job it doesn't have, not built (the digest has every job
+    of the evaluation: Hydra would say the same), or broken; a queued job,
+    as the last sync had it (unknown if it had none). digest None (not
+    current): every job as the last sync had it."""
+    found = {}
+    for attr, system in wanted:
+        job = (attr, system)
+        is_broken = system in broken.get(attr, [])
+        old = before.get(job)
+        row = digest.get(job) if digest is not None else None
+        if digest is not None and row is None:
+            found[job] = {
+                "attr": attr,
+                "system": system,
+                "status": "broken" if is_broken else "notBuilt",
+            }
+            continue
+        result = row and answer(row, is_broken, old)
+        if result is None and row and row["status"] in FINISHED:
+            result = {
+                "attr": attr,
+                "system": system,
+                "status": "broken" if is_broken else row["status"],
+                "build": int(row["build"]),
+            }
+            if row["name"]:
+                result["name"] = row["name"]
+        if result is None:
+            result = (
+                {k: v for k, v in old.items() if k != "checkedAt"}
+                if old
+                else {"attr": attr, "system": system, "status": "unknown"}
+            )
+        found[job] = result
+    return found

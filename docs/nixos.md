@@ -47,6 +47,7 @@ and optionally the page on nginx.
 | `githubTokenFile` | – | a GitHub token, passed as a systemd credential; without it, PR and issue counts and update PRs are skipped |
 | `notify`, `githubRepo`, `pageUrl` | `"none"` | `"github-issue"` keeps a status issue in `githubRepo` up to date |
 | `contact` | – | how you can be reached (an email or a URL), added to the User-Agent sent to the sources ([the command](command.md)) |
+| `allPackages` | `false` | track every nixpkgs package, not only the lists' ([every package](all-packages.md)) |
 | `nginx.virtualHost` | – | serve the page and the data on this nginx host |
 | `package` | this flake's | the nixkeeper package to run |
 

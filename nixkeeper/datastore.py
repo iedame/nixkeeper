@@ -25,6 +25,7 @@ import shutil
 import zlib
 
 from . import config
+from .changes import failures, is_outdated, waiting_for_channel
 
 FORMAT = 2
 # Rows a shard holds, about: a shard is what a details panel loads.
@@ -97,6 +98,62 @@ def restored(row, run):
     return row
 
 
+# Repology statuses whose versions can't be compared: sorted after the rest
+# (comparedRepos in page/logic.js).
+UNCOMPARABLE = {"rolling", "ignored", "incorrect", "noscheme", "untrusted"}
+
+
+def newest_repos(entries, count):
+    """Of entries, nixpkgs' own and the newest entry of the newest count other
+    repositories, as the details panel orders them (comparedRepos in
+    page/logic.js): comparable versions first, newest first."""
+    from .versions import version_key
+
+    def order(e):
+        return (
+            e.get("status") in UNCOMPARABLE,
+            _Reversed(version_key(e.get("version") or "")),
+        )
+
+    best = {}
+    for e in entries:
+        repo = e.get("repo")
+        if repo == config.NIX_REPO:
+            continue
+        if repo not in best or order(e) < order(best[repo]):
+            best[repo] = e
+    kept = sorted(best.values(), key=lambda e: (*order(e), e.get("repo") or ""))
+    return [e for e in entries if e.get("repo") == config.NIX_REPO] + kept[:count]
+
+
+class _Reversed:
+    """A key that sorts in reverse (newest version first)."""
+
+    def __init__(self, key):
+        self.key = key
+
+    def __lt__(self, other):
+        return other.key < self.key
+
+    def __eq__(self, other):
+        return self.key == other.key
+
+
+def kept_entries(projects, rows):
+    """{dataFile: Repology entries} to write for projects (lookup's) and the
+    rows made from them: in full for a project with a row on the lists; for
+    the others (with every package, the rest of nixpkgs), only nixpkgs' own
+    and those of the newest REPOLOGY_ENTRIES_KEPT other repositories, what
+    their details show (the rest are on Repology)."""
+    listed = {row["dataFile"] for row in rows if row.get("lists")}
+    return {
+        p["dataFile"]: p["entries"]
+        if p["dataFile"] in listed
+        else newest_repos(p["entries"], config.REPOLOGY_ENTRIES_KEPT)
+        for p in projects.values()
+    }
+
+
 def summary_entry(row):
     """row's entry in summary.json: what the list, the counts, filters,
     search and sorting need. Builds are reduced to their status and
@@ -128,18 +185,127 @@ def files(index, entries):
         if found := entries.get(row.get("dataFile")):
             full["repology"] = found
         shards[shard_of(row["name"], count)].append(full)
-    out = {name: data for name, data in entries.items()}  # format 1
-    out["index.json"] = {
+    manifest = {
         **index,
-        "packages": given,
         "format": FORMAT,
         "packageCount": len(rows),
         "shardCount": count,
     }
-    out["summary.json"] = {"packages": [summary_entry(row) for row in rows]}
+    out = {}
+    if index.get("allPackages"):
+        # Every package: no summary of them all (too big to load), but views
+        # of it, a name index and the counts (views); and no first format
+        # (no page old enough to need it reads a community instance's data).
+        del manifest["packages"]
+        manifest.update(views(rows, out))
+    else:
+        out.update(entries)  # format 1's per-project files
+        manifest["packages"] = given
+        out["summary.json"] = {"packages": [summary_entry(row) for row in rows]}
+    out["index.json"] = manifest
     for n, shard in enumerate(shards):
         out[f"rows/{n}.json"] = {"packages": shard}
     return out
+
+
+def status(row):
+    """A row's status as the page's dot shows it (computeStatus and
+    hasFailure in page/logic.js), in a letter: f failed, m outdated but
+    waiting for the channel, o outdated, u up to date, n not comparable
+    (Repology can't say, or doesn't know the package); then v when flagged
+    vulnerable."""
+    if failures(row):
+        letter = "f"
+    elif waiting_for_channel(row):
+        letter = "m"
+    elif is_outdated(row):
+        letter = "o"
+    elif row.get("nixStatus") in ("newest", "unique", "devel"):
+        letter = "u"
+    else:
+        letter = "n"
+    return letter + ("v" if row.get("nixVulnerable") else "")
+
+
+def slug(name):
+    """A team's or list's name as a file name: "Security review" ->
+    "security-review" (viewSlug in page/logic.js)."""
+    return re.sub(r"[^a-z0-9]+", "-", name.lower()).strip("-")
+
+
+def views(rows, out):
+    """With every package: the views the page starts from instead of a
+    summary of every row (each {"packages": [summary entries]}, sorted by
+    name), added to out, and what the manifest says of them:
+      views/attention.json: failing or outdated (not pending)
+      views/maintainer/<handle>.json: a maintainer's (lowercase handle),
+        and none.json those with no maintainer (not pending)
+      views/team/<slug>.json, views/list/<slug>.json, views/set/<name>.json
+      names.json: every row's name and status (status), and its set when
+        pending: what a search looks through
+    Returns {"counts": {...}, "views": {"attention", "teams", "lists",
+    "sets": {name: count}}}."""
+    found = {}
+
+    def put(path, row):
+        found.setdefault(path, []).append(row)
+
+    counts = dict.fromkeys(
+        (
+            "tracked",
+            "outdated",
+            "failed",
+            "vulnerable",
+            "updateFailures",
+            "waiting",
+            "pending",
+        ),
+        0,
+    )
+    teams, lists, sets = {}, {}, {}
+    names = []
+    for row in rows:
+        letter = status(row)
+        names.append(
+            [row["name"], letter, row["set"]]
+            if row.get("pending")
+            else [row["name"], letter]
+        )
+        for handle in row.get("maintainers") or []:
+            put(f"views/maintainer/{handle.lower()}.json", row)
+        for team in row.get("teams") or []:
+            put(f"views/team/{slug(team)}.json", row)
+            teams[team] = teams.get(team, 0) + 1
+        for name in row.get("lists") or []:
+            put(f"views/list/{slug(name)}.json", row)
+            lists[name] = lists.get(name, 0) + 1
+        if row.get("pending"):
+            put(f"views/set/{row['set']}.json", row)
+            sets[row["set"]] = sets.get(row["set"], 0) + 1
+            counts["pending"] += 1
+            continue
+        if row.get("maintainers") == []:
+            put("views/maintainer/none.json", row)
+        counts["tracked"] += 1
+        counts["failed"] += letter.startswith("f")
+        counts["waiting"] += letter.startswith("m")
+        counts["outdated"] += is_outdated(row)
+        counts["vulnerable"] += letter.endswith("v")
+        counts["updateFailures"] += bool(row.get("updateFailure"))
+        if letter[0] in "fmo":
+            put("views/attention.json", row)
+    for path, members in found.items():
+        out[path] = {"packages": [summary_entry(row) for row in members]}
+    out["names.json"] = {"names": names}
+    return {
+        "counts": counts,
+        "views": {
+            "attention": len(found.get("views/attention.json", [])),
+            "teams": dict(sorted(teams.items())),
+            "lists": dict(sorted(lists.items())),
+            "sets": dict(sorted(sets.items())),
+        },
+    }
 
 
 def _write_file(path, text):

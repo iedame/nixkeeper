@@ -111,6 +111,7 @@ in
       githubRepo
       pageUrl
       contact
+      allPackages
       ;
 
     nginx.virtualHost = mkOption {

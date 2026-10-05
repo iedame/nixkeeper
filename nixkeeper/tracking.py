@@ -1,6 +1,8 @@
 """Which packages to track, from the package lists and the nixpkgs index, and
 which list each is on."""
 
+from . import config
+
 # The list of packages tracked through meta.maintainers; the other lists are
 # named in package-lists/default.nix.
 MAINTAINED = "maintained"
@@ -81,3 +83,37 @@ def add_lists(rows, names):
     for row in rows:
         on = {n for key in [*row["attrs"], row["name"]] for n in names.get(key, [])}
         row["lists"] = sorted(on, key=lambda n: (n != MAINTAINED, n))
+
+
+def every_package(nixpkgs, listed):
+    """With every package tracked (config.all_packages): name -> (attrs,
+    fallback), as tracked_packages, for each nixpkgs attribute the lists
+    (listed, tracked_packages') don't already cover. One attribute each:
+    those of one Repology project come together as one row anyway (lookup),
+    so python313Packages.requests and python314Packages.requests share one."""
+    covered = {a for attrs, _ in listed.values() for a in attrs}
+    return {
+        attr: ([attr], p.get("pname") or attr)
+        for attr, p in nixpkgs.items()
+        if attr not in covered and attr not in listed
+    }
+
+
+def generated_set(attrs):
+    """The generated package set (config.GENERATED_SETS) all of attrs are in,
+    or None."""
+    sets = {a.split(".", 1)[0] if "." in a else None for a in attrs}
+    if len(sets) == 1 and (name := sets.pop()) in config.GENERATED_SETS:
+        return name
+    return None
+
+
+def add_pending(rows):
+    """With every package: mark the rows of generated package sets that no
+    list has ("pending": true, "set": its name). They get only what the
+    digests and the package index say (sync.py); a list's own packages are
+    never pending."""
+    for row in rows:
+        if not row.get("lists") and (name := generated_set(row["attrs"])):
+            row["pending"] = True
+            row["set"] = name
