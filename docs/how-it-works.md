@@ -28,46 +28,47 @@ When a source can't be reached, the row keeps its last known result, marked
 as not refreshed, and the status issue says so; the rest of the sync goes
 on. nixkeeper asks each source one thing at a time, with a pause between
 requests (update checks' pages: one a second per site, taking turns between
-sites), and when a source says to slow down (a `Retry-After`), it waits
-as long as asked, up to 5 minutes, before trying again. Hydra's builds
-come first from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra),
-a digest of every job in Hydra's newest evaluation of master that its own
+sites), and when a source says to slow down (a `Retry-After`), it waits as
+long as asked, up to 5 minutes, before trying again. Hydra's builds come
+first from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra), a
+digest of every job in Hydra's newest evaluation of master that its own
 workflow keeps up to date hourly: one download answers most jobs, every day.
 The digest is used when it's from Hydra's newest evaluation, or was read in
 the last 12 hours; otherwise (or when it can't be downloaded) Hydra is asked
 about each job, as it is for the jobs the digest can't answer: missing from
 it, not built yet, or failing with no known last success. Asked that way,
 Hydra is the slowest source (a request or more per package and platform):
-it's asked in the background while the other sources are, and the sync
-takes about as long as Hydra rather than all of them in turn; each server
-still gets one request at a time. It's also asked less about what's quiet:
-a job that built fine, for a package that's up to date with nothing changed
-or pending, is asked
-every 3 days (a third of them each day) instead of daily, so a new build
-failure there can show up to 3 days late; anything failing, outdated,
-newly changed or with an update PR is asked daily. The builds panel says
-when they were last checked. The same goes for the open PR and issue
-counts: a package with none open, and not outdated, is counted every 3
-days; for update checks that found nothing newer, unless they're marked
-`frequent`; and for Repology: a package that's up to date, not flagged
-vulnerable and unchanged in nixpkgs is looked up every 3 days, so its new
-releases can show up to 3 days late (most packages are updated by
-nixpkgs-update, which comes round about every ten days anyway). Most
-packages don't need Repology asked at all, though: their projects come from
+it's asked in the background while the other sources are, and the sync takes
+about as long as Hydra rather than all of them in turn; each server still
+gets one request at a time. It's also asked less about what's quiet: a job
+that built fine, for a package that's up to date with nothing changed or
+pending, is asked every 3 days (a third of them each day) instead of daily,
+so a new build failure there can show up to 3 days late; anything failing,
+outdated, newly changed or with an update PR is asked daily. The builds
+panel says when they were last checked. The same goes for update checks that
+found nothing newer, unless they're marked `frequent`; and for Repology: a
+package that's up to date, not flagged vulnerable and unchanged in nixpkgs
+is looked up every 3 days, so its new releases can show up to 3 days late
+(most packages are updated by nixpkgs-update, which comes round about every
+ten days anyway). Most packages don't need Repology asked at all, though:
+their projects come from
 [nixkeeper-versions](https://github.com/iedame/nixkeeper-versions), a digest
 of every nixpkgs project that its own workflow reads in bulk daily, the way
 nixpkgs-update reads Repology (outdated projects every day, the rest every
-week). Repology is still asked about a package that isn't in the digest
-(new in nixpkgs) or has another version there than the channel's (changed
-since), and about every package, as above, when the digest is more than 36
-hours old or can't be read. nixkeeper doesn't ask twice for what can't have
-changed: a package's Repology project is the one the last sync found, a
-package whose bot logs
-haven't changed since (the log site's index says when each last changed)
-isn't listed again, a release page whose server says it hasn't changed
-isn't downloaded again, and a log already read (the bot tries each package about
-every ten days) is taken from the previous sync instead of downloaded
-again.
+week). Repology is still asked about a package that isn't in the digest (new
+in nixpkgs) or has another version there than the channel's (changed since),
+and about every package, as above, when the digest is more than 36 hours old
+or can't be read. GitHub's open PRs and issues aren't searched package by
+package: each sync lists all of nixpkgs' open ones (about 120 requests) and
+the PRs merged into master since the channel's commit (about 10), and finds
+each package's counts and update PRs in their titles, every package daily
+(searched per package only when a listing fails). nixkeeper doesn't ask
+twice for what can't have changed: a package's Repology project is the one
+the last sync found, a package whose bot logs haven't changed since (the log
+site's index says when each last changed) isn't listed again, a release page
+whose server says it hasn't changed isn't downloaded again, and a log
+already read (the bot tries each package about every ten days) is taken from
+the previous sync instead of downloaded again.
 
 ## How much it tracks
 

@@ -1,16 +1,17 @@
-"""nixpkgs' open pull requests and issues, listed in bulk: every one of them
-in about 60 GraphQL requests (100 of each per request), however many
-packages are tracked, instead of two or three searches per package
-(github.py). Each package's open PR and issue counts, and its open update
-PR, are then found in the list locally (Listing).
-
-Not used for the data yet: each daily sync compares it with the searches,
-in its log (compare), so the local matching can be checked against
-GitHub's before the searches go."""
+"""nixpkgs' pull requests and issues, listed in bulk instead of two or three
+searches per package (github.py): every open PR and issue in about 120
+GraphQL requests (100 of each per request), and the PRs merged into master
+since the channel's commit in about 10 more, however many packages are
+tracked. Each package's open PR and issue counts, its open update PR and its
+update PR merged into master are then found in the lists locally:
+add_counts, add_master_prs. The daily sync falls back to the searches when
+a listing fails; the hourly update-PR check (prcheck.py), for a few
+packages, keeps them."""
 
 import re
 import sys
 import urllib.error
+from datetime import datetime, timedelta
 
 from .. import config
 from . import github
@@ -146,14 +147,6 @@ class Listing:
             len(self._matching(self.issue_words, term)),
         )
 
-    def titles(self, term, limit=5):
-        """Some matching PRs' and issues' titles, to see why counts differ."""
-        prs = sorted(self._matching(self.pr_words, term))[:limit]
-        issues = sorted(self._matching(self.issue_words, term))[:limit]
-        return [self.prs[i]["title"] for i in prs] + [
-            self.issues[i]["title"] for i in issues
-        ]
-
     def open_update_pr(self, row):
         """The open update PR for row, as github.open_update_pr finds it among
         a search's results, here among all open PRs whose title starts with
@@ -161,41 +154,123 @@ class Listing:
         return github.open_update_pr(row, self.by_package.get(row["searchTerm"], []))
 
 
-def compare(rows, now):
-    """List nixpkgs' open PRs and issues, and log how the counts and update
-    PRs found in them compare with the searches' (rows counted now: their
-    countedAt). Changes no row; anything that fails only skips this."""
+def add_counts(rows, now):
+    """Every row's open PR and issue counts and open update PR ("openPRs",
+    "openIssues", "openPR"), from one listing of all open ones, dated now
+    ("countedAt"). Returns False, changing nothing, when there's no token or
+    the listing fails (the sync then searches per package)."""
     tok = github.token()
     if not tok:
-        return
+        return False
+    print("Listing nixpkgs' open PRs and issues...", file=sys.stderr)
     try:
         listing = Listing(*list_open(tok))
     except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
-        print(f"Bulk PR/issue listing: skipped ({e})", file=sys.stderr)
-        return
-    searched = [
-        r for r in rows if r.get("countedAt") == now and r.get("openPRs") is not None
-    ]
-    differ = []
-    for row in searched:
-        prs, issues = listing.counts(row["searchTerm"])
-        local_pr = (listing.open_update_pr(row) or {}).get("number")
-        search_pr = (row.get("openPR") or {}).get("number")
-        if (prs, issues, local_pr) != (row["openPRs"], row["openIssues"], search_pr):
-            differ.append((row, prs, issues, local_pr, search_pr))
-    print(
-        f"::group::Bulk PR/issue listing (not used yet): {len(listing.prs):,} open "
-        f"PRs and {len(listing.issues):,} issues; {len(searched)} packages counted "
-        f"by search today, {len(searched) - len(differ)} agree, {len(differ)} differ",
-        file=sys.stderr,
-    )
-    for row, prs, issues, local_pr, search_pr in differ:
         print(
-            f"  {row['name']} ({row['searchTerm']}): search {row['openPRs']} PRs, "
-            f"{row['openIssues']} issues, update PR #{search_pr}; listing {prs}, "
-            f"{issues}, #{local_pr}",
+            f"::warning::Listing open PRs/issues failed ({e}); searching per package",
             file=sys.stderr,
         )
-        for title in listing.titles(row["searchTerm"]):
-            print(f"      {title}", file=sys.stderr)
-    print("::endgroup::", file=sys.stderr)
+        return False
+    for row in rows:
+        prs, issues = listing.counts(row["searchTerm"])
+        row.update(openPRs=prs, openIssues=issues, countedAt=now)
+        row.pop("openPR", None)
+        if pr := listing.open_update_pr(row):
+            row["openPR"] = pr
+    print(
+        f"  {len(listing.prs):,} open PRs and {len(listing.issues):,} issues: "
+        f"{len(rows)} packages counted",
+        file=sys.stderr,
+    )
+    for warning in github.count_warnings(rows):
+        print(f"::warning::{warning}", file=sys.stderr)
+    return True
+
+
+MERGED = """query($q: String!, $after: String) {
+  search(type: ISSUE, query: $q, first: 100, after: $after) {
+    issueCount
+    pageInfo { hasNextPage endCursor }
+    nodes { ... on PullRequest { number title url isDraft baseRefName } }
+  }
+}"""
+COMMIT_DATE = """query($owner: String!, $name: String!, $rev: String!) {
+  repository(owner: $owner, name: $name) {
+    object(expression: $rev) { ... on Commit { committedDate } }
+  }
+}"""
+# GitHub's search gives at most 1,000 results: merged PRs are listed in
+# windows of this many hours (nixpkgs merges a few hundred a day into master).
+WINDOW_HOURS = 12
+
+
+def channel_date(token, revision):
+    """When the channel's commit was committed (ISO), or None."""
+    owner, name = config.GITHUB_REPO.split("/")
+    data = github.graphql(
+        token, COMMIT_DATE, {"owner": owner, "name": name, "rev": revision}
+    )
+    return ((data.get("repository") or {}).get("object") or {}).get("committedDate")
+
+
+def list_merged(token, since, now):
+    """PRs merged into master from since to now (ISO times), as GraphQL
+    nodes; raises if a request fails, or a window has more than search's
+    1,000 results (some would be missing)."""
+    start = datetime.fromisoformat(since.replace("Z", "+00:00"))
+    end = datetime.fromisoformat(now)
+    found = []
+    while start < end:
+        stop = min(start + timedelta(hours=WINDOW_HOURS), end)
+        window = f"{start:%Y-%m-%dT%H:%M:%SZ}..{stop:%Y-%m-%dT%H:%M:%SZ}"
+        query = f"repo:{config.GITHUB_REPO} is:pr is:merged base:master merged:{window}"
+        after = None
+        while True:
+            data = github.graphql(token, MERGED, {"q": query, "after": after})
+            page = data.get("search")
+            if page is None:
+                raise ValueError("GitHub didn't answer the search for merged PRs")
+            if page["issueCount"] > 1000:
+                raise ValueError(f"more than 1,000 PRs merged in {window}")
+            found += [n for n in page["nodes"] if n and n.get("number")]
+            if not page["pageInfo"]["hasNextPage"]:
+                break
+            after = page["pageInfo"]["endCursor"]
+        start = stop
+    return found
+
+
+def add_master_prs(rows, revision, now):
+    """Each row's update PR merged into master since the channel's commit
+    (revision), which the channel doesn't have yet ("masterPR"), from one
+    listing of the PRs merged since. Returns False, changing nothing, when
+    there's no token or the listing fails (the sync then searches per
+    package)."""
+    tok = github.token()
+    if not tok:
+        return False
+    try:
+        since = channel_date(tok, revision)
+        if not since:
+            raise ValueError(f"no commit date for the channel's revision {revision}")
+        merged = list_merged(tok, since, now)
+    except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+        print(
+            f"::warning::Listing merged PRs failed ({e}); searching per package",
+            file=sys.stderr,
+        )
+        return False
+    by_package = {}
+    for pr in merged:
+        package = (pr.get("title") or "").split(":", 1)[0]
+        by_package.setdefault(package, []).append(pr)
+    for row in rows:
+        row.pop("masterPR", None)
+        if pr := github.merged_update_pr(row, by_package.get(row["searchTerm"], [])):
+            row["masterPR"] = pr
+    print(
+        f"  {len(merged):,} PRs merged into master since the channel's commit "
+        f"({since})",
+        file=sys.stderr,
+    )
+    return True

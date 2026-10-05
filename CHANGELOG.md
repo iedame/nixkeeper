@@ -11,14 +11,6 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
-- A bulk listing of nixpkgs' open pull requests and issues, a step towards
-  replacing the open PR and issue searches (two or three per package) with
-  about 60 requests for all of them, however many packages are tracked.
-  Not used yet: each daily sync lists them, finds each package's counts and
-  update PR in the titles locally (whole words, plurals included, the way
-  GitHub's title search was checked to match them), and logs where that differs from the searches, in a
-  collapsed group, to check the matching before the searches go.
-
 - Update checks worked out from nixpkgs itself, a first step towards
   relying less on Repology. A package without an update check of its own
   (or a community rule) that nixpkgs fetches from a GitHub tag is checked
@@ -51,6 +43,21 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   for where that came from.
 
 ### Changed
+
+- Open PR and issue counts and update PRs come from bulk listings instead
+  of two or three GitHub searches per package: every open nixpkgs PR and
+  issue (about 120 GraphQL requests, 100 of each per request) and the PRs
+  merged into master since the channel's commit (about 10 more), however
+  many packages are tracked, with each package's counts and update PRs
+  found in the titles locally. A sync of 241 packages made 300 searches
+  before. Counts match GitHub's title search (whole words, plurals included,
+  checked side by side: 126 of 128 packages agreed, and every update PR);
+  its deeper stemming isn't copied, so a package named like an English word
+  can count a few fewer ("trigger" doesn't count "triggered"). Every
+  package is counted daily now, not every 3 days when nothing's open. When
+  a listing fails, or there's no token for it, the sync searches per
+  package as before; the hourly update-PR check, for a few packages, still
+  searches.
 
 - Repology's data comes from [nixkeeper-versions](https://github.com/iedame/nixkeeper-versions)
   first: a digest of every nixpkgs project on Repology, which its own
