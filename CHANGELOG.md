@@ -9,6 +9,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.11.0] - 2026-10-05
+
 Ready for big lists: Hydra's builds, Repology's data and GitHub's PRs and
 issues now come in bulk, at about the same cost whatever the lists' size (a
 daily sync of 1,500 packages is estimated at about 12 minutes, down from
@@ -813,7 +815,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.10.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.11.0...HEAD
+[0.11.0]: https://github.com/iedame/nixkeeper/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/iedame/nixkeeper/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/iedame/nixkeeper/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/iedame/nixkeeper/compare/v0.7.0...v0.8.0
