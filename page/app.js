@@ -205,6 +205,14 @@ const FILTERS = {
     color: 'var(--danger)',
     test: (p) => p.nixVulnerable,
   },
+  // A build Hydra didn't try, as a dependency failed (nixkeeper-hydra says
+  // which): not failing itself, so in no other count.
+  blocked: {
+    label: 'blocked',
+    param: 'blocked',
+    color: 'var(--caution)',
+    test: (p) => buildsWith(p, 'dependency').length > 0,
+  },
   // With every package only (tiles of the header, renderScope).
   broken: {
     label: 'marked broken',
@@ -260,6 +268,7 @@ const TILES = {
   updates: 'Update failures',
   vuln: 'Vulnerable',
   broken: 'Marked broken',
+  blocked: 'Blocked',
 };
 
 // Where the package's update stands on GitHub, in GitHub's own colors:
@@ -831,8 +840,8 @@ function renderStats() {
   const buttons = Object.entries(community ? {} : FILTERS).map(([key, f]) => {
     if (['broken', 'builds', 'updates'].includes(key)) return ''; // with every package only
     const count = base.filter((p) => f.test(p) && refined(p, key)).length;
-    // "vulnerable" only shows up when something is actually flagged.
-    if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
+    // "vulnerable" and "blocked" only show up when there's some.
+    if (['vuln', 'blocked'].includes(key) && !count && activeFilter !== key) return '';
     const pressed = activeFilter === key;
     return html`<button class="stat-btn" data-filter="${key}" aria-pressed="${pressed}"
       ${!count && key !== 'all' && !pressed ? raw('disabled') : ''}>
@@ -1198,6 +1207,7 @@ function blockersHtml() {
             : raw('<span class="hl-row">')
         }<span class="status-dot missing"></span><span class="hl-name mono">${name}</span><span class="hl-age" title="Stops ${fmt(packages)} ${packages === 1 ? 'package' : 'packages'} (${fmt(builds)} ${builds === 1 ? 'build' : 'builds'})">stops ${fmt(packages)}</span>${raw(isRow ? '</a>' : '</span>')}</li>`,
     )}</ol>
+    <a class="hl-all" href="${scopeHref({ view: 'blocked' })}" data-card-view="blocked">Show all ${fmt(b.packages)} <span aria-hidden="true">→</span></a>
   </section>`;
 }
 
@@ -1413,7 +1423,9 @@ function listHeaderHtml() {
             ? setFilter
             : path === 'views/broken.json'
               ? 'Marked broken'
-              : 'Needs attention';
+              : path === 'views/blocked.json'
+                ? 'Blocked by a dependency'
+                : 'Needs attention';
   return html`<div class="scope-view">
       <span class="scope-label">Showing</span>
       <span class="view-chip">${what} · ${fmt(shownCount)}<a class="view-x" href="${scopeHref({})}" data-scope-home aria-label="Back to the overview" title="Back to the overview">✕</a></span>

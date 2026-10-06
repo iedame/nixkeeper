@@ -428,6 +428,8 @@ def views(rows, out):
       views/attention.json: failing, outdated or flagged vulnerable (not
         pending)
       views/broken.json: marked broken in nixpkgs (not pending)
+      views/blocked.json: a build of it not tried, as a dependency failed
+        (pending ones too, as the overview's blockers count them)
       views/maintainer/<handle>.json: a maintainer's (lowercase handle),
         and none.json those with no maintainer (not pending)
       views/team/<slug>.json, views/list/<slug>.json, views/set/<name>.json
@@ -473,6 +475,8 @@ def views(rows, out):
         for b in row.get("builds") or []:
             if b["status"] != "dependency":
                 continue
+            if found.get("views/blocked.json", [None])[-1] is not row:
+                put("views/blocked.json", row)
             for blocker in b.get("blockedBy") or []:
                 stops = blockers.setdefault(
                     blocker["name"], [bool(blocker.get("row")), set(), 0]
@@ -540,11 +544,12 @@ def views(rows, out):
         "counts": counts,
         "highlights": {kind: highlights(found) for kind, found in ages.items()},
         # The overview's "Blocking the most": how many dependencies stop
-        # others' builds, how many packages they stop, and the HIGHLIGHTS
+        # others' builds, how many packages have a build stopped (the
+        # blocked view's: its blockers read or not yet), and the HIGHLIGHTS
         # that stop the most, [name, row?, packages, builds].
         "blockers": {
             "count": len(blockers),
-            "packages": len({n for _, names, _ in blockers.values() for n in names}),
+            "packages": len(found.get("views/blocked.json", [])),
             "top": [
                 [name, is_row, len(names), builds]
                 for name, (is_row, names, builds) in top[:HIGHLIGHTS]
@@ -553,6 +558,7 @@ def views(rows, out):
         "views": {
             "attention": len(found.get("views/attention.json", [])),
             "broken": len(found.get("views/broken.json", [])),
+            "blocked": len(found.get("views/blocked.json", [])),
             # (In the file, by name with capitals first, as its keys sort: the
             # page sorts them its way.)
             "teams": dict(sorted(teams.items())),

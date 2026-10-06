@@ -75,6 +75,31 @@ class Answer(unittest.TestCase):
             hydra_digest.answer(row("x", "dependency", "10", last=last), False, None),
         )
 
+    def test_which_dependency_failed_without_a_last_success(self):
+        # Never built: Hydra is asked (answer None), but every package's
+        # bulk answer keeps which dependency failed, and so do Hydra's
+        # answers for the same build (sync.ask_hydra).
+        blocked = {**row("mealie", "dependency", "10"), "blockedBy": "pypdf"}
+        self.assertIsNone(hydra_digest.answer(blocked, False, None))
+        job = ("mealie", "x86_64-linux")
+        found = hydra_digest.bulk_answers({job: blocked}, [job], {}, {})
+        self.assertEqual(
+            (found[job]["status"], found[job]["blockedBy"]), ("dependency", ["pypdf"])
+        )
+        hydra_says = {"attr": "mealie", "status": "dependency", "build": 10}
+        self.assertEqual(
+            hydra_digest.with_blockers({job: dict(hydra_says)}, {job: blocked})[job][
+                "blockedBy"
+            ],
+            ["pypdf"],
+        )
+        # Another build than the digest's (Hydra's is newer): not its blockers.
+        newer = {job: {**hydra_says, "build": 11}}
+        self.assertNotIn(
+            "blockedBy", hydra_digest.with_blockers(newer, {job: blocked})[job]
+        )
+        self.assertEqual(hydra_digest.with_blockers(newer, None), newer)
+
     def test_failing_without_one_is_asked(self):
         self.assertIsNone(
             hydra_digest.answer(row("x", "dependency", "10"), False, None)
@@ -226,6 +251,24 @@ class AskHydra(unittest.TestCase):
         self.assertEqual(fetched[("a", "x86_64-linux")]["build"], 1)
         # b is queued in the digest, c isn't in it (and new): Hydra for both.
         self.assertEqual(sorted(asked), [("b", "x86_64-linux"), ("c", "x86_64-linux")])
+
+    def test_hydras_answer_gets_the_digests_blockers(self):
+        digest = {
+            ("a", "x86_64-linux"): {**row("a", "dependency", "7"), "blockedBy": "b"},
+        }
+        hydra_says = {
+            ("a", "x86_64-linux"): {"attr": "a", "status": "dependency", "build": 7}
+        }
+        with (
+            mock.patch.object(nixpkgs_source, "broken", return_value={}),
+            mock.patch.object(hydra_digest, "load", return_value=digest),
+            mock.patch.object(hydra, "fetch", return_value=hydra_says),
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            _, fetched = sync.ask_hydra(
+                ["a"], self.NIXPKGS, "rev", {"packages": []}, NOW
+            )
+        self.assertEqual(fetched[("a", "x86_64-linux")]["blockedBy"], ["b"])
 
     def test_without_a_digest_as_before(self):
         _, asked = self.ask(None)

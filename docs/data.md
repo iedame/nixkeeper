@@ -127,16 +127,19 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   `updateFailingSince`; `status` as in `names.json`);
 - `blockers` in `index.json`: the failing dependencies that stop others'
   builds, of every row (pending ones too, as zh.fail counts them): how many
-  there are (`count`), how many packages they stop (`packages`), and the 8
-  that stop the most (`top`), each `[name, row, packages, builds]`;
-- `views` in `index.json`: how many rows `attention` and `broken` have, the `teams` and
+  there are (`count`), how many packages have a build they stopped
+  (`packages`, as many as `blocked.json` has, whether nixkeeper-hydra has
+  read which dependency it was yet or not), and the 8 that stop the most
+  (`top`), each `[name, row, packages, builds]`;
+- `views` in `index.json`: how many rows `attention`, `broken` and `blocked` have, the `teams` and
   `lists` with their counts (`{ "Gaming": 12, ... }`), and the `sets`
   with how many packages each has, how many of them fail, and how many
   nixpkgs marks broken
   (`{ "haskellPackages": { "packages": 19423, "failed": 83, "broken": 7600 }, ... }`);
 - `views/`, each `{ "packages": [ ... ] }` of summary entries, sorted by
   name: `attention.json` (failing, outdated or flagged vulnerable, not
-  pending), `broken.json` (marked broken, not pending),
+  pending), `broken.json` (marked broken, not pending), `blocked.json` (a
+  build not tried because a dependency failed, pending ones too),
   `maintainer/<handle>.json` (the handle in lowercase; `none.json`: no
   maintainer, not pending), `team/<slug>.json` and `list/<slug>.json` (the
   name in lowercase, each run of other characters than letters and digits

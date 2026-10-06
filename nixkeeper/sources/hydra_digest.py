@@ -96,6 +96,31 @@ def load(now):
     return rows
 
 
+def blocked_by(row):
+    """Which dependency failed, for a dependency-failed digest row whose page
+    the digest has read: {"blockedBy": [nixpkgs attributes, or store names
+    no job builds (rows.name_blockers names them)]}, else {}."""
+    if row["status"] == "dependency" and row.get("blockedBy"):
+        return {"blockedBy": row["blockedBy"].split()}
+    return {}
+
+
+def with_blockers(results, digest):
+    """results (Hydra's answers by job) with the digest's blockedBy added to
+    each dependency-failed one of the same build: Hydra doesn't say which
+    dependency failed, and a job the digest can't answer whole (its last
+    success unknown) is asked there."""
+    for job, result in results.items():
+        row = (digest or {}).get(job)
+        if (
+            row
+            and result.get("status") == "dependency"
+            and str(result.get("build")) == row["build"]
+        ):
+            result.update(blocked_by(row))
+    return results
+
+
 def answer(row, broken, before):
     """A job's result from its digest row, as hydra.check gives it, or None
     when the digest can't say: the job is queued there, or its build isn't
@@ -112,10 +137,7 @@ def answer(row, broken, before):
     }
     if row["name"]:
         result["name"] = row["name"]
-    if row["status"] == "dependency" and row.get("blockedBy"):
-        # Which dependency failed, when the digest has read its page: nixpkgs
-        # attributes, or store names no job builds (blockers names them).
-        result["blockedBy"] = row["blockedBy"].split()
+    result.update(blocked_by(row))
     if broken or row["status"] != "ok":
         if row["status"] == "ok":  # broken, but built: that's its last success
             last = {
@@ -194,6 +216,7 @@ def bulk_answers(digest, wanted, broken, before):
             }
             if row["name"]:
                 result["name"] = row["name"]
+            result.update(blocked_by(row))
         if result is None:
             result = (
                 {k: v for k, v in old.items() if k != "checkedAt"}
