@@ -15,7 +15,7 @@ import urllib.error
 from datetime import datetime, timedelta
 
 from .. import config
-from . import http
+from . import about, http
 
 FORMAT = 1
 
@@ -39,6 +39,7 @@ def load(now):
         if not meta or meta.get("format") != FORMAT:
             raise ValueError(f"no digest in a format this nixkeeper reads ({base})")
         if not current(meta, now):
+            about.note("updates", False, "too old", at=meta["fetchedAt"])
             print(
                 f"::warning::Updates digest: not used, it's from {meta['fetchedAt']}; "
                 "reading the logs per package",
@@ -54,6 +55,7 @@ def load(now):
                 entry = json.loads(line)
                 found[entry.pop("attr")] = entry
     except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+        about.note("updates", False, f"couldn't be read ({e})")
         print(
             f"::warning::Updates digest: couldn't use it ({e}); reading the logs "
             "per package",
@@ -65,6 +67,7 @@ def load(now):
         f"({meta.get('pending', 0):,} attempts not read yet)",
         file=sys.stderr,
     )
+    about.note("updates", True, at=meta["fetchedAt"], pending=meta.get("pending", 0))
     return found
 
 

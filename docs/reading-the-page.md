@@ -60,6 +60,13 @@ too, `?page=2`). Changing a filter, the search or the order goes back to the
 first page. The browser's find (Ctrl+F) only sees the page shown: the search
 box looks through every package.
 
+**Where the data is from**: "checked … ago", at the top, opens when each
+source's data is from: the daily sync, the Hydra evaluation its builds are
+from, when Repology's versions and nixpkgs-update's attempts were read (and
+how many attempts are still to read), the nixpkgs commit. A source the sync
+didn't use (too old, or it couldn't be read) says so in yellow: its
+packages were then asked about one by one instead.
+
 **The dot** in front of each package (hover it for what it means, or open
 the `?` next to "checked" at the top for all of them):
 

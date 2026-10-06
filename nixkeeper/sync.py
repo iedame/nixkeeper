@@ -27,6 +27,7 @@ from . import (
 )
 from .changes import count_master, is_outdated
 from .sources import (
+    about,
     github,
     github_bulk,
     hydra,
@@ -99,7 +100,12 @@ def main():
         )
     wanted = {**bulk, **listed}
     bulk_attrs = {a for attrs, _ in bulk.values() for a in attrs if a in nixpkgs}
+    about.taken()  # a run's sources only (a test may have run one before)
     revision = nixpkgs_source.channel_revision()
+    if revision == config.NIXPKGS_BRANCH:  # not fetched: links use the branch
+        about.note("nixpkgs", False, "the channel's revision couldn't be read")
+    else:
+        about.note("nixpkgs", True, revision=revision)
     # Hydra is the slowest source (a request or more per package and
     # platform): asked from here, in the background, while the others are.
     # Each server is still asked one request at a time; only the waiting
@@ -178,7 +184,12 @@ def main():
     # Open PR/issue counts and open update PRs: from one listing of all of
     # nixpkgs' open ones (github_bulk), else searched per package (the
     # lists' only). Not for pending rows: their sets are updated as a whole.
-    if not github_bulk.add_counts(shown, now):
+    if github_bulk.add_counts(shown, now):
+        about.note("github", True)  # listed during the sync
+    else:
+        about.note(
+            "github", False, "no token, or the listing failed: searched per package"
+        )
         github.add_counts(on_lists, previous, now)
     outdated = [row for row in shown if is_outdated(row)]
     # Update PRs merged into master, not in the channel yet: likewise.
@@ -198,6 +209,9 @@ def main():
         index["listProblems"] = problems
     if page := listcheck.page_settings(lists):
         index["page"] = page  # the page's default theme
+    # Where the data is from: each digest's time, used or not (the page's
+    # "checked" panel). Hydra's is noted in the background: done by now.
+    index["sources"] = about.taken()
     datastore.write(
         index,
         datastore.kept_entries(projects, index_rows),

@@ -64,6 +64,27 @@ The page shows them above the table. `page`, only when the lists set it,
 holds the page's settings: `{ "theme": "catppuccin" }` is
 its default palette.
 
+`sources` says where the last full sync's data came from, by source:
+whether it was used (`used`), and if not, why (`why`: too old, or couldn't
+be read; the sync then asked per package instead). `hydra` has the
+evaluation its builds are from (`eval`) and when nixkeeper-hydra read it
+(`at`); `versions`, when nixkeeper-versions last read the outdated projects
+(`at`); `updates`, when nixkeeper-updates made its digest (`at`) and how
+many attempts it hasn't read yet (`pending`); `nixpkgs`, the channel's
+commit (`revision`); `github`, whether the open PRs were listed in one go.
+A source that's turned off isn't there; data from before 0.12.0 has none.
+The page shows them under "checked … ago".
+
+```json
+"sources": {
+  "hydra": { "used": true, "at": "2026-10-05T13:41:00+00:00", "eval": 1829853 },
+  "versions": { "used": false, "why": "too old", "at": "2026-10-03T04:20:00+00:00" },
+  "updates": { "used": true, "at": "2026-10-05T12:30:00+00:00", "pending": 1204 },
+  "nixpkgs": { "used": true, "revision": "8f3a1c2…" },
+  "github": { "used": true }
+}
+```
+
 ## `summary.json`
 
 ```json

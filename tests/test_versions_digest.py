@@ -5,7 +5,7 @@ import unittest
 from unittest import mock
 
 from nixkeeper import config, lookup
-from nixkeeper.sources import http, versions_digest
+from nixkeeper.sources import about, http, versions_digest
 
 NOW = "2026-10-05T06:00:00+00:00"
 
@@ -78,6 +78,10 @@ class Load(unittest.TestCase):
         self.assertEqual(sorted(found), ["heroic", "tracy"])
         self.assertIn("Versions digest: 119,028 projects", out)
         self.assertIn("2 of 2 tracked attributes in it", out)
+        self.assertEqual(
+            about.taken()["versions"],
+            {"used": True, "at": "2026-10-05T04:20:00+00:00", "projects": 119028},
+        )
 
     def test_too_old_or_unreadable(self):
         found, out = self.load(self.meta("2026-10-03T04:20:00+00:00"))
@@ -86,6 +90,9 @@ class Load(unittest.TestCase):
         found, out = self.load({"format": 2, "outdatedAt": NOW, "projects": 1})
         self.assertIsNone(found)
         self.assertIn("couldn't use it", out)
+        noted = about.taken()["versions"]
+        self.assertFalse(noted["used"])
+        self.assertTrue(noted["why"].startswith("couldn't be read (no digest"))
         with mock.patch.object(config, "VERSIONS_DIGEST_URL", ""):
             self.assertIsNone(versions_digest.load(["tracy"], NOW))
 
