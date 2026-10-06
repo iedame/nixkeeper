@@ -988,7 +988,7 @@ const CHEVRON = raw(
 function rowHtml(pkg, i) {
   const st = computeStatus(pkg);
   return html`<tr class="row" tabindex="0" data-i="${i}">
-      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${pkg.name}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
+      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${breakableName(pkg.name)}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
       <td class="c-ver ver mono">${versionCell(pkg, st)}</td>
       <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
       <td class="c-build">${buildCell(pkg)}</td>
@@ -1890,6 +1890,13 @@ function githubLinks(pkg) {
       title="Open nixpkgs ${label} with ${term} in the title${counted}"${count === 0 ? raw(' data-zero') : ''}>${label}${count != null ? html` <b>${count}</b>` : ''}</a>`;
   };
   return html`<span class="gh-links">${link('pr', 'pulls', 'PRs', pkg.openPRs)}${link('issue', 'issues', 'issues', pkg.openIssues)}</span>`;
+}
+
+// A package's name, able to wrap after each dot (python313Packages. /
+// requests) and at its hyphens, as a long one would otherwise widen the
+// table past the screen for every row.
+function breakableName(name) {
+  return name.split('.').map((part, i) => (i ? html`.<wbr>${part}` : part));
 }
 
 // "…/pkgs/by-name/we/wesnoth/package.nix#L147" -> "package.nix"

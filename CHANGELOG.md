@@ -67,6 +67,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- The list no longer widens the page past the screen (scrolling it
+  sideways, the last column cut off) for a long package name or a long
+  version with badges beside it: a name wraps after a dot or at a hyphen
+  (`home-assistant-custom-components.` / `homematicip_local`), and the
+  badges under each other. With every package, "needs attention" was
+  1,400px wide in a 1,280px window.
 - Which dependency failed was left out for every build whose last success
   nixkeeper-hydra's digest doesn't know (one that never built, say): with
   every package, most of them (the overview counted 61 blocked packages

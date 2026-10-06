@@ -1329,10 +1329,12 @@ tbody tr.row td {
   gap: 10px;
   margin-left: -18px;
 }
+/* Wraps after a dot or at a hyphen only (breakableName): a long name
+   (home-assistant-custom-components.homematicip_local) would otherwise
+   widen the table past the screen. */
 .pkg-name .n {
   font-weight: 600;
   font-size: 14.5px;
-  white-space: nowrap;
 }
 /* Secondary to the name: the platforms as one small pill ("Linux ·
    macOS"). Each is still a button: a click filters by platform. */
@@ -1415,8 +1417,11 @@ button.plat[aria-pressed="true"] {
   align-items: center;
   gap: 3px 16px;
 }
+/* Badges wrap under each other rather than widening the column (a long
+   version with "older version" and "vulnerable" beside it). */
 .v-tags {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
   align-items: center;
   gap: 5px;
