@@ -1205,7 +1205,30 @@ function highlightsHtml() {
     </section>`;
   });
   return html`<p class="scope-label">Newest and longest-standing · fully checked</p>
-    <div class="hl-cols">${columns}</div>`;
+    <div class="hl-cols">${columns}${blockersHtml()}</div>`;
+}
+
+// The failing dependencies that stop the most packages' builds (the
+// manifest's blockers, from nixkeeper-hydra's blockedBy): fix one, and
+// they all build again. Of all of nixpkgs, as zh.fail counts them; not
+// with data from before, or before the digest has read any.
+function blockersHtml() {
+  const b = manifest.blockers;
+  if (!b?.count) return '';
+  return html`<section class="hl-card" style="--hl:var(--danger)" aria-label="Blocking the most">
+    <div class="hl-head">
+      <div class="hl-title" title="${fmt(b.count)} failing dependencies stop ${fmt(b.packages)} packages' builds, in all of nixpkgs"><span class="hl-label">Blocking the most</span><span class="hl-n">${fmt(b.packages)}</span></div>
+      <span class="hl-unit">packages stopped</span>
+    </div>
+    <ol class="hl-list">${b.top.map(
+      ([name, isRow, packages, builds]) =>
+        html`<li>${
+          isRow
+            ? html`<a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">`
+            : raw('<span class="hl-row">')
+        }<span class="status-dot missing"></span><span class="hl-name mono">${name}</span><span class="hl-age" title="Stops ${fmt(packages)} ${packages === 1 ? 'package' : 'packages'} (${fmt(builds)} ${builds === 1 ? 'build' : 'builds'})">stops ${fmt(packages)}</span>${raw(isRow ? '</a>' : '</span>')}</li>`,
+    )}</ol>
+  </section>`;
 }
 
 // Days of history the cards draw, and how many points before they do.
@@ -1642,6 +1665,8 @@ function buildCell(pkg) {
   // all, and then only meta.broken does (markedBroken).
   if (buildsWith(pkg, 'broken').length || pkg.markedBroken)
     return button('caution', 'marked broken');
+  // A dependency's failure stopped it: not its own, so not counted as failed.
+  if (buildsWith(pkg, 'dependency').length) return button('caution', 'blocked');
   if (!hydraBuildsIt(pkg)) return button('neutral', 'not built by Hydra', true);
   return button('ok', 'none reported', true);
 }
@@ -1762,6 +1787,19 @@ const BUILD_STATUS = {
   unknown: { dot: 'neutral', text: "couldn't check Hydra on the last run" },
 };
 
+// Which dependency stopped a build (nixkeeper-hydra's blockedBy): its
+// package, opening it (with every package), or the name Hydra gave it.
+function blockedByHtml(blockers) {
+  return html`blocked by ${blockers.map(
+    ({ name, row }, i) =>
+      html`${i ? ', ' : ''}${
+        row && community
+          ? html`<a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a>`
+          : html`<span class="mono">${name}</span>`
+      }`,
+  )} (its build failed)`;
+}
+
 function buildLine(pkg, b) {
   const s = BUILD_STATUS[b.status] || BUILD_STATUS.unknown;
   const multi = (pkg.attrs || []).length > 1;
@@ -1795,7 +1833,7 @@ function buildLine(pkg, b) {
     <span class="status-dot ${s.dot}"></span>
     <span class="mono sys">${b.system}</span>
     ${multi ? html`<span class="mono attr">${b.attr}</span>` : ''}
-    <span class="st ${s.dot}">${s.text}${at}</span>${links}
+    <span class="st ${s.dot}">${b.status === 'dependency' && b.blockedBy?.length ? blockedByHtml(b.blockedBy) : s.text}${at}</span>${links}
   </div>`;
 }
 

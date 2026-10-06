@@ -112,6 +112,10 @@ def answer(row, broken, before):
     }
     if row["name"]:
         result["name"] = row["name"]
+    if row["status"] == "dependency" and row.get("blockedBy"):
+        # Which dependency failed, when the digest has read its page: nixpkgs
+        # attributes, or store names no job builds (blockers names them).
+        result["blockedBy"] = row["blockedBy"].split()
     if broken or row["status"] != "ok":
         if row["status"] == "ok":  # broken, but built: that's its last success
             last = {

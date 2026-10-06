@@ -62,6 +62,9 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   narrowing them;
 - the newest and longest-standing build failures, outdated packages and
   update failures (a switch on each), and "show all" for the whole list;
+  and the failing packages **blocking the most** others: a build that
+  fails because one of its dependencies did, as zh.fail counts them in all
+  of nixpkgs (fix that one, and they all build again);
 - what was fixed in the last week: builds that work again, packages
   updated (from and to which version), and nixpkgs-update failures
   cleared, from the first daily sync with this on;
@@ -160,8 +163,9 @@ about it (`devel`, `vulnerable`, ...); beside the newest, the update's
 |---|---|
 | failure reported (pink) | its latest build failed on a platform: the panel links the log and says when it last built, and at which version |
 | marked broken (gold) | nixpkgs marks it broken on a platform (known, so not counted as failed) |
+| blocked (gold) | it didn't build because a dependency failed: not its own failure, so not counted as failed; the panel says which dependency (its package, to open), once nixkeeper-hydra has read the build |
 | not built by Hydra | unfree, or kept off Hydra by nixpkgs |
-| none reported | no failure of its own; a failed dependency or an unfinished build shows only in the panel |
+| none reported | no failure of its own; an unfinished build shows only in the panel |
 
 **Update failures** (the nixpkgs-update bot, r-ryantm; its latest attempt):
 
