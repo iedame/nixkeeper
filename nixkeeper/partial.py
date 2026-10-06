@@ -41,9 +41,13 @@ def publish(previous, packages, now, data_files=None):
         print("Nothing changed.", file=sys.stderr)
         return False
     # Every row's entries, for the shards: the last run's, or refreshed.
+    saved = datastore.saved_entries()
     entries = {}
     for row in packages:
         if row.get("dataFile") and row["dataFile"] not in entries:
+            if row["name"] in saved:
+                entries[row["dataFile"]] = saved[row["name"]]
+                continue
             try:
                 entries[row["dataFile"]] = datastore.entries(row)
             except (OSError, ValueError):
