@@ -30,7 +30,9 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   package it stops), vulnerable and marked broken, each with its change over
   the last week and a month's trend once there's a week of daily syncs; each
   opens its list;
-- a search box (a package's name, or `@handle`) and a team picker;
+- a search box (a package's name, or `@handle`) and a team picker; while
+  searching, the matches take the place of what follows, which comes back
+  once the search is cleared;
 - the newest and longest-standing build failures, outdated packages and
   update failures (a switch on each), and "show all" for the whole list;
 - the generated sets, each with its size and how much of it is marked

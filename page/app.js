@@ -909,9 +909,19 @@ function renderScope() {
   // Drawn again only when it changes (its history arrives, a team is
   // picked), not while someone types in its search box.
   const drawn = `${trendPoints?.length ?? -1}:${teamFilter || ''}:${Object.values(highlightShown)}`;
-  if (el.dataset.drawn === drawn) return;
-  el.dataset.drawn = drawn;
-  el.innerHTML = overviewHtml();
+  if (el.dataset.drawn !== drawn) {
+    el.dataset.drawn = drawn;
+    el.innerHTML = overviewHtml();
+  }
+  // While searching, the matches (drawn under the overview) get the room:
+  // the newest and longest-standing and the generated sets step aside, and
+  // come back once the search is cleared.
+  const query = document.getElementById('search').value;
+  const more = el.querySelector('.overview-more');
+  if (more) more.hidden = Boolean(query.trim());
+  // Typed in the top search: the overview's box says the same.
+  const box = document.getElementById('overviewSearch');
+  if (box && box !== document.activeElement && box.value !== query) box.value = query;
 }
 
 const fmt = (x) => (x || 0).toLocaleString();
@@ -1047,8 +1057,7 @@ function overviewHtml() {
         <input type="search" id="overviewSearch" class="find-input" placeholder="Find a package, or @maintainer" aria-label="Find a package, or @maintainer" value="${document.getElementById('search').value}"></label>
       ${teamPicker('Browse a team…')}
     </div>
-    ${highlightsHtml()}
-    ${setsHtml(sets)}`;
+    <div class="overview-more">${highlightsHtml()}${setsHtml(sets)}</div>`;
 }
 
 // The overview's generated sets: each one's size, and how much of it is

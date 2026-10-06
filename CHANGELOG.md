@@ -42,8 +42,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   nixpkgs (fully checked, and in generated sets): cards for the outdated,
   failing, vulnerable and broken packages with their weekly change and
   trend (`history.json`, from the first sync on), a search with a team
-  picker, the newest and longest-standing build failures, outdated
-  packages and update failures, and the generated sets with how much of
+  picker (its matches in place of what follows, while searching), the
+  newest and longest-standing build failures, outdated packages and update
+  failures, and the generated sets with how much of
   each is marked broken or failing; each opens a list (what needs
   attention, marked broken, a maintainer's, a team's, a generated set's,
   one package's), whose tiles count and filter it. Visitors can keep their

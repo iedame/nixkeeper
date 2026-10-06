@@ -649,6 +649,13 @@ a:focus-visible {
 .scope p.scope-label {
   margin: 4px 0 -4px;
 }
+.overview-more {
+  display: grid;
+  gap: 10px;
+}
+.overview-more[hidden] {
+  display: none;
+}
 .hl-cols {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
