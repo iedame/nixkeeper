@@ -11,6 +11,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Which dependency failed, from nixkeeper-hydra's digest (which reads each
+  dependency-failed build's page on Hydra, as zh.fail does): a build that
+  didn't build because a dependency failed says "blocked by" it, linking
+  its package; the list shows those packages as "blocked" (amber, not
+  counted as failed: before, "none reported"); and the overview lists the
+  failing packages blocking the most others, in all of nixpkgs. In the
+  data: `blockedBy` on such builds, `blockers` in `index.json`
+  (`docs/data.md`).
 - Marks on the overview's trends: each merge of staging-next into nixpkgs
   master (mass rebuilds: failing builds jump for days after), from GitHub's
   search; each nixkeeper update a sync ran; and each change in how

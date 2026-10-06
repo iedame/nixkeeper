@@ -186,6 +186,8 @@ def main():
         print("Waiting for Hydra's answers...", file=sys.stderr)
     broken, fetched = hydra_answers.result()
     hydra.add_builds(index_rows, nixpkgs, previous, now, broken, fetched)
+    # Which dependency stopped a build, as the rows are named (to link them).
+    rows.name_blockers(index_rows)
     # After the update checks and Hydra, before outdated-since: each can make
     # a row outdated (master, by having a newer version than the channel).
     for row in index_rows:

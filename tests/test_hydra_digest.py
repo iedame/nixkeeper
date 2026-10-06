@@ -56,6 +56,25 @@ class Answer(unittest.TestCase):
             ("2026-09-01T00:00:00+00:00", 5, "x-0.9"),
         )
 
+    def test_which_dependency_failed(self):
+        last = ("5", "2026-09-01T00:00:00+00:00", "mealie-1.0")
+        blocked = {
+            **row("mealie", "dependency", "10", last=last),
+            "blockedBy": "python314Packages.python-ldap source",
+        }
+        result = hydra_digest.answer(blocked, False, None)
+        self.assertEqual(
+            result["blockedBy"], ["python314Packages.python-ldap", "source"]
+        )
+        # Not read yet (empty), or a digest from before the column: nothing.
+        self.assertNotIn(
+            "blockedBy", hydra_digest.answer({**blocked, "blockedBy": ""}, False, None)
+        )
+        self.assertNotIn(
+            "blockedBy",
+            hydra_digest.answer(row("x", "dependency", "10", last=last), False, None),
+        )
+
     def test_failing_without_one_is_asked(self):
         self.assertIsNone(
             hydra_digest.answer(row("x", "dependency", "10"), False, None)

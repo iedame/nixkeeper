@@ -168,7 +168,9 @@ def summary_entry(row):
     entry = {k: v for k, v in row.items() if k not in PANEL_ONLY}
     if "builds" in row:
         entry["builds"] = [
-            {"status": b["status"], "system": b["system"]} for b in row["builds"]
+            {"status": b["status"], "system": b["system"]}
+            | ({"blockedBy": b["blockedBy"]} if b.get("blockedBy") else {})
+            for b in row["builds"]
         ]
     if row.get("update"):  # null (never tried) and missing (not in nixpkgs) kept
         entry["update"] = {"outcome": row["update"].get("outcome")}
@@ -466,8 +468,20 @@ def views(rows, out):
     # Since when each fully checked row has been failing, outdated, failing
     # its update attempts: the overview's newest and oldest of each.
     ages = {"failing": [], "outdated": [], "updateFailing": []}
+    # Which dependencies stop the most packages' builds (of every row, pending
+    # ones too, as zh.fail counts them): {name: [row?, {packages}, builds]}.
+    blockers = {}
     for row in rows:
         letter = status(row)
+        for b in row.get("builds") or []:
+            if b["status"] != "dependency":
+                continue
+            for blocker in b.get("blockedBy") or []:
+                stops = blockers.setdefault(
+                    blocker["name"], [bool(blocker.get("row")), set(), 0]
+                )
+                stops[1].add(row["name"])
+                stops[2] += 1
         # Hydra jobs that didn't build, on every platform, of every row
         # (pending ones too): failing builds as zh.fail counts them.
         counts["failingBuilds"] += sum(
@@ -524,9 +538,21 @@ def views(rows, out):
     out["maintainers.json"] = {
         "maintainers": [maintainers[key] for key in sorted(maintainers)]
     }
+    top = sorted(blockers.items(), key=lambda kv: (-len(kv[1][1]), -kv[1][2], kv[0]))
     return {
         "counts": counts,
         "highlights": {kind: highlights(found) for kind, found in ages.items()},
+        # The overview's "Blocking the most": how many dependencies stop
+        # others' builds, how many packages they stop, and the HIGHLIGHTS
+        # that stop the most, [name, row?, packages, builds].
+        "blockers": {
+            "count": len(blockers),
+            "packages": len({n for _, names, _ in blockers.values() for n in names}),
+            "top": [
+                [name, is_row, len(names), builds]
+                for name, (is_row, names, builds) in top[:HIGHLIGHTS]
+            ],
+        },
         "views": {
             "attention": len(found.get("views/attention.json", [])),
             "broken": len(found.get("views/broken.json", [])),

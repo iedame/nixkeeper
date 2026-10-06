@@ -9,6 +9,7 @@ import unittest
 from unittest import mock
 
 from nixkeeper import config, datastore, history, sync, tracking
+from nixkeeper import rows as rows_module
 from nixkeeper.lookup import collect_projects
 from nixkeeper.rows import build_rows
 from nixkeeper.sources import github, hydra_digest, nixpkgs_update
@@ -788,3 +789,80 @@ class TrendEvents(unittest.TestCase):
                 events=kept,
             )
             self.assertEqual(datastore.read_events(out), kept)
+
+
+class Blockers(unittest.TestCase):
+    """Which dependency stopped a build (nixkeeper-hydra's blockedBy): named
+    as the rows are, and counted for the overview's "Blocking the most"."""
+
+    def test_named_as_the_rows_are(self):
+        rows = [
+            row(
+                "python313Packages.python-ldap",
+                attrs=[
+                    "python313Packages.python-ldap",
+                    "python314Packages.python-ldap",
+                ],
+            ),
+            row(
+                "mealie",
+                builds=[
+                    {
+                        "status": "dependency",
+                        "system": "x86_64-linux",
+                        "blockedBy": ["python314Packages.python-ldap", "source"],
+                    }
+                ],
+            ),
+        ]
+        rows_module.name_blockers(rows)
+        self.assertEqual(
+            rows[1]["builds"][0]["blockedBy"],
+            [
+                {"name": "python313Packages.python-ldap", "row": True},
+                {"name": "source"},
+            ],
+        )
+        rows_module.name_blockers(rows)  # a second time: unchanged
+        self.assertEqual(rows[1]["builds"][0]["blockedBy"][1], {"name": "source"})
+
+    def test_counted_and_kept_in_the_list(self):
+        ldap = {"name": "python-ldap", "row": True}
+
+        def blocked(*systems, by=ldap):
+            return [
+                {"status": "dependency", "system": s, "blockedBy": [by]}
+                for s in systems
+            ]
+
+        rows = [
+            row("mealie", builds=blocked("x86_64-linux", "aarch64-linux")),
+            row("conpass", builds=blocked("x86_64-linux")),
+            row(
+                "haskellPackages.x",
+                pending=True,
+                set="haskellPackages",
+                builds=blocked("x86_64-linux", by={"name": "source"}),
+            ),
+            row(
+                "python-ldap",
+                builds=[
+                    {
+                        "attr": "python-ldap",
+                        "status": "failed",
+                        "system": "x86_64-linux",
+                    }
+                ],
+            ),
+        ]
+        out = {}
+        found = datastore.views(rows, out)["blockers"]
+        self.assertEqual(found["count"], 2)
+        self.assertEqual(found["packages"], 3)  # pending ones too
+        self.assertEqual(
+            found["top"], [["python-ldap", True, 2, 3], ["source", False, 1, 1]]
+        )
+        self.assertEqual(
+            datastore.summary_entry(rows[0])["builds"][0],
+            {"status": "dependency", "system": "x86_64-linux", "blockedBy": [ldap]},
+        )

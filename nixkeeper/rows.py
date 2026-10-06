@@ -22,6 +22,21 @@ DEVEL_NAME = re.compile(
 )
 
 
+def name_blockers(rows):
+    """Each dependency-failed build's blockedBy (the digest's: attributes,
+    or store names no job builds) as the page links them: [{"name": the
+    row named by that attribute, or the attribute or name as it is,
+    "row": true when it's a row}]."""
+    by_attr = {a: row["name"] for row in rows for a in row.get("attrs") or []}
+    for row in rows:
+        for build in row.get("builds") or []:
+            if build.get("blockedBy") and isinstance(build["blockedBy"][0], str):
+                build["blockedBy"] = [
+                    {"name": by_attr[a], "row": True} if a in by_attr else {"name": a}
+                    for a in build["blockedBy"]
+                ]
+
+
 def row_name(attrs):
     """The attribute a row is named after: the first top-level one, else the
     first (cmake, not azure-sdk-for-cpp.cmake, a set passing it on)."""

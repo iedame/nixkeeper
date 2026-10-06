@@ -131,6 +131,10 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   how many there are, and the 8 most recent and 8 longest-standing, each
   `[name, since, status]` (from `failingSince`, `outdatedSince`,
   `updateFailingSince`; `status` as in `names.json`);
+- `blockers` in `index.json`: the failing dependencies that stop others'
+  builds, of every row (pending ones too, as zh.fail counts them): how many
+  there are (`count`), how many packages they stop (`packages`), and the 8
+  that stop the most (`top`), each `[name, row, packages, builds]`;
 - `views` in `index.json`: how many rows `attention` and `broken` have, the `teams` and
   `lists` with their counts (`{ "Gaming": 12, ... }`), and the `sets`
   with how many packages each has, how many of them fail, and how many
@@ -265,6 +269,7 @@ branch it targets), and `from` / `to` (the versions in its title,
 |---|---|
 | `attr`, `system` | the job |
 | `status` | `ok`, `failed`, `dependency` (a dependency failed), `unfinished` (timed out, aborted, ...), `notBuilt` (Hydra has no build), `broken` (nixpkgs marks it broken there), or `unknown` (Hydra couldn't be reached and there's no earlier result) |
+| `blockedBy` | for a `dependency` build, which dependency failed, when nixkeeper-hydra's digest has read its page: `[{ "name", "row"? }]`, the row of that package (`row`: `true`; by its name here), or the name Hydra gave it when no job builds it (`source`, a download) |
 | `build` | the latest build's id: `https://hydra.nixos.org/build/<id>` |
 | `name`, `version` | what that build built (`wesnoth-devel-1.19.28`), and its version |
 | `lastSuccess` | when it last built successfully, when the latest build didn't; `null` if it never did |
