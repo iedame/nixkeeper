@@ -171,9 +171,9 @@
           );
           meta.description = "Retake the page's screenshots in assets/screenshots/ (-- --browser <name or path>; --help for the options)";
         };
-        # Starts the community instance's runs through GitHub's API, hourly
+        # Starts an instance's runs through GitHub's API, hourly
         # from a machine that's always on (scripts/start-runs.sh; the
-        # nix-darwin agent in docs/all-packages.md).
+        # nix-darwin agent and NixOS timer in docs/all-packages.md).
         start-runs = pkgs.writeShellApplication {
           name = "nixkeeper-start-runs";
           runtimeInputs = with pkgs; [

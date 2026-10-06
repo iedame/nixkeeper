@@ -54,29 +54,54 @@ team, in their browser. See [reading the page](reading-the-page.md).
 GitHub runs scheduled workflows on a best-effort basis and skips runs when
 it's busy: some days the hourly digests ran a handful of times. Any machine
 that stays on can start them on time instead, through GitHub's API:
-`nix run .#start-runs`, hourly a little after the hour, starts each
-digest's run when it's due and the daily sync at 06 UTC
-([scripts/start-runs.sh](../scripts/start-runs.sh); `-- --dry-run` shows
-which, without starting anything). The workflows keep their own schedules
-as a fallback: a run started twice finds nothing new, or stops at once.
+`nix run .#start-runs`, hourly at :15 UTC, starts the daily sync at 06 UTC
+and each digest's run when it's due
+([scripts/start-runs.sh](../scripts/start-runs.sh) lists when; `-- --dry-run`
+shows what it would start now, without starting anything). The workflows
+keep their own schedules as a fallback: a run started twice finds nothing
+new, or stops at once.
 
 It needs a [fine-grained token](https://github.com/settings/personal-access-tokens/new)
-for the four repositories (nixkeeper and the three digests) with only
-**Actions: read and write**: it can start and cancel runs, nothing else.
-On a Mac, keep it in the Keychain (this asks for it):
+for the repositories it starts runs in, with only **Actions: read and
+write**: it can start and cancel runs, nothing else.
+
+### Whose runs
+
+By default it starts iedame's: the community instance's daily sync and the
+three digests. Elsewhere, two variables say which:
+
+- `NIXKEEPER_START_REPO`: your nixkeeper repository (`you/nixkeeper`),
+  whose daily sync it starts; empty for none.
+- `NIXKEEPER_START_DIGESTS`: the owner of the digest repositories whose
+  runs it starts; empty for none. A fork reads iedame's digests (unless
+  you point `NIXKEEPER_*_DIGEST` at your own), which iedame keeps
+  running: leave them out.
+
+So for a fork, `NIXKEEPER_START_REPO=you/nixkeeper` and
+`NIXKEEPER_START_DIGESTS=` (empty), with a token for your nixkeeper
+repository only. Your fork's daily sync also catches up at 14:00 UTC on
+its own when the one at 06:00 was skipped, so this is optional for a fork.
+
+### On macOS, with nix-darwin
+
+Keep the token in the Keychain (this asks for it):
 
 ```bash
 security add-generic-password -a "$USER" -s nixkeeper-start-runs -w
 ```
 
-(elsewhere, in a file named by `NIXKEEPER_START_TOKEN_FILE`), and run it
-from nix-darwin, with nixkeeper as a flake input:
+and run it as a launchd agent, with nixkeeper as a flake input:
 
 ```nix
 launchd.user.agents.nixkeeper-start-runs.serviceConfig = {
   ProgramArguments = [
     (lib.getExe inputs.nixkeeper.packages.${pkgs.stdenv.hostPlatform.system}.start-runs)
   ];
+  # For a fork (see above):
+  # EnvironmentVariables = {
+  #   NIXKEEPER_START_REPO = "you/nixkeeper";
+  #   NIXKEEPER_START_DIGESTS = "";
+  # };
   StartCalendarInterval = [ { Minute = 15; } ]; # hourly, at :15
   StandardOutPath = "/Users/you/Library/Logs/nixkeeper-start-runs.log";
   StandardErrorPath = "/Users/you/Library/Logs/nixkeeper-start-runs.log";
@@ -86,6 +111,42 @@ launchd.user.agents.nixkeeper-start-runs.serviceConfig = {
 A user agent runs while that user is logged in (the Keychain is theirs).
 launchd's minute is the Mac's local time: in a time zone with a
 half-hour offset, choose the minute that's :15 in UTC (45 for UTC+5:30).
+
+### On Linux, with NixOS
+
+Keep the token in a file only root can read (say
+`/etc/nixkeeper/start-runs-token`, mode 600), and run it from a systemd
+timer, with nixkeeper as a flake input. systemd hands the token to the
+service as a credential, so the service runs as a throwaway user that
+can read nothing else:
+
+```nix
+systemd.services.nixkeeper-start-runs = {
+  serviceConfig = {
+    Type = "oneshot";
+    DynamicUser = true;
+    LoadCredential = "token:/etc/nixkeeper/start-runs-token";
+    ExecStart = lib.getExe inputs.nixkeeper.packages.${pkgs.stdenv.hostPlatform.system}.start-runs;
+  };
+  # For a fork (see above):
+  # environment = {
+  #   NIXKEEPER_START_REPO = "you/nixkeeper";
+  #   NIXKEEPER_START_DIGESTS = "";
+  # };
+};
+systemd.timers.nixkeeper-start-runs = {
+  wantedBy = [ "timers.target" ];
+  timerConfig.OnCalendar = "*-*-* *:15:00 UTC"; # hourly, at :15 UTC
+};
+```
+
+Its output is in the journal (`journalctl -u nixkeeper-start-runs`).
+
+### Elsewhere
+
+Any scheduler that runs `nixkeeper-start-runs` hourly at :15 UTC will do
+(cron, say), with the token in a file named by
+`NIXKEEPER_START_TOKEN_FILE`.
 
 ## What it costs
 

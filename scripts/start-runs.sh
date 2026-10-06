@@ -1,29 +1,34 @@
 # shellcheck shell=bash
-# Starts the community instance's runs through GitHub's API (workflow
+# Starts a nixkeeper instance's runs through GitHub's API (workflow
 # dispatch), from a machine that's always on: GitHub's own schedule is
 # best-effort and skips runs when it's busy (nixkeeper-hydra's hourly digest
-# ran 3 times on 2026-10-06). Run it hourly, a little after the hour (the
-# nix-darwin agent in docs/all-packages.md runs it at :15); by the hour in
-# UTC it starts:
+# ran 3 times on 2026-10-06). Run it hourly at :15 UTC (the nix-darwin agent
+# and NixOS timer in docs/all-packages.md); by the hour in UTC it starts:
 #
-#   every hour      nixkeeper-hydra's digest (stops early with no newer evaluation)
-#   every 3 hours   nixkeeper-updates' digest
-#   04 UTC          nixkeeper-versions' digest, if its last run is over 12 hours old
-#   06 UTC          nixkeeper's daily sync, if the last sync is over 12 hours old
+#   06 UTC          the daily sync of NIXKEEPER_START_REPO (default
+#                   iedame/nixkeeper), if the last sync is over 12 hours old
+#
+# and the digests in NIXKEEPER_START_DIGESTS' repositories (default iedame;
+# empty for none: a fork reads iedame's digests, run by iedame):
+#
+#   every hour      nixkeeper-hydra's (stops early with no newer evaluation)
+#   every 3 hours   nixkeeper-updates'
+#   04 UTC          nixkeeper-versions', if its last run is over 12 hours old
 #
 # The workflows keep their own schedules as a fallback: a run started twice
 # (by both) either waits for the other and finds nothing new, or stops at
 # once (if_older).
 #
-# The token: a fine-grained one for the four repositories with only
-# "Actions: read and write" (it can start and cancel runs, nothing else), in
-# NIXKEEPER_START_TOKEN_FILE or else the macOS Keychain item
-# "nixkeeper-start-runs". --dry-run prints what it would start, without one.
-# NIXKEEPER_START_OWNER: whose repositories (default iedame).
+# The token: a fine-grained one for those repositories with only "Actions:
+# read and write" (it can start and cancel runs, nothing else), from the
+# file NIXKEEPER_START_TOKEN_FILE, else systemd's credential "token"
+# (LoadCredential), else the macOS Keychain item "nixkeeper-start-runs".
+# --dry-run prints what it would start, without one.
 
 set -euo pipefail
 
-owner=${NIXKEEPER_START_OWNER:-iedame}
+repo=${NIXKEEPER_START_REPO-iedame/nixkeeper}
+digests=${NIXKEEPER_START_DIGESTS-iedame}
 dry_run=false
 case "${1:-}" in
 --dry-run) dry_run=true ;;
@@ -39,44 +44,54 @@ token=
 if ! $dry_run; then
   if [ -n "${NIXKEEPER_START_TOKEN_FILE:-}" ]; then
     token=$(<"$NIXKEEPER_START_TOKEN_FILE")
-  else
+  elif [ -n "${CREDENTIALS_DIRECTORY:-}" ] && [ -f "$CREDENTIALS_DIRECTORY/token" ]; then
+    token=$(<"$CREDENTIALS_DIRECTORY/token")
+  elif [ -x /usr/bin/security ]; then
     token=$(/usr/bin/security find-generic-password -s nixkeeper-start-runs -w)
+  else
+    echo "No token: set NIXKEEPER_START_TOKEN_FILE, or LoadCredential=token:<file>." >&2
+    exit 2
   fi
 fi
 
 failed=0
 start() {
-  local repo=$1 workflow=$2 inputs=${3:-"{}"}
+  local target=$1 workflow=$2 inputs=${3:-"{}"}
   local stamp
   stamp=$(date -u +%Y-%m-%dT%H:%M:%SZ)
   if $dry_run; then
-    echo "$stamp would start $owner/$repo $workflow $inputs"
+    echo "$stamp would start $target $workflow $inputs"
     return
   fi
   local code
-  code=$(curl --silent --show-error --max-time 30 --output /dev/null \
-    --write-out '%{http_code}' --request POST \
-    --header "Authorization: Bearer $token" \
-    --header "Accept: application/vnd.github+json" \
-    --header "X-GitHub-Api-Version: 2022-11-28" \
-    --data "{\"ref\":\"main\",\"inputs\":$inputs}" \
-    "https://api.github.com/repos/$owner/$repo/actions/workflows/$workflow/dispatches") || code="no answer"
+  # The token's header from stdin (--config -), not the command line, where
+  # anyone on the machine could read it (ps).
+  code=$(printf 'header = "Authorization: Bearer %s"\n' "$token" |
+    curl --config - --silent --show-error --max-time 30 --output /dev/null \
+      --write-out '%{http_code}' --request POST \
+      --header "Accept: application/vnd.github+json" \
+      --header "X-GitHub-Api-Version: 2022-11-28" \
+      --data "{\"ref\":\"main\",\"inputs\":$inputs}" \
+      "https://api.github.com/repos/$target/actions/workflows/$workflow/dispatches") ||
+    code="no answer"
   if [ "$code" = 204 ]; then
-    echo "$stamp started $owner/$repo $workflow"
+    echo "$stamp started $target $workflow"
   else
-    echo "$stamp FAILED to start $owner/$repo $workflow: $code" >&2
+    echo "$stamp FAILED to start $target $workflow: $code" >&2
     failed=1
   fi
 }
 
-start nixkeeper-hydra digest.yml
-if ((hour % 3 == 0)); then
-  start nixkeeper-updates digest.yml
+if [ -n "$digests" ]; then
+  start "$digests/nixkeeper-hydra" digest.yml
+  if ((hour % 3 == 0)); then
+    start "$digests/nixkeeper-updates" digest.yml
+  fi
+  if ((hour == 4)); then
+    start "$digests/nixkeeper-versions" digest.yml '{"if_older":"12"}'
+  fi
 fi
-if ((hour == 4)); then
-  start nixkeeper-versions digest.yml '{"if_older":"12"}'
-fi
-if ((hour == 6)); then
-  start nixkeeper data-daily.yml '{"if_older":"12"}'
+if [ -n "$repo" ] && ((hour == 6)); then
+  start "$repo" data-daily.yml '{"if_older":"12"}'
 fi
 exit "$failed"
