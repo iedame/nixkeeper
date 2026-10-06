@@ -89,8 +89,9 @@ The page shows them under "checked … ago".
 
 One entry per row, sorted by name: the row (below) without what only its
 details show (`dataFile`, `homepage`, `repoCount`, `repologyCheckedAt`,
-`source`), its `queued` with only the versions (`{ "to": ["4.22.7"] }`, when
-there are any), its builds with only `status` and `system`, its `update` with only
+`source`), its `queued` with only the versions and whether the bot runs its
+updateScript (`{ "to": ["4.22.7"], "script": true }`, when there's either),
+its builds with only `status` and `system`, its `update` with only
 `outcome` (still `null` when the bot never tried, missing when it isn't in
 nixpkgs), and its `upstream` with only `version`, `newer`, `community` and
 `inferred`.
@@ -288,7 +289,7 @@ Only `failed` counts as a failure.
 |---|---|
 | `update` | the bot's latest attempt (below), or `null` if it never tried |
 | `updateFailure` | whether that attempt counts as a failure |
-| `queued` | when the bot will try it again, from its queue: `{ "by": "2026-10-12", "candidates": [["4.22.7", "https://github.com/…/releases"], …] }`, the day it's expected (its place in the queue as a share of the queue's cycle) and the versions it would update to that nixpkgs doesn't have, with where it found each (nothing makes the row outdated: the bot's pick can be wrong). Missing when it isn't in the queue (the bot sees nothing to update it to) or there's no queue (`sources.queue`) |
+| `queued` | when the bot will try it again, from its queue: `{ "by": "2026-10-12", "candidates": [["4.22.7", "https://github.com/…/releases"], …] }`, the day it's expected (its place in the queue as a share of the queue's cycle) and the versions it would update to that nixpkgs doesn't have, with where it found each (nothing makes the row outdated: the bot's pick can be wrong), and `"script": true` when it also runs the package's updateScript (which decides the version). Missing when it isn't in the queue (the bot sees nothing to update it to) or there's no queue (`sources.queue`) |
 
 `update`:
 

@@ -175,6 +175,8 @@ class Queue(unittest.TestCase):
         self.assertEqual(found["unciv"]["by"], "2026-10-10")  # half a cycle
         self.assertEqual(found["python3Packages.requests"]["by"], "2026-10-15")
         self.assertEqual(found["unciv-beta"]["candidates"], [])
+        self.assertTrue(found["unciv-beta"]["script"])
+        self.assertFalse(found["unciv"]["script"])
         self.assertEqual(
             about.taken()["queue"],
             {"used": True, "at": "2026-10-05T12:00:00+00:00", "cycleDays": 10.0},
@@ -220,7 +222,8 @@ class Queue(unittest.TestCase):
                 ],
             },
         )
-        self.assertEqual(requests["queued"], {"by": "2026-10-15"})
+        # Its updateScript only: no version, the script decides.
+        self.assertEqual(requests["queued"], {"by": "2026-10-15", "script": True})
         for row in (hello, pending, gone):  # not in the queue, a set's, gone
             self.assertNotIn("queued", row)
         # Without a queue, nothing.
