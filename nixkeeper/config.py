@@ -146,6 +146,13 @@ NIXPKGS_SOURCE_URL = "https://github.com/NixOS/nixpkgs/blob/{revision}/{path}"
 _override = os.environ.get("REPOLOGY_BASE_URL")
 REPOLOGY_URLS = [_override] if _override else ["https://repology.org"]
 RETRY_DELAYS = [5, 15]  # seconds before each retry of a failed Repology request
+# The longest one answer may take to arrive in full, in seconds (http.py):
+# a request's own timeout only bounds each wait for the next bytes, so a
+# server sending a little at a time could otherwise hold a run for hours.
+# Past it, the request has failed (and is retried). Downloads (a digest, up
+# to about 12 MB) get longer: enough at 40 kB/s.
+FETCH_DEADLINE_SECONDS = 60
+DOWNLOAD_DEADLINE_SECONDS = 300
 # A server that answers "too many requests" or "unavailable" may say how long
 # to wait (Retry-After): nixkeeper waits that long, up to this many seconds.
 # Asked to wait longer, it gives that request up instead of stalling the run

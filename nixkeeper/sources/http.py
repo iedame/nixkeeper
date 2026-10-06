@@ -3,6 +3,7 @@ its own: it also falls back between domains)."""
 
 import email.utils
 import gzip
+import http.client
 import ipaddress
 import socket
 import sys
@@ -99,8 +100,29 @@ def get(url, accept=None, safe=False, compressed=False):
 
 def get_bytes(url):
     """The body of url as it is (a compressed file, say), retrying as get
-    does. Returns None on 404."""
+    does, with longer to arrive (DOWNLOAD_DEADLINE_SECONDS). Returns None on
+    404."""
     return _fetch(url, raw=True)[0]
+
+
+def _read(resp, deadline, limit=None):
+    """resp's body, read as it arrives, at most limit + 1 bytes (to tell it's
+    over limit); TimeoutError once time.monotonic() is past deadline, however
+    steadily it trickles in."""
+    if not isinstance(resp, http.client.HTTPResponse):
+        # Not from a socket (a test's): nothing to wait for.
+        return resp.read() if limit is None else resp.read(limit + 1)
+    chunks, size = [], 0
+    while limit is None or size <= limit:
+        if time.monotonic() > deadline:
+            raise TimeoutError("the answer took too long to arrive")
+        want = 65536 if limit is None else min(65536, limit + 1 - size)
+        chunk = resp.read1(want)  # what has arrived, without waiting for more
+        if not chunk:
+            break
+        chunks.append(chunk)
+        size += len(chunk)
+    return b"".join(chunks)
 
 
 # A page as last read: its server's tag for that version of it ("etag") and
@@ -161,6 +183,7 @@ def _fetch(url, accept=None, safe=False, compressed=False, extra=None, raw=False
     if compressed and not safe:
         headers["Accept-Encoding"] = "gzip"
     host = urllib.parse.urlsplit(url).netloc
+    allowed = config.DOWNLOAD_DEADLINE_SECONDS if raw else config.FETCH_DEADLINE_SECONDS
     last_err = None
     for attempt, delay in enumerate([0, *config.RETRY_DELAYS]):
         if attempt:
@@ -172,15 +195,16 @@ def _fetch(url, accept=None, safe=False, compressed=False, extra=None, raw=False
             if safe:
                 check_public(url)
             open_url = _safe_opener.open if safe else urllib.request.urlopen
+            deadline = time.monotonic() + allowed
             with open_url(request, timeout=20) as resp:
                 if raw:
-                    return resp.read(), resp.headers
+                    return _read(resp, deadline), resp.headers
                 if not safe:
-                    body = resp.read()
+                    body = _read(resp, deadline)
                     if resp.headers.get("Content-Encoding") == "gzip":
                         body = gzip.decompress(body)
                     return body.decode(errors="replace"), resp.headers
-                body = resp.read(MAX_BYTES + 1)
+                body = _read(resp, deadline, MAX_BYTES)
                 if len(body) > MAX_BYTES:
                     raise UnsafeURL(f"{host} answered more than {MAX_BYTES} bytes")
                 return body.decode(errors="replace"), resp.headers

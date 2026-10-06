@@ -34,6 +34,9 @@ permissions:
 jobs:
   hourly-updates:
     runs-on: ubuntu-latest
+    # Usually 2 minutes. A run that hangs would hold the data branch (and
+    # the daily sync waiting for it) up to GitHub's default of 6 hours.
+    timeout-minutes: 20
     steps:
       - name: Checkout main
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
