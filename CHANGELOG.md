@@ -9,48 +9,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.12.0] - 2026-10-06
+
+nixkeeper can now track **every nixpkgs package**, for a community
+instance (`NIXKEEPER_ALL_PACKAGES=1`, `allPackages` in the modules): about
+126,000 rows, read in bulk from three digests (Hydra's builds, Repology's
+versions, nixpkgs-update's attempts), with a page that starts from an
+overview of all of nixpkgs. Instances that track their lists, as before,
+get the new data format, paging, teams, failing ages, the narrowing
+filters and the sources panel; their page looks as it did otherwise.
+
 ### Added
 
-- Recently fixed, with every package: each daily sync notes what's fixed
-  since the one before (a build that works again, a package updated, a
-  nixpkgs-update failure cleared), only with something showing it (Hydra's
-  success, a new version in nixpkgs, a newer attempt), so a late source or
-  a change in how nixkeeper counts never looks like a wave of fixes. The
-  last 30 days' in `history.json` (`fixed`); the overview shows the last
-  week's, newest first.
-- Maintainers, with every package: `maintainers.json` (every maintainer,
-  with their packages, outdated and failing counts); "browse every
-  maintainer" on the overview (`?view=maintainers`), by handle, the search
-  narrowing them; and typing `@` and part of a handle suggests the
-  maintainers whose handle matches.
-- Narrowing any list, together with its other filters: without
-  maintainer, not marked broken, not fixed on master yet (an outdated
-  package whose update is merged, waiting for nixos-unstable), and older
-  than a month, 6 months or a year (failing or outdated for that long).
-  Under the counts, or with every package under a list's tiles; in the
-  address as `?refine=` and `?age=` (`docs/reading-the-page.md`).
-- Where the data is from: "checked … ago" on the page opens each source's
-  time (the daily sync; the Hydra evaluation its builds are from and when
-  it was read; when Repology's versions and nixpkgs-update's attempts were
-  read, and how many attempts are still to read; the nixpkgs commit), and
-  says when the sync didn't use a digest (too old, or unreadable) and why.
-  In the data: `sources` in `index.json` (`docs/data.md`).
-- How long a package has been failing: `failingSince` (its builds, since
-  their last success when first seen) and `updateFailingSince` (its update
-  attempts), carried from sync to sync like `outdatedSince`; a red age tag
-  after the name, and failing packages listed longest first.
-- Packages nixpkgs marks broken show "marked broken" even when Hydra has no
-  job for them (`markedBroken`, from the package index's `meta.broken`):
-  until now, a broken package with no Hydra job (as hackage2nix makes them)
-  only said "not built by Hydra".
-- nixpkgs-update's attempts from
-  [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates), a digest
-  of the bot's latest attempt at every package (its log read with
-  nixkeeper's own rules, every 3 hours, from the bot's state), instead of
-  reading each package's logs; still read per package when the digest
-  hasn't read the latest attempt, or isn't current
-  (`NIXKEEPER_UPDATES_DIGEST`). With every package, every package gets its
-  attempt this way.
 - Every package: `NIXKEEPER_ALL_PACKAGES=1` (a repository variable on
   GitHub, `allPackages` in the modules, `sync --all-packages`) tracks every
   nixpkgs package, not only the lists', for a community instance
@@ -75,7 +45,6 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   own GitHub handle and team (in their browser) for "Your packages" and
   "Your team"; the instance's own lists open by address only. A search
   also lists matching names beyond the list shown.
-
 - A second format for the data, beside the first: `summary.json`, a short
   entry per package with what the page's list needs (about a third of
   `index.json` today), and `rows/<n>.json`, the packages in full with their
@@ -93,6 +62,46 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - Packages' nixpkgs teams (`meta.teams`): in the data (`teams`), in the
   details panel, and as a filter (`?team=gaming`, or a team's name in the
   panel).
+- How long a package has been failing: `failingSince` (its builds, since
+  their last success when first seen) and `updateFailingSince` (its update
+  attempts), carried from sync to sync like `outdatedSince`; a red age tag
+  after the name, and failing packages listed longest first.
+- Packages nixpkgs marks broken show "marked broken" even when Hydra has no
+  job for them (`markedBroken`, from the package index's `meta.broken`):
+  until now, a broken package with no Hydra job (as hackage2nix makes them)
+  only said "not built by Hydra".
+- nixpkgs-update's attempts from
+  [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates), a digest
+  of the bot's latest attempt at every package (its log read with
+  nixkeeper's own rules, every 3 hours, from the bot's state), instead of
+  reading each package's logs; still read per package when the digest
+  hasn't read the latest attempt, or isn't current
+  (`NIXKEEPER_UPDATES_DIGEST`). With every package, every package gets its
+  attempt this way.
+- Where the data is from: "checked … ago" on the page opens each source's
+  time (the daily sync; the Hydra evaluation its builds are from and when
+  it was read; when Repology's versions and nixpkgs-update's attempts were
+  read, and how many attempts are still to read; the nixpkgs commit), and
+  says when the sync didn't use a digest (too old, or unreadable) and why.
+  In the data: `sources` in `index.json` (`docs/data.md`).
+- Narrowing any list, together with its other filters: without
+  maintainer, not marked broken, not fixed on master yet (an outdated
+  package whose update is merged, waiting for nixos-unstable), and older
+  than a month, 6 months or a year (failing or outdated for that long).
+  Under the counts, or with every package under a list's tiles; in the
+  address as `?refine=` and `?age=` (`docs/reading-the-page.md`).
+- Recently fixed, with every package: each daily sync notes what's fixed
+  since the one before (a build that works again, a package updated, a
+  nixpkgs-update failure cleared), only with something showing it (Hydra's
+  success, a new version in nixpkgs, a newer attempt), so a late source or
+  a change in how nixkeeper counts never looks like a wave of fixes. The
+  last 30 days' in `history.json` (`fixed`); the overview shows the last
+  week's, newest first.
+- Maintainers, with every package: `maintainers.json` (every maintainer,
+  with their packages, outdated and failing counts); "browse every
+  maintainer" on the overview (`?view=maintainers`), by handle, the search
+  narrowing them; and typing `@` and part of a handle suggests the
+  maintainers whose handle matches.
 
 ### Changed
 
@@ -102,7 +111,7 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   outdated anymore: it's shown as an "older version", with the newer one
   named (`keptBeside`). It's still outdated by a newer release in its own
   series (the worked-out update checks look there), and a beta behind the
-  newest betas still is. On today's data, about 1,650 fewer outdated
+  newest betas still is. On 2026-10-06's data, about 1,650 fewer outdated
   packages (16%): the Outdated trend steps down once, at the first sync
   with this. The community up-to-date rules for `tracy_0_11` and
   `tracy_0_12` are gone, as this covers them.
@@ -947,6 +956,7 @@ to its restructuring into a Python package.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
 [unreleased]: https://github.com/iedame/nixkeeper/compare/v0.11.0...HEAD
+[0.12.0]: https://github.com/iedame/nixkeeper/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/iedame/nixkeeper/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/iedame/nixkeeper/compare/v0.9.0...v0.10.0
 [0.9.0]: https://github.com/iedame/nixkeeper/compare/v0.8.0...v0.9.0
