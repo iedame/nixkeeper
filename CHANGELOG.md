@@ -11,6 +11,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Recently fixed, with every package: each daily sync notes what's fixed
+  since the one before (a build that works again, a package updated, a
+  nixpkgs-update failure cleared), only with something showing it (Hydra's
+  success, a new version in nixpkgs, a newer attempt), so a late source or
+  a change in how nixkeeper counts never looks like a wave of fixes. The
+  last 30 days' in `history.json` (`fixed`); the overview shows the last
+  week's, newest first.
+- Maintainers, with every package: `maintainers.json` (every maintainer,
+  with their packages, outdated and failing counts); "browse every
+  maintainer" on the overview (`?view=maintainers`), by handle, the search
+  narrowing them; and typing `@` and part of a handle suggests the
+  maintainers whose handle matches.
 - Narrowing any list, together with its other filters: without
   maintainer, not marked broken, not fixed on master yet (an outdated
   package whose update is merged, waiting for nixos-unstable), and older

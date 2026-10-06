@@ -10,6 +10,7 @@ import {
   faviconKey,
   fromMaster,
   html,
+  maintainerMatches,
   matchesSearch,
   midway,
   NAME_DOTS,
@@ -652,15 +653,25 @@ async function repologyEntries(row) {
 // With every package: load the view the address asks for (viewPath) into
 // `packages`, unless it's there already. A maintainer, team or list with no
 // file has no packages here. Throws if a view can't be loaded.
+// Typing @someone in the overview's own box: the overview stays (that box
+// with it), showing the maintainers who match, until one is picked, Enter
+// is pressed or the box is left; the top search opens theirs at once.
+const typingHandleOnOverview = () =>
+  shownView === 'overview' &&
+  document.activeElement?.id === 'overviewSearch' &&
+  document.getElementById('search').value.trim().startsWith('@');
+
 async function ensureView() {
-  const path = viewPath({
-    pkg: pkgParam,
-    query: document.getElementById('search').value,
-    team: teamFilter,
-    list: listFilter,
-    set: setFilter,
-    view: viewParam,
-  });
+  const path = typingHandleOnOverview()
+    ? 'overview'
+    : viewPath({
+        pkg: pkgParam,
+        query: document.getElementById('search').value,
+        team: teamFilter,
+        list: listFilter,
+        set: setFilter,
+        view: viewParam,
+      });
   // Something else shown instead (a package, a maintainer...): ?set= and
   // ?view= no longer apply, and nothing on the page would take them off
   // again (a set's filter would hide every row: the other views leave out
@@ -673,6 +684,9 @@ async function ensureView() {
   if (path === 'overview') {
     found = []; // the overview lists nothing (renderScope)
     loadHistory();
+  } else if (path === 'maintainers') {
+    found = []; // maintainers, not packages (maintainersHtml)
+    loadMaintainers();
   } else if (path.startsWith('pkg:')) {
     const row = await fullRow({ name: path.slice(4) });
     found = row ? [row] : [];
@@ -705,6 +719,24 @@ function loadHistory() {
 
 // The name index, for searches beyond the view shown: loaded once, when a
 // search first needs it, then the list is drawn again.
+// With every package: every maintainer (maintainers.json: [handle, packages,
+// outdated, failing]), loaded when a search starts with @ or the maintainers
+// page opens; then the list is drawn again.
+let maintainersList = null;
+let maintainersLoading = null;
+function loadMaintainers() {
+  if (maintainersLoading) return;
+  maintainersLoading = fetch(dataUrl('maintainers.json'), { cache: 'no-store' })
+    .then((res) => (res.ok ? res.json() : { maintainers: [] }))
+    .then((data) => {
+      maintainersList = data.maintainers || [];
+      update({ keepPage: true });
+    })
+    .catch(() => {
+      maintainersLoading = null; // tried again with the next search
+    });
+}
+
 function loadNames() {
   if (namesLoading) return;
   namesLoading = fetch(dataUrl('names.json'), { cache: 'no-store' })
@@ -997,6 +1029,14 @@ function render(list, { keepPage = false } = {}) {
   renderStats();
   renderScope();
   const content = document.getElementById('content');
+  if (community && shownView === 'maintainers') {
+    // Maintainers, not packages: paged by their own count (maintainersHtml).
+    if (!keepPage) pageNum = 1;
+    shown = [];
+    content.innerHTML = maintainersHtml();
+    writeViewToUrl();
+    return;
+  }
   const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
   pageNum = keepPage ? Math.min(pageNum, pages) : 1;
   writeViewToUrl();
@@ -1009,6 +1049,12 @@ function render(list, { keepPage = false } = {}) {
   }
   if (!list.length) {
     const narrowed = refines.size || ageFilter;
+    const handle = document.getElementById('search').value.trim();
+    if (community && /^@\S/.test(handle) && !narrowed && activeFilter === 'all') {
+      // No such maintainer (yet: still typing): the ones whose handle matches.
+      content.innerHTML = html`<div class="empty">No maintainer is ${handle}.</div>${moreMatchesHtml()}`;
+      return;
+    }
     content.innerHTML = html`<div class="empty">No packages match${narrowed ? ' these filters' : activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}${community ? ' here' : ''}.</div>${moreMatchesHtml()}`;
     return;
   }
@@ -1033,6 +1079,15 @@ function renderScope() {
   if (!el) return;
   el.hidden = !community;
   if (!community) return;
+  if (shownView === 'maintainers') {
+    el.dataset.drawn = '';
+    el.innerHTML = html`<div class="scope-view">
+      <span class="scope-label">Showing</span>
+      <span class="view-chip">Maintainers · ${fmt(maintainersList?.length)}<a class="view-x" href="${scopeHref({})}" data-scope-home aria-label="Back to the overview" title="Back to the overview">✕</a></span>
+      <span class="scope-hint">by handle; the search narrows them, and one opens their packages</span>
+    </div>`;
+    return;
+  }
   if (shownView !== 'overview') {
     el.dataset.drawn = '';
     el.innerHTML = listHeaderHtml();
@@ -1189,7 +1244,39 @@ function overviewHtml() {
         <input type="search" id="overviewSearch" class="find-input" placeholder="Find a package, or @maintainer" aria-label="Find a package, or @maintainer" value="${document.getElementById('search').value}"></label>
       ${teamPicker('Browse a team…')}
     </div>
-    <div class="overview-more">${highlightsHtml()}${setsHtml(sets)}</div>`;
+    <p class="find-more">or <a class="files-link" href="${scopeHref({ view: 'maintainers' })}" data-card-view="maintainers">browse every maintainer</a></p>
+    <div class="overview-more">${highlightsHtml()}${fixedHtml()}${setsHtml(sets)}</div>`;
+}
+
+// The overview's recently fixed (the manifest's "fixed", from history.json):
+// builds that work again, packages updated, nixpkgs-update failures
+// cleared, the last week's of each. Not with data from before it.
+const FIXED = [
+  { key: 'build', label: 'Builds fixed' },
+  { key: 'update', label: 'Updated' },
+  { key: 'bot', label: 'Update failures cleared' },
+];
+function fixedHtml() {
+  const fixed = manifest.fixed;
+  if (!fixed) return '';
+  const cards = FIXED.map(({ key, label }) => {
+    const f = fixed[key] || { count: 0, newest: [] };
+    return html`<section class="hl-card" style="--hl:var(--ok-devel)" aria-label="${label}">
+      <div class="hl-head">
+        <div class="hl-title"><span class="hl-label">${label}</span><span class="hl-n">${fmt(f.count)}</span></div>
+      </div>
+      ${
+        f.newest.length
+          ? html`<ol class="hl-list">${f.newest.map(
+              ([name, at, from, to]) =>
+                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"><span class="status-dot ok"></span><span class="hl-name mono">${name}</span>${to ? html`<span class="fixed-to mono" title="${from} → ${to}">→ ${to}</span>` : ''}<span class="hl-age" title="${longDate(at)}">${shortAge(at)}</span></a></li>`,
+            )}</ol>`
+          : html`<p class="hl-none">None this week yet.</p>`
+      }
+    </section>`;
+  });
+  return html`<p class="scope-label">Recently fixed · last ${fixed.days} days · fully checked</p>
+    <div class="hl-cols">${cards}</div>`;
 }
 
 // The overview's generated sets: each one's size, and how much of it is
@@ -1287,8 +1374,53 @@ function showView({ set = null, pkg = null, view = null, filter = null }) {
 // With every package, under a plain search: the packages beyond the view
 // shown whose names match, from the name index (loaded on first use), each
 // opening on its own (?pkg=).
+// With every package, under a search for @someone: the maintainers whose
+// handle matches, the closest first, each opening their packages.
+function maintainerMatchesHtml(query) {
+  if (!maintainersList) {
+    loadMaintainers();
+    return html`<div class="more-matches"><div class="other-label">Looking up maintainers…</div></div>`;
+  }
+  const typed = query.trim().slice(1).toLowerCase();
+  const { found, total } = maintainerMatches(maintainersList, query, 20);
+  // On the overview (typing in its box), the handle itself too: nothing
+  // else shows it yet.
+  const others =
+    shownView === 'overview' ? found : found.filter(([handle]) => handle.toLowerCase() !== typed);
+  if (!others.length) return '';
+  return html`<div class="more-matches">
+    <div class="other-label">${typed && total > others.length ? 'Other maintainers' : 'Maintainers'} matching @${typed}${total > found.length ? html`, the first ${found.length}` : ''}</div>
+    <ul class="maint-list">${others.map(maintainerItem)}</ul>
+  </div>`;
+}
+
+// One maintainer: their handle (opening their packages) and counts.
+function maintainerItem([handle, count, outdated, failing]) {
+  return html`<li><a class="files-link" href="${maintainerHref(handle)}" data-maintainer="${handle}">@${handle}</a><span class="maint-n">${fmt(count)} ${count === 1 ? 'package' : 'packages'}${outdated ? html` · <span class="warn-text">${fmt(outdated)} outdated</span>` : ''}${failing ? html` · <span class="danger-text">${fmt(failing)} failing</span>` : ''}</span></li>`;
+}
+function maintainerHref(handle) {
+  const params = new URLSearchParams(new URL(scopeHref({}), location.href).search);
+  params.set('q', `@${handle}`);
+  return `${location.pathname}?${params.toString().replaceAll('%40', '@')}`;
+}
+
+// ?view=maintainers: every maintainer, by handle, a page at a time; the
+// search narrows them (an @ in front or not).
+function maintainersHtml() {
+  if (!maintainersList) return html`<div class="empty">Loading the maintainers…</div>`;
+  const query = document.getElementById('search').value.trim();
+  const list = query ? maintainerMatches(maintainersList, query, Infinity).found : maintainersList;
+  if (!list.length) return html`<div class="empty">No maintainer matches “${query}”.</div>`;
+  const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  pageNum = Math.min(pageNum, pages);
+  const page = list.slice((pageNum - 1) * PAGE_SIZE, pageNum * PAGE_SIZE);
+  return html`<ul class="maint-list maint-page">${page.map(maintainerItem)}</ul>${pagerHtml(list.length, pages)}`;
+}
+
 function moreMatchesHtml() {
   const query = document.getElementById('search').value;
+  if (community && !pkgParam && shownView !== 'maintainers' && /^@\S/.test(query.trim()))
+    return maintainerMatchesHtml(query);
   if (!community || pkgParam || query.trim().length < 2 || query.trim().startsWith('@')) return '';
   if (!names) {
     loadNames();
@@ -2034,6 +2166,16 @@ document.addEventListener('click', (e) => {
     filter: a.dataset.cardFilter || null,
   });
 });
+// A maintainer, from the maintainers page or a suggestion: their packages.
+document.addEventListener('click', (e) => {
+  const a = e.target.closest('a[data-maintainer]');
+  if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button) return;
+  e.preventDefault();
+  showView({});
+  const search = document.getElementById('search');
+  search.value = `@${a.dataset.maintainer}`;
+  search.dispatchEvent(new Event('input'));
+});
 // The visitor's packages (their maintainer view), or (show false) back to
 // the overview.
 function showMine(show) {
@@ -2089,6 +2231,15 @@ document.addEventListener('input', (e) => {
   const search = document.getElementById('search');
   search.value = e.target.value;
   search.dispatchEvent(new Event('input'));
+});
+// Enter, or leaving it, with @someone typed there: their packages.
+document.addEventListener('keydown', (e) => {
+  if (e.target.id !== 'overviewSearch' || e.key !== 'Enter') return;
+  if (e.target.value.trim().startsWith('@')) e.target.blur();
+});
+document.addEventListener('focusout', (e) => {
+  if (e.target.id !== 'overviewSearch') return;
+  if (e.target.value.trim().startsWith('@')) setTimeout(update); // after a click lands
 });
 document.addEventListener('change', (e) => {
   if (e.target.id !== 'teamPick') return;

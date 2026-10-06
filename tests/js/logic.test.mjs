@@ -20,6 +20,7 @@ import {
   githubRepo,
   hasFailure,
   html,
+  maintainerMatches,
   matchesSearch,
   midway,
   nameMatches,
@@ -625,6 +626,8 @@ describe('views (every package)', () => {
     assert.equal(viewPath(), 'overview');
     assert.equal(viewPath({ query: 'firefox' }), 'overview');
     assert.equal(viewPath({ view: 'attention' }), 'views/attention.json');
+    assert.equal(viewPath({ view: 'maintainers' }), 'maintainers');
+    assert.equal(viewPath({ view: 'maintainers', query: 'fg' }), 'maintainers'); // narrows it
     assert.equal(viewPath({ view: 'broken' }), 'views/broken.json');
     assert.equal(viewPath({ view: 'nonsense' }), 'overview');
     assert.equal(viewPath({ query: '@Iedame', team: 'Gaming' }), 'views/maintainer/iedame.json');
@@ -707,5 +710,28 @@ describe('problemSince and olderThan', () => {
     assert.equal(olderThan({}, '1m', 'all', now), false);
     assert.equal(olderThan({}, null, 'all', now), true);
     assert.equal(olderThan({}, 'bogus', 'all', now), true);
+  });
+});
+
+describe('maintainerMatches', () => {
+  const list = [
+    ['Fgaz', 81, 23, 7],
+    ['fgazbot', 2, 0, 0],
+    ['afgazer', 1, 0, 0],
+    ['iedame', 27, 4, 0],
+  ];
+  test('the handle, then those starting with it, then by handle; any case, @ or not', () => {
+    assert.deepEqual(
+      maintainerMatches(list, '@fgaz').found.map(([h]) => h),
+      ['Fgaz', 'fgazbot', 'afgazer'],
+    );
+    assert.equal(maintainerMatches(list, 'FGAZ').total, 3);
+  });
+  test('at most limit, and how many there are', () => {
+    assert.deepEqual(maintainerMatches(list, 'a', 2), {
+      found: [list[2], list[0]],
+      total: 4,
+    });
+    assert.deepEqual(maintainerMatches(list, '@'), { found: [], total: 0 });
   });
 });

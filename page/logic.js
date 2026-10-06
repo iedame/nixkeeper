@@ -69,7 +69,13 @@ export const viewSlug = (name) =>
 // maintainer's (?q=@handle; @none those without), a team's, a list's, a
 // generated set's, a list by name (?view=attention, ?view=broken), else the
 // overview.
-export const VIEWS = { attention: 'views/attention.json', broken: 'views/broken.json' };
+// ?view=maintainers: every maintainer (maintainers.json), not a list of
+// packages.
+export const VIEWS = {
+  attention: 'views/attention.json',
+  broken: 'views/broken.json',
+  maintainers: 'maintainers',
+};
 export function viewPath({
   pkg = null,
   query = '',
@@ -85,6 +91,24 @@ export function viewPath({
   if (list) return `views/list/${viewSlug(list)}.json`;
   if (set) return `views/set/${set}.json`;
   return VIEWS[view] || 'overview';
+}
+
+// maintainers.json's entries ([handle, packages, outdated, failing]) whose
+// handle contains the query (an @ in front or not, any case): at most limit,
+// and how many there are. The handle itself first, then those starting with
+// it, then by handle.
+export function maintainerMatches(list, query, limit = 20) {
+  const q = query.trim().replace(/^@/, '').toLowerCase();
+  if (!q) return { found: [], total: 0 };
+  const rank = (handle) => (handle === q ? 0 : handle.startsWith(q) ? 1 : 2);
+  const hits = list
+    .filter(([handle]) => handle.toLowerCase().includes(q))
+    .sort(
+      ([a], [b]) =>
+        rank(a.toLowerCase()) - rank(b.toLowerCase()) ||
+        a.toLowerCase().localeCompare(b.toLowerCase()),
+    );
+  return { found: hits.slice(0, limit), total: hits.length };
 }
 
 // A count's change over the last week, from history.json's points (oldest

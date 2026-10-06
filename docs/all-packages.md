@@ -42,8 +42,9 @@ Hydra's builds only, no update attempts or GitHub counts, and left out of
 
 It starts from an overview of all of nixpkgs: the fully checked packages'
 outdated, failing, vulnerable and broken counts with their trends (from
-`history.json`, a point a daily sync), a search, the newest and
-longest-standing failures, and the generated sets. Each opens a list: what needs
+`history.json`, a point a daily sync), a search (and every maintainer, by
+handle), the newest and longest-standing failures, what was fixed in the
+last week, and the generated sets. Each opens a list: what needs
 attention, a maintainer's packages (`?q=@handle`), a team's, a generated
 set's, or one package (`?pkg=`); visitors can keep their own handle and
 team, in their browser. See [reading the page](reading-the-page.md).

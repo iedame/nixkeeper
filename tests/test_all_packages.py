@@ -307,6 +307,7 @@ class Data(unittest.TestCase):
             files,
             {
                 "index.json",
+                "maintainers.json",
                 "names.json",
                 "rows/0.json",
                 "views/attention.json",
@@ -348,6 +349,12 @@ class Data(unittest.TestCase):
         self.assertEqual(names("views/attention.json"), ["b", "c", "e"])
         self.assertEqual(names("views/maintainer/iedame.json"), ["a", "c"])
         self.assertEqual(names("views/maintainer/none.json"), ["b"])  # not pending
+        # Every maintainer once, as first written (any case): packages,
+        # outdated, failing.
+        self.assertEqual(
+            self.read("maintainers.json")["maintainers"],
+            [["Iedame", 2, 0, 1], ["someone", 1, 0, 0]],
+        )
         self.assertEqual(
             self.read("names.json")["names"],
             [
@@ -548,3 +555,88 @@ class Highlights(unittest.TestCase):
             found["outdated"]["oldest"], [["old", "2026-01-01T00:00:00+00:00", "o"]]
         )
         self.assertEqual(found["failing"]["count"], 0)  # pending: left out
+
+
+class Fixed(unittest.TestCase):
+    """What a sync counts as fixed (history.fixes): only with something to
+    show it, so a late source or a change in how nixkeeper counts doesn't
+    look like a wave of fixes."""
+
+    OK = {"status": "ok", "system": "x86_64-linux"}
+    FAILED = {"status": "failed", "system": "x86_64-linux"}
+
+    def fixes(self, before, now):
+        return [
+            (f["name"], f["kind"])
+            for f in history.fixes(now, {"packages": before}, NOW)
+        ]
+
+    def test_a_build_fixed(self):
+        before = [row("a", failingSince="2026-09-01", builds=[self.FAILED])]
+        self.assertEqual(
+            self.fixes(before, [row("a", builds=[self.OK])]), [("a", "build")]
+        )
+        # No build says so (Hydra not read, or queued): not a fix.
+        self.assertEqual(self.fixes(before, [row("a", builds=[])]), [])
+
+    def test_updated_only_with_a_new_version(self):
+        before = [row("a", nixStatus="outdated", nixVersion="1")]
+        [fix] = history.fixes([row("a", nixVersion="2")], {"packages": before}, NOW)
+        self.assertEqual((fix["kind"], fix["from"], fix["to"]), ("update", "1", "2"))
+        # The same version, no longer counted as outdated (Repology changed
+        # its mind, or nixkeeper its rules): not an update.
+        self.assertEqual(self.fixes(before, [row("a", nixVersion="1")]), [])
+        # Repology not reached: its data is old, nothing to say.
+        self.assertEqual(
+            self.fixes(before, [row("a", nixVersion="2", staleSince=NOW)]), []
+        )
+
+    def test_the_bots_failure_cleared(self):
+        failed = {"outcome": "failed", "date": "2026-09-20"}
+        before = [row("a", updateFailure=True, update=failed)]
+        newer = {"outcome": "prOpened", "date": "2026-10-04"}
+        self.assertEqual(self.fixes(before, [row("a", update=newer)]), [("a", "bot")])
+        superseded = {**failed, "supersededOn": "2026-10-04"}
+        self.assertEqual(
+            self.fixes(before, [row("a", update=superseded)]), [("a", "bot")]
+        )
+        # Not read this time: nothing known.
+        self.assertEqual(
+            self.fixes(before, [row("a", update=newer, unread=["update"])]), []
+        )
+
+    def test_not_new_removed_or_pending(self):
+        failing = row("a", failingSince="2026-09-01", builds=[self.FAILED])
+        self.assertEqual(self.fixes([], [row("a", builds=[self.OK])]), [])  # new
+        self.assertEqual(self.fixes([failing], []), [])  # removed
+        pending = {**failing, "pending": True, "set": "rPackages"}
+        self.assertEqual(
+            self.fixes([pending], [row("a", builds=[self.OK], pending=True)]), []
+        )
+
+    def test_kept_a_month_once_a_day_and_summed_up(self):
+        old = {"at": "2026-09-01T06:00:00+00:00", "name": "x", "kind": "build"}
+        week = {"at": "2026-09-30T06:00:00+00:00", "name": "y", "kind": "build"}
+        today = {"at": NOW, "name": "z", "kind": "update", "from": "1", "to": "2"}
+        kept = datastore.with_fixed([old, week], [today, today], NOW)
+        self.assertEqual([f["name"] for f in kept], ["y", "z"])  # x: over a month
+        summary = datastore.fixed_summary(kept, NOW)
+        self.assertEqual(summary["days"], 7)
+        self.assertEqual(summary["build"]["count"], 1)  # y, 5 days before
+        self.assertEqual(summary["update"]["newest"], [["z", NOW, "1", "2"]])
+        self.assertEqual(summary["bot"], {"count": 0, "newest": []})
+
+    def test_written_with_the_history(self):
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "data")
+            fix = {"at": NOW, "name": "a", "kind": "build"}
+            datastore.write(
+                {"checkedAt": NOW, "allPackages": True, "packages": [row("a")]},
+                {},
+                out,
+                history=[],
+                fixed=[fix],
+            )
+            self.assertEqual(datastore.read_fixed(out), [fix])
+            with open(os.path.join(out, "index.json")) as f:
+                self.assertEqual(json.load(f)["fixed"]["build"]["count"], 1)
