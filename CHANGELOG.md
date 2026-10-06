@@ -25,6 +25,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   nixkeeper counts (`COUNTING_CHANGES`, the first being 0.12.0's older
   versions kept), on the day it first ran. Named and dated under the
   cards; in `history.json` as `events` (`docs/data.md`).
+- `nix run .#start-runs`: starts the community instance's runs through
+  GitHub's API, hourly from a machine that's always on (a nix-darwin agent
+  in `docs/all-packages.md`), since GitHub's schedule skips runs when it's
+  busy. The daily sync can be started with `if_older` (only when the last
+  sync is older than that many hours), and its 06:00 run now stops when
+  the last sync is under 12 hours old: started both ways, it syncs once.
 - While nixkeeper-updates' digest is still reading nixpkgs-update's past
   attempts (a backfill), the Update failures card says how many are to go:
   update failures that were there all along keep turning up, so it rises

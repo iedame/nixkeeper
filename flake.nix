@@ -171,9 +171,23 @@
           );
           meta.description = "Retake the page's screenshots in assets/screenshots/ (-- --browser <name or path>; --help for the options)";
         };
+        # Starts the community instance's runs through GitHub's API, hourly
+        # from a machine that's always on (scripts/start-runs.sh; the
+        # nix-darwin agent in docs/all-packages.md).
+        start-runs = pkgs.writeShellApplication {
+          name = "nixkeeper-start-runs";
+          runtimeInputs = with pkgs; [
+            curl
+            coreutils
+          ];
+          text = builtins.readFile ./scripts/start-runs.sh;
+        };
       in
       {
-        packages.default = nixkeeper;
+        packages = {
+          default = nixkeeper;
+          inherit start-runs;
+        };
 
         apps = {
           inherit
@@ -184,6 +198,11 @@
             screenshots
             brand
             ;
+          start-runs = {
+            type = "app";
+            program = lib.getExe start-runs;
+            meta.description = "Start the community instance's runs through GitHub's API (-- --dry-run to see which)";
+          };
           fetch = sync; # old name, kept as an alias
           quick-check = frequent-check; # old name, kept as an alias
           # `nix run github:iedame/nixkeeper -- <command>`: the command as
