@@ -99,6 +99,7 @@ let shardCount = 1;
 // view's, `manifest` index.json, with the counts of all of nixpkgs.
 let community = false;
 let manifest = null;
+let sources = null; // the daily sync's sources (index.json's "sources")
 let shownView = null; // the path of the view in `packages`
 let wantedView = null; // the one being loaded (the newest asked for wins)
 let names = null; // the name index (names.json), once loaded: [[name, status, set?]]
@@ -442,6 +443,72 @@ function showLegend(open) {
   document.getElementById('legendBtn').setAttribute('aria-expanded', open);
 }
 
+function showSources(open) {
+  document.getElementById('sourcesPanel').hidden = !open;
+  document.getElementById('checked').setAttribute('aria-expanded', open);
+}
+
+// Where the data is from: the daily sync's sources as it noted them
+// (nixkeeper/sources/about.py), each with when its data is from, or why the
+// sync didn't use it (it then asked per package instead).
+const SOURCES = [
+  {
+    key: 'hydra',
+    label: 'Hydra builds',
+    from: 'https://github.com/iedame/nixkeeper-hydra',
+    says: (s) =>
+      html`evaluation <a class="files-link" href="https://hydra.nixos.org/eval/${s.eval}" target="_blank" rel="noopener">${s.eval}</a>, read ${timeAgo(s.at)}`,
+  },
+  {
+    key: 'versions',
+    label: 'Versions (Repology)',
+    from: 'https://github.com/iedame/nixkeeper-versions',
+    says: (s) => `read ${timeAgo(s.at)}`,
+  },
+  {
+    key: 'updates',
+    label: 'nixpkgs-update',
+    from: 'https://github.com/iedame/nixkeeper-updates',
+    says: (s) =>
+      `made ${timeAgo(s.at)}${s.pending ? ` · ${s.pending.toLocaleString()} attempts still to read` : ''}`,
+  },
+  {
+    key: 'nixpkgs',
+    label: 'nixpkgs',
+    says: (s) =>
+      html`channel at <a class="files-link mono" href="https://github.com/NixOS/nixpkgs/commit/${s.revision}" target="_blank" rel="noopener">${s.revision.slice(0, 7)}</a>`,
+  },
+  { key: 'github', label: 'GitHub PRs', says: () => 'listed during the sync' },
+];
+
+function sourcesHtml() {
+  const when = (iso) =>
+    new Date(iso).toLocaleString(undefined, {
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  const rows = SOURCES.filter(({ key }) => sources?.[key]).map(({ key, label, from, says }) => {
+    const s = sources[key];
+    const name = from
+      ? html`<a class="files-link" href="${from}" target="_blank" rel="noopener">${label}</a>`
+      : label;
+    return html`<li class="${s.used ? '' : 'unused'}"><b>${name}</b><span class="src-what"${s.at ? html` title="${when(s.at)}"` : ''}>${
+      s.used
+        ? says(s)
+        : `not used: ${s.why || 'unknown'}${s.at ? `, from ${timeAgo(s.at)}` : ''}, asked per package instead`
+    }</span></li>`;
+  });
+  return html`<p class="pop-title">Where the data is from</p>
+    <ul>
+      <li><b>Daily sync</b><span title="${checkedAt ? when(checkedAt) : ''}">${checkedAt ? `${timeAgo(checkedAt)}, ${when(checkedAt)}` : 'not yet'}</span></li>
+      ${rows}
+      <li><b>Hourly checks</b><span>frequent update checks and update PRs, between syncs</span></li>
+    </ul>
+    <a class="files-link" href="https://github.com/iedame/nixkeeper/blob/main/docs/how-it-works.md" target="_blank" rel="noopener">How nixkeeper gathers it ↗</a>`;
+}
+
 function showThemePanel(open) {
   document.getElementById('themePanel').hidden = !open;
   document.getElementById('themeBtn').setAttribute('aria-expanded', open);
@@ -627,6 +694,7 @@ async function loadIndex() {
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
     checkedAt = data.checkedAt || null;
+    sources = data.sources || null;
     if (data.allPackages) {
       community = true;
       manifest = data;
@@ -723,6 +791,7 @@ function renderStats() {
     ? `${exact} The daily sync hasn't updated the data in over 2 days. Check where it runs (on GitHub: the Actions tab).`
     : exact;
   checked.textContent = `checked ${timeAgo(checkedAt)}${stale ? ' — sync may be failing' : ''}`;
+  document.getElementById('sourcesPanel').innerHTML = sourcesHtml();
 }
 
 // The lists from package-lists/, as more filters after the counts (a
@@ -1973,17 +2042,22 @@ document.getElementById('themePanel').addEventListener('change', (e) => {
 document
   .getElementById('legendBtn')
   .addEventListener('click', () => showLegend(document.getElementById('legendPanel').hidden));
+document
+  .getElementById('checked')
+  .addEventListener('click', () => showSources(document.getElementById('sourcesPanel').hidden));
 // The Theme menu and the legend close on a click elsewhere, or Escape (back
 // to their button).
 document.addEventListener('click', (e) => {
   if (!e.target.closest('.theme')) showThemePanel(false);
   if (!e.target.closest('.legend')) showLegend(false);
+  if (!e.target.closest('.sources')) showSources(false);
 });
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
   for (const [panel, btn, show] of [
     ['themePanel', 'themeBtn', showThemePanel],
     ['legendPanel', 'legendBtn', showLegend],
+    ['sourcesPanel', 'checked', showSources],
   ]) {
     if (document.getElementById(panel).hidden) continue;
     show(false);

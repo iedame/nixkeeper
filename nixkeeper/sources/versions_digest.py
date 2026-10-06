@@ -15,7 +15,7 @@ import urllib.error
 from datetime import datetime, timedelta
 
 from .. import config
-from . import http
+from . import about, http
 
 FORMAT = 1
 
@@ -58,6 +58,7 @@ def load(attrs, now):
         if not meta or meta.get("format") != FORMAT:
             raise ValueError(f"no digest in a format this nixkeeper reads ({base})")
         if not current(meta, now):
+            about.note("versions", False, "too old", at=meta["outdatedAt"])
             print(
                 f"::warning::Versions digest: not used, its outdated projects are "
                 f"from {meta['outdatedAt']}; looking packages up on Repology",
@@ -70,6 +71,7 @@ def load(attrs, now):
         with gzip.open(io.BytesIO(body), "rt") as lines:
             found = projects_of(lines, set(attrs))
     except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+        about.note("versions", False, f"couldn't be read ({e})")
         print(
             f"::warning::Versions digest: couldn't use it ({e}); looking packages "
             "up on Repology",
@@ -82,6 +84,7 @@ def load(attrs, now):
         "attributes in it",
         file=sys.stderr,
     )
+    about.note("versions", True, at=meta["outdatedAt"], projects=meta.get("projects"))
     return found
 
 

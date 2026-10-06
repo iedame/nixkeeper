@@ -16,7 +16,7 @@ import urllib.error
 from datetime import datetime, timedelta
 
 from .. import config
-from . import http
+from . import about, http
 
 FORMAT = 1
 EVAL = re.compile(r"/eval/([0-9]+)")
@@ -69,6 +69,9 @@ def load(now):
             raise ValueError(f"no digest in a format this nixkeeper reads ({base})")
         why = current(meta, now)
         if not why:
+            about.note(
+                "hydra", False, "too old", at=meta["fetchedAt"], eval=meta["eval"]
+            )
             print(
                 f"::warning::Hydra digest: not used, it's from {meta['fetchedAt']} "
                 f"(evaluation {meta['eval']}); asking Hydra about each job",
@@ -81,6 +84,7 @@ def load(now):
         text = gzip.decompress(body).decode()
         rows = {(r["attr"], r["system"]): r for r in csv.DictReader(io.StringIO(text))}
     except (urllib.error.URLError, OSError, ValueError, KeyError, csv.Error) as e:
+        about.note("hydra", False, f"couldn't be read ({e})")
         print(
             f"::warning::Hydra digest: couldn't use it ({e}); asking Hydra about "
             "each job",
@@ -88,6 +92,7 @@ def load(now):
         )
         return None
     print(f"Hydra digest: {len(rows):,} jobs, {why}", file=sys.stderr)
+    about.note("hydra", True, at=meta["fetchedAt"], eval=meta["eval"])
     return rows
 
 

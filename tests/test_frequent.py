@@ -117,10 +117,12 @@ class FrequentCheck(unittest.TestCase):
         from the shards once each, not a shard per row."""
         bbedit = {"name": "bbedit", "attrs": ["bbedit"], "dataFile": "bbedit.json"}
         kept = [other("arch", "15.5", "newest")]
+        sources = {"hydra": {"used": True, "eval": 1829817}}
         datastore.write(
             {
                 "checkedAt": "2026-09-30T06:00:00+00:00",
                 "packages": [chrome_row(), bbedit],
+                "sources": sources,
             },
             {
                 "google-chrome.json": entries("154.0.8037.57", "154.0.8037.57"),
@@ -131,6 +133,8 @@ class FrequentCheck(unittest.TestCase):
             self.run_frequent(api("154.0.8040.12", "154.0.8037.57"))
         one_by_one.assert_not_called()
         self.assertEqual(datastore.entries(bbedit), kept)
+        # The daily sync's sources stay: an hourly check isn't a sync.
+        self.assertEqual(datastore.load()["sources"], sources)
 
     def test_nothing_changed_writes_nothing(self):
         up = {

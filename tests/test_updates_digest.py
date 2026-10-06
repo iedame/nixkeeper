@@ -8,7 +8,7 @@ import unittest
 from unittest import mock
 
 from nixkeeper import config
-from nixkeeper.sources import http, nixpkgs_update, updates_digest
+from nixkeeper.sources import about, http, nixpkgs_update, updates_digest
 from tests.helpers import pkg
 
 NOW = "2026-10-05T18:00:00+00:00"
@@ -45,14 +45,24 @@ class Load(unittest.TestCase):
         with patches[0], patches[1], patches[2], patches[3]:
             found = updates_digest.load(NOW)
         self.assertEqual(found, {"wesnoth": {"attempt": read("wesnoth")}})
+        # Noted for the page: when it's from, and how many it hasn't read.
+        self.assertEqual(
+            about.taken()["updates"],
+            {"used": True, "at": "2026-10-05T15:00:00+00:00", "pending": 0},
+        )
 
     def test_old_or_off_isnt_used(self):
         meta = {"format": 1, "fetchedAt": "2026-10-04T15:00:00+00:00"}
         patches = self.serve(meta, [])
         with patches[0], patches[1], patches[2], patches[3]:
             self.assertIsNone(updates_digest.load(NOW))
+        self.assertEqual(
+            about.taken()["updates"],
+            {"used": False, "why": "too old", "at": "2026-10-04T15:00:00+00:00"},
+        )
         with mock.patch.object(config, "UPDATES_DIGEST_URL", ""):
             self.assertIsNone(updates_digest.load(NOW))
+        self.assertEqual(about.taken(), {})  # turned off: nothing to say
 
     def test_attempt_only_when_read_with_these_rules(self):
         entry = {"attempt": read("python3Packages.foo")}

@@ -6,7 +6,7 @@ import urllib.error
 from unittest import mock
 
 from nixkeeper import config, sync
-from nixkeeper.sources import http, hydra, hydra_digest
+from nixkeeper.sources import about, http, hydra, hydra_digest
 from nixkeeper.sources import nixpkgs as nixpkgs_source
 
 NOW = "2026-10-04T15:00:00+00:00"
@@ -131,6 +131,10 @@ class Load(unittest.TestCase):
         rows, out = self.load(self.meta(), [row("a", "ok", "1")])
         self.assertEqual(list(rows), [("a", "x86_64-linux")])
         self.assertIn("Hydra digest: 1 jobs, evaluation 1829817, Hydra's newest", out)
+        self.assertEqual(
+            about.taken()["hydra"],
+            {"used": True, "at": "2026-10-04T14:00:00+00:00", "eval": 1829817},
+        )
 
     def test_behind_but_recent(self):
         rows, out = self.load(self.meta(1829803), [row("a", "ok", "1")])
@@ -147,6 +151,15 @@ class Load(unittest.TestCase):
         rows, out = self.load(old)
         self.assertIsNone(rows)
         self.assertIn("::warning::Hydra digest: not used", out)
+        self.assertEqual(
+            about.taken()["hydra"],
+            {
+                "used": False,
+                "why": "too old",
+                "at": "2026-10-03T15:00:00+00:00",
+                "eval": 1829803,
+            },
+        )
 
     def test_unreadable_or_off(self):
         rows, out = self.load({"format": 2, "eval": 1, "fetchedAt": NOW})

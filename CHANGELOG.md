@@ -11,6 +11,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Where the data is from: "checked … ago" on the page opens each source's
+  time (the daily sync; the Hydra evaluation its builds are from and when
+  it was read; when Repology's versions and nixpkgs-update's attempts were
+  read, and how many attempts are still to read; the nixpkgs commit), and
+  says when the sync didn't use a digest (too old, or unreadable) and why.
+  In the data: `sources` in `index.json` (`docs/data.md`).
 - How long a package has been failing: `failingSince` (its builds, since
   their last success when first seen) and `updateFailingSince` (its update
   attempts), carried from sync to sync like `outdatedSince`; a red age tag
