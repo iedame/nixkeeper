@@ -117,3 +117,59 @@ def add_failing_since(rows, previous, now):
             row["updateFailingSince"] = old.get("updateFailingSince") or (
                 f"{day}T00:00:00+00:00" if day else now
             )
+
+
+# What a sync counts as fixed since the last (fixes): only with something
+# that shows it, so a source that's down or late, or a change in how
+# nixkeeper counts, never looks like a wave of fixes.
+#   build: was failing; now no failed build, and Hydra has a success
+#   update: was outdated; now not, and nixpkgs' version changed
+#   bot: nixpkgs-update was failing; now not, and its attempt changed (a
+#     newer one, or superseded: nixpkgs moved on)
+FIXES = ("build", "update", "bot")
+
+
+def fixes(rows, previous, now):
+    """[{"at", "name", "kind", "from"?, "to"?}] for each fully checked row
+    fixed since previous (FIXES); not for new or removed packages, pending
+    rows, or ones whose data wasn't refreshed."""
+    before = {row["name"]: row for row in previous["packages"]}
+    found = []
+    for row in rows:
+        old = before.get(row["name"])
+        if not old or row.get("pending") or old.get("pending"):
+            continue
+        builds = row.get("builds") or []
+        if (
+            old.get("failingSince")
+            and not row.get("failingSince")
+            and not any(b["status"] == "failed" for b in builds)
+            and any(b["status"] == "ok" for b in builds)
+        ):
+            found.append({"at": now, "name": row["name"], "kind": "build"})
+        if (
+            is_outdated(old)
+            and not is_outdated(row)
+            and not row.get("staleSince")
+            and row.get("nixVersion")
+            and row.get("nixVersion") != old.get("nixVersion")
+        ):
+            found.append(
+                {
+                    "at": now,
+                    "name": row["name"],
+                    "kind": "update",
+                    "from": old.get("nixVersion"),
+                    "to": row["nixVersion"],
+                }
+            )
+        update, was = row.get("update") or {}, old.get("update") or {}
+        if (
+            old.get("updateFailure")
+            and not row.get("updateFailure")
+            and "update" not in (row.get("unread") or [])
+            and update
+            and (update.get("date") != was.get("date") or update.get("supersededOn"))
+        ):
+            found.append({"at": now, "name": row["name"], "kind": "bot"})
+    return found

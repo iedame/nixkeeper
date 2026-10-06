@@ -215,8 +215,14 @@ def main():
     datastore.write(
         index,
         datastore.kept_entries(projects, index_rows),
-        # With every package, the counts' history carries over, a point a day.
+        # With every package, the counts' history carries over, a point a day,
+        # and what was fixed, the last month's.
         history=datastore.read_history() if everything else None,
+        fixed=datastore.with_fixed(
+            datastore.read_fixed(), history.fixes(index_rows, previous, now), now
+        )
+        if everything
+        else None,
     )
     # With every package, what changed for the lists' own packages only.
     notify.notify(

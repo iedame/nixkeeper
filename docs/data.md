@@ -143,9 +143,25 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   a `-`: `Security review` is `security-review`), `set/<name>.json` (a
   generated set's pending rows);
 - `history.json`: `{ "points": [ { "day", "tracked", "outdated", "failed",
-  "vulnerable", "broken" }, ... ] }`, the counts of the rows not pending at
-  each daily sync (the last 365 days; a second sync the same day replaces
-  the first): the overview's trends;
+  "vulnerable", "broken" }, ... ], "fixed": [ ... ] }`. `points`: the
+  counts of the rows not pending at each daily sync (the last 365 days; a
+  second sync the same day replaces the first), the overview's trends.
+  `fixed`: what each daily sync found fixed since the one before, the last
+  30 days, each `{ "at", "name", "kind", "from"?, "to"? }`, of the rows not
+  pending, and only with something showing it: `build` (it was failing; no
+  build fails now, and Hydra has a success), `update` (it was outdated; it
+  isn't, and nixpkgs' version changed: `from` and `to`), `bot`
+  (nixpkgs-update's attempts were failing; they aren't, and its attempt
+  changed: a newer one, or superseded). A source that's late, or a change
+  in how nixkeeper counts, so doesn't look like fixes;
+- `fixed` in `index.json`: of those, the last 7 days' (`days`): for
+  `build`, `update` and `bot`, `{ "count", "newest" }`, the 8 newest each
+  `[name, at, from, to]`;
+- `maintainers.json`: `{ "maintainers": [ [handle, packages, outdated,
+  failing], ... ] }`, every maintainer by handle (any case; as nixpkgs
+  writes it first), with how many packages list them (pending ones too)
+  and how many of the rows not pending are outdated and failing: the
+  maintainers page, and suggestions for a search starting with `@`;
 - `names.json`: `{ "names": [ [name, status], ... ] }` for every row, with
   its set as a third element when it's pending. `status` is a letter as the
   page's dot: `f` failed, `m` outdated but merged on master, `o` outdated,

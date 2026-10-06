@@ -23,7 +23,7 @@ import os
 import re
 import shutil
 import zlib
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from . import config
 from .changes import broken_builds, failures, is_outdated, waiting_for_channel
@@ -177,12 +177,13 @@ def summary_entry(row):
 HISTORY_DAYS = 365
 
 
-def files(index, entries, history=None):
+def files(index, entries, history=None, fixed=None):
     """Every file of data/ for index (its rows in "packages") and entries
     (Repology's, by dataFile): {path in data/: data}. history: with every
     package, the last run's history.json points (read_history), to which
-    this run's counts are added; None leaves history.json out (a partial
-    run keeps the one on disk)."""
+    this run's counts are added; fixed, the fixes it keeps (read_fixed, with
+    this run's: with_fixed); None leaves history.json out (a partial run
+    keeps the one on disk, and the manifest its "fixed")."""
     run = index.get("checkedAt")
     given = [elided(row, run) for row in index["packages"]]  # format 1's order
     rows = sorted(given, key=lambda row: row["name"])
@@ -208,8 +209,10 @@ def files(index, entries, history=None):
         manifest.update(views(rows, out))
         if history is not None:
             out["history.json"] = {
-                "points": with_point(history, run, manifest["counts"])
+                "points": with_point(history, run, manifest["counts"]),
+                "fixed": fixed or [],
             }
+            manifest["fixed"] = fixed_summary(fixed or [], run)
     else:
         out.update(entries)  # format 1's per-project files
         manifest["packages"] = given
@@ -236,6 +239,59 @@ def with_point(history, run, counts):
 FAILING_BUILDS = {"failed", "dependency", "unfinished"}
 # What history.json records each day: the fully checked rows' counts.
 HISTORY_COUNTS = ("tracked", "outdated", "failed", "vulnerable", "broken")
+
+
+# Days of fixes history.json keeps; days the overview counts them over.
+FIXED_DAYS = 30
+FIXED_RECENT_DAYS = 7
+
+
+def read_fixed(out_dir=None):
+    """The fixes the last run's history.json keeps, or []."""
+    out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
+    try:
+        return _load(os.path.join(out_dir, "history.json")).get("fixed") or []
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
+def with_fixed(fixed, new, run):
+    """fixed (oldest first) with this run's new ones, the last FIXED_DAYS
+    days: the same package's same kind of fix once a day (a second sync the
+    same day finds it again)."""
+    cutoff = _day_before(run, FIXED_DAYS)
+    seen, kept = set(), []
+    for fix in [*fixed, *new]:
+        key = (fix["at"][:10], fix["name"], fix["kind"])
+        if fix["at"][:10] > cutoff and key not in seen:
+            seen.add(key)
+            kept.append(fix)
+    return sorted(kept, key=lambda f: (f["at"], f["name"], f["kind"]))
+
+
+def fixed_summary(fixed, run):
+    """The manifest's "fixed": per kind, how many in the last
+    FIXED_RECENT_DAYS days and the HIGHLIGHTS newest, each [name, at, from,
+    to] (from and to for updates, else null)."""
+    cutoff = _day_before(run, FIXED_RECENT_DAYS)
+    out = {}
+    for kind in ("build", "update", "bot"):
+        mine = [f for f in fixed if f["kind"] == kind and f["at"][:10] > cutoff]
+        newest = sorted(mine, key=lambda f: (f["at"], f["name"]), reverse=True)
+        out[kind] = {
+            "count": len(mine),
+            "newest": [
+                [f["name"], f["at"], f.get("from"), f.get("to")]
+                for f in newest[:HIGHLIGHTS]
+            ],
+        }
+    return {"days": FIXED_RECENT_DAYS, **out}
+
+
+def _day_before(run, days):
+    """The day (YYYY-MM-DD) days before run's."""
+    day = datetime.fromisoformat((run or "1970-01-01")[:10])
+    return (day - timedelta(days=days)).date().isoformat()
 
 
 def read_history(out_dir=None):
@@ -312,6 +368,10 @@ def views(rows, out):
       views/team/<slug>.json, views/list/<slug>.json, views/set/<name>.json
       names.json: every row's name and status (status), and its set when
         pending: what a search looks through
+      maintainers.json: every maintainer, as nixpkgs writes the handle,
+        with how many packages they have (pending ones too) and how many
+        of the fully checked are outdated and failing: [handle, packages,
+        outdated, failing], by handle (any case)
     Returns {"counts": {...}, "views": {"attention", "teams", "lists":
     {name: count}, "sets": {name: {"packages", "failed", "broken"}}}}."""
     found = {}
@@ -335,6 +395,7 @@ def views(rows, out):
     )
     teams, lists, sets = {}, {}, {}
     names = []
+    maintainers = {}  # lowercase handle -> [handle, packages, outdated, failing]
     # Since when each fully checked row has been failing, outdated, failing
     # its update attempts: the overview's newest and oldest of each.
     ages = {"failing": [], "outdated": [], "updateFailing": []}
@@ -352,6 +413,11 @@ def views(rows, out):
         )
         for handle in row.get("maintainers") or []:
             put(f"views/maintainer/{handle.lower()}.json", row)
+            mine = maintainers.setdefault(handle.lower(), [handle, 0, 0, 0])
+            mine[1] += 1
+            if not row.get("pending"):
+                mine[2] += is_outdated(row)
+                mine[3] += letter.startswith("f")
         for team in row.get("teams") or []:
             put(f"views/team/{slug(team)}.json", row)
             teams[team] = teams.get(team, 0) + 1
@@ -387,6 +453,9 @@ def views(rows, out):
     for path, members in found.items():
         out[path] = {"packages": [summary_entry(row) for row in members]}
     out["names.json"] = {"names": names}
+    out["maintainers.json"] = {
+        "maintainers": [maintainers[key] for key in sorted(maintainers)]
+    }
     return {
         "counts": counts,
         "highlights": {kind: highlights(found) for kind, found in ages.items()},
@@ -409,16 +478,17 @@ def _write_file(path, text):
     os.replace(path + ".tmp", path)
 
 
-def write(index, entries, out_dir=None, history=None):
+def write(index, entries, out_dir=None, history=None, fixed=None):
     """Write data/ for index and entries (files; history: the counts
-    history so far, read_history). Built from scratch in a temporary folder
+    history so far, read_history; fixed: the fixes to keep, with_fixed).
+    Built from scratch in a temporary folder
     and only then swapped in for out_dir, so removed packages disappear and
     a failed run leaves the previous data intact."""
     out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
     tmp_dir = out_dir + ".tmp"
     shutil.rmtree(tmp_dir, ignore_errors=True)  # leftover from a failed run
     os.makedirs(tmp_dir)
-    for name, data in files(index, entries, history).items():
+    for name, data in files(index, entries, history, fixed).items():
         _write_file(os.path.join(tmp_dir, name), dumps(data))
     shutil.rmtree(out_dir, ignore_errors=True)
     os.rename(tmp_dir, out_dir)

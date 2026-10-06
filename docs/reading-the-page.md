@@ -44,9 +44,16 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   opens its list;
 - a search box (a package's name, or `@handle`) and a team picker; while
   searching, the matches take the place of what follows, which comes back
-  once the search is cleared;
+  once the search is cleared. Typing `@` and part of a handle suggests the
+  maintainers whose handle matches, with their counts (in the overview's
+  box, the overview stays while you type: a click or Enter opens theirs); "browse every
+  maintainer" (`?view=maintainers`) lists them all by handle, the search
+  narrowing them;
 - the newest and longest-standing build failures, outdated packages and
   update failures (a switch on each), and "show all" for the whole list;
+- what was fixed in the last week: builds that work again, packages
+  updated (from and to which version), and nixpkgs-update failures
+  cleared, from the first daily sync with this on;
 - the generated sets, each with its size and how much of it is marked
   broken or failing (a bar).
 
