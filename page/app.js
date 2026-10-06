@@ -414,7 +414,7 @@ async function copyTitle(btn) {
     area.remove();
   }
   btn.dataset.copied = ok ? 'Copied' : "Couldn't copy";
-  document.getElementById('announce').textContent = ok ? `Copied ${text}` : "Couldn't copy";
+  announce(ok ? `Copied ${text}` : "Couldn't copy");
   clearTimeout(btn.copiedTimer);
   btn.copiedTimer = setTimeout(() => delete btn.dataset.copied, 1500);
 }
@@ -1005,7 +1005,7 @@ const CHEVRON = raw(
 function rowHtml(pkg, i) {
   const st = computeStatus(pkg);
   return html`<tr class="row" tabindex="0" data-i="${i}">
-      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${breakableName(pkg.name)}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
+      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" role="img" aria-label="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${breakableName(pkg.name)}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
       <td class="c-ver ver mono">${versionCell(pkg, st)}</td>
       <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
       <td class="c-build">${buildCell(pkg)}</td>
@@ -1038,7 +1038,22 @@ function pagerHtml(total, pages) {
 // every row (below). The list changed (a filter, the search, the order):
 // back to the first page, unless keepPage (loading a shared address,
 // following a page link).
+// Says something to screen readers (#announce, a polite live region): only
+// the last of quick changes (typing a search), once things settle.
+let announceTimer = null;
+function announce(text, delay = 0) {
+  clearTimeout(announceTimer);
+  announceTimer = setTimeout(() => {
+    document.getElementById('announce').textContent = text;
+  }, delay);
+}
+let rendered = false; // the first render is the page loading: nothing said
+
 function render(list, { keepPage = false } = {}) {
+  // How many packages a change leaves, to hear without looking.
+  if (rendered && !(community && shownView === 'overview') && shownView !== 'maintainers')
+    announce(`${fmt(list.length)} ${list.length === 1 ? 'package' : 'packages'}`, 700);
+  rendered = true;
   renderStats();
   renderScope();
   const content = document.getElementById('content');
@@ -1073,7 +1088,7 @@ function render(list, { keepPage = false } = {}) {
   }
   content.innerHTML = html`<div class="wrap"><table>
     <thead><tr>
-      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>Open on GitHub</th><th>Build failures</th><th>Update failures</th><th aria-hidden="true"></th>
+      <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>Open on GitHub</th><th>Build failures</th><th>Update failures</th><th><span class="sr-only">Details</span></th>
     </tr></thead>
     <tbody id="rows">${shown.map(rowHtml)}</tbody>
   </table></div>${pagerHtml(list.length, pages)}${moreMatchesHtml()}`;
@@ -1186,21 +1201,21 @@ function highlightsHtml() {
       html`<button type="button" class="hl-mode" data-hl="${key}" data-mode="${m}" aria-pressed="${mode === m}">${text}</button>`;
     return html`<section class="hl-card" style="--hl:${color}" aria-label="${label}">
       <div class="hl-head">
-        <div class="hl-title"><span class="hl-label">${label}</span><span class="hl-n">${fmt(h.count)}</span></div>
+        <h3 class="hl-title"><span class="hl-label">${label}</span><span class="hl-n">${fmt(h.count)}</span></h3>
         <div class="hl-modes" role="group" aria-label="${label}: show">${toggle('newest', 'Newest')}${toggle('oldest', 'Oldest')}</div>
       </div>
       ${
         items.length
           ? html`<ol class="hl-list">${items.map(
               ([name, since, letter]) =>
-                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}"></span><span class="hl-name mono">${name}</span><span class="hl-age" title="Since ${longDate(since)}">${shortAge(since)}</span></a></li>`,
+                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}" aria-hidden="true"></span><span class="hl-name mono">${name}</span><span class="hl-age" title="Since ${longDate(since)}">${shortAge(since)}</span></a></li>`,
             )}</ol>`
           : html`<p class="hl-none">None right now.</p>`
       }
       ${h.count ? html`<a class="hl-all" href="${scopeHref({ view: 'attention', filter })}" data-card-view="attention" data-card-filter="${filter}">Show all ${fmt(h.count)} <span aria-hidden="true">→</span></a>` : ''}
     </section>`;
   });
-  return html`<p class="scope-label">Newest and longest-standing · fully checked</p>
+  return html`<h2 class="scope-label">Newest and longest-standing · fully checked</h2>
     <div class="hl-cols">${columns}${blockersHtml()}</div>`;
 }
 
@@ -1213,7 +1228,7 @@ function blockersHtml() {
   if (!b?.count) return '';
   return html`<section class="hl-card" style="--hl:var(--danger)" aria-label="Blocking the most">
     <div class="hl-head">
-      <div class="hl-title" title="${fmt(b.count)} failing dependencies stop ${fmt(b.packages)} packages' builds, in all of nixpkgs"><span class="hl-label">Blocking the most</span><span class="hl-n">${fmt(b.packages)}</span></div>
+      <h3 class="hl-title" title="${fmt(b.count)} failing dependencies stop ${fmt(b.packages)} packages' builds, in all of nixpkgs"><span class="hl-label">Blocking the most</span><span class="hl-n">${fmt(b.packages)}</span></h3>
       <span class="hl-unit">packages stopped</span>
     </div>
     <ol class="hl-list">${b.top.map(
@@ -1222,7 +1237,7 @@ function blockersHtml() {
           isRow
             ? html`<a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">`
             : raw('<span class="hl-row">')
-        }<span class="status-dot missing"></span><span class="hl-name mono">${name}</span><span class="hl-age" title="Stops ${fmt(packages)} ${packages === 1 ? 'package' : 'packages'} (${fmt(builds)} ${builds === 1 ? 'build' : 'builds'})">stops ${fmt(packages)}</span>${raw(isRow ? '</a>' : '</span>')}</li>`,
+        }<span class="status-dot missing" aria-hidden="true"></span><span class="hl-name mono">${name}</span><span class="hl-age" title="Stops ${fmt(packages)} ${packages === 1 ? 'package' : 'packages'} (${fmt(builds)} ${builds === 1 ? 'build' : 'builds'})">stops ${fmt(packages)}</span>${raw(isRow ? '</a>' : '</span>')}</li>`,
     )}</ol>
     <a class="hl-all" href="${scopeHref({ view: 'blocked' })}" data-card-view="blocked">Show all ${fmt(b.packages)} <span aria-hidden="true">→</span></a>
   </section>`;
@@ -1322,8 +1337,8 @@ function overviewHtml() {
       change == null
         ? ''
         : change === 0
-          ? html`<span class="card-change" title="${over}">no change</span>`
-          : html`<span class="card-change ${change > 0 ? 'worse' : 'better'}" title="${over}">${change > 0 ? '↑' : '↓'} ${fmt(Math.abs(change))}</span>`;
+          ? html`<span class="card-change" title="${over}">no change<span class="sr-only">, ${over.toLowerCase()}</span></span>`
+          : html`<span class="card-change ${change > 0 ? 'worse' : 'better'}" title="${over}"><span aria-hidden="true">${change > 0 ? '↑' : '↓'}</span><span class="sr-only">${change > 0 ? 'up' : 'down'}</span> ${fmt(Math.abs(change))}<span class="sr-only">, ${over.toLowerCase()}</span></span>`;
     return html`<a class="card" href="${scopeHref({ view: card.view, filter: card.filter })}" data-card-view="${card.view}" data-card-filter="${card.filter || ''}">
       <span class="card-label">${card.label}<span class="card-go" aria-hidden="true">›</span></span>
       <span class="card-row"><span class="card-n" style="color:${card.color}">${fmt(count(card.key))}</span>${said}</span>
@@ -1339,16 +1354,16 @@ function overviewHtml() {
       ${drawn ? sparkline(mine, card.key, card.color) : ''}
     </a>`;
   });
-  return html`<div class="scope-head">
+  return html`<h2 class="scope-head">
       <span class="scope-label">All of nixpkgs</span>
       <span class="scope-total">${fmt(total)} packages</span>
-    </div>
+    </h2>
     <div class="scope-bar" aria-hidden="true"><span style="width:${share.toFixed(1)}%"></span></div>
     <div class="scope-split">
       <span><i class="swatch full"></i><b>${fmt(c.tracked)}</b> fully checked</span>
       <span title="Generated from CRAN, Hackage and the like by their own tooling: only Repology's versions and Hydra's builds for now"><i class="swatch gen"></i><b>${fmt(c.pending)}</b> in generated sets · versions and builds only</span>
     </div>
-    <p class="scope-label">Fully checked${trends ? (points.length < TREND_DAYS ? `, since ${shortDay(points[0].day)}` : `, last ${TREND_DAYS} days`) : ''} · each opens its list${trends ? '' : html` <span class="scope-hint">(trends from the second daily sync)</span>`}</p>
+    <h2 class="scope-label">Fully checked${trends ? (points.length < TREND_DAYS ? `, since ${shortDay(points[0].day)}` : `, last ${TREND_DAYS} days`) : ''} · each opens its list${trends ? '' : html` <span class="scope-hint">(trends from the second daily sync)</span>`}</h2>
     <div class="cards">${cards}</div>${trends ? marksHtml(points) : ''}
 
     <div class="find" role="search">
@@ -1375,19 +1390,19 @@ function fixedHtml() {
     const f = fixed[key] || { count: 0, newest: [] };
     return html`<section class="hl-card" style="--hl:var(--ok-devel)" aria-label="${label}">
       <div class="hl-head">
-        <div class="hl-title"><span class="hl-label">${label}</span><span class="hl-n">${fmt(f.count)}</span></div>
+        <h3 class="hl-title"><span class="hl-label">${label}</span><span class="hl-n">${fmt(f.count)}</span></h3>
       </div>
       ${
         f.newest.length
           ? html`<ol class="hl-list">${f.newest.map(
               ([name, at, from, to]) =>
-                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"><span class="status-dot ok"></span><span class="hl-name mono">${name}</span>${to ? html`<span class="fixed-to mono" title="${from} → ${to}">→ ${to}</span>` : ''}<span class="hl-age" title="${longDate(at)}">${shortAge(at)}</span></a></li>`,
+                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"><span class="status-dot ok" aria-hidden="true"></span><span class="hl-name mono">${name}</span>${to ? html`<span class="fixed-to mono" title="${from} → ${to}">→ ${to}</span>` : ''}<span class="hl-age" title="${longDate(at)}">${shortAge(at)}</span></a></li>`,
             )}</ol>`
           : html`<p class="hl-none">None this week yet.</p>`
       }
     </section>`;
   });
-  return html`<p class="scope-label">Recently fixed · last ${fixed.days} days · fully checked</p>
+  return html`<h2 class="scope-label">Recently fixed · last ${fixed.days} days · fully checked</h2>
     <div class="hl-cols">${cards}</div>`;
 }
 
@@ -1408,7 +1423,7 @@ function setsHtml(sets) {
       <span class="set-meta">${problems.length ? problems.map((p, i) => html`${i ? ' · ' : ''}${p}`) : 'None broken or failing'}</span>
     </a>`;
   });
-  return html`<p class="scope-label">Generated sets <span class="set-pending" title="Generated from CRAN, Hackage and the like by their own tooling: only Repology's versions and Hydra's builds for now">pending</span> <span class="scope-hint">versions and builds only, for now</span></p>
+  return html`<h2 class="scope-label">Generated sets <span class="set-pending" title="Generated from CRAN, Hackage and the like by their own tooling: only Repology's versions and Hydra's builds for now">pending</span> <span class="scope-hint">versions and builds only, for now</span></h2>
     <div class="set-grid">${cards}</div>`;
 }
 
@@ -1443,7 +1458,8 @@ function listHeaderHtml() {
               : path === 'views/blocked.json'
                 ? 'Blocked by a dependency'
                 : 'Needs attention';
-  return html`<div class="scope-view">
+  return html`<h2 class="sr-only">${what}</h2>
+    <div class="scope-view">
       <span class="scope-label">Showing</span>
       <span class="view-chip">${what} · ${fmt(shownCount)}<a class="view-x" href="${scopeHref({})}" data-scope-home aria-label="Back to the overview" title="Back to the overview">✕</a></span>
       ${path.startsWith('views/set/') ? html`<span class="scope-hint">A generated set: only Repology's versions and Hydra's builds, for now</span>` : ''}
@@ -1547,7 +1563,7 @@ function moreMatchesHtml() {
     <div class="other-label">${total.toLocaleString()} ${shownView === 'overview' ? '' : 'more '}${total === 1 ? 'package matches' : 'packages match'} in all of nixpkgs${total > found.length ? html`, the first ${found.length}` : ''}</div>
     <ul>${found.map(
       ([name, letter, set]) =>
-        html`<li><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}"></span><a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a>${set ? html` <span class="badge neutral" title="A generated set: only Repology's versions and Hydra's builds for now">pending</span>` : ''}${letter.endsWith('v') ? html` <span class="badge vuln">vulnerable</span>` : ''}</li>`,
+        html`<li><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}" role="img" aria-label="${DOT_TITLE[NAME_DOTS[letter[0]] || 'neutral'] || ''}"></span><a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a>${set ? html` <span class="badge neutral" title="A generated set: only Repology's versions and Hydra's builds for now">pending</span>` : ''}${letter.endsWith('v') ? html` <span class="badge vuln">vulnerable</span>` : ''}</li>`,
     )}</ul>
   </div>`;
 }
@@ -1642,7 +1658,7 @@ function failureButton(kind, dot, text, title, stale = null, quiet = false) {
   const calm = quiet && !stale;
   const shown = calm && text === 'none reported' ? html`<span aria-hidden="true">—</span>` : text;
   return html`<button class="failure-btn${dot === 'missing' ? ' failing' : ''}${calm ? ' calm' : ''}" type="button" data-kind="${kind}"${calm ? html` data-quiet aria-label="${kind}: ${text}"` : ''} aria-expanded="false" title="${title}">
-    <span class="status-dot ${dot}"></span><span class="cell-label">${kind}:</span>${shown}${
+    <span class="status-dot ${dot}" aria-hidden="true"></span><span class="cell-label">${kind}:</span>${shown}${
       stale
         ? html` <span class="stale-tag" title="${staleText(stale, 'Not refreshed')}">not refreshed</span>`
         : ''
@@ -1767,7 +1783,7 @@ function fillUpdate(pkg, el) {
   el.innerHTML = html`${stale}
     <div class="nix-line">Latest nixpkgs-update attempt${(pkg.attrs || []).length > 1 ? html` at <span class="mono">${u.attr}</span>` : ''} · ${longDate(day)} (${shortAge(day)} ago)${versions}</div>
     <div class="build-list"><div class="build-line">
-      <span class="status-dot ${o.dot}"></span><span class="st ${o.dot}">${o.text(u, pkg)}</span>
+      <span class="status-dot ${o.dot}" aria-hidden="true"></span><span class="st ${o.dot}">${o.text(u, pkg)}</span>
     </div></div>
     ${u.excerpt?.length ? html`<pre class="log-excerpt mono">${u.excerpt.join('\n')}</pre>` : ''}
     <div class="detail-row">
@@ -1830,7 +1846,7 @@ function buildLine(pkg, b) {
     links = html`<a class="files-link" href="${HYDRA}/build/${b.build}" target="_blank" rel="noopener">build ${b.build} ↗</a>`;
   }
   return html`<div class="build-line">
-    <span class="status-dot ${s.dot}"></span>
+    <span class="status-dot ${s.dot}" aria-hidden="true"></span>
     <span class="mono sys">${b.system}</span>
     ${multi ? html`<span class="mono attr">${b.attr}</span>` : ''}
     <span class="st ${s.dot}">${b.status === 'dependency' && b.blockedBy?.length ? blockedByHtml(b.blockedBy) : s.text}${at}</span>${links}

@@ -72,6 +72,20 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- The page for screen readers, phones and low vision (a pass before the
+  community page is announced):
+  - muted text (labels, dates, zeros, headers) is now 4.5:1 against its
+    background in all four palettes (it was 2.6 to 4.4:1);
+  - the overview's sections and cards are headings, and each list has one
+    (its name), to move between with a screen reader;
+  - a package's status dot says what it means, the cards' changes say "up"
+    or "down" and since when, and how many packages a filter, tile or
+    search leaves is announced;
+  - on touch screens, everything tapped is at least 24px each way (the
+    platform tags, the ✕ back from a list, the help button, the narrowing
+    buttons and pickers, PR badges, "Show all"), and the header's buttons
+    no longer stick out past the screen's margin;
+  - the build, update and platform buttons have the page's focus ring.
 - The list no longer widens the page past the screen (scrolling it
   sideways, the last column cut off) for a long package name or a long
   version with badges beside it: a name wraps after a dot or at a hyphen

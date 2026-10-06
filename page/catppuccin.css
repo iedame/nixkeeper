@@ -15,7 +15,7 @@
   --surface: #eff1f5; /* base */
   --ink: #4c4f69; /* text */
   --ink-soft: #5c5f77; /* subtext1 */
-  --ink-faint: #8c8fa1; /* overlay1 */
+  --ink-faint: #63667d; /* between subtext0 and subtext1: 4.5:1 on mantle and base */
   --hairline: #ccd0da; /* surface0 */
   --hairline-strong: #bcc0cc; /* surface1 */
   --stale: #8c8fa1; /* overlay1 */
@@ -56,7 +56,7 @@
     --surface: #1e1e2e; /* base */
     --ink: #cdd6f4; /* text */
     --ink-soft: #a6adc8; /* subtext0 */
-    --ink-faint: #7f849c; /* overlay1 */
+    --ink-faint: #9399b2; /* overlay2: 4.5:1 on mantle and base */
     --hairline: #313244; /* surface0 */
     --hairline-strong: #45475a; /* surface1 */
     --stale: #7f849c; /* overlay1 */
@@ -94,7 +94,7 @@
   --surface: #1e1e2e;
   --ink: #cdd6f4;
   --ink-soft: #a6adc8;
-  --ink-faint: #7f849c;
+  --ink-faint: #9399b2;
   --hairline: #313244;
   --hairline-strong: #45475a;
   --stale: #7f849c;
