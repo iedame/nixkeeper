@@ -26,7 +26,13 @@ import zlib
 from datetime import datetime, timedelta
 
 from . import config
-from .changes import broken_builds, failures, is_outdated, waiting_for_channel
+from .changes import (
+    broken_builds,
+    failed_builds,
+    failures,
+    is_outdated,
+    waiting_for_channel,
+)
 
 FORMAT = 2
 # Rows a shard holds, about: a shard is what a details panel loads.
@@ -225,6 +231,25 @@ def files(index, entries, history=None, fixed=None, events=None):
     return out
 
 
+def with_split(history, previous):
+    """history with the previous run's split counts (SPLIT_COUNTS) on its
+    day's point, where that point doesn't have them: the counts were
+    recorded combined before, and the previous manifest still has them
+    apart (buildFailures: its builds that failed, as the overview's
+    newest and longest-standing count them, in older manifests)."""
+    run = previous.get("checkedAt") or ""
+    counts = previous.get("counts") or {}
+    found = {
+        "buildFailures": counts.get("buildFailures")
+        if "buildFailures" in counts
+        else ((previous.get("highlights") or {}).get("failing") or {}).get("count"),
+        "updateFailures": counts.get("updateFailures"),
+    }
+    if not run or any(v is None for v in found.values()):
+        return history
+    return [{**found, **p} if p.get("day") == run[:10] else p for p in history]
+
+
 def with_point(history, run, counts):
     """history (a list of {"day", counts...}, oldest first) with this run's
     counts of the fully checked rows as the day's point (a second sync the
@@ -240,7 +265,18 @@ def with_point(history, run, counts):
 # package fail on the page.
 FAILING_BUILDS = {"failed", "dependency", "unfinished"}
 # What history.json records each day: the fully checked rows' counts.
-HISTORY_COUNTS = ("tracked", "outdated", "failed", "vulnerable", "broken")
+HISTORY_COUNTS = (
+    "tracked",
+    "outdated",
+    "failed",
+    "buildFailures",
+    "updateFailures",
+    "vulnerable",
+    "broken",
+)
+# Counts a point didn't have before (the failing ones split, 0.13.0): the
+# previous manifest's, for its own day's point (with_split).
+SPLIT_COUNTS = ("buildFailures", "updateFailures")
 
 
 # Days of fixes history.json keeps; days the overview counts them over.
@@ -418,6 +454,7 @@ def views(rows, out):
             "failed",
             "vulnerable",
             "updateFailures",
+            "buildFailures",
             "waiting",
             "pending",
         ),
@@ -472,6 +509,7 @@ def views(rows, out):
         counts["outdated"] += is_outdated(row)
         counts["vulnerable"] += letter.endswith("v")
         counts["updateFailures"] += bool(row.get("updateFailure"))
+        counts["buildFailures"] += bool(failed_builds(row))
         for kind, field in AGES.items():
             if row.get(field):
                 ages[kind].append((row[field], row["name"], letter))

@@ -18,12 +18,20 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   versions kept), on the day it first ran. Named and dated under the
   cards; in `history.json` as `events` (`docs/data.md`).
 - While nixkeeper-updates' digest is still reading nixpkgs-update's past
-  attempts (a backfill), the Failing card says how many are to go: update
-  failures that were there all along keep turning up, so it rises without
-  anything breaking.
+  attempts (a backfill), the Update failures card says how many are to go:
+  update failures that were there all along keep turning up, so it rises
+  without anything breaking.
 
 ### Changed
 
+- With every package, failing is split in two on the overview and in a
+  list's tiles: **build failures** (a build of its own failing) and
+  **update failures** (nixpkgs-update's attempts failing), each its own
+  card, trend and filter (`?filter=builds`, `?filter=updates`;
+  `?filter=failed` still shows both). The history records both
+  (`buildFailures`, `updateFailures`), and a sync adds them to the day
+  before's point from that day's manifest, so the split trends start at
+  once.
 - The overview's trends show from the second daily sync, not after a
   week; until there's a week, each card's change is since the first sync
   (hover it for which).

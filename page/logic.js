@@ -368,16 +368,21 @@ export function faviconKey(packages, platform = null) {
 export const AGE_DAYS = { '1m': 30, '6m': 182, '1y': 365 };
 
 // Since when a row has had the problem kind names (the list's filter):
-// failing (its builds or update attempts, the earlier), outdated, or for any
-// other, the earliest of them; null when it has none of them.
+// failing (its builds or update attempts, the earlier; or builds or updates
+// alone), outdated, or for any other, the earliest of them; null when it has
+// none of them.
 export function problemSince(pkg, kind) {
   const failing = [pkg.failingSince, pkg.updateFailingSince];
   const dates =
     kind === 'failed'
       ? failing
-      : kind === 'warn'
-        ? [pkg.outdatedSince]
-        : [...failing, pkg.outdatedSince];
+      : kind === 'builds'
+        ? [pkg.failingSince]
+        : kind === 'updates'
+          ? [pkg.updateFailingSince]
+          : kind === 'warn'
+            ? [pkg.outdatedSince]
+            : [...failing, pkg.outdatedSince];
   return dates.filter(Boolean).sort()[0] || null;
 }
 

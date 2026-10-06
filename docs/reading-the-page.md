@@ -33,13 +33,16 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
 - how many packages nixpkgs has, how many are **fully checked** and how many
   are in **generated sets** (pending: only Repology's versions and Hydra's
   builds);
-- four cards for the fully checked ones: outdated (fewer than Repology's
+- five cards for the fully checked ones: outdated (fewer than Repology's
   nixpkgs page counts: that includes the generated sets, counts every
   attribute of a package, and takes any newer version it knows of, where
-  nixkeeper's own update checks overrule it), failing (with how many
-  Hydra builds fail in all, as [zh.fail](https://zh.fail/) counts them:
-  every job on every platform, a dependency's failure counted for each
-  package it stops), vulnerable and marked broken, each with its trend
+  nixkeeper's own update checks overrule it), build failures (a build of
+  its own failing; with how many Hydra builds fail in all, as
+  [zh.fail](https://zh.fail/) counts them: every job on every platform, a
+  dependency's failure counted for each package it stops), update failures
+  (nixpkgs-update's attempts failing: often a sign the update needs doing
+  by hand rather than something broken), vulnerable and marked broken,
+  each with its trend
   (from the second daily sync on, the last 30 days at most) and its change
   over the last week (since the first sync until there's a week: hover it
   for which). A dashed mark on the trends is a staging-next merge into
@@ -47,8 +50,8 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   linked under the cards), or, in the accent colour, nixkeeper updated or
   counting differently (a change in how it counts can step a count). While
   the digest of nixpkgs-update's attempts is still reading past ones, the
-  Failing card says how many are to go: update failures that were there
-  all along keep turning up until then, so it rises without anything
+  Update failures card says how many are to go: update failures that were
+  there all along keep turning up until then, so it rises without anything
   breaking. Each card opens its list;
 - a search box (a package's name, or `@handle`) and a team picker; while
   searching, the matches take the place of what follows, which comes back

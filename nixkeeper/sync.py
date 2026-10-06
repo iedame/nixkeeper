@@ -245,7 +245,11 @@ def main():
         datastore.kept_entries(projects, index_rows),
         # With every package, the counts' history carries over, a point a day,
         # and what was fixed, the last month's.
-        history=datastore.read_history() if everything else None,
+        # The day before's point gets its split failing counts from the last
+        # manifest, if it was recorded without them.
+        history=datastore.with_split(datastore.read_history(), previous)
+        if everything
+        else None,
         fixed=datastore.with_fixed(
             datastore.read_fixed(), history.fixes(index_rows, previous, now), now
         )
