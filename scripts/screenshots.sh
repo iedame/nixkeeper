@@ -9,6 +9,14 @@
 # names; Catppuccin's (Latte when light, Mocha when dark) end in -catppuccin:
 # desktop-dark-catppuccin.png, ..., social-preview-catppuccin.png.
 #
+# Which page depends on the data: a list-based instance's shows its list (the
+# shots above); every package's (a community instance: allPackages) its
+# overview of all of nixpkgs, the page it opens on (the lists it opens look
+# like the list-based ones), in files starting with overview-:
+# overview-desktop-dark.png (taller, 1280x1180, no panel), ...,
+# overview-social-preview.png. Each run takes one of the two and leaves the
+# other's files as they are.
+#
 # With the page's current code (page/) against the published data, so what's
 # shown is what's live.
 #
@@ -36,8 +44,10 @@
 # panel, whatever this copy of nixkeeper tracks. The phone shots show the
 # plain list; the social preview reuses the dark desktop shot.
 #
-# --data is where the data is: a URL to the folder holding index.json.
-# Default: this repository's data branch on GitHub (from its origin remote).
+# --data is where the data is: the folder holding index.json, a URL or a
+# local folder (served next to the page; a list-based instance's data/, say,
+# when this repository's is every package's). Default: this repository's
+# data branch on GitHub (from its origin remote).
 #
 # --port is the port of the local server that serves the page to the browser.
 # Default: 8799.
@@ -56,8 +66,9 @@ usage() {
 	echo "  --open <row>:<info|build|update|auto>, or none: the panel open in the" >&2
 	echo "          desktop shots; the row is a package's name or a position" >&2
 	echo "          (default: 10:auto)" >&2
-	echo "  --data <url>: the data, the folder with index.json (default: this" >&2
-	echo "          repository's data branch on GitHub)" >&2
+	echo "  --data <url or folder>: the data, the folder with index.json" >&2
+	echo "          (default: this repository's data branch on GitHub); a list-based" >&2
+	echo "          instance's shows its list, every package's its overview" >&2
 	echo "  --port <port>: the local server's port (default: 8799)" >&2
 	echo "See scripts/screenshots.sh for more." >&2
 	exit "${1:-1}"
@@ -104,6 +115,7 @@ done
 	exit 1
 }
 
+open_given=${OPEN:+yes}
 OPEN=${OPEN:-10:auto}
 [[ $OPEN == none || $OPEN =~ ^[^:]+:(info|build|update|auto)$ ]] || {
 	echo "--open: expected <row>:<info|build|update|auto>, or none (got: $OPEN)" >&2
@@ -119,21 +131,45 @@ if [ -z "${DATA:-}" ]; then
 	repo=$(git remote get-url origin | sed -E 's#^.*github\.com[:/]##; s#\.git$##')
 	DATA="https://raw.githubusercontent.com/$repo/data/data/"
 fi
+# A local folder: served next to the page, as data/ (below).
+local_data=
+if [[ $DATA != *://* ]]; then
+	[ -f "$DATA/index.json" ] || {
+		echo "--data: no index.json in $DATA" >&2
+		exit 1
+	}
+	local_data=$(cd "$DATA" && pwd)
+fi
 DATA=${DATA%/}/ # the folder, as the page expects it
 
 # The data has to be there, and so does the panel asked for: the package on
 # the page, and for build or update a cell that opens one (packages not in
-# nixpkgs have neither).
-python3 - "$DATA" "$OPEN" <<'EOF'
-import json, sys, urllib.request
-data, want = sys.argv[1:]
-try:
-    with urllib.request.urlopen(data + "index.json", timeout=30) as resp:
-        rows = {row["name"]: row for row in json.load(resp)["packages"]}
-except (OSError, ValueError, KeyError) as e:
-    sys.exit(f"--data: couldn't read {data}index.json ({e})")
+# nixpkgs have neither). Prints which page the data shows: list or overview.
+mode=$(python3 - "$DATA" "$OPEN" "$open_given" <<'EOF'
+import json, os, sys, urllib.request
+data, want, given = sys.argv[1:]
+def read(name):
+    try:
+        if "://" not in data:
+            with open(os.path.join(data, name)) as f:
+                return json.load(f)
+        with urllib.request.urlopen(data + name, timeout=30) as resp:
+            return json.load(resp)
+    except (OSError, ValueError) as e:
+        sys.exit(f"--data: couldn't read {data}{name} ({e})")
+index = read("index.json")
+if index.get("format", 1) < 2:
+    sys.exit(f"--data: {data}index.json is from nixkeeper 0.11.0 or older")
+if index.get("allPackages"):
+    # Every package (a community instance): its overview of all of nixpkgs,
+    # with no rows to open a panel in.
+    if given and want != "none":
+        sys.exit("--open: every package's data shows its overview, with no panel to open")
+    print("overview")
+    sys.exit()
+rows = {row["name"]: row for row in read("summary.json").get("packages", [])}
 if not rows:
-    sys.exit(f"--data: {data}index.json has no packages")
+    sys.exit(f"--data: {data}summary.json has no packages")
 if want != "none":
     name, panel = want.rsplit(":", 1)
     if name.isdigit():
@@ -146,7 +182,9 @@ if want != "none":
         field = {"build": "builds", "update": "update"}.get(panel)
         if field and field not in rows[name]:
             sys.exit(f"--open: {name} has no {panel} panel (it's not in nixpkgs)")
+print("list")
 EOF
+)
 
 case $browser in
 *firefox*)
@@ -197,7 +235,12 @@ trap cleanup EXIT
 # able to open a panel once its rows are there (?open=<row>:<panel>, as
 # --open).
 cp page/* "$site/"
-python3 - "$site/index.html" "$DATA" <<'EOF'
+page_data=$DATA
+if [ -n "$local_data" ]; then
+	ln -s "$local_data" "$site/data"
+	page_data=data/
+fi
+python3 - "$site/index.html" "$page_data" <<'EOF'
 import sys
 path, data = sys.argv[1:]
 page = open(path).read()
@@ -282,23 +325,33 @@ shot() {
 	echo "  $1"
 }
 
-echo "Taking screenshots (data: $DATA)..."
+# The list's shots, or the overview's (overview-...): taller, to show its
+# cards, the search and what's newest, and no panel.
+prefix=''
+height=860
+card=social-preview.html
+if [ "$mode" = overview ]; then
+	prefix=overview-
+	height=1180
+	card='social-preview.html?mode=overview'
+fi
+echo "Taking screenshots of the $mode (data: $DATA)..."
 cp scripts/social-preview.html "$site/"
 for palette in classic catppuccin; do
 	suffix=
 	[ "$palette" = classic ] || suffix=-$palette
 	for theme in dark light; do
 		query="?palette=$palette"
-		[ "$OPEN" != none ] && query="$query&open=$OPEN"
-		shot "desktop-$theme$suffix" 1280 860 2 "$theme" "$query"
-		shot "mobile-$theme$suffix" 800 844 2 "$theme" "phone.html?palette=$palette"
-		magick "$work/out/mobile-$theme$suffix.png" -gravity center -crop 780x1688+0+0 +repage \
-			"$work/out/mobile-$theme$suffix.png"
+		[ "$mode" = list ] && [ "$OPEN" != none ] && query="$query&open=$OPEN"
+		shot "${prefix}desktop-$theme$suffix" 1280 "$height" 2 "$theme" "$query"
+		shot "${prefix}mobile-$theme$suffix" 800 844 2 "$theme" "phone.html?palette=$palette"
+		magick "$work/out/${prefix}mobile-$theme$suffix.png" -gravity center -crop 780x1688+0+0 +repage \
+			"$work/out/${prefix}mobile-$theme$suffix.png"
 	done
 	# The social preview: a card (scripts/social-preview.html) with the
 	# lockup, what nixkeeper watches, and the dark desktop shot, at 2x.
-	cp "$work/out/desktop-dark$suffix.png" "$site/shot.png"
-	shot "social-preview$suffix" 1280 640 2 dark social-preview.html
+	cp "$work/out/${prefix}desktop-dark$suffix.png" "$site/shot.png"
+	shot "${prefix}social-preview$suffix" 1280 640 2 dark "$card"
 done
 
 echo "Compressing into assets/screenshots/..."
@@ -308,4 +361,4 @@ for f in "$work"/out/*.png; do
 done
 du -ch assets/screenshots/*.png | tail -1
 echo "Done. The social preview is uploaded by hand: Settings → General → Social preview"
-echo "(social-preview.png, or social-preview-catppuccin.png)."
+echo "(${prefix}social-preview.png, or ${prefix}social-preview-catppuccin.png)."

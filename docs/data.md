@@ -5,24 +5,18 @@ rewrites and commits to the `data` branch, under `data/`. That branch is
 always `main` plus one commit with the latest data: each run replaces it, so
 it keeps no history.
 
-- `index.json`: the sync's details (when, which version, list problems),
-  the counts of rows and shards, and, for now, every row (`packages`)
+- `index.json`: the sync's details (when, which version, list problems)
+  and the counts of rows and shards
 - `summary.json`: a short entry per row, with what the page's list needs
   (below)
 - `rows/<n>.json`: the rows in full, with their Repology entries, in shards
   (below)
-- `<project>.json`: each Repology project's packages, as Repology lists
-  them: one entry per repository and package, with only what nixkeeper reads
-  (`repo`, `srcname`, `version`, `status`, and `vulnerable` when flagged),
-  each once; a row's `dataFile` names its file. For now: the shards hold
-  the same entries
 
-`packages` in `index.json` and the `<project>.json` files are the data's
-first format, which pages from 0.11.0 and before read; format 2 (`summary.json`
-and the shards) is what lets the page load only what it shows, and what it
-reads since 0.12.0 (it still reads the first format, for data from before). Both are
-written for now; the first format will be dropped in a later release, with a
-note in the changelog.
+This is the data's second format, which lets the page load only what it
+shows. The first (0.11.0 and before; written beside the second until
+0.13.0) had every row in `index.json` (`packages`) and each Repology
+project's entries in a file of its own (`<project>.json`): the page no
+longer reads it, and the next sync after upgrading rewrites it.
 
 On GitHub they're at
 `https://raw.githubusercontent.com/<owner>/<repo>/data/data/index.json`.
@@ -45,16 +39,15 @@ hand (`jq . index.json`).
 ## `index.json`
 
 ```json
-{ "format": 2, "checkedAt": "2026-09-30T06:00:00+00:00", "version": "0.12.0",
-  "packageCount": 241, "shardCount": 1, "packages": [ ... ] }
+{ "format": 2, "checkedAt": "2026-09-30T06:00:00+00:00", "version": "0.13.0",
+  "packageCount": 241, "shardCount": 1 }
 ```
 
 `format` is the data's format (2; missing in data from before). `version`
 is the nixkeeper that ran the last full sync (the page shows it at the
 bottom). `checkedAt` is when the last full sync ran (the hourly checks update
 single rows without changing it). `packageCount` is how many rows there are,
-`shardCount` how many shards hold them. `packages` are the rows, sorted by
-name (the first format, for now).
+`shardCount` how many shards hold them.
 
 `listProblems`, only when there are any, lists mistakes the sync found in the
 package lists, as sentences: a maintainer handle no package lists, an extra
@@ -105,7 +98,9 @@ nixpkgs), and its `upstream` with only `version`, `newer`, `community` and
 ```
 
 The rows in full, sorted by name, each with its Repology project's entries
-in `repology` (as in `<project>.json`; missing when there are none). Rows
+in `repology`: one entry per repository and package, with only what
+nixkeeper reads (`repo`, `srcname`, `version`, `status`, and `vulnerable`
+when flagged), each once; missing when there are none. Rows
 are spread over `shardCount` shards (a power of two, about 500 rows each) by
 a hash of their name: a row is in shard `crc32(name) % shardCount` (CRC-32
 of the name's UTF-8 bytes, as zlib computes it), so a new package changes
@@ -115,8 +110,7 @@ only its own shard.
 
 With [every package](all-packages.md) tracked, `index.json` says
 `"allPackages": true` and there's no `summary.json` (every package's entry
-would be too much to load), no `packages` in `index.json` and no
-`<project>.json` files (the shards hold the entries; for packages not on the
+would be too much to load; the shards' entries are, for packages not on the
 lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 
 - `counts` in `index.json`: `tracked`, `outdated`, `failed` (failing in
@@ -194,7 +188,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `attrs` | the nixpkgs attributes the row covers (variants sharing a version, like `heroic` and `heroic-unwrapped`) |
 | `searchTerm` | what GitHub searches for its PRs and issues: the attribute, with versioned sets under the name nixpkgs titles use |
 | `lists` | the lists it's on: `maintained` (found through a maintainer handle), then the named lists (`gaming-team`, ...) |
-| `project`, `dataFile` | its Repology project, and that project's file in `data/` |
+| `project`, `dataFile` | its Repology project, and the key its entries are kept under (a file-name-safe form of the project's name: its file in `data/` in the first format) |
 | `platforms` | `{ "linux": bool, "darwin": bool }` from `meta.platforms`; `null` when nixpkgs doesn't restrict them |
 | `homepage` | `meta.homepage` |
 | `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it |

@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from nixkeeper import config, notify, prcheck
+from nixkeeper import config, datastore, notify, prcheck
 from nixkeeper.sources import github
 
 URL = "https://github.com/NixOS/nixpkgs/pull/"
@@ -51,9 +51,18 @@ class PRCheck(unittest.TestCase):
         self.addCleanup(patcher.stop)
 
     def publish(self, *rows):
+        """The last run's data, in format 1 (as from 0.11.0: still read)."""
         index = {"checkedAt": "2026-09-30T06:00:00+00:00", "packages": list(rows)}
         with open("data/index.json", "w") as f:
             json.dump(index, f)
+        self.published = [row["name"] for row in rows]
+        return index
+
+    def written(self):
+        """The data the check wrote, its rows in the order published."""
+        index = datastore.load("data")
+        if published := getattr(self, "published", None):
+            index["packages"].sort(key=lambda row: published.index(row["name"]))
         return index
 
     def run_check(self, answers):
@@ -73,8 +82,7 @@ class PRCheck(unittest.TestCase):
             mock.patch.object(notify, "notify") as notified,
         ):
             prcheck.main()
-        with open("data/index.json") as f:
-            return json.load(f), notified, searched
+        return self.written(), notified, searched
 
     def test_open_and_merged_update_prs(self):
         self.publish(
@@ -161,8 +169,7 @@ class PRCheck(unittest.TestCase):
             mock.patch.object(notify, "notify"),
         ):
             prcheck.main()
-        with open("data/index.json") as f:
-            self.assertEqual(json.load(f)["packages"][0]["openPR"], existing)
+        self.assertEqual(self.written()["packages"][0]["openPR"], existing)
 
     def test_the_followed_packages_prs(self):
         """A package updated together with another (follows.py) gets its

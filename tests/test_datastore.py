@@ -68,31 +68,28 @@ class Output(unittest.TestCase):
             {"wesnoth.json": [{"repo": "x"}]},
             self.out,
         )
+        # No per-project files (format 1) since 0.13.0: the entries are in
+        # the shards.
         self.assertEqual(
-            sorted(os.listdir(self.out)),
-            ["index.json", "rows", "summary.json", "wesnoth.json"],
+            sorted(os.listdir(self.out)), ["index.json", "rows", "summary.json"]
         )
         self.assertEqual(os.listdir(os.path.join(self.out, "rows")), ["0.json"])
         self.assertFalse(os.path.exists(self.out + ".tmp"))
-        self.assertEqual(json.loads(self.read("wesnoth.json")), [{"repo": "x"}])
 
     def test_written_compact_with_sorted_keys(self):
         write({"packages": [{"name": "a"}], "checkedAt": "now"}, {}, self.out)
         self.assertEqual(self.read("summary.json"), '{"packages":[{"name":"a"}]}')
         self.assertTrue(self.read("index.json").startswith('{"checkedAt":"now",'))
 
-    def test_manifest_keeps_format_1_rows(self):
+    def test_manifest_without_rows(self):
         rows = [full_row("wesnoth"), full_row("unciv")]
-        write({"checkedAt": "now", "version": "0.12.0", "packages": rows}, {}, self.out)
+        write({"checkedAt": "now", "version": "0.13.0", "packages": rows}, {}, self.out)
         index = json.loads(self.read("index.json"))
         self.assertEqual(index["format"], 2)
         self.assertEqual(index["packageCount"], 2)
         self.assertEqual(index["shardCount"], 1)
-        self.assertEqual(index["version"], "0.12.0")
-        # A page from before reads these, until it's updated.
-        self.assertEqual(
-            [row["name"] for row in index["packages"]], ["wesnoth", "unciv"]
-        )
+        self.assertEqual(index["version"], "0.13.0")
+        self.assertNotIn("packages", index)  # format 1's, until 0.13.0
 
     def test_summary_leaves_out_what_only_panels_use(self):
         write({"packages": [full_row("wesnoth", openPRs=2)]}, {}, self.out)
@@ -153,15 +150,26 @@ class Output(unittest.TestCase):
         write(
             {"checkedAt": "now", "packages": rows}, {"wesnoth.json": ENTRIES}, self.out
         )
-        index = json.loads(self.read("index.json"))
-        index.pop("packages")  # as once format 1 isn't written anymore
-        with open(os.path.join(self.out, "index.json"), "w") as f:
-            json.dump(index, f)
         loaded = datastore.load(self.out)
         self.assertEqual(loaded["checkedAt"], "now")
         self.assertEqual(
             loaded["packages"], sorted(rows, key=lambda row: row["name"])
         )  # without their entries
+
+    def test_load_falls_back_on_0_12_0s_rows(self):
+        # 0.12.0 wrote format 1's rows beside the shards: when a shard can't
+        # be read, they're the last run's.
+        write({"checkedAt": "now", "packages": [full_row("a")]}, {}, self.out)
+        index = json.loads(self.read("index.json"))
+        index["packages"] = [{"name": "a"}]
+        with open(os.path.join(self.out, "index.json"), "w") as f:
+            json.dump(index, f)
+        os.remove(os.path.join(self.out, "rows/0.json"))
+        self.assertEqual(datastore.load(self.out)["packages"], [{"name": "a"}])
+        del index["packages"]  # and since 0.13.0: none
+        with open(os.path.join(self.out, "index.json"), "w") as f:
+            json.dump(index, f)
+        self.assertEqual(datastore.load(self.out)["packages"], [])
 
     def test_load_reads_format_1(self):
         os.makedirs(self.out)
@@ -177,7 +185,6 @@ class Output(unittest.TestCase):
     def test_entries_from_the_shard_then_the_data_file(self):
         row = full_row("wesnoth")
         write({"packages": [row]}, {"wesnoth.json": ENTRIES}, self.out)
-        os.remove(os.path.join(self.out, "wesnoth.json"))
         self.assertEqual(datastore.entries(row, self.out), ENTRIES)
         # Format 1 (from 0.11.0 and before): the data file.
         os.makedirs(os.path.join(self.dir.name, "old"))
@@ -276,9 +283,8 @@ class RunStamps(unittest.TestCase):
 
     def test_everywhere_written(self):
         self.written([stamped("a")])
-        for name in ("index.json", "summary.json"):
-            with open(os.path.join(self.out, name)) as f:
-                self.assertNotIn(RUN, json.load(f)["packages"][0].values())
+        with open(os.path.join(self.out, "summary.json")) as f:
+            self.assertNotIn(RUN, json.load(f)["packages"][0].values())
 
     def test_load_puts_them_back(self):
         rows = [stamped("a"), stamped("b", EARLIER)]

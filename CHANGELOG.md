@@ -51,6 +51,24 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - The overview's trends show from the second daily sync, not after a
   week; until there's a week, each card's change is since the first sync
   (hover it for which).
+- `nix run .#screenshots` takes every package's overview too, when the data
+  is a community instance's: the same shots, starting with `overview-`
+  (the desktop ones taller, no panel; the social preview's card says
+  "every nixpkgs package"), beside the list's, which a run with a
+  list-based instance's data retakes as before. `--data` can be a local
+  folder too, served next to the page.
+
+### Removed
+
+- The data's first format is no longer written: no `packages` in
+  `index.json` and no `<project>.json` files (the shards have had the same
+  since 0.12.0), so `data/` is smaller (a few files instead of one per
+  Repology project) and syncs and the hourly checks write less. A page from
+  0.11.0 or before can't show the new data: update it with the data (the
+  modules and the GitHub workflows do). The page no longer reads the first
+  format either, and says so for data from 0.11.0 or before; the sync
+  still reads it, so upgrading from 0.11.0 keeps the last run's data, and
+  rewrites it in the second format (`docs/data.md`).
 
 ## [0.12.0] - 2026-10-06
 
