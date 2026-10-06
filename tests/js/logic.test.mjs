@@ -700,6 +700,8 @@ describe('problemSince and olderThan', () => {
     assert.equal(problemSince(pkg, 'failed'), '2026-03-01T00:00:00Z'); // the earlier failing
     assert.equal(problemSince(pkg, 'warn'), '2025-06-01T00:00:00Z');
     assert.equal(problemSince(pkg, 'all'), '2025-06-01T00:00:00Z');
+    assert.equal(problemSince(pkg, 'builds'), '2026-09-20T00:00:00Z'); // builds alone
+    assert.equal(problemSince(pkg, 'updates'), '2026-03-01T00:00:00Z'); // updates alone
     assert.equal(problemSince({}, 'all'), null);
   });
   test('older than a month, 6 months, a year', () => {

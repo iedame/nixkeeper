@@ -189,6 +189,19 @@ const FILTERS = {
     test: (p) => computeStatus(p) === 'warn',
   },
   failed: { label: 'failed', param: 'failed', color: 'var(--danger)', test: (p) => hasFailure(p) },
+  // With every package only, the two kinds of failing apart (tiles, cards).
+  builds: {
+    label: 'build failures',
+    param: 'builds',
+    color: 'var(--danger)',
+    test: (p) => failedBuilds(p).length > 0,
+  },
+  updates: {
+    label: 'update failures',
+    param: 'updates',
+    color: 'var(--caution)',
+    test: (p) => Boolean(p.updateFailure),
+  },
   vuln: {
     label: 'flagged vulnerable',
     param: 'vulnerable',
@@ -203,8 +216,6 @@ const FILTERS = {
     test: (p) => p.markedBroken || buildsWith(p, 'broken').length > 0,
   },
 };
-// With every package, the header's tiles (renderScope): these filters, by
-// these names, instead of the count chips.
 // What narrows any list, together with its other filters: each is left
 // out or kept whatever the tile (?refine=); "older than" (?age=) goes by
 // how long the tile's kind of problem has lasted (any, with none picked).
@@ -244,9 +255,12 @@ function refineHtml() {
   )}</select></label></div>`;
 }
 
+// With every package, the header's tiles (renderScope): these filters, by
+// these names, instead of the count chips.
 const TILES = {
   warn: 'Outdated',
-  failed: 'Failing',
+  builds: 'Build failures',
+  updates: 'Update failures',
   vuln: 'Vulnerable',
   broken: 'Marked broken',
 };
@@ -845,7 +859,7 @@ function renderStats() {
         <b style="color:var(--warn)">${fmt(manifest.views?.attention)}</b> needs attention</button>`
     : '';
   const buttons = Object.entries(community ? {} : FILTERS).map(([key, f]) => {
-    if (key === 'broken') return ''; // with every package only
+    if (['broken', 'builds', 'updates'].includes(key)) return ''; // with every package only
     const count = base.filter((p) => f.test(p) && refined(p, key)).length;
     // "vulnerable" only shows up when something is actually flagged.
     if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
@@ -1133,7 +1147,20 @@ const SEARCH_ICON =
 // (?view=, ?filter=), and history.json's key.
 const CARDS = [
   { key: 'outdated', label: 'Outdated', view: 'attention', filter: 'warn', color: 'var(--warn)' },
-  { key: 'failed', label: 'Failing', view: 'attention', filter: 'failed', color: 'var(--danger)' },
+  {
+    key: 'buildFailures',
+    label: 'Build failures',
+    view: 'attention',
+    filter: 'builds',
+    color: 'var(--danger)',
+  },
+  {
+    key: 'updateFailures',
+    label: 'Update failures',
+    view: 'attention',
+    filter: 'updates',
+    color: 'var(--caution)',
+  },
   {
     key: 'vulnerable',
     label: 'Vulnerable',
@@ -1146,9 +1173,9 @@ const CARDS = [
 // The overview's lists of the newest and longest-standing (the manifest's
 // highlights), and which of the two each shows.
 const HIGHLIGHTS = [
-  { key: 'failing', label: 'Build failures', filter: 'failed', color: 'var(--danger)' },
+  { key: 'failing', label: 'Build failures', filter: 'builds', color: 'var(--danger)' },
   { key: 'outdated', label: 'Outdated', filter: 'warn', color: 'var(--warn)' },
-  { key: 'updateFailing', label: 'Update failures', filter: 'failed', color: 'var(--caution)' },
+  { key: 'updateFailing', label: 'Update failures', filter: 'updates', color: 'var(--caution)' },
 ];
 const highlightShown = { failing: 'newest', outdated: 'newest', updateFailing: 'newest' };
 
@@ -1260,8 +1287,15 @@ function overviewHtml() {
   const share = total ? (100 * (c.tracked || 0)) / total : 0;
   const points = (trendPoints || []).slice(-TREND_DAYS);
   const trends = points.length >= TREND_MIN_POINTS;
+  // Build failures from before the count was kept apart: the newest and
+  // longest-standing lists' count of them.
+  const count = (key) =>
+    key === 'buildFailures' && c[key] == null ? manifest.highlights?.failing?.count : c[key];
   const cards = CARDS.map((card) => {
-    const trend = trends ? trendChange(points, card.key) : null;
+    // The days that have this count (the split ones are newer than the rest).
+    const mine = points.filter((p) => p[card.key] != null);
+    const drawn = mine.length >= TREND_MIN_POINTS;
+    const trend = drawn ? trendChange(mine, card.key) : null;
     const change = trend?.change;
     const over = trend?.since ? `Since ${shortDay(trend.since)}` : 'Over the last 7 days';
     const said =
@@ -1272,15 +1306,17 @@ function overviewHtml() {
           : html`<span class="card-change ${change > 0 ? 'worse' : 'better'}" title="${over}">${change > 0 ? '↑' : '↓'} ${fmt(Math.abs(change))}</span>`;
     return html`<a class="card" href="${scopeHref({ view: card.view, filter: card.filter })}" data-card-view="${card.view}" data-card-filter="${card.filter || ''}">
       <span class="card-label">${card.label}<span class="card-go" aria-hidden="true">›</span></span>
-      <span class="card-row"><span class="card-n" style="color:${card.color}">${fmt(c[card.key])}</span>${said}</span>
+      <span class="card-row"><span class="card-n" style="color:${card.color}">${fmt(count(card.key))}</span>${said}</span>
       ${
-        card.key === 'failed' && c.failingBuilds
-          ? html`<span class="card-sub" title="Every Hydra job that didn't build, on every platform, in all of nixpkgs: as zh.fail counts them, with a dependency's failure counted for each package it stops, and timeouts. A package counts as failing here only when its own build failed.">${fmt(c.failingBuilds)} failing builds on Hydra</span>${backfillNote()}`
-          : card.key === 'outdated'
-            ? html`<span class="card-sub" title="Each package counted once, its other attributes left out, and the generated sets (Haskell, R and the others) left out: with nixkeeper's own update checks, which can overrule a newer version listed elsewhere (a development series, a version upstream withdrew). Counts of every attribute in nixpkgs come out higher.">Unique, non-generated packages</span>`
-            : ''
+        card.key === 'buildFailures' && c.failingBuilds
+          ? html`<span class="card-sub" title="Every Hydra job that didn't build, on every platform, in all of nixpkgs: as zh.fail counts them, with a dependency's failure counted for each package it stops, and timeouts. A package counts here only when its own build failed.">${fmt(c.failingBuilds)} failing builds on Hydra</span>`
+          : card.key === 'updateFailures'
+            ? backfillNote()
+            : card.key === 'outdated'
+              ? html`<span class="card-sub" title="Each package counted once, its other attributes left out, and the generated sets (Haskell, R and the others) left out: with nixkeeper's own update checks, which can overrule a newer version listed elsewhere (a development series, a version upstream withdrew). Counts of every attribute in nixpkgs come out higher.">Unique, non-generated packages</span>`
+              : ''
       }
-      ${trends ? sparkline(points, card.key, card.color) : ''}
+      ${drawn ? sparkline(mine, card.key, card.color) : ''}
     </a>`;
   });
   return html`<div class="scope-head">

@@ -119,8 +119,10 @@ would be too much to load), no `packages` in `index.json` and no
 `<project>.json` files (the shards hold the entries; for packages not on the
 lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 
-- `counts` in `index.json`: `tracked`, `outdated`, `failed`, `vulnerable`,
-  `broken` (marked broken), `updateFailures`, `waiting` (outdated, the
+- `counts` in `index.json`: `tracked`, `outdated`, `failed` (failing in
+  any way), `buildFailures` (a build of its own failed), `updateFailures`
+  (nixpkgs-update's attempts failing), `vulnerable`, `broken` (marked
+  broken), `waiting` (outdated, the
   update merged on master) of the rows not pending; `pending`; and
   `failingBuilds`, every Hydra job of every row that didn't build (failed,
   a dependency failed, or unfinished), on every platform;
@@ -143,9 +145,12 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   a `-`: `Security review` is `security-review`), `set/<name>.json` (a
   generated set's pending rows);
 - `history.json`: `{ "points": [ { "day", "tracked", "outdated", "failed",
-  "vulnerable", "broken" }, ... ], "fixed": [ ... ] }`. `points`: the
-  counts of the rows not pending at each daily sync (the last 365 days; a
-  second sync the same day replaces the first), the overview's trends.
+  "buildFailures", "updateFailures", "vulnerable", "broken" }, ... ],
+  "fixed": [ ... ] }`. `points`: the counts of the rows not pending at each
+  daily sync (the last 365 days; a second sync the same day replaces the
+  first), the overview's trends. Points from before 0.13.0 have `failed`
+  only; a sync adds `buildFailures` and `updateFailures` to the previous
+  day's from that day's manifest.
   `fixed`: what each daily sync found fixed since the one before, the last
   30 days, each `{ "at", "name", "kind", "from"?, "to"? }`, of the rows not
   pending, and only with something showing it: `build` (it was failing; no

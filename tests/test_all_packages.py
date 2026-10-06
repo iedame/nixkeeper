@@ -260,6 +260,34 @@ class Data(unittest.TestCase):
         with open(os.path.join(self.out, name)) as f:
             return json.load(f)
 
+    def test_the_day_befores_split_from_the_last_manifest(self):
+        points = [
+            {"day": "2026-10-05", "failed": 1619},
+            {"day": "2026-10-06", "failed": 3151},
+        ]
+        # A manifest from before the split: its highlights' failing builds.
+        previous = {
+            "checkedAt": "2026-10-06T12:50:07+00:00",
+            "counts": {"failed": 3151, "updateFailures": 2164},
+            "highlights": {"failing": {"count": 1096}},
+        }
+        self.assertEqual(
+            datastore.with_split(points, previous),
+            [
+                {"day": "2026-10-05", "failed": 1619},  # no manifest for it
+                {
+                    "day": "2026-10-06",
+                    "failed": 3151,
+                    "buildFailures": 1096,
+                    "updateFailures": 2164,
+                },
+            ],
+        )
+        # A point that has them keeps its own; no manifest, nothing to add.
+        recorded = [{"day": "2026-10-06", "buildFailures": 7, "updateFailures": 8}]
+        self.assertEqual(datastore.with_split(recorded, previous), recorded)
+        self.assertEqual(datastore.with_split(points, {}), points)
+
     def test_status_letters(self):
         self.assertEqual(datastore.status(row("a")), "u")
         self.assertEqual(datastore.status(row("a", nixStatus="outdated")), "o")
@@ -331,6 +359,7 @@ class Data(unittest.TestCase):
                 "failed": 1,
                 "vulnerable": 1,
                 "updateFailures": 1,
+                "buildFailures": 0,
                 "waiting": 0,
                 "pending": 1,
             },
@@ -409,6 +438,8 @@ class Data(unittest.TestCase):
                     "tracked": 2,
                     "outdated": 1,
                     "failed": 0,
+                    "buildFailures": 0,
+                    "updateFailures": 0,
                     "vulnerable": 0,
                     "broken": 1,
                 },
