@@ -15,6 +15,18 @@ searches for theirs, so `?q=@yourhandle` is a link to your own. Its teams
 only that team's packages, as `?team=` does in the address
 (`?team=gaming`, in any case).
 
+Any list can be narrowed further, together with everything else (under the
+counts; with every package, under a list's tiles): **without maintainer**,
+**not marked broken** (failures nobody has marked yet), **not fixed on
+master yet** (leaving out outdated packages whose update is merged and
+waits for nixos-unstable), and **older than** a month, 6 months or a year:
+how long it's been failing or outdated (the counts' kind, when one is
+picked: failing for over 6 months, say). Each count then counts what's
+left. In the address: `?refine=unmaintained,notbroken,notonmaster` and
+`?age=1m`, `6m` or `1y`, so "failing for 6 months, with no maintainer" is a
+link. The dates only go back to when nixkeeper started following a package,
+so "older than" finds more as time goes on.
+
 On a page tracking [every package](all-packages.md) (a community
 instance), the page starts from an **overview** of nixpkgs, with no list:
 

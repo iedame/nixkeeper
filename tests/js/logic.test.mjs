@@ -24,9 +24,11 @@ import {
   midway,
   nameMatches,
   nixkeeperEntry,
+  olderThan,
   onMaster,
   onPlatform,
   pageLinks,
+  problemSince,
   raw,
   safeUrl,
   shardOf,
@@ -662,5 +664,31 @@ describe('weekChange', () => {
   test('null without a week of points', () => {
     assert.equal(weekChange([day('2026-10-01', 1), day('2026-10-05', 2)], 'failed'), null);
     assert.equal(weekChange([], 'failed'), null);
+  });
+});
+
+describe('problemSince and olderThan', () => {
+  const now = Date.parse('2026-10-06T00:00:00Z');
+  const pkg = {
+    failingSince: '2026-09-20T00:00:00Z',
+    updateFailingSince: '2026-03-01T00:00:00Z',
+    outdatedSince: '2025-06-01T00:00:00Z',
+  };
+  test("the list's kind of problem, or the earliest", () => {
+    assert.equal(problemSince(pkg, 'failed'), '2026-03-01T00:00:00Z'); // the earlier failing
+    assert.equal(problemSince(pkg, 'warn'), '2025-06-01T00:00:00Z');
+    assert.equal(problemSince(pkg, 'all'), '2025-06-01T00:00:00Z');
+    assert.equal(problemSince({}, 'all'), null);
+  });
+  test('older than a month, 6 months, a year', () => {
+    assert.equal(olderThan(pkg, '6m', 'failed', now), true); // since March
+    assert.equal(olderThan(pkg, '1y', 'failed', now), false);
+    assert.equal(olderThan(pkg, '1y', 'warn', now), true); // since June 2025
+    assert.equal(olderThan({ failingSince: '2026-09-20T00:00:00Z' }, '1m', 'failed', now), false);
+  });
+  test('no problem: never older; no age picked: every row', () => {
+    assert.equal(olderThan({}, '1m', 'all', now), false);
+    assert.equal(olderThan({}, null, 'all', now), true);
+    assert.equal(olderThan({}, 'bogus', 'all', now), true);
   });
 });
