@@ -9,6 +9,25 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- Marks on the overview's trends: each merge of staging-next into nixpkgs
+  master (mass rebuilds: failing builds jump for days after), from GitHub's
+  search; each nixkeeper update a sync ran; and each change in how
+  nixkeeper counts (`COUNTING_CHANGES`, the first being 0.12.0's older
+  versions kept), on the day it first ran. Named and dated under the
+  cards; in `history.json` as `events` (`docs/data.md`).
+- While nixkeeper-updates' digest is still reading nixpkgs-update's past
+  attempts (a backfill), the Failing card says how many are to go: update
+  failures that were there all along keep turning up, so it rises without
+  anything breaking.
+
+### Changed
+
+- The overview's trends show from the second daily sync, not after a
+  week; until there's a week, each card's change is since the first sync
+  (hover it for which).
+
 ## [0.12.0] - 2026-10-06
 
 nixkeeper can now track **every nixpkgs package**, for a community

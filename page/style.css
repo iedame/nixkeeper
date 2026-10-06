@@ -732,6 +732,37 @@ button.checked:focus-visible {
   height: 22px;
   margin-top: 2px;
 }
+/* The trends' marks: a staging-next merge, nixkeeper updated. */
+.spark-mark {
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+.spark-mark.staging-next {
+  stroke: var(--ink-faint);
+}
+.spark-mark.nixkeeper,
+.spark-mark.counting {
+  stroke: var(--accent);
+}
+.card-note {
+  color: var(--caution);
+}
+.spark-legend {
+  margin: -2px 0 0;
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+.spark-key {
+  display: inline-block;
+  width: 0;
+  height: 10px;
+  margin: 0 5px -1px 0;
+  border-left: 1px dashed var(--ink-faint);
+}
+.spark-key.nixkeeper,
+.spark-key.counting {
+  border-left-color: var(--accent);
+}
 .scope p.scope-label {
   margin: 4px 0 -4px;
 }

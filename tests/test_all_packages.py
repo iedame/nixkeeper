@@ -8,10 +8,10 @@ import tempfile
 import unittest
 from unittest import mock
 
-from nixkeeper import config, datastore, history, tracking
+from nixkeeper import config, datastore, history, sync, tracking
 from nixkeeper.lookup import collect_projects
 from nixkeeper.rows import build_rows
-from nixkeeper.sources import hydra_digest, nixpkgs_update
+from nixkeeper.sources import github, hydra_digest, nixpkgs_update
 from tests.helpers import nix, other, pkg
 
 NOW = "2026-10-05T06:00:00+00:00"
@@ -640,3 +640,120 @@ class Fixed(unittest.TestCase):
             self.assertEqual(datastore.read_fixed(out), [fix])
             with open(os.path.join(out, "index.json")) as f:
                 self.assertEqual(json.load(f)["fixed"]["build"]["count"], 1)
+
+
+class TrendEvents(unittest.TestCase):
+    """What marks the overview's trends: staging-next merged into master,
+    and nixkeeper updated (sync.trend_events, datastore.with_events)."""
+
+    MERGED = {
+        "search": {
+            "nodes": [
+                {
+                    "number": 566094,
+                    "title": "staging-next 2026-09-23",
+                    "mergedAt": "2026-09-28T17:40:27Z",
+                },
+                {},  # an issue, or a node GitHub couldn't fill
+            ]
+        }
+    }
+
+    def test_staging_next_merges(self):
+        with mock.patch.object(github, "graphql", return_value=self.MERGED) as asked:
+            found = github.staging_next_merges("token", "2026-09-05")
+        self.assertEqual(
+            found,
+            [
+                {
+                    "day": "2026-09-28",
+                    "kind": "staging-next",
+                    "pr": 566094,
+                    "title": "staging-next 2026-09-23",
+                }
+            ],
+        )
+        self.assertIn("merged:>=2026-09-05", asked.call_args.args[2]["q"])
+        self.assertIsNone(github.staging_next_merges(None, "2026-09-05"))  # no token
+        with (
+            mock.patch.object(github, "graphql", side_effect=OSError("down")),
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            self.assertIsNone(github.staging_next_merges("token", "2026-09-05"))
+
+    def test_nixkeeper_updated_since_the_last_sync(self):
+        with (
+            mock.patch.object(github, "staging_next_merges", return_value=None),
+            mock.patch.object(github, "token", return_value=None),
+            mock.patch.object(sync, "version", return_value="0.12.0"),
+            mock.patch.object(config, "COUNTING_CHANGES", []),
+        ):
+            self.assertEqual(
+                sync.trend_events({"version": "0.11.0"}, NOW),
+                [
+                    {
+                        "day": "2026-10-05",
+                        "kind": "nixkeeper",
+                        "version": "0.12.0",
+                        "from": "0.11.0",
+                    }
+                ],
+            )
+            self.assertEqual(sync.trend_events({"version": "0.12.0"}, NOW), [])
+            self.assertEqual(sync.trend_events({}, NOW), [])  # the first sync
+
+    def test_a_counting_change_on_the_first_day_it_ran(self):
+        change = {"merged": "2026-10-04T09:00:00+00:00", "text": "older versions"}
+        quiet = (
+            mock.patch.object(github, "staging_next_merges", return_value=None),
+            mock.patch.object(github, "token", return_value=None),
+            mock.patch.object(config, "COUNTING_CHANGES", [change]),
+            mock.patch.object(datastore, "read_events", return_value=[]),
+        )
+        with quiet[0], quiet[1], quiet[2], quiet[3]:
+            # The last sync came after it was merged: it ran with it (main).
+            after = {"checkedAt": "2026-10-04T12:00:00+00:00"}
+            self.assertEqual(
+                sync.trend_events(after, NOW),
+                [{"day": "2026-10-04", "kind": "counting", "text": "older versions"}],
+            )
+            # Before: this sync is the first with it.
+            before = {"checkedAt": "2026-10-04T06:00:00+00:00"}
+            self.assertEqual(sync.trend_events(before, NOW)[0]["day"], "2026-10-05")
+        # Marked once: a later sync leaves it.
+        with (
+            quiet[0],
+            quiet[1],
+            quiet[2],
+            mock.patch.object(
+                datastore, "read_events", return_value=[{"text": "older versions"}]
+            ),
+        ):
+            self.assertEqual(sync.trend_events(after, NOW), [])
+
+    def test_kept_once_each_a_year(self):
+        old = {"day": "2025-09-01", "kind": "staging-next", "pr": 1, "title": "old"}
+        merge = {
+            "day": "2026-09-28",
+            "kind": "staging-next",
+            "pr": 566094,
+            "title": "x",
+        }
+        update = {
+            "day": "2026-10-05",
+            "kind": "nixkeeper",
+            "version": "0.12.0",
+            "from": "0.11.0",
+        }
+        kept = datastore.with_events([old, merge], [merge, update], NOW)
+        self.assertEqual(kept, [merge, update])  # old: over a year; merge once
+        with tempfile.TemporaryDirectory() as d:
+            out = os.path.join(d, "data")
+            datastore.write(
+                {"checkedAt": NOW, "allPackages": True, "packages": [row("a")]},
+                {},
+                out,
+                history=[],
+                events=kept,
+            )
+            self.assertEqual(datastore.read_events(out), kept)

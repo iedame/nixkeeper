@@ -403,6 +403,45 @@ def count_warnings(rows):
     return warnings
 
 
+# Merges of staging-next into master: mass rebuilds land then, and the
+# failing counts jump for days after (the overview's trend markers).
+STAGING_NEXT = (
+    "repo:NixOS/nixpkgs is:pr is:merged base:master head:staging-next merged:>={since}"
+)
+
+
+def staging_next_merges(token, since):
+    """[{"day", "kind": "staging-next", "pr", "title"}] for each merge of
+    staging-next into nixpkgs master since the day since (YYYY-MM-DD), by
+    the day it was merged (UTC); None without a token or when GitHub
+    couldn't answer."""
+    if not token:
+        return None
+    try:
+        data = graphql(
+            token,
+            "query($q: String!) { search(type: ISSUE, first: 20, query: $q) "
+            "{ nodes { ... on PullRequest { number title mergedAt } } } }",
+            {"q": STAGING_NEXT.format(since=since)},
+        )
+    except (urllib.error.URLError, OSError, ValueError) as e:
+        if isinstance(e, urllib.error.HTTPError):
+            e.close()
+        print(f"  staging-next merges: GitHub didn't answer ({e})", file=sys.stderr)
+        return None
+    nodes = (data.get("search") or {}).get("nodes") or []
+    return [
+        {
+            "day": n["mergedAt"][:10],
+            "kind": "staging-next",
+            "pr": n["number"],
+            "title": n.get("title") or "",
+        }
+        for n in nodes
+        if n and n.get("number") and n.get("mergedAt")
+    ]
+
+
 STATUS_LABEL = "nixkeeper-status"
 
 

@@ -169,6 +169,17 @@ MAX_FAILED_SHARE = 0.5
 # outdated only by a newer release in its own series (an update check), or,
 # for a devel variant (a beta), a newer devel version elsewhere.
 OUTDATED_STATUSES = {"outdated"}
+
+# Changes in how nixkeeper counts that step a count overnight, for the
+# overview's trends (marked, with every package): when each was merged, and
+# what it changed. A sync marks one on the first day it ran with it. Add one
+# with any rule change that moves the counts.
+COUNTING_CHANGES = [
+    {
+        "merged": "2026-10-06T09:03:41+00:00",
+        "text": "older versions kept beside a newer one aren't outdated",
+    },
+]
 KEPT = "legacy"
 
 # Hydra, nixpkgs' build farm. The nixpkgs/unstable jobset builds master (not the

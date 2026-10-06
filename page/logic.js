@@ -124,6 +124,30 @@ export function weekChange(points, key) {
   return before ? last[key] - before[key] : null;
 }
 
+// A count's change for its card: over the last week (weekChange) once
+// there's a week of points, else since the oldest point there is (the
+// first daily syncs). {change, since: that point's day}, or null with fewer
+// than two points.
+export function trendChange(points, key) {
+  const week = weekChange(points, key);
+  if (week != null) return { change: week, since: null };
+  if (points.length < 2) return null;
+  return { change: points.at(-1)[key] - points[0][key], since: points[0].day };
+}
+
+// Where a day (YYYY-MM-DD) falls on a trend of points (oldest first), from
+// 0 (the first point's day) to 100 (the last's), by date, so missing days
+// keep their room; null outside them.
+export function dayPosition(points, day) {
+  if (points.length < 2) return null;
+  const at = (d) => Date.parse(`${d}T00:00:00Z`);
+  const first = at(points[0].day);
+  const span = at(points.at(-1).day) - first;
+  const t = at(day);
+  if (!span || Number.isNaN(t) || t < first || t > first + span) return null;
+  return (100 * (t - first)) / span;
+}
+
 // The names index's status letters (status in datastore.py) as the dot
 // they stand for.
 export const NAME_DOTS = { f: 'missing', m: 'merged', o: 'warn', u: 'ok', n: 'neutral' };
