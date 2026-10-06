@@ -50,6 +50,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   counts or tiles ("On Linux / macOS", `?platform=`), as a row's platform
   tag already did: build failures on macOS are a link now.
 
+- nixpkgs-update attempts that ended "other" (15% of them) now say what
+  happened, with the log's own line (parser 3, so every log is read again):
+  `branchExists` (the bot already pushed that update to its branch: its PR
+  is open or on its way), `skipped` (the bot passes the package over on
+  purpose: it opts out, GNOME's release cycle, too many rebuilds, ...;
+  "skipped" in the list), and, for `noChange` and `cantUpdate`, why
+  (nothing newer by Nix's version order, the same hashes, the source URL
+  unchanged). A request that failed (GitHub answering 500, say) is a
+  failure, its excerpt the host and the answer, not the request's dump.
+
 ### Changed
 
 - With every package, failing is split in two on the overview and in a

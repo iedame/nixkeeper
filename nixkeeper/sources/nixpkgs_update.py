@@ -22,7 +22,7 @@ LOG_NAME = re.compile(r'href="(\d{4}-\d{2}-\d{2})\.log"')
 # attribute, same date) instead of downloading it again, but only one read
 # with these same rules: bump this whenever parse() changes how it reads a
 # log, so the next sync reads every log again and the change applies at once.
-PARSER = 2
+PARSER = 3
 # What add_attempts adds to an attempt after reading its log, from the
 # state of nixpkgs and the rules at the time; as_read() takes them off.
 JUDGED = ("supersededOutcome", "supersededOn", "reason", "community")
@@ -51,6 +51,42 @@ NO_CHANGE = (
     "Package version did not change",
     # Someone updated it before the bot got to it.
     "not present in master derivation file",
+)
+# The bot already pushed this update to its branch (its PR open, or on its
+# way): "An auto update branch exists with message `karakeep: 0.33.1 ->
+# 0.33.2`. New version is 0.33.2." then this.
+BRANCH_EXISTS = "An auto update branch exists with an equal or greater version"
+BRANCH_MESSAGE = re.compile(
+    r"An auto update branch exists with message `\S+ (\S+) -> (\S+)`"
+)
+# Nothing to update, and why: the candidate isn't newer by Nix's order ("0.1.0
+# is not newer than 0.1.0-unstable-2024-06-14 according to Nix"), or the
+# rewriter found the same source.
+NOTHING_NEWER = re.compile(
+    r"^(?:\S+ is not newer than \S+ according to Nix.*"
+    r"|Hashes equal; no update necessary)$",
+    re.MULTILINE,
+)
+# The version rewriter changed the version but not where the source comes
+# from: the bot can't update this package.
+SOURCE_UNCHANGED = re.compile(r"^Source url did not change\.", re.MULTILINE)
+# A request that failed, GitHub's API most often (opening the PR): the dump of
+# the request is no excerpt, its host and answer are.
+HTTP_ERROR = re.compile(r"^HTTPError \(HttpExceptionRequest", re.MULTILINE)
+HTTP_HOST = re.compile(r'host\s*=\s*"([^"]+)"')
+HTTP_STATUS = re.compile(r'statusCode = (\d+), statusMessage = "([^"]*)"')
+HTTP_EXCEPTION = re.compile(
+    r"\b(ConnectionTimeout|ResponseTimeout|ConnectionFailure|TooManyRedirects|"
+    r"InternalException|ConnectionClosed)\b"
+)
+# The bot's own checks before it tries anything: a line right after one of
+# these that no other rule reads is why it stopped there, on purpose (its
+# skiplist: "Derivation file opts-out of auto-updates", "Do not update GNOME
+# during a release cycle", "Python package with too many package rebuilds
+# 3150 > 100", "rocm packages are upgraded in lockstep ...", "same as dune_3").
+CHECKS = re.compile(
+    r"^(?:attrpath: \S+|Checking auto update branch\.\.\."
+    r"|No auto update branch exists)$"
 )
 # nix build errors, nixpkgs-update's own, and update script errors.
 FAILED = re.compile(r"^error:|ExitFailure|failed with", re.MULTILINE)
@@ -130,6 +166,41 @@ def excerpt(log):
     return lines[-EXCERPT_LINES:]
 
 
+def meaningful_lines(log):
+    """log's lines without colours, trailing spaces and blank lines."""
+    return [
+        line
+        for line in (ANSI.sub("", raw).rstrip() for raw in log.splitlines())
+        if line
+    ]
+
+
+def http_excerpt(log):
+    """What a failed request was: ["HTTPError from api.github.com: 500
+    Internal Server Error"], or the exception's name when there was no
+    answer (a timeout)."""
+    host = HTTP_HOST.search(log)
+    status = HTTP_STATUS.search(log)
+    exception = HTTP_EXCEPTION.search(log)
+    what = (
+        f"{status.group(1)} {status.group(2)}".strip()
+        if status
+        else exception.group(1)
+        if exception
+        else "no answer"
+    )
+    return [f"HTTPError from {host.group(1)}: {what}" if host else f"HTTPError: {what}"]
+
+
+def skip_reason(log):
+    """Why the bot stopped right after its own checks (CHECKS), on purpose:
+    the line that came next, when it's the log's last; else None."""
+    lines = meaningful_lines(log)
+    if len(lines) >= 2 and CHECKS.match(lines[-2]) and not CHECKS.match(lines[-1]):
+        return lines[-1][:200]
+    return None
+
+
 def diff_versions(log, was):
     """(from, to) from the diff of an updateScript log ("0 -> 1"), when every
     version change in it updates the version in `was` (wesnoth-devel-1.19.24)
@@ -162,9 +233,11 @@ def diff_versions(log, was):
 
 def parse(log):
     """{"outcome", "from"?, "to"?, "was"?, "pr"?, "excerpt"?} for one log.
-    outcome: prOpened, prExists, cantUpdate (a newer version, but no way for
-    the bot to update the package: excerpt says why), noChange, failed, or
-    other. was: what
+    outcome: prOpened, prExists, branchExists (the bot already pushed this
+    update to its branch), cantUpdate (a newer version, but no way for the
+    bot to update the package: excerpt says why), noChange (excerpt: why,
+    when the log says), skipped (the bot passed it over on purpose: excerpt
+    says why), failed, or other. was: what
     nixpkgs had when the bot tried, as a version (2.7.3) or, with an
     updateScript, a name-version (wesnoth-devel-1.19.24)."""
     result = {}
@@ -183,12 +256,25 @@ def parse(log):
         result["outcome"] = "prExists"
     elif prs:
         result["outcome"] = "prOpened"
+    elif BRANCH_EXISTS in log:
+        result["outcome"] = "branchExists"
+        branch = BRANCH_MESSAGE.search(log)
+        if branch and result.get("from") in (None, UPDATE_SCRIPT):
+            result["from"], result["to"] = branch.groups()  # the script's versions
+    elif HTTP_ERROR.search(log):
+        result.update(outcome="failed", excerpt=http_excerpt(log))
     elif EMPTY_DIFF in log and result.get("from") not in (None, UPDATE_SCRIPT):
         result.update(outcome="cantUpdate", excerpt=REWRITER.findall(log))
+    elif unchanged := SOURCE_UNCHANGED.search(log):
+        result.update(outcome="cantUpdate", excerpt=[unchanged.group(0)])
     elif any(text in log for text in NO_CHANGE):
         result["outcome"] = "noChange"
+    elif nothing := NOTHING_NEWER.search(log):
+        result.update(outcome="noChange", excerpt=[nothing.group(0).strip()])
     elif FAILED.search(log):
         result.update(outcome="failed", excerpt=excerpt(log))
+    elif reason := skip_reason(log):
+        result.update(outcome="skipped", excerpt=[reason])
     else:
         result["outcome"] = "other"
     if prs and result["outcome"] in ("prExists", "prOpened"):

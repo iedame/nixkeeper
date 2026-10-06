@@ -1710,6 +1710,9 @@ function updateCell(pkg) {
   // A newer version the bot has no way to update to: not a failure, but it
   // needs a manual update (or an updateScript).
   if (pkg.update?.outcome === 'cantUpdate') return button('caution', "can't update");
+  // The bot passes it over on purpose (opted out, GNOME's release cycle, too
+  // many rebuilds, ...): not a failure, but it won't update it either.
+  if (pkg.update?.outcome === 'skipped') return button('neutral', 'skipped', true);
   // With every package, only the lists' packages' logs are read (with no
   // attempt read before).
   if (pkg.unread?.includes('update') && !pkg.update) return button('neutral', 'not read', true);
@@ -1749,7 +1752,19 @@ const UPDATE_OUTCOME = {
     dot: 'ok',
     text: (u) => html`a PR was already open${u.pr ? html` (${prLink(u.pr, `#${u.pr} ↗`)})` : ''}`,
   },
+  // The update's already on its way: the bot pushed it to its branch, and
+  // its PR is open or will be.
+  branchExists: {
+    dot: 'ok',
+    text: () =>
+      'already done: the bot pushed this update to its branch, and its PR is open or on its way',
+  },
   noChange: { dot: 'ok', text: () => 'nothing to update' },
+  // Its skiplist or the package itself says not to: the excerpt says why.
+  skipped: {
+    dot: 'neutral',
+    text: () => 'skipped on purpose: the bot passes this package over, for the reason below',
+  },
   other: { dot: 'neutral', text: () => 'finished without a recognisable result' },
 };
 

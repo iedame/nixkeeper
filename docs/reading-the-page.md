@@ -177,9 +177,10 @@ about it (`devel`, `vulnerable`, ...); beside the newest, the update's
 |---|---|
 | failure reported (pink) | the bot's update failed: the panel shows the end of its log |
 | can't update (gold) | a newer version exists, but none of the bot's ways of updating apply to this package: update it by hand, or give it an updateScript |
+| skipped | the bot passes this package over on purpose (the package opts out, GNOME's release cycle, too many rebuilds, ...: the panel says which): while it does, updates are done by hand |
 | superseded | the attempt no longer matters: nixpkgs has moved past that version (in the channel, or merged on master), or a manual rule ignores it (`package-lists/ignored-updates.nix`) |
 | not attempted | the bot has never tried this package |
-| none reported | the bot opened a PR, found one open, had nothing to update, or finished without a recognisable result (the panel says which) |
+| none reported | the bot opened a PR, found one open, had already pushed the update to its branch, had nothing to update (nothing newer by Nix's version order, say), or finished without a recognisable result (the panel says which) |
 
 A `not refreshed` tag on a build or update cell means Hydra or the update
 logs couldn't be reached on the last sync, so it shows the last known result.

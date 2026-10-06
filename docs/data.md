@@ -291,11 +291,11 @@ Only `failed` counts as a failure.
 |---|---|
 | `attr`, `date` | the attribute it tried, and the day |
 | `log` | the attempt's log |
-| `outcome` | `failed`, `cantUpdate` (a newer version, but no way for the bot to update the package), `prOpened`, `prExists`, `noChange`, `superseded`, or `other` |
+| `outcome` | `failed`, `cantUpdate` (a newer version, but no way for the bot to update the package), `prOpened`, `prExists`, `branchExists` (the bot already pushed this update to its branch), `noChange`, `skipped` (the bot passes the package over on purpose), `superseded`, or `other` |
 | `from`, `to` | the versions it tried (for an `updateScript` run, read from its diff, or `0` → `1` when it failed before writing one) |
 | `was` | what nixpkgs had then: a version, or a name-version (`wesnoth-devel-1.19.24`) |
 | `pr` | the PR it opened or found |
-| `excerpt` | why it failed or couldn't update: the last lines of the log, or the bot's reasons |
+| `excerpt` | why it failed, couldn't update, was skipped or had nothing to update: the last lines of the log, or the bot's reasons (for a failed request, its host and answer) |
 | `supersededOn` | for `superseded`: `nixos-unstable` or `master` (nixpkgs moved past that version), or `ignored` (a manual rule) |
 | `supersededOutcome` | what the attempt was before: `failed` or `cantUpdate` |
 | `reason` | the manual rule's reason, for `ignored` |
