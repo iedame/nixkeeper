@@ -101,6 +101,7 @@ def load_queue(now):
                 .date()
                 .isoformat(),
                 "candidates": entry.get("candidates", []),
+                "script": bool(entry.get("script")),
             }
             for attr, entry in queue["queue"].items()
         }

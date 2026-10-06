@@ -115,15 +115,18 @@ class Output(unittest.TestCase):
             {
                 "packages": [
                     full_row("unciv", queued=queued),
-                    full_row("wesnoth", queued={"by": "2026-10-15"}),
+                    full_row("wesnoth", queued={"by": "2026-10-15", "script": True}),
+                    full_row("zzz", queued={"by": "2026-10-15"}),
                 ]
             },
             {},
             self.out,
         )
-        unciv, wesnoth = json.loads(self.read("summary.json"))["packages"]
+        unciv, wesnoth, zzz = json.loads(self.read("summary.json"))["packages"]
         self.assertEqual(unciv["queued"], {"to": ["4.22.7"]})  # once each
-        self.assertNotIn("queued", wesnoth)  # an updateScript's turn only
+        # Its updateScript's turn: no version, the script decides.
+        self.assertEqual(wesnoth["queued"], {"script": True})
+        self.assertNotIn("queued", zzz)  # neither: nothing to show
         # The row has it all, for the panel.
         rows = json.loads(self.read("rows/0.json"))["packages"]
         self.assertEqual(rows[0]["queued"], queued)

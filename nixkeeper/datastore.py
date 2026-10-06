@@ -182,13 +182,17 @@ def summary_entry(row):
         entry["upstream"] = {
             k: v for k, v in row["upstream"].items() if k in UPSTREAM_SHOWN
         }
-    # The bot's queue: only the versions it would update to, for the list's
-    # "queued" badge; when (which changes daily) only in the row.
+    # The bot's queue, for the list's robot: the versions it would update to,
+    # and whether it runs the package's updateScript; when (which changes
+    # daily) only in the row.
+    queued = row.get("queued") or {}
     entry.pop("queued", None)
-    if to := list(
-        dict.fromkeys(c[0] for c in (row.get("queued") or {}).get("candidates", []))
-    ):
-        entry["queued"] = {"to": to}
+    to = list(dict.fromkeys(c[0] for c in queued.get("candidates", [])))
+    if to or queued.get("script"):
+        entry["queued"] = {
+            **({"to": to} if to else {}),
+            **({"script": True} if queued.get("script") else {}),
+        }
     return entry
 
 

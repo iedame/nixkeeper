@@ -535,6 +535,9 @@ def add_queue(rows, nixpkgs, queue):
         row["queued"] = {"by": soonest["by"]}
         if candidates:
             row["queued"]["candidates"] = candidates
+        if soonest.get("script"):
+            # It also runs the package's updateScript, which decides the version.
+            row["queued"]["script"] = True
 
 
 def add_attempts(

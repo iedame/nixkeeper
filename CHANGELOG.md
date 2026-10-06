@@ -73,7 +73,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   queue" when it sees nothing to update to; and in the list, a robot's
   head joined to the update cell ("queued" to screen readers; green when
   to the newest version and its last attempt didn't fail: its PR should
-  follow), which opens that panel too. Rows have it as
+  follow; amber when the bot will try but it's unsure, its last attempt
+  having failed, another version, or an outdated package's updateScript
+  deciding the version), which opens that panel too. Rows have it as
   `queued` (`docs/data.md`); the sources panel says when the queue is from.
 
 ### Changed

@@ -338,31 +338,43 @@ const BOT_ICON = raw(
   '<svg class="bot-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.6v2"/><circle cx="8" cy="1.8" r="0.9" fill="currentColor" stroke="none"/><rect x="2.75" y="4.6" width="10.5" height="8.4" rx="2.2"/><circle cx="6" cy="8.6" r="1.05" fill="currentColor" stroke="none"/><circle cx="10" cy="8.6" r="1.05" fill="currentColor" stroke="none"/><path d="M1 7.8v2.2M15 7.8v2.2"/></svg>',
 );
 
-// "queued", joined to the update cell's button: the bot is set to update the
-// package (a version in its queue), green when that's the newest one shown
-// and its last attempt didn't fail, so its PR should follow. Not with an
-// update PR open or merged already (its badge says it). Like the cell's
-// button, it opens the update panel, which says when.
+// The robot, joined to the update cell's button: nixpkgs-update will try the
+// package (it's in the bot's queue). Green when to the newest version shown
+// and its last attempt didn't fail, so its PR should follow; amber when it
+// will try but it's unsure: its last attempt didn't work, it would update
+// to another version, or only the package's updateScript runs (an outdated
+// package's: the script decides the version). Not with an update PR open or
+// merged already (its badge says it). Like the cell's button, it opens the
+// update panel, which says when.
 function queuedTag(pkg) {
   const st = computeStatus(pkg);
   const to = queuedTo(pkg);
-  if (!to.length || pkg.openPR || waitingForChannel(pkg)) return '';
+  if (pkg.openPR || waitingForChannel(pkg)) return '';
   const target = st === 'warn' ? targetVersion(pkg) : null;
-  const newest = Boolean(target && to.includes(target));
-  // Its last attempt went wrong: the next may as well.
-  const doubtful = pkg.updateFailure || ['cantUpdate', 'skipped'].includes(pkg.update?.outcome);
-  const match = newest && !doubtful;
-  // Its last attempt made the PR, or found one or its branch already.
-  const made = ['prOpened', 'prExists', 'branchExists'].includes(pkg.update?.outcome);
-  const title = `nixpkgs-update is set to update it to ${newest ? `${target}, the newest` : `${to.join(' or ')}${target ? `, not the newest (${target})` : ''}`}${
-    doubtful
-      ? ", but its last attempt didn't work: the next may not either"
-      : made
-        ? ': its last attempt already made a PR, or found one (the update panel links it)'
-        : newest
-          ? ': its PR should follow'
-          : ''
-  }. When: the update panel`;
+  let match = false;
+  let title;
+  if (to.length) {
+    const newest = Boolean(target && to.includes(target));
+    // Its last attempt went wrong: the next may as well.
+    const doubtful = pkg.updateFailure || ['cantUpdate', 'skipped'].includes(pkg.update?.outcome);
+    // Its last attempt made the PR, or found one or its branch already.
+    const made = ['prOpened', 'prExists', 'branchExists'].includes(pkg.update?.outcome);
+    match = newest && !doubtful;
+    title = `nixpkgs-update is set to update it to ${newest ? `${target}, the newest` : `${to.join(' or ')}${target ? `, not the newest (${target})` : ''}`}${
+      doubtful
+        ? ", but its last attempt didn't work: the next may not either"
+        : made
+          ? ': its last attempt already made a PR, or found one (the update panel links it)'
+          : newest
+            ? ': its PR should follow'
+            : ''
+    }. When: the update panel`;
+  } else if (pkg.queued?.script && st === 'warn') {
+    title =
+      "nixpkgs-update will run its updateScript, which decides the version: whether it's the newest, its PR will tell. When: the update panel";
+  } else {
+    return '';
+  }
   return html`<button type="button" class="queued-tag${match ? ' match' : ''}" data-kind="update" aria-expanded="false" aria-label="Queued: ${title}" title="${title}">${BOT_ICON}</button>`;
 }
 
