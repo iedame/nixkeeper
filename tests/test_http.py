@@ -3,9 +3,13 @@ sources/http.py, and its use in Repology's and GitHub's requests."""
 
 import gzip
 import io
+import threading
+import time
 import unittest
 import urllib.error
+import urllib.request
 from datetime import UTC, datetime
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from unittest import mock
 
 from nixkeeper import config
@@ -258,3 +262,63 @@ class SitePause(unittest.TestCase):
             http.get_page("https://pypi.org/pypi/a/json")
             http.get_page("https://pypi.org/pypi/b/json")
         self.assertEqual(self.slept, [1.0])
+
+
+class Deadline(unittest.TestCase):
+    """A whole answer has FETCH_DEADLINE_SECONDS to arrive, however steadily
+    it trickles in: a real server on this machine sending a byte at a time."""
+
+    BODY = b"x" * 60
+
+    def setUp(self):
+        body = self.BODY
+
+        class Handler(BaseHTTPRequestHandler):
+            def do_GET(self):
+                self.send_response(200)
+                self.send_header("Content-Length", str(len(body)))
+                self.end_headers()
+                try:
+                    for i in range(len(body)):
+                        self.wfile.write(body[i : i + 1])
+                        self.wfile.flush()
+                        if self.path == "/slow":
+                            time.sleep(0.02)
+                except OSError:
+                    pass  # the client gave up
+
+            def log_message(self, *args):
+                pass
+
+        server = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+        server.daemon_threads = True
+        threading.Thread(target=server.serve_forever, daemon=True).start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+        self.base = f"http://127.0.0.1:{server.server_address[1]}"
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch.object(config, "RETRY_DELAYS", []),
+            mock.patch.object(config, "FETCH_DEADLINE_SECONDS", 0.3),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_a_trickle_is_given_up(self):
+        # 60 bytes at 20 ms each: 1.2 s, against 0.3 s.
+        started = time.monotonic()
+        with self.assertRaises(TimeoutError):
+            http.get(self.base + "/slow")
+        self.assertLess(time.monotonic() - started, 1)
+
+    def test_a_steady_answer_arrives(self):
+        self.assertEqual(http.get(self.base + "/fast"), self.BODY.decode())
+
+    def test_downloads_have_longer(self):
+        with mock.patch.object(config, "DOWNLOAD_DEADLINE_SECONDS", 10):
+            self.assertEqual(http.get_bytes(self.base + "/slow"), self.BODY)
+
+    def test_at_most_the_limit(self):
+        with urllib.request.urlopen(self.base + "/fast", timeout=5) as resp:
+            body = http._read(resp, time.monotonic() + 5, limit=50)
+        self.assertEqual(len(body), 51)  # one more: over the limit

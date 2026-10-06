@@ -85,6 +85,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   next (222 of 224 rows on today's data), instead of every row changing
   every day.
 
+### Fixed
+
+- A site sending its answer a little at a time could hold a run for hours
+  (an hourly run waited 22 minutes on an update check before it was
+  cancelled): a request's timeout only bounded each wait for the next
+  bytes. Now a whole answer has a minute to arrive (5 for a digest's
+  download), or the request has failed, is retried, and the package keeps
+  its previous result as when a site is down. The data workflows also have
+  time limits (20 minutes hourly, an hour daily), so a run that hangs can't
+  hold the data branch, which the other one waits for, up to GitHub's
+  default of 6 hours.
+
 ## [0.11.0] - 2026-10-05
 
 Ready for big lists: Hydra's builds, Repology's data and GitHub's PRs and

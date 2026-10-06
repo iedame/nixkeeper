@@ -43,6 +43,12 @@ The workflows run in the repository's **Actions** tab:
 - **A failed run**: open it and read the failing step's log. A run that
   can't reach a source (Repology, Hydra, the bot's logs) keeps the previous
   data for it rather than failing.
+- **A run cancelled after 20 minutes (hourly) or an hour (daily)**: that's
+  its time limit, there so a run that hangs doesn't hold the data branch,
+  which the other workflow waits for. A request to a site that answers too
+  slowly is given up after a minute (5 for a digest's download), so a
+  timeout means something else got stuck: read where the log stops. The
+  next run starts afresh; nothing half-done is published.
 - **The page doesn't update after a page change**: Settings → Pages →
   Source has to be **GitHub Actions**, and "Pages: publish the page" has to
   have run.
