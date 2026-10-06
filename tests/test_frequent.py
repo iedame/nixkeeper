@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from unittest import mock
 
-from nixkeeper import config, frequent, notify
+from nixkeeper import config, datastore, frequent, notify
 from nixkeeper.sources import github, http, repology
 from nixkeeper.sources import nixpkgs as nixpkgs_source
 from tests.helpers import nix, other
@@ -111,6 +111,26 @@ class FrequentCheck(unittest.TestCase):
         notified.assert_called_once()
         self.assertEqual(notified.call_args.args[0], before)  # compared with before
         self.assertTrue(os.path.exists("data/google-chrome.json"))
+
+    def test_other_rows_keep_their_entries_read_once(self):
+        """Format 2: the rows not checked keep their Repology entries, read
+        from the shards once each, not a shard per row."""
+        bbedit = {"name": "bbedit", "attrs": ["bbedit"], "dataFile": "bbedit.json"}
+        kept = [other("arch", "15.5", "newest")]
+        datastore.write(
+            {
+                "checkedAt": "2026-09-30T06:00:00+00:00",
+                "packages": [chrome_row(), bbedit],
+            },
+            {
+                "google-chrome.json": entries("154.0.8037.57", "154.0.8037.57"),
+                "bbedit.json": kept,
+            },
+        )
+        with mock.patch.object(datastore, "entries") as one_by_one:
+            self.run_frequent(api("154.0.8040.12", "154.0.8037.57"))
+        one_by_one.assert_not_called()
+        self.assertEqual(datastore.entries(bbedit), kept)
 
     def test_nothing_changed_writes_nothing(self):
         up = {

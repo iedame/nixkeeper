@@ -487,6 +487,26 @@ def load(out_dir=None):
     return index
 
 
+def saved_entries(out_dir=None):
+    """Every row's Repology entries from the last run, {name: entries}, each
+    shard read once (format 2); {} for format 1 or if one can't be read
+    (entries() then reads each row's own file). For the hourly checks, which
+    write every shard again: entries() a row at a time would read a shard
+    per row, about 126,000 shard reads with every package."""
+    out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
+    try:
+        index = _load(os.path.join(out_dir, "index.json"))
+        if index.get("format") != FORMAT:
+            return {}
+        return {
+            full["name"]: full.get("repology") or []
+            for n in range(index["shardCount"])
+            for full in _load(os.path.join(out_dir, f"rows/{n}.json"))["packages"]
+        }
+    except (OSError, ValueError, KeyError, TypeError):
+        return {}
+
+
 def entries(row, out_dir=None):
     """row's Repology entries from the last run: from its shard (format 2),
     else its data file (format 1). Raises OSError or ValueError when neither

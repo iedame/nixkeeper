@@ -2,6 +2,7 @@ import json
 import os
 import tempfile
 import unittest
+import unittest.mock
 
 from nixkeeper import datastore
 from nixkeeper.datastore import data_file, write
@@ -188,6 +189,30 @@ class Output(unittest.TestCase):
         self.assertEqual(datastore.entries(row, old), ENTRIES)
         with self.assertRaises(OSError):
             datastore.entries(full_row("unciv"), old)
+
+    def test_saved_entries_read_each_shard_once(self):
+        rows = [full_row(f"pkg{i}") for i in range(1200)]
+        write({"packages": rows}, {r["dataFile"]: ENTRIES for r in rows}, self.out)
+        reads = []
+        load = datastore._load
+
+        def counting(path):
+            reads.append(path)
+            return load(path)
+
+        with unittest.mock.patch.object(datastore, "_load", counting):
+            saved = datastore.saved_entries(self.out)
+        self.assertEqual(saved["pkg7"], ENTRIES)
+        self.assertEqual(len(saved), 1200)
+        shards = json.loads(self.read("index.json"))["shardCount"]
+        self.assertEqual(len(reads), 1 + shards)  # the index, each shard once
+
+    def test_no_saved_entries_in_format_1(self):
+        os.makedirs(self.out)
+        with open(os.path.join(self.out, "index.json"), "w") as f:
+            json.dump({"packages": [full_row("wesnoth")]}, f)
+        self.assertEqual(datastore.saved_entries(self.out), {})
+        self.assertEqual(datastore.saved_entries(os.path.join(self.dir.name, "x")), {})
 
     def test_update_rewrites_only_what_changed(self):
         rows = [{"name": f"pkg{i}"} for i in range(1200)]
