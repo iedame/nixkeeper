@@ -28,7 +28,7 @@ class Diff(unittest.TestCase):
         self.assertTrue(should_notify(c))
 
     def test_still_outdated_is_not_news(self):
-        c = self.changes([row("unciv", "outdated")], [row("unciv", "legacy")])
+        c = self.changes([row("unciv", "outdated")], [row("unciv", "outdated")])
         self.assertEqual(c["outdated"], [])
         self.assertFalse(should_notify(c))
 
@@ -153,6 +153,25 @@ class Diff(unittest.TestCase):
     def test_first_run_notifies_nothing(self):
         c = self.changes([], [row("a", "outdated"), row("b", "missing")])
         self.assertFalse(should_notify(c))
+
+
+class OlderVersionKept(unittest.TestCase):
+    """Repology's "legacy": an older version nixpkgs keeps beside a newer one
+    under another attribute. Outdated only by a newer release in its own
+    series, or, for a devel variant, a newer devel version elsewhere."""
+
+    def test_not_outdated_by_itself(self):
+        self.assertFalse(is_outdated(row("tracy_0_11", "legacy", refVersion="0.14.1")))
+
+    def test_a_newer_release_in_its_series(self):
+        newer = {"version": "1.1", "newer": True, "inferred": True}
+        self.assertTrue(is_outdated(row("tracy_0_11", "legacy", upstream=newer)))
+
+    def test_a_devel_variant_behind_other_devel_versions(self):
+        beta = row("foo-beta", "legacy", devel=True, refVersion="2")
+        self.assertTrue(is_outdated(beta))
+        # Ahead of the devel versions elsewhere: kept beside the stable one.
+        self.assertFalse(is_outdated({**beta, "refVersion": "0.9"}))
 
 
 class MasterAhead(unittest.TestCase):

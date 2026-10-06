@@ -148,9 +148,10 @@ class Verdict(unittest.TestCase):
         self.assertEqual(
             v("1.0", "outdated", "1.2"), ("disagree", "Repology 1.2, GitHub 1.0")
         )
+        # An older version kept beside a newer one: Repology's "legacy"
+        # isn't outdated, only a newer release in its own series is.
         self.assertEqual(
-            v("1.1", "legacy", "1.2"),
-            ("disagree", "both outdated: GitHub 1.1, Repology 1.2"),
+            v("1.1", "legacy", "1.2"), ("disagree", "GitHub 1.1, Repology up to date")
         )
 
     def test_against_its_own_rule(self):

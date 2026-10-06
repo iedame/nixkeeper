@@ -84,6 +84,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- An older version nixpkgs keeps on purpose beside a newer one under
+  another attribute (Repology's "legacy": `tracy_0_11` beside `tracy`,
+  `gnumake42`, `php82Extensions`, older kernels' modules) isn't counted as
+  outdated anymore: it's shown as an "older version", with the newer one
+  named (`keptBeside`). It's still outdated by a newer release in its own
+  series (the worked-out update checks look there), and a beta behind the
+  newest betas still is. On today's data, about 1,650 fewer outdated
+  packages (16%): the Outdated trend steps down once, at the first sync
+  with this. The community up-to-date rules for `tracy_0_11` and
+  `tracy_0_12` are gone, as this covers them.
 - The daily sync workflow runs again at 14:00 UTC as a catch-up: it only
   syncs if the last sync is over 20 hours old (GitHub skipped or badly
   delayed the 06:00 one), and otherwise stops at once.
@@ -100,6 +110,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- A project's attributes split into rows by version counted every one
+  after the first as a devel variant, older series too (`gnumake42`,
+  `php82Extensions`, `flatbuffers_23` had a "devel" badge and were compared
+  with devel versions). Now only one newer than the stable one, or named
+  for one (`-devel`, `-beta`, `-unstable`, ...), is.
 - With every package, an hourly check that changed something took half an
   hour or more to write it (an Edge release did, and two runs were stopped
   after 22 minutes): it read each row's Repology entries on its own,

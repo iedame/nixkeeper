@@ -25,6 +25,7 @@ import {
   nameMatches,
   nixkeeperEntry,
   olderThan,
+  olderVersionKept,
   onMaster,
   onPlatform,
   pageLinks,
@@ -63,8 +64,24 @@ describe('computeStatus', () => {
     assert.equal(computeStatus(pkg({ nixStatus: 'missing' })), 'missing');
     assert.equal(computeStatus(pkg({ nixStatus: 'rolling' })), 'neutral');
   });
-  test('legacy counts as outdated', () => {
-    assert.equal(computeStatus(pkg({ nixStatus: 'legacy' })), 'warn');
+  test('an older version kept (legacy) is not outdated by itself', () => {
+    const kept = pkg({ nixStatus: 'legacy', nixVersion: '0.11.1', refVersion: '0.14.1' });
+    assert.equal(computeStatus(kept), 'neutral');
+    assert.equal(olderVersionKept(kept), true);
+    // A newer release in its own series makes it outdated.
+    const behind = { ...kept, upstream: { newer: true, version: '0.11.2' } };
+    assert.equal(computeStatus(behind), 'warn');
+    assert.equal(olderVersionKept(behind), false);
+  });
+  test('a devel variant (legacy) behind newer devel versions is outdated', () => {
+    const beta = pkg({
+      nixStatus: 'legacy',
+      devel: true,
+      nixVersion: '1.0b1',
+      refVersion: '1.1b2',
+    });
+    assert.equal(computeStatus(beta), 'warn');
+    assert.equal(computeStatus({ ...beta, refVersion: '0.9' }), 'neutral');
   });
   test("an update check's newer release makes it outdated", () => {
     assert.equal(computeStatus(pkg({ upstream: { newer: true } })), 'warn');

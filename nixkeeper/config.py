@@ -163,9 +163,13 @@ MAX_RETRY_AFTER = 300
 # mostly "not refreshed".
 MAX_FAILED_SHARE = 0.5
 
-# Repology statuses the page shows as outdated ("legacy": outdated while the
-# same repo has a newer version in another package).
-OUTDATED_STATUSES = {"outdated", "legacy"}
+# Repology statuses the page shows as outdated. Not "legacy" (KEPT): an
+# older version nixpkgs keeps on purpose beside a newer one under another
+# attribute (tracy_0_11 beside tracy, php82Extensions beside php84's). It's
+# outdated only by a newer release in its own series (an update check), or,
+# for a devel variant (a beta), a newer devel version elsewhere.
+OUTDATED_STATUSES = {"outdated"}
+KEPT = "legacy"
 
 # Hydra, nixpkgs' build farm. The nixpkgs/unstable jobset builds master (not the
 # nixos-unstable channel, which only advances once enough of it has built).
