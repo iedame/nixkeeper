@@ -6,11 +6,22 @@ name: "Data: daily sync"
 
 on:
   schedule:
-    - cron: '0 6 * * *'   # daily at 06:00 UTC
-    # A catch-up: syncs only when the last sync is over 20 hours old (GitHub
-    # skipped or badly delayed the one at 06:00); otherwise it stops at once.
+    # Daily at 06:00 UTC, if the last sync is over 12 hours old: also
+    # started through the API at 06:15 from outside GitHub (its schedule
+    # skips runs when busy; scripts/start-runs.sh), and whichever runs second
+    # stops at once.
+    - cron: '0 6 * * *'
+    # A catch-up: syncs only when the last sync is over 20 hours old (both
+    # were skipped or badly delayed); otherwise it stops at once.
     - cron: '0 14 * * *'
-  workflow_dispatch: {}    # lets you trigger a run manually from the Actions tab
+  # Lets you trigger a run manually from the Actions tab (always syncs), or
+  # through the API with if_older.
+  workflow_dispatch:
+    inputs:
+      if_older:
+        description: "Only if the last sync is older than this many hours (empty: always)"
+        type: string
+        default: ""
 
 # The hourly updates (data-hourly.yml) also push to the data branch: never at
 # the same time. A run waits for the other instead of cancelling it.
@@ -46,8 +57,10 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
       - name: Sync package data
-        run: nix run .#sync -- ${{ github.event.schedule == '0 14 * * *' && '--if-older 20' || '' }}
+        run: nix run .#sync -- ${IF_OLDER:+--if-older "$IF_OLDER"}
         env:
+          # (An input reaches the shell as a variable, never as code.)
+          IF_OLDER: ${{ github.event.schedule == '0 14 * * *' && '20' || github.event.schedule == '0 6 * * *' && '12' || inputs.if_older }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR/issue counts and the status issue
           NIXKEEPER_NOTIFY: github-issue  # the status issue; local runs don't notify
           # Every nixpkgs package, not only the lists' (the community

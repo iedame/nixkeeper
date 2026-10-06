@@ -49,6 +49,44 @@ attention, a maintainer's packages (`?q=@handle`), a team's, a generated
 set's, or one package (`?pkg=`); visitors can keep their own handle and
 team, in their browser. See [reading the page](reading-the-page.md).
 
+## Starting the runs on time
+
+GitHub runs scheduled workflows on a best-effort basis and skips runs when
+it's busy: some days the hourly digests ran a handful of times. Any machine
+that stays on can start them on time instead, through GitHub's API:
+`nix run .#start-runs`, hourly a little after the hour, starts each
+digest's run when it's due and the daily sync at 06 UTC
+([scripts/start-runs.sh](../scripts/start-runs.sh); `-- --dry-run` shows
+which, without starting anything). The workflows keep their own schedules
+as a fallback: a run started twice finds nothing new, or stops at once.
+
+It needs a [fine-grained token](https://github.com/settings/personal-access-tokens/new)
+for the four repositories (nixkeeper and the three digests) with only
+**Actions: read and write**: it can start and cancel runs, nothing else.
+On a Mac, keep it in the Keychain (this asks for it):
+
+```bash
+security add-generic-password -a "$USER" -s nixkeeper-start-runs -w
+```
+
+(elsewhere, in a file named by `NIXKEEPER_START_TOKEN_FILE`), and run it
+from nix-darwin, with nixkeeper as a flake input:
+
+```nix
+launchd.user.agents.nixkeeper-start-runs.serviceConfig = {
+  ProgramArguments = [
+    (lib.getExe inputs.nixkeeper.packages.${pkgs.stdenv.hostPlatform.system}.start-runs)
+  ];
+  StartCalendarInterval = [ { Minute = 15; } ]; # hourly, at :15
+  StandardOutPath = "/Users/you/Library/Logs/nixkeeper-start-runs.log";
+  StandardErrorPath = "/Users/you/Library/Logs/nixkeeper-start-runs.log";
+};
+```
+
+A user agent runs while that user is logged in (the Keychain is theirs).
+launchd's minute is the Mac's local time: in a time zone with a
+half-hour offset, choose the minute that's :15 in UTC (45 for UTC+5:30).
+
 ## What it costs
 
 No requests beyond the bulk ones a list-based instance makes. The data is a few hundred MB (about 30 MB gzipped),
