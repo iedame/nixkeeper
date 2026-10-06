@@ -7,6 +7,7 @@ import {
   computeStatus,
   dayPosition,
   daysText,
+  daysUntil,
   hasFailure as failureOn,
   faviconKey,
   fromMaster,
@@ -19,6 +20,7 @@ import {
   nixkeeperEntry,
   olderThan,
   olderVersionKept,
+  onHost,
   onMaster,
   onPlatform,
   pageLinks,
@@ -326,6 +328,44 @@ function openPrBadge(pkg) {
   );
 }
 
+// The versions nixpkgs-update's queue would update a package to: a list
+// entry's (summary), or a full row's candidates (one package alone).
+const queuedTo = (pkg) =>
+  pkg.queued?.to || [...new Set((pkg.queued?.candidates || []).map(([to]) => to))];
+
+// A robot's head (nixpkgs-update, the bot), in the text's colour.
+const BOT_ICON = raw(
+  '<svg class="bot-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 2.6v2"/><circle cx="8" cy="1.8" r="0.9" fill="currentColor" stroke="none"/><rect x="2.75" y="4.6" width="10.5" height="8.4" rx="2.2"/><circle cx="6" cy="8.6" r="1.05" fill="currentColor" stroke="none"/><circle cx="10" cy="8.6" r="1.05" fill="currentColor" stroke="none"/><path d="M1 7.8v2.2M15 7.8v2.2"/></svg>',
+);
+
+// "queued", joined to the update cell's button: the bot is set to update the
+// package (a version in its queue), green when that's the newest one shown
+// and its last attempt didn't fail, so its PR should follow. Not with an
+// update PR open or merged already (its badge says it). Like the cell's
+// button, it opens the update panel, which says when.
+function queuedTag(pkg) {
+  const st = computeStatus(pkg);
+  const to = queuedTo(pkg);
+  if (!to.length || pkg.openPR || waitingForChannel(pkg)) return '';
+  const target = st === 'warn' ? targetVersion(pkg) : null;
+  const newest = Boolean(target && to.includes(target));
+  // Its last attempt went wrong: the next may as well.
+  const doubtful = pkg.updateFailure || ['cantUpdate', 'skipped'].includes(pkg.update?.outcome);
+  const match = newest && !doubtful;
+  // Its last attempt made the PR, or found one or its branch already.
+  const made = ['prOpened', 'prExists', 'branchExists'].includes(pkg.update?.outcome);
+  const title = `nixpkgs-update is set to update it to ${newest ? `${target}, the newest` : `${to.join(' or ')}${target ? `, not the newest (${target})` : ''}`}${
+    doubtful
+      ? ", but its last attempt didn't work: the next may not either"
+      : made
+        ? ': its last attempt already made a PR, or found one (the update panel links it)'
+        : newest
+          ? ': its PR should follow'
+          : ''
+  }. When: the update panel`;
+  return html`<button type="button" class="queued-tag${match ? ' match' : ''}" data-kind="update" aria-expanded="false" aria-label="Queued: ${title}" title="${title}">${BOT_ICON}</button>`;
+}
+
 // The version column: the versions on the left, badges on the right (so
 // they line up from row to row). Up to date: nixpkgs' version, and what's
 // said about it (devel, vulnerable, ...) at the right. Outdated, two lines:
@@ -576,6 +616,12 @@ const SOURCES = [
       html`channel at <a class="files-link mono" href="https://github.com/NixOS/nixpkgs/commit/${s.revision}" target="_blank" rel="noopener">${s.revision.slice(0, 7)}</a>`,
   },
   { key: 'github', label: 'GitHub PRs', says: () => 'listed during the sync' },
+  {
+    key: 'queue',
+    label: "nixpkgs-update's queue",
+    from: 'https://nixpkgs-update-logs.nixos.org/~supervisor/queue.html',
+    says: (s) => `from ${timeAgo(s.at)}, going round every ${s.cycleDays} days`,
+  },
 ];
 
 function sourcesHtml() {
@@ -1587,7 +1633,7 @@ async function toggle(tr, mode) {
   tr.classList.toggle('open', !closing);
   detail.classList.toggle('open', !closing);
   detail.dataset.mode = closing ? '' : mode;
-  for (const btn of tr.querySelectorAll('.failure-btn')) {
+  for (const btn of tr.querySelectorAll('.failure-btn, .queued-tag')) {
     btn.setAttribute('aria-expanded', !closing && btn.dataset.kind === mode);
   }
   if (closing) return;
@@ -1633,7 +1679,9 @@ document.getElementById('content').addEventListener('click', (e) => {
     update();
     return;
   }
-  toggle(tr, e.target.closest('.failure-btn')?.dataset.kind || 'info');
+  // A cell's button or the "queued" badge: its panel; anywhere else, the
+  // package's details.
+  toggle(tr, e.target.closest('[data-kind]')?.dataset.kind || 'info');
 });
 document.getElementById('content').addEventListener('keydown', (e) => {
   if (e.target.matches('tr.row') && (e.key === 'Enter' || e.key === ' ')) {
@@ -1690,6 +1738,13 @@ function buildCell(pkg) {
 // nixpkgs-update's latest attempt. `update` is null when the bot never tried
 // and missing for packages not in nixpkgs.
 function updateCell(pkg) {
+  const status = updateStatus(pkg);
+  // The bot set to update it: joined to the status, as the platforms are.
+  const queued = pkg.pending || pkg.update === undefined ? '' : queuedTag(pkg);
+  return queued ? html`<span class="upd-pair">${status}${queued}</span>` : status;
+}
+
+function updateStatus(pkg) {
   if (pkg.pending)
     return html`<span class="failure-na" title="${PENDING_TITLE}: nixpkgs-update's attempts aren't read">—</span>`;
   if (pkg.update === undefined)
@@ -1768,13 +1823,47 @@ const UPDATE_OUTCOME = {
   other: { dot: 'neutral', text: () => 'finished without a recognisable result' },
 };
 
+// When the bot will try the package again, from its queue (the row's
+// "queued"), and what it would update it to: a version it found that
+// nixpkgs doesn't have (from a GitHub release, say), which doesn't make the
+// package outdated here, the bot's picking can be wrong. Not in the queue:
+// it sees nothing to update to. Nothing without the queue.
+function queueHtml(pkg) {
+  if (!sources?.queue?.used) return '';
+  const q = pkg.queued;
+  if (!q) {
+    return html`<div class="nix-line">Not in nixpkgs-update's queue: it sees nothing to update this package to right now.</div>`;
+  }
+  const days = daysUntil(q.by);
+  // Each version once, with where the bot found it (GitHub's releases,
+  // Repology, ...).
+  const byVersion = new Map();
+  for (const [to, url] of q.candidates || []) {
+    byVersion.set(to, [...(byVersion.get(to) || []), url]);
+  }
+  const where = (url) =>
+    onHost(url, 'github.com')
+      ? 'GitHub release'
+      : onHost(url, 'repology.org')
+        ? 'Repology'
+        : 'its source';
+  const candidates = [...byVersion].map(
+    ([to, urls], i) =>
+      html`${i ? ', ' : ''}<span class="mono">${to}</span> (${urls.map(
+        (url, j) =>
+          html`${j ? ' · ' : ''}${url ? html`<a class="files-link" href="${safeUrl(url)}" target="_blank" rel="noopener">${where(url)} ↗</a>` : where(url)}`,
+      )})`,
+  );
+  return html`<div class="nix-line">Next attempt ${days < 1 ? 'expected within a day' : html`expected around ${longDate(`${q.by}T12:00:00Z`)} (in ${days === 1 ? 'a day' : `${days} days`})`}, from <a class="files-link" href="https://nixpkgs-update-logs.nixos.org/~supervisor/queue.html" target="_blank" rel="noopener">its queue ↗</a>${candidates.length ? html`: it would update it to ${candidates}` : ''}.</div>`;
+}
+
 function fillUpdate(pkg, el) {
   const u = pkg.update;
   const unread = pkg.unread?.includes('update')
     ? html`<div class="stale-note">Not read on the last sync: with every package, nixpkgs-update's attempts come from a digest of them, which hasn't read this package's yet.${u ? ' Showing the last attempt read.' : ''}</div>`
     : '';
   if (unread && !u) {
-    el.innerHTML = unread;
+    el.innerHTML = html`${unread}${queueHtml(pkg)}`;
     return;
   }
   const stale = html`${unread}${staleNote(
@@ -1783,7 +1872,7 @@ function fillUpdate(pkg, el) {
     'Showing the last known attempt.',
   )}`;
   if (!u) {
-    el.innerHTML = html`${stale}<div class="nix-line">nixpkgs-update hasn't tried to update this package (it may have no update source it understands).</div>`;
+    el.innerHTML = html`${stale}<div class="nix-line">nixpkgs-update hasn't tried to update this package (it may have no update source it understands).</div>${queueHtml(pkg)}`;
     return;
   }
   const dir = u.log.slice(0, u.log.lastIndexOf('/') + 1); // every attempt's log
@@ -1801,6 +1890,7 @@ function fillUpdate(pkg, el) {
       <span class="status-dot ${o.dot}" aria-hidden="true"></span><span class="st ${o.dot}">${o.text(u, pkg)}</span>
     </div></div>
     ${u.excerpt?.length ? html`<pre class="log-excerpt mono">${u.excerpt.join('\n')}</pre>` : ''}
+    ${queueHtml(pkg)}
     <div class="detail-row">
       <a class="files-link" href="${safeUrl(u.log)}" target="_blank" rel="noopener">log ↗</a>
       <a class="files-link" href="${safeUrl(dir)}" target="_blank" rel="noopener">all attempts ↗</a>

@@ -104,6 +104,30 @@ class Output(unittest.TestCase):
         self.assertEqual(entry["openPRs"], 2)
         self.assertEqual(entry["nixVersion"], "1.18.5")
 
+    def test_summary_keeps_the_queues_versions_not_its_day(self):
+        github = "https://github.com/yairm210/Unciv/releases"
+        repology = "https://repology.org/project/unciv/versions"
+        queued = {
+            "by": "2026-10-11",
+            "candidates": [["4.22.7", github], ["4.22.7", repology]],
+        }
+        write(
+            {
+                "packages": [
+                    full_row("unciv", queued=queued),
+                    full_row("wesnoth", queued={"by": "2026-10-15"}),
+                ]
+            },
+            {},
+            self.out,
+        )
+        unciv, wesnoth = json.loads(self.read("summary.json"))["packages"]
+        self.assertEqual(unciv["queued"], {"to": ["4.22.7"]})  # once each
+        self.assertNotIn("queued", wesnoth)  # an updateScript's turn only
+        # The row has it all, for the panel.
+        rows = json.loads(self.read("rows/0.json"))["packages"]
+        self.assertEqual(rows[0]["queued"], queued)
+
     def test_summary_keeps_null_and_missing_update_apart(self):
         never = {"name": "a", "update": None}  # the bot never tried
         absent = {"name": "b"}  # not in nixpkgs

@@ -128,3 +128,102 @@ class AddAttempts(unittest.TestCase):
         self.assertNotIn("unread", rows[0])
         self.assertIsNone(rows[1]["update"])
         self.assertEqual(rows[1]["unread"], ["update"])
+
+
+# The digest's copy of the bot's queue (nixkeeper-updates' queue.json.gz): a
+# 10-day cycle of 1,000 positions, made at noon.
+QUEUE = {
+    "updatedAt": "2026-10-05T12:00:00+00:00",
+    "cycleDays": 10.0,
+    "positions": 1000,
+    "queue": {
+        "proxyman": {
+            "position": 1,
+            "script": True,
+            "candidates": [
+                ["3.16.1", "3.21.0", "https://github.com/p/proxyman/releases"],
+                ["3.16.1", "26.0.1", "https://repology.org/project/proxyman/versions"],
+            ],
+        },
+        "unciv": {
+            "position": 500,
+            "candidates": [
+                ["4.22.5", "4.22.7", "https://github.com/yairm210/Unciv/releases"],
+                ["4.22.5", "4.22.7", "https://repology.org/project/unciv/versions"],
+            ],
+        },
+        "unciv-beta": {"position": 900, "script": True},
+        "python3Packages.requests": {"position": 1000, "script": True},
+    },
+}
+
+
+class Queue(unittest.TestCase):
+    def load(self, queue, now=NOW):
+        body = gzip.compress(json.dumps(queue).encode(), mtime=0) if queue else None
+        with (
+            mock.patch.object(config, "UPDATES_DIGEST_URL", "https://d/"),
+            mock.patch.object(http, "get_bytes", return_value=body),
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            return updates_digest.load_queue(now)
+
+    def test_the_day_each_is_expected(self):
+        found = self.load(QUEUE)
+        # Position p of n: p / n of a cycle after the page was made.
+        self.assertEqual(found["proxyman"]["by"], "2026-10-05")
+        self.assertEqual(found["unciv"]["by"], "2026-10-10")  # half a cycle
+        self.assertEqual(found["python3Packages.requests"]["by"], "2026-10-15")
+        self.assertEqual(found["unciv-beta"]["candidates"], [])
+        self.assertEqual(
+            about.taken()["queue"],
+            {"used": True, "at": "2026-10-05T12:00:00+00:00", "cycleDays": 10.0},
+        )
+
+    def test_none_too_old_or_unreadable(self):
+        self.assertIsNone(self.load(None))
+        self.assertEqual(about.taken()["queue"]["used"], False)
+        self.assertIsNone(self.load(QUEUE, now="2026-10-06T13:00:00+00:00"))
+        self.assertEqual(about.taken()["queue"]["why"], "too old")
+        self.assertIsNone(self.load({"nonsense": True}))
+        self.assertIn("couldn't be read", about.taken()["queue"]["why"])
+
+    def test_rows(self):
+        found = self.load(QUEUE)
+        nixpkgs = {
+            "unciv": pkg("unciv", "4.22.5"),
+            "unciv-beta": pkg("unciv", "4.22.7"),
+            "python313Packages.requests": pkg("requests", "2.32"),
+            "hello": pkg("hello", "2.12"),
+        }
+        rows = [
+            {"name": "unciv", "attrs": ["unciv", "unciv-beta"], "nixVersion": "4.22.5"},
+            # The bot's name for it (search_term): python3Packages.
+            {
+                "name": "python313Packages.requests",
+                "attrs": ["python313Packages.requests"],
+            },
+            {"name": "hello", "attrs": ["hello"], "nixVersion": "2.12"},
+            {"name": "haskellPackages.x", "attrs": ["unciv"], "pending": True},
+            {"name": "gone", "attrs": ["proxyman"]},  # not in nixpkgs
+        ]
+        nixpkgs_update.add_queue(rows, nixpkgs, found)
+        unciv, requests, hello, pending, gone = rows
+        # Its soonest attribute's day, the versions nixpkgs doesn't have.
+        self.assertEqual(
+            unciv["queued"],
+            {
+                "by": "2026-10-10",
+                "candidates": [
+                    ["4.22.7", "https://github.com/yairm210/Unciv/releases"],
+                    ["4.22.7", "https://repology.org/project/unciv/versions"],
+                ],
+            },
+        )
+        self.assertEqual(requests["queued"], {"by": "2026-10-15"})
+        for row in (hello, pending, gone):  # not in the queue, a set's, gone
+            self.assertNotIn("queued", row)
+        # Without a queue, nothing.
+        rows = [{"name": "unciv", "attrs": ["unciv"]}]
+        nixpkgs_update.add_queue(rows, nixpkgs, None)
+        self.assertNotIn("queued", rows[0])

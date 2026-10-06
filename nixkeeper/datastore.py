@@ -36,7 +36,13 @@ FORMAT = 2
 # Rows a shard holds, about: a shard is what a details panel loads.
 SHARD_ROWS = 500
 # A row's fields only the details panels use, left out of its summary entry.
-PANEL_ONLY = ("dataFile", "homepage", "repoCount", "repologyCheckedAt", "source")
+PANEL_ONLY = (
+    "dataFile",
+    "homepage",
+    "repoCount",
+    "repologyCheckedAt",
+    "source",
+)
 # Of a summary entry's update check, what the list shows (the version,
 # whether it's newer, whose check it is).
 UPSTREAM_SHOWN = ("community", "inferred", "newer", "version")
@@ -176,6 +182,13 @@ def summary_entry(row):
         entry["upstream"] = {
             k: v for k, v in row["upstream"].items() if k in UPSTREAM_SHOWN
         }
+    # The bot's queue: only the versions it would update to, for the list's
+    # "queued" badge; when (which changes daily) only in the row.
+    entry.pop("queued", None)
+    if to := list(
+        dict.fromkeys(c[0] for c in (row.get("queued") or {}).get("candidates", []))
+    ):
+        entry["queued"] = {"to": to}
     return entry
 
 

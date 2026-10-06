@@ -212,6 +212,8 @@ def main():
         in_bulk,
         updates_digest.load(now),
     )
+    # When the bot will try each package again, and what it would update to.
+    nixpkgs_update.add_queue(index_rows, nixpkgs, updates_digest.load_queue(now))
     # Open PR/issue counts and open update PRs: from one listing of all of
     # nixpkgs' open ones (github_bulk), else searched per package (the
     # lists' only). Not for pending rows: their sets are updated as a whole.

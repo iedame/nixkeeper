@@ -66,6 +66,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   `version` attribute (`cantUpdate`), and its checks of a build that went
   wrong (`failed`).
 
+- When nixpkgs-update will try a package again, and what it would update
+  it to, from the bot's queue (nixkeeper-updates' copy of it): "Next
+  attempt expected around Oct 12, from its queue: it would update it to
+  4.22.7 (GitHub release · Repology)" in the update panel, or "not in the
+  queue" when it sees nothing to update to; and in the list, a robot's
+  head joined to the update cell ("queued" to screen readers; green when
+  to the newest version and its last attempt didn't fail: its PR should
+  follow), which opens that panel too. Rows have it as
+  `queued` (`docs/data.md`); the sources panel says when the queue is from.
+
 ### Changed
 
 - With every package, failing is split in two on the overview and in a

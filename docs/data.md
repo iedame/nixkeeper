@@ -63,8 +63,10 @@ be read; the sync then asked per package instead). `hydra` has the
 evaluation its builds are from (`eval`) and when nixkeeper-hydra read it
 (`at`); `versions`, when nixkeeper-versions last read the outdated projects
 (`at`); `updates`, when nixkeeper-updates made its digest (`at`) and how
-many attempts it hasn't read yet (`pending`); `nixpkgs`, the channel's
-commit (`revision`); `github`, whether the open PRs were listed in one go.
+many attempts it hasn't read yet (`pending`); `queue`, when the bot's queue
+was made (`at`) and how many days it takes to go round (`cycleDays`);
+`nixpkgs`, the channel's commit (`revision`); `github`, whether the open PRs
+were listed in one go.
 A source that's turned off isn't there; data from before 0.12.0 has none.
 The page shows them under "checked … ago".
 
@@ -73,6 +75,7 @@ The page shows them under "checked … ago".
   "hydra": { "used": true, "at": "2026-10-05T13:41:00+00:00", "eval": 1829853 },
   "versions": { "used": false, "why": "too old", "at": "2026-10-03T04:20:00+00:00" },
   "updates": { "used": true, "at": "2026-10-05T12:30:00+00:00", "pending": 1204 },
+  "queue": { "used": true, "at": "2026-10-05T12:15:00+00:00", "cycleDays": 10.3 },
   "nixpkgs": { "used": true, "revision": "8f3a1c2…" },
   "github": { "used": true }
 }
@@ -86,7 +89,8 @@ The page shows them under "checked … ago".
 
 One entry per row, sorted by name: the row (below) without what only its
 details show (`dataFile`, `homepage`, `repoCount`, `repologyCheckedAt`,
-`source`), its builds with only `status` and `system`, its `update` with only
+`source`), its `queued` with only the versions (`{ "to": ["4.22.7"] }`, when
+there are any), its builds with only `status` and `system`, its `update` with only
 `outcome` (still `null` when the bot never tried, missing when it isn't in
 nixpkgs), and its `upstream` with only `version`, `newer`, `community` and
 `inferred`.
@@ -284,6 +288,7 @@ Only `failed` counts as a failure.
 |---|---|
 | `update` | the bot's latest attempt (below), or `null` if it never tried |
 | `updateFailure` | whether that attempt counts as a failure |
+| `queued` | when the bot will try it again, from its queue: `{ "by": "2026-10-12", "candidates": [["4.22.7", "https://github.com/…/releases"], …] }`, the day it's expected (its place in the queue as a share of the queue's cycle) and the versions it would update to that nixpkgs doesn't have, with where it found each (nothing makes the row outdated: the bot's pick can be wrong). Missing when it isn't in the queue (the bot sees nothing to update it to) or there's no queue (`sources.queue`) |
 
 `update`:
 

@@ -71,6 +71,52 @@ def load(now):
     return found
 
 
+def load_queue(now):
+    """When the bot will next try each package, from the digest's copy of its
+    queue (queue.json.gz, made from ~supervisor/queue.html): {bot's
+    attribute: {"by": the day it's expected, "candidates": [[from, to,
+    source URL], ...]}}, or None (noting why) when there's none, it's too
+    old, or it can't be read. The queue goes round in "cycleDays": a
+    package at position p of n is reached about p / n of a cycle after the
+    page was made."""
+    base = config.UPDATES_DIGEST_URL
+    if not base:
+        return None
+    try:
+        body = http.get_bytes(base + "queue.json.gz")
+        if body is None:
+            about.note("queue", False, "the digest has no queue yet")
+            return None
+        queue = json.loads(gzip.decompress(body))
+        made = datetime.fromisoformat(queue["updatedAt"])
+        if datetime.fromisoformat(now) - made > timedelta(
+            hours=config.UPDATES_QUEUE_MAX_AGE_HOURS
+        ):
+            about.note("queue", False, "too old", at=queue["updatedAt"])
+            return None
+        cycle, positions = queue["cycleDays"], queue["positions"]
+        found = {
+            attr: {
+                "by": (made + timedelta(days=cycle * entry["position"] / positions))
+                .date()
+                .isoformat(),
+                "candidates": entry.get("candidates", []),
+            }
+            for attr, entry in queue["queue"].items()
+        }
+    except (urllib.error.URLError, OSError, ValueError, KeyError, TypeError) as e:
+        about.note("queue", False, f"couldn't be read ({e})")
+        print(f"::warning::The bot's queue: couldn't use it ({e})", file=sys.stderr)
+        return None
+    about.note("queue", True, at=queue["updatedAt"], cycleDays=cycle)
+    print(
+        f"The bot's queue: {len(found):,} packages, a {cycle:g}-day cycle, "
+        f"from {queue['updatedAt']}",
+        file=sys.stderr,
+    )
+    return found
+
+
 def attempt(entry, attr, parser):
     """The latest attempt at attr (nixkeeper's attribute) from its digest
     entry, as nixpkgs_update.latest_attempt reads it, or None when the
