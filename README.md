@@ -37,6 +37,22 @@ Pick it in the page's Theme menu, or make it your page's default with
 `page.theme = "catppuccin";` in your package lists.
 </details>
 
+It can also track [every nixpkgs package](docs/all-packages.md), as the
+[live dashboard](https://iedame.github.io/nixkeeper/) does: a community
+instance anyone can look up their packages on, which opens on an overview of
+all of nixpkgs.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/screenshots/overview-desktop-dark.png">
+    <img src="assets/screenshots/overview-desktop-light.png" width="70%" alt="The overview of every nixpkgs package on a desktop: counts of outdated packages, build failures, update failures, vulnerable and broken packages with their trends, a search, the newest failures, the dependencies blocking the most builds, and what was fixed in the last week">
+  </picture>
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="assets/screenshots/overview-mobile-dark.png">
+    <img src="assets/screenshots/overview-mobile-light.png" width="22%" alt="The same overview on a phone: the counts as cards, two by two">
+  </picture>
+</p>
+
 For each package it tracks, nixkeeper shows on one static page (`page/`):
 
 - **New releases**: whether nixpkgs unstable is behind, per
