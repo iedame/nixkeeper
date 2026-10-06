@@ -4,8 +4,8 @@ Each row is a package; clicking it opens its details (every repository
 Repology compares it with, after `nixkeeper` first when an update check found
 a version: hover it for where; links to its homepage and nixpkgs source), and
 clicking its build or update cell opens that instead. The counts at the top
-(tracked, outdated, failed, and flagged vulnerable when any are) filter the
-list, as do the list names beside them and a row's platform tags; the filters
+(tracked, outdated, failed, and flagged vulnerable or blocked when any are)
+filter the list, as do the list names beside them and a row's platform tags; the filters
 stay in the address, so a view can be shared. The search box matches names;
 `@handle` instead lists a maintainer's packages (their whole GitHub handle,
 as nixpkgs lists it in `meta.maintainers`), and `@none` the packages with no
@@ -64,7 +64,8 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   update failures (a switch on each), and "show all" for the whole list;
   and the failing packages **blocking the most** others: a build that
   fails because one of its dependencies did, as zh.fail counts them in all
-  of nixpkgs (fix that one, and they all build again);
+  of nixpkgs (fix that one, and they all build again), and "show all" for
+  every package blocked (`?view=blocked`);
 - what was fixed in the last week: builds that work again, packages
   updated (from and to which version), and nixpkgs-update failures
   cleared, from the first daily sync with this on;
@@ -76,10 +77,10 @@ worst first) opens that list from anywhere; "Your packages" (your GitHub
 handle) and "Your team" open yours, once given (they're kept in your
 browser only, and ✎ changes them). A list says what it is under
 "Showing" (✕ goes back to the overview): what needs attention, marked
-broken, a maintainer's packages (`?q=@handle`, `@none` for those with
+broken, blocked by a dependency, a maintainer's packages (`?q=@handle`, `@none` for those with
 none), a team's (`?team=`), a generated set's (`?set=`), one package alone
 (`?pkg=firefox`), or one of the instance's lists (`?list=`, by address
-only). Its tiles (outdated, failing, vulnerable, marked broken) count it and
+only). Its tiles (outdated, failing, vulnerable, marked broken, blocked) count it and
 filter it, as the counts at the top do on other pages; the search and order
 work within it too, and a search also lists the packages beyond it whose
 names match, closest first. "not on Repology" is a package Repology doesn't
@@ -163,7 +164,7 @@ about it (`devel`, `vulnerable`, ...); beside the newest, the update's
 |---|---|
 | failure reported (pink) | its latest build failed on a platform: the panel links the log and says when it last built, and at which version |
 | marked broken (gold) | nixpkgs marks it broken on a platform (known, so not counted as failed) |
-| blocked (gold) | it didn't build because a dependency failed: not its own failure, so not counted as failed; the panel says which dependency (its package, to open), once nixkeeper-hydra has read the build |
+| blocked (gold) | it didn't build because a dependency failed: not its own failure, so not counted as failed (the "blocked" count and tile, `?filter=blocked`, list them); the panel says which dependency (its package, to open), once nixkeeper-hydra has read the build |
 | not built by Hydra | unfree, or kept off Hydra by nixpkgs |
 | none reported | no failure of its own; an unfinished build shows only in the panel |
 

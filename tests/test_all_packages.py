@@ -370,6 +370,7 @@ class Data(unittest.TestCase):
             {
                 "attention": 3,
                 "broken": 0,
+                "blocked": 0,
                 "teams": {"Gaming": 1},
                 "lists": {"gaming-team": 1},
                 "sets": {"haskellPackages": {"packages": 1, "failed": 0, "broken": 1}},
@@ -855,10 +856,21 @@ class Blockers(unittest.TestCase):
                 ],
             ),
         ]
+        # Blocked, its blocker not read yet: stopped all the same.
+        rows.append(
+            row("unread", builds=[{"status": "dependency", "system": "x86_64-linux"}])
+        )
         out = {}
-        found = datastore.views(rows, out)["blockers"]
+        made = datastore.views(rows, out)
+        found = made["blockers"]
         self.assertEqual(found["count"], 2)
-        self.assertEqual(found["packages"], 3)  # pending ones too
+        self.assertEqual(found["packages"], 4)  # pending ones too
+        # The packages stopped, each once, for the card's "Show all".
+        self.assertEqual(
+            [p["name"] for p in out["views/blocked.json"]["packages"]],
+            ["mealie", "conpass", "haskellPackages.x", "unread"],
+        )
+        self.assertEqual(made["views"]["blocked"], 4)
         self.assertEqual(
             found["top"], [["python-ldap", True, 2, 3], ["source", False, 1, 1]]
         )

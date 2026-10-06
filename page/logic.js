@@ -67,13 +67,14 @@ export const viewSlug = (name) =>
 // "pkg:<name>" for one package (?pkg=), or "overview" for none (the start
 // page: all of nixpkgs in numbers, and the ways in): one package, else a
 // maintainer's (?q=@handle; @none those without), a team's, a list's, a
-// generated set's, a list by name (?view=attention, ?view=broken), else the
-// overview.
+// generated set's, a list by name (?view=attention, ?view=broken,
+// ?view=blocked), else the overview.
 // ?view=maintainers: every maintainer (maintainers.json), not a list of
 // packages.
 export const VIEWS = {
   attention: 'views/attention.json',
   broken: 'views/broken.json',
+  blocked: 'views/blocked.json',
   maintainers: 'maintainers',
 };
 export function viewPath({

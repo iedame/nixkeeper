@@ -37,6 +37,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   attempts (a backfill), the Update failures card says how many are to go:
   update failures that were there all along keep turning up, so it rises
   without anything breaking.
+- A "blocked" filter (`?filter=blocked`): packages with a build Hydra
+  didn't try because a dependency failed, which no other count has (they
+  aren't failing themselves). A count at the top when there are any; with
+  every package, a tile in each list, and a view of them all
+  (`?view=blocked`, `views/blocked.json`) that the overview's "Blocking the
+  most" opens ("Show all"). Its count is now every blocked package's,
+  whether nixkeeper-hydra has read which dependency it was yet or not.
 
 ### Changed
 
@@ -57,6 +64,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   "every nixpkgs package"), beside the list's, which a run with a
   list-based instance's data retakes as before. `--data` can be a local
   folder too, served next to the page.
+
+### Fixed
+
+- Which dependency failed was left out for every build whose last success
+  nixkeeper-hydra's digest doesn't know (one that never built, say): with
+  every package, most of them (the overview counted 61 blocked packages
+  instead of about 580), and with lists, every one asked of Hydra (which
+  doesn't say). It's kept now, and added to Hydra's answer for the same
+  build.
 
 ### Removed
 

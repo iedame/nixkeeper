@@ -74,7 +74,8 @@ def ask_hydra(attrs, nixpkgs, revision, previous, now, bulk=frozenset()):
         f"{len(jobs)} to ask Hydra about...",
         file=sys.stderr,
     )
-    fetched = {**found, **hydra.fetch(jobs, broken)}
+    # Hydra doesn't say which dependency failed: the digest's, for the same build.
+    fetched = {**found, **hydra_digest.with_blockers(hydra.fetch(jobs, broken), digest)}
     minutes = (time.monotonic() - started) / 60
     print(f"Hydra, in the background: done in {minutes:.0f} min", file=sys.stderr)
     return broken, fetched
