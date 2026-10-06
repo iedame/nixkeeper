@@ -1,4 +1,5 @@
 import {
+  AGE_DAYS,
   buildsWith as buildsOn,
   communityCheck,
   comparedRepos,
@@ -14,6 +15,7 @@ import {
   NAME_DOTS,
   nameMatches,
   nixkeeperEntry,
+  olderThan,
   onMaster,
   onPlatform,
   pageLinks,
@@ -116,6 +118,10 @@ const shardCache = new Map(); // n -> Promise of Map(name -> full row)
 let packages = [];
 let checkedAt = null;
 let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
+// Narrowing any list further, with everything else (?refine=, REFINES keys
+// comma-separated, and ?age=, an AGE_DAYS key).
+let refines = new Set();
+let ageFilter = null;
 let sortAZ = false; // default order puts what needs attention first
 // The table shows PAGE_SIZE rows at a time: drawing stays fast whatever the
 // data's size, and the page keeps working with Ctrl+F and screen readers
@@ -195,6 +201,45 @@ const FILTERS = {
 };
 // With every package, the header's tiles (renderScope): these filters, by
 // these names, instead of the count chips.
+// What narrows any list, together with its other filters: each is left
+// out or kept whatever the tile (?refine=); "older than" (?age=) goes by
+// how long the tile's kind of problem has lasted (any, with none picked).
+const REFINES = {
+  unmaintained: {
+    label: 'Without maintainer',
+    title: 'Only packages with no maintainer in nixpkgs',
+    test: (p) => !(p.maintainers || []).length,
+  },
+  notbroken: {
+    label: 'Not marked broken',
+    title: "Leave out what nixpkgs marks broken: failures nobody's marked yet",
+    test: (p) => !FILTERS.broken.test(p),
+  },
+  notonmaster: {
+    label: 'Not fixed on master yet',
+    title: 'Leave out outdated packages whose update is merged, waiting for nixos-unstable',
+    test: (p) => !waitingForChannel(p),
+  },
+};
+const AGES = { '1m': 'a month', '6m': '6 months', '1y': 'a year' };
+// kind: whose age counts (a FILTERS key): the list's, or a count's own.
+const refined = (p, kind = activeFilter) =>
+  [...refines].every((key) => REFINES[key].test(p)) && olderThan(p, ageFilter, kind);
+
+function refineHtml() {
+  return html`<div class="refine" role="group" aria-label="Narrow the list">${Object.entries(
+    REFINES,
+  ).map(
+    ([key, r]) =>
+      html`<button type="button" class="refine-btn" data-refine="${key}" aria-pressed="${refines.has(key)}" title="${r.title}">${r.label}</button>`,
+  )}<label class="refine-age" title="How long it's been failing or outdated (the kind picked above, if any)">Older than <select data-age><option value="">any age</option>${Object.entries(
+    AGES,
+  ).map(
+    ([key, label]) =>
+      html`<option value="${key}"${ageFilter === key ? raw(' selected') : ''}>${label}</option>`,
+  )}</select></label></div>`;
+}
+
 const TILES = {
   warn: 'Outdated',
   failed: 'Failing',
@@ -352,6 +397,8 @@ function readViewFromUrl() {
   setFilter = params.get('set') || null;
   pkgParam = params.get('pkg') || null;
   viewParam = params.get('view') || null;
+  refines = new Set((params.get('refine') || '').split(',').filter((key) => REFINES[key]));
+  ageFilter = AGE_DAYS[params.get('age')] ? params.get('age') : null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
 }
@@ -370,9 +417,12 @@ function viewQuery(page = pageNum) {
   set('set', setFilter);
   set('pkg', pkgParam);
   set('view', viewParam);
+  set('refine', [...refines].join(','));
+  set('age', ageFilter);
   set('page', page > 1 ? page : '');
-  // "@" is fine in a query: ?q=@handle reads better in a shared link.
-  const query = params.toString().replaceAll('%40', '@');
+  // "@" and "," are fine in a query: ?q=@handle and ?refine=a,b read
+  // better in a shared link.
+  const query = params.toString().replaceAll('%40', '@').replaceAll('%2C', ',');
   return location.pathname + (query ? `?${query}` : '');
 }
 function writeViewToUrl() {
@@ -754,7 +804,7 @@ function renderStats() {
     : '';
   const buttons = Object.entries(community ? {} : FILTERS).map(([key, f]) => {
     if (key === 'broken') return ''; // with every package only
-    const count = base.filter(f.test).length;
+    const count = base.filter((p) => f.test(p) && refined(p, key)).length;
     // "vulnerable" only shows up when something is actually flagged.
     if (key === 'vuln' && !count && activeFilter !== 'vuln') return '';
     const pressed = activeFilter === key;
@@ -774,6 +824,11 @@ function renderStats() {
       : '';
   document.getElementById('stats').innerHTML =
     html`${attentionChip}${buttons}${platformChip}${teamChip}`;
+  // Without every package, the list's narrowing under the counts; with
+  // every package, it's in the list's header, under the tiles.
+  const refine = document.getElementById('refine');
+  refine.hidden = community;
+  refine.innerHTML = community ? '' : refineHtml();
   const checked = document.getElementById('checked');
   checked.classList.toggle('stale', stale);
   // The exact time on hover: "checked 4h ago" is friendly, but vague.
@@ -874,7 +929,7 @@ function renderLists() {
     el.innerHTML = '';
     return;
   }
-  const base = packages.filter((p) => inPlatform(p) && inTeam(p));
+  const base = packages.filter((p) => inPlatform(p) && inTeam(p) && refined(p, 'all'));
   const listCount = (name) =>
     community
       ? manifest.views.lists[name] || 0
@@ -946,7 +1001,8 @@ function render(list, { keepPage = false } = {}) {
     return;
   }
   if (!list.length) {
-    content.innerHTML = html`<div class="empty">No packages match${activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}${community ? ' here' : ''}.</div>${moreMatchesHtml()}`;
+    const narrowed = refines.size || ageFilter;
+    content.innerHTML = html`<div class="empty">No packages match${narrowed ? ' these filters' : activeFilter !== 'all' && !document.getElementById('search').value.trim() ? ` the “${FILTERS[activeFilter].label}” filter` : ''}${community ? ' here' : ''}.</div>${moreMatchesHtml()}`;
     return;
   }
   content.innerHTML = html`<div class="wrap"><table>
@@ -1156,8 +1212,9 @@ function listHeaderHtml() {
   // The tiles count the view shown, with the platform, list and team
   // filters, as the count chips do (renderStats).
   const base = packages.filter((p) => inPlatform(p) && inList(p) && inTeam(p) && inSet(p));
+  const shownCount = base.filter((p) => refined(p)).length;
   const tiles = Object.entries(TILES).map(([key, label]) => {
-    const count = base.filter(FILTERS[key].test).length;
+    const count = base.filter((p) => FILTERS[key].test(p) && refined(p, key)).length;
     const pressed = activeFilter === key;
     return html`<button type="button" class="tile" data-filter="${key}" aria-pressed="${pressed}"
       title="${pressed ? 'Show them all again' : `Show only these (${label.toLowerCase()})`}">
@@ -1180,13 +1237,13 @@ function listHeaderHtml() {
               : 'Needs attention';
   return html`<div class="scope-view">
       <span class="scope-label">Showing</span>
-      <span class="view-chip">${what} · ${fmt(base.length)}<a class="view-x" href="${scopeHref({})}" data-scope-home aria-label="Back to the overview" title="Back to the overview">✕</a></span>
+      <span class="view-chip">${what} · ${fmt(shownCount)}<a class="view-x" href="${scopeHref({})}" data-scope-home aria-label="Back to the overview" title="Back to the overview">✕</a></span>
       ${path.startsWith('views/set/') ? html`<span class="scope-hint">A generated set: only Repology's versions and Hydra's builds, for now</span>` : ''}
       ${teamPicker('Any team')}
     </div>
     ${
       // One package: its row says it all, the tiles would only count to 1.
-      path.startsWith('pkg:') ? '' : html`<div class="tiles">${tiles}</div>`
+      path.startsWith('pkg:') ? '' : html`<div class="tiles">${tiles}</div>${refineHtml()}`
     }`;
 }
 
@@ -1213,6 +1270,8 @@ function showView({ set = null, pkg = null, view = null, filter = null }) {
   teamFilter = null;
   listFilter = null;
   activeFilter = filter || 'all';
+  refines = new Set();
+  ageFilter = null;
   document.getElementById('search').value = '';
   update();
   document.getElementById('scope')?.scrollIntoView({ block: 'nearest' });
@@ -1839,6 +1898,7 @@ function currentFiltered() {
       inList(p) &&
       inTeam(p) &&
       inSet(p) &&
+      refined(p) &&
       FILTERS[activeFilter].test(p) &&
       matchesSearch(p, q),
   );
@@ -1874,6 +1934,21 @@ document.getElementById('stats').addEventListener('click', (e) => {
   }
   // Clicking the active filter again goes back to showing everything.
   activeFilter = btn.dataset.filter === activeFilter ? 'all' : btn.dataset.filter;
+  update();
+});
+
+// Narrowing the list (refineHtml), wherever it's drawn.
+document.addEventListener('click', (e) => {
+  const btn = e.target.closest('button[data-refine]');
+  if (!btn) return;
+  const key = btn.dataset.refine;
+  if (refines.has(key)) refines.delete(key);
+  else refines.add(key);
+  update();
+});
+document.addEventListener('change', (e) => {
+  if (!e.target.matches('select[data-age]')) return;
+  ageFilter = e.target.value || null;
   update();
 });
 

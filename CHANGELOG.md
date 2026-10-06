@@ -11,6 +11,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Narrowing any list, together with its other filters: without
+  maintainer, not marked broken, not fixed on master yet (an outdated
+  package whose update is merged, waiting for nixos-unstable), and older
+  than a month, 6 months or a year (failing or outdated for that long).
+  Under the counts, or with every package under a list's tiles; in the
+  address as `?refine=` and `?age=` (`docs/reading-the-page.md`).
 - Where the data is from: "checked … ago" on the page opens each source's
   time (the daily sync; the Hydra evaluation its builds are from and when
   it was read; when Repology's versions and nixpkgs-update's attempts were

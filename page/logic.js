@@ -301,6 +301,31 @@ export function faviconKey(packages, platform = null) {
   return ['r', 'f', 'v'].filter((s) => signals[s]).join('') || 'ok';
 }
 
+// "Older than" (?age=): how many days each choice means.
+export const AGE_DAYS = { '1m': 30, '6m': 182, '1y': 365 };
+
+// Since when a row has had the problem kind names (the list's filter):
+// failing (its builds or update attempts, the earlier), outdated, or for any
+// other, the earliest of them; null when it has none of them.
+export function problemSince(pkg, kind) {
+  const failing = [pkg.failingSince, pkg.updateFailingSince];
+  const dates =
+    kind === 'failed'
+      ? failing
+      : kind === 'warn'
+        ? [pkg.outdatedSince]
+        : [...failing, pkg.outdatedSince];
+  return dates.filter(Boolean).sort()[0] || null;
+}
+
+// Whether a row has had that problem for longer than age (an AGE_DAYS key;
+// any other: no limit, so every row is).
+export function olderThan(pkg, age, kind, now = Date.now()) {
+  if (!AGE_DAYS[age]) return true;
+  const since = problemSince(pkg, kind);
+  return Boolean(since) && now - new Date(since).getTime() > AGE_DAYS[age] * DAY;
+}
+
 // How long a package has been outdated, one letter per unit: <1 d, 3 d, 2 w,
 // 5 m (months), 2 y.
 export function shortAge(iso, now = Date.now()) {
