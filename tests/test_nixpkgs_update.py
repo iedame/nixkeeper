@@ -79,6 +79,85 @@ The update script for blackvoxel-2.5 failed with exit code 1
 """
 
 
+# Parser 3's outcomes, each trimmed from a log the digest read as "other"
+# (2026-09-29 to 10-05).
+# karakeep's: the bot had already pushed 0.33.2 to its branch.
+BRANCH_EXISTS = f"""{HEAD}karakeep 0.33.1 -> 0.33.2 https://github.com/karakeep-app/karakeep/releases
+attrpath: karakeep
+Checking auto update branch...
+[version] generic version rewriter does not support multiple hashes
+[updateScript] Success
+Diff after rewrites:
+An auto update branch exists with message `karakeep: 0.33.1 -> 0.33.2`. \
+New version is 0.33.2.
+An auto update branch exists with an equal or greater version
+"""
+# lilypond-unstable's: an updateScript package, its versions only in the
+# branch's message.
+BRANCH_EXISTS_SCRIPT = f"""{HEAD}lilypond-unstable 0 -> 1
+attrpath: lilypond-unstable
+Checking auto update branch...
+An auto update branch exists with message `lilypond-unstable: 2.27.2 -> 2.27.3`. \
+New version is 2.27.3.
+An auto update branch exists with an equal or greater version
+"""
+NOT_NEWER = f"""{HEAD}xmonad-log 0.1.0-unstable-2024-06-14 -> 0.1.0 https://github.com/xintron/xmonad-log/releases
+attrpath: xmonad-log
+Checking auto update branch...
+No auto update branch exists
+0.1.0 is not newer than 0.1.0-unstable-2024-06-14 according to Nix; \
+versionComparison: -1 \n"""
+HASHES_EQUAL = f"""{HEAD}dislocker 0.7.3-unstable-2025-09-07 -> 2026.08.31 https://repology.org/project/dislocker/versions
+attrpath: dislocker
+Checking auto update branch...
+No auto update branch exists
+[version] \nHashes equal; no update necessary
+"""
+SOURCE_UNCHANGED = f"""{HEAD}mictray 0.2.5 -> 0.3.1 https://github.com/Junker/mictray/releases
+attrpath: mictray
+Checking auto update branch...
+No auto update branch exists
+[version] updated version and sha256
+Diff after rewrites:
++    sha256 = "sha256-5LAUU43Vh6n4He171ujT4/v8G0YsHU1f1IEVUrKRkCk=";
+Source url did not change. \n"""
+# Skipped on purpose, after each of the bot's checks.
+SKIPPED_OPT_OUT = f"""{HEAD}rakudo 2026.07 -> 2026.09 https://github.com/rakudo/rakudo/releases
+attrpath: rakudo
+Checking auto update branch...
+No auto update branch exists
+Derivation file opts-out of auto-updates
+"""
+SKIPPED_GNOME = f"""{HEAD}errands 0 -> 1
+attrpath: errands
+Checking auto update branch...
+Do not update GNOME during a release cycle
+"""
+SKIPPED_LOCKSTEP = f"""{HEAD}rocmPackages.miopen 0 -> 1
+attrpath: rocmPackages.miopen
+rocm packages are upgraded in lockstep https://github.com/NixOS/nixpkgs/issues/385294
+"""
+SKIPPED_REBUILDS = f"""{HEAD}python3Packages.pint 0 -> 1
+attrpath: python3Packages.pint
+Checking auto update branch...
+   build-system = [
+
+No auto update branch exists
+Python package with too many package rebuilds 3150  > 100
+"""
+# crack-hash's: opening the PR failed, GitHub answering 500.
+HTTP_FAILED = f"""{HEAD}crack-hash 1.1.0-unstable-2025-12-31 -> 1.2.0 https://github.com/kOaDT/crack-hash/releases
+attrpath: crack-hash
+[updateScript] Success
+HTTPError (HttpExceptionRequest Request {{
+  host                 = "api.github.com"
+  port                 = 443
+ (StatusCodeException (Response {{responseStatus = Status {{statusCode = 500, \
+statusMessage = "Internal Server Error"}}, responseVersion = HTTP/1.1}})
+}}) ""))
+"""
+
+
 def listing(*dates):
     return "".join(f'<a href="{d}.log">{d}.log</a>\n' for d in dates)
 
@@ -151,6 +230,86 @@ class Parse(unittest.TestCase):
         for log in (NO_CHANGE, ALREADY_UPDATED):
             with self.subTest(log=log[:80]):
                 self.assertEqual(nixpkgs_update.parse(log)["outcome"], "noChange")
+
+    def test_branch_exists(self):
+        result = nixpkgs_update.parse(BRANCH_EXISTS)
+        self.assertEqual(
+            (result["outcome"], result["from"], result["to"]),
+            ("branchExists", "0.33.1", "0.33.2"),
+        )
+        # An updateScript's versions, from the branch's message.
+        result = nixpkgs_update.parse(BRANCH_EXISTS_SCRIPT)
+        self.assertEqual(
+            (result["outcome"], result["from"], result["to"]),
+            ("branchExists", "2.27.2", "2.27.3"),
+        )
+
+    def test_nothing_newer_says_why(self):
+        for log, why in (
+            (
+                NOT_NEWER,
+                "0.1.0 is not newer than 0.1.0-unstable-2024-06-14 according to "
+                "Nix; versionComparison: -1",
+            ),
+            (HASHES_EQUAL, "Hashes equal; no update necessary"),
+        ):
+            with self.subTest(why=why[:30]):
+                result = nixpkgs_update.parse(log)
+                self.assertEqual(
+                    (result["outcome"], result["excerpt"]), ("noChange", [why])
+                )
+
+    def test_source_unchanged_cant_update(self):
+        result = nixpkgs_update.parse(SOURCE_UNCHANGED)
+        self.assertEqual(
+            (result["outcome"], result["excerpt"]),
+            ("cantUpdate", ["Source url did not change."]),
+        )
+
+    def test_skipped_after_each_check(self):
+        for log, why in (
+            (SKIPPED_OPT_OUT, "Derivation file opts-out of auto-updates"),
+            (SKIPPED_GNOME, "Do not update GNOME during a release cycle"),
+            (
+                SKIPPED_LOCKSTEP,
+                "rocm packages are upgraded in lockstep "
+                "https://github.com/NixOS/nixpkgs/issues/385294",
+            ),
+            (
+                SKIPPED_REBUILDS,
+                "Python package with too many package rebuilds 3150  > 100",
+            ),
+        ):
+            with self.subTest(why=why[:30]):
+                result = nixpkgs_update.parse(log)
+                self.assertEqual(
+                    (result["outcome"], result["excerpt"]), ("skipped", [why])
+                )
+
+    def test_a_failure_after_the_checks_isnt_a_skip(self):
+        # The bot's checks, then a build that failed: its log, not a reason.
+        log = f"""{HEAD}x 1 -> 2
+attrpath: x
+Checking auto update branch...
+No auto update branch exists
+error: builder for '/nix/store/x.drv' failed with exit code 1
+"""
+        self.assertEqual(nixpkgs_update.parse(log)["outcome"], "failed")
+
+    def test_failed_request_says_where_and_what(self):
+        result = nixpkgs_update.parse(HTTP_FAILED)
+        self.assertEqual(
+            (result["outcome"], result["excerpt"]),
+            ("failed", ["HTTPError from api.github.com: 500 Internal Server Error"]),
+        )
+        timeout = (
+            'HTTPError (HttpExceptionRequest Request {\n  host = "github.com"\n}\n'
+            " ResponseTimeout)"
+        )
+        self.assertEqual(
+            nixpkgs_update.parse(f"{HEAD}x 1 -> 2\n{timeout}\n")["excerpt"],
+            ["HTTPError from github.com: ResponseTimeout"],
+        )
 
     def test_unrecognised(self):
         self.assertEqual(nixpkgs_update.parse(f"{HEAD}x 1 -> 2\n")["outcome"], "other")

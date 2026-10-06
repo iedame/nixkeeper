@@ -179,6 +179,11 @@ COUNTING_CHANGES = [
         "merged": "2026-10-06T09:03:41+00:00",
         "text": "older versions kept beside a newer one aren't outdated",
     },
+    {
+        # Between the last daily sync before the merge and the first after.
+        "merged": "2026-10-06T21:00:00+00:00",
+        "text": "nixpkgs-update logs read anew: a failed request is an update failure",
+    },
 ]
 KEPT = "legacy"
 
