@@ -70,9 +70,18 @@ class FrequentCheck(unittest.TestCase):
         self.addCleanup(patcher.stop)
 
     def publish(self, *rows):
+        """The last run's data, in format 1 (as from 0.11.0: still read)."""
         index = {"checkedAt": "2026-09-30T06:00:00+00:00", "packages": list(rows)}
         with open("data/index.json", "w") as f:
             json.dump(index, f)
+        self.published = [row["name"] for row in rows]
+        return index
+
+    def written(self):
+        """The data the check wrote, its rows in the order published."""
+        index = datastore.load("data")
+        if published := getattr(self, "published", None):
+            index["packages"].sort(key=lambda row: published.index(row["name"]))
         return index
 
     def run_frequent(self, page, nix_version="154.0.8037.57", newest="154.0.8037.57"):
@@ -93,8 +102,7 @@ class FrequentCheck(unittest.TestCase):
             mock.patch.object(github, "token", return_value=None),
         ):
             frequent.main()
-        with open("data/index.json") as f:
-            return json.load(f), notified, get
+        return self.written(), notified, get
 
     def test_new_release_is_written_and_notified(self):
         before = self.publish(chrome_row(), {"name": "bbedit", "attrs": ["bbedit"]})
@@ -110,7 +118,7 @@ class FrequentCheck(unittest.TestCase):
         )  # not bbedit's
         notified.assert_called_once()
         self.assertEqual(notified.call_args.args[0], before)  # compared with before
-        self.assertTrue(os.path.exists("data/google-chrome.json"))
+        self.assertTrue(datastore.entries(chrome, "data"))  # refreshed, in its shard
 
     def test_other_rows_keep_their_entries_read_once(self):
         """Format 2: the rows not checked keep their Repology entries, read

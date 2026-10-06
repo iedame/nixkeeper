@@ -2,17 +2,15 @@
 previous run (history, schedules, notifications, the hourly checks) or
 writes a new one goes through here.
 
-Two formats (docs/data.md):
+The data's format (docs/data.md), format 2: index.json as a small manifest
+(format, counts), summary.json with a short entry per row (what the page's
+list needs), and the full rows in rows/<n>.json shards (n from a hash of the
+name), each row with its Repology entries ("repology").
 
-- format 1: index.json with every row in full ("packages"), and each
-  Repology project's entries in <dataFile> (output of 0.11.0 and before);
-- format 2: index.json as a small manifest (format, counts), summary.json
-  with a short entry per row (what the page's list needs), and the full rows
-  in rows/<n>.json shards (n from a hash of the name), each row with its
-  Repology entries ("repology").
-
-While pages switch over, both are written: format 2 beside format 1 (its
-"packages" and per-project files), so a page from before still works."""
+Format 1 (0.11.0 and before; written beside format 2 until 0.13.0) is still
+read, so a sync after upgrading from it keeps the last run's data: index.json
+with every row in full ("packages"), and each Repology project's entries in
+<dataFile>."""
 
 import contextlib
 import copy
@@ -187,15 +185,17 @@ HISTORY_DAYS = 365
 
 def files(index, entries, history=None, fixed=None, events=None):
     """Every file of data/ for index (its rows in "packages") and entries
-    (Repology's, by dataFile): {path in data/: data}. history: with every
+    (Repology's, by dataFile, put in the rows' shards): {path in data/:
+    data}. history: with every
     package, the last run's history.json points (read_history), to which
     this run's counts are added; fixed, the fixes it keeps (read_fixed, with
     this run's: with_fixed); events, what marks the trends (with_events);
     None leaves history.json out (a partial run keeps the one on disk, and
     the manifest its "fixed")."""
     run = index.get("checkedAt")
-    given = [elided(row, run) for row in index["packages"]]  # format 1's order
-    rows = sorted(given, key=lambda row: row["name"])
+    rows = sorted(
+        (elided(row, run) for row in index["packages"]), key=lambda row: row["name"]
+    )
     count = shard_count(len(rows))
     shards = [[] for _ in range(count)]
     for row in rows:
@@ -209,12 +209,11 @@ def files(index, entries, history=None, fixed=None, events=None):
         "packageCount": len(rows),
         "shardCount": count,
     }
+    del manifest["packages"]  # in the shards
     out = {}
     if index.get("allPackages"):
         # Every package: no summary of them all (too big to load), but views
-        # of it, a name index and the counts (views); and no first format
-        # (no page old enough to need it reads a community instance's data).
-        del manifest["packages"]
+        # of it, a name index and the counts (views).
         manifest.update(views(rows, out))
         if history is not None:
             out["history.json"] = {
@@ -224,8 +223,6 @@ def files(index, entries, history=None, fixed=None, events=None):
             }
             manifest["fixed"] = fixed_summary(fixed or [], run)
     else:
-        out.update(entries)  # format 1's per-project files
-        manifest["packages"] = given
         out["summary.json"] = {"packages": [summary_entry(row) for row in rows]}
     out["index.json"] = manifest
     for n, shard in enumerate(shards):
@@ -633,7 +630,8 @@ def load(out_dir=None):
     except (OSError, ValueError):
         return {"packages": []}
     if index.get("format") == FORMAT:
-        # The rows from the shards; if one can't be read, format 1's (below).
+        # The rows from the shards; if one can't be read, index.json's (in
+        # data from 0.12.0, written beside format 1), else none.
         with contextlib.suppress(OSError, ValueError, KeyError, TypeError):
             index["packages"] = sorted(
                 (
@@ -673,8 +671,8 @@ def saved_entries(out_dir=None):
 
 def entries(row, out_dir=None):
     """row's Repology entries from the last run: from its shard (format 2),
-    else its data file (format 1). Raises OSError or ValueError when neither
-    can be read."""
+    else its data file (format 1, from 0.11.0 and before). Raises OSError or
+    ValueError when neither can be read."""
     out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
     try:
         index = _shared(os.path.join(out_dir, "index.json"))

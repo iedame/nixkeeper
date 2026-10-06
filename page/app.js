@@ -92,12 +92,9 @@ addListsLink();
 
 let dataBase = null; // set by loadIndex
 const dataUrl = (path) => new URL(path, dataBase).href;
-const detailCache = new Map(); // file -> a Repology project's entries (format 1)
-// The data's format (docs/data.md). 2: the list from summary.json (a short
+// The data (docs/data.md, format 2): the list from summary.json (a short
 // entry per package), each package's full row from its shard
-// (rows/<n>.json), loaded when a panel opens. 1 (0.11.0 and before):
-// index.json has every row in full, and each Repology project its own file.
-let format = 1;
+// (rows/<n>.json, of shardCount), loaded when a panel opens.
 let shardCount = 1;
 // With every package (a community instance: index.json's allPackages), the
 // page shows one view of the data at a time (viewPath): `packages` is that
@@ -600,28 +597,17 @@ function showListProblems(problems) {
     : '';
 }
 
-// Format 2's summary entries, or null to use index.json's rows (format 1,
-// or a summary that couldn't be loaded while index.json still has them).
-async function summaryOf(data) {
-  if (!(data.format >= 2 && data.shardCount)) return null;
-  try {
-    const res = await fetch(dataUrl('summary.json'), { cache: 'no-store' });
-    if (!res.ok) throw new Error(res.status);
-    const summary = await res.json();
-    format = 2;
-    shardCount = data.shardCount;
-    return summary.packages || [];
-  } catch (e) {
-    if (data.packages) return null;
-    throw e;
-  }
+// The summary's entries, a short one per package (summary.json).
+async function summaryOf() {
+  const res = await fetch(dataUrl('summary.json'), { cache: 'no-store' });
+  if (!res.ok) throw new Error(res.status);
+  return (await res.json()).packages || [];
 }
 
-// A package's full row (what its panels show): its shard's in format 2,
-// loaded once (a failed load isn't kept, so opening it again tries again);
-// in format 1, the row itself. null if it couldn't be loaded.
+// A package's full row (what its panels show): its shard's, loaded once (a
+// failed load isn't kept, so opening it again tries again). null if it
+// couldn't be loaded.
 async function fullRow(pkg) {
-  if (format < 2) return pkg;
   const n = shardOf(pkg.name, shardCount);
   if (!shardCache.has(n)) {
     shardCache.set(
@@ -641,27 +627,6 @@ async function fullRow(pkg) {
     return (await shardCache.get(n)).get(pkg.name) || null;
   } catch {
     shardCache.delete(n);
-    return null;
-  }
-}
-
-// A row's Repology entries (the repositories it's compared against): in its
-// shard's row (format 2), else its project's file. null when they couldn't
-// be loaded (the network, say): the panel says so, rather than "compared
-// with 0 other repositories", and isn't kept, so opening it again tries again.
-async function repologyEntries(row) {
-  if (format >= 2) return row.repology || [];
-  // Stored per project, under a file-name-safe version of its name
-  // (python:requests -> python_requests.json).
-  const file = row.dataFile || `${row.project || row.name}.json`;
-  if (detailCache.has(file)) return detailCache.get(file);
-  try {
-    const res = await fetch(dataUrl(encodeURIComponent(file)), { cache: 'no-store' });
-    if (!res.ok) return null;
-    const entries = await res.json();
-    detailCache.set(file, entries);
-    return entries;
-  } catch {
     return null;
   }
 }
@@ -799,20 +764,25 @@ async function loadIndex() {
     const res = await fetch(dataUrl('index.json'), { cache: 'no-store' });
     if (!res.ok) throw new Error(res.status);
     const data = await res.json();
+    if (!(data.format >= 2 && data.shardCount)) {
+      // Format 1, which only nixkeeper 0.11.0 and before write alone.
+      content.innerHTML = html`<div class="error">
+        This data is from nixkeeper 0.11.0 or older, which this page no longer reads.<br>
+        The next sync rewrites it.
+      </div>`;
+      return;
+    }
     checkedAt = data.checkedAt || null;
     sources = data.sources || null;
+    shardCount = data.shardCount;
     if (data.allPackages) {
       community = true;
       manifest = data;
       myHandle = stored('nixkeeper-handle');
       myTeam = stored('nixkeeper-team');
       loadMyCount();
-      format = 2;
-      shardCount = data.shardCount;
     } else {
-      packages = ((await summaryOf(data)) || data.packages || []).map((p) =>
-        withRunStamps(p, checkedAt),
-      );
+      packages = (await summaryOf()).map((p) => withRunStamps(p, checkedAt));
     }
     // The nixkeeper that made the data, in the footer (older data has none).
     document.getElementById('version').textContent =
@@ -1577,7 +1547,7 @@ async function toggle(tr, mode) {
   if (closing) return;
   // The panel needs the full row (the list has the summary's entry).
   const row = await fullRow(pkg);
-  const entries = row && mode === 'info' ? await repologyEntries(row) : null;
+  const entries = row && mode === 'info' ? row.repology || [] : null;
   if (detail.dataset.mode !== mode) return; // switched or closed meanwhile
   if (!row) {
     inner.innerHTML = html`<div class="nix-line">Couldn't load this package's details. Open it again to retry.</div>`;
@@ -1916,7 +1886,7 @@ function sourceFileName(url) {
 }
 
 // entries: the row's Repology entries, or null if they couldn't be loaded
-// (repologyEntries).
+// (its shard).
 function fillDetail(pkg, el, entries) {
   const loaded = Array.isArray(entries);
 
