@@ -10,6 +10,7 @@ import collections
 import re
 import sys
 
+from . import config
 from .sources import github, upstream
 from .sources import nixpkgs as nixpkgs_source
 from .versions import is_newer
@@ -119,7 +120,7 @@ def verdict(row, version, rule):
             return "agree", f"{version}, as its rule"
         return "rule differs", f"{version}, its rule {theirs}"
     by_github = is_newer(version, nix)
-    by_repology = row.get("nixStatus") in ("outdated", "legacy")
+    by_repology = row.get("nixStatus") in config.OUTDATED_STATUSES
     ref = row.get("refVersion")
     if not by_github and not by_repology:
         return "agree", "up to date"

@@ -16,6 +16,7 @@ import {
   nameMatches,
   nixkeeperEntry,
   olderThan,
+  olderVersionKept,
   onMaster,
   onPlatform,
   pageLinks,
@@ -302,7 +303,7 @@ function versionCell(pkg, st) {
   const failing = stale
     ? html`<span class="badge neutral" title="${staleText(stale, "nixkeeper's update check failing")}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
     : '';
-  const about = html`${pkg.pending ? html`<span class="badge neutral" title="${PENDING_TITLE} (${pkg.set})">pending</span>` : ''}${st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : ''}`;
+  const about = html`${pkg.pending ? html`<span class="badge neutral" title="${PENDING_TITLE} (${pkg.set})">pending</span>` : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : ''}`;
   if (st !== 'warn')
     return html`<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
@@ -476,6 +477,11 @@ function setSitePalette(palette) {
 // Repology's statuses as the page says them, where the code isn't clear
 // ("unlisted": with every package, one Repology doesn't know).
 const STATUS_LABEL = { unlisted: 'not on Repology' };
+// An older version kept beside a newer one (olderVersionKept): which.
+const keptText = (pkg) =>
+  pkg.keptBeside
+    ? `An older version nixpkgs keeps on purpose: it also has ${pkg.keptBeside.attr} ${pkg.keptBeside.version}`
+    : 'An older version nixpkgs keeps on purpose, beside a newer one';
 const statusLabel = (status) => STATUS_LABEL[status] || status;
 const PENDING_TITLE =
   "A generated package set: only Repology's versions and Hydra's builds for now";
@@ -485,7 +491,8 @@ const DOT_TITLE = {
   warn: 'Outdated: a newer release is out',
   merged: 'On master: the update is merged, waiting for nixos-unstable',
   missing: 'Not packaged: not in nixpkgs unstable',
-  neutral: "Can't compare: a rolling or unusual version scheme",
+  neutral:
+    "Can't compare (a rolling or unusual version scheme), or an older version kept on purpose",
 };
 
 function showLegend(open) {
@@ -1700,7 +1707,7 @@ function fillDetail(pkg, el, entries) {
   const since = pkg.outdatedSince
     ? ` — outdated since ${longDate(pkg.outdatedSince)} (${daysText(pkg.outdatedSince)})`
     : '';
-  const repologyOutdated = ['outdated', 'legacy'].includes(pkg.nixStatus);
+  const repologyOutdated = pkg.nixStatus === 'outdated';
   // A branch check (unstable versions): how many commits nixpkgs is behind,
   // and what makes that count as outdated ("90 days or 50 commits").
   const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
@@ -1768,13 +1775,15 @@ function fillDetail(pkg, el, entries) {
                 ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
                 : st === 'warn'
                   ? html`, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion || '?'}</span>${since}`
-                  : st === 'neutral'
-                    ? pkg.nixStatus === 'unlisted'
-                      ? " — Repology doesn't list this package, so there's nothing to compare it with."
-                      : html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
-                    : loaded
-                      ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${compared} other ${compared === 1 ? 'repository' : 'repositories'}.`
-                      : ` — the newest ${pkg.devel ? 'devel ' : ''}version.`
+                  : olderVersionKept(pkg)
+                    ? html` — an older version nixpkgs keeps on purpose${pkg.keptBeside ? html`, beside <b class="mono">${pkg.keptBeside.attr}</b> <span class="mono">${pkg.keptBeside.version}</span>` : ', beside a newer one'}: not outdated while nothing newer is out in its own series.`
+                    : st === 'neutral'
+                      ? pkg.nixStatus === 'unlisted'
+                        ? " — Repology doesn't list this package, so there's nothing to compare it with."
+                        : html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
+                      : loaded
+                        ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${compared} other ${compared === 1 ? 'repository' : 'repositories'}.`
+                        : ` — the newest ${pkg.devel ? 'devel ' : ''}version.`
           }${
             up && !up.newer && !failing
               ? follows

@@ -101,6 +101,19 @@ class Rows(unittest.TestCase):
         # No devel version elsewhere (the aur beta is "ignored"): falls back to stable.
         self.assertEqual(beta["refVersion"], "8.12.36")
 
+    def test_an_older_series_split_off_isnt_devel(self):
+        entries = [
+            nix("gnumake", "4.4.1", "newest"),
+            nix("gnumake42", "4.2.1", "legacy"),
+            other("arch", "4.4.1", "newest"),
+        ]
+        stable, older = self.rows(
+            project("gnumake", ["gnumake", "gnumake42"], entries, "gnumake")
+        )
+        self.assertEqual((stable["name"], stable["devel"]), ("gnumake", False))
+        self.assertEqual((older["name"], older["devel"]), ("gnumake42", False))
+        self.assertEqual(older["keptBeside"], {"attr": "gnumake", "version": "4.4.1"})
+
     def test_repology_devel_status_marks_single_row_devel(self):
         [row] = self.rows(
             project(
@@ -123,6 +136,20 @@ class Rows(unittest.TestCase):
             (row["name"], row["nixVersion"], row["nixStatus"]),
             ("haskellPackages.pandoc", "3.7.0.2", "legacy"),
         )
+        # Kept beside the newer one, which the page names.
+        self.assertEqual(row["keptBeside"], {"attr": "pandoc", "version": "3.8"})
+
+    def test_kept_beside_the_plainest_name_of_the_newest(self):
+        entries = [
+            nix("tracy", "0.14.1", "newest"),
+            nix("tracy_0_14", "0.14.1", "newest"),
+            nix("tracy_0_13", "0.13.1", "legacy"),
+            nix("tracy_0_11", "0.11.1", "legacy"),
+        ]
+        [row] = self.rows(project("tracy_0_11", ["tracy_0_11"], entries, "tracy"))
+        self.assertEqual(row["keptBeside"], {"attr": "tracy", "version": "0.14.1"})
+        [newest] = self.rows(project("tracy", ["tracy"], entries, "tracy"))
+        self.assertNotIn("keptBeside", newest)
 
     def test_not_in_nixpkgs(self):
         [row] = self.rows(project("python3Packages.requests", [], []))

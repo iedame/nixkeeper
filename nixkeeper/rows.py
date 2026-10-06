@@ -1,5 +1,7 @@
 """Turning Repology projects into the page's rows."""
 
+import re
+
 from . import config
 from .sources.nixpkgs import platforms
 from .versions import version_key
@@ -11,6 +13,13 @@ def search_term(attr):
     for pattern, alias in config.SEARCH_ALIASES:
         attr = pattern.sub(alias, attr)
     return attr
+
+
+# An attribute named for a development channel (wesnoth-devel, foo-beta,
+# bar_unstable, baz-nightly, code-insiders).
+DEVEL_NAME = re.compile(
+    r"[-_.](devel|dev|beta|alpha|unstable|nightly|rc|preview|insiders|canary|git)$"
+)
 
 
 def row_name(attrs):
@@ -44,7 +53,10 @@ def project_rows(proj, nixpkgs):
         ]
 
     # Stable first: the variant Repology calls newest, else the shortest attr
-    # (wesnoth before wesnoth-devel). The rest compare against devel versions.
+    # (wesnoth before wesnoth-devel). The rest are devel variants, compared
+    # against devel versions, when they're newer than it or named so
+    # (wesnoth-devel, _1password-gui-beta); otherwise older versions kept
+    # beside it (gnumake42, php82Extensions.zip).
     ordered = sorted(
         groups.values(),
         key=lambda g: (
@@ -53,12 +65,17 @@ def project_rows(proj, nixpkgs):
             min(e["srcname"] for e in g),
         ),
     )
+    stable = version_key(ordered[0][0].get("version") or "")
     rows = []
     for i, group in enumerate(ordered):
         attrs = sorted(e["srcname"] for e in group)
+        devel = i > 0 and (
+            version_key(group[0].get("version") or "") > stable
+            or any(DEVEL_NAME.search(a) for a in attrs)
+        )
         rows.append(
             make_row(
-                proj, row_name(attrs), attrs, group[0], others, nixpkgs, devel=i > 0
+                proj, row_name(attrs), attrs, group[0], others, nixpkgs, devel=devel
             )
         )
     return rows
@@ -98,6 +115,23 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         # classifies as devel (lincity).
         "devel": devel or (nix or {}).get("status") == "devel",
     }
+    if nix and nix.get("status") == config.KEPT:
+        # An older version kept beside a newer one: which, for the page.
+        newer = [
+            e
+            for e in proj["entries"]
+            if e.get("repo") == config.NIX_REPO
+            and e.get("version")
+            and version_key(e["version"]) > version_key(nix.get("version") or "")
+        ]
+        if newer:
+            best = max(version_key(e["version"]) for e in newer)
+            # Of those with that version, the plainest name (tracy, not tracy_0_14).
+            top = min(
+                (e for e in newer if version_key(e["version"]) == best),
+                key=lambda e: (len(e.get("srcname") or ""), e.get("srcname") or ""),
+            )
+            row["keptBeside"] = {"attr": top.get("srcname"), "version": top["version"]}
     pkgs = [nixpkgs[a] for a in attrs if a in nixpkgs]
     if proj.get("unlisted") and pkgs and not nix:
         # In nixpkgs, but not on Repology (read in bulk, with every package):

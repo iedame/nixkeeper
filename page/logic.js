@@ -131,13 +131,21 @@ export function onPlatform(pkg, key) {
   return pkg.platforms === null || Boolean(pkg.platforms?.[key]);
 }
 
-// Follows Repology's statuses. "legacy" means outdated while the same repo
-// carries a newer version in another package (e.g. a beta overtaken by the
-// stable release), so it counts as outdated. Whether a row is a devel variant
-// comes separately from pkg.devel and only shades its "devel" badge.
+// Follows Repology's statuses, but "legacy" (an older version nixpkgs keeps
+// beside a newer one under another attribute: tracy_0_11 beside tracy) isn't
+// outdated by itself: only by a newer release in its own series (an update
+// check), or, for a devel variant (a beta), a newer devel version elsewhere
+// (config.KEPT in nixkeeper). Whether a row is a devel variant comes
+// separately from pkg.devel and only shades its "devel" badge.
 export function computeStatus(pkg) {
   if (pkg.nixStatus === 'missing') return 'missing';
-  if (pkg.nixStatus === 'outdated' || pkg.nixStatus === 'legacy') return 'warn';
+  if (pkg.nixStatus === 'outdated') return 'warn';
+  if (
+    pkg.nixStatus === 'legacy' &&
+    pkg.devel &&
+    compareVersions(pkg.refVersion || '', pkg.nixVersion || '') > 0
+  )
+    return 'warn';
   // nixkeeper's own update check found a release Repology hasn't seen.
   if (pkg.upstream?.newer) return 'warn';
   // Or master already has a newer version than the channel.
@@ -145,6 +153,13 @@ export function computeStatus(pkg) {
   if (pkg.nixStatus === 'newest' || pkg.nixStatus === 'unique' || pkg.nixStatus === 'devel')
     return 'ok';
   return 'neutral';
+}
+
+// An older version nixpkgs keeps on purpose beside a newer one (Repology's
+// "legacy"), and nothing newer in its own series: shown as such, not as
+// outdated. pkg.keptBeside names the newer one, when the data has it.
+export function olderVersionKept(pkg) {
+  return pkg.nixStatus === 'legacy' && computeStatus(pkg) !== 'warn';
 }
 
 // Hydra builds with a status, on the selected platform only while one is.

@@ -47,18 +47,6 @@
     reason = "A snapshot from after the 12.12 release; Repology ignores unstable versions.";
   };
 
-  tracy_0_11 = {
-    version = "0.11.1";
-    newest = "0.14.1";
-    reason = "An older series nixpkgs keeps for what still needs it (tracy has the newest); Repology compares it with the newest series and calls it legacy.";
-  };
-
-  tracy_0_12 = {
-    version = "0.12.2";
-    newest = "0.14.1";
-    reason = "An older series nixpkgs keeps for what still needs it (tracy has the newest); Repology compares it with the newest series and calls it legacy.";
-  };
-
   twinejs = {
     version = "2.12.0";
     newest = "7.0.0";

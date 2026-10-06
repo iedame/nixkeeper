@@ -88,7 +88,7 @@ the `?` next to "checked" at the top for all of them):
 | orange | outdated: Repology or nixkeeper's own update check knows a newer version |
 | violet | outdated, but the update is already merged on master, waiting for nixos-unstable (usually a few days). Master having a newer version than the channel counts too, even before Repology or an update check knows of it |
 | pink | not in nixpkgs unstable (counted as failed) |
-| grey | Repology can't compare the version: `untrusted`, `rolling`, `noscheme`, `incorrect` (shown as a badge) |
+| grey | Repology can't compare the version: `untrusted`, `rolling`, `noscheme`, `incorrect` (shown as a badge); or an **older version** nixpkgs keeps on purpose beside a newer one (`tracy_0_11` beside `tracy`, `php82Extensions` beside PHP 8.4's): not outdated while nothing newer is out in its own series, and the details name the newer one |
 
 **The version**: nixpkgs unstable's. For an outdated package, the newest
 version is under it, after a `→`, with the start they share faded, so the

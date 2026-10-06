@@ -32,8 +32,9 @@ class OutdatedSince(unittest.TestCase):
         }
         self.assertEqual(self.run_with("outdated", before), "2026-09-01T06:00:00+00:00")
 
-    def test_legacy_counts_as_outdated(self):
-        self.assertEqual(self.run_with("legacy"), self.NOW)
+    def test_an_older_version_kept_isnt_outdated(self):
+        # Repology's "legacy": nixpkgs keeps it beside a newer one.
+        self.assertIsNone(self.run_with("legacy"))
 
     def test_caught_up_drops_the_date(self):
         before = {

@@ -11,6 +11,19 @@ def is_outdated(row):
         row.get("nixStatus") in config.OUTDATED_STATUSES
         or bool((row.get("upstream") or {}).get("newer"))
         or ahead_on_master(row)
+        or behind_as_devel(row)
+    )
+
+
+def behind_as_devel(row):
+    """A devel variant (a beta) Repology calls legacy because the stable one
+    is newer: behind if a newer devel version is out elsewhere. Unlike a
+    kept older series, a beta that's fallen behind is still an update to
+    make."""
+    return (
+        row.get("nixStatus") == config.KEPT
+        and bool(row.get("devel"))
+        and is_newer(row.get("refVersion") or "", row.get("nixVersion"))
     )
 
 

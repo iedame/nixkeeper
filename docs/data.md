@@ -181,7 +181,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `refVersion` | the newest version seen elsewhere (for a devel row, the newest devel one), or what nixkeeper's update check found, or what master has (`master`), whichever is newest |
 | `refFromMaster` | `true` when `refVersion` is master's: newer than anything Repology or an update check knows of |
 | `repoCount` | how many other repositories Repology compares it with (each counted once) |
-| `devel` | a development variant of a split project (`wesnoth-devel`), or a version Repology calls devel |
+| `devel` | a development variant of a split project: newer than its stable one, or named for one (`wesnoth-devel`, `_1password-gui-beta`); or a version Repology calls devel |
+| `keptBeside` | for an older version nixpkgs keeps on purpose (Repology's `legacy`: `tracy_0_11`, `gnumake42`, `php82Extensions.zip`), the newer one beside it: `{ "attr", "version" }` |
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
 | `failingSince` | since when a build of it has been failing (its own build, not a dependency's): kept from sync to sync while it fails, gone once it doesn't; first seen, it's the failed builds' last success (the failing began after it), or then |
@@ -191,8 +192,11 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `upstream` | nixkeeper's own update check, when it has one (below): a rule of yours or the community's, or one worked out from nixpkgs |
 | `upToDate` | an [up-to-date rule](community.md#up-to-date-rules-until-something-changes) applies: Repology gets `nixVersion` wrong, so `nixStatus` is `newest` and there's no `refVersion`. `status` is what Repology said, `newest` the version it showed as newest elsewhere (when there was one), `reason` the rule's, and `community` is `true` for a community rule |
 
-A row counts as outdated when `nixStatus` is `outdated` or `legacy`, or
-`upstream.newer` is `true`.
+A row counts as outdated when `nixStatus` is `outdated`, `upstream.newer`
+is `true` (a newer release, for a versioned attribute in its own series),
+or master has a newer version. `legacy` (an older version kept beside a
+newer one, `keptBeside`) isn't outdated by itself, except for a devel row
+behind the newest devel version elsewhere (`refVersion`).
 
 `upstream`:
 
