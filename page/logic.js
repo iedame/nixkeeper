@@ -411,6 +411,12 @@ export function daysText(iso, now = Date.now()) {
   return days < 1 ? 'today' : days === 1 ? '1 day' : `${days} days`;
 }
 
+// Whole days from now until a day to come (a plain day, read as its midday
+// UTC): 0 for today or one past.
+export function daysUntil(day, now = Date.now()) {
+  return Math.max(0, Math.round((new Date(`${day}T12:00:00Z`).getTime() - now) / DAY));
+}
+
 export function timeAgo(iso, now = Date.now()) {
   if (!iso) return 'never';
   const diff = now - new Date(iso).getTime();
@@ -469,6 +475,18 @@ export function html(strings, ...values) {
 }
 // Markup the page writes itself, as is. Never for text from the data.
 export const raw = (text) => new Markup(String(text));
+
+// Whether url's host is host or one of its subdomains (github.com, or
+// api.github.com), by its parsed hostname: not "github.com" anywhere in it
+// (https://example.org/?github.com). False for what isn't a URL.
+export function onHost(url, host) {
+  try {
+    const name = new URL(url).hostname.toLowerCase();
+    return name === host || name.endsWith(`.${host}`);
+  } catch {
+    return false;
+  }
+}
 
 // "owner/repo" from ?owner=&repo=, or from a GitHub Pages project site's
 // address (a location: its hostname and pathname). Only names GitHub allows

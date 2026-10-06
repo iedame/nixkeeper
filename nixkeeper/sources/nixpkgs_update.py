@@ -506,6 +506,37 @@ def bulk_turns(rows, nixpkgs, before, dates, since, bulk):
     return {name for _, _, name in waiting[: config.UPDATE_LOGS_BUDGET]}
 
 
+def add_queue(rows, nixpkgs, queue):
+    """Give each row the bot will try again ("queued": {"by": the day
+    expected, "candidates": [[version, source URL], ...]}) from its queue
+    (updates_digest.load_queue): its soonest attribute's, and the versions
+    the bot would update it to that nixpkgs doesn't have yet. Rows of the
+    generated sets (pending), not in nixpkgs, or not in the queue get none;
+    nothing at all without a queue."""
+    if not queue:
+        return
+    for row in rows:
+        if row.get("pending"):
+            continue
+        found = [
+            queue[search_term(a)]
+            for a in row.get("attrs") or []
+            if a in nixpkgs and search_term(a) in queue
+        ]
+        if not found:
+            continue
+        soonest = min(found, key=lambda e: e["by"])
+        candidates = []
+        for candidate in soonest["candidates"]:
+            # [from, to, source URL]; the URL "" when the queue had none.
+            to, source = candidate[1], (candidate[2:] or [""])[0]
+            if to != row.get("nixVersion") and [to, source] not in candidates:
+                candidates.append([to, source])
+        row["queued"] = {"by": soonest["by"]}
+        if candidates:
+            row["queued"]["candidates"] = candidates
+
+
 def add_attempts(
     rows,
     nixpkgs,

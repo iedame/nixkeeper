@@ -180,7 +180,15 @@ about it (`devel`, `vulnerable`, ...); beside the newest, the update's
 | skipped | the bot passes this package over on purpose (the package opts out, GNOME's release cycle, too many rebuilds, ...: the panel says which): while it does, updates are done by hand |
 | superseded | the attempt no longer matters: nixpkgs has moved past that version (in the channel, or merged on master), or a manual rule ignores it (`package-lists/ignored-updates.nix`) |
 | not attempted | the bot has never tried this package |
+| … · a robot's head | joined to any of these: nixpkgs-update is set to update it, from its queue (screen readers say "queued"). Green when to the newest version and its last attempt didn't fail, so its PR should follow (hover it for which version); it opens the update panel too, which says when. Not shown while an update PR is open or merged |
 | none reported | the bot opened a PR, found one open, had already pushed the update to its branch, had nothing to update (nothing newer by Nix's version order, say), or finished without a recognisable result (the panel says which) |
+
+The update panel also says when the bot will try the package again, from
+[its queue](https://nixpkgs-update-logs.nixos.org/~supervisor/queue.html),
+which goes round every 10 days or so, and what it would update it to: a
+version it found on GitHub or Repology that nixpkgs doesn't have yet. That
+doesn't make the package outdated here (the bot's pick can be wrong). A
+package not in the queue has nothing the bot could update it to right now.
 
 A `not refreshed` tag on a build or update cell means Hydra or the update
 logs couldn't be reached on the last sync, so it shows the last known result.

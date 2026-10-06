@@ -226,6 +226,9 @@ UPDATES_DIGEST_URL = os.environ.get(
 # The digest is used while it was made this recently (its workflow runs
 # every 3 hours).
 UPDATES_DIGEST_MAX_AGE_HOURS = 12
+# The bot's queue (the digest's queue.json.gz) older than this isn't used:
+# its days to come would be off.
+UPDATES_QUEUE_MAX_AGE_HOURS = 24
 # Platforms nixpkgs builds; x86_64-darwin is no longer one of them.
 HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 # After this many lookups in a row fail, Hydra is likely down: the rest of the

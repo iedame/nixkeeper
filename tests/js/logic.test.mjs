@@ -15,6 +15,7 @@ import {
   crc32,
   dayPosition,
   daysText,
+  daysUntil,
   escapeHtml,
   faviconKey,
   fromMaster,
@@ -28,6 +29,7 @@ import {
   nixkeeperEntry,
   olderThan,
   olderVersionKept,
+  onHost,
   onMaster,
   onPlatform,
   pageLinks,
@@ -362,6 +364,23 @@ describe('ages', () => {
     assert.equal(daysText(daysAgo(0.2), NOW), 'today');
     assert.equal(daysText(daysAgo(1), NOW), '1 day');
     assert.equal(daysText(daysAgo(12), NOW), '12 days');
+  });
+  test('daysUntil', () => {
+    // NOW is 2026-10-01 at noon UTC.
+    assert.equal(daysUntil('2026-10-01', NOW), 0);
+    assert.equal(daysUntil('2026-10-02', NOW), 1);
+    assert.equal(daysUntil('2026-10-12', NOW), 11);
+    assert.equal(daysUntil('2026-09-28', NOW), 0); // past: due now
+  });
+  test('onHost', () => {
+    assert.equal(onHost('https://github.com/yairm210/Unciv/releases', 'github.com'), true);
+    assert.equal(onHost('https://API.GitHub.com/repos/x', 'github.com'), true);
+    // The name elsewhere in the address isn't the host.
+    assert.equal(onHost('https://example.org/?github.com', 'github.com'), false);
+    assert.equal(onHost('https://github.com.example.org/', 'github.com'), false);
+    assert.equal(onHost('https://notgithub.com/', 'github.com'), false);
+    assert.equal(onHost('not a url', 'github.com'), false);
+    assert.equal(onHost('', 'repology.org'), false);
   });
   test('timeAgo', () => {
     assert.equal(timeAgo(null, NOW), 'never');
