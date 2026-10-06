@@ -462,6 +462,7 @@ def views(rows, out):
         0,
     )
     teams, lists, sets = {}, {}, {}
+    failing_on = {}  # "linux", "darwin", each system -> packages failing there
     names = []
     maintainers = {}  # lowercase handle -> [handle, packages, outdated, failing]
     # Since when each fully checked row has been failing, outdated, failing
@@ -525,6 +526,18 @@ def views(rows, out):
         counts["vulnerable"] += letter.endswith("v")
         counts["updateFailures"] += bool(row.get("updateFailure"))
         counts["buildFailures"] += bool(failed_builds(row))
+        # The same by where they fail: each Hydra system, and Linux and
+        # macOS (a package failing on both Linux systems counted once), as
+        # the page's platform filter counts them: only where the package is
+        # available (not ete's aarch64-darwin, built by ete-unwrapped).
+        available = row.get("platforms")
+        systems = {
+            b["system"]
+            for b in failed_builds(row)
+            if available is None or available.get(b["system"].rsplit("-", 1)[-1])
+        }
+        for where in systems | {s.rsplit("-", 1)[-1] for s in systems}:
+            failing_on[where] = failing_on.get(where, 0) + 1
         for kind, field in AGES.items():
             if row.get(field):
                 ages[kind].append((row[field], row["name"], letter))
@@ -541,7 +554,7 @@ def views(rows, out):
     }
     top = sorted(blockers.items(), key=lambda kv: (-len(kv[1][1]), -kv[1][2], kv[0]))
     return {
-        "counts": counts,
+        "counts": {**counts, "buildFailuresOn": dict(sorted(failing_on.items()))},
         "highlights": {kind: highlights(found) for kind, found in ages.items()},
         # The overview's "Blocking the most": how many dependencies stop
         # others' builds, how many packages have a build stopped (the
