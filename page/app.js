@@ -5,6 +5,7 @@ import {
   comparedRepos,
   compareVersions,
   computeStatus,
+  dayPosition,
   daysText,
   hasFailure as failureOn,
   faviconKey,
@@ -30,13 +31,13 @@ import {
   targetVersion,
   themeFor,
   timeAgo,
+  trendChange,
   updateTitle,
   VIEWS,
   versionDiff,
   viewPath,
   viewSlug,
   waitingForChannel,
-  weekChange,
   withRunStamps,
   withSlash,
 } from './logic.js';
@@ -113,6 +114,7 @@ let namesLoading = null;
 let pkgParam = null;
 let viewParam = null;
 let trendPoints = null; // history.json's points, once loaded (the overview's trends)
+let trendEvents = []; // and what marks them (staging-next merges, nixkeeper updates)
 let historyLoading = false;
 let setFilter = null;
 const inSet = (pkg) => !setFilter || pkg.set === setFilter;
@@ -710,6 +712,7 @@ function loadHistory() {
     .then((res) => (res.ok ? res.json() : { points: [] }))
     .then((data) => {
       trendPoints = data.points || [];
+      trendEvents = data.events || [];
       if (shownView === 'overview') renderScope();
     })
     .catch(() => {
@@ -1095,7 +1098,7 @@ function renderScope() {
   }
   // Drawn again only when it changes (its history arrives, a team is
   // picked), not while someone types in its search box.
-  const drawn = `${trendPoints?.length ?? -1}:${teamFilter || ''}:${Object.values(highlightShown)}`;
+  const drawn = `${trendPoints?.length ?? -1}:${trendEvents.length}:${teamFilter || ''}:${Object.values(highlightShown)}`;
   if (el.dataset.drawn !== drawn) {
     el.dataset.drawn = drawn;
     el.innerHTML = overviewHtml();
@@ -1180,20 +1183,71 @@ function highlightsHtml() {
 
 // Days of history the cards draw, and how many points before they do.
 const TREND_DAYS = 30;
-const TREND_MIN_POINTS = 7;
+const TREND_MIN_POINTS = 2;
 
+// A card's trend: its count at each point, placed by date (dayPosition),
+// with a thin mark on each day something explains a jump (TREND_EVENTS).
 function sparkline(points, key, color) {
   const values = points.map((p) => p[key] ?? 0);
   const lo = Math.min(...values);
   const span = Math.max(...values) - lo || 1;
-  const step = 100 / Math.max(1, values.length - 1);
-  const xy = values.map(
-    (v, i) => `${(i * step).toFixed(1)},${(20 - (18 * (v - lo)) / span).toFixed(1)}`,
+  const xy = points.map(
+    (p, i) =>
+      `${dayPosition(points, p.day).toFixed(1)},${(20 - (18 * (values[i] - lo)) / span).toFixed(1)}`,
   );
+  const marks = shownEvents(points)
+    .map(
+      (e) =>
+        `<line class="spark-mark ${e.kind}" x1="${e.x.toFixed(1)}" x2="${e.x.toFixed(1)}" y1="0" y2="22" vector-effect="non-scaling-stroke"/>`,
+    )
+    .join('');
   return raw(
-    `<svg class="spark" viewBox="0 0 100 22" preserveAspectRatio="none" aria-hidden="true"><polyline points="${xy.join(' ')}" fill="none" stroke="${color}" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`,
+    `<svg class="spark" viewBox="0 0 100 22" preserveAspectRatio="none" aria-hidden="true">${marks}<polyline points="${xy.join(' ')}" fill="none" stroke="${color}" stroke-width="1.6" vector-effect="non-scaling-stroke"/></svg>`,
   );
 }
+
+// Under the cards: what the marks on the trends are, the days shown's.
+function marksHtml(points) {
+  const shown = shownEvents(points);
+  if (!shown.length) return '';
+  return html`<p class="spark-legend">${shown.map(
+    (e, i) =>
+      html`${i ? ' · ' : ''}<span class="spark-key ${e.kind}" aria-hidden="true"></span>${e.kind === 'staging-next' ? html`<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${e.pr}" target="_blank" rel="noopener" title="${e.title}">${TREND_EVENTS[e.kind](e)} ↗</a>` : TREND_EVENTS[e.kind](e)} ${shortDay(e.day)}`,
+  )}</p>`;
+}
+
+// While nixkeeper-updates' digest is still reading the bot's past attempts
+// (more than this many to go: a backfill, not a day's new ones), update
+// failures keep turning up that were there all along: the Failing card
+// says so, as its rise isn't packages breaking.
+const BACKFILL_PENDING = 1000;
+function backfillNote() {
+  const updates = manifest.sources?.updates;
+  if (!updates?.used || !(updates.pending > BACKFILL_PENDING)) return '';
+  return html`<span class="card-sub card-note" title="nixkeeper-updates is still reading nixpkgs-update's past attempts: update failures that were there all along keep turning up, so this count rises until it's done">update failures still being read: ${fmt(updates.pending)} attempts to go</span>`;
+}
+
+// What marks the trends, in words: a staging-next merge (mass rebuilds:
+// failing builds jump for days after), or nixkeeper updated (a change in
+// how it counts can step a count).
+const TREND_EVENTS = {
+  'staging-next': (e) => `staging-next merged (#${e.pr})`,
+  nixkeeper: (e) => `nixkeeper ${e.version}`,
+  counting: (e) => `counted differently: ${e.text}`,
+};
+// The events on the days the trends show, with where they fall.
+function shownEvents(points) {
+  return trendEvents
+    .filter((e) => TREND_EVENTS[e.kind])
+    .map((e) => ({ ...e, x: dayPosition(points, e.day) }))
+    .filter((e) => e.x != null);
+}
+const shortDay = (day) =>
+  new Date(`${day}T00:00:00Z`).toLocaleDateString(undefined, {
+    day: 'numeric',
+    month: 'short',
+    timeZone: 'UTC',
+  });
 
 function overviewHtml() {
   const c = manifest.counts || {};
@@ -1207,19 +1261,21 @@ function overviewHtml() {
   const points = (trendPoints || []).slice(-TREND_DAYS);
   const trends = points.length >= TREND_MIN_POINTS;
   const cards = CARDS.map((card) => {
-    const change = trends ? weekChange(points, card.key) : null;
+    const trend = trends ? trendChange(points, card.key) : null;
+    const change = trend?.change;
+    const over = trend?.since ? `Since ${shortDay(trend.since)}` : 'Over the last 7 days';
     const said =
       change == null
         ? ''
         : change === 0
-          ? html`<span class="card-change">no change</span>`
-          : html`<span class="card-change ${change > 0 ? 'worse' : 'better'}" title="Over the last 7 days">${change > 0 ? '↑' : '↓'} ${fmt(Math.abs(change))}</span>`;
+          ? html`<span class="card-change" title="${over}">no change</span>`
+          : html`<span class="card-change ${change > 0 ? 'worse' : 'better'}" title="${over}">${change > 0 ? '↑' : '↓'} ${fmt(Math.abs(change))}</span>`;
     return html`<a class="card" href="${scopeHref({ view: card.view, filter: card.filter })}" data-card-view="${card.view}" data-card-filter="${card.filter || ''}">
       <span class="card-label">${card.label}<span class="card-go" aria-hidden="true">›</span></span>
       <span class="card-row"><span class="card-n" style="color:${card.color}">${fmt(c[card.key])}</span>${said}</span>
       ${
         card.key === 'failed' && c.failingBuilds
-          ? html`<span class="card-sub" title="Every Hydra job that didn't build, on every platform, in all of nixpkgs: as zh.fail counts them, with a dependency's failure counted for each package it stops, and timeouts. A package counts as failing here only when its own build failed.">${fmt(c.failingBuilds)} failing builds on Hydra</span>`
+          ? html`<span class="card-sub" title="Every Hydra job that didn't build, on every platform, in all of nixpkgs: as zh.fail counts them, with a dependency's failure counted for each package it stops, and timeouts. A package counts as failing here only when its own build failed.">${fmt(c.failingBuilds)} failing builds on Hydra</span>${backfillNote()}`
           : card.key === 'outdated'
             ? html`<span class="card-sub" title="Each package counted once, its other attributes left out, and the generated sets (Haskell, R and the others) left out: with nixkeeper's own update checks, which can overrule a newer version listed elsewhere (a development series, a version upstream withdrew). Counts of every attribute in nixpkgs come out higher.">Unique, non-generated packages</span>`
             : ''
@@ -1236,8 +1292,8 @@ function overviewHtml() {
       <span><i class="swatch full"></i><b>${fmt(c.tracked)}</b> fully checked</span>
       <span title="Generated from CRAN, Hackage and the like by their own tooling: only Repology's versions and Hydra's builds for now"><i class="swatch gen"></i><b>${fmt(c.pending)}</b> in generated sets · versions and builds only</span>
     </div>
-    <p class="scope-label">Fully checked${trends ? `, last ${TREND_DAYS} days` : ''} · each opens its list${trends ? '' : html` <span class="scope-hint">(trends after a week of daily syncs)</span>`}</p>
-    <div class="cards">${cards}</div>
+    <p class="scope-label">Fully checked${trends ? (points.length < TREND_DAYS ? `, since ${shortDay(points[0].day)}` : `, last ${TREND_DAYS} days`) : ''} · each opens its list${trends ? '' : html` <span class="scope-hint">(trends from the second daily sync)</span>`}</p>
+    <div class="cards">${cards}</div>${trends ? marksHtml(points) : ''}
 
     <div class="find" role="search">
       <label class="find-box"><span class="find-icon" aria-hidden="true">${raw(SEARCH_ICON)}</span>

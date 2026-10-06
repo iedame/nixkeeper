@@ -13,6 +13,7 @@ import {
   compareVersions,
   computeStatus,
   crc32,
+  dayPosition,
   daysText,
   escapeHtml,
   faviconKey,
@@ -38,6 +39,7 @@ import {
   targetVersion,
   themeFor,
   timeAgo,
+  trendChange,
   updateTitle,
   versionDiff,
   viewPath,
@@ -733,5 +735,24 @@ describe('maintainerMatches', () => {
       total: 4,
     });
     assert.deepEqual(maintainerMatches(list, '@'), { found: [], total: 0 });
+  });
+});
+
+describe('trendChange and dayPosition', () => {
+  const day = (d, failed) => ({ day: d, failed });
+  test('a week once there is one, else since the first point', () => {
+    const week = [day('2026-09-25', 100), day('2026-10-05', 150)];
+    assert.deepEqual(trendChange(week, 'failed'), { change: 50, since: null });
+    const two = [day('2026-10-05', 2127), day('2026-10-06', 2195)];
+    assert.deepEqual(trendChange(two, 'failed'), { change: 68, since: '2026-10-05' });
+    assert.equal(trendChange([day('2026-10-06', 1)], 'failed'), null);
+  });
+  test('by date, missing days keeping their room; null outside', () => {
+    const points = [day('2026-10-01', 0), day('2026-10-02', 0), day('2026-10-05', 0)];
+    assert.equal(dayPosition(points, '2026-10-01'), 0);
+    assert.equal(dayPosition(points, '2026-10-02'), 25);
+    assert.equal(dayPosition(points, '2026-10-05'), 100);
+    assert.equal(dayPosition(points, '2026-09-28'), null);
+    assert.equal(dayPosition([day('2026-10-01', 0)], '2026-10-01'), null);
   });
 });

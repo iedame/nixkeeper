@@ -153,7 +153,15 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   isn't, and nixpkgs' version changed: `from` and `to`), `bot`
   (nixpkgs-update's attempts were failing; they aren't, and its attempt
   changed: a newer one, or superseded). A source that's late, or a change
-  in how nixkeeper counts, so doesn't look like fixes;
+  in how nixkeeper counts, so doesn't look like fixes. `events`: what
+  marks the trends, the last 365 days: `{ "day", "kind": "staging-next",
+  "pr", "title" }` for each merge of staging-next into master (mass
+  rebuilds: failing builds jump for days after; asked of GitHub's search
+  each daily sync, the last 30 days', kept once each), and `{ "day", "kind":
+  "nixkeeper", "version", "from" }` when the sync ran a new nixkeeper
+  version, and `{ "day", "kind": "counting", "text" }` for a change in how
+  nixkeeper counts (`COUNTING_CHANGES` in `config.py`), on the first day the
+  sync ran with it (a change can step a count overnight);
 - `fixed` in `index.json`: of those, the last 7 days' (`days`): for
   `build`, `update` and `bot`, `{ "count", "newest" }`, the 8 newest each
   `[name, at, from, to]`;

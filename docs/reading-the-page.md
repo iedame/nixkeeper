@@ -39,9 +39,17 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   nixkeeper's own update checks overrule it), failing (with how many
   Hydra builds fail in all, as [zh.fail](https://zh.fail/) counts them:
   every job on every platform, a dependency's failure counted for each
-  package it stops), vulnerable and marked broken, each with its change over
-  the last week and a month's trend once there's a week of daily syncs; each
-  opens its list;
+  package it stops), vulnerable and marked broken, each with its trend
+  (from the second daily sync on, the last 30 days at most) and its change
+  over the last week (since the first sync until there's a week: hover it
+  for which). A dashed mark on the trends is a staging-next merge into
+  master (mass rebuilds: failing builds jump for days after; its PR is
+  linked under the cards), or, in the accent colour, nixkeeper updated or
+  counting differently (a change in how it counts can step a count). While
+  the digest of nixpkgs-update's attempts is still reading past ones, the
+  Failing card says how many are to go: update failures that were there
+  all along keep turning up until then, so it rises without anything
+  breaking. Each card opens its list;
 - a search box (a package's name, or `@handle`) and a team picker; while
   searching, the matches take the place of what follows, which comes back
   once the search is cleared. Typing `@` and part of a handle suggests the

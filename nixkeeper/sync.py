@@ -6,7 +6,7 @@ is asked in the background from the start (background.py). `nixkeeper sync`
 
 import sys
 import time
-from datetime import UTC, datetime
+from datetime import UTC, datetime, timedelta
 
 from . import (
     background,
@@ -78,6 +78,34 @@ def ask_hydra(attrs, nixpkgs, revision, previous, now, bulk=frozenset()):
     minutes = (time.monotonic() - started) / 60
     print(f"Hydra, in the background: done in {minutes:.0f} min", file=sys.stderr)
     return broken, fetched
+
+
+def trend_events(previous, now):
+    """What marks the overview's trends from this run: staging-next merged
+    into master in the last month (asked again daily, kept once each), and
+    nixkeeper itself updated since the last sync."""
+    since = (datetime.fromisoformat(now) - timedelta(days=30)).date().isoformat()
+    events = github.staging_next_merges(github.token(), since) or []
+    if previous.get("version") and previous["version"] != version():
+        events.append(
+            {
+                "day": now[:10],
+                "kind": "nixkeeper",
+                "version": version(),
+                "from": previous["version"],
+            }
+        )
+    # A change in how nixkeeper counts: on the first day it ran with it. The
+    # last sync did if it came after the change was merged (an instance
+    # running main); else this one is the first.
+    known = {e.get("text") for e in datastore.read_events()}
+    last = previous.get("checkedAt") or ""
+    for change in config.COUNTING_CHANGES:
+        if change["text"] in known:
+            continue
+        ran = last if last and last >= change["merged"] else now
+        events.append({"day": ran[:10], "kind": "counting", "text": change["text"]})
+    return events
 
 
 def main():
@@ -220,6 +248,11 @@ def main():
         history=datastore.read_history() if everything else None,
         fixed=datastore.with_fixed(
             datastore.read_fixed(), history.fixes(index_rows, previous, now), now
+        )
+        if everything
+        else None,
+        events=datastore.with_events(
+            datastore.read_events(), trend_events(previous, now), now
         )
         if everything
         else None,

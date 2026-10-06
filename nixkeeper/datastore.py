@@ -177,13 +177,14 @@ def summary_entry(row):
 HISTORY_DAYS = 365
 
 
-def files(index, entries, history=None, fixed=None):
+def files(index, entries, history=None, fixed=None, events=None):
     """Every file of data/ for index (its rows in "packages") and entries
     (Repology's, by dataFile): {path in data/: data}. history: with every
     package, the last run's history.json points (read_history), to which
     this run's counts are added; fixed, the fixes it keeps (read_fixed, with
-    this run's: with_fixed); None leaves history.json out (a partial run
-    keeps the one on disk, and the manifest its "fixed")."""
+    this run's: with_fixed); events, what marks the trends (with_events);
+    None leaves history.json out (a partial run keeps the one on disk, and
+    the manifest its "fixed")."""
     run = index.get("checkedAt")
     given = [elided(row, run) for row in index["packages"]]  # format 1's order
     rows = sorted(given, key=lambda row: row["name"])
@@ -211,6 +212,7 @@ def files(index, entries, history=None, fixed=None):
             out["history.json"] = {
                 "points": with_point(history, run, manifest["counts"]),
                 "fixed": fixed or [],
+                "events": events or [],
             }
             manifest["fixed"] = fixed_summary(fixed or [], run)
     else:
@@ -292,6 +294,34 @@ def _day_before(run, days):
     """The day (YYYY-MM-DD) days before run's."""
     day = datetime.fromisoformat((run or "1970-01-01")[:10])
     return (day - timedelta(days=days)).date().isoformat()
+
+
+def read_events(out_dir=None):
+    """The trend markers the last run's history.json keeps, or []."""
+    out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
+    try:
+        return _load(os.path.join(out_dir, "history.json")).get("events") or []
+    except (OSError, ValueError, AttributeError):
+        return []
+
+
+def with_events(events, new, run):
+    """events with this run's new ones, each once (a staging-next merge by its
+    PR, a nixkeeper update by its version, a counting change by its text),
+    the last HISTORY_DAYS days,
+    oldest first. What marks the trends: a staging-next merge (mass
+    rebuilds: failing builds jump for days after), nixkeeper's own updates,
+    and changes in how it counts (config.COUNTING_CHANGES)."""
+    cutoff = _day_before(run, HISTORY_DAYS)
+    kept = {}
+    for event in [*events, *new]:
+        key = (
+            event["kind"],
+            event.get("pr") or event.get("version") or event.get("text"),
+        )
+        if event["day"] > cutoff:
+            kept[key] = event  # the newest word on it
+    return sorted(kept.values(), key=lambda e: (e["day"], e["kind"]))
 
 
 def read_history(out_dir=None):
@@ -478,7 +508,7 @@ def _write_file(path, text):
     os.replace(path + ".tmp", path)
 
 
-def write(index, entries, out_dir=None, history=None, fixed=None):
+def write(index, entries, out_dir=None, history=None, fixed=None, events=None):
     """Write data/ for index and entries (files; history: the counts
     history so far, read_history; fixed: the fixes to keep, with_fixed).
     Built from scratch in a temporary folder
@@ -488,7 +518,7 @@ def write(index, entries, out_dir=None, history=None, fixed=None):
     tmp_dir = out_dir + ".tmp"
     shutil.rmtree(tmp_dir, ignore_errors=True)  # leftover from a failed run
     os.makedirs(tmp_dir)
-    for name, data in files(index, entries, history, fixed).items():
+    for name, data in files(index, entries, history, fixed, events).items():
         _write_file(os.path.join(tmp_dir, name), dumps(data))
     shutil.rmtree(out_dir, ignore_errors=True)
     os.rename(tmp_dir, out_dir)
