@@ -44,6 +44,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   (`?view=blocked`, `views/blocked.json`) that the overview's "Blocking the
   most" opens ("Show all"). Its count is now every blocked package's,
   whether nixkeeper-hydra has read which dependency it was yet or not.
+- Build failures by platform: the overview's card says how many fail on
+  Linux and on macOS (each Hydra system on hover; `buildFailuresOn` in
+  `index.json`), and every list can be narrowed to one platform under its
+  counts or tiles ("On Linux / macOS", `?platform=`), as a row's platform
+  tag already did: build failures on macOS are a link now.
 
 ### Changed
 

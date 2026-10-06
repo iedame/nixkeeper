@@ -119,7 +119,10 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   broken), `waiting` (outdated, the
   update merged on master) of the rows not pending; `pending`; and
   `failingBuilds`, every Hydra job of every row that didn't build (failed,
-  a dependency failed, or unfinished), on every platform;
+  a dependency failed, or unfinished), on every platform; and
+  `buildFailuresOn`, the `buildFailures` by where they fail: `linux`,
+  `darwin` and each Hydra system (`x86_64-linux`, ...), a package counted
+  where it's available only, as the page's platform filter does;
 - `highlights` in `index.json`: for `failing` (builds), `outdated` and
   `updateFailing`, of the rows not pending, `{ "count", "newest", "oldest" }`:
   how many there are, and the 8 most recent and 8 longest-standing, each

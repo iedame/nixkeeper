@@ -257,7 +257,24 @@ function refineHtml() {
   ).map(
     ([key, label]) =>
       html`<option value="${key}"${ageFilter === key ? raw(' selected') : ''}>${label}</option>`,
+  )}</select></label><label class="refine-age" title="Only packages available on it, and of their builds the ones there (build failures on macOS, say)">On <select data-platform-pick><option value="">any platform</option>${Object.entries(
+    PLATFORMS,
+  ).map(
+    ([key, p]) =>
+      html`<option value="${key}"${platformFilter === key ? raw(' selected') : ''}>${p.label}</option>`,
   )}</select></label></div>`;
+}
+
+// The overview's build failures by where they fail (the manifest's
+// buildFailuresOn): Linux and macOS, each Hydra system on hover. Not with
+// data from before.
+function platformSplit(on) {
+  if (!on || on.linux == null) return '';
+  const systems = Object.entries(on)
+    .filter(([k]) => k.includes('-'))
+    .map(([k, n]) => `${k} ${fmt(n)}`)
+    .join(', ');
+  return html`<span class="card-sub" title="Packages whose own build fails there: ${systems}. A package failing on both Linux systems counts once for Linux; on Linux and macOS, once for each. Narrow the list by platform under its tiles.">Linux ${fmt(on.linux)} · macOS ${fmt(on.darwin || 0)}</span>`;
 }
 
 // With every package, the header's tiles (renderScope): these filters, by
@@ -1312,7 +1329,7 @@ function overviewHtml() {
       <span class="card-row"><span class="card-n" style="color:${card.color}">${fmt(count(card.key))}</span>${said}</span>
       ${
         card.key === 'buildFailures' && c.failingBuilds
-          ? html`<span class="card-sub" title="Every Hydra job that didn't build, on every platform, in all of nixpkgs: as zh.fail counts them, with a dependency's failure counted for each package it stops, and timeouts. A package counts here only when its own build failed.">${fmt(c.failingBuilds)} failing builds on Hydra</span>`
+          ? html`<span class="card-sub" title="Every Hydra job that didn't build, on every platform, in all of nixpkgs: as zh.fail counts them, with a dependency's failure counted for each package it stops, and timeouts. A package counts here only when its own build failed.">${fmt(c.failingBuilds)} failing builds on Hydra</span>${platformSplit(c.buildFailuresOn)}`
           : card.key === 'updateFailures'
             ? backfillNote()
             : card.key === 'outdated'
@@ -1463,6 +1480,7 @@ function showView({ set = null, pkg = null, view = null, filter = null }) {
   activeFilter = filter || 'all';
   refines = new Set();
   ageFilter = null;
+  platformFilter = null;
   document.getElementById('search').value = '';
   update();
   document.getElementById('scope')?.scrollIntoView({ block: 'nearest' });
@@ -2207,8 +2225,9 @@ document.addEventListener('click', (e) => {
   update();
 });
 document.addEventListener('change', (e) => {
-  if (!e.target.matches('select[data-age]')) return;
-  ageFilter = e.target.value || null;
+  if (e.target.matches('select[data-age]')) ageFilter = e.target.value || null;
+  else if (e.target.matches('select[data-platform-pick]')) platformFilter = e.target.value || null;
+  else return;
   update();
 });
 

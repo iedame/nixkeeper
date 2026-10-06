@@ -19,12 +19,14 @@ Any list can be narrowed further, together with everything else (under the
 counts; with every package, under a list's tiles): **without maintainer**,
 **not marked broken** (failures nobody has marked yet), **not fixed on
 master yet** (leaving out outdated packages whose update is merged and
-waits for nixos-unstable), and **older than** a month, 6 months or a year:
+waits for nixos-unstable), **older than** a month, 6 months or a year:
 how long it's been failing or outdated (the counts' kind, when one is
-picked: failing for over 6 months, say). Each count then counts what's
-left. In the address: `?refine=unmaintained,notbroken,notonmaster` and
-`?age=1m`, `6m` or `1y`, so "failing for 6 months, with no maintainer" is a
-link. The dates only go back to when nixkeeper started following a package,
+picked: failing for over 6 months, say), and **on** Linux or macOS: the
+packages available there, and only their builds there (build failures on
+macOS, say; as clicking a row's platform tag does). Each count then counts
+what's left. In the address: `?refine=unmaintained,notbroken,notonmaster`,
+`?age=1m`, `6m` or `1y`, and `?platform=linux` or `macos`, so "failing for
+6 months, with no maintainer" is a link. The dates only go back to when nixkeeper started following a package,
 so "older than" finds more as time goes on.
 
 On a page tracking [every package](all-packages.md) (a community
@@ -39,7 +41,8 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   nixkeeper's own update checks overrule it), build failures (a build of
   its own failing; with how many Hydra builds fail in all, as
   [zh.fail](https://zh.fail/) counts them: every job on every platform, a
-  dependency's failure counted for each package it stops), update failures
+  dependency's failure counted for each package it stops; and how many
+  fail on Linux and on macOS, each Hydra system on hover), update failures
   (nixpkgs-update's attempts failing: often a sign the update needs doing
   by hand rather than something broken), vulnerable and marked broken,
   each with its trend

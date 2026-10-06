@@ -363,6 +363,7 @@ class Data(unittest.TestCase):
                 "buildFailures": 0,
                 "waiting": 0,
                 "pending": 1,
+                "buildFailuresOn": {},
             },
         )
         self.assertEqual(
@@ -477,6 +478,45 @@ class Data(unittest.TestCase):
         counts = self.read("index.json")["counts"]
         self.assertEqual(counts["failingBuilds"], 4)  # pending rows' too
         self.assertEqual(counts["failed"], 1)  # packages: their own build failed
+
+    def test_build_failures_by_platform(self):
+        def failed(*systems):
+            return [{"attr": "x", "status": "failed", "system": s} for s in systems]
+
+        rows = [
+            row("a", builds=failed("x86_64-linux", "aarch64-linux")),  # Linux once
+            row("b", builds=failed("aarch64-darwin")),
+            row("c", builds=failed("aarch64-linux", "aarch64-darwin")),
+            row("d", builds=[{"attr": "d", "status": "ok", "system": "x86_64-linux"}]),
+            # Fails on macOS (another attribute's build), but Linux-only: the
+            # page's macOS filter leaves it out, and so does the count.
+            row(
+                "f",
+                platforms={"linux": True, "darwin": False},
+                builds=failed("aarch64-darwin"),
+            ),
+            row(
+                "haskellPackages.e",
+                pending=True,
+                set="haskellPackages",
+                builds=failed("x86_64-linux"),
+            ),  # pending: not counted
+        ]
+        datastore.write(
+            {"checkedAt": NOW, "allPackages": True, "packages": rows}, {}, self.out
+        )
+        counts = self.read("index.json")["counts"]
+        self.assertEqual(counts["buildFailures"], 4)
+        self.assertEqual(
+            counts["buildFailuresOn"],
+            {
+                "aarch64-darwin": 2,
+                "aarch64-linux": 2,
+                "darwin": 2,
+                "linux": 2,
+                "x86_64-linux": 1,
+            },
+        )
 
     def test_newest_repos_kept(self):
         entries = [
