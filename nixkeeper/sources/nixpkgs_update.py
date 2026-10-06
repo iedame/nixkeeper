@@ -22,7 +22,7 @@ LOG_NAME = re.compile(r'href="(\d{4}-\d{2}-\d{2})\.log"')
 # attribute, same date) instead of downloading it again, but only one read
 # with these same rules: bump this whenever parse() changes how it reads a
 # log, so the next sync reads every log again and the change applies at once.
-PARSER = 3
+PARSER = 4
 # What add_attempts adds to an attempt after reading its log, from the
 # state of nixpkgs and the rules at the time; as_read() takes them off.
 JUDGED = ("supersededOutcome", "supersededOn", "reason", "community")
@@ -39,15 +39,20 @@ UPDATE_SCRIPT_PACKAGE = re.compile(
 DIFF_HEAD = "Diff after rewrites:\n"
 PR = re.compile(r"api\.github\.com/repos/NixOS/nixpkgs/(?:pulls|issues)/(\d+)")
 PR_EXISTS = "There might already be an open PR"
+# Several already open for this update's branch (nixpkgs-update's GH.hs).
+TOO_MANY_PRS = "Too many open PRs from "
 # Every rewriter left the package as it was. After an updateScript attempt
 # ("0 -> 1") that means there was nothing to update; after a real version
 # ("1.37 -> 1.38"), that the bot has no way to update this package.
 EMPTY_DIFF = "The diff was empty after rewrites"
+# The same, said when the derivation's file came out unchanged (Update.hs).
+NO_REWRITES = "No rewrites performed on derivation."
 # Why the rewriters that could have applied didn't: "[version] generic
 # version rewriter does not support multiple hashes".
 REWRITER = re.compile(r"^\[(?:version|updateScript)\] (\S.*)$", re.MULTILINE)
 NO_CHANGE = (
     EMPTY_DIFF,
+    NO_REWRITES,
     "Package version did not change",
     # Someone updated it before the bot got to it.
     "not present in master derivation file",
@@ -60,13 +65,18 @@ BRANCH_MESSAGE = re.compile(
     r"An auto update branch exists with message `\S+ (\S+) -> (\S+)`"
 )
 # Nothing to update, and why: the candidate isn't newer by Nix's order ("0.1.0
-# is not newer than 0.1.0-unstable-2024-06-14 according to Nix"), or the
-# rewriter found the same source.
+# is not newer than 0.1.0-unstable-2024-06-14 according to Nix"), the
+# rewriters found the same source, revision or dependencies' hash
+# (Rewrite.hs, Update.hs), or the edit changes nothing nixpkgs builds.
 NOTHING_NEWER = re.compile(
     r"^(?:\S+ is not newer than \S+ according to Nix.*"
-    r"|Hashes equal; no update necessary)$",
+    r"|(?:Hashes|cargo hashes|deps hashes|rev) equal; no update necessary.*"
+    r"|Update edits cause no rebuilds\.)\s*$",
     re.MULTILINE,
 )
+# An updateScript package without a version: the bot can't tell what it
+# updated to (Update.hs), so it can't update it.
+NO_VERSION = re.compile(r"^The derivation has no 'version' attribute.*$", re.MULTILINE)
 # The version rewriter changed the version but not where the source comes
 # from: the bot can't update this package.
 SOURCE_UNCHANGED = re.compile(r"^Source url did not change\.", re.MULTILINE)
@@ -88,8 +98,16 @@ CHECKS = re.compile(
     r"^(?:attrpath: \S+|Checking auto update branch\.\.\."
     r"|No auto update branch exists)$"
 )
-# nix build errors, nixpkgs-update's own, and update script errors.
-FAILED = re.compile(r"^error:|ExitFailure|failed with", re.MULTILINE)
+# nix build errors, nixpkgs-update's own, and update script errors; and its
+# checks of a build that went wrong (Nix.hs, Check.hs), which can end a log
+# with no error line of nix's.
+FAILED = re.compile(
+    r"^error:|ExitFailure|failed with|^nix build failed\.|"
+    r"nix log failed trying to get build logs|Could not find result link|"
+    r"build succeeded unexpectedly|grep did not find version in file names|"
+    r"Failed to read expected nix boolean",
+    re.MULTILINE,
+)
 ANSI = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
 EXCERPT_LINES = 3
 
@@ -252,7 +270,9 @@ def parse(log):
     ):
         result["from"], result["to"] = versions
     prs = PR.findall(log)
-    if PR_EXISTS in log:
+    # A version the bot tried, not an updateScript's run (0 -> 1).
+    real_version = result.get("from") not in (None, UPDATE_SCRIPT)
+    if PR_EXISTS in log or TOO_MANY_PRS in log:
         result["outcome"] = "prExists"
     elif prs:
         result["outcome"] = "prOpened"
@@ -263,8 +283,10 @@ def parse(log):
             result["from"], result["to"] = branch.groups()  # the script's versions
     elif HTTP_ERROR.search(log):
         result.update(outcome="failed", excerpt=http_excerpt(log))
-    elif EMPTY_DIFF in log and result.get("from") not in (None, UPDATE_SCRIPT):
+    elif (EMPTY_DIFF in log or NO_REWRITES in log) and real_version:
         result.update(outcome="cantUpdate", excerpt=REWRITER.findall(log))
+    elif no_version := NO_VERSION.search(log):
+        result.update(outcome="cantUpdate", excerpt=[no_version.group(0).strip()])
     elif unchanged := SOURCE_UNCHANGED.search(log):
         result.update(outcome="cantUpdate", excerpt=[unchanged.group(0)])
     elif any(text in log for text in NO_CHANGE):

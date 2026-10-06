@@ -51,7 +51,7 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   tag already did: build failures on macOS are a link now.
 
 - nixpkgs-update attempts that ended "other" (15% of them) now say what
-  happened, with the log's own line (parser 3, so every log is read again):
+  happened, with the log's own line (parser 4, so every log is read again):
   `branchExists` (the bot already pushed that update to its branch: its PR
   is open or on its way), `skipped` (the bot passes the package over on
   purpose: it opts out, GNOME's release cycle, too many rebuilds, ...;
@@ -59,6 +59,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   (nothing newer by Nix's version order, the same hashes, the source URL
   unchanged). A request that failed (GitHub answering 500, say) is a
   failure, its excerpt the host and the answer, not the request's dump.
+  nixpkgs-update's own messages that end an attempt are read too (as its
+  source writes them, checked against r-ryantm-orbit's list): too many open
+  PRs (`prExists`), no rewrites performed, the same revision or
+  dependencies' hash, edits that rebuild nothing (`noChange`), no
+  `version` attribute (`cantUpdate`), and its checks of a build that went
+  wrong (`failed`).
 
 ### Changed
 

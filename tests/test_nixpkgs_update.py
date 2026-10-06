@@ -311,6 +311,83 @@ error: builder for '/nix/store/x.drv' failed with exit code 1
             ["HTTPError from github.com: ResponseTimeout"],
         )
 
+    def test_nixpkgs_updates_own_messages(self):
+        # Parser 4: messages none of the sampled logs had, as nixpkgs-update's
+        # source writes them (src/GH.hs, Update.hs, Rewrite.hs, Nix.hs,
+        # Check.hs, 2026-10), each where it ends a log: after the bot's
+        # checks, so none is taken for a reason to skip.
+        def log(last, versions="1.0 -> 1.1"):
+            return (
+                f"{HEAD}x {versions} https://repology.org/project/x/versions\n"
+                "attrpath: x\nChecking auto update branch...\n"
+                f"No auto update branch exists\n{last}\n"
+            )
+
+        for last, outcome, excerpt, versions in (
+            ("Too many open PRs from auto-update/x", "prExists", None, "1.0 -> 1.1"),
+            (
+                "[version] generic version rewriter does not support multiple hashes\n"
+                "No rewrites performed on derivation.",
+                "cantUpdate",
+                ["generic version rewriter does not support multiple hashes"],
+                "1.0 -> 1.1",
+            ),
+            ("No rewrites performed on derivation.", "noChange", None, "0 -> 1"),
+            (
+                "rev equal; no update necessary",
+                "noChange",
+                ["rev equal; no update necessary"],
+                "1.0 -> 1.1",
+            ),
+            (
+                "cargo hashes equal; no update necessary: sha256-AAAA",
+                "noChange",
+                ["cargo hashes equal; no update necessary: sha256-AAAA"],
+                "1.0 -> 1.1",
+            ),
+            (
+                "deps hashes equal; no update necessary: sha256-BBBB",
+                "noChange",
+                ["deps hashes equal; no update necessary: sha256-BBBB"],
+                "1.0 -> 1.1",
+            ),
+            (
+                "Update edits cause no rebuilds.",
+                "noChange",
+                ["Update edits cause no rebuilds."],
+                "1.0 -> 1.1",
+            ),
+            (
+                "The derivation has no 'version' attribute, so do not know how to "
+                "figure out the version while doing an updateScript update",
+                "cantUpdate",
+                [
+                    "The derivation has no 'version' attribute, so do not know how "
+                    "to figure out the version while doing an updateScript update"
+                ],
+                "0 -> 1",
+            ),
+            ("nix log failed trying to get build logs ", "failed", None, "1.0 -> 1.1"),
+            ("Could not find result link. ", "failed", None, "1.0 -> 1.1"),
+            ("build succeeded unexpectedly", "failed", None, "1.0 -> 1.1"),
+            ("grep did not find version in file names", "failed", None, "1.0 -> 1.1"),
+            ("Failed to read expected nix boolean x ", "failed", None, "1.0 -> 1.1"),
+            (
+                "nix build failed.\nbuilding '/nix/store/x.drv'... ",
+                "failed",
+                None,
+                "1.0 -> 1.1",
+            ),
+        ):
+            with self.subTest(last=last[:40]):
+                result = nixpkgs_update.parse(log(last, versions))
+                self.assertEqual(result["outcome"], outcome)
+                if excerpt is not None:
+                    self.assertEqual(result["excerpt"], excerpt)
+                if outcome == "failed":
+                    self.assertTrue(result["excerpt"])  # where the log ends
+                self.assertNotIn("pr", result)
+
     def test_unrecognised(self):
         self.assertEqual(nixpkgs_update.parse(f"{HEAD}x 1 -> 2\n")["outcome"], "other")
 
