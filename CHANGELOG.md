@@ -9,8 +9,26 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.13.0] - 2026-10-07
+
+The community dashboard moves to **https://nixkeeper.com/**, served from
+Cloudflare, and says more about why packages fail: which dependency
+blocks a build, where builds fail (Linux, macOS), and why nixpkgs-update's
+attempts failed or did nothing, read from its logs, with when the bot will
+try again from its queue. Runs start on time from a machine that's always
+on (`start-runs`), and the data's first format is no longer written.
+
 ### Added
 
+- The dashboard is at https://nixkeeper.com/, served from Cloudflare (a
+  Worker serving static assets): the page and its data as one site, from
+  Cloudflare's edge, instead of the data from raw.githubusercontent.com.
+  The data workflows publish it there when the page or the data changed,
+  for an instance with a Worker set (`CLOUDFLARE_WORKER`;
+  `docs/all-packages.md`); the data branch stays the syncs' own copy, and
+  GitHub Pages the page of every other instance. GitHub Pages' workflow
+  also writes where the data is into the page, so one on a custom domain
+  finds it as on github.io.
 - Which dependency failed, from nixkeeper-hydra's digest (which reads each
   dependency-failed build's page on Hydra, as zh.fail does): a build that
   didn't build because a dependency failed says "blocked by" it, linking
@@ -19,25 +37,6 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   failing packages blocking the most others, in all of nixpkgs. In the
   data: `blockedBy` on such builds, `blockers` in `index.json`
   (`docs/data.md`).
-- Marks on the overview's trends: each merge of staging-next into nixpkgs
-  master (mass rebuilds: failing builds jump for days after), from GitHub's
-  search; each nixkeeper update a sync ran; and each change in how
-  nixkeeper counts (`COUNTING_CHANGES`, the first being 0.12.0's older
-  versions kept), on the day it first ran. Named and dated under the
-  cards; in `history.json` as `events` (`docs/data.md`).
-- `nix run .#start-runs`: starts an instance's runs through GitHub's API,
-  hourly from a machine that's always on (a nix-darwin agent or a NixOS
-  timer, in `docs/all-packages.md`), since GitHub's schedule skips runs
-  when it's busy. The community instance's hourly updates (every hour but
-  06 UTC), daily sync and digests by
-  default; a fork's daily sync with `NIXKEEPER_START_REPO` and
-  `NIXKEEPER_START_DIGESTS=` (it reads iedame's digests). The daily sync can be started with `if_older` (only when the last
-  sync is older than that many hours), and its 06:00 run now stops when
-  the last sync is under 12 hours old: started both ways, it syncs once.
-- While nixkeeper-updates' digest is still reading nixpkgs-update's past
-  attempts (a backfill), the Update failures card says how many are to go:
-  update failures that were there all along keep turning up, so it rises
-  without anything breaking.
 - A "blocked" filter (`?filter=blocked`): packages with a build Hydra
   didn't try because a dependency failed, which no other count has (they
   aren't failing themselves). A count at the top when there are any; with
@@ -50,7 +49,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   `index.json`), and every list can be narrowed to one platform under its
   counts or tiles ("On Linux / macOS", `?platform=`), as a row's platform
   tag already did: build failures on macOS are a link now.
-
+- Why a nixpkgs-update attempt failed, from its log (parser 5, so every
+  log is read again): tests, build, dependency (missing or too old), patch
+  (nixpkgs' patches or substitutions no longer apply), source (couldn't be
+  fetched), hash (one the bot couldn't work out), updateScript, unavailable
+  (broken, insecure or not for x86_64-linux), or request (the bot's own,
+  not the package). The list says it ("failed: tests"), the update panel in
+  full, its excerpt starting at the log's line that says so instead of the
+  log's last lines; rows have it as `failedBecause` (`docs/data.md`). Read
+  from 200 failed attempts' logs, 97% of which it says.
 - nixpkgs-update attempts that ended "other" (15% of them) now say what
   happened, with the log's own line (parser 4, so every log is read again):
   `branchExists` (the bot already pushed that update to its branch: its PR
@@ -66,17 +73,6 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   dependencies' hash, edits that rebuild nothing (`noChange`), no
   `version` attribute (`cantUpdate`), and its checks of a build that went
   wrong (`failed`).
-
-- Why a nixpkgs-update attempt failed, from its log (parser 5, so every
-  log is read again): tests, build, dependency (missing or too old), patch
-  (nixpkgs' patches or substitutions no longer apply), source (couldn't be
-  fetched), hash (one the bot couldn't work out), updateScript, unavailable
-  (broken, insecure or not for x86_64-linux), or request (the bot's own,
-  not the package). The list says it ("failed: tests"), the update panel in
-  full, its excerpt starting at the log's line that says so instead of the
-  log's last lines; rows have it as `failedBecause` (`docs/data.md`). Read
-  from 200 failed attempts' logs, 97% of which it says.
-
 - When nixpkgs-update will try a package again, and what it would update
   it to, from the bot's queue (nixkeeper-updates' copy of it): "Next
   attempt expected around Oct 12, from its queue: it would update it to
@@ -88,16 +84,26 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   having failed, another version, or an outdated package's updateScript
   deciding the version), which opens that panel too. Rows have it as
   `queued` (`docs/data.md`); the sources panel says when the queue is from.
-
-- The dashboard is at https://nixkeeper.com/, served from Cloudflare (a
-  Worker serving static assets): the page and its data as one site, from
-  Cloudflare's edge, instead of the data from raw.githubusercontent.com.
-  The data workflows publish it there when the page or the data changed,
-  for an instance with a Worker set (`CLOUDFLARE_WORKER`;
-  `docs/all-packages.md`); the
-  data branch stays the syncs' own copy, and GitHub Pages the page of every
-  other instance. GitHub Pages' workflow also writes where the data is into
-  the page, so one on a custom domain finds it as on github.io.
+- While nixkeeper-updates' digest is still reading nixpkgs-update's past
+  attempts (a backfill), the Update failures card says how many are to go:
+  update failures that were there all along keep turning up, so it rises
+  without anything breaking.
+- Marks on the overview's trends: each merge of staging-next into nixpkgs
+  master (mass rebuilds: failing builds jump for days after), from GitHub's
+  search; each nixkeeper update a sync ran; and each change in how
+  nixkeeper counts (`COUNTING_CHANGES`, the first being 0.12.0's older
+  versions kept), on the day it first ran. Named and dated under the
+  cards; in `history.json` as `events` (`docs/data.md`).
+- `nix run .#start-runs`: starts an instance's runs through GitHub's API,
+  hourly from a machine that's always on (a nix-darwin agent or a NixOS
+  timer, in `docs/all-packages.md`), since GitHub's schedule skips runs
+  when it's busy. The community instance's hourly updates (every hour but
+  06 UTC), daily sync and digests by default; a fork's with
+  `NIXKEEPER_START_REPO` and `NIXKEEPER_START_DIGESTS=` (it reads iedame's
+  digests). The daily sync can be started with `if_older` (only when the
+  last sync is older than that many hours), and its 06:00 run now stops
+  when the last sync is under 12 hours old: started both ways, it syncs
+  once.
 
 ### Changed
 
@@ -1110,7 +1116,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.11.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.13.0...HEAD
+[0.13.0]: https://github.com/iedame/nixkeeper/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/iedame/nixkeeper/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/iedame/nixkeeper/compare/v0.10.0...v0.11.0
 [0.10.0]: https://github.com/iedame/nixkeeper/compare/v0.9.0...v0.10.0
