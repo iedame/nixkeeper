@@ -447,7 +447,7 @@ function versionCell(pkg, st) {
   const failing = stale
     ? html`<span class="badge neutral" title="${staleText(stale, "nixkeeper's update check failing")}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
     : '';
-  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : ''}`;
+  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : pkg.lookupFailed ? html`<span class="badge neutral" title="${LOOKUP_FAILED}">not looked up</span>` : ''}`;
   if (st !== 'warn')
     return html`<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
@@ -636,6 +636,7 @@ const bulkText = (set) =>
 const bulkShort = (set) => profileOf(set)?.short || 'updated in bulk';
 const bulkBadge = (set) =>
   html`<span class="badge neutral" title="${bulkText(set)} (${set}): counted on its set's line on the overview">${bulkShort(set)}</span>`;
+const LOOKUP_FAILED = "Repology couldn't be reached on the last sync, and there's no earlier data";
 const UNVERSIONED_TITLE =
   "Not software with releases to compare (a system component): its builds are what's checked";
 
@@ -711,6 +712,13 @@ const SOURCES = [
     says: (s) =>
       html`evaluation <a class="files-link" href="https://hydra.nixos.org/eval/${s.eval}" target="_blank" rel="noopener">${s.eval}</a>, read ${timeAgo(s.at)}`,
     instead: 'not shown',
+  },
+  {
+    // Only noted when lookups failed (Repology down, most likely).
+    key: 'repology',
+    label: 'Repology lookups',
+    says: () => '',
+    instead: 'the rest of the sync went on',
   },
   {
     key: 'queue',
@@ -2351,7 +2359,9 @@ function fillDetail(pkg, el, entries) {
                         ? html` — an older version nixpkgs keeps on purpose${pkg.keptBeside ? html`, beside <b class="mono">${pkg.keptBeside.attr}</b> <span class="mono">${pkg.keptBeside.version}</span>` : ', beside a newer one'}: not outdated while nothing newer is out in its own series.`
                         : st === 'neutral'
                           ? pkg.nixStatus === 'unlisted'
-                            ? " — Repology doesn't list this package, so there's nothing to compare it with."
+                            ? pkg.lookupFailed
+                              ? ` — ${LOOKUP_FAILED}, so there's nothing to compare it with yet.`
+                              : " — Repology doesn't list this package, so there's nothing to compare it with."
                             : html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
                           : loaded
                             ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${compared} other ${compared === 1 ? 'repository' : 'repositories'}.`

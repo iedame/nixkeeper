@@ -59,7 +59,8 @@ nixpkgs-update reads Repology (outdated projects every day, the rest every
 week). Repology is still asked about a package that isn't in the digest (new
 in nixpkgs) or has another version there than the channel's (changed since),
 and about every package, as above, when the digest is more than 36 hours old
-or can't be read. nixpkgs-update's attempts likewise come from
+or can't be read; an old digest still answers for the packages Repology
+can't (when it's down, its digest's run couldn't read it either). nixpkgs-update's attempts likewise come from
 [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates), a digest
 of the bot's latest attempt at every package, its log read with nixkeeper's
 own rules, made every 3 hours from the bot's state; a package's logs are
@@ -93,8 +94,12 @@ on purpose, raise the limit in the lists: `maxPackages = 6000;`
 (`lists.maxPackages` in the modules). On GitHub Actions, a sync has to
 finish within 6 hours, or nothing is published: about 8,000 new packages
 at once. Add big lists in stages, since only new packages cost that much;
-the sync warns when one may run that long. If most Repology lookups fail,
-the sync stops and leaves the published data as it was.
+the sync warns when one may run that long. When Repology lookups fail
+(Repology down, most likely), the sync goes on: each of those packages
+keeps its last versions (from the versions digest, else the last run's),
+marked "not refreshed", and Hydra's builds, nixpkgs-update's attempts and
+the rest are refreshed as usual; a new package with no earlier data shows
+as not looked up. The sources panel says how many lookups failed.
 
 ## What gets tracked
 

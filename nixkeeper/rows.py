@@ -202,6 +202,8 @@ def build_rows(projects, nixpkgs):
         for row in project_rows(proj, nixpkgs):
             if proj.get("staleSince"):
                 row["staleSince"] = proj["staleSince"]  # when its data was last fetched
+            if proj.get("lookupFailed"):
+                row["lookupFailed"] = True  # Repology couldn't be asked: no data
             if proj.get("checkedAt"):
                 row["repologyCheckedAt"] = proj["checkedAt"]
             rows.append(row)

@@ -84,9 +84,12 @@ class Load(unittest.TestCase):
         )
 
     def test_too_old_or_unreadable(self):
+        # Too old: kept, for where Repology can't be reached (lookup.py).
         found, out = self.load(self.meta("2026-10-03T04:20:00+00:00"))
-        self.assertIsNone(found)
-        self.assertIn("::warning::Versions digest: not used", out)
+        self.assertEqual(sorted(found), ["heroic", "tracy"])
+        self.assertTrue(found.stale)
+        self.assertIn("the digest only where that fails", out)
+        self.assertIn("used only where Repology", about.taken()["versions"]["why"])
         found, out = self.load({"format": 2, "outdatedAt": NOW, "projects": 1})
         self.assertIsNone(found)
         self.assertIn("couldn't use it", out)

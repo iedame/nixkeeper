@@ -11,6 +11,7 @@ from nixkeeper import schedule
 from nixkeeper.history import load_previous_run
 from nixkeeper.lookup import collect_projects
 from nixkeeper.rows import build_rows
+from nixkeeper.sources import about, versions_digest
 from tests.helpers import nix, other
 
 
@@ -149,7 +150,7 @@ class CollectProjects(unittest.TestCase):
         )
         self.assertEqual(projects["wesnoth"]["staleSince"], "2026-09-01T06:00:00+00:00")
 
-    def test_failed_lookup_without_previous_data_is_skipped(self):
+    def test_failed_lookup_without_previous_data_is_kept_unlisted(self):
         projects = self.collect(
             {
                 "new": (["new"], "new"),
@@ -159,25 +160,70 @@ class CollectProjects(unittest.TestCase):
             {"packages": []},
             {"new": OSError("down"), "bbedit": ("bbedit", []), "fzssh": ("fzssh", [])},
         )
-        self.assertEqual(sorted(projects), ["bbedit", "fzssh"])
+        self.assertEqual(sorted(projects), ["bbedit", "fzssh", "unlisted:new"])
+        # Not dropped from the run: shown as not on Repology, saying why.
+        self.assertEqual(
+            (
+                projects["unlisted:new"]["unlisted"],
+                projects["unlisted:new"]["lookupFailed"],
+            ),
+            (True, True),
+        )
 
-    def test_more_than_half_failing_aborts(self):
+    def test_repology_down_the_sync_goes_on(self):
+        # Every lookup failing (it used to stop the sync): each keeps what it
+        # had, and the sources panel says so.
+        about.taken()
         wanted = {n: ([n], n) for n in "abc"}
-        with self.assertRaises(SystemExit):
-            self.collect(
-                wanted,
-                {"packages": []},
-                {"a": OSError(), "b": OSError(), "c": ("c", [])},
-            )
+        previous = self.write_previous(
+            [
+                {
+                    "name": "a",
+                    "searchTerm": "a",
+                    "attrs": ["a"],
+                    "project": "a",
+                    "dataFile": "a.json",
+                }
+            ],
+            files={"a.json": [nix("a", "1", "newest")]},
+        )
+        projects = self.collect(wanted, previous, {n: OSError("down") for n in "abc"})
+        self.assertEqual(sorted(projects), ["a", "unlisted:b", "unlisted:c"])
+        self.assertEqual(projects["a"]["entries"], [nix("a", "1", "newest")])
+        self.assertIn("3 of 3 lookups failed", about.taken()["repology"]["why"])
 
-    def test_exactly_half_failing_continues(self):
-        wanted = {n: ([n], n) for n in "abcd"}
-        projects = self.collect(
+    def test_a_stale_digest_answers_where_repology_cant(self):
+        stale = versions_digest.Stale(
+            {"a": ("a", [nix("a", "2", "newest")], "2026-09-30")}
+        )
+        wanted = {"a": (["a"], "a")}
+        # Repology answers: it's asked first, the stale digest left alone.
+        projects = collect_projects(
             wanted,
             {"packages": []},
-            {"a": OSError(), "b": OSError(), "c": ("c", []), "d": ("d", [])},
+            lambda *_: ("a", [nix("a", "3", "newest")]),
+            self.dir.name,
+            nixpkgs={"a": {"version": "3"}},
+            now="2026-10-08T06:00:00+00:00",
+            digest=stale,
         )
-        self.assertEqual(sorted(projects), ["c", "d"])
+        self.assertEqual(projects["a"]["entries"][0]["version"], "3")
+        # It doesn't: the digest's versions, as of the day it read them.
+
+        def down(*_):
+            raise OSError("down")
+
+        projects = collect_projects(
+            wanted,
+            {"packages": []},
+            down,
+            self.dir.name,
+            nixpkgs={"a": {"version": "3"}},
+            now="2026-10-08T06:00:00+00:00",
+            digest=stale,
+        )
+        self.assertEqual(projects["a"]["entries"][0]["version"], "2")
+        self.assertEqual(projects["a"]["staleSince"], "2026-09-30T00:00:00+00:00")
 
 
 class QuietLookups(unittest.TestCase):

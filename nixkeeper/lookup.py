@@ -5,7 +5,7 @@ import urllib.error
 
 from . import config, history, schedule
 from .datastore import data_file
-from .sources import repology, versions_digest
+from .sources import about, repology, versions_digest
 
 
 def due(pname, rows, nixpkgs, now):
@@ -46,9 +46,10 @@ def collect_projects(
     """Look up every tracked package on Repology, falling back to the previous
     run's data (in out_dir) when a lookup fails. digest: nixkeeper-versions'
     projects by attribute (versions_digest.load), for the packages it can
-    answer (versions_digest.answer), with no lookup. With nixpkgs and now,
-    only the rest that are due (due) are looked up; the others keep the last
-    run's data. Several attrs
+    answer (versions_digest.answer), with no lookup; when it isn't current
+    (stale: Repology may be down), only for those Repology can't answer.
+    With nixpkgs and now, only the rest that are due (due) are looked up;
+    the others keep the last run's data. Several attrs
     (wesnoth / wesnoth-devel, heroic / heroic-unwrapped) can map to one
     project; those are merged here and split into rows by rows.project_rows.
     bulk: the pnames (with every package tracked: those not on the lists)
@@ -56,8 +57,10 @@ def collect_projects(
     when the channel has moved on: Repology itself would say the same), else
     as the last run had them, else not on Repology ("unlisted": true).
     Returns project -> {"name", "project", "attrs", "entries", "dataFile"[,
-    "checkedAt"][, "staleSince"][, "unlisted"]}, or exits if too many
-    lookups failed."""
+    "checkedAt"][, "staleSince"][, "unlisted"][, "lookupFailed"]}. A lookup
+    that fails keeps the stale digest's versions, else the last run's, else
+    none ("lookupFailed": shown as not on Repology); the sync goes on
+    whatever Repology does, its other sources fresh."""
     out_dir = out_dir or config.OUT_DIR  # the setting now, not at import
     # The project each attribute had last run: asked for directly, it saves
     # a request (repology.resolve).
@@ -69,14 +72,16 @@ def collect_projects(
     }
     projects = {}
     failed = []
-    kept = from_digest = 0
+    kept = from_digest = looked_up = 0
+    # A digest that isn't current answers only what Repology can't.
+    fresh = None if getattr(digest, "stale", False) else digest
     for pname, (attrs, fallback) in sorted(wanted.items()):
         stale_since = None
         checked_at = now
         if (
-            digest
+            fresh
             and nixpkgs is not None
-            and (found := versions_digest.answer(digest, attrs, nixpkgs))
+            and (found := versions_digest.answer(fresh, attrs, nixpkgs))
         ):
             project, entries, day = found
             from_digest += 1
@@ -106,19 +111,39 @@ def collect_projects(
             add(projects, pname, project, entries, attrs, checked_at)
             continue
         print(f"Resolving {pname}...", file=sys.stderr)
+        looked_up += 1
         try:
             project, entries = resolve(
                 fallback, attrs, next((known[a] for a in attrs if a in known), None)
             )
         except (urllib.error.URLError, OSError, ValueError) as e:
             failed.append(pname)
+            if found := digest and versions_digest.answer(digest, attrs, {}):
+                # What the digest last read: as Repology had it then.
+                project, entries, day = found
+                stale_since = f"{day}T00:00:00+00:00"
+                print(
+                    f"  giving up on {pname} ({e}); the digest's versions from {day}",
+                    file=sys.stderr,
+                )
+                add(
+                    projects,
+                    pname,
+                    project,
+                    repology.trimmed(entries),
+                    attrs,
+                    None,
+                    stale_since,
+                )
+                continue
             reused = history.previous_project(previous, pname, attrs, out_dir)
             if not reused:
                 print(
-                    f"  giving up on {pname} ({e}); no previous data, "
-                    "skipping it this run",
+                    f"  giving up on {pname} ({e}); no earlier data: shown as not "
+                    "on Repology this run",
                     file=sys.stderr,
                 )
+                unlisted(projects, pname, attrs, lookup_failed=True)
                 continue
             project, entries, stale_since = reused
             checked_at = None  # not checked now: as failed lookups go
@@ -139,10 +164,20 @@ def collect_projects(
             file=sys.stderr,
         )
 
-    if len(failed) > config.MAX_FAILED_SHARE * (len(wanted) - len(bulk)):
-        sys.exit(
-            f"Repology lookups failed for {len(failed)} of {len(wanted)} packages; "
-            f"keeping the previous data. Failed: {', '.join(failed)}"
+    if failed:
+        # Repology down, most likely: the rest of the sync goes on (Hydra,
+        # nixpkgs-update, ...), these keep their last versions.
+        about.note(
+            "repology",
+            False,
+            f"{len(failed):,} of {looked_up:,} lookups failed: their last versions "
+            "kept",
+        )
+        print(
+            f"::warning::Repology lookups failed for {len(failed):,} of "
+            f"{looked_up:,} packages; their last versions kept: "
+            f"{', '.join(failed[:20])}" + (" ..." if len(failed) > 20 else ""),
+            file=sys.stderr,
         )
     return projects
 
@@ -169,8 +204,15 @@ def add_bulk(projects, pname, attrs, digest, previous, out_dir):
         project, entries, stale_since = reused
         add(projects, pname, project, entries, attrs, None, stale_since)
         return 0
-    # Its own entry, never joined to a Repology project of the same name
-    # (add would: that's how one project's attributes come together).
+    unlisted(projects, pname, attrs)
+    return 0
+
+
+def unlisted(projects, pname, attrs, lookup_failed=False):
+    """Add pname as not on Repology: its own entry, never joined to a
+    Repology project of the same name (add would: that's how one project's
+    attributes come together). lookup_failed: because Repology couldn't be
+    asked, not because it doesn't list it."""
     key = f"unlisted:{pname}"
     projects[key] = {
         "name": pname,
@@ -179,8 +221,8 @@ def add_bulk(projects, pname, attrs, digest, previous, out_dir):
         "entries": [],
         "dataFile": data_file(key),
         "unlisted": True,
+        **({"lookupFailed": True} if lookup_failed else {}),
     }
-    return 0
 
 
 def add(projects, pname, project, entries, attrs, checked_at=None, stale_since=None):

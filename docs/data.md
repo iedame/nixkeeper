@@ -59,7 +59,9 @@ its default palette.
 
 `sources` says where the last full sync's data came from, by source:
 whether it was used (`used`), and if not, why (`why`: too old, or couldn't
-be read; the sync then asked per package instead). `hydra` has the
+be read; the sync then asked per package instead, an old versions digest
+answering where Repology couldn't). `repology` is there only when lookups
+failed: how many (`why`); those packages kept their last versions. `hydra` has the
 evaluation its builds are from (`eval`) and when nixkeeper-hydra read it
 (`at`); `versions`, when nixkeeper-versions last read the outdated projects
 (`at`); `typst`, when nixkeeper-versions last read Typst Universe's index
@@ -221,6 +223,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); missing when it has none |
 | `set` | with every package: the set updated in bulk (`haskellPackages`, ...) of a row no list has: counted on its set's line, without GitHub's counts ([every package](all-packages.md)); `index.json`'s `profiles` says what updates it. Data from 0.13.0 and before has `"pending": true` beside it |
 | `branch` | for a row built on a branch that updates its set before master (haskell-updates, from nixkeeper-hydra): `{ "name": "haskell-updates", "version", "status", "build" }`, the branch's version, how its build went there (as `builds`' statuses) and the build. Counts nothing: the page says an update waits for the branch's merge, or a failure is fixed there, or that a package breaks when it merges |
+| `lookupFailed` | `true` for a package Repology couldn't be asked about on this sync (down, most likely) with no earlier data: shown as not looked up, `nixStatus` `unlisted` |
 | `unversioned` | with every package: `true` for a row of `darwin` or `freebsd`, not versioned software: its builds are what's checked |
 | `unread` | with every package: the sources this sync didn't read for the row and kept as they were (`["update"]`: its nixpkgs-update attempt, which nixkeeper-updates' digest hasn't read yet) |
 | `source` | where nixpkgs defines it, on GitHub at the channel's commit and line |

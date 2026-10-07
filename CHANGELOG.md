@@ -54,6 +54,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- The daily sync no longer stops when Repology can't be reached (more than
+  half of its lookups failing): Hydra's builds, nixpkgs-update's attempts,
+  the Typst and Emacs versions and GitHub's PRs are refreshed anyway, and
+  the packages Repology couldn't answer keep their last versions, from the
+  versions digest even when it's old (Repology being down, its run
+  couldn't read it either), else from the last run, marked "not
+  refreshed". A new package with no earlier data is shown as not looked up
+  (`lookupFailed`) instead of left out of the run. The sources panel says
+  how many lookups failed (`sources.repology`).
+
 - With every package, the generated sets (R, Haskell, Emacs, TeX Live,
   Typst, SBCL) are no longer "pending": they're **sets updated in bulk**,
   each saying what keeps it current (the CRAN import, hackage2nix on
