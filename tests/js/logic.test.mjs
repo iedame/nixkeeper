@@ -7,6 +7,7 @@ import { describe, test } from 'node:test';
 import {
   aheadOnMaster,
   attentionRank,
+  botWontUpdate,
   buildsWith,
   communityCheck,
   comparedRepos,
@@ -116,6 +117,34 @@ describe('compareVersions', () => {
   });
   test('unstable dates compare by date', () => {
     assert.equal(compareVersions('0-unstable-2026-08-22', '0-unstable-2026-09-01'), -1);
+  });
+});
+
+describe("botWontUpdate: outdated, and nixpkgs-update won't update it", () => {
+  test("it can't, or passes it over on purpose", () => {
+    assert.equal(botWontUpdate(outdated({ update: { outcome: 'cantUpdate' } })), true);
+    assert.equal(botWontUpdate(outdated({ update: { outcome: 'skipped' } })), true);
+  });
+  test("never tried, and not in its queue (unless there's no queue)", () => {
+    assert.equal(botWontUpdate(outdated({ update: null })), true);
+    assert.equal(botWontUpdate(outdated({ update: null, queued: { to: ['1.1'] } })), false);
+    assert.equal(botWontUpdate(outdated({ update: null, queued: { to: ['1.1'] } }), false), true);
+  });
+  test('it will, or might: a failure, a PR it made, nothing to update', () => {
+    for (const outcome of ['failed', 'prOpened', 'noChange', 'superseded', 'other']) {
+      assert.equal(botWontUpdate(outdated({ update: { outcome } })), false, outcome);
+    }
+  });
+  test("not when someone's on it, or the bot's attempts aren't known", () => {
+    const cant = { update: { outcome: 'cantUpdate' } };
+    assert.equal(botWontUpdate(outdated({ ...cant, openPR: { number: 1 } })), false);
+    assert.equal(botWontUpdate(outdated({ ...cant, master: '1.1' })), false);
+    assert.equal(botWontUpdate(outdated({ update: null, pending: true })), false);
+    assert.equal(botWontUpdate(outdated({ update: null, unread: ['update'] })), false);
+    assert.equal(botWontUpdate(outdated()), false); // not in nixpkgs
+  });
+  test('only outdated packages', () => {
+    assert.equal(botWontUpdate(pkg({ update: { outcome: 'cantUpdate' } })), false);
   });
 });
 

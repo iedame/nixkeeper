@@ -19,12 +19,15 @@ Any list can be narrowed further, together with everything else (under the
 counts; with every package, under a list's tiles): **without maintainer**,
 **not marked broken** (failures nobody has marked yet), **not fixed on
 master yet** (leaving out outdated packages whose update is merged and
-waits for nixos-unstable), **older than** a month, 6 months or a year:
+waits for nixos-unstable), **bot won't update it** (outdated packages
+nixpkgs-update won't update by itself, so it takes someone: it can't,
+skips them on purpose, or has never tried them and they aren't in its
+queue; none with an update PR open or merged), **older than** a month, 6 months or a year:
 how long it's been failing or outdated (the counts' kind, when one is
 picked: failing for over 6 months, say), and **on** Linux or macOS: the
 packages available there, and only their builds there (build failures on
 macOS, say; as clicking a row's platform tag does). Each count then counts
-what's left. In the address: `?refine=unmaintained,notbroken,notonmaster`,
+what's left. In the address: `?refine=unmaintained,notbroken,notonmaster,nobot`,
 `?age=1m`, `6m` or `1y`, and `?platform=linux` or `macos`, so "failing for
 6 months, with no maintainer" is a link. The dates only go back to when nixkeeper started following a package,
 so "older than" finds more as time goes on.

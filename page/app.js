@@ -1,5 +1,6 @@
 import {
   AGE_DAYS,
+  botWontUpdate,
   buildsWith as buildsOn,
   communityCheck,
   comparedRepos,
@@ -241,6 +242,13 @@ const REFINES = {
     label: 'Not fixed on master yet',
     title: 'Leave out outdated packages whose update is merged, waiting for nixos-unstable',
     test: (p) => !waitingForChannel(p),
+  },
+  // Where a person is needed: nixpkgs-update won't open the PR.
+  nobot: {
+    label: "Bot won't update it",
+    title:
+      "Only outdated packages nixpkgs-update won't update by itself: it can't, it skips them on purpose, or it has never tried and they aren't in its queue. No update PR open or merged yet",
+    test: (p) => botWontUpdate(p, Boolean(sources?.queue?.used)),
   },
 };
 const AGES = { '1m': 'a month', '6m': '6 months', '1y': 'a year' };

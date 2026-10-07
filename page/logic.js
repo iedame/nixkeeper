@@ -260,6 +260,20 @@ export function waitingForChannel(pkg) {
   );
 }
 
+// Outdated, and nixpkgs-update won't update it by itself, so it takes
+// someone: the bot can't (none of its ways apply), passes it over on
+// purpose (skipped), or has never tried it and isn't about to (not in its
+// queue; queueRead: whether the data has the queue at all). Not while an
+// update PR is open or merged (someone is on it), nor where the bot's
+// attempts aren't known (generated sets, not read yet, not in nixpkgs).
+export function botWontUpdate(pkg, queueRead = true) {
+  if (computeStatus(pkg) !== 'warn' || pkg.pending || pkg.update === undefined) return false;
+  if (pkg.openPR || waitingForChannel(pkg)) return false;
+  const outcome = pkg.update?.outcome;
+  if (outcome === 'cantUpdate' || outcome === 'skipped') return true;
+  return pkg.update === null && !pkg.unread?.includes('update') && !(queueRead && pkg.queued);
+}
+
 // Hydra's build of master is newer than the channel's version: there's a
 // newer release, whatever Repology and the update checks know
 // (ahead_on_master in nixkeeper/changes.py).

@@ -9,6 +9,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- "Bot won't update it", narrowing any list (`?refine=nobot`): outdated
+  packages nixpkgs-update won't update by itself, so they take someone:
+  the bot can't (none of its ways apply), skips them on purpose, or has
+  never tried them and they aren't in its queue; none with an update PR
+  open or merged. 1,560 of nixpkgs' 8,848 outdated packages on
+  2026-10-07.
+
 ### Changed
 
 - An instance served from its own site (Cloudflare, `CLOUDFLARE_SITE_URL`)
