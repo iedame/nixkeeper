@@ -80,7 +80,8 @@ hour (the daily sync instead at 06 UTC) and each digest's run when it's due
 ([scripts/start-runs.sh](../scripts/start-runs.sh) lists when; `-- --dry-run`
 shows what it would start now, without starting anything). The workflows
 keep their own schedules as a fallback: a run started twice finds nothing
-new, or stops at once.
+new, or stops at once. A start GitHub answers with a server error, or
+doesn't answer, is tried again after 1 minute and then 3.
 
 It needs a [fine-grained token](https://github.com/settings/personal-access-tokens/new)
 for the repositories it starts runs in, with only **Actions: read and

@@ -29,10 +29,18 @@
 # file NIXKEEPER_START_TOKEN_FILE, else systemd's credential "token"
 # (LoadCredential), else the macOS Keychain item "nixkeeper-start-runs".
 # --dry-run prints what it would start, without one.
+#
+# A start GitHub answers with a server error (5xx), or doesn't answer, is
+# tried again after 1 minute and then 3 (NIXKEEPER_START_RETRY_WAITS, in
+# seconds): on 2026-10-07 one hour's starts all got 500s, and a lost start
+# of nixkeeper-updates' is 3 hours lost. Other answers (a bad token, a
+# wrong workflow) aren't: they won't change by waiting. Should a failed
+# start have started the run after all, the second is harmless (see above).
 
 set -euo pipefail
 
 repo=${NIXKEEPER_START_REPO-iedame/nixkeeper}
+read -ra retry_waits <<<"${NIXKEEPER_START_RETRY_WAITS-60 180}"
 digests=${NIXKEEPER_START_DIGESTS-iedame}
 dry_run=false
 case "${1:-}" in
@@ -68,23 +76,34 @@ start() {
     echo "$stamp would start $target $workflow $inputs"
     return
   fi
-  local code
-  # The token's header from stdin (--config -), not the command line, where
-  # anyone on the machine could read it (ps).
-  code=$(printf 'header = "Authorization: Bearer %s"\n' "$token" |
-    curl --config - --silent --show-error --max-time 30 --output /dev/null \
-      --write-out '%{http_code}' --request POST \
-      --header "Accept: application/vnd.github+json" \
-      --header "X-GitHub-Api-Version: 2022-11-28" \
-      --data "{\"ref\":\"main\",\"inputs\":$inputs}" \
-      "https://api.github.com/repos/$target/actions/workflows/$workflow/dispatches") ||
-    code="no answer"
-  if [ "$code" = 204 ]; then
-    echo "$stamp started $target $workflow"
-  else
-    echo "$stamp FAILED to start $target $workflow: $code" >&2
-    failed=1
-  fi
+  local code wait
+  for wait in "${retry_waits[@]}" ""; do
+    # The token's header from stdin (--config -), not the command line,
+    # where anyone on the machine could read it (ps).
+    code=$(printf 'header = "Authorization: Bearer %s"\n' "$token" |
+      curl --config - --silent --show-error --max-time 30 --output /dev/null \
+        --write-out '%{http_code}' --request POST \
+        --header "Accept: application/vnd.github+json" \
+        --header "X-GitHub-Api-Version: 2022-11-28" \
+        --data "{\"ref\":\"main\",\"inputs\":$inputs}" \
+        "https://api.github.com/repos/$target/actions/workflows/$workflow/dispatches") ||
+      code="no answer"
+    if [ "$code" = 204 ]; then
+      echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) started $target $workflow"
+      return
+    fi
+    case "$code" in
+    5?? | "no answer" | 000) ;;
+    *) wait= ;; # not worth trying again
+    esac
+    if [ -z "$wait" ]; then
+      break
+    fi
+    echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) could not start $target $workflow: $code, trying again in ${wait}s" >&2
+    sleep "$wait"
+  done
+  echo "$(date -u +%Y-%m-%dT%H:%M:%SZ) FAILED to start $target $workflow: $code" >&2
+  failed=1
 }
 
 if [ -n "$digests" ]; then
