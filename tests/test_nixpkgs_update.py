@@ -188,15 +188,181 @@ class Parse(unittest.TestCase):
                 "to": "2.8.1",
                 "was": "2.7.3",
                 "outcome": "failed",
-                # The last meaningful lines, without @nix markers or colours.
+                "failedBecause": "build",
+                # The line that says what went wrong, without colours.
                 "excerpt": [
-                    "Running phase: buildPhase",
-                    "no Makefile or custom buildPhase, doing nothing",
                     "/nix/store/dp0z-stdenv-linux/setup: line 1770: cd: source: No "
                     "such file or directory",
                 ],
             },
         )
+
+    def test_why_it_failed(self):
+        # Parser 5: lines from real failed attempts' logs (2026-10), each
+        # after the bot's own lines and the update's diff, which no rule
+        # reads: the reason, and the excerpt starting at the line that says.
+        def log(*lines):
+            return (
+                f"{HEAD}x 1.0 -> 1.1 https://github.com/x/x/releases\n"
+                "attrpath: x\n"
+                '[golangModuleVersion] Found old vendorHash = "sha256-A="\n'
+                "Diff after rewrites:\n--- a/x.nix\n+++ b/x.nix\n"
+                '-  version = "1.0";\n+  version = "1.1";\n'
+                '   hash = "sha256-hash mismatch in fixed-output";\n'
+                "No auto update branch exists\nReceived ExitFailure 1 when running\n"
+                "Raw command: nix-build -A x\nnix build failed.\n"
+                + "\n".join(lines)
+                + "\n"
+            )
+
+        for lines, because, first in (
+            (
+                [
+                    "error: Refusing to evaluate package 'ocaml5.5.0-bz2-0.8.0' in "
+                    "/x/default.nix:42 because it has an unsupported platform"
+                ],
+                "unavailable",
+                "error: Refusing to evaluate package 'ocaml5.5.0-bz2-0.8.0' in "
+                "/x/default.nix:42 because it has an unsupported platform",
+            ),
+            (
+                [
+                    "patching file pytest_notebook/plugin.py",
+                    "Hunk #1 FAILED at 11.",
+                    "2 out of 2 hunks FAILED -- saving rejects to file plugin.py.rej",
+                ],
+                "patch",
+                "Hunk #1 FAILED at 11.",
+            ),
+            (
+                [
+                    "substituteStream() in derivation phart-2.1.0: ERROR: pattern "
+                    "hatchling==1.26.3 doesn't match anything in file 'pyproject.toml'"
+                ],
+                "patch",
+                "substituteStream() in derivation phart-2.1.0: ERROR: pattern "
+                "hatchling==1.26.3 doesn't match anything in file 'pyproject.toml'",
+            ),
+            (
+                [
+                    "Checking runtime dependencies for prefect-3.8.7-py3-none-any.whl",
+                    "  - python-slugify<9.1,>=9 not satisfied by version 8.0.4",
+                ],
+                "dependency",
+                "- python-slugify<9.1,>=9 not satisfied by version 8.0.4",
+            ),
+            (
+                ["ERROR Backend 'hatchling.build' is not available."],
+                "dependency",
+                "ERROR Backend 'hatchling.build' is not available.",
+            ),
+            (
+                [
+                    "    > fatal error: fontconfig/fontconfig.h: No such file or "
+                    "directory"
+                ],
+                "dependency",
+                "fatal error: fontconfig/fontconfig.h: No such file or directory",
+            ),
+            (
+                [
+                    "build succeeded unexpectedlystderr did not split as expected full "
+                    "stderr was:",
+                    "go: resolving embeds: no matching files found",
+                ],
+                "hash",
+                "build succeeded unexpectedlystderr did not split as expected full "
+                "stderr was:",
+            ),
+            (
+                [
+                    "stderr did not split as expected full stderr was:",
+                    "curl: (22) The requested URL returned error: 404",
+                    "error: cannot download x-1.1.tar.gz from any mirror",
+                ],
+                "source",
+                "curl: (22) The requested URL returned error: 404",
+            ),
+            (
+                [
+                    "nix_update.errors.VersionError: Please specify the version.",
+                    "The update script for x-1.0 failed with exit code 1",
+                ],
+                "updateScript",
+                "nix_update.errors.VersionError: Please specify the version.",
+            ),
+            (
+                ["test result: FAILED. 6 passed; 1 failed; 0 ignored"],
+                "tests",
+                "test result: FAILED. 6 passed; 1 failed; 0 ignored",
+            ),
+            (
+                ["Ok:                4", "Fail:              1"],
+                "tests",
+                "Fail:              1",
+            ),
+            (
+                ["error: build log of 'x' is not available"],
+                "noLog",
+                "error: build log of 'x' is not available",
+            ),
+            (
+                # nix's wrapping isn't the reason, nor the bot's lookup of a Go
+                # package's source; the compiler's error is.
+                [
+                    "error: attribute 'originalSrc' in selection path 'x.originalSrc' "
+                    "not found",
+                    "../x.c:608:8: error: 'AGB' undeclared (first use in this "
+                    "function)",
+                    "error: Cannot build '/nix/store/x.drv'.",
+                ],
+                "build",
+                "../x.c:608:8: error: 'AGB' undeclared (first use in this function)",
+            ),
+        ):
+            with self.subTest(because=because, first=first[:30]):
+                result = nixpkgs_update.parse(log(*lines))
+                self.assertEqual(result["outcome"], "failed")
+                self.assertEqual(result["failedBecause"], because)
+                self.assertEqual(result["excerpt"][0], first)
+                self.assertLessEqual(len(result["excerpt"]), 3)
+
+    def test_no_reason_found(self):
+        # None of the rules: "other", and the lines just before nix's
+        # wrapping of the failure (not "Reason: builder failed").
+        result = nixpkgs_update.parse(
+            f"{HEAD}x 1 -> 2\nnix build failed.\n"
+            "Running phase: installPhase\nno Makefile, doing nothing\n"
+            "Tool 'x' failed to install.\n"
+            "error: Cannot build '/nix/store/x.drv'.\n"
+            "       Reason: builder failed with exit code 1.\n"
+        )
+        self.assertEqual(
+            (result["failedBecause"], result["excerpt"]),
+            (
+                "other",
+                [
+                    "Running phase: installPhase",
+                    "no Makefile, doing nothing",
+                    "Tool 'x' failed to install.",
+                ],
+            ),
+        )
+        # An updateScript that failed without saying why is the script's.
+        error = nixpkgs_update.parse(UPDATE_SCRIPT_ERROR)
+        self.assertEqual(error["failedBecause"], "updateScript")
+
+    def test_a_url_isnt_a_version(self):
+        # No new version in the bot's queue, only where it would come from
+        # (ocamlPackages.labltk, 2026-10-03): no "to".
+        result = nixpkgs_update.parse(
+            f"{HEAD}ocamlPackages.labltk 8.06.16 -> "
+            "https://github.com/garrigue/labltk/releases\n"
+            "https://github.com/garrigue/labltk/releases is not newer than 8.06.16 "
+            "according to Nix; versionComparison: -1\n"
+        )
+        self.assertEqual((result["from"], result["outcome"]), ("8.06.16", "noChange"))
+        self.assertNotIn("to", result)
 
     def test_cant_update(self):
         self.assertEqual(
@@ -302,6 +468,7 @@ error: builder for '/nix/store/x.drv' failed with exit code 1
             (result["outcome"], result["excerpt"]),
             ("failed", ["HTTPError from api.github.com: 500 Internal Server Error"]),
         )
+        self.assertEqual(result["failedBecause"], "request")
         timeout = (
             'HTTPError (HttpExceptionRequest Request {\n  host = "github.com"\n}\n'
             " ResponseTimeout)"

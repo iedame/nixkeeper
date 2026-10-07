@@ -32,7 +32,12 @@ def full_row(name, **extra):
                 "version": "1.18.5",
             }
         ],
-        "update": {"outcome": "failed", "log": "https://example.org/log", "to": "2"},
+        "update": {
+            "outcome": "failed",
+            "failedBecause": "tests",
+            "log": "https://example.org/log",
+            "to": "2",
+        },
         "upstream": {
             "version": "1.19",
             "newer": True,
@@ -99,7 +104,10 @@ class Output(unittest.TestCase):
         self.assertEqual(
             entry["builds"], [{"status": "failed", "system": "x86_64-linux"}]
         )
-        self.assertEqual(entry["update"], {"outcome": "failed"})
+        # Why it failed: the list says.
+        self.assertEqual(
+            entry["update"], {"outcome": "failed", "failedBecause": "tests"}
+        )
         self.assertEqual(entry["upstream"], {"version": "1.19", "newer": True})
         self.assertEqual(entry["openPRs"], 2)
         self.assertEqual(entry["nixVersion"], "1.18.5")

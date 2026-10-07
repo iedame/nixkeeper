@@ -168,7 +168,7 @@ def kept_entries(projects, rows):
 def summary_entry(row):
     """row's entry in summary.json: what the list, the counts, filters,
     search and sorting need. Builds are reduced to their status and
-    platform, the update attempt to its outcome."""
+    platform, the update attempt to its outcome (and why it failed)."""
     entry = {k: v for k, v in row.items() if k not in PANEL_ONLY}
     if "builds" in row:
         entry["builds"] = [
@@ -178,6 +178,8 @@ def summary_entry(row):
         ]
     if row.get("update"):  # null (never tried) and missing (not in nixpkgs) kept
         entry["update"] = {"outcome": row["update"].get("outcome")}
+        if because := row["update"].get("failedBecause"):
+            entry["update"]["failedBecause"] = because  # the list says why
     if "upstream" in row:
         entry["upstream"] = {
             k: v for k, v in row["upstream"].items() if k in UPSTREAM_SHOWN
