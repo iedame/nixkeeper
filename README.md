@@ -83,7 +83,7 @@ to it: `https://nixkeeper.com/?q=@yourhandle`. A team's
 packages are under "Browse a team" (`?team=gnome`), one package under
 `?pkg=firefox`, and "needs attention" lists everything failing, outdated or
 vulnerable. Every filter stays in the address, so a list ("my packages
-failing on macOS for over a month") is a link to share. "Your packages" and
+failing on Darwin for over a month") is a link to share. "Your packages" and
 "Your team" remember yours, in your browser only: there's no account.
 
 **What's checked.** About 52,000 packages are fully checked: their

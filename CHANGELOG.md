@@ -75,6 +75,40 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A package's panel, reorganised: the verdict first ("Up to date",
+  "Outdated", "Waiting for the channel", "Older version kept"...) with
+  nixpkgs' version, the newest and since when, and a badge for the source
+  that decided (its update check's tags or page, Typst Universe, an
+  up-to-date rule, master: in the accent's tint; Repology: grey). The
+  explanation and context notes fold behind "Why?" (remembered in your
+  browser); notes that call for something (vulnerable, a failing check,
+  archived) stay in view. Then "Compared against", maintainers and teams
+  side by side as pills, and the links as buttons with icons (Tabler
+  Icons, MIT, inline), each section apart. The builds panel likewise: how
+  it stands ("Failing on 2 of 3", "Blocked on 1 of 3", "Building on all
+  3"), then a row per system with its status, when it last built, and its
+  Log and Build (failed), Build (blocked), Source (marked broken) and Job,
+  instead of the job links apart at the end. And the update panel: the
+  outcome as a pill ("Failed: patch", "PR opened", "Can't update"), when it
+  was attempted and the versions tried, why, the log's last lines, the
+  next attempt from the bot's queue as its own section, and Log and All
+  attempts as buttons.
+
+- The page says **Darwin** for macOS, as nixpkgs does (`lib.platforms.darwin`,
+  `aarch64-darwin`): the platform tags under a package's name, the "On"
+  choice under the tiles, and the build failures card ("Linux 812 · Darwin
+  268"); hovering a tag says "Darwin (macOS)" and its systems. The address
+  is `?platform=darwin`; `?platform=macos` still works.
+
+- Platforms by system: the "On" choice under the tiles has Linux x86_64 and
+  Linux aarch64 beside Linux and Darwin (`?platform=x86_64-linux`,
+  `aarch64-linux`), each narrowing builds to that system's; and a package on
+  only one Linux system says which ("Linux x86_64" instead of "Linux"),
+  about 1,900 of nixpkgs' 151,000 attributes. Rows' `platforms` gain
+  `systems` where that's so (`docs/data.md`), and `meta.badPlatforms` now
+  takes systems away (about 220 attributes exclude a system nixpkgs builds
+  this way).
+
 - A package's own update check (a rule of yours or the community's, or one
   it follows) decides whether it's outdated where it and Repology disagree,
   as the version sources do: before, a check could only add "outdated".

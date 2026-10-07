@@ -524,12 +524,18 @@ class Data(unittest.TestCase):
             row("b", builds=failed("aarch64-darwin")),
             row("c", builds=failed("aarch64-linux", "aarch64-darwin")),
             row("d", builds=[{"attr": "d", "status": "ok", "system": "x86_64-linux"}]),
-            # Fails on macOS (another attribute's build), but Linux-only: the
-            # page's macOS filter leaves it out, and so does the count.
+            # Fails on Darwin (another attribute's build), but Linux-only: the
+            # page's Darwin filter leaves it out, and so does the count.
             row(
                 "f",
                 platforms={"linux": True, "darwin": False},
                 builds=failed("aarch64-darwin"),
+            ),
+            # The same within Linux: on x86_64-linux only.
+            row(
+                "g",
+                platforms={"linux": True, "darwin": False, "systems": ["x86_64-linux"]},
+                builds=failed("aarch64-linux"),
             ),
             row(
                 "haskellPackages.e",
@@ -541,7 +547,7 @@ class Data(unittest.TestCase):
             {"checkedAt": NOW, "allPackages": True, "packages": rows}, {}, self.out
         )
         counts = self.read("index.json")["counts"]
-        self.assertEqual(counts["buildFailures"], 4)
+        self.assertEqual(counts["buildFailures"], 5)  # f and g too: any system
         self.assertEqual(
             counts["buildFailuresOn"],
             {

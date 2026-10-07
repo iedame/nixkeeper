@@ -196,14 +196,48 @@ def load_index():
         return json.loads(brotli.decompress(resp.read()))["packages"]
 
 
+# The systems nixpkgs builds for (Hydra), by family: what a row's platforms
+# say it's available on, and the page's per-system filter.
+SYSTEMS = {
+    "linux": ("x86_64-linux", "aarch64-linux"),
+    "darwin": ("aarch64-darwin",),
+}
+
+
 def platforms(pkgs):
-    """Whether any of pkgs builds on Linux / macOS, from meta.platforms. None
-    when none of them declares platforms: nixpkgs then doesn't restrict it."""
-    declared = [p["meta"]["platforms"] for p in pkgs if p["meta"].get("platforms")]
+    """Where any of pkgs is available, from meta.platforms less
+    meta.badPlatforms: Linux and Darwin (any system of each), and "systems"
+    (of SYSTEMS) when those don't already say which: a package on
+    x86_64-linux only, not aarch64-linux (about 1,900 attributes of 151,000
+    on 2026-10-07). None when none of them declares platforms: nixpkgs then
+    doesn't restrict it."""
+
+    def strings(field, p):
+        return {s for s in p["meta"].get(field) or [] if isinstance(s, str)}
+
+    declared = [p for p in pkgs if p["meta"].get("platforms")]
     if not declared:
         return None
-    systems = [s for ps in declared for s in ps if isinstance(s, str)]
-    return {
-        "linux": any(s.endswith("-linux") for s in systems),
-        "darwin": any(s.endswith("-darwin") for s in systems),
+    available = set().union(
+        *(strings("platforms", p) - strings("badPlatforms", p) for p in declared)
+    )
+    found = {
+        family: any(s.endswith(f"-{family}") for s in available) for family in SYSTEMS
     }
+    # What the families imply, against what's there.
+    implied = {s for family, ok in found.items() if ok for s in SYSTEMS[family]}
+    known = {s for systems in SYSTEMS.values() for s in systems}
+    if (available & known) != implied:
+        found["systems"] = sorted(available & known)
+    return found
+
+
+def available_on(platforms, system):
+    """Whether a row whose platforms() are platforms is available on system
+    (x86_64-linux), as the page's platform filter has it."""
+    if platforms is None:
+        return True
+    if not platforms.get(system.rsplit("-", 1)[-1]):
+        return False
+    systems = platforms.get("systems")
+    return systems is None or system in systems

@@ -384,6 +384,20 @@ describe('failures and platforms', () => {
     assert.equal(onPlatform(pkg({ platforms: { linux: true } }), 'darwin'), false);
     assert.equal(onPlatform(pkg({ platforms: { linux: true } }), 'linux'), true);
   });
+  test('by system', () => {
+    const both = pkg({ platforms: { linux: true, darwin: true } });
+    assert.equal(onPlatform(both, 'aarch64-linux'), true); // no systems: all of each
+    const x86 = pkg({ platforms: { linux: true, darwin: false, systems: ['x86_64-linux'] } });
+    assert.equal(onPlatform(x86, 'linux'), true);
+    assert.equal(onPlatform(x86, 'x86_64-linux'), true);
+    assert.equal(onPlatform(x86, 'aarch64-linux'), false);
+    assert.equal(onPlatform(x86, 'darwin'), false);
+    assert.equal(onPlatform(pkg({ platforms: null }), 'aarch64-linux'), true);
+    assert.equal(buildsWith(pkg({ builds }), 'failed', 'x86_64-linux').length, 1);
+    assert.equal(buildsWith(pkg({ builds }), 'failed', 'aarch64-linux').length, 0);
+    assert.equal(buildsWith(pkg({ builds }), 'broken', 'aarch64-linux').length, 1);
+    assert.equal(hasFailure(pkg({ builds }), 'aarch64-linux'), false);
+  });
 });
 
 describe('attentionRank', () => {

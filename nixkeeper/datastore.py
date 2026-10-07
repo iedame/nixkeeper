@@ -32,6 +32,7 @@ from .changes import (
     on_branch,
     waiting_for_channel,
 )
+from .sources.nixpkgs import available_on
 
 FORMAT = 2
 # Rows a shard holds, about: a shard is what a details panel loads.
@@ -584,14 +585,13 @@ def views(rows, out):
         counts["updateFailures"] += bool(row.get("updateFailure"))
         counts["buildFailures"] += bool(failed_builds(row))
         # The same by where they fail: each Hydra system, and Linux and
-        # macOS (a package failing on both Linux systems counted once), as
+        # Darwin (a package failing on both Linux systems counted once), as
         # the page's platform filter counts them: only where the package is
         # available (not ete's aarch64-darwin, built by ete-unwrapped).
-        available = row.get("platforms")
         systems = {
             b["system"]
             for b in failed_builds(row)
-            if available is None or available.get(b["system"].rsplit("-", 1)[-1])
+            if available_on(row.get("platforms"), b["system"])
         }
         for where in systems | {s.rsplit("-", 1)[-1] for s in systems}:
             failing_on[where] = failing_on.get(where, 0) + 1

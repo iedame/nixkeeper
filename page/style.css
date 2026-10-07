@@ -1370,7 +1370,7 @@ tbody tr.row td {
   font-size: 14.5px;
 }
 /* Secondary to the name: the platforms as one small pill ("Linux ·
-   macOS"). Each is still a button: a click filters by platform. */
+   Darwin"). Each is still a button: a click filters by platform. */
 .plats {
   display: inline-flex;
   align-items: baseline;
@@ -1727,48 +1727,6 @@ a.badge:hover {
   display: none;
 }
 
-.build-list {
-  display: grid;
-  gap: 6px;
-  margin-bottom: 10px;
-}
-.build-line {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 13px;
-  flex-wrap: wrap;
-}
-.build-line .sys {
-  min-width: 118px;
-  color: var(--ink-soft);
-}
-.build-line .attr {
-  color: var(--ink-soft);
-}
-.build-line .st {
-  min-width: 70px;
-}
-.build-line .st.missing {
-  color: var(--danger);
-  font-weight: 500;
-}
-.build-line .st.warn {
-  color: var(--warn);
-}
-.build-line .st.caution {
-  color: var(--caution);
-}
-.build-line .st.neutral {
-  color: var(--ink-faint);
-}
-.build-line .since {
-  color: var(--ink-soft);
-}
-.build-line .since a {
-  color: inherit;
-  text-decoration: underline dotted;
-}
 /* A source the last sync couldn't refresh: shown, not alarming. */
 .stale-note {
   font-size: 12.5px;
@@ -1803,11 +1761,6 @@ a.badge:hover {
   margin: 0 0 10px;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
-}
-.build-note {
-  font-size: 12px;
-  color: var(--ink-faint);
-  margin-bottom: 10px;
 }
 .gh-links {
   display: inline-flex;
@@ -1894,6 +1847,316 @@ tbody tr.row.open td {
 .nix-line {
   font-size: 14px;
   margin-bottom: 10px;
+}
+/* A package's panel: the verdict at a glance, what it means, then
+   sections apart (compared against, people, links). */
+.pd {
+  display: grid;
+  gap: 14px;
+  padding-top: 6px;
+}
+.pd-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+}
+.pd-verdict {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.pd-verdict.ok {
+  color: var(--ok-devel);
+  background: var(--ok-soft);
+}
+.pd-verdict.warn {
+  color: var(--warn);
+  background: var(--warn-soft);
+}
+.pd-verdict.danger {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+.pd-verdict.merged {
+  color: var(--merged);
+  background: var(--merged-soft);
+}
+.pd-verdict.neutral {
+  color: var(--ink-soft);
+  background: var(--stale-soft);
+}
+/* The versions and the deciding source, as label over value. */
+.pd-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 26px;
+  margin: 0;
+}
+.pd-facts dt {
+  color: var(--ink-faint);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.pd-facts dd {
+  margin: 2px 0 0;
+  font-size: 13.5px;
+  color: var(--ink);
+}
+.pd-newer {
+  color: var(--warn);
+  font-weight: 600;
+}
+.pd-ago {
+  color: var(--ink-faint);
+}
+/* Inline icons (ICONS in app.js): the text's size and colour. */
+.ic {
+  width: 1.1em;
+  height: 1.1em;
+  flex: none;
+}
+/* Which source decided: ours in the accent's tint, Repology grey, master
+   in merged's. */
+.pd-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.pd-source.ours {
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 12%, transparent);
+}
+.pd-source.repology {
+  color: var(--ink-soft);
+  background: var(--stale-soft);
+}
+.pd-source.merged {
+  color: var(--merged);
+  background: var(--merged-soft);
+}
+.pd-foot {
+  margin: 0;
+  font-size: 12px;
+  color: var(--ink-faint);
+}
+.pd-verdict.caution {
+  color: var(--caution);
+  background: color-mix(in srgb, var(--caution-dot) 16%, transparent);
+}
+/* The builds panel: a row per system, its status, when it last built and
+   what to open, in columns where there's room. */
+.br-list {
+  display: grid;
+  /* Columns sized to what's in them and shared by every row (subgrid), so
+     the buttons line up right after the longest detail, not at the far
+     edge; the last, empty one takes the rest, for the rows' dividers. */
+  grid-template-columns: max-content max-content minmax(0, max-content) max-content 1fr;
+  column-gap: 20px;
+  border-top: 1px solid var(--hairline);
+}
+.br {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+  row-gap: 6px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 13px;
+}
+.br-sys {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.br-attr {
+  color: var(--ink-faint);
+  font-size: 12px;
+}
+.br-st {
+  justify-self: start;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.br-st.ok {
+  color: var(--ok-devel);
+  background: var(--ok-soft);
+}
+.br-st.missing {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+.br-st.caution {
+  color: var(--caution);
+  background: color-mix(in srgb, var(--caution-dot) 16%, transparent);
+}
+.br-st.neutral {
+  color: var(--ink-soft);
+  background: var(--stale-soft);
+}
+.br-what {
+  color: var(--ink-soft);
+  min-width: 0;
+}
+.br-acts {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.br-acts .pd-link {
+  padding: 3px 9px;
+}
+@media (max-width: 640px) {
+  .br-list {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .br-st {
+    justify-self: end;
+  }
+  .br-what,
+  .br-acts {
+    grid-column: 1 / -1;
+  }
+}
+.pd-why-body {
+  display: grid;
+  gap: 10px;
+}
+.pd-why-body[hidden] {
+  display: none;
+}
+/* "Why?": the explanation's toggle, at the end of the links. */
+.pd-why {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font: inherit;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--accent);
+  background: none;
+  border: 0;
+  padding: 5px 4px;
+  cursor: pointer;
+}
+.pd-why .ic {
+  transition: transform 0.15s;
+}
+.pd-why[aria-expanded="true"] .ic {
+  transform: rotate(180deg);
+}
+/* The explanation: readable lines, quieter than the facts. */
+.pd-text {
+  margin: 0;
+  max-width: 78ch;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+.pd-text .mono {
+  color: var(--ink);
+}
+.pd-notes {
+  display: grid;
+  gap: 8px;
+  max-width: 78ch;
+}
+.pd-notes > * {
+  margin: 0;
+}
+/* Each section on its own, a hairline above. */
+.pd-sec {
+  border-top: 1px solid var(--hairline);
+  padding-top: 12px;
+}
+.pd-sec .other-label {
+  margin-top: 0;
+}
+.pd-sec .repo-chips,
+.pd-sec .log-excerpt {
+  margin-bottom: 0;
+}
+/* Maintainers and teams side by side where there's room. */
+.pd-people {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0 28px;
+}
+.pd-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.pd-pills .pd-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--hairline);
+  background: var(--bg);
+}
+.pd-pills button.pd-pill {
+  color: var(--accent);
+  font-weight: 500;
+  cursor: pointer;
+}
+.pd-pills button.pd-pill:hover,
+.pd-pills .pd-pill:has(.maint-btn:hover) {
+  border-color: var(--hairline-strong);
+}
+.pd-pill .maint-btn:hover {
+  text-decoration: none;
+}
+.pd-pill-go {
+  color: var(--ink-faint);
+  text-decoration: none;
+  font-size: 11.5px;
+}
+.pd-pill-go:hover {
+  color: var(--accent);
+}
+/* The package's links, as one row of buttons at the foot. */
+.pd-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-top: 1px solid var(--hairline);
+  padding-top: 12px;
+}
+.pd-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--accent);
+  text-decoration: none;
+  padding: 5px 12px;
+  border-radius: var(--radius);
+  border: 1px solid var(--hairline-strong);
+  background: var(--surface);
+}
+.pd-link:hover {
+  background: var(--bg);
 }
 /* A panel's small headings ("Compared against"): like the popovers'. */
 .other-label {
@@ -2262,23 +2525,6 @@ a.page-btn:focus-visible {
   }
   .detail-inner {
     padding-left: 12px;
-  }
-  /* Each platform: dot, platform and result, then its links and dates on
-     a line of their own under the platform. */
-  .build-line {
-    display: grid;
-    grid-template-columns: auto auto 1fr;
-    column-gap: 10px;
-    row-gap: 2px;
-  }
-  .build-line .sys,
-  .build-line .st {
-    min-width: 0;
-  }
-  .build-line > .attr,
-  .build-line > .files-link,
-  .build-line > .since {
-    grid-column: 2 / -1;
   }
 }
 

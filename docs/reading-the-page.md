@@ -5,7 +5,8 @@ Repology compares it with, after `nixkeeper` first when an update check found
 a version: hover it for where; links to its homepage and nixpkgs source), and
 clicking its build or update cell opens that instead. The counts at the top
 (tracked, outdated, failed, and flagged vulnerable or blocked when any are)
-filter the list, as do the list names beside them and a row's platform tags; the filters
+filter the list, as do the list names beside them and a row's platform tags
+(Linux, Darwin, or "Linux x86_64" for a package on only one Linux system); the filters
 stay in the address, so a view can be shared. The search box matches names;
 `@handle` instead lists a maintainer's packages (their whole GitHub handle,
 as nixpkgs lists it in `meta.maintainers`), and `@none` the packages with no
@@ -24,11 +25,14 @@ nixpkgs-update won't update by itself, so it takes someone: it can't,
 skips them on purpose, or has never tried them and they aren't in its
 queue; none with an update PR open or merged), **older than** a month, 6 months or a year:
 how long it's been failing or outdated (the counts' kind, when one is
-picked: failing for over 6 months, say), and **on** Linux or macOS: the
-packages available there, and only their builds there (build failures on
-macOS, say; as clicking a row's platform tag does). Each count then counts
-what's left. In the address: `?refine=unmaintained,notbroken,notonmaster,nobot`,
-`?age=1m`, `6m` or `1y`, and `?platform=linux` or `macos`, so "failing for
+picked: failing for over 6 months, say), and **on** Linux, Linux x86_64,
+Linux aarch64 or Darwin (macOS, as nixpkgs calls it): the packages
+available there, and only their builds there (build failures on
+aarch64-linux, say; as clicking a row's platform tag does). Each count then
+counts what's left. In the address:
+`?refine=unmaintained,notbroken,notonmaster,nobot`, `?age=1m`, `6m` or
+`1y`, and `?platform=linux`, `x86_64-linux`, `aarch64-linux` or `darwin`
+(`macos` still works), so "failing for
 6 months, with no maintainer" is a link. The dates only go back to when nixkeeper started following a package,
 so "older than" finds more as time goes on.
 
@@ -46,7 +50,7 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   its own failing; with how many Hydra builds fail in all, as
   [zh.fail](https://zh.fail/) counts them: every job on every platform, a
   dependency's failure counted for each package it stops; and how many
-  fail on Linux and on macOS, each Hydra system on hover), update failures
+  fail on Linux and on Darwin, each Hydra system on hover), update failures
   (nixpkgs-update's attempts failing: often a sign the update needs doing
   by hand rather than something broken), vulnerable and marked broken,
   each with its trend
@@ -170,7 +174,10 @@ about it (`devel`, `vulnerable`, ...); beside the newest, the update's
 | `not refreshed` | Repology couldn't be reached on the last sync: older data |
 | `check failing` | nixkeeper's own update check for it isn't working: fix it in `package-lists/update-checks.nix` |
 
-**Build failures** (Hydra, which builds nixpkgs master):
+**Build failures** (Hydra, which builds nixpkgs master). The cell opens the
+builds panel: how it stands ("Failing on 2 of 3", "Blocked on 1 of 3",
+"Building on all 3"), then a row per system with its status, when it last
+built, and its log, Hydra job, build or source to open:
 
 | Shows | Means |
 |---|---|
@@ -180,7 +187,11 @@ about it (`devel`, `vulnerable`, ...); beside the newest, the update's
 | not built by Hydra | unfree, or kept off Hydra by nixpkgs |
 | none reported | no failure of its own; an unfinished build shows only in the panel |
 
-**Update failures** (the nixpkgs-update bot, r-ryantm; its latest attempt):
+**Update failures** (the nixpkgs-update bot, r-ryantm; its latest attempt).
+The cell opens the update panel: the outcome ("Failed: patch", "PR opened",
+"Can't update"...), when it was attempted and from which version to which,
+why, the log's last lines, the next attempt from the bot's queue (when, and
+what it would update to), and the log and every attempt to open:
 
 | Shows | Means |
 |---|---|
