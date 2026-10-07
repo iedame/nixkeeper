@@ -75,6 +75,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A package's panel opens sooner: its data starts loading when the pointer
+  rests on its row (or keyboard focus reaches it), not at the click. A
+  shard Cloudflare's nearest location doesn't have yet takes 0.3-0.6 s to
+  arrive, most of a first open; the pause before a click now hides most of
+  it. Sweeping the pointer over the list loads nothing.
+
 - The update cell's robot (nixpkgs-update will try it) no longer sits in a
   grey pill with the status: it stays joined to it, plain, so those rows
   don't stand out.
