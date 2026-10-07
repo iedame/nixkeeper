@@ -2125,6 +2125,12 @@ tbody tr.row.open td {
 .pd-pill .maint-btn:hover {
   text-decoration: none;
 }
+/* A team a list adds (teamsByList): said, quietly, inside its pill. */
+.pd-pill-note {
+  font-size: 10.5px;
+  font-weight: 400;
+  color: var(--ink-faint);
+}
 .pd-pill-go {
   color: var(--ink-faint);
   text-decoration: none;

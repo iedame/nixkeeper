@@ -85,6 +85,30 @@ def add_lists(rows, names):
         row["lists"] = sorted(on, key=lambda n: (n != MAINTAINED, n))
 
 
+def add_list_teams(rows, nixpkgs):
+    """A named list called as a nixpkgs team is (its name as a file name:
+    gaming for Gaming, as datastore.slug has it) joins that team: its
+    packages count as the team's too, on the team's page (?team=Gaming), in
+    its counts and in the team filter, beside those nixpkgs lists under the
+    team (meta.teams). For packages a team looks after that nixpkgs doesn't
+    list it on. Those a list adds are also in "teamsByList", so the page
+    can say where the team came from; a package both ways stays nixpkgs'."""
+    from .datastore import slug  # datastore imports more of nixkeeper
+
+    teams = {}
+    for pkg in nixpkgs.values():
+        for team in (pkg.get("meta") or {}).get("teams") or []:
+            name = team.get("shortName") if isinstance(team, dict) else None
+            if isinstance(name, str) and name:
+                teams.setdefault(slug(name), name)
+    for row in rows:
+        for list_name in row.get("lists") or []:
+            team = teams.get(slug(list_name))
+            if team and team not in (row.get("teams") or []):
+                row.setdefault("teams", []).append(team)
+                row.setdefault("teamsByList", []).append(team)
+
+
 def every_package(nixpkgs, listed):
     """With every package tracked (config.all_packages): name -> (attrs,
     fallback), as tracked_packages, for each nixpkgs attribute the lists

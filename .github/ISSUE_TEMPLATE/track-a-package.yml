@@ -19,8 +19,8 @@ body:
     id: list
     attributes:
       label: Which list
-      description: The list it belongs on, e.g. `gaming-team` (the list names are under the counts on the page).
-      placeholder: gaming-team
+      description: The list it belongs on, e.g. `gaming` (the list names are under the counts on the page).
+      placeholder: gaming
     validations:
       required: true
   - type: textarea

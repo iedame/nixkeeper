@@ -2,7 +2,13 @@ import io
 import unittest
 from unittest import mock
 
-from nixkeeper.tracking import add_lists, extra_lists, list_names, tracked_packages
+from nixkeeper.tracking import (
+    add_list_teams,
+    add_lists,
+    extra_lists,
+    list_names,
+    tracked_packages,
+)
 from tests.helpers import NIXPKGS
 
 
@@ -99,4 +105,35 @@ class Lists(unittest.TestCase):
                 "fzssh-unknown": ["extra"],
                 "bbedit": [],
             },
+        )
+
+    def test_a_list_named_as_a_team_joins_it(self):
+        index = {
+            "openttd": {"meta": {"teams": [{"shortName": "Gaming"}]}},
+            "kde-thing": {"meta": {"teams": [{"shortName": "Qt-KDE"}]}},
+        }
+        rows = [
+            # on the gaming list, not under the team in nixpkgs: the list adds it
+            {"name": "egoboo", "attrs": ["egoboo"], "lists": ["gaming"]},
+            # under the team in nixpkgs and on the list: nixpkgs' (once)
+            {
+                "name": "openttd",
+                "attrs": ["openttd"],
+                "lists": ["gaming"],
+                "teams": ["Gaming"],
+            },
+            # a list matching no team, or none: nothing
+            {"name": "bbedit", "attrs": ["bbedit"], "lists": ["extra"]},
+            # case and punctuation aside: "qt-kde" is Qt-KDE
+            {"name": "plasma-x", "attrs": ["plasma-x"], "lists": ["Qt KDE"]},
+        ]
+        add_list_teams(rows, index)
+        self.assertEqual(
+            [(r["name"], r.get("teams"), r.get("teamsByList")) for r in rows],
+            [
+                ("egoboo", ["Gaming"], ["Gaming"]),
+                ("openttd", ["Gaming"], None),
+                ("bbedit", None, None),
+                ("plasma-x", ["Qt-KDE"], ["Qt-KDE"]),
+            ],
         )

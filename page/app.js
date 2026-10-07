@@ -2821,7 +2821,11 @@ function fillDetail(pkg, el, entries) {
     pkg.teams?.length &&
       html`<section class="pd-sec"><h4 class="other-label">Teams</h4><div class="pd-pills">${pkg.teams.map(
         (t) =>
-          html`<button type="button" class="pd-pill maint-btn team-btn" data-team="${t}" title="The team's packages here">${t}</button>`,
+          html`<button type="button" class="pd-pill maint-btn team-btn" data-team="${t}" title="${
+            pkg.teamsByList?.includes(t)
+              ? `On the list named after the team (package-lists), not under it in nixpkgs (meta.teams). The team's packages here`
+              : "The team's packages here"
+          }">${t}${pkg.teamsByList?.includes(t) ? html`<span class="pd-pill-note">list</span>` : ''}</button>`,
       )}</div></section>`,
   ].filter(Boolean);
   const links = [
