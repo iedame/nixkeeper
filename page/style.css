@@ -79,6 +79,12 @@
 * {
   box-sizing: border-box;
 }
+/* Room for the scrollbar from the start: when the data makes the page
+   taller than the window, the scrollbar doesn't narrow it and shift the
+   centred page sideways (a layout shift). */
+html {
+  scrollbar-gutter: stable;
+}
 body {
   margin: 0;
   background: var(--bg);
@@ -2040,6 +2046,12 @@ a.page-btn:focus-visible {
 
 /* The last line: nixkeeper (and its version) on GitHub, and on a copy, its
    package lists. Quiet, centred. */
+/* Hidden while the data loads (doneLoading shows it): it appears where the
+   page ends, rather than being pushed down when the page fills in (a layout
+   shift, which a page's speed is also judged by). */
+.colophon[hidden] {
+  display: none;
+}
 .colophon {
   display: flex;
   justify-content: center;

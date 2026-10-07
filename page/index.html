@@ -100,13 +100,15 @@
     </div>
   </div>
   </div>
+  <!-- Above everything the data fills in, removed when it's there (doneLoading
+       in app.js), with the footer shown then: what appears takes its place
+       without moving anything in view. -->
+  <div class="loading" id="loading">Loading package data…</div>
   <div class="scope" id="scope" hidden></div>
   <div class="list-problems" id="listProblems" hidden></div>
-  <div id="content">
-    <div class="loading">Loading package data…</div>
-  </div>
+  <div id="content"></div>
 
-  <p class="colophon" id="about">
+  <p class="colophon" id="about" hidden>
     <a class="files-link" href="https://github.com/iedame/nixkeeper" target="_blank" rel="noopener">nixkeeper<span id="version"></span> on GitHub ↗</a>
     <a class="files-link" href="https://github.com/iedame/nixkeeper/blob/main/docs/reading-the-page.md" target="_blank" rel="noopener">What these mean ↗</a>
   </p>
