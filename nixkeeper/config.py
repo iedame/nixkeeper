@@ -90,6 +90,8 @@ SET_PROFILES = {
         "name": "Haskell",
         "updatedBy": "hackage2nix, on the haskell-updates branch",
         "short": "hackage2nix",
+        # Where updates wait before master (sources/branches.py).
+        "branch": "haskell-updates",
         "link": NIXPKGS_TREE
         + "maintainers/scripts/haskell/regenerate-hackage-packages.sh",
     },

@@ -28,6 +28,7 @@ from . import (
 from .changes import count_master, is_outdated
 from .sources import (
     about,
+    branches,
     emacs_digest,
     github,
     github_bulk,
@@ -156,6 +157,9 @@ def main():
     for feed in (typst_digest, emacs_digest):
         if any(a.startswith(feed.PREFIX) for a in tracked):
             feed.apply(index_rows, nixpkgs, feed.load(now))
+    # What a branch updating a set before master has (haskell-updates).
+    for branch in branches.wanted(tracked):
+        branches.apply(index_rows, branch, branches.load(branch, now))
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
     # The lists' rows (all of them, unless every package is tracked): the
     # rest are read in bulk only, and the rows of sets updated in bulk have

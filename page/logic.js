@@ -274,6 +274,18 @@ export function botWontUpdate(pkg, queueRead = true) {
   return pkg.update === null && !pkg.unread?.includes('update') && !(queueRead && pkg.queued);
 }
 
+// Outdated, but the branch that updates its set before master
+// (haskell-updates: pkg.branch) already has the target version or newer:
+// waiting for the branch's merge into master (on_branch in
+// nixkeeper/changes.py).
+export function onBranch(pkg) {
+  return (
+    computeStatus(pkg) === 'warn' &&
+    Boolean(pkg.branch?.version) &&
+    compareVersions(targetVersion(pkg) || '', pkg.branch.version) <= 0
+  );
+}
+
 // Hydra's build of master is newer than the channel's version: there's a
 // newer release, whatever Repology and the update checks know
 // (ahead_on_master in nixkeeper/changes.py).

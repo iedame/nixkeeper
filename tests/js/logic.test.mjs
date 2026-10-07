@@ -30,6 +30,7 @@ import {
   nixkeeperEntry,
   olderThan,
   olderVersionKept,
+  onBranch,
   onHost,
   onMaster,
   onPlatform,
@@ -145,6 +146,19 @@ describe("botWontUpdate: outdated, and nixpkgs-update won't update it", () => {
   });
   test('only outdated packages', () => {
     assert.equal(botWontUpdate(pkg({ update: { outcome: 'cantUpdate' } })), false);
+  });
+});
+
+describe('onBranch: updated on haskell-updates, waiting for its merge', () => {
+  const branch = (version) => ({ name: 'haskell-updates', version });
+  test('the target version there, or newer', () => {
+    assert.equal(onBranch(outdated({ branch: branch('1.1') })), true);
+    assert.equal(onBranch(outdated({ branch: branch('1.2') })), true);
+  });
+  test('not when the branch is behind, or nothing is outdated', () => {
+    assert.equal(onBranch(outdated({ branch: branch('1.0') })), false);
+    assert.equal(onBranch(outdated()), false);
+    assert.equal(onBranch(pkg({ branch: branch('9.9') })), false);
   });
 });
 

@@ -65,7 +65,10 @@ evaluation its builds are from (`eval`) and when nixkeeper-hydra read it
 (`at`); `typst`, when nixkeeper-versions last read Typst Universe's index
 (`at`) and how many packages it has (`packages`; not used, Repology's
 versions stay); `emacs`, likewise for the Emacs archives (`at`, and
-`melpa`, `melpaStable`, `nongnu`, `gnu`: how many packages each has); `updates`, when nixkeeper-updates made its digest (`at`) and how
+`melpa`, `melpaStable`, `nongnu`, `gnu`: how many packages each has);
+`branch:haskell-updates`, when nixkeeper-hydra last read the
+haskell-updates jobset (`at`), which evaluation (`eval`) and how many jobs
+(`jobs`; not used, rows have no `branch`); `updates`, when nixkeeper-updates made its digest (`at`) and how
 many attempts it hasn't read yet (`pending`); `queue`, when the bot's queue
 was made (`at`) and how many days it takes to go round (`cycleDays`);
 `nixpkgs`, the channel's commit (`revision`); `github`, whether the open PRs
@@ -146,7 +149,9 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 - `views` in `index.json`: how many rows `attention`, `broken` and `blocked` have, the `teams` and
   `lists` with their counts (`{ "Gaming": 12, ... }`), and the `sets`
   with how many packages each has, how many of them are outdated (from
-  0.14.0), fail, and nixpkgs marks broken
+  0.14.0; `onBranch`: of those, how many are already updated on the
+  branch that updates the set before master, haskell-updates), fail, and
+  nixpkgs marks broken
   (`{ "haskellPackages": { "packages": 19423, "outdated": 1083, "failed": 83, "broken": 7600 }, ... }`);
 - `profiles` in `index.json`: what updates each set updated in bulk,
   `{ "rPackages": { "name": "R", "updatedBy": "the CRAN and Bioconductor
@@ -215,6 +220,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `markedBroken` | `true` when nixpkgs marks one of its attributes broken (`meta.broken` in the package index, evaluated for x86_64-linux), even with no Hydra job to say so (a broken package often has none) |
 | `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); missing when it has none |
 | `set` | with every package: the set updated in bulk (`haskellPackages`, ...) of a row no list has: counted on its set's line, without GitHub's counts ([every package](all-packages.md)); `index.json`'s `profiles` says what updates it. Data from 0.13.0 and before has `"pending": true` beside it |
+| `branch` | for a row built on a branch that updates its set before master (haskell-updates, from nixkeeper-hydra): `{ "name": "haskell-updates", "version", "status", "build" }`, the branch's version, how its build went there (as `builds`' statuses) and the build. Counts nothing: the page says an update waits for the branch's merge, or a failure is fixed there, or that a package breaks when it merges |
 | `unversioned` | with every package: `true` for a row of `darwin` or `freebsd`, not versioned software: its builds are what's checked |
 | `unread` | with every package: the sources this sync didn't read for the row and kept as they were (`["update"]`: its nixpkgs-update attempt, which nixkeeper-updates' digest hasn't read yet) |
 | `source` | where nixpkgs defines it, on GitHub at the channel's commit and line |
