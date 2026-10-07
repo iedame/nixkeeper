@@ -4,12 +4,16 @@ name: "Pages: publish the page"
 # Needs Settings → Pages → Source: "GitHub Actions". main only changes
 # through pull requests that passed CI, so what's published has been checked.
 # The data isn't part of it: the page reads that from the data branch.
+# An instance served from its own site (CLOUDFLARE_SITE_URL, the community
+# one's https://nixkeeper.com/; docs/all-packages.md) publishes a page that
+# sends visitors there instead, keeping their search and filters.
 
 on:
   push:
     branches: [main]
     paths:
       - 'page/**'
+      - 'scripts/pages-redirect.sh'
       - '.github/workflows/pages.yml'
   workflow_dispatch: {}  # to publish by hand, e.g. right after switching the source
 
@@ -48,10 +52,16 @@ jobs:
           sed -i "s|<meta charset=\"UTF-8\">|&\n<meta name=\"nixkeeper-data\" content=\"$DATA\">|" page/index.html
           grep -F "<meta name=\"nixkeeper-data\" content=\"$DATA\">" page/index.html
 
+      - name: Send visitors to the instance's own site instead
+        if: vars.CLOUDFLARE_SITE_URL != ''
+        env:
+          SITE: ${{ vars.CLOUDFLARE_SITE_URL }}
+        run: bash scripts/pages-redirect.sh "$SITE" redirect
+
       - name: Package the page
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: page
+          path: ${{ vars.CLOUDFLARE_SITE_URL != '' && 'redirect' || 'page' }}
 
       - name: Publish it
         id: deploy

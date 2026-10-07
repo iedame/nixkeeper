@@ -185,6 +185,10 @@ To do the same for an instance:
 4. Run "Data: hourly updates" once: it publishes the page and data (the
    first time takes a few minutes, uploading every file; after that, only
    the files that changed).
+5. Run "Pages: publish the page" once: with `CLOUDFLARE_SITE_URL` set,
+   your `<owner>.github.io` address no longer serves the page but sends
+   visitors to your site, with their search and filters (`?q=`,
+   `?view=`, ...), so links to it keep working.
 
 ## What it costs
 
