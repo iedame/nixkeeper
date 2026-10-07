@@ -9,6 +9,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Changed
+
+- An instance served from its own site (Cloudflare, `CLOUDFLARE_SITE_URL`)
+  no longer has a second copy of the page on GitHub Pages: its
+  `<owner>.github.io` address sends visitors to the site, keeping their
+  search, filters and view (`scripts/pages-redirect.sh`). The community
+  dashboard's old address, https://iedame.github.io/nixkeeper/, goes to
+  https://nixkeeper.com/.
+
 ## [0.13.0] - 2026-10-07
 
 The community dashboard moves to **https://nixkeeper.com/**, served from
