@@ -75,6 +75,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A package's own update check (a rule of yours or the community's, or one
+  it follows) decides whether it's outdated where it and Repology disagree,
+  as the version sources do: before, a check could only add "outdated".
+  google-chrome read as outdated since 2026-10-06 against an older stable
+  (154.0.8037.97), Repology's rule still calling 155 a beta after it went
+  stable, while its check (Google's version history) found nixpkgs' 155
+  current. The panel says what Repology said (`repologySaid`); worked-out
+  checks, and a rule's last result while it fails, still only add newer
+  versions. Repository chips no longer mark an older "newest" as ahead.
+
 - `start-runs` tries a start again when GitHub answers with a server
   error or not at all, after 1 minute and then 3: on 2026-10-07 one hour's
   starts all got 500s, losing nixkeeper-updates' run for 3 hours.
