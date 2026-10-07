@@ -53,11 +53,11 @@ def load(file, source, label, now):
     return found
 
 
-def compare(row, name, newest, url, released=None, dated=False):
+def compare(row, name, newest, url, released=None, dated=False, **more):
     """Make row outdated or newest against newest (a version on name's
     source, at url), and say so ("feed": what it was compared with, the
     day it was published when known; dated: versions are a build's date
-    and time, as MELPA's)."""
+    and time, as MELPA's; more: what else the source says)."""
     row["refVersion"] = newest
     row["feed"] = {
         "name": name,
@@ -65,6 +65,7 @@ def compare(row, name, newest, url, released=None, dated=False):
         "url": url,
         **({"released": released} if released else {}),
         **({"dated": True} if dated else {}),
+        **more,
     }
     row.pop("keptBeside", None)
     behind = version_key(newest) > version_key(row.get("nixVersion") or "")

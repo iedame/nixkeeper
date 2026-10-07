@@ -35,6 +35,7 @@ from .sources import (
     hydra,
     hydra_digest,
     nixpkgs_update,
+    stackage_digest,
     typst_digest,
     updates_digest,
     upstream,
@@ -152,9 +153,10 @@ def main():
         wanted, previous, nixpkgs=nixpkgs, now=now, digest=digest, bulk=set(bulk)
     )
     index_rows = rows.build_rows(projects, nixpkgs)
-    # Typst and Emacs packages: compared with their own sources instead
-    # (Typst Universe, the Emacs archives; sources/feeds.py).
-    for feed in (typst_digest, emacs_digest):
+    # Typst, Emacs and Stackage-pinned Haskell packages: compared with their
+    # own sources instead (Typst Universe, the Emacs archives, Stackage LTS;
+    # sources/feeds.py).
+    for feed in (typst_digest, emacs_digest, stackage_digest):
         if any(a.startswith(feed.PREFIX) for a in tracked):
             feed.apply(index_rows, nixpkgs, feed.load(now))
     # What a branch updating a set before master has (haskell-updates).

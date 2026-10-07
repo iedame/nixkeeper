@@ -447,7 +447,7 @@ function versionCell(pkg, st) {
   const failing = stale
     ? html`<span class="badge neutral" title="${staleText(stale, "nixkeeper's update check failing")}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
     : '';
-  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : pkg.lookupFailed ? html`<span class="badge neutral" title="${LOOKUP_FAILED}">not looked up</span>` : ''}`;
+  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.feed?.heldBack && st === 'ok' ? html`<span class="badge neutral" title="nixpkgs pins it to ${pkg.feed.name}: Hackage has ${pkg.feed.heldBack}, which Stackage holds back until its next series">Stackage LTS</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : pkg.lookupFailed ? html`<span class="badge neutral" title="${LOOKUP_FAILED}">not looked up</span>` : ''}`;
   if (st !== 'warn')
     return html`<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
@@ -703,6 +703,14 @@ const SOURCES = [
     from: 'https://github.com/iedame/nixkeeper-versions',
     says: (s) =>
       `read ${timeAgo(s.at)}: MELPA ${s.melpa?.toLocaleString()}, MELPA Stable ${s.melpaStable?.toLocaleString()}, NonGNU ${s.nongnu?.toLocaleString()}, GNU ${s.gnu?.toLocaleString()} packages`,
+    instead: "Repology's versions used",
+  },
+  {
+    key: 'stackage',
+    label: 'Versions (Stackage LTS)',
+    from: 'https://github.com/iedame/nixkeeper-versions',
+    says: (s) =>
+      `nixpkgs follows ${s.nixpkgs}, ${s.snapshot} is the newest (${s.packages?.toLocaleString()} packages), read ${timeAgo(s.at)}`,
     instead: "Repology's versions used",
   },
   {
@@ -2334,11 +2342,15 @@ function fillDetail(pkg, el, entries) {
     const d = /^(\d{4})(\d{2})(\d{2})\./.exec(v || '');
     return d ? longDate(`${d[1]}-${d[2]}-${d[3]}T12:00:00Z`) : null;
   };
-  const feedDay = feed?.released
-    ? ` (published ${longDate(`${feed.released}T12:00:00Z`)})`
-    : feed?.dated && builtOn(feed.version)
-      ? ` (a build from ${builtOn(feed.version)}${st === 'warn' && builtOn(pkg.nixVersion) ? `; nixpkgs' is from ${builtOn(pkg.nixVersion)}` : ''})`
-      : '';
+  const feedDay = feed?.followed
+    ? feed.followed !== feed.snapshot
+      ? ` (nixpkgs follows ${feed.followed}; ${feed.snapshot} is out)`
+      : ''
+    : feed?.released
+      ? ` (published ${longDate(`${feed.released}T12:00:00Z`)})`
+      : feed?.dated && builtOn(feed.version)
+        ? ` (a build from ${builtOn(feed.version)}${st === 'warn' && builtOn(pkg.nixVersion) ? `; nixpkgs' is from ${builtOn(pkg.nixVersion)}` : ''})`
+        : '';
   const nixLine =
     up?.newer && !fromMaster(pkg)
       ? upstreamLine()
@@ -2350,7 +2362,7 @@ function fillDetail(pkg, el, entries) {
               : feed && st === 'warn' && !fromMaster(pkg)
                 ? html`, the newest on ${feedLink} is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion}</span>${feedDay}${since}`
                 : feed && st === 'ok'
-                  ? html` — the newest on ${feedLink}${feedDay}.`
+                  ? html` — the newest on ${feedLink}${feedDay}.${feed.heldBack ? html` Hackage has <span class="mono">${feed.heldBack}</span>, which Stackage holds back until its next series.` : ''}`
                   : st === 'warn' && fromMaster(pkg)
                     ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
                     : st === 'warn'
