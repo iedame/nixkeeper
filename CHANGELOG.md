@@ -11,6 +11,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Haskell packages say what haskell-updates has, the branch where the
+  Haskell team updates them before merging into master about every two
+  weeks (its Hydra jobset, from nixkeeper-hydra's `haskell-updates.json.gz`):
+  an outdated package already updated there gets an "on haskell-updates"
+  badge, as one merged on master gets "on master", and its panel says the
+  branch's version and how it builds there: waiting for the merge, fixed
+  there, failing there too, or breaking when the branch merges. Haskell's
+  card on the overview counts those updated there ("1,092 outdated, 564 on
+  haskell-updates" on 2026-10-07); nothing else counts the branch's builds.
+  Rows have `branch` (`docs/data.md`).
+
 - Emacs packages compared with the archives nixpkgs makes them from,
   instead of Repology (which can't compare MELPA's date versions,
   "untrusted"): nixkeeper-versions reads MELPA's, MELPA Stable's, NonGNU

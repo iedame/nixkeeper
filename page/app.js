@@ -21,6 +21,7 @@ import {
   nixkeeperEntry,
   olderThan,
   olderVersionKept,
+  onBranch,
   onHost,
   onMaster,
   onPlatform,
@@ -306,9 +307,52 @@ const badge = (cls, text, title, pr) =>
     ? html` <a class="badge ${cls}" href="${safeUrl(pr.url)}" target="_blank" rel="noopener" title="${title}">${text}</a>`
     : html` <span class="badge ${cls}" title="${title}">${text}</span>`;
 
-// The update's badge: on master when that's all it waits for, else its PR.
+// The update's badge: on master when that's all it waits for, else its PR,
+// else the branch that has it (haskell-updates), waiting for its merge.
 function prBadge(pkg) {
-  return waitingForChannel(pkg) ? masterBadge(pkg) : openPrBadge(pkg);
+  if (waitingForChannel(pkg)) return masterBadge(pkg);
+  if (pkg.openPR) return openPrBadge(pkg);
+  return onBranch(pkg) ? branchBadge(pkg) : '';
+}
+
+const hydraBuildUrl = (build) => `https://hydra.nixos.org/build/${encodeURIComponent(build)}`;
+
+function branchBadge(pkg) {
+  const b = pkg.branch;
+  return badge(
+    'onmaster',
+    `on ${b.name}`,
+    `${b.name} already has ${b.version}: waiting for its merge into master (about every two weeks)`,
+    b.build ? { url: hydraBuildUrl(b.build) } : null,
+  );
+}
+
+// What a branch updating its set before master (haskell-updates) has, in
+// the panel: its version, how its build went, and what that means here.
+const BRANCH_BUILD = {
+  ok: 'builds',
+  failed: 'fails to build',
+  dependency: "doesn't build: a dependency fails",
+  unfinished: "didn't finish building",
+  queued: "isn't built yet",
+};
+function branchNote(pkg) {
+  const b = pkg.branch;
+  if (!b) return '';
+  const failing = failedBuilds(pkg).length > 0;
+  if (b.version === pkg.nixVersion && b.status === 'ok' && !failing) return '';
+  const after = onBranch(pkg)
+    ? b.status === 'ok'
+      ? ': the update waits for its merge into master, about every two weeks.'
+      : ', so the update may wait for a fix before the branch merges.'
+    : failing && b.status === 'ok'
+      ? ': fixed there, once the branch merges into master.'
+      : failing
+        ? ': failing there too.'
+        : b.status === 'failed' || b.status === 'dependency'
+          ? ': it breaks when the branch merges into master, unless fixed first.'
+          : '.';
+  return html`<div class="master-note"><span class="mono">${b.name}</span> has <span class="mono">${b.version}</span>, which ${BRANCH_BUILD[b.status] || b.status} there (<a class="files-link" href="${safeUrl(hydraBuildUrl(b.build))}" target="_blank" rel="noopener">build ↗</a>)${after}</div>`;
 }
 
 function masterBadge(pkg) {
@@ -659,6 +703,14 @@ const SOURCES = [
     says: (s) =>
       `read ${timeAgo(s.at)}: MELPA ${s.melpa?.toLocaleString()}, MELPA Stable ${s.melpaStable?.toLocaleString()}, NonGNU ${s.nongnu?.toLocaleString()}, GNU ${s.gnu?.toLocaleString()} packages`,
     instead: "Repology's versions used",
+  },
+  {
+    key: 'branch:haskell-updates',
+    label: 'haskell-updates (Hydra)',
+    from: 'https://github.com/iedame/nixkeeper-hydra',
+    says: (s) =>
+      html`evaluation <a class="files-link" href="https://hydra.nixos.org/eval/${s.eval}" target="_blank" rel="noopener">${s.eval}</a>, read ${timeAgo(s.at)}`,
+    instead: 'not shown',
   },
   {
     key: 'queue',
@@ -1519,7 +1571,9 @@ function setsHtml(sets) {
   const pct = (n, of) => (of ? Math.min(100, (100 * n) / of) : 0).toFixed(1);
   const cards = sets.map(([s, v]) => {
     const problems = [
-      v.outdated ? html`<span class="set-outdated">${fmt(v.outdated)} outdated</span>` : '',
+      v.outdated
+        ? html`<span class="set-outdated">${fmt(v.outdated)} outdated</span>${v.onBranch ? html`, ${fmt(v.onBranch)} on ${profileOf(s)?.branch || 'its branch'}` : ''}`
+        : '',
       v.broken ? html`<span class="set-broken">${fmt(v.broken)} broken</span>` : '',
       v.failed ? html`<span class="set-failed">${fmt(v.failed)} failing</span>` : '',
     ].filter(Boolean);
@@ -2338,7 +2392,7 @@ function fillDetail(pkg, el, entries) {
               : ', not in nixos-unstable yet.'
           }</div>`
         : ''
-    }${checkNote}${
+    }${branchNote(pkg)}${checkNote}${
       pkg.nixVulnerable
         ? html`<div class="vuln-note">⚠ Repology flags nixpkgs' version <span class="mono">${pkg.nixVersion}</span> as vulnerable.${
             pkg.project

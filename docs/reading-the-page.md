@@ -76,8 +76,10 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
 - what was fixed in the last week: builds that work again, packages
   updated (from and to which version), and nixpkgs-update failures
   cleared, from the first daily sync with this on;
-- the sets updated in bulk, each with its size, what updates it, and how
-  much of it is marked broken or failing (a bar).
+- the sets updated in bulk, each with its size, what updates it, how
+  many are outdated (for Haskell, how many of those are already updated on
+  haskell-updates, waiting for its merge), and how much of it is marked
+  broken or failing (a bar).
 
 At the top, "needs attention" (failing, outdated or flagged vulnerable,
 worst first) opens that list from anywhere; "Your packages" (your GitHub

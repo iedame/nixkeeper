@@ -68,6 +68,18 @@ def waiting_for_channel(row):
     )
 
 
+def on_branch(row):
+    """Outdated, and the branch that updates its set before master
+    (haskell-updates, row's "branch") already has the version it's compared
+    against (or newer): waiting for the branch's merge into master."""
+    version = (row.get("branch") or {}).get("version")
+    return (
+        is_outdated(row)
+        and bool(version)
+        and not is_newer(row.get("refVersion") or "", version)
+    )
+
+
 def failed_builds(row):
     return [b for b in row.get("builds") or [] if b["status"] == "failed"]
 

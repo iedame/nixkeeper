@@ -29,6 +29,7 @@ from .changes import (
     failed_builds,
     failures,
     is_outdated,
+    on_branch,
     waiting_for_channel,
 )
 
@@ -535,6 +536,9 @@ def views(rows, out):
             )
             found_set["packages"] += 1
             found_set["outdated"] += is_outdated(row)
+            if on_branch(row):
+                # Of those, already updated on the branch (haskell-updates).
+                found_set["onBranch"] = found_set.get("onBranch", 0) + 1
             found_set["failed"] += letter.startswith("f")
             found_set["broken"] += bool(row.get("markedBroken") or broken_builds(row))
             counts["inSets"] += 1
