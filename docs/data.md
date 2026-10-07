@@ -143,9 +143,12 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   where it's available only, as the page's platform filter does;
 - `highlights` in `index.json`: for `failing` (builds), `outdated` and
   `updateFailing`, of the rows not in such a set, `{ "count", "newest", "oldest" }`:
-  how many there are, and the 8 most recent and 8 longest-standing, each
-  `[name, since, status]` (from `failingSince`, `outdatedSince`,
-  `updateFailingSince`; `status` as in `names.json`);
+  how many there are (the same as `counts`' `buildFailures`, `outdated`
+  and `updateFailures`), and the 8 most recent and 8 longest-standing of
+  those that have their date, each `[name, since, status]` (from
+  `failingSince`, `outdatedSince`, `updateFailingSince`, which the daily
+  sync sets: one counted since the last has none yet; `status` as in
+  `names.json`);
 - `blockers` in `index.json`: the failing dependencies that stop others'
   builds, of every row (in sets too, as zh.fail counts them): how many
   there are (`count`), how many packages have a build they stopped
