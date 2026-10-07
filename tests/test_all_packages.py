@@ -641,6 +641,39 @@ class Highlights(unittest.TestCase):
         )
         self.assertEqual(found["failing"]["count"], 0)  # in a set: left out
 
+    def test_only_what_counts_now(self):
+        # Dates the daily sync set, before the hourly checks recounted (a
+        # change in how nixkeeper counts, a failure cleared): not listed, so
+        # the lists match the cards.
+        since = "2026-01-01T00:00:00+00:00"
+        failed = [{"attr": "x", "status": "failed", "system": "x86_64-linux"}]
+        rows = [
+            row("outdated", nixStatus="outdated", outdatedSince=since),
+            row("caught-up", nixStatus="newest", outdatedSince=since),
+            row("failing", builds=failed, failingSince=since),
+            row("built", builds=[], failingSince=since),
+            row("bot-fails", updateFailure=True, updateFailingSince=since),
+            row("bot-fixed", updateFailure=False, updateFailingSince=since),
+            # Newly outdated, its date not set yet: counted, not listed.
+            row("newly", nixStatus="outdated"),
+        ]
+        with tempfile.TemporaryDirectory() as d:
+            datastore.write(
+                {"checkedAt": NOW, "allPackages": True, "packages": rows}, {}, d
+            )
+            with open(os.path.join(d, "index.json")) as f:
+                index = json.load(f)
+        found, counts = index["highlights"], index["counts"]
+        self.assertEqual(found["outdated"]["count"], counts["outdated"])
+        self.assertEqual(counts["outdated"], 2)
+        self.assertEqual([n for n, _, _ in found["outdated"]["newest"]], ["outdated"])
+        self.assertEqual(found["failing"]["count"], counts["buildFailures"])
+        self.assertEqual([n for n, _, _ in found["failing"]["newest"]], ["failing"])
+        self.assertEqual(found["updateFailing"]["count"], counts["updateFailures"])
+        self.assertEqual(
+            [n for n, _, _ in found["updateFailing"]["newest"]], ["bot-fails"]
+        )
+
 
 class Fixed(unittest.TestCase):
     """What a sync counts as fixed (history.fixes): only with something to

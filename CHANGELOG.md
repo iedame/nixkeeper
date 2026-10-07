@@ -107,6 +107,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- The overview's newest and longest-standing failures and outdated
+  packages agree with the cards above them: their count is the card's, and
+  they list only what counts now. The hourly checks recount, but only the
+  daily sync sets and drops the dates the lists go by, so a change in how
+  nixkeeper counts (as the version ordering did) left them apart for up to
+  a day (8,695 outdated listed under a card of 8,684).
 - nixpkgs evaluations (where packages are marked broken, where their
   sources come from) read the list of attributes from a file instead of
   nix's command line, which Linux limits to 128 KB an argument: an

@@ -395,6 +395,12 @@ AGES = {
     "outdated": "outdatedSince",
     "updateFailing": "updateFailingSince",
 }
+# The card each highlight list goes with: its count is the card's.
+HIGHLIGHT_COUNTS = {
+    "failing": "buildFailures",
+    "outdated": "outdated",
+    "updateFailing": "updateFailures",
+}
 # How many of each the overview shows, newest and oldest.
 HIGHLIGHTS = 8
 
@@ -572,8 +578,16 @@ def views(rows, out):
         }
         for where in systems | {s.rsplit("-", 1)[-1] for s in systems}:
             failing_on[where] = failing_on.get(where, 0) + 1
+        # Only what counts now: the hourly checks recount, but only the daily
+        # sync sets and drops these dates, so a change in how nixkeeper counts
+        # would otherwise leave the lists apart from the cards for a day.
+        now_counts = {
+            "failing": bool(failed_builds(row)),
+            "outdated": is_outdated(row),
+            "updateFailing": bool(row.get("updateFailure")),
+        }
         for kind, field in AGES.items():
-            if row.get(field):
+            if row.get(field) and now_counts[kind]:
                 ages[kind].append((row[field], row["name"], letter))
         if row.get("markedBroken") or broken_builds(row):
             counts["broken"] += 1
@@ -589,7 +603,12 @@ def views(rows, out):
     top = sorted(blockers.items(), key=lambda kv: (-len(kv[1][1]), -kv[1][2], kv[0]))
     return {
         "counts": {**counts, "buildFailuresOn": dict(sorted(failing_on.items()))},
-        "highlights": {kind: highlights(found) for kind, found in ages.items()},
+        # Their counts are the cards' (one counted with no date yet, until the
+        # daily sync gives it one, is in the count, not the lists).
+        "highlights": {
+            kind: {**highlights(found), "count": counts[HIGHLIGHT_COUNTS[kind]]}
+            for kind, found in ages.items()
+        },
         # The overview's "Blocking the most": how many dependencies stop
         # others' builds, how many packages have a build stopped (the
         # blocked view's: its blockers read or not yet), and the HIGHLIGHTS
