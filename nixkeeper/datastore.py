@@ -534,6 +534,14 @@ def views(rows, out):
             found_set = sets.setdefault(
                 row["set"], {"packages": 0, "outdated": 0, "failed": 0, "broken": 0}
             )
+            if row.get("archived"):
+                # No longer on CRAN or in Bioconductor (sources/cran_digest.py);
+                # most nixpkgs marks broken already: those it doesn't apart.
+                found_set["archived"] = found_set.get("archived", 0) + 1
+                if not (row.get("markedBroken") or broken_builds(row)):
+                    found_set["archivedUnmarked"] = (
+                        found_set.get("archivedUnmarked", 0) + 1
+                    )
             found_set["packages"] += 1
             found_set["outdated"] += is_outdated(row)
             if on_branch(row):

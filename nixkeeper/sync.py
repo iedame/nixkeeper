@@ -29,6 +29,7 @@ from .changes import count_master, is_outdated
 from .sources import (
     about,
     branches,
+    cran_digest,
     emacs_digest,
     github,
     github_bulk,
@@ -153,10 +154,10 @@ def main():
         wanted, previous, nixpkgs=nixpkgs, now=now, digest=digest, bulk=set(bulk)
     )
     index_rows = rows.build_rows(projects, nixpkgs)
-    # Typst, Emacs and Stackage-pinned Haskell packages: compared with their
-    # own sources instead (Typst Universe, the Emacs archives, Stackage LTS;
-    # sources/feeds.py).
-    for feed in (typst_digest, emacs_digest, stackage_digest):
+    # Typst, Emacs, Stackage-pinned Haskell and R packages: compared with
+    # their own sources instead (Typst Universe, the Emacs archives, Stackage
+    # LTS, CRAN and Bioconductor; sources/feeds.py).
+    for feed in (typst_digest, emacs_digest, stackage_digest, cran_digest):
         if any(a.startswith(feed.PREFIX) for a in tracked):
             feed.apply(index_rows, nixpkgs, feed.load(now))
     # What a branch updating a set before master has (haskell-updates).

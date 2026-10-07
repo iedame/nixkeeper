@@ -447,7 +447,7 @@ function versionCell(pkg, st) {
   const failing = stale
     ? html`<span class="badge neutral" title="${staleText(stale, "nixkeeper's update check failing")}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
     : '';
-  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.feed?.heldBack && st === 'ok' ? html`<span class="badge neutral" title="nixpkgs pins it to ${pkg.feed.name}: Hackage has ${pkg.feed.heldBack}, which Stackage holds back until its next series">Stackage LTS</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : pkg.lookupFailed ? html`<span class="badge neutral" title="${LOOKUP_FAILED}">not looked up</span>` : ''}`;
+  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.archived ? html`<span class="badge warn" title="${archivedText(pkg)}">archived</span>` : ''}${pkg.feed?.heldBack && st === 'ok' ? html`<span class="badge neutral" title="nixpkgs pins it to ${pkg.feed.name}: Hackage has ${pkg.feed.heldBack}, which Stackage holds back until its next series">Stackage LTS</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : pkg.lookupFailed ? html`<span class="badge neutral" title="${LOOKUP_FAILED}">not looked up</span>` : ''}`;
   if (st !== 'warn')
     return html`<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
@@ -636,6 +636,12 @@ const bulkText = (set) =>
 const bulkShort = (set) => profileOf(set)?.short || 'updated in bulk';
 const bulkBadge = (set) =>
   html`<span class="badge neutral" title="${bulkText(set)} (${set}): counted on its set's line on the overview">${bulkShort(set)}</span>`;
+// No longer on CRAN or in the Bioconductor release nixpkgs pins (the row's
+// "archived", sources/cran_digest.py).
+const ARCHIVED_TITLE =
+  "No longer on CRAN or in the Bioconductor release nixpkgs pins: CRAN archived it (it failed CRAN's checks and wasn't fixed, or its maintainer left), or Bioconductor dropped it";
+const archivedText = (pkg) =>
+  `${ARCHIVED_TITLE}. ${pkg.markedBroken ? 'nixpkgs marks it broken.' : "nixpkgs doesn't mark it broken: likely broken anyway, or due for removal."}`;
 const LOOKUP_FAILED = "Repology couldn't be reached on the last sync, and there's no earlier data";
 const UNVERSIONED_TITLE =
   "Not software with releases to compare (a system component): its builds are what's checked";
@@ -711,6 +717,14 @@ const SOURCES = [
     from: 'https://github.com/iedame/nixkeeper-versions',
     says: (s) =>
       `nixpkgs follows ${s.nixpkgs}, ${s.snapshot} is the newest (${s.packages?.toLocaleString()} packages), read ${timeAgo(s.at)}`,
+    instead: "Repology's versions used",
+  },
+  {
+    key: 'cran',
+    label: 'Versions (CRAN, Bioconductor)',
+    from: 'https://github.com/iedame/nixkeeper-versions',
+    says: (s) =>
+      `read ${timeAgo(s.at)}: CRAN ${s.cran?.toLocaleString()}, Bioconductor ${s.biocVersion} ${((s.bioc || 0) + (s.annotation || 0) + (s.experiment || 0)).toLocaleString()} packages`,
     instead: "Repology's versions used",
   },
   {
@@ -1590,6 +1604,9 @@ function setsHtml(sets) {
       v.outdated
         ? html`<span class="set-outdated">${fmt(v.outdated)} outdated</span>${v.onBranch ? html`, ${fmt(v.onBranch)} on ${profileOf(s)?.branch || 'its branch'}` : ''}`
         : '',
+      v.archived
+        ? html`<span class="set-broken" title="${ARCHIVED_TITLE}; nixpkgs marks most of them broken already">${fmt(v.archived)} archived${v.archivedUnmarked ? html` (${fmt(v.archivedUnmarked)} not marked broken)` : ''}</span>`
+        : '',
       v.broken ? html`<span class="set-broken">${fmt(v.broken)} broken</span>` : '',
       v.failed ? html`<span class="set-failed">${fmt(v.failed)} failing</span>` : '',
     ].filter(Boolean);
@@ -2405,8 +2422,9 @@ function fillDetail(pkg, el, entries) {
     : pkg.unversioned
       ? html`<div class="nix-line">${UNVERSIONED_TITLE}.</div>`
       : '';
+  const archived = pkg.archived ? html`<div class="stale-note">${archivedText(pkg)}</div>` : '';
   el.innerHTML = html`
-    <div class="nix-line">${nixLine}</div>${inBulk}${unloaded}${
+    <div class="nix-line">${nixLine}</div>${inBulk}${archived}${unloaded}${
       onMaster(pkg)
         ? html`<div class="master-note">master already has <span class="mono">${onMaster(pkg)}</span> (${masterSaid})${
             waitingForChannel(pkg)
