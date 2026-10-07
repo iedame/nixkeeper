@@ -51,8 +51,11 @@ Repology, which mostly can't compare them: each package's latest attribute
 ones (`typstPackages.cetz_0_3_0`) as older versions kept. Emacs packages
 likewise, with the archive nixpkgs takes each from (MELPA, whose versions
 are a build's date, MELPA Stable, NonGNU ELPA or GNU ELPA; nixpkgs'
-hand-written ones keep Repology's verdict). Other sets' sources may follow
-(Hackage for Haskell).
+hand-written ones keep Repology's verdict). Haskell packages nixpkgs pins
+to Stackage LTS (`stackage.yaml`, about 3,400) are compared with that
+series' newest snapshot, not Hackage's newest, which Stackage holds back
+until its next series: those at it show a "Stackage LTS" badge instead of
+outdated.
 
 ## The page
 

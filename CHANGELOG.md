@@ -11,6 +11,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Haskell packages nixpkgs pins to Stackage LTS (about 3,400, its
+  `stackage.yaml`) compared with that series' newest snapshot instead of
+  Hackage's newest (Repology's), which Stackage holds back on purpose until
+  its next series: outdated when behind the snapshot (nixpkgs follows LTS
+  24.38; 24.62 is out), and at it, a "Stackage LTS" badge when Hackage has
+  newer, instead of outdated. nixkeeper-versions reads which series nixpkgs
+  follows and its newest snapshot daily (`stackage.json.gz`). On
+  2026-10-07, Haskell's outdated from 1,084 to 984: 237 behind their LTS
+  snapshot, 406 held back by Stackage no longer counted.
+
 - Haskell packages say what haskell-updates has, the branch where the
   Haskell team updates them before merging into master about every two
   weeks (its Hydra jobset, from nixkeeper-hydra's `haskell-updates.json.gz`):
