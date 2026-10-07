@@ -114,7 +114,11 @@ found through `maintainers`. `?list=gaming-team` in the address is a page of
 just that list, to share with the people it's for.
 
 Update checks (`package-lists/update-checks.nix`) look for new releases
-Repology doesn't count yet. A package without one of its own (or a community
+Repology doesn't count yet. A rule's check (yours or a community one) is
+the package's own source: where it and Repology disagree on whether nixpkgs
+is outdated, it decides, as when one of Repology's rules lags (Chrome's
+"155 and up are betas", kept after 155 went stable), and the panel says
+what Repology said. A package without one of its own (or a community
 rule) gets one worked out from nixpkgs: fetched from a GitHub tag, it's
 checked against that repository's tags, in the scheme nixpkgs' tag shows
 (`v1.2.3`, ...), plain versions only, and is left to Repology when that

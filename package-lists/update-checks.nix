@@ -29,7 +29,11 @@
 #
 # Patterns are Python regexes; a capture group, if there is one, is the
 # version. The highest version found counts; if it's newer than nixpkgs', the
-# package shows as outdated (for a branch, once outdatedAfter says so).
+# package shows as outdated (for a branch, once outdatedAfter says so). A
+# check is the package's own source: where it and Repology disagree on
+# whether nixpkgs is outdated, the check decides (Repology's verdict is shown
+# beside it), so a check that finds nixpkgs' version keeps it up to date
+# when one of Repology's rules lags.
 #
 # Any kind can add `frequent = true;` to be checked about hourly, not just in
 # the daily sync (.github/workflows/data-hourly.yml): for packages whose new

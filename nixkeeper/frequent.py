@@ -48,6 +48,9 @@ def refresh_repology(row, previous, now):
         return None
     for key in ("nixVersion", "nixStatus", "nixVulnerable", "refVersion", "repoCount"):
         row[key] = fresh[key]
+    # Repology's verdict is this fresh one now, for the check to decide
+    # against (upstream.apply); without a refresh, the one it kept stays.
+    row.pop("repologySaid", None)
     row.pop("staleSince", None)
     row["repologyCheckedAt"] = now
     return entries

@@ -2312,7 +2312,12 @@ function fillDetail(pkg, el, entries) {
     ...others.map((e) => ({
       repo: e.repo,
       version: e.version,
-      ahead: e.status === 'newest' && e.version !== pkg.nixVersion,
+      // Repology's newest, when it's newer than nixpkgs' (not when one of its
+      // rules makes an older one newest: google-chrome's, at times).
+      ahead:
+        e.status === 'newest' &&
+        Boolean(pkg.nixVersion) &&
+        compareVersions(e.version, pkg.nixVersion) > 0,
     })),
   ];
   // "in the wesnoth/wesnoth tags" or "on www.barebones.com".
@@ -2323,7 +2328,10 @@ function fillDetail(pkg, el, entries) {
   const since = pkg.outdatedSince
     ? ` — outdated since ${longDate(pkg.outdatedSince)} (${daysText(pkg.outdatedSince)})`
     : '';
-  const repologyOutdated = pkg.nixStatus === 'outdated';
+  // What Repology said, where the update check decided otherwise
+  // (repologySaid, upstream.apply in nixkeeper).
+  const said = pkg.repologySaid;
+  const repologyOutdated = (said?.status ?? pkg.nixStatus) === 'outdated';
   // A branch check (unstable versions): how many commits nixpkgs is behind,
   // and what makes that count as outdated ("90 days or 50 commits").
   const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
@@ -2423,16 +2431,20 @@ function fillDetail(pkg, el, entries) {
                               ? ` — ${LOOKUP_FAILED}, so there's nothing to compare it with yet.`
                               : " — Repology doesn't list this package, so there's nothing to compare it with."
                             : html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
-                          : loaded
-                            ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${compared} other ${compared === 1 ? 'repository' : 'repositories'}.`
-                            : ` — the newest ${pkg.devel ? 'devel ' : ''}version.`
+                          : said && up && !failing
+                            ? ' — the newest version, by its update check.'
+                            : loaded
+                              ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${compared} other ${compared === 1 ? 'repository' : 'repositories'}.`
+                              : ` — the newest ${pkg.devel ? 'devel ' : ''}version.`
           }${
             up && !up.newer && !failing
               ? follows
                 ? html` It's ${follows}.`
                 : up.behind
                   ? html` ${ours}: ${behind} ${upLink} (up to <span class="mono">${up.version}</span>), not counted as outdated until ${limits}.`
-                  : html` ${ours} ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${up.version}</span>.`
+                  : said
+                    ? html` ${communityCheck(pkg) ? 'A community update check' : ours.replace(/^n/, 'N')} found <span class="mono">${up.version}</span> ${upLink}. Repology counts it <span class="mono">${said.status}</span>${said.newest ? html`, with <span class="mono">${said.newest}</span> as the newest elsewhere` : ''}: the update check decides, being this package's own source.`
+                    : html` ${ours} ${st === 'warn' ? 'found nothing newer' : 'agrees'}: the latest version ${upLink} is <span class="mono">${up.version}</span>.`
               : ''
           }`;
   // Where master is: the PR that brought it, and whether Hydra built it.

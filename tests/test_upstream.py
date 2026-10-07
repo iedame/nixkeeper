@@ -64,6 +64,65 @@ class Apply(unittest.TestCase):
         self.assertEqual(r["refVersion"], "1.19.30")
 
 
+class Decides(unittest.TestCase):
+    """A rule's check decides where it and Repology disagree."""
+
+    CHROME = {"version": "155.0.8059.39", "label": "versionhistory.googleapis.com"}
+
+    def chrome(self):
+        # Repology's rule had 155 and up as betas after 155 went stable: it
+        # called nixpkgs outdated, against an older stable.
+        return row("google-chrome", "155.0.8059.39", "outdated", "154.0.8037.97")
+
+    def test_up_to_date_by_its_rule(self):
+        r = self.chrome()
+        upstream.apply(r, self.CHROME)
+        self.assertEqual(r["nixStatus"], "newest")
+        self.assertIsNone(r["refVersion"])
+        self.assertEqual(
+            r["repologySaid"], {"status": "outdated", "newest": "154.0.8037.97"}
+        )
+        self.assertFalse(is_outdated(r))
+
+    def test_outdated_by_its_rule(self):
+        r = row("bbedit", "15.5.1", "newest", "15.5.1")
+        upstream.apply(r, {"version": "15.5.2"})
+        self.assertEqual(r["nixStatus"], "outdated")
+        self.assertEqual(r["refVersion"], "15.5.2")
+        self.assertEqual(r["repologySaid"], {"status": "newest", "newest": "15.5.1"})
+
+    def test_agreeing_keeps_repology(self):
+        r = row(status="outdated", ref="1.19.30")
+        upstream.apply(r, {"version": "1.19.28"})
+        self.assertEqual(r["nixStatus"], "outdated")
+        self.assertNotIn("repologySaid", r)
+
+    def test_checked_again_starts_from_repology(self):
+        r = self.chrome()
+        upstream.apply(r, self.CHROME)
+        once = dict(r)
+        upstream.apply(r, self.CHROME)  # the hourly check, Repology not refreshed
+        self.assertEqual(r, once)
+        upstream.apply(r, {"version": "155.0.8059.50"})  # a new stable
+        self.assertEqual(r["nixStatus"], "outdated")
+        self.assertEqual(r["refVersion"], "155.0.8059.50")
+        self.assertNotIn("repologySaid", r)  # agreeing now: nothing overruled
+
+    def test_worked_out_failed_or_kept_dont_decide(self):
+        for found, decides, status in (
+            ({**self.CHROME, "inferred": True}, True, "outdated"),
+            (self.CHROME, False, "outdated"),  # the last result of a failing rule
+            (self.CHROME, True, "legacy"),  # kept beside a newer one
+        ):
+            with self.subTest(found=found, decides=decides, status=status):
+                r = self.chrome()
+                r["nixStatus"] = status
+                upstream.apply(r, found, decides=decides)
+                self.assertEqual(r["nixStatus"], status)
+                self.assertEqual(r["refVersion"], "154.0.8037.97")
+                self.assertNotIn("repologySaid", r)
+
+
 class AddChecks(unittest.TestCase):
     def setUp(self):
         self.stderr = io.StringIO()
