@@ -225,13 +225,14 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `name` | the row's name: its nixpkgs attribute (`wesnoth-devel`), or the list entry when nixpkgs doesn't have it |
 | `attrs` | the nixpkgs attributes the row covers (variants sharing a version, like `heroic` and `heroic-unwrapped`) |
 | `searchTerm` | what GitHub searches for its PRs and issues: the attribute, with versioned sets under the name nixpkgs titles use |
-| `lists` | the lists it's on: `maintained` (found through a maintainer handle), then the named lists (`gaming-team`, ...) |
+| `lists` | the lists it's on: `maintained` (found through a maintainer handle), then the named lists (`gaming`, ...) |
 | `project`, `dataFile` | its Repology project, and the key its entries are kept under (a file-name-safe form of the project's name: its file in `data/` in the first format) |
 | `platforms` | `{ "linux": bool, "darwin": bool }` from `meta.platforms` less `meta.badPlatforms`; `null` when nixpkgs doesn't restrict them. From 0.14.0, `systems` too when those don't already say which of the systems nixpkgs builds it's on (`x86_64-linux`, `aarch64-linux`, `aarch64-darwin`): `{ "linux": true, "darwin": false, "systems": ["x86_64-linux"] }`, Linux on x86_64 only. Without `systems`, all of each family's |
 | `homepage` | `meta.homepage` |
 | `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it |
 | `markedBroken` | `true` when nixpkgs marks one of its attributes broken (`meta.broken` in the package index, evaluated for x86_64-linux), even with no Hydra job to say so (a broken package often has none) |
-| `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); missing when it has none |
+| `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); from 0.14.0, also the team a list named after it adds (`teamsByList`); missing when it has none |
+| `teamsByList` | of `teams`, those only a list named after the team adds (the `gaming` list: `Gaming`), not `meta.teams`; missing when none |
 | `set` | with every package: the set updated in bulk (`haskellPackages`, ...) of a row no list has: counted on its set's line, without GitHub's counts ([every package](all-packages.md)); `index.json`'s `profiles` says what updates it. Data from 0.13.0 and before has `"pending": true` beside it |
 | `branch` | for a row built on a branch that updates its set before master (haskell-updates, from nixkeeper-hydra): `{ "name": "haskell-updates", "version", "status", "build" }`, the branch's version, how its build went there (as `builds`' statuses) and the build. Counts nothing: the page says an update waits for the branch's merge, or a failure is fixed there, or that a package breaks when it merges |
 | `lookupFailed` | `true` for a package Repology couldn't be asked about on this sync (down, most likely) with no earlier data: shown as not looked up, `nixStatus` `unlisted` |

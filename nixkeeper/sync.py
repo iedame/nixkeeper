@@ -164,6 +164,8 @@ def main():
     for branch in branches.wanted(tracked):
         branches.apply(index_rows, branch, branches.load(branch, now))
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
+    # A list called as a team (gaming, Gaming) adds its packages to the team.
+    tracking.add_list_teams(index_rows, nixpkgs)
     # The lists' rows (all of them, unless every package is tracked): the
     # rest are read in bulk only, and the rows of sets updated in bulk have
     # their set (config.SET_PROFILES).

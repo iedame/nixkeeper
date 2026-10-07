@@ -105,13 +105,18 @@ as not looked up. The sources panel says how many lookups failed.
 
 `package-lists/default.nix` lists GitHub handles under `maintainers` (every
 nixpkgs package they maintain is tracked) and imports further named lists
-under `extraPackages` (`extra`, `gaming-team`, ...) of nixpkgs attribute names
+under `extraPackages` (`extra`, `gaming`, ...) of nixpkgs attribute names
 (exactly that package, e.g. `haskellPackages.pandoc`) or pnames (every
 top-level package with that pname).
 
 Each list is a filter on the page, next to `maintained` for the packages
-found through `maintainers`. `?list=gaming-team` in the address is a page of
-just that list, to share with the people it's for.
+found through `maintainers`. `?list=gaming` in the address is a page of
+just that list, to share with the people it's for. A list named as a
+nixpkgs team is (`gaming` for Gaming, compared as file names are: case and
+punctuation aside) also joins the team: its packages show on the team's
+page (`?team=Gaming`), in its counts and its filter, beside those nixpkgs
+lists under it in `meta.teams`. For packages a team looks after that
+nixpkgs doesn't list it on; their panel says the team comes from the list.
 
 Update checks (`package-lists/update-checks.nix`) look for new releases
 Repology doesn't count yet. A rule's check (yours or a community one) is

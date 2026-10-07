@@ -10,13 +10,16 @@
   # More packages to track, as named lists: each name becomes a filter on the
   # page (?list=<name>), so a list can be shared with the people it's for.
   # Entries are nixpkgs attribute names (exactly that package) or pnames
-  # (every package with it). A package can be on several lists.
+  # (every package with it). A package can be on several lists. A list
+  # named as a nixpkgs team is (gaming for Gaming) also joins the team: its
+  # packages show on the team's page (?team=Gaming) beside those nixpkgs
+  # lists under it.
   extraPackages = {
     # General
     extra = import ./extra-packages.nix;
 
-    # NixOS/Gaming Team Packages
-    gaming-team = import ./gaming-team.nix;
+    # NixOS/Gaming Team Packages: also the Gaming team's (?team=Gaming)
+    gaming = import ./gaming.nix;
   };
 
   # Where to look for new releases of some tracked packages, on top of

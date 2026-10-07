@@ -11,6 +11,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- A list named as a nixpkgs team is (`gaming` for Gaming: case and
+  punctuation aside) joins the team: its packages show on the team's page
+  (`?team=Gaming`), in its counts and filter, beside those nixpkgs lists
+  under the team in `meta.teams`. For packages a team looks after that
+  nixpkgs doesn't list it on; their panel marks the team "list". Rows have
+  `teamsByList` (`docs/data.md`). This instance's `gaming-team` list is
+  now `gaming` (`?list=gaming-team` links show nothing now).
+
 - R packages compared with CRAN, or the Bioconductor release nixpkgs pins
   (3.23), instead of Repology: nixkeeper-versions reads their index files
   daily (`cran.json.gz`), as nixpkgs' own update script does. It agrees
