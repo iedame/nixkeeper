@@ -107,6 +107,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- nixpkgs evaluations (where packages are marked broken, where their
+  sources come from) read the list of attributes from a file instead of
+  nix's command line, which Linux limits to 128 KB an argument: an
+  instance tracking a few thousand packages failed there ("Argument list
+  too long"), as did nixkeeper-versions' evaluation of every package. The
+  evaluation is `--impure` to read it; what it evaluates is still the
+  channel's revision.
 - Versions are ordered as Repology orders them (its libversion algorithm,
   in Python and in the page; tested against Repology's own test suite,
   `tests/data/version-comparison-tests.txt`): a pre-release before its

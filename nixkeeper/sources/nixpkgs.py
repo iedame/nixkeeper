@@ -6,6 +6,7 @@ import json
 import os
 import subprocess
 import sys
+import tempfile
 import urllib.error
 import urllib.request
 
@@ -76,13 +77,28 @@ BROKEN_EXPR = """pkgs: map (attr:
   let
     pkg = pkgs.lib.attrByPath (pkgs.lib.splitString "." attr) { } pkgs;
     r = builtins.tryEval (pkg.meta.broken or false);
-  in if r.success then r.value else null) (builtins.fromJSON ''{attrs}'')"""
+  in if r.success then r.value else null) {attrs}"""
 
 
 def evaluate(revision, system, expr, attrs):
-    """expr (a function of legacyPackages, with {attrs} for the attributes as
-    JSON) evaluated at the channel's revision for system: its JSON answer.
-    Raises with nix's last line of output if that fails."""
+    """expr (a function of legacyPackages, with {attrs} where the list of
+    attributes goes) evaluated at the channel's revision for system: its
+    JSON answer. The attributes are read from a file, not put on nix's
+    command line: Linux limits one argument to 128 KB, a few thousand
+    attribute names (reading a file outside the store takes --impure; what's
+    evaluated is still that revision). Raises with nix's last line of output
+    if that fails."""
+    with tempfile.TemporaryDirectory() as tmp:
+        path = os.path.join(tmp, "attrs.json")
+        with open(path, "w") as f:
+            json.dump(attrs, f)
+        listed = f"(builtins.fromJSON (builtins.readFile {json.dumps(path)}))"
+        return _nix_eval(revision, system, expr.replace("{attrs}", listed))
+
+
+def _nix_eval(revision, system, apply):
+    """legacyPackages.system at revision, with apply applied: its JSON
+    answer. Raises EvalError with nix's last line of output."""
     try:
         out = subprocess.run(
             [
@@ -90,10 +106,11 @@ def evaluate(revision, system, expr, attrs):
                 "eval",
                 "--extra-experimental-features",
                 "nix-command flakes",
+                "--impure",
                 "--json",
                 f"github:NixOS/nixpkgs/{revision}#legacyPackages.{system}",
                 "--apply",
-                expr.replace("{attrs}", json.dumps(attrs)),
+                apply,
             ],
             capture_output=True,
             text=True,
@@ -154,7 +171,7 @@ SOURCES_EXPR = """pkgs: map (attr:
         then builtins.head urls.value else text src "url";
     };
     r = builtins.tryEval (builtins.deepSeq found found);
-  in if r.success then r.value else null) (builtins.fromJSON ''{attrs}'')"""
+  in if r.success then r.value else null) {attrs}"""
 
 
 def sources(attrs, revision):
