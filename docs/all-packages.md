@@ -44,6 +44,13 @@ waits for the next CRAN import, which no one PR does. Packages of `darwin`
 and `freebsd` aren't versioned software: they say so, and their builds are
 what's checked.
 
+Typst packages are compared with [Typst Universe](https://typst.app/universe/),
+their source (nixkeeper-versions reads its index daily), instead of
+Repology, which mostly can't compare them: each package's latest attribute
+(`typstPackages.cetz`) against Universe's newest version, its versioned
+ones (`typstPackages.cetz_0_3_0`) as older versions kept. Other sets'
+sources may follow (MELPA and ELPA for Emacs, Hackage for Haskell).
+
 ## The page
 
 It starts from an overview of all of nixpkgs: the fully checked packages'

@@ -646,6 +646,13 @@ const SOURCES = [
   },
   { key: 'github', label: 'GitHub PRs', says: () => 'listed during the sync' },
   {
+    key: 'typst',
+    label: 'Versions (Typst Universe)',
+    from: 'https://github.com/iedame/nixkeeper-versions',
+    says: (s) => `read ${timeAgo(s.at)}, ${s.packages?.toLocaleString()} packages`,
+    instead: "Repology's versions used",
+  },
+  {
     key: 'queue',
     label: "nixpkgs-update's queue",
     from: 'https://nixpkgs-update-logs.nixos.org/~supervisor/queue.html',
@@ -661,17 +668,19 @@ function sourcesHtml() {
       hour: '2-digit',
       minute: '2-digit',
     });
-  const rows = SOURCES.filter(({ key }) => sources?.[key]).map(({ key, label, from, says }) => {
-    const s = sources[key];
-    const name = from
-      ? html`<a class="files-link" href="${from}" target="_blank" rel="noopener">${label}</a>`
-      : label;
-    return html`<li class="${s.used ? '' : 'unused'}"><b>${name}</b><span class="src-what"${s.at ? html` title="${when(s.at)}"` : ''}>${
-      s.used
-        ? says(s)
-        : `not used: ${s.why || 'unknown'}${s.at ? `, from ${timeAgo(s.at)}` : ''}, asked per package instead`
-    }</span></li>`;
-  });
+  const rows = SOURCES.filter(({ key }) => sources?.[key]).map(
+    ({ key, label, from, says, instead }) => {
+      const s = sources[key];
+      const name = from
+        ? html`<a class="files-link" href="${from}" target="_blank" rel="noopener">${label}</a>`
+        : label;
+      return html`<li class="${s.used ? '' : 'unused'}"><b>${name}</b><span class="src-what"${s.at ? html` title="${when(s.at)}"` : ''}>${
+        s.used
+          ? says(s)
+          : `not used: ${s.why || 'unknown'}${s.at ? `, from ${timeAgo(s.at)}` : ''}, ${instead || 'asked per package instead'}`
+      }</span></li>`;
+    },
+  );
   return html`<p class="pop-title">Where the data is from</p>
     <ul>
       <li><b>Daily sync</b><span title="${checkedAt ? when(checkedAt) : ''}">${checkedAt ? `${timeAgo(checkedAt)}, ${when(checkedAt)}` : 'not yet'}</span></li>
@@ -1502,6 +1511,7 @@ function setsHtml(sets) {
   const pct = (n, of) => (of ? Math.min(100, (100 * n) / of) : 0).toFixed(1);
   const cards = sets.map(([s, v]) => {
     const problems = [
+      v.outdated ? html`<span class="set-outdated">${fmt(v.outdated)} outdated</span>` : '',
       v.broken ? html`<span class="set-broken">${fmt(v.broken)} broken</span>` : '',
       v.failed ? html`<span class="set-failed">${fmt(v.failed)} failing</span>` : '',
     ].filter(Boolean);
@@ -1510,7 +1520,7 @@ function setsHtml(sets) {
       <span class="set-n">${fmt(v.packages)} <span class="set-unit">packages</span></span>
       <span class="set-by" title="${bulkText(s)}">by ${bulkShort(s)}</span>
       <span class="set-bar" aria-hidden="true"><span class="set-bar-broken" style="width:${pct(v.broken, v.packages)}%"></span><span class="set-bar-failed" style="width:${pct(v.failed, v.packages)}%"></span></span>
-      <span class="set-meta">${problems.length ? problems.map((p, i) => html`${i ? ' · ' : ''}${p}`) : 'None broken or failing'}</span>
+      <span class="set-meta">${problems.length ? problems.map((p, i) => html`${i ? ' · ' : ''}${p}`) : v.outdated == null ? 'None broken or failing' : 'None outdated, broken or failing'}</span>
     </a>`;
   });
   return html`<h2 class="scope-label">Sets updated in bulk <span class="scope-hint">each by its own tooling, not one PR per package: counted here, not in the cards above</span></h2>
@@ -2243,6 +2253,13 @@ function fillDetail(pkg, el, entries) {
           : ''
       }).`
     : '';
+  // Compared with its own source instead of Repology (Typst Universe):
+  // the row's "feed".
+  const feed = pkg.feed;
+  const feedLink = feed
+    ? html`<a class="files-link" href="${safeUrl(feed.url)}" target="_blank" rel="noopener">${feed.name} ↗</a>`
+    : '';
+  const feedDay = feed?.released ? ` (published ${longDate(`${feed.released}T12:00:00Z`)})` : '';
   const nixLine =
     up?.newer && !fromMaster(pkg)
       ? upstreamLine()
@@ -2251,19 +2268,23 @@ function fillDetail(pkg, el, entries) {
         : html`nixpkgs unstable has <span class="mono" style="font-weight:600">${pkg.nixVersion}</span>${
             rule
               ? ruleText
-              : st === 'warn' && fromMaster(pkg)
-                ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
-                : st === 'warn'
-                  ? html`, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion || '?'}</span>${since}`
-                  : olderVersionKept(pkg)
-                    ? html` — an older version nixpkgs keeps on purpose${pkg.keptBeside ? html`, beside <b class="mono">${pkg.keptBeside.attr}</b> <span class="mono">${pkg.keptBeside.version}</span>` : ', beside a newer one'}: not outdated while nothing newer is out in its own series.`
-                    : st === 'neutral'
-                      ? pkg.nixStatus === 'unlisted'
-                        ? " — Repology doesn't list this package, so there's nothing to compare it with."
-                        : html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
-                      : loaded
-                        ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${compared} other ${compared === 1 ? 'repository' : 'repositories'}.`
-                        : ` — the newest ${pkg.devel ? 'devel ' : ''}version.`
+              : feed && st === 'warn' && !fromMaster(pkg)
+                ? html`, the newest on ${feedLink} is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion}</span>${feedDay}${since}`
+                : feed && st === 'ok'
+                  ? html` — the newest on ${feedLink}${feedDay}.`
+                  : st === 'warn' && fromMaster(pkg)
+                    ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
+                    : st === 'warn'
+                      ? html`, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion || '?'}</span>${since}`
+                      : olderVersionKept(pkg)
+                        ? html` — an older version nixpkgs keeps on purpose${pkg.keptBeside ? html`, beside <b class="mono">${pkg.keptBeside.attr}</b> <span class="mono">${pkg.keptBeside.version}</span>` : ', beside a newer one'}: not outdated while nothing newer is out in its own series.`
+                        : st === 'neutral'
+                          ? pkg.nixStatus === 'unlisted'
+                            ? " — Repology doesn't list this package, so there's nothing to compare it with."
+                            : html` — Repology classifies this version as <span class="mono">${pkg.nixStatus}</span>.`
+                          : loaded
+                            ? ` — the newest ${pkg.devel ? 'devel ' : ''}version, compared with ${compared} other ${compared === 1 ? 'repository' : 'repositories'}.`
+                            : ` — the newest ${pkg.devel ? 'devel ' : ''}version.`
           }${
             up && !up.newer && !failing
               ? follows

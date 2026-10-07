@@ -1086,6 +1086,9 @@ button.checked:focus-visible {
 .set-failed {
   color: var(--danger);
 }
+.set-outdated {
+  color: var(--warn);
+}
 .set-broken {
   color: var(--caution);
 }

@@ -33,6 +33,7 @@ from .sources import (
     hydra,
     hydra_digest,
     nixpkgs_update,
+    typst_digest,
     updates_digest,
     upstream,
     versions_digest,
@@ -149,6 +150,9 @@ def main():
         wanted, previous, nixpkgs=nixpkgs, now=now, digest=digest, bulk=set(bulk)
     )
     index_rows = rows.build_rows(projects, nixpkgs)
+    # Typst packages: compared with Typst Universe, their source, instead.
+    if any(a.startswith(typst_digest.PREFIX) for a in tracked):
+        typst_digest.apply(index_rows, nixpkgs, typst_digest.load(now))
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
     # The lists' rows (all of them, unless every package is tracked): the
     # rest are read in bulk only, and the rows of sets updated in bulk have
