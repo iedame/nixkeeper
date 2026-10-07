@@ -28,7 +28,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 - `nix run .#start-runs`: starts an instance's runs through GitHub's API,
   hourly from a machine that's always on (a nix-darwin agent or a NixOS
   timer, in `docs/all-packages.md`), since GitHub's schedule skips runs
-  when it's busy. The community instance's daily sync and digests by
+  when it's busy. The community instance's hourly updates (every hour but
+  06 UTC), daily sync and digests by
   default; a fork's daily sync with `NIXKEEPER_START_REPO` and
   `NIXKEEPER_START_DIGESTS=` (it reads iedame's digests). The daily sync can be started with `if_older` (only when the last
   sync is older than that many hours), and its 06:00 run now stops when
