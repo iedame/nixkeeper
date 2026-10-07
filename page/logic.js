@@ -192,7 +192,9 @@ export function computeStatus(pkg) {
   if (
     pkg.nixStatus === 'legacy' &&
     pkg.devel &&
-    compareVersions(pkg.refVersion || '', pkg.nixVersion || '') > 0
+    pkg.refVersion &&
+    pkg.nixVersion &&
+    compareVersions(pkg.refVersion, pkg.nixVersion) > 0
   )
     return 'warn';
   // nixkeeper's own update check found a release Repology hasn't seen.
@@ -235,7 +237,8 @@ export function hasFailure(pkg, platform = null) {
 // other word) < zero < post-release (post..., patch..., pl, errata) <
 // nonzero < a letter suffix (1.0a); then words by their first letter, any
 // case, numbers as numbers; the shorter version padded with zeros (1 ==
-// 1.0, 1.0rc1 < 1.0 < 1.0patch1 < 1.0.1 < 1.0a).
+// 1.0, 1.0rc1 < 1.0 < 1.0patch1 < 1.0.1 < 1.0a). And nixpkgs' "unstable"
+// snapshots after the version before the word (versionParts).
 const PRE_RELEASE = 0;
 const ZERO = 1;
 const POST_RELEASE = 2;
@@ -287,14 +290,35 @@ function compareComponent(x, y) {
   return 0;
 }
 
-export function compareVersions(a, b) {
-  const pa = versionComponents(a || '');
-  const pb = versionComponents(b || '');
+function compareComponents(pa, pb) {
   for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
     const c = compareComponent(pa[i] || PAD, pb[i] || PAD);
     if (c) return c;
   }
   return 0;
+}
+
+// nixpkgs' "unstable" versions (0-unstable-2022-07-13, 1.2-unstable-2025-05-
+// 01; unstable-2015-10-15, with none before it, as 0): the version before
+// the word, a snapshot after it, and its date (versions.py's Version).
+function versionParts(version) {
+  const m = /unstable/i.exec(version);
+  return m
+    ? [
+        versionComponents(version.slice(0, m.index)),
+        1,
+        versionComponents(version.slice(m.index + 8)),
+      ]
+    : [versionComponents(version), 0, []];
+}
+
+export function compareVersions(a, b) {
+  const [pa, snapA, afterA] = versionParts(a || '');
+  const [pb, snapB, afterB] = versionParts(b || '');
+  const c = compareComponents(pa, pb);
+  if (c) return c;
+  if (snapA !== snapB) return snapA < snapB ? -1 : 1;
+  return compareComponents(afterA, afterB);
 }
 
 // The version master has, when ahead of the channel: Hydra's build there, or
