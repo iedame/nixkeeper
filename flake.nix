@@ -471,7 +471,11 @@
 
         devShells.default = pkgs.mkShell {
           packages = [
-            (pkgs.python3.withPackages (ps: [ ps.brotli ]))
+            # libversion: for the tests only (tests/test_versions.py).
+            (pkgs.python3.withPackages (ps: [
+              ps.brotli
+              ps.libversion
+            ]))
             pkgs.nodejs-slim # the page's tests (tests/js/)
             treefmt.config.build.wrapper
           ]
