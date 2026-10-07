@@ -403,7 +403,7 @@ function versionCell(pkg, st) {
   const failing = stale
     ? html`<span class="badge neutral" title="${staleText(stale, "nixkeeper's update check failing")}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
     : '';
-  const about = html`${pkg.pending ? html`<span class="badge neutral" title="${PENDING_TITLE} (${pkg.set})">pending</span>` : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : ''}`;
+  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : ''}`;
   if (st !== 'warn')
     return html`<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
@@ -583,8 +583,17 @@ const keptText = (pkg) =>
     ? `An older version nixpkgs keeps on purpose: it also has ${pkg.keptBeside.attr} ${pkg.keptBeside.version}`
     : 'An older version nixpkgs keeps on purpose, beside a newer one';
 const statusLabel = (status) => STATUS_LABEL[status] || status;
-const PENDING_TITLE =
-  "A generated package set: only Repology's versions and Hydra's builds for now";
+// A set kept current in bulk by its own tooling (rPackages: the CRAN
+// import), not one PR per package: what updates it, from index.json's
+// "profiles" (config.SET_PROFILES). Data from before has none: said plainly.
+const profileOf = (set) => manifest?.profiles?.[set] || null;
+const bulkText = (set) =>
+  `Kept current in bulk by ${profileOf(set)?.updatedBy || 'its own tooling'}, not one PR per package`;
+const bulkShort = (set) => profileOf(set)?.short || 'updated in bulk';
+const bulkBadge = (set) =>
+  html`<span class="badge neutral" title="${bulkText(set)} (${set}): counted on its set's line on the overview">${bulkShort(set)}</span>`;
+const UNVERSIONED_TITLE =
+  "Not software with releases to compare (a system component): its builds are what's checked";
 
 const DOT_TITLE = {
   ok: 'Up to date: nixpkgs has the newest version',
@@ -1173,10 +1182,10 @@ function render(list, { keepPage = false } = {}) {
 }
 
 // With every package, the header. The overview (no list chosen): all of
-// nixpkgs, split into the fully checked and the generated sets; cards for
-// the fully checked ones' outdated, failing, vulnerable and broken (their
-// count, its change over a week, a month's trend), each opening its list;
-// the generated sets; and ways to find packages (what needs attention is
+// nixpkgs, split into the fully checked and the sets updated in bulk;
+// cards for the fully checked ones' outdated, failing, vulnerable and broken
+// (their count, its change over a week, a month's trend), each opening its
+// list; the sets updated in bulk; and ways to find packages (what needs attention is
 // the filter bar's chip, renderStats, on every view). A
 // list: what it is ("Showing", ✕ back to the overview), tiles counting and
 // filtering it, and the team picker.
@@ -1207,7 +1216,7 @@ function renderScope() {
     el.innerHTML = overviewHtml();
   }
   // While searching, the matches (drawn under the overview) get the room:
-  // the newest and longest-standing and the generated sets step aside, and
+  // the newest and longest-standing and the sets updated in bulk step aside, and
   // come back once the search is cleared.
   const query = document.getElementById('search').value;
   const more = el.querySelector('.overview-more');
@@ -1396,7 +1405,9 @@ function overviewHtml() {
     name,
     typeof v === 'number' ? { packages: v, failed: 0, broken: 0 } : v,
   ]);
-  const total = (c.tracked || 0) + (c.pending || 0);
+  // In sets updated in bulk ("pending" before 0.14.0).
+  const inSets = c.inSets ?? c.pending ?? 0;
+  const total = (c.tracked || 0) + inSets;
   const share = total ? (100 * (c.tracked || 0)) / total : 0;
   const points = (trendPoints || []).slice(-TREND_DAYS);
   const trends = points.length >= TREND_MIN_POINTS;
@@ -1426,7 +1437,7 @@ function overviewHtml() {
           : card.key === 'updateFailures'
             ? backfillNote()
             : card.key === 'outdated'
-              ? html`<span class="card-sub" title="Each package counted once, its other attributes left out, and the generated sets (Haskell, R and the others) left out: with nixkeeper's own update checks, which can overrule a newer version listed elsewhere (a development series, a version upstream withdrew). Counts of every attribute in nixpkgs come out higher.">Unique, non-generated packages</span>`
+              ? html`<span class="card-sub" title="Each package counted once, its other attributes left out, and the sets updated in bulk (Haskell, R and the others) left out: they count on their own lines below. With nixkeeper's own update checks, which can overrule a newer version listed elsewhere (a development series, a version upstream withdrew). Counts of every attribute in nixpkgs come out higher.">Unique, outside sets updated in bulk</span>`
               : ''
       }
       ${drawn ? sparkline(mine, card.key, card.color) : ''}
@@ -1439,7 +1450,7 @@ function overviewHtml() {
     <div class="scope-bar" aria-hidden="true"><span style="width:${share.toFixed(1)}%"></span></div>
     <div class="scope-split">
       <span><i class="swatch full"></i><b>${fmt(c.tracked)}</b> fully checked</span>
-      <span title="Generated from CRAN, Hackage and the like by their own tooling: only Repology's versions and Hydra's builds for now"><i class="swatch gen"></i><b>${fmt(c.pending)}</b> in generated sets · versions and builds only</span>
+      <span title="Generated from CRAN, Hackage and the like and kept current in bulk by their own tooling, not one PR per package: each set counted on its own line below, not in the cards"><i class="swatch gen"></i><b>${fmt(inSets)}</b> in sets updated in bulk · counted per set</span>
     </div>
     <h2 class="scope-label">Fully checked${trends ? (points.length < TREND_DAYS ? `, since ${shortDay(points[0].day)}` : `, last ${TREND_DAYS} days`) : ''} · each opens its list${trends ? '' : html` <span class="scope-hint">(trends from the second daily sync)</span>`}</h2>
     <div class="cards">${cards}</div>${trends ? marksHtml(points) : ''}
@@ -1484,8 +1495,8 @@ function fixedHtml() {
     <div class="hl-cols">${cards}</div>`;
 }
 
-// The overview's generated sets: each one's size, and how much of it is
-// marked broken or failing (a bar, in their colours).
+// The overview's sets updated in bulk: each one's size, what updates it,
+// and how much of it is marked broken or failing (a bar, in their colours).
 function setsHtml(sets) {
   if (!sets.length) return '';
   const pct = (n, of) => (of ? Math.min(100, (100 * n) / of) : 0).toFixed(1);
@@ -1497,11 +1508,12 @@ function setsHtml(sets) {
     return html`<a class="set-card" href="${scopeHref({ set: s })}" data-scope-set="${s}">
       <span class="set-name mono">${s}</span>
       <span class="set-n">${fmt(v.packages)} <span class="set-unit">packages</span></span>
+      <span class="set-by" title="${bulkText(s)}">by ${bulkShort(s)}</span>
       <span class="set-bar" aria-hidden="true"><span class="set-bar-broken" style="width:${pct(v.broken, v.packages)}%"></span><span class="set-bar-failed" style="width:${pct(v.failed, v.packages)}%"></span></span>
       <span class="set-meta">${problems.length ? problems.map((p, i) => html`${i ? ' · ' : ''}${p}`) : 'None broken or failing'}</span>
     </a>`;
   });
-  return html`<h2 class="scope-label">Generated sets <span class="set-pending" title="Generated from CRAN, Hackage and the like by their own tooling: only Repology's versions and Hydra's builds for now">pending</span> <span class="scope-hint">versions and builds only, for now</span></h2>
+  return html`<h2 class="scope-label">Sets updated in bulk <span class="scope-hint">each by its own tooling, not one PR per package: counted here, not in the cards above</span></h2>
     <div class="set-grid">${cards}</div>`;
 }
 
@@ -1540,7 +1552,7 @@ function listHeaderHtml() {
     <div class="scope-view">
       <span class="scope-label">Showing</span>
       <span class="view-chip">${what} · ${fmt(shownCount)}<a class="view-x" href="${scopeHref({})}" data-scope-home aria-label="Back to the overview" title="Back to the overview">✕</a></span>
-      ${path.startsWith('views/set/') ? html`<span class="scope-hint">A generated set: only Repology's versions and Hydra's builds, for now</span>` : ''}
+      ${path.startsWith('views/set/') ? html`<span class="scope-hint">${bulkText(setFilter)}${profileOf(setFilter) ? html` (<a class="files-link" href="${safeUrl(profileOf(setFilter).link)}" target="_blank" rel="noopener">in nixpkgs ↗</a>)` : ''}</span>` : ''}
       ${teamPicker('Any team')}
     </div>
     ${
@@ -1641,7 +1653,7 @@ function moreMatchesHtml() {
     <div class="other-label">${total.toLocaleString()} ${shownView === 'overview' ? '' : 'more '}${total === 1 ? 'package matches' : 'packages match'} in all of nixpkgs${total > found.length ? html`, the first ${found.length}` : ''}</div>
     <ul>${found.map(
       ([name, letter, set]) =>
-        html`<li><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}" role="img" aria-label="${DOT_TITLE[NAME_DOTS[letter[0]] || 'neutral'] || ''}"></span><a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a>${set ? html` <span class="badge neutral" title="A generated set: only Repology's versions and Hydra's builds for now">pending</span>` : ''}${letter.endsWith('v') ? html` <span class="badge vuln">vulnerable</span>` : ''}</li>`,
+        html`<li><span class="status-dot ${NAME_DOTS[letter[0]] || 'neutral'}" role="img" aria-label="${DOT_TITLE[NAME_DOTS[letter[0]] || 'neutral'] || ''}"></span><a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a>${set ? html` ${bulkBadge(set)}` : ''}${letter.endsWith('v') ? html` <span class="badge vuln">vulnerable</span>` : ''}</li>`,
     )}</ul>
   </div>`;
 }
@@ -1772,13 +1784,14 @@ function buildCell(pkg) {
 function updateCell(pkg) {
   const status = updateStatus(pkg);
   // The bot set to update it: joined to the status, as the platforms are.
-  const queued = pkg.pending || pkg.update === undefined ? '' : queuedTag(pkg);
+  const queued = pkg.update === undefined ? '' : queuedTag(pkg);
   return queued ? html`<span class="upd-pair">${status}${queued}</span>` : status;
 }
 
 function updateStatus(pkg) {
-  if (pkg.pending)
-    return html`<span class="failure-na" title="${PENDING_TITLE}: nixpkgs-update's attempts aren't read">—</span>`;
+  // A set's, the bot never tried: its set's tooling updates it.
+  if (pkg.set && !pkg.update)
+    return html`<span class="failure-na" title="${bulkText(pkg.set)}: nixpkgs-update hasn't tried it">—</span>`;
   if (pkg.update === undefined)
     return html`<span class="failure-na" title="Not in nixpkgs">—</span>`;
   const button = (dot, text, quiet = false) =>
@@ -1806,6 +1819,8 @@ function updateStatus(pkg) {
   // With every package, only the lists' packages' logs are read (with no
   // attempt read before).
   if (pkg.unread?.includes('update') && !pkg.update) return button('neutral', 'not read', true);
+  if (pkg.update === null && pkg.unversioned)
+    return html`<span class="failure-na" title="${UNVERSIONED_TITLE}: nothing for nixpkgs-update to update">—</span>`;
   if (pkg.update === null) return button('neutral', 'not attempted', true);
   return button('ok', 'none reported', true);
 }
@@ -1943,7 +1958,11 @@ function fillUpdate(pkg, el) {
     'Showing the last known attempt.',
   )}`;
   if (!u) {
-    el.innerHTML = html`${stale}<div class="nix-line">nixpkgs-update hasn't tried to update this package (it may have no update source it understands).</div>${queueHtml(pkg)}`;
+    el.innerHTML = html`${stale}<div class="nix-line">${
+      pkg.set
+        ? html`nixpkgs-update hasn't tried to update this package: ${bulkText(pkg.set).replace(/^K/, 'k')}.`
+        : "nixpkgs-update hasn't tried to update this package (it may have no update source it understands)."
+    }</div>${queueHtml(pkg)}`;
     return;
   }
   const dir = u.log.slice(0, u.log.lastIndexOf('/') + 1); // every attempt's log
@@ -2266,11 +2285,14 @@ function fillDetail(pkg, el, entries) {
   const unloaded = loaded
     ? ''
     : html`<div class="stale-note">⚠ Couldn't load Repology's details for this package, so the repositories it's compared with aren't shown. Close and reopen it to try again.</div>`;
-  const pending = pkg.pending
-    ? html`<div class="stale-note">From a generated package set (<span class="mono">${pkg.set}</span>): only Repology's versions and Hydra's builds for now; update checks, nixpkgs-update's attempts and GitHub counts aren't collected for it yet.</div>`
-    : '';
+  const profile = profileOf(pkg.set);
+  const inBulk = pkg.set
+    ? html`<div class="nix-line">In ${profile ? `the ${profile.name} set` : 'a set'} (<span class="mono">${pkg.set}</span>): ${bulkText(pkg.set).replace(/^K/, 'k')}${profile ? html` (<a class="files-link" href="${safeUrl(profile.link)}" target="_blank" rel="noopener">in nixpkgs ↗</a>)` : ''}. It counts on its set's line on the overview, not in the cards; GitHub's PR counts and nixkeeper's update checks aren't collected for it.</div>`
+    : pkg.unversioned
+      ? html`<div class="nix-line">${UNVERSIONED_TITLE}.</div>`
+      : '';
   el.innerHTML = html`
-    <div class="nix-line">${nixLine}</div>${pending}${unloaded}${
+    <div class="nix-line">${nixLine}</div>${inBulk}${unloaded}${
       onMaster(pkg)
         ? html`<div class="master-note">master already has <span class="mono">${onMaster(pkg)}</span> (${masterSaid})${
             waitingForChannel(pkg)

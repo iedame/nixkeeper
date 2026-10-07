@@ -52,7 +52,7 @@ class Tracking(unittest.TestCase):
             },
         )
 
-    def test_generated_sets_are_pending_unless_listed(self):
+    def test_sets_updated_in_bulk_unless_listed(self):
         rows = [
             {"name": "haskellPackages.a", "attrs": ["haskellPackages.a"], "lists": []},
             {
@@ -66,12 +66,21 @@ class Tracking(unittest.TestCase):
                 "lists": [],
             },
             {"name": "d", "attrs": ["d"], "lists": []},
+            # Not versioned software, listed or not: its builds only.
+            {"name": "darwin.e", "attrs": ["darwin.e"], "lists": ["x"]},
         ]
-        tracking.add_pending(rows)
+        tracking.add_sets(rows)
         self.assertEqual(
-            [(r.get("pending"), r.get("set")) for r in rows],
-            [(True, "haskellPackages"), (None, None), (None, None), (None, None)],
+            [(r.get("set"), r.get("unversioned")) for r in rows],
+            [
+                ("haskellPackages", None),
+                (None, None),
+                (None, None),
+                (None, None),
+                (None, True),
+            ],
         )
+        self.assertNotIn("pending", rows[0])
 
 
 class Repology(unittest.TestCase):
@@ -195,12 +204,12 @@ class Hydra(unittest.TestCase):
 
 class UpdateLogs(unittest.TestCase):
     def test_turns_outdated_and_failing_first_within_the_budget(self):
-        nixpkgs = {n: pkg(n) for n in ("quiet", "outdated", "failing", "pending")}
+        nixpkgs = {n: pkg(n) for n in ("quiet", "outdated", "failing", "in-set")}
         rows = [
             {"name": "quiet", "attrs": ["quiet"], "nixStatus": "newest"},
             {"name": "outdated", "attrs": ["outdated"], "nixStatus": "outdated"},
             {"name": "failing", "attrs": ["failing"], "nixStatus": "newest"},
-            {"name": "pending", "attrs": ["pending"], "pending": True},
+            {"name": "in-set", "attrs": ["in-set"], "set": "rPackages"},
         ]
         before = {"failing": {"name": "failing", "updateFailure": True, "update": {}}}
         dates = {n: nixpkgs_update.datetime.now(nixpkgs_update.UTC) for n in nixpkgs}
@@ -315,7 +324,6 @@ class Data(unittest.TestCase):
             row("c", updateFailure=True, maintainers=["iedame"]),
             row(
                 "haskellPackages.d",
-                pending=True,
                 set="haskellPackages",
                 maintainers=[],
                 markedBroken=True,
@@ -362,7 +370,7 @@ class Data(unittest.TestCase):
                 "updateFailures": 1,
                 "buildFailures": 0,
                 "waiting": 0,
-                "pending": 1,
+                "inSets": 1,
                 "buildFailuresOn": {},
             },
         )
@@ -380,7 +388,7 @@ class Data(unittest.TestCase):
         names = lambda path: [p["name"] for p in self.read(path)["packages"]]  # noqa: E731
         self.assertEqual(names("views/attention.json"), ["b", "c", "e"])
         self.assertEqual(names("views/maintainer/iedame.json"), ["a", "c"])
-        self.assertEqual(names("views/maintainer/none.json"), ["b"])  # not pending
+        self.assertEqual(names("views/maintainer/none.json"), ["b"])  # not in a set
         # Every maintainer once, as first written (any case): packages,
         # outdated, failing.
         self.assertEqual(
@@ -467,7 +475,6 @@ class Data(unittest.TestCase):
             row("b", builds=builds("unfinished", "broken")),
             row(
                 "haskellPackages.c",
-                pending=True,
                 set="haskellPackages",
                 builds=builds("failed"),
             ),
@@ -476,7 +483,7 @@ class Data(unittest.TestCase):
             {"checkedAt": NOW, "allPackages": True, "packages": rows}, {}, self.out
         )
         counts = self.read("index.json")["counts"]
-        self.assertEqual(counts["failingBuilds"], 4)  # pending rows' too
+        self.assertEqual(counts["failingBuilds"], 4)  # in sets too
         self.assertEqual(counts["failed"], 1)  # packages: their own build failed
 
     def test_build_failures_by_platform(self):
@@ -497,10 +504,9 @@ class Data(unittest.TestCase):
             ),
             row(
                 "haskellPackages.e",
-                pending=True,
                 set="haskellPackages",
                 builds=failed("x86_64-linux"),
-            ),  # pending: not counted
+            ),  # in a set: not counted
         ]
         datastore.write(
             {"checkedAt": NOW, "allPackages": True, "packages": rows}, {}, self.out
@@ -613,7 +619,6 @@ class Highlights(unittest.TestCase):
             row("old", nixStatus="outdated", outdatedSince="2026-01-01T00:00:00+00:00"),
             row(
                 "haskellPackages.x",
-                pending=True,
                 set="haskellPackages",
                 failingSince="2026-01-01T00:00:00+00:00",
             ),
@@ -627,7 +632,7 @@ class Highlights(unittest.TestCase):
         self.assertEqual(
             found["outdated"]["oldest"], [["old", "2026-01-01T00:00:00+00:00", "o"]]
         )
-        self.assertEqual(found["failing"]["count"], 0)  # pending: left out
+        self.assertEqual(found["failing"]["count"], 0)  # in a set: left out
 
 
 class Fixed(unittest.TestCase):
@@ -678,13 +683,13 @@ class Fixed(unittest.TestCase):
             self.fixes(before, [row("a", update=newer, unread=["update"])]), []
         )
 
-    def test_not_new_removed_or_pending(self):
+    def test_not_new_removed_or_in_a_set(self):
         failing = row("a", failingSince="2026-09-01", builds=[self.FAILED])
         self.assertEqual(self.fixes([], [row("a", builds=[self.OK])]), [])  # new
         self.assertEqual(self.fixes([failing], []), [])  # removed
-        pending = {**failing, "pending": True, "set": "rPackages"}
+        in_set = {**failing, "set": "rPackages"}
         self.assertEqual(
-            self.fixes([pending], [row("a", builds=[self.OK], pending=True)]), []
+            self.fixes([in_set], [row("a", builds=[self.OK], set="rPackages")]), []
         )
 
     def test_kept_a_month_once_a_day_and_summed_up(self):
@@ -881,7 +886,6 @@ class Blockers(unittest.TestCase):
             row("conpass", builds=blocked("x86_64-linux")),
             row(
                 "haskellPackages.x",
-                pending=True,
                 set="haskellPackages",
                 builds=blocked("x86_64-linux", by={"name": "source"}),
             ),
@@ -904,7 +908,7 @@ class Blockers(unittest.TestCase):
         made = datastore.views(rows, out)
         found = made["blockers"]
         self.assertEqual(found["count"], 2)
-        self.assertEqual(found["packages"], 4)  # pending ones too
+        self.assertEqual(found["packages"], 4)  # in sets too
         # The packages stopped, each once, for the card's "Show all".
         self.assertEqual(
             [p["name"] for p in out["views/blocked.json"]["packages"]],

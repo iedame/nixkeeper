@@ -131,13 +131,13 @@ FIXES = ("build", "update", "bot")
 
 def fixes(rows, previous, now):
     """[{"at", "name", "kind", "from"?, "to"?}] for each fully checked row
-    fixed since previous (FIXES); not for new or removed packages, pending
-    rows, or ones whose data wasn't refreshed."""
+    fixed since previous (FIXES); not for new or removed packages, those of
+    sets updated in bulk, or ones whose data wasn't refreshed."""
     before = {row["name"]: row for row in previous["packages"]}
     found = []
     for row in rows:
         old = before.get(row["name"])
-        if not old or row.get("pending") or old.get("pending"):
+        if not old or row.get("set") or old.get("set"):
             continue
         builds = row.get("builds") or []
         if (

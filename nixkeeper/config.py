@@ -71,16 +71,57 @@ def all_packages():
 
 
 # Package sets generated from another ecosystem's index (CRAN, Hackage, ...)
-# by their own tooling: with every package, their rows are "pending", with
-# only what the digests and the package index say (set by set, more later).
-GENERATED_SETS = [
-    "emacsPackages",
-    "haskellPackages",
-    "rPackages",
-    "sbclPackages",
-    "texlivePackages",
-    "typstPackages",
-]
+# and kept current in bulk by their own tooling, not one PR per package:
+# with every package, their rows (not on the lists) carry "set", are counted
+# on their set's line on the overview instead of the cards, and say what
+# updates them. Versions from Repology and builds from Hydra as any row;
+# the bot's attempts where it has any (it tries some TeX Live and Emacs
+# packages). For each: a name, what updates it and where that is in
+# nixpkgs, and a short form for badges.
+NIXPKGS_TREE = "https://github.com/NixOS/nixpkgs/tree/master/"
+SET_PROFILES = {
+    "emacsPackages": {
+        "name": "Emacs",
+        "updatedBy": "the ELPA, NonGNU ELPA and MELPA update scripts",
+        "short": "ELPA/MELPA",
+        "link": NIXPKGS_TREE + "pkgs/applications/editors/emacs/elisp-packages",
+    },
+    "haskellPackages": {
+        "name": "Haskell",
+        "updatedBy": "hackage2nix, on the haskell-updates branch",
+        "short": "hackage2nix",
+        "link": NIXPKGS_TREE
+        + "maintainers/scripts/haskell/regenerate-hackage-packages.sh",
+    },
+    "rPackages": {
+        "name": "R",
+        "updatedBy": "the CRAN and Bioconductor import (generate-r-packages.R)",
+        "short": "CRAN import",
+        "link": NIXPKGS_TREE + "pkgs/development/r-modules",
+    },
+    "sbclPackages": {
+        "name": "Common Lisp",
+        "updatedBy": "the Quicklisp import (ql-import.lisp)",
+        "short": "Quicklisp import",
+        "link": NIXPKGS_TREE + "pkgs/development/lisp-modules",
+    },
+    "texlivePackages": {
+        "name": "TeX Live",
+        "updatedBy": "a snapshot of TeX Live's package database (tlpdb.nix)",
+        "short": "TeX Live snapshot",
+        "link": NIXPKGS_TREE + "pkgs/tools/typesetting/tex/texlive/UPGRADING.md",
+    },
+    "typstPackages": {
+        "name": "Typst",
+        "updatedBy": "the Typst Universe import (update-typst-packages.py)",
+        "short": "Typst Universe import",
+        "link": NIXPKGS_TREE + "maintainers/scripts/update-typst-packages.py",
+    },
+}
+# Attribute sets that aren't software with releases to compare (system
+# components: darwin's SDK pieces, FreeBSD's base): their rows say so
+# ("unversioned") instead of a version status; their builds count as any.
+UNVERSIONED_SETS = ("darwin", "freebsd")
 # With every package and no updates digest (it isn't current): how many
 # packages not on the lists a sync reads the nixpkgs-update logs of (those
 # whose logs changed since the last sync; one or two requests each), the

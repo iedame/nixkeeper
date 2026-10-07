@@ -151,14 +151,15 @@ def main():
     index_rows = rows.build_rows(projects, nixpkgs)
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
     # The lists' rows (all of them, unless every package is tracked): the
-    # rest are read in bulk only, and generated sets' rows are pending.
+    # rest are read in bulk only, and the rows of sets updated in bulk have
+    # their set (config.SET_PROFILES).
     on_lists = [row for row in index_rows if row["lists"]] if everything else index_rows
     in_bulk = (
         {row["name"] for row in index_rows if not row["lists"]} if everything else set()
     )
     if everything:
-        tracking.add_pending(index_rows)
-    shown = [row for row in index_rows if not row.get("pending")]
+        tracking.add_sets(index_rows)
+    shown = [row for row in index_rows if not row.get("set")]
 
     # Repology's verdicts that are wrong for a version (up-to-date rules):
     # before the update checks and master, which can still make it outdated.
@@ -216,7 +217,8 @@ def main():
     nixpkgs_update.add_queue(index_rows, nixpkgs, updates_digest.load_queue(now))
     # Open PR/issue counts and open update PRs: from one listing of all of
     # nixpkgs' open ones (github_bulk), else searched per package (the
-    # lists' only). Not for pending rows: their sets are updated as a whole.
+    # lists' only). Not for the rows of sets updated in bulk: their sets are
+    # updated as a whole.
     if github_bulk.add_counts(shown, now):
         about.note("github", True)  # listed during the sync
     else:
@@ -238,6 +240,8 @@ def main():
     index = {"checkedAt": now, "packages": index_rows, "version": version()}
     if everything:
         index["allPackages"] = True
+        # What updates each set updated in bulk: once here, not on its rows.
+        index["profiles"] = config.SET_PROFILES
     if problems:
         index["listProblems"] = problems
     if page := listcheck.page_settings(lists):

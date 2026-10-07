@@ -36,10 +36,11 @@ On a page tracking [every package](all-packages.md) (a community
 instance), the page starts from an **overview** of nixpkgs, with no list:
 
 - how many packages nixpkgs has, how many are **fully checked** and how many
-  are in **generated sets** (pending: only Repology's versions and Hydra's
-  builds);
+  are in **sets updated in bulk** (R, Haskell, Emacs, TeX Live, Typst,
+  SBCL: kept current by their own tooling, the CRAN import or hackage2nix,
+  say, not one PR per package; counted per set, not in the cards);
 - five cards for the fully checked ones: outdated (fewer than Repology's
-  nixpkgs page counts: that includes the generated sets, counts every
+  nixpkgs page counts: that includes the sets updated in bulk, counts every
   attribute of a package, and takes any newer version it knows of, where
   nixkeeper's own update checks overrule it), build failures (a build of
   its own failing; with how many Hydra builds fail in all, as
@@ -75,8 +76,8 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
 - what was fixed in the last week: builds that work again, packages
   updated (from and to which version), and nixpkgs-update failures
   cleared, from the first daily sync with this on;
-- the generated sets, each with its size and how much of it is marked
-  broken or failing (a bar).
+- the sets updated in bulk, each with its size, what updates it, and how
+  much of it is marked broken or failing (a bar).
 
 At the top, "needs attention" (failing, outdated or flagged vulnerable,
 worst first) opens that list from anywhere; "Your packages" (your GitHub
@@ -84,7 +85,7 @@ handle) and "Your team" open yours, once given (they're kept in your
 browser only, and ✎ changes them). A list says what it is under
 "Showing" (✕ goes back to the overview): what needs attention, marked
 broken, blocked by a dependency, a maintainer's packages (`?q=@handle`, `@none` for those with
-none), a team's (`?team=`), a generated set's (`?set=`), one package alone
+none), a team's (`?team=`), a set's (`?set=`), one package alone
 (`?pkg=firefox`), or one of the instance's lists (`?list=`, by address
 only). Its tiles (outdated, failing, vulnerable, marked broken, blocked) count it and
 filter it, as the counts at the top do on other pages; the search and order
