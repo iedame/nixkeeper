@@ -6,7 +6,8 @@ name: "Pages: publish the page"
 # The data isn't part of it: the page reads that from the data branch.
 # An instance served from its own site (CLOUDFLARE_SITE_URL, the community
 # one's https://nixkeeper.com/; docs/all-packages.md) publishes a page that
-# sends visitors there instead, keeping their search and filters.
+# sends visitors there instead, keeping their search and filters, and only
+# when run by hand (workflow_dispatch): pushes don't change it.
 
 on:
   push:
@@ -28,6 +29,10 @@ concurrency:
 
 jobs:
   publish:
+    # With its own site, Pages only sends visitors there, and the page
+    # reaches the site with the data runs' deploys: a push needn't publish.
+    # After changing scripts/pages-redirect.sh, run this by hand.
+    if: vars.CLOUDFLARE_SITE_URL == '' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: read

@@ -209,7 +209,9 @@ To do the same for an instance:
 5. Run "Pages: publish the page" once: with `CLOUDFLARE_SITE_URL` set,
    your `<owner>.github.io` address no longer serves the page but sends
    visitors to your site, with their search and filters (`?q=`,
-   `?view=`, ...), so links to it keep working.
+   `?view=`, ...), so links to it keep working. From then on pushes don't
+   run it (the page reaches your site with the data runs); run it by hand
+   again only if `scripts/pages-redirect.sh` changes.
 
 ## What it costs
 

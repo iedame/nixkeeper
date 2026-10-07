@@ -75,6 +75,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- With its own site (`CLOUDFLARE_SITE_URL`), "Pages: publish the page"
+  no longer runs on every page change: its redirect doesn't change with
+  the page, which reaches the site with the data runs. Run it by hand
+  after changing `scripts/pages-redirect.sh`.
+
 - "Where the data is from" groups the sources read from nixkeeper's
   digests under each one, linked once (nixkeeper-hydra: builds,
   haskell-updates; nixkeeper-versions: nixkeeper's own update checks, from
