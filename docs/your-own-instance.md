@@ -16,7 +16,9 @@ gaming team's. To get a dashboard of your own:
 3. **Turn on GitHub Pages**: Settings → Pages → Source: **GitHub Actions**.
    Then Actions → "Pages: publish the page" → Run workflow (after that, it
    publishes by itself whenever the page changes). The page is then at
-   `https://<you>.github.io/<repo>/`.
+   `https://<you>.github.io/<repo>/`, or at your own domain if you give
+   Pages one (Settings → Pages → Custom domain): the workflow writes where
+   your data is into the page, so it finds it on any address.
 4. **Run the first sync**: Actions → "Data: daily sync" → Run workflow. It
    takes a few minutes, creates the `data` branch, and opens the status issue
    (labelled `nixkeeper-status`) that the syncs keep up to date. The page

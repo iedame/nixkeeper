@@ -148,6 +148,44 @@ Any scheduler that runs `nixkeeper-start-runs` hourly at :15 UTC will do
 (cron, say), with the token in a file named by
 `NIXKEEPER_START_TOKEN_FILE`.
 
+## Serving it from Cloudflare
+
+GitHub Pages serves the page, and the page reads its data from
+raw.githubusercontent.com, which isn't meant for heavy traffic. The
+community instance is served from Cloudflare instead, at
+https://nixkeeper.com/: the page and its data as one site, a
+[Worker](https://developers.cloudflare.com/workers/static-assets/) serving
+only static assets, from Cloudflare's edge (about 5,300 files and 335 MB,
+within its free plan's 20,000 files and 25 MiB a file). The data workflows
+publish there after they publish the data branch, which stays the syncs'
+own copy ([scripts/cloudflare.sh](../scripts/cloudflare.sh)), and only when
+the page or the data changed: a page change goes out with the next hourly
+run. Cloudflare doesn't build anything or read the repository; the
+workflows upload what they made.
+
+To do the same for an instance:
+
+1. In Cloudflare, create a Worker (Workers & Pages → Create → Worker,
+   starting from the "Hello World" one; a name, say `nixkeeper`: the first
+   publish replaces what it serves), and give it your domain (its Settings
+   → Domains & Routes → Add → Custom domain; the domain's DNS has to be on
+   Cloudflare).
+2. Create an API token with only **Account → Workers Scripts → Edit**.
+3. In the repository's Settings → Secrets and variables → Actions: the
+   secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` (in
+   Cloudflare's dashboard, beside your account), and the variables
+   `CLOUDFLARE_WORKER` (the Worker's name) and `CLOUDFLARE_SITE_URL`
+   (`https://` and your domain). Without the Worker variable nothing is
+   published there. A variable's value shows in the workflows' logs, public
+   for a public repository: the account ID is a secret to keep it out.
+   The Worker is served on your domain only: the workflow turns off its
+   `workers.dev` address (named after your account's subdomain, at first
+   your email address's) and preview addresses, so none is printed in the
+   logs, and the account needs no `workers.dev` subdomain.
+4. Run "Data: hourly updates" once: it publishes the page and data (the
+   first time takes a few minutes, uploading every file; after that, only
+   the files that changed).
+
 ## What it costs
 
 No requests beyond the bulk ones a list-based instance makes. The data is a few hundred MB (about 30 MB gzipped),

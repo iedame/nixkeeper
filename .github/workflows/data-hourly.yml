@@ -67,7 +67,21 @@ jobs:
           NIXKEEPER_NOTIFY: github-issue
 
       - name: Publish the data if it changed
+        id: publish
         # After a failed check too, but never without the restored data.
         if: ${{ !cancelled() && steps.restore.outcome == 'success' }}
         run: |
           bash scripts/data-branch.sh publish "hourly: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+
+      # The page with this data, to Cloudflare (a Worker serving them as
+      # static assets): only for an instance with one (the community one,
+      # nixkeeper.com), and only when the page or the data changed since
+      # (scripts/cloudflare.sh).
+      - name: Publish to Cloudflare
+        if: ${{ !cancelled() && steps.publish.outcome == 'success' }}
+        env:
+          CLOUDFLARE_WORKER: ${{ vars.CLOUDFLARE_WORKER }}
+          CLOUDFLARE_SITE_URL: ${{ vars.CLOUDFLARE_SITE_URL }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}  # a secret: kept out of the logs
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: bash scripts/cloudflare.sh deploy

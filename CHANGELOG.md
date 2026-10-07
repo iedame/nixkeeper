@@ -78,6 +78,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   deciding the version), which opens that panel too. Rows have it as
   `queued` (`docs/data.md`); the sources panel says when the queue is from.
 
+- The dashboard is at https://nixkeeper.com/, served from Cloudflare (a
+  Worker serving static assets): the page and its data as one site, from
+  Cloudflare's edge, instead of the data from raw.githubusercontent.com.
+  The data workflows publish it there when the page or the data changed,
+  for an instance with a Worker set (`CLOUDFLARE_WORKER`;
+  `docs/all-packages.md`); the
+  data branch stays the syncs' own copy, and GitHub Pages the page of every
+  other instance. GitHub Pages' workflow also writes where the data is into
+  the page, so one on a custom domain finds it as on github.io.
+
 ### Changed
 
 - With every package, failing is split in two on the overview and in a
