@@ -175,10 +175,21 @@ export function nameMatches(names, query, shown, limit = 50) {
 // name (shard_of in nixkeeper/datastore.py).
 export const shardOf = (name, count) => crc32(name) % count;
 
-// "any platform" (no restriction in nixpkgs) counts as both.
+// Whether pkg is available on key: a family ("linux", "darwin") or a system
+// ("x86_64-linux"). "any platform" (no restriction in nixpkgs) counts as all.
+// platforms.systems, when there, says which systems of a family it's on
+// (available_on in nixkeeper/sources/nixpkgs.py); without it, all of them.
 export function onPlatform(pkg, key) {
-  return pkg.platforms === null || Boolean(pkg.platforms?.[key]);
+  const pl = pkg.platforms;
+  if (pl === null) return true;
+  const family = key.split('-').pop();
+  if (!pl?.[family]) return false;
+  return key === family || !pl.systems || pl.systems.includes(key);
 }
+
+// A build is on platform: its system, or any system of that family.
+const onSystem = (system, platform) =>
+  platform.includes('-') ? system === platform : system.endsWith(`-${platform}`);
 
 // Follows Repology's statuses, but "legacy" (an older version nixpkgs keeps
 // beside a newer one under another attribute: tracy_0_11 beside tracy) isn't
@@ -216,7 +227,7 @@ export function olderVersionKept(pkg) {
 // Hydra builds with a status, on the selected platform only while one is.
 export function buildsWith(pkg, status, platform = null) {
   return (pkg.builds || []).filter(
-    (b) => b.status === status && (!platform || b.system.endsWith(`-${platform}`)),
+    (b) => b.status === status && (!platform || onSystem(b.system, platform)),
   );
 }
 

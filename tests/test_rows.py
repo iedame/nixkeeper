@@ -1,6 +1,7 @@
 import unittest
 
 from nixkeeper.rows import add_source_links, build_rows, search_term, source_url
+from nixkeeper.sources import nixpkgs as nixpkgs_source
 from tests.helpers import NIXPKGS, nix, other, pkg, project
 
 
@@ -172,8 +173,49 @@ class Rows(unittest.TestCase):
         self.assertEqual(plat("bbedit"), {"linux": False, "darwin": True})
         self.assertIsNone(plat("fzssh"))  # nothing declared: unrestricted
         self.assertEqual(
-            plat("odd"), {"linux": True, "darwin": False}
-        )  # pattern entries ignored
+            plat("odd"),  # pattern entries ignored
+            {"linux": True, "darwin": False, "systems": ["x86_64-linux"]},
+        )
+
+    def test_platforms_by_system(self):
+        def plat(platforms, bad=None):
+            meta = {"platforms": platforms}
+            if bad:
+                meta["badPlatforms"] = bad
+            return nixpkgs_source.platforms([{"meta": meta}])
+
+        every = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
+        self.assertEqual(plat(every), {"linux": True, "darwin": True})
+        # A Linux system missing: which ones, then.
+        self.assertEqual(
+            plat(["x86_64-linux", "aarch64-darwin"]),
+            {
+                "linux": True,
+                "darwin": True,
+                "systems": ["aarch64-darwin", "x86_64-linux"],
+            },
+        )
+        self.assertEqual(
+            plat(["aarch64-linux"]),
+            {"linux": True, "darwin": False, "systems": ["aarch64-linux"]},
+        )
+        # meta.badPlatforms takes systems away.
+        self.assertEqual(
+            plat(every, bad=["aarch64-linux"]),
+            {
+                "linux": True,
+                "darwin": True,
+                "systems": ["aarch64-darwin", "x86_64-linux"],
+            },
+        )
+        self.assertEqual(
+            plat(every, bad=["aarch64-darwin"]), {"linux": True, "darwin": False}
+        )
+        # Only x86_64-darwin, which nixpkgs no longer builds: Darwin, but none
+        # of the systems it builds.
+        self.assertEqual(
+            plat(["x86_64-darwin"]), {"linux": False, "darwin": True, "systems": []}
+        )
 
     def test_homepage_takes_first_of_a_list(self):
         [row] = self.rows(
