@@ -223,6 +223,12 @@ COUNTING_CHANGES = [
         "merged": "2026-10-06T21:00:00+00:00",
         "text": "nixpkgs-update logs read anew: a failed request is an update failure",
     },
+    {
+        # Between today's syncs; set to the merge's time if later.
+        "merged": "2026-10-07T13:00:00+00:00",
+        "text": "versions ordered as Repology orders them: a pre-release before "
+        "its release",
+    },
 ]
 KEPT = "legacy"
 

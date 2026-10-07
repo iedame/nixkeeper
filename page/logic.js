@@ -228,15 +228,71 @@ export function hasFailure(pkg, platform = null) {
   );
 }
 
-// Version order as the sync compares them (nixkeeper/versions.py): numbers
-// as numbers, a letter part before a number (1.0rc1 < 1.0.1).
+// Version order as the sync compares them (nixkeeper/versions.py):
+// Repology's algorithm (libversion, doc/ALGORITHM.md), tested against its
+// test suite (tests/data/version-comparison-tests.txt). Components, numeric
+// or alphabetic, each ranked: pre-release (alpha, beta, rc, pre..., any
+// other word) < zero < post-release (post..., patch..., pl, errata) <
+// nonzero < a letter suffix (1.0a); then words by their first letter, any
+// case, numbers as numbers; the shorter version padded with zeros (1 ==
+// 1.0, 1.0rc1 < 1.0 < 1.0patch1 < 1.0.1 < 1.0a).
+const PRE_RELEASE = 0;
+const ZERO = 1;
+const POST_RELEASE = 2;
+const NONZERO = 3;
+const LETTER_SUFFIX = 4;
+const PAD = [ZERO, 0, 0];
+
+function versionKeyword(word) {
+  const w = word.toLowerCase();
+  if (w === 'alpha' || w === 'beta' || w === 'rc' || w.startsWith('pre')) return PRE_RELEASE;
+  if (w.startsWith('post') || w.startsWith('patch') || w === 'pl' || w === 'errata')
+    return POST_RELEASE;
+  return null;
+}
+
+// [rank, kind, value]: kind 0 for a zero, 1 for a word (its first letter),
+// 2 for a number. Trailing zeros left out: padding adds them.
+function versionComponents(version) {
+  const found = [];
+  let pos = 0;
+  for (const m of version.matchAll(/([A-Za-z]+)|([0-9]+)/g)) {
+    const [, word, number] = m;
+    if (word) {
+      // Right after a number and not followed by one: a letter suffix.
+      const afterNumber = m.index === pos && found.length > 0 && found.at(-1)[1] !== 1;
+      const followed = /[0-9]/.test(version.charAt(m.index + word.length));
+      let rank = versionKeyword(word);
+      if (rank === null) rank = afterNumber && !followed ? LETTER_SUFFIX : PRE_RELEASE;
+      found.push([rank, 1, word[0].toLowerCase()]);
+    } else {
+      // As text without its leading zeros: no number is too long.
+      const digits = number.replace(/^0+/, '');
+      found.push(digits ? [NONZERO, 2, digits] : [...PAD]);
+    }
+    pos = m.index + m[0].length;
+  }
+  while (found.length && found.at(-1)[0] === ZERO) found.pop();
+  return found;
+}
+
+function compareComponent(x, y) {
+  for (let i = 0; i < 3; i++) {
+    if (x[i] === y[i]) continue;
+    // Numbers (text without leading zeros): the longer is bigger.
+    if (i === 2 && x[1] === 2 && x[i].length !== y[i].length)
+      return x[i].length < y[i].length ? -1 : 1;
+    return x[i] < y[i] ? -1 : 1;
+  }
+  return 0;
+}
+
 export function compareVersions(a, b) {
-  const parts = (v) =>
-    (v.match(/\d+|[A-Za-z]+/g) || []).map((p) => (/^\d/.test(p) ? [1, +p, ''] : [0, 0, p]));
-  const [pa, pb] = [parts(a), parts(b)];
+  const pa = versionComponents(a || '');
+  const pb = versionComponents(b || '');
   for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
-    if (!pa[i] || !pb[i]) return pa[i] ? 1 : -1;
-    for (let j = 0; j < 3; j++) if (pa[i][j] !== pb[i][j]) return pa[i][j] < pb[i][j] ? -1 : 1;
+    const c = compareComponent(pa[i] || PAD, pb[i] || PAD);
+    if (c) return c;
   }
   return 0;
 }
