@@ -122,19 +122,20 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   any way), `buildFailures` (a build of its own failed), `updateFailures`
   (nixpkgs-update's attempts failing), `vulnerable`, `broken` (marked
   broken), `waiting` (outdated, the
-  update merged on master) of the rows not pending; `pending`; and
+  update merged on master) of the rows not in a set updated in bulk;
+  `inSets`, how many are (`pending` before 0.14.0); and
   `failingBuilds`, every Hydra job of every row that didn't build (failed,
   a dependency failed, or unfinished), on every platform; and
   `buildFailuresOn`, the `buildFailures` by where they fail: `linux`,
   `darwin` and each Hydra system (`x86_64-linux`, ...), a package counted
   where it's available only, as the page's platform filter does;
 - `highlights` in `index.json`: for `failing` (builds), `outdated` and
-  `updateFailing`, of the rows not pending, `{ "count", "newest", "oldest" }`:
+  `updateFailing`, of the rows not in such a set, `{ "count", "newest", "oldest" }`:
   how many there are, and the 8 most recent and 8 longest-standing, each
   `[name, since, status]` (from `failingSince`, `outdatedSince`,
   `updateFailingSince`; `status` as in `names.json`);
 - `blockers` in `index.json`: the failing dependencies that stop others'
-  builds, of every row (pending ones too, as zh.fail counts them): how many
+  builds, of every row (in sets too, as zh.fail counts them): how many
   there are (`count`), how many packages have a build they stopped
   (`packages`, as many as `blocked.json` has, whether nixkeeper-hydra has
   read which dependency it was yet or not), and the 8 that stop the most
@@ -144,25 +145,30 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   with how many packages each has, how many of them fail, and how many
   nixpkgs marks broken
   (`{ "haskellPackages": { "packages": 19423, "failed": 83, "broken": 7600 }, ... }`);
+- `profiles` in `index.json`: what updates each set updated in bulk,
+  `{ "rPackages": { "name": "R", "updatedBy": "the CRAN and Bioconductor
+  import (generate-r-packages.R)", "short": "CRAN import", "link": ... },
+  ... }` (`SET_PROFILES` in `config.py`);
 - `views/`, each `{ "packages": [ ... ] }` of summary entries, sorted by
-  name: `attention.json` (failing, outdated or flagged vulnerable, not
-  pending), `broken.json` (marked broken, not pending), `blocked.json` (a
-  build not tried because a dependency failed, pending ones too),
+  name: `attention.json` (failing, outdated or flagged vulnerable, not in a
+  set updated in bulk), `broken.json` (marked broken, not in such a set),
+  `blocked.json` (a build not tried because a dependency failed, in such
+  sets too),
   `maintainer/<handle>.json` (the handle in lowercase; `none.json`: no
-  maintainer, not pending), `team/<slug>.json` and `list/<slug>.json` (the
+  maintainer, not in such a set), `team/<slug>.json` and `list/<slug>.json` (the
   name in lowercase, each run of other characters than letters and digits
   a `-`: `Security review` is `security-review`), `set/<name>.json` (a
-  generated set's pending rows);
+  set's rows);
 - `history.json`: `{ "points": [ { "day", "tracked", "outdated", "failed",
   "buildFailures", "updateFailures", "vulnerable", "broken" }, ... ],
-  "fixed": [ ... ] }`. `points`: the counts of the rows not pending at each
+  "fixed": [ ... ] }`. `points`: the counts of the rows not in a set at each
   daily sync (the last 365 days; a second sync the same day replaces the
   first), the overview's trends. Points from before 0.13.0 have `failed`
   only; a sync adds `buildFailures` and `updateFailures` to the previous
   day's from that day's manifest.
   `fixed`: what each daily sync found fixed since the one before, the last
   30 days, each `{ "at", "name", "kind", "from"?, "to"? }`, of the rows not
-  pending, and only with something showing it: `build` (it was failing; no
+  in a set, and only with something showing it: `build` (it was failing; no
   build fails now, and Hydra has a success), `update` (it was outdated; it
   isn't, and nixpkgs' version changed: `from` and `to`), `bot`
   (nixpkgs-update's attempts were failing; they aren't, and its attempt
@@ -181,11 +187,11 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   `[name, at, from, to]`;
 - `maintainers.json`: `{ "maintainers": [ [handle, packages, outdated,
   failing], ... ] }`, every maintainer by handle (any case; as nixpkgs
-  writes it first), with how many packages list them (pending ones too)
-  and how many of the rows not pending are outdated and failing: the
+  writes it first), with how many packages list them (in sets too)
+  and how many of the rows not in a set are outdated and failing: the
   maintainers page, and suggestions for a search starting with `@`;
 - `names.json`: `{ "names": [ [name, status], ... ] }` for every row, with
-  its set as a third element when it's pending. `status` is a letter as the
+  its set as a third element when it's in a set updated in bulk. `status` is a letter as the
   page's dot: `f` failed, `m` outdated but merged on master, `o` outdated,
   `u` up to date, `n` can't be compared; then `v` when flagged vulnerable.
 
@@ -205,7 +211,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it |
 | `markedBroken` | `true` when nixpkgs marks one of its attributes broken (`meta.broken` in the package index, evaluated for x86_64-linux), even with no Hydra job to say so (a broken package often has none) |
 | `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); missing when it has none |
-| `pending`, `set` | with every package: `true` and its set for a row of a generated set (`haskellPackages`, ...) that no list has: only Repology's versions and Hydra's builds ([every package](all-packages.md)) |
+| `set` | with every package: the set updated in bulk (`haskellPackages`, ...) of a row no list has: counted on its set's line, without GitHub's counts ([every package](all-packages.md)); `index.json`'s `profiles` says what updates it. Data from 0.13.0 and before has `"pending": true` beside it |
+| `unversioned` | with every package: `true` for a row of `darwin` or `freebsd`, not versioned software: its builds are what's checked |
 | `unread` | with every package: the sources this sync didn't read for the row and kept as they were (`["update"]`: its nixpkgs-update attempt, which nixkeeper-updates' digest hasn't read yet) |
 | `source` | where nixpkgs defines it, on GitHub at the channel's commit and line |
 | `unfree` | `true` when every attribute is unfree (Hydra doesn't build those) |

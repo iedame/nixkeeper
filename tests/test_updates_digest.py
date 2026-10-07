@@ -114,6 +114,23 @@ class AddAttempts(unittest.TestCase):
         latest.assert_called_once()
         self.assertEqual(rows[0]["update"]["outcome"], "prOpened")
 
+    def test_sets_updated_in_bulk_from_the_digest_only(self):
+        # The bot tries some (TeX Live, Emacs): their attempts as any
+        # package's; none is read from the logs, digest or not.
+        rows = [
+            {"name": "texlivePackages.a", "attrs": ["texlivePackages.a"], "set": "t"},
+            {"name": "texlivePackages.b", "attrs": ["texlivePackages.b"], "set": "t"},
+        ]
+        names = {row["name"] for row in rows}
+        digest = {"texlivePackages.a": {"attempt": read("texlivePackages.a")}}
+        self.add(rows, digest, bulk=names)
+        self.assertEqual(rows[0]["update"]["outcome"], "failed")
+        self.assertIsNone(rows[1]["update"])  # never tried
+        for row in rows:
+            row.pop("update")
+        self.add(rows, None, bulk=names)  # no digest: no logs read either
+        self.assertNotIn("update", rows[0])
+
     def test_in_bulk_the_last_read_or_unread(self):
         rows = [
             {"name": "behind", "attrs": ["behind"], "nixVersion": "1"},
@@ -206,11 +223,12 @@ class Queue(unittest.TestCase):
                 "attrs": ["python313Packages.requests"],
             },
             {"name": "hello", "attrs": ["hello"], "nixVersion": "2.12"},
-            {"name": "haskellPackages.x", "attrs": ["unciv"], "pending": True},
+            # A set's: queued too, when the bot has it in its queue.
+            {"name": "haskellPackages.x", "attrs": ["unciv"], "set": "x"},
             {"name": "gone", "attrs": ["proxyman"]},  # not in nixpkgs
         ]
         nixpkgs_update.add_queue(rows, nixpkgs, found)
-        unciv, requests, hello, pending, gone = rows
+        unciv, requests, hello, in_set, gone = rows
         # Its soonest attribute's day, the versions nixpkgs doesn't have.
         self.assertEqual(
             unciv["queued"],
@@ -224,7 +242,8 @@ class Queue(unittest.TestCase):
         )
         # Its updateScript only: no version, the script decides.
         self.assertEqual(requests["queued"], {"by": "2026-10-15", "script": True})
-        for row in (hello, pending, gone):  # not in the queue, a set's, gone
+        self.assertEqual(in_set["queued"]["by"], "2026-10-10")
+        for row in (hello, gone):  # not in the queue, gone
             self.assertNotIn("queued", row)
         # Without a queue, nothing.
         rows = [{"name": "unciv", "attrs": ["unciv"]}]

@@ -626,7 +626,7 @@ def to_read(row, attrs, old, dates, since):
 
 def bulk_turns(rows, nixpkgs, before, dates, since, bulk):
     """With every package: the names of the rows in bulk (not on the lists,
-    not pending) whose attempts are read this sync, at most
+    not of a set updated in bulk) whose attempts are read this sync, at most
     UPDATE_LOGS_BUDGET of those that take a request (to_read): outdated or
     failing ones first, then those waiting longest (the rest keep their last
     attempt until a later sync). None of them when the log site's index
@@ -635,7 +635,7 @@ def bulk_turns(rows, nixpkgs, before, dates, since, bulk):
         return set()
     waiting = []
     for row in rows:
-        if row["name"] not in bulk or row.get("pending"):
+        if row["name"] not in bulk or row.get("set"):
             continue
         attrs = [a for a in row["attrs"] if a in nixpkgs]
         old = before.get(row["name"])
@@ -651,14 +651,11 @@ def add_queue(rows, nixpkgs, queue):
     """Give each row the bot will try again ("queued": {"by": the day
     expected, "candidates": [[version, source URL], ...]}) from its queue
     (updates_digest.load_queue): its soonest attribute's, and the versions
-    the bot would update it to that nixpkgs doesn't have yet. Rows of the
-    generated sets (pending), not in nixpkgs, or not in the queue get none;
-    nothing at all without a queue."""
+    the bot would update it to that nixpkgs doesn't have yet. Rows not in
+    nixpkgs or not in the queue get none; nothing at all without a queue."""
     if not queue:
         return
     for row in rows:
-        if row.get("pending"):
-            continue
         found = [
             queue[search_term(a)]
             for a in row.get("attrs") or []
@@ -701,9 +698,10 @@ def add_attempts(
     rules (community.py), marked so on the attempt. digest: nixkeeper-
     updates' (updates_digest.load), the attempts it can answer taken from
     it instead of the logs. bulk: with every package, the rows not on the
-    lists: pending ones get no attempt at all, the others the digest's last
-    read attempt (without one, they're read within a budget: bulk_turns);
-    one with none says it wasn't read ("unread": ["update"])."""
+    lists: the digest's last read attempt (without one, they're read within
+    a budget: bulk_turns, but not those of sets updated in bulk, which the
+    bot rarely tries); one with none says it wasn't read ("unread":
+    ["update"])."""
     ignored_updates = ignored_updates or {}
     print("Checking nixpkgs-update logs...", file=sys.stderr)
     before = {row["name"]: row for row in previous["packages"]}
@@ -723,8 +721,8 @@ def add_attempts(
             continue  # not in nixpkgs: nothing for the bot to update
         attempts = None
         if row["name"] in bulk:
-            if row.get("pending"):
-                continue  # generated sets: not read for now
+            if row.get("set") and digest is None:
+                continue  # sets updated in bulk: the digest's attempts only
             old = before.get(row["name"])
             if digest is not None:
                 # The digest's last read attempts, whatever it hasn't read yet.

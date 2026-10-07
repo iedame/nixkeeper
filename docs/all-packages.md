@@ -32,11 +32,17 @@ asked package by package:
 | nixpkgs-update | from [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates)' digest, its last read attempt; a package whose attempts it hasn't read yet says so (`unread`). Without the digest, not read (about 4,000 packages' logs change a day, more than a sync can read politely) |
 | GitHub | PR and issue counts and update PRs from the bulk listings only |
 
-Packages of **generated sets** (rPackages, haskellPackages, emacsPackages,
-typstPackages, texlivePackages, sbclPackages: their own tooling generates
-them from CRAN, Hackage and so on) are **pending**: Repology's versions and
-Hydra's builds only, no update attempts or GitHub counts, and left out of
-"needs attention" and the counts at the top. More may come set by set.
+Packages of **sets updated in bulk** (rPackages, haskellPackages,
+emacsPackages, typstPackages, texlivePackages, sbclPackages: their own
+tooling generates them from CRAN, Hackage and so on, and keeps them current
+as a whole, not one PR per package) have Repology's versions, Hydra's
+builds and nixpkgs-update's attempts where it makes any (some TeX Live and
+Emacs packages), but no GitHub counts, and each says what updates it
+(`SET_PROFILES` in `config.py`). They're counted on their set's line on the
+overview, not in "needs attention" or the cards: an R package behind CRAN
+waits for the next CRAN import, which no one PR does. Packages of `darwin`
+and `freebsd` aren't versioned software: they say so, and their builds are
+what's checked.
 
 ## The page
 
@@ -44,8 +50,8 @@ It starts from an overview of all of nixpkgs: the fully checked packages'
 outdated, failing, vulnerable and broken counts with their trends (from
 `history.json`, a point a daily sync), a search (and every maintainer, by
 handle), the newest and longest-standing failures, what was fixed in the
-last week, and the generated sets. Each opens a list: what needs
-attention, a maintainer's packages (`?q=@handle`), a team's, a generated
+last week, and the sets updated in bulk. Each opens a list: what needs
+attention, a maintainer's packages (`?q=@handle`), a team's, a
 set's, or one package (`?pkg=`); visitors can keep their own handle and
 team, in their browser. See [reading the page](reading-the-page.md).
 

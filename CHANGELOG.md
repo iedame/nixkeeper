@@ -20,6 +20,20 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- With every package, the generated sets (R, Haskell, Emacs, TeX Live,
+  Typst, SBCL) are no longer "pending": they're **sets updated in bulk**,
+  each saying what keeps it current (the CRAN import, hackage2nix on
+  haskell-updates, the Quicklisp import, TeX Live's snapshot, the
+  ELPA/MELPA scripts, the Typst Universe import), linked in nixpkgs, on
+  the overview, on its list and on each of its packages, in place of the
+  "pending" badge. nixpkgs-update's attempts are shown for them where the
+  bot makes any (some TeX Live and Emacs packages); they're still counted
+  on their set's line, not in the cards (an R package behind CRAN waits for
+  the next import, which no one PR does). `darwin` and `freebsd` packages
+  say they're not versioned software instead of "unlisted", their builds
+  being what's checked. In the data: `set` without `pending`,
+  `unversioned`, `profiles` and `counts.inSets` in `index.json`
+  (`docs/data.md`); the page still reads data from before.
 - An instance served from its own site (Cloudflare, `CLOUDFLARE_SITE_URL`)
   no longer has a second copy of the page on GitHub Pages: its
   `<owner>.github.io` address sends visitors to the site, keeping their

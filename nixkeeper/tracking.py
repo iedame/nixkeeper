@@ -99,21 +99,23 @@ def every_package(nixpkgs, listed):
     }
 
 
-def generated_set(attrs):
-    """The generated package set (config.GENERATED_SETS) all of attrs are in,
-    or None."""
+def in_set(attrs, names):
+    """The attribute set of names (its first part: rPackages) all of attrs
+    are in, or None."""
     sets = {a.split(".", 1)[0] if "." in a else None for a in attrs}
-    if len(sets) == 1 and (name := sets.pop()) in config.GENERATED_SETS:
+    if len(sets) == 1 and (name := sets.pop()) in names:
         return name
     return None
 
 
-def add_pending(rows):
-    """With every package: mark the rows of generated package sets that no
-    list has ("pending": true, "set": its name). They get only what the
-    digests and the package index say (sync.py); a list's own packages are
-    never pending."""
+def add_sets(rows):
+    """With every package: give the rows of the sets updated in bulk
+    (config.SET_PROFILES) that no list has their set ("set": rPackages),
+    and mark those of sets that aren't versioned software
+    (config.UNVERSIONED_SETS: "unversioned"). A list's own packages keep
+    the full checks, set or not."""
     for row in rows:
-        if not row.get("lists") and (name := generated_set(row["attrs"])):
-            row["pending"] = True
+        if not row.get("lists") and (name := in_set(row["attrs"], config.SET_PROFILES)):
             row["set"] = name
+        if in_set(row["attrs"], config.UNVERSIONED_SETS):
+            row["unversioned"] = True

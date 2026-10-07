@@ -445,17 +445,17 @@ def views(rows, out):
     summary of every row (each {"packages": [summary entries]}, sorted by
     name), added to out, and what the manifest says of them:
       views/attention.json: failing, outdated or flagged vulnerable (not
-        pending)
-      views/broken.json: marked broken in nixpkgs (not pending)
+        in a set updated in bulk: those count on their set's line)
+      views/broken.json: marked broken in nixpkgs (not in such a set)
       views/blocked.json: a build of it not tried, as a dependency failed
-        (pending ones too, as the overview's blockers count them)
+        (in such sets too, as the overview's blockers count them)
       views/maintainer/<handle>.json: a maintainer's (lowercase handle),
-        and none.json those with no maintainer (not pending)
+        and none.json those with no maintainer (not in such a set)
       views/team/<slug>.json, views/list/<slug>.json, views/set/<name>.json
       names.json: every row's name and status (status), and its set when
-        pending: what a search looks through
+        it has one: what a search looks through
       maintainers.json: every maintainer, as nixpkgs writes the handle,
-        with how many packages they have (pending ones too) and how many
+        with how many packages they have (in such sets too) and how many
         of the fully checked are outdated and failing: [handle, packages,
         outdated, failing], by handle (any case)
     Returns {"counts": {...}, "views": {"attention", "teams", "lists":
@@ -476,7 +476,7 @@ def views(rows, out):
             "updateFailures",
             "buildFailures",
             "waiting",
-            "pending",
+            "inSets",
         ),
         0,
     )
@@ -487,8 +487,8 @@ def views(rows, out):
     # Since when each fully checked row has been failing, outdated, failing
     # its update attempts: the overview's newest and oldest of each.
     ages = {"failing": [], "outdated": [], "updateFailing": []}
-    # Which dependencies stop the most packages' builds (of every row, pending
-    # ones too, as zh.fail counts them): {name: [row?, {packages}, builds]}.
+    # Which dependencies stop the most packages' builds (of every row, those
+    # in sets too, as zh.fail counts them): {name: [row?, {packages}, builds]}.
     blockers = {}
     for row in rows:
         letter = status(row)
@@ -504,20 +504,20 @@ def views(rows, out):
                 stops[1].add(row["name"])
                 stops[2] += 1
         # Hydra jobs that didn't build, on every platform, of every row
-        # (pending ones too): failing builds as zh.fail counts them.
+        # (in sets too): failing builds as zh.fail counts them.
         counts["failingBuilds"] += sum(
             b["status"] in FAILING_BUILDS for b in row.get("builds") or []
         )
         names.append(
             [row["name"], letter, row["set"]]
-            if row.get("pending")
+            if row.get("set")
             else [row["name"], letter]
         )
         for handle in row.get("maintainers") or []:
             put(f"views/maintainer/{handle.lower()}.json", row)
             mine = maintainers.setdefault(handle.lower(), [handle, 0, 0, 0])
             mine[1] += 1
-            if not row.get("pending"):
+            if not row.get("set"):
                 mine[2] += is_outdated(row)
                 mine[3] += letter.startswith("f")
         for team in row.get("teams") or []:
@@ -526,7 +526,7 @@ def views(rows, out):
         for name in row.get("lists") or []:
             put(f"views/list/{slug(name)}.json", row)
             lists[name] = lists.get(name, 0) + 1
-        if row.get("pending"):
+        if row.get("set"):
             put(f"views/set/{row['set']}.json", row)
             found_set = sets.setdefault(
                 row["set"], {"packages": 0, "failed": 0, "broken": 0}
@@ -534,7 +534,7 @@ def views(rows, out):
             found_set["packages"] += 1
             found_set["failed"] += letter.startswith("f")
             found_set["broken"] += bool(row.get("markedBroken") or broken_builds(row))
-            counts["pending"] += 1
+            counts["inSets"] += 1
             continue
         if row.get("maintainers") == []:
             put("views/maintainer/none.json", row)
