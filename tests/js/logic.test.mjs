@@ -120,6 +120,15 @@ describe('compareVersions', () => {
   test('unstable dates compare by date', () => {
     assert.equal(compareVersions('0-unstable-2026-08-22', '0-unstable-2026-09-01'), -1);
   });
+  test("nixpkgs' unstable snapshots come after their version", () => {
+    assert.equal(compareVersions('1.2-unstable-2025-05-01', '1.2'), 1);
+    assert.equal(compareVersions('1.3', '1.2-unstable-2025-05-01'), 1);
+    assert.equal(compareVersions('0-unstable-2022-07-13', '0'), 1);
+    assert.equal(compareVersions('0.37-unstable-2026-06-03', '0.37'), 1);
+    assert.equal(compareVersions('0.0.1', '0-unstable-2023-04-26'), 1);
+    assert.equal(compareVersions('0.0.1', 'unstable-2023-04-26'), 1);
+    assert.equal(compareVersions('unstable-2023-04-26', '0-unstable-2023-04-26'), 0);
+  });
   test('a pre-release before its release; a trailing zero changes nothing', () => {
     assert.equal(compareVersions('1.0rc1', '1.0'), -1);
     assert.equal(compareVersions('2.0.0-beta.1', '2.0.0'), -1);

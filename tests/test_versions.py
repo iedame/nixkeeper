@@ -52,6 +52,24 @@ class Ordering(unittest.TestCase):
         self.assertTrue(is_newer("20251005.508", "20250820.1200"))
         self.assertTrue(is_newer("0.10.0", "0.9.2"))
 
+    def test_nixpkgs_unstable_is_after_its_version(self):
+        # nixpkgs' snapshots after a release, and of packages without any.
+        self.assertTrue(is_newer("1.2-unstable-2025-05-01", "1.2"))
+        self.assertTrue(is_newer("1.3", "1.2-unstable-2025-05-01"))
+        self.assertTrue(is_newer("0.37-unstable-2026-06-03", "0.37"))
+        self.assertTrue(is_newer("0.3.21-unstable-2025-08-15-6.6.158", "0.3.21"))
+        self.assertTrue(is_newer("0-unstable-2022-07-13", "0"))
+        self.assertTrue(is_newer("0-unstable-2026-09-01", "0-unstable-2026-08-22"))
+        # A release candidate stays before its release.
+        self.assertTrue(is_newer("1.2", "1.2rc1-unstable-2025-01-01"))
+        # Before any release, whichever way it's written: the first release
+        # is newer (not "unstable" against 0.0.1's second 0).
+        self.assertTrue(is_newer("0.0.1", "0-unstable-2023-04-26"))
+        self.assertTrue(is_newer("0.0.1", "unstable-2023-04-26"))
+        self.assertEqual(
+            version_key("unstable-2023-04-26"), version_key("0-unstable-2023-04-26")
+        )
+
     def test_a_key_for_max_sets_and_tuples(self):
         versions = ["1.0", "1.0.1", "1.0rc1", "1"]
         self.assertEqual(max(versions, key=version_key), "1.0.1")
@@ -61,4 +79,8 @@ class Ordering(unittest.TestCase):
     def test_nothing_to_compare(self):
         self.assertFalse(is_newer("1.0", None))
         self.assertFalse(is_newer("1.0", ""))
+        # No version isn't a newer one, though Repology's order puts it (as 0)
+        # above an unstable version: master missing isn't master ahead.
+        self.assertFalse(is_newer("", "0-unstable-2022-07-13"))
+        self.assertFalse(is_newer(None, "0-unstable-2022-07-13"))
         self.assertEqual(version_key(""), version_key("0"))

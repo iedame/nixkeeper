@@ -183,6 +183,11 @@ class MasterAhead(unittest.TestCase):
         self.assertFalse(is_outdated(row("x", master="1")))  # same as the channel
         self.assertFalse(is_outdated(row("x", master="0.9")))
         self.assertFalse(is_outdated(row("x")))
+        # An unstable version with no master build: not ahead (Repology's
+        # order puts no version, as 0, above 0-unstable-...).
+        self.assertFalse(
+            is_outdated(row("x", "noscheme", nixVersion="0-unstable-2022-07-13"))
+        )
 
     def test_master_becomes_the_version_to_update_to(self):
         r = row("wesnoth-devel", "devel", nixVersion="1.19.24", refVersion="1.19.24")
