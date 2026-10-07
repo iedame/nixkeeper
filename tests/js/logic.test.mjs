@@ -2,6 +2,7 @@
 // (part of `nix flake check`, as checks.page).
 
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { describe, test } from 'node:test';
 
 import {
@@ -118,6 +119,36 @@ describe('compareVersions', () => {
   });
   test('unstable dates compare by date', () => {
     assert.equal(compareVersions('0-unstable-2026-08-22', '0-unstable-2026-09-01'), -1);
+  });
+  test('a pre-release before its release; a trailing zero changes nothing', () => {
+    assert.equal(compareVersions('1.0rc1', '1.0'), -1);
+    assert.equal(compareVersions('2.0.0-beta.1', '2.0.0'), -1);
+    assert.equal(compareVersions('1', '1.0'), 0);
+    assert.equal(compareVersions('1.0RC1', '1.0rc1'), 0);
+  });
+  // Repology's test suite (tests/data/version-comparison-tests.txt, CC0):
+  // its plain cases, as tests/test_versions.py reads them.
+  test("Repology's version comparison test suite", () => {
+    const text = readFileSync(
+      new URL('../data/version-comparison-tests.txt', import.meta.url),
+      'utf8',
+    );
+    let section = '';
+    let count = 0;
+    for (const raw of text.split('\n')) {
+      const line = raw.trim();
+      if (!line || line.startsWith('#')) continue;
+      if (line.startsWith('[')) {
+        section = line;
+        continue;
+      }
+      const m = /^"(.*)" ([a-z]*)([<=>])([a-z]*) "(.*)"$/.exec(line);
+      if (!m || m[2] || m[4]) continue;
+      const got = ['<', '=', '>'][compareVersions(m[1], m[5]) + 1];
+      assert.equal(got, m[3], `${section} ${m[1]} ${m[3]} ${m[5]}`);
+      count++;
+    }
+    assert.ok(count > 150);
   });
 });
 

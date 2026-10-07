@@ -95,6 +95,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   dashboard's old address, https://iedame.github.io/nixkeeper/, goes to
   https://nixkeeper.com/.
 
+### Fixed
+
+- Versions are ordered as Repology orders them (its libversion algorithm,
+  in Python and in the page; tested against Repology's own test suite,
+  `tests/data/version-comparison-tests.txt`): a pre-release before its
+  release (`1.0rc1 < 1.0`, `2.0.0-beta.1 < 2.0.0`; before, after it), `1`
+  the same as `1.0`, any letter case alike, `1.0 < 1.0patch1 < 1.0.1 <
+  1.0a`. nixkeeper's own comparisons (update checks, what master has, the
+  version sources, update PRs) got 47 of the suite's 177 cases wrong; a
+  release candidate tag could make a package look outdated. Marked on the
+  trends as a change in how nixkeeper counts.
+
 ## [0.13.0] - 2026-10-07
 
 The community dashboard moves to **https://nixkeeper.com/**, served from
