@@ -1876,6 +1876,32 @@ async function toggle(tr, mode) {
   else fillDetail(row, inner, entries);
 }
 
+// A row's full data (its shard) starts loading when the pointer rests on
+// the row or keyboard focus reaches it, so a panel opens without waiting:
+// a shard's first request at a Cloudflare edge that doesn't have it yet
+// takes 0.3-0.6 s, most of a first open (measured 2026-10-07). A short
+// rest, not every row the pointer crosses, so sweeping over the list
+// doesn't load them all. fullRow keeps one request per shard: the click
+// then waits for the same one.
+const PRELOAD_AFTER_MS = 100;
+let preloadTimer = null;
+let preloadRow = null; // the row it's waiting on: moving within it changes nothing
+function preload(tr, delay) {
+  if (tr === preloadRow) return;
+  clearTimeout(preloadTimer);
+  preloadRow = tr;
+  const pkg = tr && shown[tr.dataset.i];
+  if (pkg) preloadTimer = setTimeout(() => fullRow(pkg), delay);
+}
+const table = document.getElementById('content');
+table.addEventListener('pointerover', (e) => {
+  if (e.pointerType === 'mouse' || e.pointerType === 'pen') {
+    preload(e.target.closest('tbody tr.row'), PRELOAD_AFTER_MS);
+  }
+});
+table.addEventListener('pointerleave', () => preload(null, 0));
+table.addEventListener('focusin', (e) => preload(e.target.closest('tbody tr.row'), 0));
+
 // The table's clicks, for every row: a link opens (and nothing else), the
 // versions copy the update's title, a platform filters by it, the build and
 // update cells open their panel, and anywhere else the details.
