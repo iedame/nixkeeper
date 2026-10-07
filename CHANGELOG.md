@@ -75,6 +75,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A list loads in steps, the browser free in between: filtering and
+  sorting; then the counts, tiles and the first 50 rows, drawn together so
+  nothing above the list moves; then the page's other 150 rows. The same
+  work, but no single stretch long enough to freeze a slow phone (one task
+  of 311 ms on Lighthouse's mid-range phone, 2026-10-07). A newer update
+  (typing, say) stops an older one between steps; the pager's move to the
+  first row now waits for the new page.
+
 - Lists sort faster: each package's rank (failing, outdated...) and date
   are worked out once, not at every comparison. Sorting "needs attention"
   (11,579 packages) took 48-89 ms on a fast laptop and about half a second

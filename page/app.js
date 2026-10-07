@@ -132,6 +132,9 @@ let sortAZ = false; // default order puts what needs attention first
 // data's size, and the page keeps working with Ctrl+F and screen readers
 // (no virtual scrolling). ?page= in the address, past the first.
 const PAGE_SIZE = 200;
+// Of those, drawn first, with the counts and tiles: more than a screen's
+// worth; the rest follow a moment later (update).
+const FIRST_ROWS = 50;
 let pageNum = 1;
 let platformFilter = null; // null | 'linux' | 'darwin', combined with activeFilter
 // The rules that follow the platform filter (logic.js), on the selected one.
@@ -983,7 +986,18 @@ function loadNames() {
 // Draw the list again after the view's state changed (a filter, the search,
 // the address): with every package, its view loaded first. keepPage: as
 // render's.
+// A load, in steps with the browser free in between, so the page stays
+// responsive on a slow phone: filtering and sorting every package; then the
+// counts, tiles and first rows (drawn together: nothing above the list
+// moves later); then the rest of the page's rows, below. In one go, a
+// mid-range phone was busy for over half a second (Lighthouse, 2026-10-07).
+// A newer update stops an older one between steps (typing, say).
+let updateRun = 0;
+const yieldToBrowser = () =>
+  globalThis.scheduler?.yield ? scheduler.yield() : new Promise((r) => setTimeout(r, 0));
+
 async function update({ keepPage = false } = {}) {
+  const run = ++updateRun;
   if (community) {
     try {
       await ensureView();
@@ -993,7 +1007,12 @@ async function update({ keepPage = false } = {}) {
       return;
     }
   }
-  render(currentFiltered(), { keepPage });
+  await yieldToBrowser();
+  if (run !== updateRun) return;
+  const list = currentFiltered();
+  await yieldToBrowser();
+  if (run !== updateRun) return;
+  await render(list, { keepPage, run });
 }
 
 async function loadIndex() {
@@ -1282,7 +1301,7 @@ function doneLoading() {
   if (about) about.hidden = false;
 }
 
-function render(list, { keepPage = false } = {}) {
+async function render(list, { keepPage = false, run = updateRun } = {}) {
   doneLoading();
   // How many packages a change leaves, to hear without looking.
   if (rendered && !(community && shownView === 'overview') && shownView !== 'maintainers')
@@ -1324,8 +1343,18 @@ function render(list, { keepPage = false } = {}) {
     <thead><tr>
       <th style="padding-left:10px">Package</th><th>nixpkgs unstable</th><th>Open on GitHub</th><th>Build failures</th><th>Update failures</th><th><span class="sr-only">Details</span></th>
     </tr></thead>
-    <tbody id="rows">${shown.map(rowHtml)}</tbody>
+    <tbody id="rows">${shown.slice(0, FIRST_ROWS).map(rowHtml)}</tbody>
   </table></div>${pagerHtml(list.length, pages)}${moreMatchesHtml()}`;
+  // The rest of the page's rows, below the screen, a moment later.
+  if (shown.length <= FIRST_ROWS) return;
+  await yieldToBrowser();
+  if (run !== updateRun) return;
+  document
+    .getElementById('rows')
+    ?.insertAdjacentHTML(
+      'beforeend',
+      String(html`${shown.slice(FIRST_ROWS).map((pkg, i) => rowHtml(pkg, FIRST_ROWS + i))}`),
+    );
 }
 
 // With every package, the header. The overview (no list chosen): all of
@@ -1912,11 +1941,12 @@ document.getElementById('content').addEventListener('click', (e) => {
   if (pageLink && !(e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button)) {
     e.preventDefault();
     pageNum = Number(pageLink.dataset.page);
-    update({ keepPage: true });
-    // Back to the table's top, the keyboard on its first row.
-    const content = document.getElementById('content');
-    if (content.getBoundingClientRect().top < 0) content.scrollIntoView();
-    content.querySelector('tr.row')?.focus({ preventScroll: true });
+    // Back to the table's top, the keyboard on its first row, once drawn.
+    update({ keepPage: true }).then(() => {
+      const content = document.getElementById('content');
+      if (content.getBoundingClientRect().top < 0) content.scrollIntoView();
+      content.querySelector('tr.row')?.focus({ preventScroll: true });
+    });
     return;
   }
   const tr = e.target.closest('tr.row');
