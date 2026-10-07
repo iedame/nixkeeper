@@ -11,6 +11,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- R packages compared with CRAN, or the Bioconductor release nixpkgs pins
+  (3.23), instead of Repology: nixkeeper-versions reads their index files
+  daily (`cran.json.gz`), as nixpkgs' own update script does. It agrees
+  with Repology on current packages, and catches Bioconductor patch
+  releases Repology doesn't flag. A package on neither any more (archived
+  by CRAN, dropped by Bioconductor) shows "archived" where Repology could
+  only say "unique": 6,004 on 2026-10-07, nearly all of which nixpkgs marks
+  broken already; R's card on the overview counts the 163 it doesn't
+  ("6,004 archived (163 not marked broken)"). Rows have `archived`.
+
 - Haskell packages nixpkgs pins to Stackage LTS (about 3,400, its
   `stackage.yaml`) compared with that series' newest snapshot instead of
   Hackage's newest (Repology's), which Stackage holds back on purpose until

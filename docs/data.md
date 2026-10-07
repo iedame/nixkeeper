@@ -68,7 +68,9 @@ evaluation its builds are from (`eval`) and when nixkeeper-hydra read it
 (`at`) and how many packages it has (`packages`; not used, Repology's
 versions stay); `emacs`, likewise for the Emacs archives (`at`, and
 `melpa`, `melpaStable`, `nongnu`, `gnu`: how many packages each has);
-`stackage`, likewise for Stackage LTS (`at`, `snapshot`: its newest,
+`cran`, likewise for CRAN and Bioconductor (`at`, `biocVersion`: the
+release nixpkgs pins, and `cran`, `bioc`, `annotation`, `experiment`: how
+many packages each index has); `stackage`, likewise for Stackage LTS (`at`, `snapshot`: its newest,
 `nixpkgs`: the one nixpkgs follows, `packages`: how many it pins);
 `branch:haskell-updates`, when nixkeeper-hydra last read the
 haskell-updates jobset (`at`), which evaluation (`eval`) and how many jobs
@@ -155,7 +157,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   with how many packages each has, how many of them are outdated (from
   0.14.0; `onBranch`: of those, how many are already updated on the
   branch that updates the set before master, haskell-updates), fail, and
-  nixpkgs marks broken
+  nixpkgs marks broken; for R, `archived` (no longer on CRAN or in
+  Bioconductor) and `archivedUnmarked` (those not marked broken)
   (`{ "haskellPackages": { "packages": 19423, "outdated": 1083, "failed": 83, "broken": 7600 }, ... }`);
 - `profiles` in `index.json`: what updates each set updated in bulk,
   `{ "rPackages": { "name": "R", "updatedBy": "the CRAN and Bioconductor
@@ -242,7 +245,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `repoCount` | how many other repositories Repology compares it with (each counted once) |
 | `devel` | a development variant of a split project: newer than its stable one, or named for one (`wesnoth-devel`, `_1password-gui-beta`); or a version Repology calls devel |
 | `keptBeside` | for an older version nixpkgs keeps on purpose (Repology's `legacy`: `tracy_0_11`, `gnumake42`, `php82Extensions.zip`), the newer one beside it: `{ "attr", "version" }` |
-| `feed` | when its versions are compared with its own source instead of Repology: `{ "name", "version", "released"?, "dated"?, "url" }`, its newest version there, the day it was published (when the source says), and `dated` when versions are a build's date and time (MELPA's `20251005.508`). `nixStatus` and `refVersion` are then from it. Typst packages, with Typst Universe: `outdated` or `newest` for a package's latest attribute (`typstPackages.cetz`), `legacy` for its other versions (`typstPackages.cetz_0_3_0`). Emacs packages, with the archive each comes from (`MELPA` for a MELPA version, else the first of `MELPA Stable`, `NonGNU ELPA` and `GNU ELPA` that has it, in nixpkgs' order); not the hand-written ones, the devel archives' versions or packages no archive has. Haskell packages nixpkgs pins to Stackage LTS, with that series' newest snapshot (`Stackage LTS 24`): also `snapshot` (`lts-24.62`), `followed` (the one nixpkgs follows, `lts-24.38`) and `heldBack` (Hackage's newer version, which Stackage holds back until its next series); the rest of `haskellPackages` keep Repology's verdict |
+| `feed` | when its versions are compared with its own source instead of Repology: `{ "name", "version", "released"?, "dated"?, "url" }`, its newest version there, the day it was published (when the source says), and `dated` when versions are a build's date and time (MELPA's `20251005.508`). `nixStatus` and `refVersion` are then from it. Typst packages, with Typst Universe: `outdated` or `newest` for a package's latest attribute (`typstPackages.cetz`), `legacy` for its other versions (`typstPackages.cetz_0_3_0`). Emacs packages, with the archive each comes from (`MELPA` for a MELPA version, else the first of `MELPA Stable`, `NonGNU ELPA` and `GNU ELPA` that has it, in nixpkgs' order); not the hand-written ones, the devel archives' versions or packages no archive has. Haskell packages nixpkgs pins to Stackage LTS, with that series' newest snapshot (`Stackage LTS 24`): also `snapshot` (`lts-24.62`), `followed` (the one nixpkgs follows, `lts-24.38`) and `heldBack` (Hackage's newer version, which Stackage holds back until its next series); the rest of `haskellPackages` keep Repology's verdict. R packages, with `CRAN` or the Bioconductor release nixpkgs pins (`Bioconductor 3.23`) |
+| `archived` | `true` for an R package on neither CRAN nor the Bioconductor release nixpkgs pins any more (archived by CRAN, or dropped by Bioconductor); its status stays Repology's. nixpkgs marks most of those broken already |
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
 | `failingSince` | since when a build of it has been failing (its own build, not a dependency's): kept from sync to sync while it fails, gone once it doesn't; first seen, it's the failed builds' last success (the failing began after it), or then |

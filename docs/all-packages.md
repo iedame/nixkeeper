@@ -55,7 +55,9 @@ hand-written ones keep Repology's verdict). Haskell packages nixpkgs pins
 to Stackage LTS (`stackage.yaml`, about 3,400) are compared with that
 series' newest snapshot, not Hackage's newest, which Stackage holds back
 until its next series: those at it show a "Stackage LTS" badge instead of
-outdated.
+outdated. R packages are compared with CRAN, or the Bioconductor release
+nixpkgs pins; those on neither any more show "archived" (nixpkgs marks
+most of them broken already; R's card counts those it doesn't).
 
 ## The page
 
