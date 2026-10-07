@@ -1823,7 +1823,29 @@ function moreMatchesHtml() {
 // One panel under the row, showing the package details (clicking the row),
 // its builds or its latest update attempt (clicking those cells). Clicking
 // what's shown closes it; clicking something else switches.
+// One package open at a time: opening another row's panel closes the rest
+// (the same row switches between its panels in place). The clicked row stays
+// where it was on screen, though a panel above it closes.
+function closeOthers(tr) {
+  const others = [...document.querySelectorAll('tbody tr.row.open')].filter((o) => o !== tr);
+  if (!others.length) return;
+  const top = tr.getBoundingClientRect().top;
+  for (const other of others) {
+    other.classList.remove('open');
+    const detail = other.nextElementSibling;
+    if (detail?.classList.contains('detail')) {
+      detail.classList.remove('open');
+      detail.dataset.mode = '';
+    }
+    for (const btn of other.querySelectorAll('.failure-btn, .queued-tag')) {
+      btn.setAttribute('aria-expanded', 'false');
+    }
+  }
+  window.scrollBy(0, tr.getBoundingClientRect().top - top);
+}
+
 async function toggle(tr, mode) {
+  closeOthers(tr);
   const pkg = shown[tr.dataset.i];
   let detail = tr.nextElementSibling;
   if (!detail?.classList.contains('detail')) {
@@ -2494,7 +2516,7 @@ function fillDetail(pkg, el, entries) {
     })),
   ];
   // "in the wesnoth/wesnoth tags" or "on www.barebones.com".
-  const upLabel = up ? up.label || `${up.repo} tags` : '';
+  const upLabel = up ? up.label || (up.repo ? `${up.repo} tags` : 'its update check') : '';
   const upLink = up
     ? html`${up.repo ? 'in the' : 'on'} ${safeUrl(up.url) ? html`<a class="files-link" href="${safeUrl(up.url)}" target="_blank" rel="noopener">${upLabel} ↗</a>` : upLabel}`
     : '';
@@ -2681,14 +2703,26 @@ function fillDetail(pkg, el, entries) {
                 feed.name,
                 `Compared with ${feed.name}, this package's own source`,
               ]
-            : said || up?.newer
+            : (said || up?.newer) && up.follows
               ? [
                   'ours',
-                  up.commit ? 'git-branch' : up.repo ? 'tag' : 'world',
-                  upLabel,
-                  `${checkKind.replace(/^[ay]/, (c) => c.toUpperCase())}: ${upLabel}`,
+                  'git-merge',
+                  `with ${up.follows}`,
+                  `Updated together with ${up.follows} (${communityCheck(pkg) ? 'a community rule' : 'your update checks'}): its newest version counts for this package too`,
                 ]
-              : ['repology', 'chart-dots-3', 'Repology', 'Repology: the repositories it compares'];
+              : said || up?.newer
+                ? [
+                    'ours',
+                    up.commit ? 'git-branch' : up.repo ? 'tag' : 'world',
+                    upLabel,
+                    `${checkKind.replace(/^[ay]/, (c) => c.toUpperCase())}: ${upLabel}`,
+                  ]
+                : [
+                    'repology',
+                    'chart-dots-3',
+                    'Repology',
+                    'Repology: the repositories it compares',
+                  ];
   const facts = [
     pkg.nixVersion && ['nixpkgs unstable', html`<span class="mono">${pkg.nixVersion}</span>`],
     st === 'warn' && target && ['newest', html`<span class="mono pd-newer">${target}</span>`],

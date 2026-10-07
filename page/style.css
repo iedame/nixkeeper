@@ -1672,16 +1672,15 @@ a.badge:hover {
   color: var(--ink);
 }
 /* The update cell's status joined to the robot (nixpkgs-update will try
-   it, from its queue), as a package's platforms are: one pill, two buttons
-   with a dot between, each opening the update panel. The robot green when
-   it's to the newest version and the last attempt didn't fail, amber when
-   the bot will try but it's unsure (queuedTag). */
+   it, from its queue): kept together on one line, two buttons with a dot
+   between, each opening the update panel; no pill behind them, so a row
+   with the robot doesn't stand out from those without. The robot green
+   when it's to the newest version and the last attempt didn't fail, amber
+   when the bot will try but it's unsure (queuedTag). */
 .upd-pair {
   display: inline-flex;
   align-items: center;
   white-space: nowrap;
-  border-radius: var(--radius);
-  background: color-mix(in srgb, var(--stale-soft) 70%, transparent);
 }
 .upd-pair .failure-btn {
   padding-right: 4px;

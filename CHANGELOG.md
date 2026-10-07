@@ -75,6 +75,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- The update cell's robot (nixpkgs-update will try it) no longer sits in a
+  grey pill with the status: it stays joined to it, plain, so those rows
+  don't stand out.
+- One package open at a time: opening another row's panel closes the one
+  open (the same row still switches between its details, builds and
+  update panels in place), and the clicked row stays where it was on
+  screen.
+
 - A package's panel, reorganised: the verdict first ("Up to date",
   "Outdated", "Waiting for the channel", "Older version kept"...) with
   nixpkgs' version, the newest and since when, and a badge for the source
