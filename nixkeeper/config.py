@@ -201,10 +201,6 @@ DOWNLOAD_DEADLINE_SECONDS = 300
 # Asked to wait longer, it gives that request up instead of stalling the run
 # (the package keeps its previous data, as with any failed lookup).
 MAX_RETRY_AFTER = 300
-# If more lookups than this fail, Repology is likely down: abort and keep the
-# previous data (the page flags it as stale) instead of publishing a run that's
-# mostly "not refreshed".
-MAX_FAILED_SHARE = 0.5
 
 # Repology statuses the page shows as outdated. Not "legacy" (KEPT): an
 # older version nixpkgs keeps on purpose beside a newer one under another

@@ -46,10 +46,19 @@ def projects_of(lines, attrs):
     return found
 
 
+class Stale(dict):
+    """A digest that isn't current (load): what it has is only used where
+    Repology can't be reached, or for packages read in bulk, which keep the
+    last versions anyway (lookup.py)."""
+
+    stale = True
+
+
 def load(attrs, now):
     """{attr: (project, entries, checked day)} for the tracked attrs the
-    digest has, or None (saying why) when it's turned off, not current or
-    can't be read."""
+    digest has (a Stale one when it isn't current: Repology is asked first,
+    the digest only where Repology can't be reached), or None (saying why)
+    when it's turned off or can't be read."""
     base = config.VERSIONS_DIGEST_URL
     if not base:
         return None
@@ -57,19 +66,27 @@ def load(attrs, now):
         meta = json.loads(http.get(base + "meta.json") or "null")
         if not meta or meta.get("format") != FORMAT:
             raise ValueError(f"no digest in a format this nixkeeper reads ({base})")
-        if not current(meta, now):
-            about.note("versions", False, "too old", at=meta["outdatedAt"])
-            print(
-                f"::warning::Versions digest: not used, its outdated projects are "
-                f"from {meta['outdatedAt']}; looking packages up on Repology",
-                file=sys.stderr,
-            )
-            return None
         body = http.get_bytes(base + "projects.jsonl.gz")
         if body is None:
             raise ValueError("its projects.jsonl.gz is missing")
         with gzip.open(io.BytesIO(body), "rt") as lines:
             found = projects_of(lines, set(attrs))
+        if not current(meta, now):
+            # Repology may be down (the digest's run couldn't read it): its
+            # last versions, where Repology can't be reached.
+            about.note(
+                "versions",
+                False,
+                "too old: used only where Repology can't be reached",
+                at=meta["outdatedAt"],
+            )
+            print(
+                f"::warning::Versions digest: its outdated projects are from "
+                f"{meta['outdatedAt']}; looking packages up on Repology, the "
+                "digest only where that fails",
+                file=sys.stderr,
+            )
+            return Stale(found)
     except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
         about.note("versions", False, f"couldn't be read ({e})")
         print(
