@@ -104,9 +104,12 @@ first page. The browser's find (Ctrl+F) only sees the page shown: the search
 box looks through every package.
 
 **Where the data is from**: "checked … ago", at the top, opens when each
-source's data is from: the daily sync, the Hydra evaluation its builds are
-from, when Repology's versions and nixpkgs-update's attempts were read (and
-how many attempts are still to read), the nixpkgs commit. A source the sync
+source's data is from: the daily sync, the nixpkgs commit, then each of
+nixkeeper's digests with what the sync read from it (nixkeeper-hydra: the
+Hydra evaluations of master and haskell-updates; nixkeeper-versions:
+Repology and the other version sources, when each was read;
+nixkeeper-updates: nixpkgs-update's attempts, with how many are still to
+read, and its queue). A source the sync
 didn't use (too old, or it couldn't be read) says so in yellow: its
 packages were then asked about one by one instead.
 

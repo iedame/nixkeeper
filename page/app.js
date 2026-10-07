@@ -667,74 +667,24 @@ function showSources(open) {
 
 // Where the data is from: the daily sync's sources as it noted them
 // (nixkeeper/sources/about.py), each with when its data is from, or why the
-// sync didn't use it (it then asked per package instead).
+// sync didn't use it (it then asked per package instead). Those read from
+// one of nixkeeper's digests are grouped under it (DIGESTS), in this order.
+const DIGESTS = {
+  hydra: 'https://github.com/iedame/nixkeeper-hydra',
+  versions: 'https://github.com/iedame/nixkeeper-versions',
+  updates: 'https://github.com/iedame/nixkeeper-updates',
+};
+const hydraEval = (s) =>
+  html`evaluation <a class="files-link" href="https://hydra.nixos.org/eval/${s.eval}" target="_blank" rel="noopener">${s.eval}</a>, read ${timeAgo(s.at)}`;
 const SOURCES = [
-  {
-    key: 'hydra',
-    label: 'Hydra builds',
-    from: 'https://github.com/iedame/nixkeeper-hydra',
-    says: (s) =>
-      html`evaluation <a class="files-link" href="https://hydra.nixos.org/eval/${s.eval}" target="_blank" rel="noopener">${s.eval}</a>, read ${timeAgo(s.at)}`,
-  },
-  {
-    key: 'versions',
-    label: 'Versions (Repology)',
-    from: 'https://github.com/iedame/nixkeeper-versions',
-    says: (s) => `read ${timeAgo(s.at)}`,
-  },
-  {
-    key: 'updates',
-    label: 'nixpkgs-update',
-    from: 'https://github.com/iedame/nixkeeper-updates',
-    says: (s) =>
-      `made ${timeAgo(s.at)}${s.pending ? ` · ${s.pending.toLocaleString()} attempts still to read` : ''}`,
-  },
   {
     key: 'nixpkgs',
     label: 'nixpkgs',
+    from: 'https://github.com/NixOS/nixpkgs',
     says: (s) =>
       html`channel at <a class="files-link mono" href="https://github.com/NixOS/nixpkgs/commit/${s.revision}" target="_blank" rel="noopener">${s.revision.slice(0, 7)}</a>`,
   },
   { key: 'github', label: 'GitHub PRs', says: () => 'listed during the sync' },
-  {
-    key: 'typst',
-    label: 'Versions (Typst Universe)',
-    from: 'https://github.com/iedame/nixkeeper-versions',
-    says: (s) => `read ${timeAgo(s.at)}, ${s.packages?.toLocaleString()} packages`,
-    instead: "Repology's versions used",
-  },
-  {
-    key: 'emacs',
-    label: 'Versions (Emacs archives)',
-    from: 'https://github.com/iedame/nixkeeper-versions',
-    says: (s) =>
-      `read ${timeAgo(s.at)}: MELPA ${s.melpa?.toLocaleString()}, MELPA Stable ${s.melpaStable?.toLocaleString()}, NonGNU ${s.nongnu?.toLocaleString()}, GNU ${s.gnu?.toLocaleString()} packages`,
-    instead: "Repology's versions used",
-  },
-  {
-    key: 'stackage',
-    label: 'Versions (Stackage LTS)',
-    from: 'https://github.com/iedame/nixkeeper-versions',
-    says: (s) =>
-      `nixpkgs follows ${s.nixpkgs}, ${s.snapshot} is the newest (${s.packages?.toLocaleString()} packages), read ${timeAgo(s.at)}`,
-    instead: "Repology's versions used",
-  },
-  {
-    key: 'cran',
-    label: 'Versions (CRAN, Bioconductor)',
-    from: 'https://github.com/iedame/nixkeeper-versions',
-    says: (s) =>
-      `read ${timeAgo(s.at)}: CRAN ${s.cran?.toLocaleString()}, Bioconductor ${s.biocVersion} ${((s.bioc || 0) + (s.annotation || 0) + (s.experiment || 0)).toLocaleString()} packages`,
-    instead: "Repology's versions used",
-  },
-  {
-    key: 'branch:haskell-updates',
-    label: 'haskell-updates (Hydra)',
-    from: 'https://github.com/iedame/nixkeeper-hydra',
-    says: (s) =>
-      html`evaluation <a class="files-link" href="https://hydra.nixos.org/eval/${s.eval}" target="_blank" rel="noopener">${s.eval}</a>, read ${timeAgo(s.at)}`,
-    instead: 'not shown',
-  },
   {
     // Only noted when lookups failed (Repology down, most likely).
     key: 'repology',
@@ -742,10 +692,71 @@ const SOURCES = [
     says: () => '',
     instead: 'the rest of the sync went on',
   },
+  { key: 'hydra', digest: 'hydra', label: 'Builds', says: hydraEval },
+  {
+    key: 'branch:haskell-updates',
+    digest: 'hydra',
+    label: 'haskell-updates',
+    says: hydraEval,
+    instead: 'not shown',
+  },
+  {
+    // nixkeeper's own update checks (upstream.py, inferred.py): not a digest
+    // nor noted by the sync, but run in it, so from the daily sync's time.
+    key: 'nixkeeper',
+    digest: 'versions',
+    label: 'nixkeeper',
+    title: "nixkeeper's own update checks: GitHub tags, release pages, a branch's commits",
+    says: (s) => `read ${timeAgo(s.at)}`,
+  },
+  {
+    key: 'versions',
+    digest: 'versions',
+    label: 'Repology',
+    says: (s) => `read ${timeAgo(s.at)}`,
+  },
+  {
+    key: 'typst',
+    digest: 'versions',
+    label: 'Typst Universe',
+    says: (s) => `read ${timeAgo(s.at)}, ${s.packages?.toLocaleString()} packages`,
+    instead: "Repology's versions used",
+  },
+  {
+    key: 'emacs',
+    digest: 'versions',
+    label: 'Emacs archives',
+    says: (s) =>
+      `read ${timeAgo(s.at)}: MELPA ${s.melpa?.toLocaleString()}, MELPA Stable ${s.melpaStable?.toLocaleString()}, NonGNU ${s.nongnu?.toLocaleString()}, GNU ${s.gnu?.toLocaleString()} packages`,
+    instead: "Repology's versions used",
+  },
+  {
+    key: 'stackage',
+    digest: 'versions',
+    label: 'Stackage LTS',
+    says: (s) =>
+      `nixpkgs follows ${s.nixpkgs}, ${s.snapshot} is the newest (${s.packages?.toLocaleString()} packages), read ${timeAgo(s.at)}`,
+    instead: "Repology's versions used",
+  },
+  {
+    key: 'cran',
+    digest: 'versions',
+    label: 'CRAN, Bioconductor',
+    says: (s) =>
+      `read ${timeAgo(s.at)}: CRAN ${s.cran?.toLocaleString()}, Bioconductor ${s.biocVersion} ${((s.bioc || 0) + (s.annotation || 0) + (s.experiment || 0)).toLocaleString()} packages`,
+    instead: "Repology's versions used",
+  },
+  {
+    key: 'updates',
+    digest: 'updates',
+    label: 'Update attempts',
+    says: (s) =>
+      `made ${timeAgo(s.at)}${s.pending ? ` · ${s.pending.toLocaleString()} attempts still to read` : ''}`,
+  },
   {
     key: 'queue',
-    label: "nixpkgs-update's queue",
-    from: 'https://nixpkgs-update-logs.nixos.org/~supervisor/queue.html',
+    digest: 'updates',
+    label: 'Queue',
     says: (s) => `from ${timeAgo(s.at)}, going round every ${s.cycleDays} days`,
   },
 ];
@@ -758,24 +769,35 @@ function sourcesHtml() {
       hour: '2-digit',
       minute: '2-digit',
     });
-  const rows = SOURCES.filter(({ key }) => sources?.[key]).map(
-    ({ key, label, from, says, instead }) => {
-      const s = sources[key];
-      const name = from
-        ? html`<a class="files-link" href="${from}" target="_blank" rel="noopener">${label}</a>`
-        : label;
-      return html`<li class="${s.used ? '' : 'unused'}"><b>${name}</b><span class="src-what"${s.at ? html` title="${when(s.at)}"` : ''}>${
-        s.used
-          ? says(s)
-          : `not used: ${s.why || 'unknown'}${s.at ? `, from ${timeAgo(s.at)}` : ''}, ${instead || 'asked per package instead'}`
-      }</span></li>`;
-    },
-  );
+  const noted = (key) =>
+    key === 'nixkeeper'
+      ? sources?.versions && checkedAt && { used: true, at: checkedAt }
+      : sources?.[key];
+  const row = ({ key, label, from, title, says, instead, digest }) => {
+    const s = noted(key);
+    const name = from
+      ? html`<a class="files-link" href="${from}" target="_blank" rel="noopener">${label}</a>`
+      : label;
+    return html`<li class="${[s.used ? '' : 'unused', digest ? 'in-digest' : ''].filter(Boolean).join(' ')}"><b${title ? html` title="${title}"` : ''}>${name}</b><span class="src-what"${s.at ? html` title="${when(s.at)}"` : ''}>${
+      s.used
+        ? says(s)
+        : `not used: ${s.why || 'unknown'}${s.at ? `, from ${timeAgo(s.at)}` : ''}, ${instead || 'asked per package instead'}`
+    }</span></li>`;
+  };
+  const shown = SOURCES.filter(({ key }) => noted(key));
+  const own = shown.filter((src) => !src.digest).map(row);
+  const digests = Object.entries(DIGESTS).map(([digest, url]) => {
+    const mine = shown.filter((src) => src.digest === digest);
+    return mine.length
+      ? html`<li class="src-digest"><a class="files-link" href="${url}" target="_blank" rel="noopener">nixkeeper-${digest}</a></li>${mine.map(row)}`
+      : '';
+  });
   return html`<p class="pop-title">Where the data is from</p>
     <ul>
       <li><b>Daily sync</b><span title="${checkedAt ? when(checkedAt) : ''}">${checkedAt ? `${timeAgo(checkedAt)}, ${when(checkedAt)}` : 'not yet'}</span></li>
-      ${rows}
       <li><b>Hourly checks</b><span>frequent update checks and update PRs, between syncs</span></li>
+      ${own}
+      ${digests}
     </ul>
     <a class="files-link" href="https://github.com/iedame/nixkeeper/blob/main/docs/how-it-works.md" target="_blank" rel="noopener">How nixkeeper gathers it ↗</a>`;
 }
@@ -1594,12 +1616,21 @@ function fixedHtml() {
     <div class="hl-cols">${cards}</div>`;
 }
 
+const SET_BAR_TITLE =
+  'Outdated (orange), marked broken (yellow) and failing (red), each package once, at its worst: a failing package counts as failing only, a broken one as broken only. The counts below count each on its own, so a package can be in several.';
+
 // The overview's sets updated in bulk: each one's size, what updates it,
-// and how much of it is marked broken or failing (a bar, in their colours).
+// and how much of it is failing, marked broken or outdated (a bar, in
+// their colours).
 function setsHtml(sets) {
   if (!sets.length) return '';
   const pct = (n, of) => (of ? Math.min(100, (100 * n) / of) : 0).toFixed(1);
   const cards = sets.map(([s, v]) => {
+    // Each package once, at its worst (from 0.14.0); before, broken and
+    // failing as counted, overlapping.
+    const worst = v.bar || { broken: v.broken, failed: v.failed };
+    // In the order the text below says them.
+    const bar = ['outdated', 'broken', 'failed'].filter((k) => worst[k]).map((k) => [k, worst[k]]);
     const problems = [
       v.outdated
         ? html`<span class="set-outdated">${fmt(v.outdated)} outdated</span>${v.onBranch ? html`, ${fmt(v.onBranch)} on ${profileOf(s)?.branch || 'its branch'}` : ''}`
@@ -1614,7 +1645,7 @@ function setsHtml(sets) {
       <span class="set-name mono">${s}</span>
       <span class="set-n">${fmt(v.packages)} <span class="set-unit">packages</span></span>
       <span class="set-by" title="${bulkText(s)}">by ${bulkShort(s)}</span>
-      <span class="set-bar" aria-hidden="true"><span class="set-bar-broken" style="width:${pct(v.broken, v.packages)}%"></span><span class="set-bar-failed" style="width:${pct(v.failed, v.packages)}%"></span></span>
+      <span class="set-bar" aria-hidden="true" title="${SET_BAR_TITLE}">${bar.map(([kind, n]) => html`<span class="set-bar-${kind}" style="width:${pct(n, v.packages)}%"></span>`)}</span>
       <span class="set-meta">${problems.length ? problems.map((p, i) => html`${i ? ' · ' : ''}${p}`) : v.outdated == null ? 'None broken or failing' : 'None outdated, broken or failing'}</span>
     </a>`;
   });

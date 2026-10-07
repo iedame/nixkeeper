@@ -538,7 +538,14 @@ def views(rows, out):
         if row.get("set"):
             put(f"views/set/{row['set']}.json", row)
             found_set = sets.setdefault(
-                row["set"], {"packages": 0, "outdated": 0, "failed": 0, "broken": 0}
+                row["set"],
+                {
+                    "packages": 0,
+                    "outdated": 0,
+                    "failed": 0,
+                    "broken": 0,
+                    "bar": {"failed": 0, "broken": 0, "outdated": 0},
+                },
             )
             if row.get("archived"):
                 # No longer on CRAN or in Bioconductor (sources/cran_digest.py);
@@ -553,8 +560,18 @@ def views(rows, out):
             if on_branch(row):
                 # Of those, already updated on the branch (haskell-updates).
                 found_set["onBranch"] = found_set.get("onBranch", 0) + 1
-            found_set["failed"] += letter.startswith("f")
-            found_set["broken"] += bool(row.get("markedBroken") or broken_builds(row))
+            failed = letter.startswith("f")
+            broken = bool(row.get("markedBroken") or broken_builds(row))
+            found_set["failed"] += failed
+            found_set["broken"] += broken
+            # The overview's bar: each package once, at its worst (failing,
+            # then broken, then outdated), so its parts never overlap.
+            if failed:
+                found_set["bar"]["failed"] += 1
+            elif broken:
+                found_set["bar"]["broken"] += 1
+            elif is_outdated(row):
+                found_set["bar"]["outdated"] += 1
             counts["inSets"] += 1
             continue
         if row.get("maintainers") == []:

@@ -63,7 +63,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   on Typst Universe is …" with the day it was published, the sources panel
   when the index was read; rows have `feed` (`docs/data.md`). Each set's
   card on the overview counts its outdated packages too (`outdated` in
-  `views.sets`).
+  `views.sets`), and its bar draws them in orange beside failing and
+  broken, each package once, at its worst (`bar` in `views.sets`).
 
 - "Bot won't update it", narrowing any list (`?refine=nobot`): outdated
   packages nixpkgs-update won't update by itself, so they take someone:
@@ -73,6 +74,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   2026-10-07.
 
 ### Changed
+
+- "Where the data is from" groups the sources read from nixkeeper's
+  digests under each one, linked once (nixkeeper-hydra: builds,
+  haskell-updates; nixkeeper-versions: nixkeeper's own update checks, from
+  the daily sync, then Repology, Typst Universe, Emacs
+  archives, Stackage LTS, CRAN and Bioconductor; nixkeeper-updates: update
+  attempts, the queue).
+
+- The overview's top bar draws the sets updated in bulk in a shade of the
+  logo's, not grey, beside fully checked: a split of nixpkgs, not progress.
 
 - The daily sync no longer stops when Repology can't be reached (more than
   half of its lookups failing): Hydra's builds, nixpkgs-update's attempts,

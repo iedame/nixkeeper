@@ -11,6 +11,9 @@
   /* Links and key UI: the brand violet (tokens.css, from assets/brand/), which
      switches to its dark-theme value by itself. */
   --accent: var(--nk-link-text);
+  /* The sets updated in bulk, beside the accent's fully checked: another
+     shade of the logo's, so the split doesn't read as progress. */
+  --bulk: var(--nk-bulk-fill);
   /* Statuses: the brand tokens' roles (tokens.css), which switch to their
      dark-theme values by themselves. Dots use the brighter fill; text uses
      the darker text value, readable on the page's backgrounds. Outdated and
@@ -603,9 +606,21 @@ button.checked:focus-visible {
 }
 .sources-panel ul {
   grid-template-columns: auto 1fr;
+  /* A name beside the first line of what it says, when that wraps. */
+  align-items: baseline;
 }
 .sources-panel .unused .src-what {
   color: var(--caution);
+}
+/* A digest's name, its sources below it, indented. */
+.sources-panel .src-digest > a {
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  font-weight: 600;
+}
+.sources-panel .in-digest > b {
+  padding-left: 10px;
+  font-weight: 500;
 }
 .filterbar .checked.stale {
   color: var(--danger);
@@ -651,7 +666,7 @@ button.checked:focus-visible {
 .scope-bar {
   height: 6px;
   border-radius: 3px;
-  background: var(--hairline-strong);
+  background: var(--bulk);
   overflow: hidden;
 }
 .scope-bar span {
@@ -676,7 +691,7 @@ button.checked:focus-visible {
   background: var(--accent);
 }
 .swatch.gen {
-  background: var(--hairline-strong);
+  background: var(--bulk);
 }
 .cards {
   display: grid;
@@ -1067,10 +1082,13 @@ button.checked:focus-visible {
   background: var(--hairline);
 }
 .set-bar-broken {
-  background: var(--caution);
+  background: var(--caution-dot);
 }
 .set-bar-failed {
-  background: var(--danger);
+  background: var(--danger-dot);
+}
+.set-bar-outdated {
+  background: var(--warn-dot);
 }
 .set-meta {
   font-size: 11.5px;
