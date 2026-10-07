@@ -653,6 +653,14 @@ const SOURCES = [
     instead: "Repology's versions used",
   },
   {
+    key: 'emacs',
+    label: 'Versions (Emacs archives)',
+    from: 'https://github.com/iedame/nixkeeper-versions',
+    says: (s) =>
+      `read ${timeAgo(s.at)}: MELPA ${s.melpa?.toLocaleString()}, MELPA Stable ${s.melpaStable?.toLocaleString()}, NonGNU ${s.nongnu?.toLocaleString()}, GNU ${s.gnu?.toLocaleString()} packages`,
+    instead: "Repology's versions used",
+  },
+  {
     key: 'queue',
     label: "nixpkgs-update's queue",
     from: 'https://nixpkgs-update-logs.nixos.org/~supervisor/queue.html',
@@ -2259,7 +2267,16 @@ function fillDetail(pkg, el, entries) {
   const feedLink = feed
     ? html`<a class="files-link" href="${safeUrl(feed.url)}" target="_blank" rel="noopener">${feed.name} ↗</a>`
     : '';
-  const feedDay = feed?.released ? ` (published ${longDate(`${feed.released}T12:00:00Z`)})` : '';
+  // MELPA's versions are a build's date and time (20251005.508): said as days.
+  const builtOn = (v) => {
+    const d = /^(\d{4})(\d{2})(\d{2})\./.exec(v || '');
+    return d ? longDate(`${d[1]}-${d[2]}-${d[3]}T12:00:00Z`) : null;
+  };
+  const feedDay = feed?.released
+    ? ` (published ${longDate(`${feed.released}T12:00:00Z`)})`
+    : feed?.dated && builtOn(feed.version)
+      ? ` (a build from ${builtOn(feed.version)}${st === 'warn' && builtOn(pkg.nixVersion) ? `; nixpkgs' is from ${builtOn(pkg.nixVersion)}` : ''})`
+      : '';
   const nixLine =
     up?.newer && !fromMaster(pkg)
       ? upstreamLine()

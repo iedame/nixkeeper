@@ -11,6 +11,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Emacs packages compared with the archives nixpkgs makes them from,
+  instead of Repology (which can't compare MELPA's date versions,
+  "untrusted"): nixkeeper-versions reads MELPA's, MELPA Stable's, NonGNU
+  ELPA's and GNU ELPA's indexes daily (`emacs.json.gz`), and each package is
+  compared with MELPA when its version is MELPA's, else the first of MELPA
+  Stable, NonGNU ELPA and GNU ELPA that has it, as nixpkgs layers them; its
+  hand-written packages keep Repology's verdict. On 2026-10-07, 6,722 of
+  6,804 Emacs rows compared (2,984 before), 310 outdated (34 before). The
+  panel says MELPA's versions as days ("a build from Sep 23; nixpkgs' is
+  from Sep 11"), the sources panel when the archives were read. The
+  version sources share one module (`sources/feeds.py`).
+
 - Typst packages compared with Typst Universe, their source, instead of
   Repology (which saw nixpkgs alone, "unique", for most): nixkeeper-versions
   reads Universe's index daily (`typst.json.gz`), and each package's latest

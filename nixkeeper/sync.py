@@ -28,6 +28,7 @@ from . import (
 from .changes import count_master, is_outdated
 from .sources import (
     about,
+    emacs_digest,
     github,
     github_bulk,
     hydra,
@@ -150,9 +151,11 @@ def main():
         wanted, previous, nixpkgs=nixpkgs, now=now, digest=digest, bulk=set(bulk)
     )
     index_rows = rows.build_rows(projects, nixpkgs)
-    # Typst packages: compared with Typst Universe, their source, instead.
-    if any(a.startswith(typst_digest.PREFIX) for a in tracked):
-        typst_digest.apply(index_rows, nixpkgs, typst_digest.load(now))
+    # Typst and Emacs packages: compared with their own sources instead
+    # (Typst Universe, the Emacs archives; sources/feeds.py).
+    for feed in (typst_digest, emacs_digest):
+        if any(a.startswith(feed.PREFIX) for a in tracked):
+            feed.apply(index_rows, nixpkgs, feed.load(now))
     tracking.add_lists(index_rows, tracking.list_names(lists, nixpkgs))
     # The lists' rows (all of them, unless every package is tracked): the
     # rest are read in bulk only, and the rows of sets updated in bulk have
