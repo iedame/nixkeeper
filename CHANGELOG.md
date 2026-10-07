@@ -75,6 +75,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- `start-runs` tries a start again when GitHub answers with a server
+  error or not at all, after 1 minute and then 3: on 2026-10-07 one hour's
+  starts all got 500s, losing nixkeeper-updates' run for 3 hours.
+
 - With its own site (`CLOUDFLARE_SITE_URL`), "Pages: publish the page"
   no longer runs on every page change: its redirect doesn't change with
   the page, which reaches the site with the data runs. Run it by hand
