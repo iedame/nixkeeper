@@ -22,7 +22,7 @@ LOG_NAME = re.compile(r'href="(\d{4}-\d{2}-\d{2})\.log"')
 # attribute, same date) instead of downloading it again, but only one read
 # with these same rules: bump this whenever parse() changes how it reads a
 # log, so the next sync reads every log again and the change applies at once.
-PARSER = 4
+PARSER = 5
 # What add_attempts adds to an attempt after reading its log, from the
 # state of nixpkgs and the rules at the time; as_read() takes them off.
 JUDGED = ("supersededOutcome", "supersededOn", "reason", "community")
@@ -108,6 +108,93 @@ FAILED = re.compile(
     r"Failed to read expected nix boolean",
     re.MULTILINE,
 )
+# Why a failed attempt failed ("failedBecause"): the first rule, in this
+# order, that one of the log's lines meets, that line and the next ones its
+# excerpt. Taken from ~200 failed attempts' logs (2026-10-07): a reason
+# found earlier in the list is the cause of those found later (a missing
+# dependency makes the build fail, a source gone makes nix-update fail).
+FAILED_BECAUSE = tuple(
+    (because, re.compile(rule))
+    for because, rule in (
+        # Not built where the bot builds: broken, insecure, not on x86_64-linux
+        # (the package or a dependency).
+        (
+            "unavailable",
+            r"Refusing to evaluate|is not available on the requested hostPlatform"
+            r"|is marked as broken|not supported for interpreter",
+        ),
+        # nixpkgs' own changes to the source no longer apply: patches,
+        # substituteInPlace.
+        (
+            "patch",
+            r"Hunk #\d+ FAILED|patch does not apply|can't find file to patch"
+            r"|Reversed \(or previously applied\) patch"
+            r"|doesn't match anything in file"
+            r"|substitute\(\): ERROR: file .* does not exist",
+        ),
+        # A dependency too old, missing, or new (a build backend, a module).
+        (
+            "dependency",
+            r"not satisfied by version|^\s*- \S+ not installed$|Unmet dependencies"
+            r"|Backend '\S+' is not available|Could NOT find"
+            r"|required packages were not found|pkg-config tool not found"
+            r"|Package '\S+'.* not found|Dependency \S+ found: NO|No module named"
+            r"|no required module provides package|required \S+ module not found"
+            r"|fatal error: \S+\.h: No such file",
+        ),
+        # A fixed-output hash (vendored dependencies, mostly) not updated, or
+        # one the bot couldn't work out: it builds them with a wrong hash to
+        # be told the right one, and they failed to build instead.
+        (
+            "hash",
+            r"hash mismatch in fixed-output|ERROR: npmDepsHash|is out of date"
+            r"|build succeeded unexpectedly",
+        ),
+        # The new version's source can't be fetched.
+        (
+            "source",
+            r"curl: \(22\)|HTTP error 404|couldn't find remote ref|invalid refspec"
+            r"|Unable to checkout|unable to download",
+        ),
+        # The package's updateScript (nix-update, mostly) failed on its own.
+        (
+            "updateScript",
+            r"nix_update\.errors\.\w+:|update\.sh: line \d+:"
+            r"|grep did not find version|does not provide attribute .*\.src'"
+            r"|does not have a `passthru\.updateScript`|urllib\.error\.HTTPError:",
+        ),
+        (
+            "tests",
+            r"test result: FAILED|^Fail: +[1-9]|^=+ .*\d+ failed|^FAILED \S+::"
+            r"|tests? failed out of|^--- FAIL:|^FAIL\s",
+        ),
+        # The build failed, and nix kept no log of it to tell why.
+        ("noLog", r"build log of .* is not available"),
+        # Any other error building it.
+        (
+            "build",
+            r"error\[E\d+\]|fatal error:|: error:|error TS\d+|cannot find symbol"
+            r"|[Cc]ompilation failed|undefined reference to|^CMake Error|^panic: "
+            r"|^\S+: error: |^error: |\berror [A-Z]+\d+:|^ERROR[: ]|make: \*\*\*"
+            r"|^\S+(?:Error|Exception|Invalid\w*): |cannot stat"
+            r"|No such file or directory$"
+            r"|but \.dist-info/METADATA specifies version",
+        ),
+    )
+)
+# nix's wrapping of a failed build: the reason comes before.
+WRAPPING = re.compile(
+    r"^error: (?:Cannot build|builder for|\d+ dependencies of derivation|build of)"
+    r"|^\s*For full logs, run:"
+)
+# Lines no rule reads: that, and a lookup the bot makes of every Go
+# package's source that fails harmlessly.
+NOT_A_REASON = re.compile(
+    rf"{WRAPPING.pattern}|in selection path '\S+\.originalSrc' not found"
+)
+# What the bot runs, not what it printed.
+NOT_OUTPUT = ("Raw command:", "Standard output:")
+UPDATE_SCRIPT_FAILED = "The update script for"
 ANSI = re.compile(r"\x1b\[[0-9;]*[A-Za-z]")
 EXCERPT_LINES = 3
 
@@ -210,6 +297,50 @@ def http_excerpt(log):
     return [f"HTTPError from {host.group(1)}: {what}" if host else f"HTTPError: {what}"]
 
 
+def output_lines(log):
+    """What the builds and scripts printed in log: its meaningful lines,
+    without the diff of the update, the rewriters' notes ("[version] ..."),
+    the commands the bot ran, and the "> " nix puts before a build's lines."""
+    lines, in_diff = [], False
+    for raw in log.splitlines():
+        line = ANSI.sub("", raw).rstrip()
+        if line == DIFF_HEAD.strip():
+            in_diff = True
+            continue
+        if in_diff:
+            if not line or re.match(r"[ +\-@\\]|diff |index ", line):
+                continue
+            in_diff = False
+        if not line.strip() or raw.startswith("@nix") or re.match(r"\[\w+\]", line):
+            continue
+        line = re.sub(r"^\s*> ?", "", line)
+        if not line.startswith(NOT_OUTPUT):
+            lines.append(line)
+    return lines
+
+
+def failed_because(log):
+    """(why a failed attempt failed, its excerpt): the first of
+    FAILED_BECAUSE's rules a line of log meets, and that line with the
+    next; ("other", the last lines before nix's wrapping of the failure, or
+    the log's last) when none does."""
+    lines = output_lines(log)
+    for because, rule in FAILED_BECAUSE:
+        for i, line in enumerate(lines):
+            if not NOT_A_REASON.search(line) and rule.search(line):
+                return because, [
+                    shown.strip()[:200] for shown in lines[i : i + EXCERPT_LINES]
+                ]
+    because = "updateScript" if UPDATE_SCRIPT_FAILED in log else "other"
+    wrapped = next((i for i, line in enumerate(lines) if WRAPPING.search(line)), None)
+    if wrapped:
+        return because, [
+            shown.strip()[:200]
+            for shown in lines[max(0, wrapped - EXCERPT_LINES) : wrapped]
+        ]
+    return because, excerpt(log)
+
+
 def skip_reason(log):
     """Why the bot stopped right after its own checks (CHECKS), on purpose:
     the line that came next, when it's the log's last; else None."""
@@ -250,12 +381,14 @@ def diff_versions(log, was):
 
 
 def parse(log):
-    """{"outcome", "from"?, "to"?, "was"?, "pr"?, "excerpt"?} for one log.
+    """{"outcome", "from"?, "to"?, "was"?, "pr"?, "excerpt"?,
+    "failedBecause"?} for one log.
     outcome: prOpened, prExists, branchExists (the bot already pushed this
     update to its branch), cantUpdate (a newer version, but no way for the
     bot to update the package: excerpt says why), noChange (excerpt: why,
     when the log says), skipped (the bot passed it over on purpose: excerpt
-    says why), failed, or other. was: what
+    says why), failed (failedBecause: why, see FAILED_BECAUSE; "request"
+    when the bot's own request failed), or other. was: what
     nixpkgs had when the bot tried, as a version (2.7.3) or, with an
     updateScript, a name-version (wesnoth-devel-1.19.24)."""
     result = {}
@@ -263,6 +396,10 @@ def parse(log):
         result["from"], result["to"] = info.groups()
         if result["from"] != UPDATE_SCRIPT:
             result["was"] = result["from"]
+        if "://" in result["to"]:
+            # No new version, only where it would come from (ocamlPackages.
+            # labltk's "8.06.16 -> https://github.com/...", 2026-10-03).
+            del result["to"]
     if "was" not in result and (package := UPDATE_SCRIPT_PACKAGE.search(log)):
         result["was"] = package.group(1)
     if result.get("from") == UPDATE_SCRIPT and (
@@ -282,7 +419,10 @@ def parse(log):
         if branch and result.get("from") in (None, UPDATE_SCRIPT):
             result["from"], result["to"] = branch.groups()  # the script's versions
     elif HTTP_ERROR.search(log):
-        result.update(outcome="failed", excerpt=http_excerpt(log))
+        # The bot's own request (to GitHub's API, mostly), not the package.
+        result.update(
+            outcome="failed", failedBecause="request", excerpt=http_excerpt(log)
+        )
     elif (EMPTY_DIFF in log or NO_REWRITES in log) and real_version:
         result.update(outcome="cantUpdate", excerpt=REWRITER.findall(log))
     elif no_version := NO_VERSION.search(log):
@@ -294,7 +434,8 @@ def parse(log):
     elif nothing := NOTHING_NEWER.search(log):
         result.update(outcome="noChange", excerpt=[nothing.group(0).strip()])
     elif FAILED.search(log):
-        result.update(outcome="failed", excerpt=excerpt(log))
+        because, lines = failed_because(log)
+        result.update(outcome="failed", failedBecause=because, excerpt=lines)
     elif reason := skip_reason(log):
         result.update(outcome="skipped", excerpt=[reason])
     else:

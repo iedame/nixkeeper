@@ -67,6 +67,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   `version` attribute (`cantUpdate`), and its checks of a build that went
   wrong (`failed`).
 
+- Why a nixpkgs-update attempt failed, from its log (parser 5, so every
+  log is read again): tests, build, dependency (missing or too old), patch
+  (nixpkgs' patches or substitutions no longer apply), source (couldn't be
+  fetched), hash (one the bot couldn't work out), updateScript, unavailable
+  (broken, insecure or not for x86_64-linux), or request (the bot's own,
+  not the package). The list says it ("failed: tests"), the update panel in
+  full, its excerpt starting at the log's line that says so instead of the
+  log's last lines; rows have it as `failedBecause` (`docs/data.md`). Read
+  from 200 failed attempts' logs, 97% of which it says.
+
 - When nixpkgs-update will try a package again, and what it would update
   it to, from the bot's queue (nixkeeper-updates' copy of it): "Next
   attempt expected around Oct 12, from its queue: it would update it to

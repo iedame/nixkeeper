@@ -175,7 +175,7 @@ about it (`devel`, `vulnerable`, ...); beside the newest, the update's
 
 | Shows | Means |
 |---|---|
-| failure reported (pink) | the bot's update failed: the panel shows the end of its log |
+| failed: … (pink) | the bot's update failed, and why, from its log: `tests`, `build`, `dependency` (one missing or too old), `patch` (nixpkgs' patches no longer apply), `source` (couldn't be fetched), `hash` (one the bot couldn't work out), `updateScript` (the package's own failed), `unavailable` (broken, insecure or not for x86_64-linux), `request` (the bot's own request failed, not the package). The panel says it in full, with the log's line that says so. `failure reported` when the log doesn't say |
 | can't update (gold) | a newer version exists, but none of the bot's ways of updating apply to this package: update it by hand, or give it an updateScript |
 | skipped | the bot passes this package over on purpose (the package opts out, GNOME's release cycle, too many rebuilds, ...: the panel says which): while it does, updates are done by hand |
 | superseded | the attempt no longer matters: nixpkgs has moved past that version (in the channel, or merged on master), or a manual rule ignores it (`package-lists/ignored-updates.nix`) |

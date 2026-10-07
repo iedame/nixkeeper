@@ -1782,7 +1782,10 @@ function updateStatus(pkg) {
       notRefreshed(pkg, 'update'),
       quiet,
     );
-  if (pkg.updateFailure) return button('missing', 'failure reported');
+  if (pkg.updateFailure) {
+    const because = FAILED_BECAUSE[pkg.update?.failedBecause];
+    return button('missing', because ? `failed: ${because.short}` : 'failure reported');
+  }
   // The bot's last attempt failed, but nixpkgs has moved on since: not a
   // failure anymore, though the next attempt may well break the same way.
   if (pkg.update?.outcome === 'superseded') return button('neutral', 'superseded', true);
@@ -1799,10 +1802,46 @@ function updateStatus(pkg) {
   return button('ok', 'none reported', true);
 }
 
+// Why the bot's attempt failed ("failedBecause"), as the log says: short in
+// the list, said in full in the panel. None recognised: "other".
+const FAILED_BECAUSE = {
+  unavailable: {
+    short: 'unavailable',
+    text: "nixpkgs won't build it where the bot builds (x86_64-linux): it or a dependency is broken, insecure or not for that platform",
+  },
+  patch: {
+    short: 'patch',
+    text: "nixpkgs' changes to the source (patches, substitutions) don't apply to the new version",
+  },
+  dependency: {
+    short: 'dependency',
+    text: "the new version needs a dependency nixpkgs doesn't give it: missing, or too old",
+  },
+  hash: {
+    short: 'hash',
+    text: "the bot couldn't work out a hash: of vendored dependencies, mostly, which failed to fetch or build",
+  },
+  source: { short: 'source', text: "the new version's source couldn't be fetched" },
+  updateScript: { short: 'updateScript', text: "the package's updateScript failed" },
+  tests: { short: 'tests', text: 'the new version built, but its tests failed' },
+  noLog: { short: 'build', text: 'the build failed, and nix kept no log of why' },
+  build: { short: 'build', text: 'the new version failed to build' },
+  request: {
+    short: 'request',
+    text: "a request of the bot's failed (to GitHub, mostly), not the package",
+  },
+};
+
 const prLink = (n, text) =>
   html`<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${n}" target="_blank" rel="noopener">${text}</a>`;
 const UPDATE_OUTCOME = {
-  failed: { dot: 'missing', text: () => 'failed' },
+  failed: {
+    dot: 'missing',
+    text: (u) => {
+      const because = FAILED_BECAUSE[u.failedBecause];
+      return because ? `failed: ${because.text}` : 'failed';
+    },
+  },
   // nixpkgs has moved on since the attempt (updated another way): in the
   // channel, or merged on master and not in the channel yet. Or a rule
   // ignores the version it tried: your own (package-lists/ignored-updates.nix)
@@ -1904,7 +1943,7 @@ function fillUpdate(pkg, el) {
   const day = `${u.date}T12:00:00Z`;
   // "0 -> 1" means the package's updateScript picks the version.
   const versions =
-    u.from && !(u.from === '0' && u.to === '1')
+    u.from && u.to && !(u.from === '0' && u.to === '1')
       ? html` · <span class="mono">${u.from} → ${u.to}</span>`
       : '';
   const o = UPDATE_OUTCOME[u.outcome] || UPDATE_OUTCOME.other;
