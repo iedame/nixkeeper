@@ -48,8 +48,11 @@ Typst packages are compared with [Typst Universe](https://typst.app/universe/),
 their source (nixkeeper-versions reads its index daily), instead of
 Repology, which mostly can't compare them: each package's latest attribute
 (`typstPackages.cetz`) against Universe's newest version, its versioned
-ones (`typstPackages.cetz_0_3_0`) as older versions kept. Other sets'
-sources may follow (MELPA and ELPA for Emacs, Hackage for Haskell).
+ones (`typstPackages.cetz_0_3_0`) as older versions kept. Emacs packages
+likewise, with the archive nixpkgs takes each from (MELPA, whose versions
+are a build's date, MELPA Stable, NonGNU ELPA or GNU ELPA; nixpkgs'
+hand-written ones keep Repology's verdict). Other sets' sources may follow
+(Hackage for Haskell).
 
 ## The page
 
