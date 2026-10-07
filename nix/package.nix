@@ -53,6 +53,9 @@ python3Packages.buildPythonApplication (finalAttrs: {
   nativeCheckInputs = [
     python3Packages.unittestCheckHook
     versionCheckHook
+    # Only for tests/test_versions.py: the port of libversion's algorithm
+    # (nixkeeper/versions.py) compared with libversion itself.
+    python3Packages.libversion
   ];
 
   unittestFlagsArray = [

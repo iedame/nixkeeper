@@ -1,3 +1,5 @@
+import functools
+import itertools
 import os
 import re
 import unittest
@@ -37,6 +39,45 @@ class RepologysSuite(unittest.TestCase):
                 x, y = version_key(a), version_key(b)
                 got = "<" if x < y else ">" if x > y else "="
                 self.assertEqual(got, relation)
+
+
+# libversion itself (py-libversion, nixpkgs' python3Packages.libversion):
+# only where the tests run from the flake (nix flake check, nix develop),
+# never needed by nixkeeper.
+try:
+    import libversion
+except ImportError:
+    libversion = None
+REAL = os.path.join(os.path.dirname(__file__), "data", "real-versions.txt")
+
+
+@unittest.skipUnless(libversion, "py-libversion isn't installed")
+class AgainstLibversion(unittest.TestCase):
+    """nixkeeper's port orders real versions as libversion does, so it can't
+    drift unnoticed: the suite above covers the documented cases, this the
+    shapes versions really take (nixpkgs' "unstable" rule aside, which
+    libversion doesn't have)."""
+
+    def test_real_versions_in_the_same_order(self):
+        with open(REAL) as f:
+            versions = [
+                # "# " starts a comment; a version can start with "#" (#671).
+                line.rstrip("\n")
+                for line in f
+                if line.strip() and not line.startswith("# ")
+            ]
+        self.assertGreater(len(versions), 3000)  # the file read as it should be
+        # In libversion's order, each next to the one after it: agreeing on
+        # every such pair, the two orders are the same.
+        ordered = sorted(versions, key=functools.cmp_to_key(libversion.version_compare))
+        for a, b in itertools.pairwise(ordered):
+            x, y = version_key(a), version_key(b)
+            ours = (x > y) - (x < y)
+            if ours != libversion.version_compare(a, b):
+                self.fail(
+                    f"{a!r} vs {b!r}: libversion says "
+                    f"{libversion.version_compare(a, b)}, nixkeeper {ours}"
+                )
 
 
 class Ordering(unittest.TestCase):
