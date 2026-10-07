@@ -3,7 +3,8 @@
 # SITE: for an instance served from its own site (Cloudflare,
 # CLOUDFLARE_SITE_URL; docs/all-packages.md), so its <owner>.github.io
 # address isn't a second copy of the dashboard, reading its data the slow
-# way. Run by .github/workflows/pages.yml instead of publishing the page.
+# way. Run by .github/workflows/pages.yml instead of publishing the page,
+# only when that's run by hand: after changing this, run it.
 #
 #   bash scripts/pages-redirect.sh SITE DIR
 #
