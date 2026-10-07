@@ -46,6 +46,7 @@
   --nk-link-text: #1a59d5;
   --nk-link-badge: #1a59d5;
   --nk-link-bg: #d6e0f5;
+  --nk-bulk-fill: #ca9ee6; /* mauve, lightened: beside the blue accent */
 }
 
 /* Mocha: by the system's setting unless set to light, or when set to dark;
@@ -87,6 +88,7 @@
     --nk-link-text: #89b4fa;
     --nk-link-badge: #89b4fa;
     --nk-link-bg: #2d334b;
+    --nk-bulk-fill: #6c5a8f; /* mauve, darkened */
   }
 }
 :root[data-palette="catppuccin"][data-mode="dark"] {
@@ -125,4 +127,5 @@
   --nk-link-text: #89b4fa;
   --nk-link-badge: #89b4fa;
   --nk-link-bg: #2d334b;
+  --nk-bulk-fill: #6c5a8f; /* mauve, darkened */
 }

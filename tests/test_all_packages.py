@@ -388,6 +388,7 @@ class Data(unittest.TestCase):
                         "outdated": 0,
                         "failed": 0,
                         "broken": 1,
+                        "bar": {"failed": 0, "broken": 1, "outdated": 0},
                     }
                 },
             },
@@ -420,6 +421,27 @@ class Data(unittest.TestCase):
         self.assertEqual(
             datastore.entries(rows[0], self.out), [nix("a", "1", "newest")]
         )
+
+    def test_set_bar_each_package_at_its_worst(self):
+        def r(name, **more):
+            return row(f"rPackages.{name}", set="rPackages", **more)
+
+        rows = [
+            r("a", nixStatus="outdated", markedBroken=True, updateFailure=True),
+            r("b", nixStatus="outdated", markedBroken=True),
+            r("c", nixStatus="outdated"),
+            r("d", markedBroken=True),
+            r("e"),
+        ]
+        datastore.write(
+            {"checkedAt": NOW, "allPackages": True, "packages": rows}, {}, self.out
+        )
+        found = self.read("index.json")["views"]["sets"]["rPackages"]
+        # The counts overlap; the bar's parts don't.
+        self.assertEqual(
+            (found["outdated"], found["broken"], found["failed"]), (3, 3, 1)
+        )
+        self.assertEqual(found["bar"], {"failed": 1, "broken": 2, "outdated": 1})
 
     def test_history_a_point_a_day(self):
         rows = [row("a"), row("b", nixStatus="outdated", markedBroken=True)]

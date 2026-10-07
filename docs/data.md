@@ -161,8 +161,11 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   0.14.0; `onBranch`: of those, how many are already updated on the
   branch that updates the set before master, haskell-updates), fail, and
   nixpkgs marks broken; for R, `archived` (no longer on CRAN or in
-  Bioconductor) and `archivedUnmarked` (those not marked broken)
-  (`{ "haskellPackages": { "packages": 19423, "outdated": 1083, "failed": 83, "broken": 7600 }, ... }`);
+  Bioconductor) and `archivedUnmarked` (those not marked broken). These
+  counts overlap (a package can be outdated and broken); `bar` (from
+  0.14.0) counts each package once, at its worst: failing, then broken,
+  then outdated, what the overview's bar draws
+  (`{ "haskellPackages": { "packages": 19423, "outdated": 1083, "failed": 83, "broken": 7600, "bar": { "failed": 83, "broken": 7530, "outdated": 560 } }, ... }`);
 - `profiles` in `index.json`: what updates each set updated in bulk,
   `{ "rPackages": { "name": "R", "updatedBy": "the CRAN and Bioconductor
   import (generate-r-packages.R)", "short": "CRAN import", "link": ... },
