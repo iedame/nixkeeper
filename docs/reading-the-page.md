@@ -3,7 +3,8 @@
 Each row is a package; clicking it opens its details (every repository
 Repology compares it with, after `nixkeeper` first when an update check found
 a version: hover it for where; links to its homepage and nixpkgs source), and
-clicking its build or update cell opens that instead. The counts at the top
+clicking its build or update cell opens that instead; one package is open
+at a time, so opening another closes it. The counts at the top
 (tracked, outdated, failed, and flagged vulnerable or blocked when any are)
 filter the list, as do the list names beside them and a row's platform tags
 (Linux, Darwin, or "Linux x86_64" for a package on only one Linux system); the filters
