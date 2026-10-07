@@ -54,8 +54,8 @@ team, in their browser. See [reading the page](reading-the-page.md).
 GitHub runs scheduled workflows on a best-effort basis and skips runs when
 it's busy: some days the hourly digests ran a handful of times. Any machine
 that stays on can start them on time instead, through GitHub's API:
-`nix run .#start-runs`, hourly at :15 UTC, starts the daily sync at 06 UTC
-and each digest's run when it's due
+`nix run .#start-runs`, hourly at :15 UTC, starts the hourly updates every
+hour (the daily sync instead at 06 UTC) and each digest's run when it's due
 ([scripts/start-runs.sh](../scripts/start-runs.sh) lists when; `-- --dry-run`
 shows what it would start now, without starting anything). The workflows
 keep their own schedules as a fallback: a run started twice finds nothing
@@ -67,11 +67,11 @@ write**: it can start and cancel runs, nothing else.
 
 ### Whose runs
 
-By default it starts iedame's: the community instance's daily sync and the
-three digests. Elsewhere, two variables say which:
+By default it starts iedame's: the community instance's hourly updates and
+daily sync, and the three digests. Elsewhere, two variables say which:
 
 - `NIXKEEPER_START_REPO`: your nixkeeper repository (`you/nixkeeper`),
-  whose daily sync it starts; empty for none.
+  whose hourly updates and daily sync it starts; empty for none.
 - `NIXKEEPER_START_DIGESTS`: the owner of the digest repositories whose
   runs it starts; empty for none. A fork reads iedame's digests (unless
   you point `NIXKEEPER_*_DIGEST` at your own), which iedame keeps

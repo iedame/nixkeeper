@@ -13,7 +13,9 @@ on:
   schedule:
     # Hourly, at :23 to stay clear of the top of the hour, when GitHub's
     # scheduler is busiest. Scheduled runs are best-effort: under load GitHub
-    # delays or skips them, so gaps of a few hours happen.
+    # delays or skips them, so gaps of a few hours happen (every 4 to 7
+    # hours on 2026-10-05/06). The fallback when nothing starts it at :15
+    # (scripts/start-runs.sh): a run started both ways finds nothing new.
     - cron: '23 * * * *'
   workflow_dispatch: {}
 
