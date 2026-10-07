@@ -110,6 +110,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- The page no longer jumps as it loads (its layout shift, 0.15 to 0.8
+  depending on the screen, now about 0): the footer stays hidden until the
+  data is there, the loading line sits above where the list or overview
+  appears, and the scrollbar has its room from the start.
 - The page for screen readers, phones and low vision (a pass before the
   community page is announced):
   - muted text (labels, dates, zeros, headers) is now 4.5:1 against its

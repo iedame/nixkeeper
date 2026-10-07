@@ -836,6 +836,7 @@ async function loadIndex() {
   const content = document.getElementById('content');
   dataBase = dataBase || (await findDataBase());
   if (!dataBase) {
+    doneLoading();
     content.innerHTML = `<div class="error">
       Couldn't find the data to show.<br>
       Serve it as <code>data/</code> next to this page, set it with
@@ -850,6 +851,7 @@ async function loadIndex() {
     const data = await res.json();
     if (!(data.format >= 2 && data.shardCount)) {
       // Format 1, which only nixkeeper 0.11.0 and before write alone.
+      doneLoading();
       content.innerHTML = html`<div class="error">
         This data is from nixkeeper 0.11.0 or older, which this page no longer reads.<br>
         The next sync rewrites it.
@@ -876,6 +878,7 @@ async function loadIndex() {
     document.getElementById('search').disabled = false;
     await update({ keepPage: true });
   } catch {
+    doneLoading();
     content.innerHTML = html`<div class="error">
       Couldn't load <code>${dataUrl('index.json')}</code>.<br>
       Check that the sync has run at least once (and, on GitHub, that the repo is public).
@@ -1107,7 +1110,16 @@ function announce(text, delay = 0) {
 }
 let rendered = false; // the first render is the page loading: nothing said
 
+// The data is there (or isn't coming): the loading line goes, what's shown
+// takes its place, and the footer appears below it (index.html).
+function doneLoading() {
+  document.getElementById('loading')?.remove();
+  const about = document.getElementById('about');
+  if (about) about.hidden = false;
+}
+
 function render(list, { keepPage = false } = {}) {
+  doneLoading();
   // How many packages a change leaves, to hear without looking.
   if (rendered && !(community && shownView === 'overview') && shownView !== 'maintainers')
     announce(`${fmt(list.length)} ${list.length === 1 ? 'package' : 'packages'}`, 700);
