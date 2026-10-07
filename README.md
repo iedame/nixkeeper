@@ -3,7 +3,7 @@
 [![CI: tests and lint](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml)
 [![Data: daily sync](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml/badge.svg)](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml)
 [![Latest release](https://img.shields.io/github/v/release/iedame/nixkeeper)](https://github.com/iedame/nixkeeper/releases/latest)
-[![Dashboard](https://img.shields.io/badge/dashboard-live-8250df)](https://iedame.github.io/nixkeeper/)
+[![Dashboard](https://img.shields.io/badge/dashboard-live-8250df)](https://nixkeeper.com/)
 
 Health dashboard for the nixpkgs packages you maintain: new releases, build
 and update failures, and vulnerabilities, in one place.
@@ -59,7 +59,7 @@ commenting when something newly needs attention.
 
 ## The community dashboard
 
-[The live dashboard](https://iedame.github.io/nixkeeper/) tracks
+[The live dashboard](https://nixkeeper.com/) tracks
 [every nixpkgs package](docs/all-packages.md), about 126,000, so anyone can
 look theirs up without setting anything up. It opens on an overview of all
 of nixpkgs: how many packages are outdated, failing to build, failing their
@@ -79,7 +79,7 @@ the most other builds; and what was fixed in the last week.
 </p>
 
 **Finding yours.** Search for `@` and your GitHub handle, or link straight
-to it: `https://iedame.github.io/nixkeeper/?q=@yourhandle`. A team's
+to it: `https://nixkeeper.com/?q=@yourhandle`. A team's
 packages are under "Browse a team" (`?team=gnome`), one package under
 `?pkg=firefox`, and "needs attention" lists everything failing, outdated or
 vulnerable. Every filter stays in the address, so a list ("my packages

@@ -1,0 +1,88 @@
+# shellcheck shell=bash
+# Publishes the page with its data (page/ and data/, one site) to Cloudflare,
+# as a Worker serving only static assets, for an instance served from there:
+# the community one, at https://nixkeeper.com/. The page then finds its data
+# next to it (data/), from Cloudflare's edge, instead of on
+# raw.githubusercontent.com. Run by the data workflows
+# (.github/workflows/data-*.yml) after they publish the data branch, which
+# stays the syncs' own copy (they restore from it).
+#
+#   bash scripts/cloudflare.sh deploy [--force]
+#
+# Only when the page or the data changed since the last deploy (or --force):
+# the site's version.json (the page's git tree, a hash of the data) is
+# compared with the live one first, so a run that changed nothing deploys
+# nothing, and a page change goes out with the next run of either workflow.
+#
+# Needs CLOUDFLARE_WORKER (the Worker's name; without it, this does nothing:
+# an instance on GitHub Pages only), CLOUDFLARE_SITE_URL (where it's served,
+# https://nixkeeper.com), CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN (a
+# token with only Account → Workers Scripts → Edit). wrangler is nixpkgs'
+# (this flake's lock), unless NIXKEEPER_WRANGLER names another command (for
+# tests).
+
+set -euo pipefail
+
+case "${1:-}" in
+deploy) ;;
+*)
+  echo "usage: bash scripts/cloudflare.sh deploy [--force]" >&2
+  exit 2
+  ;;
+esac
+force=false
+[ "${2:-}" = --force ] && force=true
+
+worker=${CLOUDFLARE_WORKER:-}
+if [ -z "$worker" ]; then
+  echo "No Cloudflare Worker (CLOUDFLARE_WORKER): not published there."
+  exit 0
+fi
+: "${CLOUDFLARE_SITE_URL:?CLOUDFLARE_SITE_URL is needed with a Worker}"
+: "${CLOUDFLARE_ACCOUNT_ID:?CLOUDFLARE_ACCOUNT_ID is needed with a Worker}"
+: "${CLOUDFLARE_API_TOKEN:?CLOUDFLARE_API_TOKEN is needed with a Worker}"
+if [ ! -f data/index.json ]; then
+  echo "::error::No data/index.json: nothing to publish to Cloudflare."
+  exit 1
+fi
+
+# What's going out: the page as on this commit, and every data file's bytes.
+page=$(git rev-parse HEAD:page)
+data=$(cd data && find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum | sha256sum | cut -c1-64)
+version="{\"data\":\"$data\",\"page\":\"$page\"}"
+live=$(curl -fsS --max-time 30 "${CLOUDFLARE_SITE_URL%/}/version.json" 2>/dev/null || true)
+if [ "$live" = "$version" ] && ! $force; then
+  echo "Cloudflare already has this page and data."
+  exit 0
+fi
+
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
+site=$work/site
+mkdir "$site"
+cp -R page/. "$site/"
+cp -R data "$site/data"
+printf '%s\n' "$version" >"$site/version.json"
+# Served on its custom domain only (given in Cloudflare's dashboard): no
+# <name>.<account>.workers.dev address or preview addresses, which wrangler
+# would otherwise turn on with each deploy and print in the (public) log.
+# Beside the site, not in it: it isn't served.
+cat >"$work/wrangler.json" <<EOF
+{
+  "name": "$worker",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "site" },
+  "workers_dev": false,
+  "preview_urls": false
+}
+EOF
+
+export WRANGLER_SEND_METRICS=false # no usage telemetry from our runs
+read -r -a wrangler <<<"${NIXKEEPER_WRANGLER:-nix run --inputs-from . nixpkgs#wrangler --}"
+# Static assets only (no Worker code): wrangler uploads only the files
+# Cloudflare doesn't have yet, and the new version replaces the old all at
+# once, never a new index.json with yesterday's shards.
+"${wrangler[@]}" deploy \
+  --config "$work/wrangler.json" \
+  --message "page $(git rev-parse --short HEAD:page), data ${data:0:12}"
+echo "Published to Cloudflare ($worker): page $page, data ${data:0:12}."
