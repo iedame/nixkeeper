@@ -75,6 +75,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- Lists sort faster: each package's rank (failing, outdated...) and date
+  are worked out once, not at every comparison. Sorting "needs attention"
+  (11,579 packages) took 48-89 ms on a fast laptop and about half a second
+  of a mid-range phone's 653 ms long task (Lighthouse, 2026-10-07); now
+  about 7 ms, in the same order. Undated rows now go last, as intended
+  (none today).
+
 - A package's panel opens sooner: its data starts loading when the pointer
   rests on its row (or keyboard focus reaches it), not at the click. A
   shard Cloudflare's nearest location doesn't have yet takes 0.3-0.6 s to
