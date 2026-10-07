@@ -62,7 +62,9 @@ whether it was used (`used`), and if not, why (`why`: too old, or couldn't
 be read; the sync then asked per package instead). `hydra` has the
 evaluation its builds are from (`eval`) and when nixkeeper-hydra read it
 (`at`); `versions`, when nixkeeper-versions last read the outdated projects
-(`at`); `updates`, when nixkeeper-updates made its digest (`at`) and how
+(`at`); `typst`, when nixkeeper-versions last read Typst Universe's index
+(`at`) and how many packages it has (`packages`; not used, Repology's
+versions stay); `updates`, when nixkeeper-updates made its digest (`at`) and how
 many attempts it hasn't read yet (`pending`); `queue`, when the bot's queue
 was made (`at`) and how many days it takes to go round (`cycleDays`);
 `nixpkgs`, the channel's commit (`revision`); `github`, whether the open PRs
@@ -142,9 +144,9 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   (`top`), each `[name, row, packages, builds]`;
 - `views` in `index.json`: how many rows `attention`, `broken` and `blocked` have, the `teams` and
   `lists` with their counts (`{ "Gaming": 12, ... }`), and the `sets`
-  with how many packages each has, how many of them fail, and how many
-  nixpkgs marks broken
-  (`{ "haskellPackages": { "packages": 19423, "failed": 83, "broken": 7600 }, ... }`);
+  with how many packages each has, how many of them are outdated (from
+  0.14.0), fail, and nixpkgs marks broken
+  (`{ "haskellPackages": { "packages": 19423, "outdated": 1083, "failed": 83, "broken": 7600 }, ... }`);
 - `profiles` in `index.json`: what updates each set updated in bulk,
   `{ "rPackages": { "name": "R", "updatedBy": "the CRAN and Bioconductor
   import (generate-r-packages.R)", "short": "CRAN import", "link": ... },
@@ -228,6 +230,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `repoCount` | how many other repositories Repology compares it with (each counted once) |
 | `devel` | a development variant of a split project: newer than its stable one, or named for one (`wesnoth-devel`, `_1password-gui-beta`); or a version Repology calls devel |
 | `keptBeside` | for an older version nixpkgs keeps on purpose (Repology's `legacy`: `tracy_0_11`, `gnumake42`, `php82Extensions.zip`), the newer one beside it: `{ "attr", "version" }` |
+| `feed` | when its versions are compared with its own source instead of Repology (Typst packages, with Typst Universe): `{ "name": "Typst Universe", "version", "released"?, "url" }`, its newest version there and the day it was published. `nixStatus` and `refVersion` are then from it: `outdated` or `newest` for a package's latest attribute (`typstPackages.cetz`), `legacy` for its other versions (`typstPackages.cetz_0_3_0`) |
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
 | `failingSince` | since when a build of it has been failing (its own build, not a dependency's): kept from sync to sync while it fails, gone once it doesn't; first seen, it's the failed builds' last success (the failing began after it), or then |

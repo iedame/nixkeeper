@@ -38,6 +38,7 @@ SHARD_ROWS = 500
 # A row's fields only the details panels use, left out of its summary entry.
 PANEL_ONLY = (
     "dataFile",
+    "feed",
     "homepage",
     "repoCount",
     "repologyCheckedAt",
@@ -459,7 +460,8 @@ def views(rows, out):
         of the fully checked are outdated and failing: [handle, packages,
         outdated, failing], by handle (any case)
     Returns {"counts": {...}, "views": {"attention", "teams", "lists":
-    {name: count}, "sets": {name: {"packages", "failed", "broken"}}}}."""
+    {name: count}, "sets": {name: {"packages", "outdated", "failed",
+    "broken"}}}}."""
     found = {}
 
     def put(path, row):
@@ -529,9 +531,10 @@ def views(rows, out):
         if row.get("set"):
             put(f"views/set/{row['set']}.json", row)
             found_set = sets.setdefault(
-                row["set"], {"packages": 0, "failed": 0, "broken": 0}
+                row["set"], {"packages": 0, "outdated": 0, "failed": 0, "broken": 0}
             )
             found_set["packages"] += 1
+            found_set["outdated"] += is_outdated(row)
             found_set["failed"] += letter.startswith("f")
             found_set["broken"] += bool(row.get("markedBroken") or broken_builds(row))
             counts["inSets"] += 1

@@ -382,7 +382,14 @@ class Data(unittest.TestCase):
                 "blocked": 0,
                 "teams": {"Gaming": 1},
                 "lists": {"gaming-team": 1},
-                "sets": {"haskellPackages": {"packages": 1, "failed": 0, "broken": 1}},
+                "sets": {
+                    "haskellPackages": {
+                        "packages": 1,
+                        "outdated": 0,
+                        "failed": 0,
+                        "broken": 1,
+                    }
+                },
             },
         )
         names = lambda path: [p["name"] for p in self.read(path)["packages"]]  # noqa: E731

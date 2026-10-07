@@ -11,6 +11,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Typst packages compared with Typst Universe, their source, instead of
+  Repology (which saw nixpkgs alone, "unique", for most): nixkeeper-versions
+  reads Universe's index daily (`typst.json.gz`), and each package's latest
+  attribute is outdated or newest against Universe's newest version, its
+  versioned ones older versions kept. On 2026-10-07, 89 of 4,900 Typst rows
+  outdated, where Repology could compare none. The panel says "the newest
+  on Typst Universe is …" with the day it was published, the sources panel
+  when the index was read; rows have `feed` (`docs/data.md`). Each set's
+  card on the overview counts its outdated packages too (`outdated` in
+  `views.sets`).
+
 - "Bot won't update it", narrowing any list (`?refine=nobot`): outdated
   packages nixpkgs-update won't update by itself, so they take someone:
   the bot can't (none of its ways apply), skips them on purpose, or has
