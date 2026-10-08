@@ -509,3 +509,63 @@ def update_status_issue(
     if comment:
         api("POST", f"/repos/{repo}/issues/{number}/comments", token, {"body": comment})
     return number
+
+
+# The issues of those who get a status issue of their own (notifications/,
+# notify.py): one label for all, each told apart by its title.
+SUBSCRIBER_LABEL = "nixkeeper-subscriber"
+
+
+def ensure_label(repo, token, label, about, color="5319e7"):
+    """Create label in repo unless it's there already."""
+    try:
+        api(
+            "POST",
+            f"/repos/{repo}/labels",
+            token,
+            {"name": label, "color": color, "description": about},
+        )
+    except urllib.error.HTTPError as e:
+        if e.code != 422:  # 422: the label already exists
+            raise
+        e.close()
+
+
+def open_issues(repo, token, label):
+    """{title: number} of the open issues labelled label (all pages)."""
+    found, page = {}, 1
+    while True:
+        issues = api(
+            "GET",
+            f"/repos/{repo}/issues?labels={label}&state=open&per_page=100&page={page}",
+            token,
+        )
+        for issue in issues or []:
+            if "pull_request" not in issue:
+                found[issue["title"]] = issue["number"]
+        if len(issues or []) < 100:
+            return found
+        page += 1
+
+
+def write_issue(repo, token, number, title, body, label, comment=None):
+    """Rewrite issue number's body (or open one, when number is None), then
+    post comment if given. Returns the issue number."""
+    if number:
+        api("PATCH", f"/repos/{repo}/issues/{number}", token, {"body": body})
+    else:
+        number = api(
+            "POST",
+            f"/repos/{repo}/issues",
+            token,
+            {"title": title, "body": body, "labels": [label]},
+        )["number"]
+    if comment:
+        api("POST", f"/repos/{repo}/issues/{number}/comments", token, {"body": comment})
+    return number
+
+
+def close_issue(repo, token, number, comment):
+    """Comment on issue number, then close it."""
+    api("POST", f"/repos/{repo}/issues/{number}/comments", token, {"body": comment})
+    api("PATCH", f"/repos/{repo}/issues/{number}", token, {"state": "closed"})

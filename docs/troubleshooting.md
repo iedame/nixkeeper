@@ -54,7 +54,10 @@ The workflows run in the repository's **Actions** tab:
   have run.
 - **The status issue** (labelled `nixkeeper-status`) is rewritten by every
   sync; it lists what needs attention and comments when something newly
-  does.
+  does. Off with `statusIssue = false;` in the lists (the sync closes it).
+  The maintainers' and teams' own (labelled `nixkeeper-subscriber`, titled
+  "nixkeeper status: @\<handle\>" or "nixkeeper status: \<team\> team") come from `notifications/`
+  ([notifications.md](notifications.md)).
 
 ## The `nixkeeper` command
 

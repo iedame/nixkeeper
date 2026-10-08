@@ -52,6 +52,11 @@ DEFAULTS = {
 }
 OUT_DIR = os.environ.get("NIXKEEPER_DATA_DIR") or DEFAULTS["OUT_DIR"]
 LISTS = os.environ.get("NIXKEEPER_LISTS") or DEFAULTS["LISTS"]
+# NIXKEEPER_NOTIFICATIONS: who gets a status issue of their own
+# (notifications/, notify.py), beside the package lists by default.
+NOTIFICATIONS = os.environ.get("NIXKEEPER_NOTIFICATIONS") or os.path.join(
+    os.path.dirname(os.path.abspath(LISTS)), "notifications"
+)
 NOTIFY = None  # set by the command; otherwise NIXKEEPER_NOTIFY, read when used
 NIX_REPO = "nix_unstable"
 ALL_PACKAGES = None  # set by the command; otherwise NIXKEEPER_ALL_PACKAGES

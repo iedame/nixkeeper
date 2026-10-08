@@ -54,6 +54,11 @@
   # tag scheme nixpkgs uses. To leave them to Repology alone:
   # workedOutChecks = false;
 
+  # The status issue for everything on these lists ("nixkeeper status",
+  # updated by the daily sync): off, so it's closed. Status issues for one
+  # maintainer or team are in notifications/.
+  statusIssue = false;
+
   # The page's colours for visitors who haven't picked any in its Theme menu:
   # "classic" or "catppuccin" (Latte when light, Mocha when dark).
   # page.theme = "catppuccin";

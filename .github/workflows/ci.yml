@@ -22,5 +22,17 @@ jobs:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
+      # notifications/ subscribes the handles its files mention to an issue:
+      # a pull request may only add its own author, and the handles and
+      # teams must be nixos-unstable's (not this flake's lagging nixpkgs).
+      - name: "Notifications: known names, only adding yourself"
+        if: github.event_name == 'pull_request'
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          AUTHOR: ${{ github.event.pull_request.user.login }}
+        run: |
+          git fetch --no-tags --depth=1 origin "$BASE"
+          python3 scripts/check-notifications.py "$BASE" "$AUTHOR"
+
       - name: Run flake checks (builds nixkeeper, which runs its tests)
         run: nix flake check

@@ -302,6 +302,8 @@
             touch $out
           '';
           package-lists = listsChecker.check (import ./package-lists);
+          # notifications/: well formed, for handles and teams nixpkgs has.
+          notifications = (import ./nix/notifications.nix { inherit pkgs; }).check (import ./notifications);
           # The community rules (community/): well formed, for packages in
           # nixpkgs; the update checks also within the limits they're held to,
           # with patterns Python compiles (nixkeeper/community.py).

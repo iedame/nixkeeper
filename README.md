@@ -54,8 +54,9 @@ For each package it tracks, nixkeeper shows on one static page (`page/`):
   PR one click away: open (green), or merged and on master (violet)
   while it waits for the channel
 
-A daily sync refreshes it all and keeps a status issue up to date,
-commenting when something newly needs attention.
+A daily sync refreshes it all. Any maintainer or team can get a GitHub
+issue of their own, kept up to date and commenting when something newly
+needs attention: [get notified](docs/notifications.md).
 
 ## The community dashboard
 

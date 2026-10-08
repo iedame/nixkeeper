@@ -41,8 +41,9 @@ choose others; a flag wins over its variable:
 | `--data-dir` | `NIXKEEPER_DATA_DIR` | `~/.local/state/nixkeeper/data` | where the data is written, and the previous run read from |
 | `--lists` | `NIXKEEPER_LISTS` | `~/.config/nixkeeper/package-lists` (or `lists.json` there) | the package lists: that Nix folder, or a JSON file of what it evaluates to |
 | | `NIXKEEPER_GITHUB_TOKEN_FILE` | – | a file holding a GitHub token (else `GITHUB_TOKEN`, else the local `gh` login) |
-| `--notify` | `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issue up to date (the workflows set it) |
-| | `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issue lives |
+| `--notify` | `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issues up to date (the workflows set it) |
+| | `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issues live |
+| | `NIXKEEPER_NOTIFICATIONS` | `notifications/` beside the lists | who gets a status issue of their own ([notifications.md](notifications.md)) |
 | | `NIXKEEPER_PAGE_URL` | the GitHub Pages site | the page link in notifications |
 | | `NIXKEEPER_CONTACT` | – | how you can be reached (an email or a URL), added to the User-Agent nixkeeper sends to the sources; see below |
 | `--all-packages` (sync) | `NIXKEEPER_ALL_PACKAGES` | – | `1` to track every nixpkgs package, not only the lists' ([every package](all-packages.md)) |

@@ -62,10 +62,13 @@ jobs:
           # (An input reaches the shell as a variable, never as code.)
           IF_OLDER: ${{ github.event.schedule == '0 14 * * *' && '20' || github.event.schedule == '0 6 * * *' && '12' || inputs.if_older }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR/issue counts and the status issue
-          NIXKEEPER_NOTIFY: github-issue  # the status issue; local runs don't notify
+          NIXKEEPER_NOTIFY: github-issue  # the status issues; local runs don't notify
           # Every nixpkgs package, not only the lists' (the community
           # instance): a repository variable, so forks don't inherit it.
           NIXKEEPER_ALL_PACKAGES: ${{ vars.NIXKEEPER_ALL_PACKAGES }}
+          # The issues' links: the instance's own site, when it has one
+          # (otherwise its GitHub Pages address).
+          NIXKEEPER_PAGE_URL: ${{ vars.CLOUDFLARE_SITE_URL }}
 
       - name: Publish the data if it changed
         id: publish
