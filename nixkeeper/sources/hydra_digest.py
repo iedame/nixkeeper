@@ -24,6 +24,9 @@ EVAL = re.compile(r"/eval/([0-9]+)")
 # the digest, not built yet) is asked of Hydra.
 FINISHED = {"ok", "failed", "dependency", "unfinished"}
 LAST_SUCCESS = ("lastSuccess", "lastSuccessBuild", "lastSuccessName")
+# A row's lastSuccessAt when Hydra says the job never succeeded (from
+# nixkeeper-hydra's lookups, 2026-10-08; its build and name are empty).
+NEVER = "never"
 
 
 def newest_eval():
@@ -151,6 +154,10 @@ def answer(row, broken, before):
                 "lastSuccessBuild": int(row["lastSuccessBuild"]),
                 "lastSuccessName": row["lastSuccessName"],
             }
+        elif row["lastSuccessAt"] == NEVER:
+            # nixkeeper-hydra asked Hydra: the job never succeeded (what
+            # asking again would say).
+            last = {"lastSuccess": None}
         elif (
             before
             and before.get("build") == result["build"]
