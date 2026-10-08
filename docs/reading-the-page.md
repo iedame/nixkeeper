@@ -134,7 +134,8 @@ nixkeeper's digests with what the sync read from it (nixkeeper-hydra: the
 Hydra evaluations of master and haskell-updates; nixkeeper-versions:
 Repology and the other version sources, when each was read;
 nixkeeper-updates: nixpkgs-update's attempts, with how many are still to
-read, and its queue). A source the sync
+read, and its queue; nixkeeper-vulnerabilities: the NixOS security tracker
+and OSV). A source the sync
 didn't use (too old, or it couldn't be read) says so in yellow: its
 packages were then asked about one by one instead.
 
@@ -191,7 +192,7 @@ about it (`devel`, `vulnerable`, ...); beside the newest, the update's
 | `on master` (violet) | the update is merged into master; links to its PR |
 | `devel` | a development release, compared against other devel versions |
 | `insecure` | nixpkgs itself marks it insecure (`meta.knownVulnerabilities`): it won't build unless allowed; the details give nixpkgs' reasons, their CVEs linked |
-| `vulnerable` | Repology flags this version; the details link its known CVEs |
+| `vulnerable` | vulnerable, says one or more of: the NixOS security tracker (a CVE affecting the package), OSV (an advisory listing its version), Repology; hovering says who, and how many CVEs. Red for critical or high severity, orange for medium, grey for low; the vulnerable list goes worst first. The details list each CVE: its severity, the verdict, the tracker's issue and its nixpkgs issue, and the release branches still affected (a fix to backport); the ones not counted (fixed, unconfirmed, dismissed) folded below |
 | `untrusted`, `rolling`, ... | Repology's status for a version it can't compare |
 | `not refreshed` | Repology couldn't be reached on the last sync: older data |
 | `check failing` | nixkeeper's own update check for it isn't working: fix it in `package-lists/update-checks.nix` |

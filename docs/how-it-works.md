@@ -67,7 +67,16 @@ can't (when it's down, its digest's run couldn't read it either). nixpkgs-update
 of the bot's latest attempt at every package, its log read with nixkeeper's
 own rules, made every 3 hours from the bot's state; a package's logs are
 still read when the digest hasn't read its latest attempt yet, or is more
-than 12 hours old. GitHub's open PRs and issues aren't searched package by
+than 12 hours old. What's vulnerable comes from
+[nixkeeper-vulnerabilities](https://github.com/iedame/nixkeeper-vulnerabilities),
+a digest of the NixOS security tracker (the CVEs it matched to nixpkgs
+packages, triaged by the security team, with their status on master and
+the release branches) and of OSV's advisories for language packages: a
+CVE counts when the tracker says the package is affected, or, when it
+can't say, nixpkgs' version is in the CVE's affected range; besides
+those, nixpkgs' own insecure mark and Repology's flag still count. The
+digest is used once it has read the tracker through, while under 3 days
+old. GitHub's open PRs and issues aren't searched package by
 package: each sync lists all of nixpkgs' open ones (about 120 requests) and
 the PRs merged into master since the channel's commit (about 10), and finds
 each package's counts and update PRs in their titles, every package daily

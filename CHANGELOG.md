@@ -9,6 +9,28 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- What's vulnerable comes from the NixOS security tracker and OSV too, read
+  from nixkeeper-vulnerabilities' digest by the daily sync (once it has
+  read the tracker through, while under 3 days old): the CVEs the tracker
+  matched to nixpkgs packages, and OSV's advisories for language packages
+  (PyPI, Hackage, CRAN, RubyGems, opam). A CVE counts when the tracker
+  says the package is affected on nixpkgs master, or, when it can't say
+  (most of them), nixpkgs' version is in the CVE's affected range; the
+  security team's "won't fix" counts, "not affected" doesn't; an OSV
+  advisory counts when it lists nixpkgs' version (not for a CVE the
+  tracker has). nixpkgs' own insecure mark and Repology's flag still
+  count: the tracker's entries cover some of a package's CVEs, not
+  necessarily Repology's. The "vulnerable" badge says who says so and is
+  coloured by the worst severity (critical/high red, medium orange, low
+  grey), the vulnerable list goes worst first, and the details list each
+  CVE: severity, verdict, the tracker's `NIXPKGS-…` issue and its nixpkgs
+  issue, and the release branches still affected (a fix to backport).
+  "Needs attention" on 2026-10-08: 599 vulnerable instead of 355. Rows
+  have `vulnerabilities`, the lists' entries `vuln`; the sources panel
+  lists the tracker and OSV (`docs/data.md`).
+
 ## [0.14.1] - 2026-10-08
 
 The release 0.14.0 was meant to be: its tag went on the wrong commit (see

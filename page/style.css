@@ -1607,6 +1607,52 @@ button.plat[aria-pressed="true"] {
   background: var(--danger-soft);
   color: var(--danger);
 }
+/* By the worst severity known: critical and high stay red; medium in the
+   caution colour; low muted. */
+.badge.vuln.sev-medium,
+.badge.vuln.sev-moderate {
+  background: var(--warn-soft);
+  color: var(--caution);
+}
+.badge.vuln.sev-low {
+  background: var(--bg);
+  color: var(--ink-soft);
+}
+/* The panel's CVEs and advisories. */
+.vl-list {
+  margin: 0;
+  padding-left: 18px;
+  font-size: 12.5px;
+}
+.vl {
+  margin: 4px 0;
+}
+.vl-summary {
+  color: var(--ink-soft);
+}
+.vl-backport {
+  color: var(--caution);
+}
+.vl-rest summary {
+  cursor: pointer;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+}
+.sev {
+  font-size: 11px;
+  padding: 0 6px;
+  border-radius: 20px;
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+.sev.sev-medium,
+.sev.sev-moderate {
+  color: var(--caution);
+}
+.sev.sev-low {
+  background: var(--bg);
+  color: var(--ink-soft);
+}
 /* Outdated, but the update is already on master: a solid violet label with
    white text, like GitHub's "Merged". */
 .badge.onmaster {

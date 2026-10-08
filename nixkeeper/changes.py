@@ -97,10 +97,26 @@ def build_label(row, build):
     return f"{build['attr']} on {build['system']}"
 
 
+# The verdicts of a row's "vulnerabilities" that make it vulnerable
+# (sources/vulnerabilities_digest.py's COUNTED).
+COUNTED_VULNERABILITIES = ("affected", "byVersion", "wontFix", "osv")
+
+
 def is_vulnerable(row):
-    """Whether a row counts as vulnerable: Repology flags nixpkgs' version
-    (nixVulnerable), or nixpkgs itself marks it insecure (markedInsecure)."""
-    return bool(row.get("nixVulnerable") or row.get("markedInsecure"))
+    """Whether a row counts as vulnerable, by any of its sources: nixpkgs
+    itself marks it insecure (markedInsecure); one of its CVEs or advisories
+    from nixkeeper-vulnerabilities is counted ("vulnerabilities"); Repology
+    flags nixpkgs' version (nixVulnerable). Repology's flag counts even where
+    the digest has entries: the tracker's cover some of a package's CVEs,
+    not necessarily Repology's (firefox-esr, 2026-10-08: one old CVE)."""
+    return bool(
+        row.get("markedInsecure")
+        or row.get("nixVulnerable")
+        or any(
+            v["verdict"] in COUNTED_VULNERABILITIES
+            for v in row.get("vulnerabilities") or []
+        )
+    )
 
 
 def failures(row):
