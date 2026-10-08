@@ -49,6 +49,14 @@ def cves_url(project):
     return f"https://repology.org/project/{urllib.parse.quote(project)}/cves"
 
 
+def pr_number(pr):
+    """A nixpkgs PR's number, in code: never a link. A link to the PR (or
+    its address) puts "mentioned this pull request" on the nixpkgs PR each
+    time the issue is rewritten; a bare #number would link this repository's
+    issue of that number instead."""
+    return f"`#{pr['number']}`"
+
+
 def describe(row, now):
     """One package, as a bullet's text."""
     text = f"`{row['name']}`"
@@ -62,10 +70,10 @@ def describe(row, now):
         if waiting_for_channel(row):
             text += f" · on master ({on_master(row)}), waiting for nixos-unstable"
             if pr := row.get("masterPR"):
-                text += f" ([#{pr['number']}]({pr['url']}))"
+                text += f" ({pr_number(pr)})"
         elif pr := row.get("openPR"):
             state = "draft PR" if pr["draft"] else "PR"
-            text += f" · {state} [#{pr['number']}]({pr['url']}) open"
+            text += f" · {state} {pr_number(pr)} open"
     if failures(row):
         text += " — " + ", ".join(failures(row))
     if row.get("nixVulnerable"):
@@ -226,6 +234,16 @@ def read_subscribers(path=None):
     return found
 
 
+def read_lists():
+    """The package lists, for their settings (statusIssue); {} when they
+    can't be read, which never stops a run."""
+    try:
+        return nixpkgs_source.read_lists()
+    except SystemExit as e:
+        print(f"::warning::package lists not read for notifying: {e}", file=sys.stderr)
+        return {}
+
+
 def subscriber_title(sub):
     """ "nixkeeper status: @iedame" or "nixkeeper status: Gaming team": a
     handle and a team of the same name never share an issue."""
@@ -283,9 +301,13 @@ def subscriber_body(sub, rows, changes, now, base):
     )
 
 
-def subscriber_issues(repo, token, subscribers, previous, everyone, now):
+def subscriber_issues(
+    repo, token, subscribers, previous, everyone, now, news_only=False
+):
     """Each subscriber's issue, with only their packages; and closing those
-    whose file is gone."""
+    whose file is gone. news_only (the hourly checks): only the issues of
+    those whose packages newly need attention, and none closed: the daily
+    sync rewrites them all."""
     github.ensure_label(
         repo,
         token,
@@ -304,7 +326,10 @@ def subscriber_issues(repo, token, subscribers, previous, everyone, now):
             "packages": [r for r in previous["packages"] if is_subscribed(sub, r)],
         }
         changes = diff(before, rows)
-        comment = change_comment(changes, now) if should_notify(changes) else None
+        news = should_notify(changes)
+        if news_only and not news:
+            continue
+        comment = change_comment(changes, now) if news else None
         number = github.write_issue(
             repo,
             token,
@@ -321,6 +346,8 @@ def subscriber_issues(repo, token, subscribers, previous, everyone, now):
         )
         time.sleep(SUBSCRIBER_PAUSE)
     for title, number in sorted(issues.items()):
+        if news_only:
+            break
         if re.match(re.escape(TITLE) + ": ", title) and title not in wanted:
             github.close_issue(
                 repo,
@@ -332,7 +359,14 @@ def subscriber_issues(repo, token, subscribers, previous, everyone, now):
 
 
 def github_issue(
-    rows, changes, now, previous=None, everyone=None, lists=None, subscribers=None
+    rows,
+    changes,
+    now,
+    previous=None,
+    everyone=None,
+    lists=None,
+    subscribers=None,
+    news_only=False,
 ):
     """The status issues in NIXKEEPER_GITHUB_REPO (in a workflow, the
     workflow's own repository): the instance's own, for rows (unless the
@@ -372,7 +406,9 @@ def github_issue(
             file=sys.stderr,
         )
     if subscribers:
-        subscriber_issues(repo, token, subscribers, previous, everyone or rows, now)
+        subscriber_issues(
+            repo, token, subscribers, previous, everyone or rows, now, news_only
+        )
 
 
 # How to notify, by NIXKEEPER_NOTIFY. Another way (ntfy, email, ...) is a
@@ -382,13 +418,24 @@ SENDERS = {"github-issue": github_issue}
 ALIASES = {"1": "github-issue"}
 
 
-def notify(previous, rows, now, everyone=None, everyone_before=None, lists=None):
+def notify(
+    previous,
+    rows,
+    now,
+    everyone=None,
+    everyone_before=None,
+    lists=None,
+    news_only=False,
+):
     """Send what changed the way NIXKEEPER_NOTIFY says (unset or "none": not
     at all, as in local runs). rows: the instance's own (its lists');
     everyone: every row, with everyone_before the previous run's (with every
     package: all of nixpkgs), for the subscribers' issues; lists: the package
-    lists (statusIssue). Never fails the sync: a problem here is reported as
-    a workflow warning."""
+    lists (statusIssue; read here when not given, as by the hourly checks:
+    without them, a turned-off status issue came back); news_only (the hourly
+    checks): subscribers' issues only where their packages newly need
+    attention. Never fails the sync: a problem here is reported as a workflow
+    warning."""
     method = config.NOTIFY or os.environ.get("NIXKEEPER_NOTIFY") or "none"
     method = ALIASES.get(method, method)
     if method == "none":
@@ -405,6 +452,8 @@ def notify(previous, rows, now, everyone=None, everyone_before=None, lists=None)
         )
         return
     try:
+        if lists is None:
+            lists = read_lists()
         subscribers = read_subscribers()
         SENDERS[method](
             rows,
@@ -414,6 +463,7 @@ def notify(previous, rows, now, everyone=None, everyone_before=None, lists=None)
             everyone=everyone or rows,
             lists=lists,
             subscribers=subscribers,
+            news_only=news_only,
         )
     except (urllib.error.URLError, OSError, ValueError) as e:
         print(f"::warning::Couldn't notify ({method}): {e}", file=sys.stderr)
