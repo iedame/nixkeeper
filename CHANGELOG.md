@@ -11,6 +11,21 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Status issues for any maintainer or team: a file in `notifications/`
+  (`maintainers/iedame.nix`: `{ maintainer = "iedame"; }`;
+  `teams/gaming.nix`: `{ team = "Gaming"; mention = [ ... ]; }`) opens
+  "nixkeeper status: @iedame" or "nixkeeper status: Gaming team",
+  rewritten by every daily sync with only their packages (not the sets
+  updated in bulk) and commenting when something newly needs attention; the
+  issue mentions them, which subscribes them. Removing the file closes it.
+  You can only add yourself: CI checks that each handle a pull request
+  newly mentions is its author, and that its handles and teams are
+  nixos-unstable's (`scripts/check-notifications.py`); `nix flake check`
+  checks the files' format (`nix/notifications.nix`). The
+  instance's own status issue can be turned off (`statusIssue = false;` in
+  the lists; the sync closes it): this one's is. See
+  [docs/notifications.md](docs/notifications.md).
+
 - A list named as a nixpkgs team is (`gaming` for Gaming: case and
   punctuation aside) joins the team: its packages show on the team's page
   (`?team=Gaming`), in its counts and filter, beside those nixpkgs lists

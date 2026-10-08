@@ -293,4 +293,8 @@ def main():
         else previous,
         on_lists,
         now,
+        # The subscribers' issues (notifications/): theirs among every row.
+        everyone=index_rows,
+        everyone_before=previous,
+        lists=lists,
     )

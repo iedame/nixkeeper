@@ -1,10 +1,15 @@
-"""The status issue: one GitHub issue in this repo showing what needs attention,
-rewritten every sync, plus a comment (which is what notifies) when something
-changed for the worse. Only runs that set --notify or NIXKEEPER_NOTIFY post
-(the workflows do); see notify() for the methods."""
+"""The status issues: GitHub issues in this repo showing what needs
+attention, rewritten every sync, plus a comment (which is what notifies)
+when something changed for the worse. The instance's own ("nixkeeper
+status", everything on its lists; off with `statusIssue = false;` in the
+lists), and one for each maintainer or team in notifications/ ("nixkeeper
+status: iedame"), with only their packages. Only runs that set --notify or
+NIXKEEPER_NOTIFY post (the workflows do); see notify() for the methods."""
 
 import os
+import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 from datetime import datetime
@@ -25,8 +30,12 @@ from .changes import (
     waiting_for_channel,
 )
 from .sources import github
+from .sources import nixpkgs as nixpkgs_source
 
 TITLE = "nixkeeper status"
+# Between one subscriber's issue and the next: GitHub limits how fast
+# content is created.
+SUBSCRIBER_PAUSE = 1.0
 
 
 def days_text(since, now):
@@ -161,8 +170,9 @@ def change_comment(changes, now):
 
 
 def page_url(repo=None):
-    """Where the page lives, for links: NIXKEEPER_PAGE_URL, else the GitHub
-    Pages project site of owner/repo, else None."""
+    """Where the page lives, for links: NIXKEEPER_PAGE_URL (the workflows: the
+    instance's own site, when it has one), else the GitHub Pages project site
+    of owner/repo, else None."""
     if os.environ.get("NIXKEEPER_PAGE_URL"):
         return os.environ["NIXKEEPER_PAGE_URL"]
     if not repo:
@@ -171,10 +181,160 @@ def page_url(repo=None):
     return f"https://{owner}.github.io/{name}/"
 
 
-def github_issue(rows, changes, now):
-    """The status issue in NIXKEEPER_GITHUB_REPO (in a workflow, the
-    workflow's own repository). Needs a token given explicitly: the local gh
-    login is never used to post."""
+# notifications/'s folders, and the field each file in them has.
+FOLDERS = {"maintainers": "maintainer", "teams": "team"}
+
+
+def read_subscribers(path=None):
+    """Who gets a status issue of their own: {"maintainers/iedame":
+    {"maintainer": handle}, "teams/gaming": {"team": name, "mention":
+    [handles]}}, from notifications/ (config.NOTIFICATIONS;
+    nix/notifications.nix checks the format). {} without the folder. One
+    that doesn't make sense (or isn't in its kind's folder) is left out,
+    said so."""
+    path = path or config.NOTIFICATIONS
+    if not os.path.exists(path):
+        return {}
+    try:
+        read = nixpkgs_source.read_lists(path)
+    except SystemExit as e:  # didn't evaluate: the sync goes on without them
+        print(f"::warning::notifications/ not read: {e}", file=sys.stderr)
+        return {}
+    found = {}
+    for folder, kind in FOLDERS.items():
+        for name, sub in sorted((read.get(folder) or {}).items()):
+            mention = sub.get("mention", []) if isinstance(sub, dict) else None
+            if (
+                not isinstance(sub, dict)
+                or not isinstance(sub.get(kind), str)
+                or not sub[kind]
+                or set(FOLDERS.values()) - {kind} & set(sub)
+                or not isinstance(mention, list)
+                or not all(isinstance(m, str) and m for m in mention)
+            ):
+                print(
+                    f"::warning::notifications/{folder}/{name}.nix: needs {kind} "
+                    "(and mention, a list of handles, if any): left out",
+                    file=sys.stderr,
+                )
+                continue
+            found[f"{folder}/{name}"] = sub
+    return found
+
+
+def subscriber_title(sub):
+    """ "nixkeeper status: @iedame" or "nixkeeper status: Gaming team": a
+    handle and a team of the same name never share an issue."""
+    if "maintainer" in sub:
+        return f"{TITLE}: @{sub['maintainer']}"
+    return f"{TITLE}: {sub['team']} team"
+
+
+def mentions(sub):
+    """The handles a subscriber's issue mentions (which subscribes them)."""
+    handles = [sub["maintainer"]] if "maintainer" in sub else []
+    return [*handles, *sub.get("mention", [])]
+
+
+def is_subscribed(sub, row):
+    """Whether row is one of sub's packages: listing the maintainer, or under
+    the team (meta.teams, or a list named after it). Not in a set updated in
+    bulk, as the page's counts."""
+    if row.get("set"):
+        return False
+    if "maintainer" in sub:
+        handle = sub["maintainer"].lower()
+        return any(m.lower() == handle for m in row.get("maintainers") or [])
+    team = sub["team"].lower()
+    return any(t.lower() == team for t in row.get("teams") or [])
+
+
+def subscriber_page(base, sub):
+    """The page showing sub's packages: ?q=@handle, or ?team=."""
+    if not base:
+        return None
+    query = (
+        {"q": f"@{sub['maintainer']}"} if "maintainer" in sub else {"team": sub["team"]}
+    )
+    return f"{base.rstrip('/')}/?{urllib.parse.urlencode(query)}"
+
+
+def subscriber_body(sub, rows, changes, now, base):
+    who = (
+        f"@{sub['maintainer']}'s packages"
+        if "maintainer" in sub
+        else f"The {sub['team']} team's packages"
+        + (
+            f" · for {' '.join(f'@{m}' for m in sub.get('mention', []))}"
+            if sub.get("mention")
+            else ""
+        )
+    )
+    return (
+        f"{who}, as [nixkeeper]({base or 'https://github.com/iedame/nixkeeper'}) "
+        "sees them.\n\n"
+        + status_body(rows, changes, now, subscriber_page(base, sub))
+        + "\n\n<sub>From notifications/ in this repository: removing the file "
+        "closes this issue.</sub>"
+    )
+
+
+def subscriber_issues(repo, token, subscribers, previous, everyone, now):
+    """Each subscriber's issue, with only their packages; and closing those
+    whose file is gone."""
+    github.ensure_label(
+        repo,
+        token,
+        github.SUBSCRIBER_LABEL,
+        "A maintainer's or team's status issue (notifications/)",
+    )
+    issues = github.open_issues(repo, token, github.SUBSCRIBER_LABEL)
+    base = page_url(repo)
+    wanted = set()
+    for sub in subscribers.values():
+        title = subscriber_title(sub)
+        wanted.add(title)
+        rows = [r for r in everyone if is_subscribed(sub, r)]
+        before = {
+            **previous,
+            "packages": [r for r in previous["packages"] if is_subscribed(sub, r)],
+        }
+        changes = diff(before, rows)
+        comment = change_comment(changes, now) if should_notify(changes) else None
+        number = github.write_issue(
+            repo,
+            token,
+            issues.get(title),
+            title,
+            subscriber_body(sub, rows, changes, now, base),
+            github.SUBSCRIBER_LABEL,
+            comment,
+        )
+        print(
+            f"Updated {title!r} (#{number}, {len(rows)} packages)"
+            + (" and commented" if comment else ""),
+            file=sys.stderr,
+        )
+        time.sleep(SUBSCRIBER_PAUSE)
+    for title, number in sorted(issues.items()):
+        if re.match(re.escape(TITLE) + ": ", title) and title not in wanted:
+            github.close_issue(
+                repo,
+                token,
+                number,
+                "Its file in notifications/ is gone: no longer updated.",
+            )
+            print(f"Closed {title!r} (#{number}): no file for it", file=sys.stderr)
+
+
+def github_issue(
+    rows, changes, now, previous=None, everyone=None, lists=None, subscribers=None
+):
+    """The status issues in NIXKEEPER_GITHUB_REPO (in a workflow, the
+    workflow's own repository): the instance's own, for rows (unless the
+    lists turn it off: closed then), and the subscribers' (notifications/),
+    each with its packages among everyone. Needs a token given explicitly:
+    the local gh login is never used to post."""
     repo = os.environ.get("NIXKEEPER_GITHUB_REPO") or os.environ.get(
         "GITHUB_REPOSITORY"
     )
@@ -187,27 +347,44 @@ def github_issue(rows, changes, now):
             file=sys.stderr,
         )
         return
-    comment = change_comment(changes, now) if should_notify(changes) else None
-    number = github.update_status_issue(
-        repo, token, TITLE, status_body(rows, changes, now, page_url(repo)), comment
-    )
-    print(
-        f"Updated status issue #{number}" + (" and commented" if comment else ""),
-        file=sys.stderr,
-    )
+    if (lists or {}).get("statusIssue", True) is False:
+        for number in github.open_issues(repo, token, github.STATUS_LABEL).values():
+            github.close_issue(
+                repo,
+                token,
+                number,
+                "Turned off (`statusIssue = false;` in the package lists): no "
+                "longer updated. Status issues of their own are in "
+                "notifications/.",
+            )
+            print(f"Closed the status issue #{number}: turned off", file=sys.stderr)
+    else:
+        comment = change_comment(changes, now) if should_notify(changes) else None
+        number = github.update_status_issue(
+            repo, token, TITLE, status_body(rows, changes, now, page_url(repo)), comment
+        )
+        print(
+            f"Updated status issue #{number}" + (" and commented" if comment else ""),
+            file=sys.stderr,
+        )
+    if subscribers:
+        subscriber_issues(repo, token, subscribers, previous, everyone or rows, now)
 
 
 # How to notify, by NIXKEEPER_NOTIFY. Another way (ntfy, email, ...) is a
-# function taking (rows, changes, now), added here.
+# function taking (rows, changes, now, **context), added here.
 SENDERS = {"github-issue": github_issue}
 # Earlier name for github-issue, still accepted.
 ALIASES = {"1": "github-issue"}
 
 
-def notify(previous, rows, now):
+def notify(previous, rows, now, everyone=None, everyone_before=None, lists=None):
     """Send what changed the way NIXKEEPER_NOTIFY says (unset or "none": not
-    at all, as in local runs). Never fails the sync: a problem here is
-    reported as a workflow warning."""
+    at all, as in local runs). rows: the instance's own (its lists');
+    everyone: every row, with everyone_before the previous run's (with every
+    package: all of nixpkgs), for the subscribers' issues; lists: the package
+    lists (statusIssue). Never fails the sync: a problem here is reported as
+    a workflow warning."""
     method = config.NOTIFY or os.environ.get("NIXKEEPER_NOTIFY") or "none"
     method = ALIASES.get(method, method)
     if method == "none":
@@ -224,6 +401,15 @@ def notify(previous, rows, now):
         )
         return
     try:
-        SENDERS[method](rows, diff(previous, rows), now)
+        subscribers = read_subscribers()
+        SENDERS[method](
+            rows,
+            diff(previous, rows),
+            now,
+            previous=everyone_before or previous,
+            everyone=everyone or rows,
+            lists=lists,
+            subscribers=subscribers,
+        )
     except (urllib.error.URLError, OSError, ValueError) as e:
         print(f"::warning::Couldn't notify ({method}): {e}", file=sys.stderr)

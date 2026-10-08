@@ -14,8 +14,10 @@ page that shows it.
   (and nixpkgs for where it marks them broken), the nixpkgs-update logs for
   the bot's latest attempt, and GitHub for open PRs, issues and update PRs.
   It writes everything as JSON to the `data` branch ([data.md](data.md)) and
-  rewrites the status issue, commenting when something newly needs
-  attention.
+  rewrites the status issues (the instance's own, unless its lists turn it
+  off, and one per maintainer or team in `notifications/`:
+  [notifications.md](notifications.md)), commenting when something newly
+  needs attention.
 - **The hourly checks** ("Data: hourly updates") refresh a few rows of the
   last published data: the update checks marked `frequent` (browsers, for
   their security fixes) and outdated packages' update PRs. They commit only

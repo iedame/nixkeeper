@@ -1,0 +1,4 @@
+{
+  team = "Gaming";
+  mention = [ "iedame" ];
+}

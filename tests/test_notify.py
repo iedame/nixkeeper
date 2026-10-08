@@ -319,3 +319,164 @@ class StatusIssue(unittest.TestCase):
         ):
             github.update_status_issue("o/r", "t", "title", "body")
         raised.exception.close()  # else Python warns about the unclosed error
+
+
+class Subscribers(unittest.TestCase):
+    """Status issues of their own, for maintainers and teams (notifications/)."""
+
+    ME = {"maintainer": "iedame"}
+    GAMING = {"team": "Gaming", "mention": ["iedame"]}
+    EVERYONE = [
+        {
+            "name": "unciv",
+            "nixStatus": "outdated",
+            "nixVersion": "4.22.1",
+            "refVersion": "4.22.4",
+            "maintainers": ["IEdame"],
+        },
+        {
+            "name": "egoboo",
+            "nixStatus": "newest",
+            "nixVersion": "2.8.1",
+            "teams": ["Gaming"],
+            "teamsByList": ["Gaming"],
+        },
+        {
+            "name": "openttd",
+            "nixStatus": "newest",
+            "nixVersion": "14.1",
+            "teams": ["Gaming"],
+            "maintainers": ["iedame"],
+        },
+        {
+            "name": "rPackages.foo",
+            "nixStatus": "outdated",
+            "nixVersion": "1",
+            "set": "rPackages",
+            "maintainers": ["iedame"],
+        },
+        {
+            "name": "other",
+            "nixStatus": "newest",
+            "nixVersion": "1",
+            "maintainers": ["x"],
+        },
+    ]
+
+    def setUp(self):
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch.object(notify.time, "sleep"),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_whose_packages(self):
+        mine = [r["name"] for r in self.EVERYONE if notify.is_subscribed(self.ME, r)]
+        team = [
+            r["name"] for r in self.EVERYONE if notify.is_subscribed(self.GAMING, r)
+        ]
+        # Any case; not the sets updated in bulk; a list's team counts too.
+        self.assertEqual(mine, ["unciv", "openttd"])
+        self.assertEqual(team, ["egoboo", "openttd"])
+        self.assertEqual(notify.mentions(self.GAMING), ["iedame"])
+        self.assertEqual(
+            notify.subscriber_title(self.GAMING), "nixkeeper status: Gaming team"
+        )
+        self.assertEqual(
+            notify.subscriber_page("https://nixkeeper.com", self.ME),
+            "https://nixkeeper.com/?q=%40iedame",
+        )
+
+    def fake_github(self, open_issues):
+        calls = []
+
+        def api(method, path, token, body=None):
+            calls.append((method, path, body))
+            if method == "GET":
+                return open_issues
+            if method == "POST" and path.endswith("/issues"):
+                return {"number": 40}
+            return None
+
+        return mock.patch.object(github, "api", side_effect=api), calls
+
+    def test_issues_written_opened_and_closed(self):
+        existing = [
+            {"number": 3, "title": "nixkeeper status: @iedame"},
+            {"number": 9, "title": "nixkeeper status: someone-gone"},
+        ]
+        patched, calls = self.fake_github(existing)
+        before = {"packages": [{**r, "nixStatus": "newest"} for r in self.EVERYONE]}
+        with patched:
+            notify.subscriber_issues(
+                "o/r",
+                "t",
+                {"maintainers/iedame": self.ME, "teams/gaming": self.GAMING},
+                before,
+                self.EVERYONE,
+                NOW,
+            )
+        writes = [(m, p) for m, p, _ in calls if m != "GET"]
+        self.assertIn(("PATCH", "/repos/o/r/issues/3"), writes)  # iedame's, rewritten
+        self.assertIn(("POST", "/repos/o/r/issues"), writes)  # Gaming's, opened
+        # unciv newly outdated: iedame's issue gets a comment; Gaming's doesn't.
+        self.assertIn(("POST", "/repos/o/r/issues/3/comments"), writes)
+        self.assertNotIn(("POST", "/repos/o/r/issues/40/comments"), writes)
+        # Its file gone: commented and closed.
+        self.assertIn(("POST", "/repos/o/r/issues/9/comments"), writes)
+        self.assertIn(("PATCH", "/repos/o/r/issues/9"), writes)
+        opened = next(
+            b for m, p, b in calls if m == "POST" and p == "/repos/o/r/issues"
+        )
+        self.assertEqual(opened["title"], "nixkeeper status: Gaming team")
+        self.assertEqual(notify.subscriber_title(self.ME), "nixkeeper status: @iedame")
+        self.assertIn("@iedame", opened["body"])  # mentioned: subscribed
+        self.assertIn("2 packages tracked", opened["body"])
+
+    def test_status_issue_turned_off(self):
+        patched, calls = self.fake_github([{"number": 1, "title": "nixkeeper status"}])
+        env = {"GITHUB_REPOSITORY": "o/r", "GITHUB_TOKEN": "t"}
+        with (
+            patched,
+            mock.patch.dict(os.environ, env, clear=True),
+            mock.patch.object(github, "update_status_issue") as update,
+        ):
+            notify.github_issue(
+                ROWS, diff(BEFORE, ROWS), NOW, lists={"statusIssue": False}
+            )
+        update.assert_not_called()
+        self.assertIn(("PATCH", "/repos/o/r/issues/1", {"state": "closed"}), calls)
+
+    def test_malformed_files_left_out(self):
+        read = {
+            "maintainers": {
+                "iedame": {"maintainer": "iedame"},
+                "both": {"maintainer": "a", "team": "b"},
+                "a-team": {"team": "Gaming"},  # in the wrong folder
+            },
+            "teams": {
+                "gaming": {"team": "Gaming", "mention": ["iedame"]},
+                "nothing": {},
+                "badmention": {"team": "Gaming", "mention": "iedame"},
+            },
+        }
+        exists = mock.patch.object(notify.os.path, "exists", return_value=True)
+        with (
+            exists,
+            mock.patch.object(notify.nixpkgs_source, "read_lists", return_value=read),
+        ):
+            self.assertEqual(
+                notify.read_subscribers("x"),
+                {
+                    "maintainers/iedame": {"maintainer": "iedame"},
+                    "teams/gaming": {"team": "Gaming", "mention": ["iedame"]},
+                },
+            )
+        with (
+            exists,
+            mock.patch.object(
+                notify.nixpkgs_source, "read_lists", side_effect=SystemExit("no eval")
+            ),
+        ):
+            self.assertEqual(notify.read_subscribers("x"), {})  # the sync goes on
