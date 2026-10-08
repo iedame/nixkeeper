@@ -113,9 +113,18 @@ FAILED = re.compile(
 # excerpt. Taken from ~200 failed attempts' logs (2026-10-07): a reason
 # found earlier in the list is the cause of those found later (a missing
 # dependency makes the build fail, a source gone makes nix-update fail).
+# The bot's own machine failing, not the package (2026-10-08: 1,306 failed
+# attempts said "the build users group 'nixbld' has no members"): first, as
+# it explains whatever follows it. Still an update failure (someone should
+# tell nixpkgs-update's maintainers), told apart by its reason.
+BOT_FAILURE = (
+    r"build users group '\S+' has no members"
+    r"|cannot connect to socket at '\S*daemon-socket\S*'"
+)
 FAILED_BECAUSE = tuple(
     (because, re.compile(rule))
     for because, rule in (
+        ("bot", BOT_FAILURE),
         # Not built where the bot builds: broken, insecure, not on x86_64-linux
         # (the package or a dependency).
         (
@@ -512,6 +521,24 @@ def superseded(attempt, nix_version, master=None):
 SUPERSEDABLE = ("failed", "cantUpdate")
 
 
+BOT_FAILED = re.compile(BOT_FAILURE)
+
+
+def with_bot_reason(attempt):
+    """attempt, its reason "bot" when its log's excerpt says the bot's
+    machine failed: for attempts read before that reason was (2026-10-08),
+    by nixkeeper-updates or a log read earlier, without reading them again
+    (the excerpt holds the error)."""
+    if (
+        attempt
+        and attempt.get("outcome") == "failed"
+        and attempt.get("failedBecause") != "bot"
+        and BOT_FAILED.search("\n".join(attempt.get("excerpt") or []))
+    ):
+        attempt["failedBecause"] = "bot"
+    return attempt
+
+
 def supersede(attempt, where):
     """Mark attempt superseded, keeping what it was ("superseded" says
     "failed" or "couldn't update")."""
@@ -740,7 +767,7 @@ def add_attempts(
                 dates is None or to_read(row, attrs, old, dates, since)
             ):
                 waited += 1
-                row["update"] = (old or {}).get("update")
+                row["update"] = with_bot_reason((old or {}).get("update"))
                 row["updateFailure"] = bool((old or {}).get("updateFailure"))
                 row["unread"] = ["update"]
                 continue
@@ -760,7 +787,7 @@ def add_attempts(
                 if not down:
                     print(f"  {row['name']}: {e}", file=sys.stderr)
                 old = before.get(row["name"], {})
-                row["update"] = old.get("update")
+                row["update"] = with_bot_reason(old.get("update"))
                 row["updateFailure"] = bool(old.get("updateFailure"))
                 history.not_refreshed(
                     row,
@@ -770,7 +797,7 @@ def add_attempts(
                     now,
                 )
                 continue
-        attempt = max(attempts, key=lambda a: a["date"], default=None)
+        attempt = with_bot_reason(max(attempts, key=lambda a: a["date"], default=None))
         if (
             attempt
             and attempt.get("from") == UPDATE_SCRIPT

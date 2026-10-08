@@ -307,6 +307,15 @@ class Parse(unittest.TestCase):
                 "error: build log of 'x' is not available",
             ),
             (
+                # The bot's machine, not the package: first, whatever follows.
+                [
+                    "error: the build users group 'nixbld' has no members",
+                    "error: Cannot build '/nix/store/x.drv'.",
+                ],
+                "bot",
+                "error: the build users group 'nixbld' has no members",
+            ),
+            (
                 # nix's wrapping isn't the reason, nor the bot's lookup of a Go
                 # package's source; the compiler's error is.
                 [
@@ -326,6 +335,23 @@ class Parse(unittest.TestCase):
                 self.assertEqual(result["failedBecause"], because)
                 self.assertEqual(result["excerpt"][0], first)
                 self.assertLessEqual(len(result["excerpt"]), 3)
+
+    def test_bot_reason_from_an_attempt_read_before(self):
+        # Read before the "bot" reason was: its excerpt says so, no reread.
+        nixbld = "error: the build users group 'nixbld' has no members"
+        old = {"outcome": "failed", "failedBecause": "build", "excerpt": [nixbld]}
+        self.assertEqual(nixpkgs_update.with_bot_reason(old)["failedBecause"], "bot")
+        other = {
+            "outcome": "failed",
+            "failedBecause": "patch",
+            "excerpt": ["Hunk #1 FAILED"],
+        }
+        self.assertEqual(
+            nixpkgs_update.with_bot_reason(other)["failedBecause"], "patch"
+        )
+        done = {"outcome": "prOpened", "excerpt": [nixbld]}  # not a failure
+        self.assertNotIn("failedBecause", nixpkgs_update.with_bot_reason(done))
+        self.assertIsNone(nixpkgs_update.with_bot_reason(None))
 
     def test_no_reason_found(self):
         # None of the rules: "other", and the lines just before nix's

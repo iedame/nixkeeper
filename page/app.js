@@ -2381,7 +2381,20 @@ const FAILED_BECAUSE = {
     short: 'request',
     text: "a request of the bot's failed (to GitHub, mostly), not the package",
   },
+  // The bot's own machine (its build users, its nix daemon): not the
+  // package. Worth telling nixpkgs-update's maintainers while it's recent
+  // (REPORT_DAYS); an older one was a past outage, fixed since (2026-09-28:
+  // four hours, 1,306 attempts), which the bot's next round clears.
+  bot: {
+    short: 'bot',
+    text: "the bot's machine failed (its build users group, or its nix daemon), not the package",
+    report: true,
+  },
 };
+
+// How recent a "bot" failure is worth reporting (its panel's note).
+const REPORT_DAYS = 3;
+const DAY_MS = 86400e3;
 
 const prLink = (n, text) =>
   html`<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${n}" target="_blank" rel="noopener">${text}</a>`;
@@ -2549,7 +2562,13 @@ function fillUpdate(pkg, el) {
       <span class="pd-verdict ${tone}">${o.label(u)}</span>
       <dl class="pd-facts">${facts.map(([k, v]) => html`<div><dt>${k}</dt><dd>${v}</dd></div>`)}</dl>
     </div>
-    <p class="pd-text">${String(text).charAt(0).toUpperCase()}${raw(String(text).slice(1))}.</p>
+    <p class="pd-text">${String(text).charAt(0).toUpperCase()}${raw(String(text).slice(1))}.</p>${
+      because?.report
+        ? Date.now() - new Date(day).getTime() <= REPORT_DAYS * DAY_MS
+          ? html`<p class="pd-text">Worth telling <a class="files-link" href="https://github.com/NixOS/nixpkgs-update/issues" target="_blank" rel="noopener">nixpkgs-update's maintainers ↗</a>, if no one has yet.</p>`
+          : html`<p class="pd-text">A past problem of the bot's (on ${longDate(day)}): it will try again on its next round.</p>`
+        : ''
+    }
     ${
       u.excerpt?.length
         ? html`<section class="pd-sec"><h4 class="other-label">From the log</h4><pre class="log-excerpt mono">${u.excerpt.join('\n')}</pre></section>`
