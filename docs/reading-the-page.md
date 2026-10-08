@@ -45,7 +45,7 @@ package: when that was in the last 3 days, its details link
 nixpkgs-update's issues, to tell them; older, it was a past outage the
 bot's next round clears), or
 other when none was recognised; each with how
-many there are in the list; `?because=patch`), **older than** a month, 6 months, a year, 2 or 3 years:
+many there are in the list; `?updateFailed=patch`), **older than** a month, 6 months, a year, 2 or 3 years:
 how long it's been failing or outdated (the counts' kind, when one is
 picked: failing for over 6 months, say), or **never built** (a failing
 build that never succeeded on Hydra, which has no date; with **on**, only

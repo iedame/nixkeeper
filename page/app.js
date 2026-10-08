@@ -146,7 +146,8 @@ let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
 // comma-separated, and ?age=, an AGES key).
 let refines = new Set();
 let ageFilter = null;
-// ?because=: update failures for one reason (a FAILED_BECAUSE key, or other).
+// ?updateFailed=: update failures for one reason (a FAILED_BECAUSE key, or
+// other).
 let becauseFilter = null;
 let sortAZ = false; // default order puts what needs attention first
 // The table shows pageSize rows at a time: drawing stays fast whatever the
@@ -356,7 +357,7 @@ const teamOutChips = () =>
       : ''
   }`;
 
-// "Failed because" (?because=): the reasons update attempts failed, each
+// "Failed because" (?updateFailed=): the reasons update attempts failed, each
 // with how many of the list's packages it is (as the tiles count: the
 // other filters but this one), the commonest first; those with none left
 // out, but the one picked.
@@ -704,10 +705,10 @@ function readViewFromUrl() {
   if (refineKeys.includes('direct')) noTeam = true;
   refines = new Set(refineKeys.filter((key) => REFINES[key]));
   ageFilter = AGES[params.get('age')] ? params.get('age') : null;
-  // Any reason the data may have (checked by the list, not here).
-  becauseFilter = /^[A-Za-z]{1,30}$/.test(params.get('because') || '')
-    ? params.get('because')
-    : null;
+  // Any reason the data may have (checked by the list, not here). ?because=
+  // is its name from before ?buildFailed= came (2026-10-08), still read.
+  const updateFailed = params.get('updateFailed') ?? params.get('because') ?? '';
+  becauseFilter = /^[A-Za-z]{1,30}$/.test(updateFailed) ? updateFailed : null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   const per = Number(params.get('per'));
   pageSize = PAGE_SIZES.includes(per) ? per : DEFAULT_PAGE_SIZE;
@@ -733,7 +734,8 @@ function viewQuery(page = pageNum) {
   set('view', viewParam);
   set('refine', [...refines].join(','));
   set('age', ageFilter);
-  set('because', becauseFilter);
+  set('updateFailed', becauseFilter);
+  params.delete('because'); // the old name, written as the new one
   set('page', page > 1 ? page : '');
   set('per', pageSize !== DEFAULT_PAGE_SIZE ? pageSize : '');
   // "@" and "," are fine in a query: ?q=@ and ?refine=a,b read better in

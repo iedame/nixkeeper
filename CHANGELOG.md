@@ -52,7 +52,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   load). Only the parameters saying where the data lives (`?data=`,
   `?owner=&repo=`) are kept, so a copy pointed at other data stays on it.
 
-- **Failed because** (`?because=patch`), narrowing any list to the update
+- **Failed because** (`?updateFailed=patch`; `?because=`, its name for a
+  few hours, still read), narrowing any list to the update
   failures of one reason, as nixpkgs-update's log says (build,
   updateScript, source, dependency, patch, unavailable, tests, hash,
   request, "build, no log", other), each with how many there are in the
