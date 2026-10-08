@@ -198,6 +198,43 @@ class FrequentCheck(unittest.TestCase):
         self.assertFalse(chrome["upstream"]["newer"])
         self.assertNotIn("outdatedSince", chrome)
 
+    def test_the_channels_version_survives_the_repology_refresh(self):
+        """microsoft-edge, 2026-10-08: the daily sync took .62 from the
+        channel, Repology still had .53; the hourly refresh put .53 back and
+        the check read it as outdated."""
+        self.publish(
+            chrome_row(
+                nixVersion="154.0.8040.12",
+                refVersion="154.0.8040.12",
+                repologyVersion="154.0.8037.57",
+            )
+        )
+        index, _, _ = self.run_frequent(
+            api("154.0.8040.12"), nix_version="154.0.8037.57", newest="154.0.8040.12"
+        )
+        chrome = index["packages"][0]
+        self.assertEqual(
+            (chrome["nixVersion"], chrome["nixStatus"], chrome["repologyVersion"]),
+            ("154.0.8040.12", "newest", "154.0.8037.57"),
+        )
+        self.assertFalse(chrome["upstream"]["newer"])
+        self.assertNotIn("outdatedSince", chrome)
+
+    def test_repology_catching_up_drops_its_old_version(self):
+        self.publish(
+            chrome_row(
+                nixVersion="154.0.8040.12",
+                refVersion="154.0.8040.12",
+                repologyVersion="154.0.8037.57",
+            )
+        )
+        index, _, _ = self.run_frequent(
+            api("154.0.8040.12"), nix_version="154.0.8040.12", newest="154.0.8040.12"
+        )
+        chrome = index["packages"][0]
+        self.assertEqual(chrome["nixVersion"], "154.0.8040.12")
+        self.assertNotIn("repologyVersion", chrome)
+
     def test_failing_check_is_marked_and_notified_once(self):
         self.publish(chrome_row())
         index, notified, _ = self.run_frequent("<html>moved</html>")
