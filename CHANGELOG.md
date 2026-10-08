@@ -9,85 +9,59 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.14.0] - 2026-10-08
+
+nixkeeper relies less on Repology: R, Haskell (Stackage LTS and
+haskell-updates), Emacs and Typst packages are compared with their own
+sources, a package's own update check decides where it and Repology
+disagree, and versions are ordered as Repology orders them. Anyone can
+get a **status issue** for their packages or their team's
+(`notifications/`). Build failures say how long they've really failed
+(Hydra's last success, for every package) and where a build **never**
+succeeded; packages nixpkgs marks insecure count as vulnerable. Lists can
+leave out a team's or a maintainer's packages, or keep only what a
+maintainer looks after themselves (**Not via a team**); a maintainer's page
+is at `?maintainer=`. The page says Darwin, as nixpkgs does, and Linux by
+system; the package panels are redesigned, and lists load faster.
+
 ### Added
 
-- Teams in the address beyond one team's packages: `?team=-Geospatial`
-  leaves a team's packages out of any list (several:
-  `team=-Geospatial,-Gaming`; each a "not Geospatial" chip to undo it), and
-  `?team=none` keeps what isn't through a team. On a maintainer's page
-  that's its new **Not via a team** button: only the packages that list
-  them themselves, leaving out those they maintain only as a member of
-  the package's team (nixpkgs adds a team's members to its packages'
-  `meta.maintainers`; @l0b0 on 2026-10-08: 204 packages, 23 direct, 181
-  through the Geospatial and Gaming teams), from nixpkgs'
-  `meta.nonTeamMaintainers` (`nonTeamMaintainers` in the data);
-  elsewhere, packages without a team.
-- Packages nixpkgs itself marks insecure (`meta.knownVulnerabilities`,
-  read from the package index the sync already downloads: 109 on
-  2026-10-08, 59 of them not flagged by Repology) count as vulnerable: an
-  "insecure" badge, nixpkgs' reasons in the details (CVE ids linked to
-  NVD), the vulnerable filter and count, the tab's icon, and
-  notifications ("marked insecure in nixpkgs"). `markedInsecure` in the
-  data.
-- "Older than" 2 or 3 years, and **never built** (`?age=never`): the
-  packages with a failing build that never succeeded on Hydra, where
-  (`neverBuiltOn` in the data: its systems); with **On**, only those that
-  never built there. Such a build has no date: when it's all that fails,
-  the list shows "n/a" where it shows how long a package has failed, and
-  the overview's longest-standing build failures leave it out. The build
-  column says where instead of "failure reported" ("never: darwin",
-  "never: aarch64-linux") whenever a failed build never succeeded, the
-  package's other failures in its panel.
-- Packages per page: 50, 100, 200 (still the default), 500 or 1,000, picked under
-  the list ("Per page") or in the address (`?per=500`, kept when moving
-  between views, so a team's or maintainer's link can carry it); the
-  maintainers' list too. Only those sizes: a huge one would draw every
-  package at once.
+- Packages compared with their own sources instead of Repology, read daily
+  by nixkeeper-versions; rows have `feed` (`docs/data.md`), the panel says
+  the source's newest version, and the sources panel when it was read:
+  - **R** with CRAN, or the Bioconductor release nixpkgs pins (3.23), from
+    their index files (`cran.json.gz`), as nixpkgs' own update script
+    does. It agrees with Repology on current packages, and catches
+    Bioconductor patch releases Repology doesn't flag. A package on
+    neither any more (archived by CRAN, dropped by Bioconductor) shows
+    "archived" where Repology could only say "unique": 6,004 on
+    2026-10-07, nearly all of which nixpkgs marks broken already; R's card
+    on the overview counts the 163 it doesn't ("6,004 archived (163 not
+    marked broken)"). Rows have `archived`.
+  - **Haskell** packages nixpkgs pins to Stackage LTS (about 3,400, its
+    `stackage.yaml`) with that series' newest snapshot instead of
+    Hackage's newest, which Stackage holds back on purpose until its next
+    series (`stackage.json.gz`): outdated when behind the snapshot
+    (nixpkgs follows LTS 24.38; 24.62 is out), and at it, a "Stackage LTS"
+    badge when Hackage has newer, instead of outdated. On 2026-10-07,
+    Haskell's outdated from 1,084 to 984: 237 behind their LTS snapshot,
+    406 held back by Stackage no longer counted.
+  - **Emacs** packages with the archives nixpkgs makes them from
+    (`emacs.json.gz`; Repology can't compare MELPA's date versions,
+    "untrusted"): MELPA when its version is MELPA's, else the first of
+    MELPA Stable, NonGNU ELPA and GNU ELPA that has it, as nixpkgs layers
+    them; its hand-written packages keep Repology's verdict. On
+    2026-10-07, 6,722 of 6,804 Emacs rows compared (2,984 before), 310
+    outdated (34 before). The panel says MELPA's versions as days ("a build
+    from Sep 23; nixpkgs' is from Sep 11").
+  - **Typst** packages with Typst Universe (`typst.json.gz`; Repology saw
+    nixpkgs alone, "unique", for most): each package's latest attribute is
+    outdated or newest against Universe's newest version, its versioned
+    ones older versions kept. On 2026-10-07, 89 of 4,900 Typst rows
+    outdated, where Repology could compare none.
 
-- Status issues for any maintainer or team: a file in `notifications/`
-  (`maintainers/iedame.nix`: `{ maintainer = "iedame"; }`;
-  `teams/gaming.nix`: `{ team = "Gaming"; mention = [ ... ]; }`) opens
-  "nixkeeper status: @iedame" or "nixkeeper status: Gaming team",
-  rewritten by every daily sync with only their packages (not the sets
-  updated in bulk) and commenting when something newly needs attention; the
-  issue mentions them, which subscribes them. Removing the file closes it.
-  You can only add yourself: CI checks that each handle a pull request
-  newly mentions is its author, and that its handles and teams are
-  nixos-unstable's (`scripts/check-notifications.py`); `nix flake check`
-  checks the files' format (`nix/notifications.nix`). The
-  instance's own status issue can be turned off (`statusIssue = false;` in
-  the lists; the sync closes it): this one's is. See
-  [docs/notifications.md](docs/notifications.md).
-
-- A list named as a nixpkgs team is (`gaming` for Gaming: case and
-  punctuation aside) joins the team: its packages show on the team's page
-  (`?team=Gaming`), in its counts and filter, beside those nixpkgs lists
-  under the team in `meta.teams`. For packages a team looks after that
-  nixpkgs doesn't list it on; their panel marks the team "list". Rows have
-  `teamsByList` (`docs/data.md`). This instance's `gaming-team` list is
-  now `gaming` (`?list=gaming-team` links show nothing now).
-
-- R packages compared with CRAN, or the Bioconductor release nixpkgs pins
-  (3.23), instead of Repology: nixkeeper-versions reads their index files
-  daily (`cran.json.gz`), as nixpkgs' own update script does. It agrees
-  with Repology on current packages, and catches Bioconductor patch
-  releases Repology doesn't flag. A package on neither any more (archived
-  by CRAN, dropped by Bioconductor) shows "archived" where Repology could
-  only say "unique": 6,004 on 2026-10-07, nearly all of which nixpkgs marks
-  broken already; R's card on the overview counts the 163 it doesn't
-  ("6,004 archived (163 not marked broken)"). Rows have `archived`.
-
-- Haskell packages nixpkgs pins to Stackage LTS (about 3,400, its
-  `stackage.yaml`) compared with that series' newest snapshot instead of
-  Hackage's newest (Repology's), which Stackage holds back on purpose until
-  its next series: outdated when behind the snapshot (nixpkgs follows LTS
-  24.38; 24.62 is out), and at it, a "Stackage LTS" badge when Hackage has
-  newer, instead of outdated. nixkeeper-versions reads which series nixpkgs
-  follows and its newest snapshot daily (`stackage.json.gz`). On
-  2026-10-07, Haskell's outdated from 1,084 to 984: 237 behind their LTS
-  snapshot, 406 held back by Stackage no longer counted.
-
-- Haskell packages say what haskell-updates has, the branch where the
+  The version sources share one module (`sources/feeds.py`).
+- Haskell packages say what **haskell-updates** has, the branch where the
   Haskell team updates them before merging into master about every two
   weeks (its Hydra jobset, from nixkeeper-hydra's `haskell-updates.json.gz`):
   an outdated package already updated there gets an "on haskell-updates"
@@ -95,167 +69,154 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   branch's version and how it builds there: waiting for the merge, fixed
   there, failing there too, or breaking when the branch merges. Haskell's
   card on the overview counts those updated there ("1,092 outdated, 564 on
-  haskell-updates" on 2026-10-07); nothing else counts the branch's builds.
-  Rows have `branch` (`docs/data.md`).
-
-- Emacs packages compared with the archives nixpkgs makes them from,
-  instead of Repology (which can't compare MELPA's date versions,
-  "untrusted"): nixkeeper-versions reads MELPA's, MELPA Stable's, NonGNU
-  ELPA's and GNU ELPA's indexes daily (`emacs.json.gz`), and each package is
-  compared with MELPA when its version is MELPA's, else the first of MELPA
-  Stable, NonGNU ELPA and GNU ELPA that has it, as nixpkgs layers them; its
-  hand-written packages keep Repology's verdict. On 2026-10-07, 6,722 of
-  6,804 Emacs rows compared (2,984 before), 310 outdated (34 before). The
-  panel says MELPA's versions as days ("a build from Sep 23; nixpkgs' is
-  from Sep 11"), the sources panel when the archives were read. The
-  version sources share one module (`sources/feeds.py`).
-
-- Typst packages compared with Typst Universe, their source, instead of
-  Repology (which saw nixpkgs alone, "unique", for most): nixkeeper-versions
-  reads Universe's index daily (`typst.json.gz`), and each package's latest
-  attribute is outdated or newest against Universe's newest version, its
-  versioned ones older versions kept. On 2026-10-07, 89 of 4,900 Typst rows
-  outdated, where Repology could compare none. The panel says "the newest
-  on Typst Universe is …" with the day it was published, the sources panel
-  when the index was read; rows have `feed` (`docs/data.md`). Each set's
-  card on the overview counts its outdated packages too (`outdated` in
-  `views.sets`), and its bar draws them in orange beside failing and
-  broken, each package once, at its worst (`bar` in `views.sets`).
-
+  haskell-updates" on 2026-10-07). Rows have `branch` (`docs/data.md`).
+- **Status issues for any maintainer or team**: a file in `notifications/`
+  (`maintainers/iedame.nix`: `{ maintainer = "iedame"; }`;
+  `teams/gaming.nix`: `{ team = "Gaming"; mention = [ ... ]; }`) opens
+  "nixkeeper status: @iedame" or "nixkeeper status: Gaming team",
+  rewritten by every daily sync with only their packages (not the sets
+  updated in bulk) and commenting when something newly needs attention
+  (the hourly checks too, for what's new); the issue mentions them, which
+  subscribes them, and links their page. Removing the file closes it. You
+  can only add yourself: CI checks that each handle a pull request newly
+  mentions is its author, and that its handles and teams are
+  nixos-unstable's (`scripts/check-notifications.py`); `nix flake check`
+  checks the files' format (`nix/notifications.nix`). The instance's own
+  status issue can be turned off (`statusIssue = false;` in the lists; the
+  sync closes it): this one's is. See
+  [docs/notifications.md](docs/notifications.md).
+- **Never built**: where a failing build never succeeded on Hydra
+  (`neverBuiltOn` in the data: its systems). The build column says where
+  instead of "failure reported" ("never: darwin", "never: aarch64-linux",
+  "never: linux" for both Linux systems), the package's other failures in
+  its panel. Such a build has no date: when it's all that fails, the list
+  shows "n/a" where it shows how long a package has failed, and the
+  overview's longest-standing build failures leave it out. "Older than"
+  has **never built** (`?age=never`; with **On**, only those that never
+  built there), and 2 or 3 years too.
+- Packages **nixpkgs itself marks insecure** (`meta.knownVulnerabilities`,
+  read from the package index the sync already downloads: 109 on
+  2026-10-08, 59 of them not flagged by Repology) count as vulnerable: an
+  "insecure" badge, nixpkgs' reasons in the details (CVE ids linked to
+  NVD), the vulnerable filter and count, the tab's icon, and
+  notifications ("marked insecure in nixpkgs"). `markedInsecure` in the
+  data.
+- Lists narrowed **by people**, in the address:
+  - `?team=-Geospatial` leaves a team's packages out of any list (several:
+    `team=-Geospatial,-Gaming`), and `?maintainer=-iedame` a maintainer's
+    (directly or through a team): `?team=Gaming&maintainer=-iedame`,
+    `?maintainer=l0b0,-iedame`. Each is a chip ("not Geospatial", "not
+    @iedame") to undo it.
+  - `?team=none` keeps what isn't through a team. On a maintainer's page
+    that's its **Not via a team** button: only the packages that list them
+    themselves, leaving out those they maintain only as a member of the
+    package's team (nixpkgs adds a team's members to its packages'
+    `meta.maintainers`; @l0b0 on 2026-10-08: 204 packages, 23 direct, 181
+    through the Geospatial and Gaming teams), from nixpkgs'
+    `meta.nonTeamMaintainers` (`nonTeamMaintainers` in the data);
+    elsewhere, packages without a team.
+- A list named as a nixpkgs team is (`gaming` for Gaming: case and
+  punctuation aside) **joins the team**: its packages show on the team's
+  page (`?team=Gaming`), in its counts and filter, beside those nixpkgs
+  lists under the team in `meta.teams`. For packages a team looks after
+  that nixpkgs doesn't list it on; their panel marks the team "list". Rows
+  have `teamsByList` (`docs/data.md`). This instance's `gaming-team` list
+  is now `gaming` (`?list=gaming-team` links show nothing now).
+- **Packages per page**: 50, 100, 200 (still the default), 500 or 1,000,
+  picked under the list ("Per page") or in the address (`?per=500`, kept
+  when moving between views, so a team's or maintainer's link can carry
+  it); the maintainers' list too. Only those sizes: a huge one would draw
+  every package at once.
+- **Platforms by system**: the "On" choice under the tiles has Linux
+  x86_64 and Linux aarch64 beside Linux and Darwin
+  (`?platform=x86_64-linux`, `aarch64-linux`), each narrowing builds to
+  that system's; and a package on only one Linux system says which ("Linux
+  x86_64" instead of "Linux"), about 1,900 of nixpkgs' 151,000 attributes.
+  Rows' `platforms` gain `systems` where that's so (`docs/data.md`), and
+  `meta.badPlatforms` now takes systems away (about 220 attributes exclude
+  a system nixpkgs builds this way).
 - "Bot won't update it", narrowing any list (`?refine=nobot`): outdated
   packages nixpkgs-update won't update by itself, so they take someone:
   the bot can't (none of its ways apply), skips them on purpose, or has
   never tried them and they aren't in its queue; none with an update PR
   open or merged. 1,560 of nixpkgs' 8,848 outdated packages on
   2026-10-07.
+- Each set's card on the overview counts its outdated packages too
+  (`outdated` in `views.sets`), and its bar draws them in orange beside
+  failing and broken, each package once, at its worst (`bar` in
+  `views.sets`).
 
 ### Changed
 
-- `start-runs` also starts nixkeeper-vulnerabilities' digest every hour
-  (its own schedule ran once in its first 7 hours). Its token needs that
-  repository too.
-- A maintainer's page is at `?maintainer=l0b0` (the search still shows
+- **Since when builds have been failing** (`failingSince`) is Hydra's last
+  success of the failed builds, read each sync, no longer the day nixkeeper
+  first saw them fail when that wasn't known (most packages'
+  2026-10-05, the day nixkeeper started tracking every package); carried
+  from sync to sync only while Hydra's answer isn't known. nixkeeper-hydra
+  now knows the last success of every failing job (it asked Hydra about the
+  4,805 it didn't, 2026-10-07), so "last built ..." shows beyond the lists'
+  packages; a job Hydra says never succeeded comes as `lastSuccessAt`
+  "never" in its digest, which the sync reads as such instead of asking
+  Hydra again every day. The overview's longest-standing build failures
+  and the list's order go by how long they really have failed.
+- A package's own **update check decides** whether it's outdated where it
+  and Repology disagree (a rule of yours or the community's, or one it
+  follows), as the version sources do: before, a check could only add
+  "outdated". google-chrome read as outdated since 2026-10-06 against an
+  older stable (154.0.8037.97), Repology's rule still calling 155 a beta
+  after it went stable, while its check (Google's version history) found
+  nixpkgs' 155 current. The panel says what Repology said
+  (`repologySaid`); worked-out checks, and a rule's last result while it
+  fails, still only add newer versions. Repository chips no longer mark an
+  older "newest" as ahead.
+- A **maintainer's page** is at `?maintainer=l0b0` (the search still shows
   `@l0b0`); links from before, `?q=@l0b0`, open it and become that. The
-  page's own links and subscriber issues use the new address. With a `-`,
-  it leaves a maintainer's packages out of any list instead
-  (`?team=Gaming&maintainer=-iedame`, `?maintainer=l0b0,-iedame`; directly
-  or through a team), each a "not @iedame" chip to undo it.
-- Since when a package's builds have been failing (`failingSince`) is
-  Hydra's last success of its failed builds, read each sync, no longer the
-  day nixkeeper first saw them fail when that wasn't known yet (most
-  packages' 2026-10-05, the day nixkeeper started tracking every package);
-  carried from sync to sync only while Hydra's answer isn't known. The
-  overview's longest-standing build failures and the list's order go by
-  how long they really have failed.
-- A failing build's last success, for every package: nixkeeper-hydra now
-  asks Hydra about the jobs it didn't know (4,805 on 2026-10-07, most of
-  them failing since before it started), so "last built ..." shows beyond
-  the lists' packages. A job Hydra says never succeeded comes as
-  `lastSuccessAt` "never" in its digest, which the sync reads as such
-  instead of asking Hydra again every day.
-
-- A list loads in steps, the browser free in between: filtering and
-  sorting; then the counts, tiles and the first 50 rows, drawn together so
-  nothing above the list moves; then the page's other 150 rows. The same
-  work, but no single stretch long enough to freeze a slow phone (one task
-  of 311 ms on Lighthouse's mid-range phone, 2026-10-07). A newer update
-  (typing, say) stops an older one between steps; the pager's move to the
-  first row now waits for the new page.
-
-- Lists sort faster: each package's rank (failing, outdated...) and date
-  are worked out once, not at every comparison. Sorting "needs attention"
-  (11,579 packages) took 48-89 ms on a fast laptop and about half a second
-  of a mid-range phone's 653 ms long task (Lighthouse, 2026-10-07); now
-  about 7 ms, in the same order. Undated rows now go last, as intended
-  (none today).
-
-- A package's panel opens sooner: its data starts loading when the pointer
-  rests on its row (or keyboard focus reaches it), not at the click. A
-  shard Cloudflare's nearest location doesn't have yet takes 0.3-0.6 s to
-  arrive, most of a first open; the pause before a click now hides most of
-  it. Sweeping the pointer over the list loads nothing.
-
-- The update cell's robot (nixpkgs-update will try it) no longer sits in a
-  grey pill with the status: it stays joined to it, plain, so those rows
-  don't stand out.
-- One package open at a time: opening another row's panel closes the one
-  open (the same row still switches between its details, builds and
-  update panels in place), and the clicked row stays where it was on
-  screen.
-
-- A package's panel, reorganised: the verdict first ("Up to date",
-  "Outdated", "Waiting for the channel", "Older version kept"...) with
-  nixpkgs' version, the newest and since when, and a badge for the source
-  that decided (its update check's tags or page, Typst Universe, an
-  up-to-date rule, master: in the accent's tint; Repology: grey). The
-  explanation and context notes fold behind "Why?" (remembered in your
-  browser); notes that call for something (vulnerable, a failing check,
-  archived) stay in view. Then "Compared against", maintainers and teams
-  side by side as pills, and the links as buttons with icons (Tabler
-  Icons, MIT, inline), each section apart. The builds panel likewise: how
-  it stands ("Failing on 2 of 3", "Blocked on 1 of 3", "Building on all
-  3"), then a row per system with its status, when it last built, and its
-  Log and Build (failed), Build (blocked), Source (marked broken) and Job,
-  instead of the job links apart at the end. And the update panel: the
-  outcome as a pill ("Failed: patch", "PR opened", "Can't update"), when it
-  was attempted and the versions tried, why, the log's last lines, the
-  next attempt from the bot's queue as its own section, and Log and All
-  attempts as buttons.
-
-- The page says **Darwin** for macOS, as nixpkgs does (`lib.platforms.darwin`,
-  `aarch64-darwin`): the platform tags under a package's name, the "On"
-  choice under the tiles, and the build failures card ("Linux 812 · Darwin
-  268"); hovering a tag says "Darwin (macOS)" and its systems. The address
-  is `?platform=darwin`; `?platform=macos` still works.
-
-- Platforms by system: the "On" choice under the tiles has Linux x86_64 and
-  Linux aarch64 beside Linux and Darwin (`?platform=x86_64-linux`,
-  `aarch64-linux`), each narrowing builds to that system's; and a package on
-  only one Linux system says which ("Linux x86_64" instead of "Linux"),
-  about 1,900 of nixpkgs' 151,000 attributes. Rows' `platforms` gain
-  `systems` where that's so (`docs/data.md`), and `meta.badPlatforms` now
-  takes systems away (about 220 attributes exclude a system nixpkgs builds
-  this way).
-
-- A package's own update check (a rule of yours or the community's, or one
-  it follows) decides whether it's outdated where it and Repology disagree,
-  as the version sources do: before, a check could only add "outdated".
-  google-chrome read as outdated since 2026-10-06 against an older stable
-  (154.0.8037.97), Repology's rule still calling 155 a beta after it went
-  stable, while its check (Google's version history) found nixpkgs' 155
-  current. The panel says what Repology said (`repologySaid`); worked-out
-  checks, and a rule's last result while it fails, still only add newer
-  versions. Repository chips no longer mark an older "newest" as ahead.
-
-- `start-runs` tries a start again when GitHub answers with a server
-  error or not at all, after 1 minute and then 3: on 2026-10-07 one hour's
-  starts all got 500s, losing nixkeeper-updates' run for 3 hours.
-
-- With its own site (`CLOUDFLARE_SITE_URL`), "Pages: publish the page"
-  no longer runs on every page change: its redirect doesn't change with
-  the page, which reaches the site with the data runs. Run it by hand
-  after changing `scripts/pages-redirect.sh`.
-
-- "Where the data is from" groups the sources read from nixkeeper's
-  digests under each one, linked once (nixkeeper-hydra: builds,
-  haskell-updates; nixkeeper-versions: nixkeeper's own update checks, from
-  the daily sync, then Repology, Typst Universe, Emacs
-  archives, Stackage LTS, CRAN and Bioconductor; nixkeeper-updates: update
-  attempts, the queue).
-
-- The overview's top bar draws the sets updated in bulk in a shade of the
-  logo's, not grey, beside fully checked: a split of nixpkgs, not progress.
-
-- The daily sync no longer stops when Repology can't be reached (more than
-  half of its lookups failing): Hydra's builds, nixpkgs-update's attempts,
-  the Typst and Emacs versions and GitHub's PRs are refreshed anyway, and
-  the packages Repology couldn't answer keep their last versions, from the
-  versions digest even when it's old (Repology being down, its run
-  couldn't read it either), else from the last run, marked "not
-  refreshed". A new package with no earlier data is shown as not looked up
-  (`lookupFailed`) instead of left out of the run. The sources panel says
-  how many lookups failed (`sources.repology`).
-
+  page's own links and the status issues use the new address.
+- The **package panels, redesigned**. Its details: the verdict first ("Up
+  to date", "Outdated", "Waiting for the channel", "Older version
+  kept"...) with nixpkgs' version, the newest and since when, and a badge
+  for the source that decided (its update check's tags or page, Typst
+  Universe, an up-to-date rule, master: in the accent's tint; Repology:
+  grey). The explanation and context notes fold behind "Why?" (remembered
+  in your browser); notes that call for something (vulnerable, a failing
+  check, archived) stay in view. Then "Compared against", maintainers and
+  teams side by side as pills, and the links as buttons with icons (Tabler
+  Icons, MIT, inline), each section apart. Its builds: how it stands
+  ("Failing on 2 of 3", "Blocked on 1 of 3", "Building on all 3"), then a
+  row per system with its status, when it last built, and its Log and
+  Build (failed), Build (blocked), Source (marked broken) and Job, instead
+  of the job links apart at the end. Its update: the outcome as a pill
+  ("Failed: patch", "PR opened", "Can't update"), when it was attempted and
+  the versions tried, why, the log's last lines, the next attempt from the
+  bot's queue as its own section, and Log and All attempts as buttons.
+  One package open at a time: opening another row's panel closes the one
+  open (the same row still switches between its panels in place), and the
+  clicked row stays where it was on screen. The update cell's robot
+  (nixpkgs-update will try it) is plain beside the status, no longer in a
+  grey pill, so those rows don't stand out.
+- The page says **Darwin** for macOS, as nixpkgs does
+  (`lib.platforms.darwin`, `aarch64-darwin`): the platform tags under a
+  package's name, the "On" choice under the tiles, and the build failures
+  card ("Linux 812 · Darwin 268"); hovering a tag says "Darwin (macOS)" and
+  its systems. The address is `?platform=darwin`; `?platform=macos` still
+  works.
+- **Faster lists**, on a slow phone especially (Lighthouse's mid-range
+  phone on "needs attention", 2026-10-07: Total Blocking Time 990 ms →
+  600 ms):
+  - a list loads in steps, the browser free in between: filtering and
+    sorting; then the counts, tiles and the first 50 rows, drawn together
+    so nothing above the list moves; then the page's other rows. A newer
+    update (typing, say) stops an older one between steps; the pager's
+    move to the first row waits for the new page;
+  - sorting works out each package's rank and date once, not at every
+    comparison (11,579 packages: 48-89 ms on a fast laptop, half a second
+    of the phone's longest task, now about 7 ms; undated rows go last, as
+    intended);
+  - a package's panel starts loading its data when the pointer rests on
+    its row (or keyboard focus reaches it), not at the click: the pause
+    before a click hides most of a first open (0.3-0.6 s when Cloudflare's
+    nearest location doesn't have it yet). Sweeping the pointer over the
+    list loads nothing.
 - With every package, the generated sets (R, Haskell, Emacs, TeX Live,
   Typst, SBCL) are no longer "pending": they're **sets updated in bulk**,
   each saying what keeps it current (the CRAN import, hackage2nix on
@@ -264,47 +225,67 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   the overview, on its list and on each of its packages, in place of the
   "pending" badge. nixpkgs-update's attempts are shown for them where the
   bot makes any (some TeX Live and Emacs packages); they're still counted
-  on their set's line, not in the cards (an R package behind CRAN waits for
-  the next import, which no one PR does). `darwin` and `freebsd` packages
-  say they're not versioned software instead of "unlisted", their builds
-  being what's checked. In the data: `set` without `pending`,
+  on their set's line, not in the cards (an R package behind CRAN waits
+  for the next import, which no one PR does). `darwin` and `freebsd`
+  packages say they're not versioned software instead of "unlisted",
+  their builds being what's checked. In the data: `set` without `pending`,
   `unversioned`, `profiles` and `counts.inSets` in `index.json`
-  (`docs/data.md`); the page still reads data from before.
+  (`docs/data.md`); the page still reads data from before. The overview's
+  top bar draws them in a shade of the logo's, not grey, beside fully
+  checked: a split of nixpkgs, not progress.
+- The daily sync no longer stops when Repology can't be reached (more than
+  half of its lookups failing): Hydra's builds, nixpkgs-update's attempts,
+  the other version sources and GitHub's PRs are refreshed anyway, and
+  the packages Repology couldn't answer keep their last versions, from the
+  versions digest even when it's old (Repology being down, its run
+  couldn't read it either), else from the last run, marked "not
+  refreshed". A new package with no earlier data is shown as not looked up
+  (`lookupFailed`) instead of left out of the run. The sources panel says
+  how many lookups failed (`sources.repology`).
+- "Where the data is from" groups the sources read from nixkeeper's
+  digests under each one, linked once (nixkeeper-hydra: builds,
+  haskell-updates; nixkeeper-versions: nixkeeper's own update checks, from
+  the daily sync, then Repology, Typst Universe, Emacs archives, Stackage
+  LTS, CRAN and Bioconductor; nixkeeper-updates: update attempts, the
+  queue).
 - An instance served from its own site (Cloudflare, `CLOUDFLARE_SITE_URL`)
   no longer has a second copy of the page on GitHub Pages: its
   `<owner>.github.io` address sends visitors to the site, keeping their
   search, filters and view (`scripts/pages-redirect.sh`). The community
   dashboard's old address, https://iedame.github.io/nixkeeper/, goes to
-  https://nixkeeper.com/.
+  https://nixkeeper.com/. "Pages: publish the page" then no longer runs on
+  every page change: its redirect doesn't change with the page, which
+  reaches the site with the data runs. Run it by hand after changing
+  `scripts/pages-redirect.sh`.
+- `start-runs` tries a start again when GitHub answers with a server
+  error or not at all, after 1 minute and then 3 (on 2026-10-07 one hour's
+  starts all got 500s, losing nixkeeper-updates' run for 3 hours), and
+  also starts nixkeeper-vulnerabilities' digest every hour. Its token
+  needs that repository too.
 
 ### Fixed
 
+- Versions are ordered as Repology orders them (its libversion algorithm,
+  in Python and in the page; tested against Repology's own test suite,
+  `tests/data/version-comparison-tests.txt`): a pre-release before its
+  release (`1.0rc1 < 1.0`, `2.0.0-beta.1 < 2.0.0`; before, after it), `1`
+  the same as `1.0`, any letter case alike, `1.0 < 1.0patch1 < 1.0.1 <
+  1.0a`. nixkeeper's own comparisons (update checks, what master has, the
+  version sources, update PRs) got 47 of the suite's 177 cases wrong; a
+  release candidate tag could make a package look outdated. Marked on the
+  trends as a change in how nixkeeper counts.
 - The hourly PR check found "merged into master" update PRs that the
   channel already has: it searched merged PRs without the daily sync's
   bound, so an old one whose version sorts above nixpkgs' (xmage's 1.4.60,
   above its later 1.4.60-dev_2026-06-28 snapshot) made the bot's failed
-  attempt look superseded, until the next daily sync said otherwise, and
-  the package was "newly failed" in its status issues every day. Merged PRs
-  are now searched from the channel's commit only, as the daily sync lists
-  them; when that date can't be known, the row keeps what it had.
-- A turned-off status issue (`statusIssue = false;`) came back: the hourly
-  checks notify too, and didn't read the lists' setting. They do now (and
-  the next run closes it again). They also wrote the subscribers' issues
-  from the lists' packages alone, which would have emptied those of anyone
-  not on the lists; now they use every row, and touch only the issues of
-  those whose packages newly need attention (the daily sync rewrites them
-  all).
-- Status issues no longer link nixpkgs pull requests: each link added a
-  "mentioned this pull request" line on the PR every time the issue was
+  attempt look superseded until the next daily sync said otherwise, and
+  the package was "newly failed" every day. Merged PRs are now searched
+  from the channel's commit only, as the daily sync lists them; when that
+  date can't be known, the row keeps what it had.
+- The status issue no longer links nixpkgs pull requests: each link added
+  a "mentioned this pull request" line on the PR every time the issue was
   rewritten. They're named by number, in code (`` `#562674` ``), which
   neither links nor points at this repository's issue of that number.
-
-- The status issues of their own (`notifications/`) weren't opened: the
-  folder's place was worked out when nixkeeper loaded, before `--lists`
-  (which the workflows' sync passes) set where the lists are, so the sync
-  looked beside the default lists instead and found none. It's worked out
-  when used now, and the log says where it looked when there's none.
-
 - The overview's newest and longest-standing failures and outdated
   packages agree with the cards above them: their count is the card's, and
   they list only what counts now. The hourly checks recount, but only the
@@ -318,15 +299,6 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   too long"), as did nixkeeper-versions' evaluation of every package. The
   evaluation is `--impure` to read it; what it evaluates is still the
   channel's revision.
-- Versions are ordered as Repology orders them (its libversion algorithm,
-  in Python and in the page; tested against Repology's own test suite,
-  `tests/data/version-comparison-tests.txt`): a pre-release before its
-  release (`1.0rc1 < 1.0`, `2.0.0-beta.1 < 2.0.0`; before, after it), `1`
-  the same as `1.0`, any letter case alike, `1.0 < 1.0patch1 < 1.0.1 <
-  1.0a`. nixkeeper's own comparisons (update checks, what master has, the
-  version sources, update PRs) got 47 of the suite's 177 cases wrong; a
-  release candidate tag could make a package look outdated. Marked on the
-  trends as a change in how nixkeeper counts.
 
 ## [0.13.0] - 2026-10-07
 
@@ -1435,7 +1407,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.13.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.14.0...HEAD
+[0.14.0]: https://github.com/iedame/nixkeeper/compare/v0.13.0...v0.14.0
 [0.13.0]: https://github.com/iedame/nixkeeper/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/iedame/nixkeeper/compare/v0.11.0...v0.12.0
 [0.11.0]: https://github.com/iedame/nixkeeper/compare/v0.10.0...v0.11.0
