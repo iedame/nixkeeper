@@ -162,6 +162,12 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         row["maintainers"] = maintainers(pkgs)
         if found := teams(pkgs):
             row["teams"] = found
+            # nixpkgs adds its teams' members to meta.maintainers; those it
+            # lists directly (meta.nonTeamMaintainers), when that's fewer: a
+            # maintainer's page can leave out what they have only via a team.
+            direct = non_team_maintainers(pkgs)
+            if direct is not None and direct != row["maintainers"]:
+                row["nonTeamMaintainers"] = direct
         # meta.broken, as the package index has it (x86_64-linux): Hydra's
         # builds say where it's broken, but a broken package often has no
         # Hydra job at all (hydraPlatforms = [], as hackage2nix sets it).
@@ -185,17 +191,26 @@ def insecure(pkgs):
     return found
 
 
-def maintainers(pkgs):
-    """The GitHub handles in pkgs' meta.maintainers, each once (whatever its
-    case), in order; [] when none has any (a maintainer without a GitHub
-    handle can't be searched for)."""
+def maintainers(pkgs, field="maintainers"):
+    """The GitHub handles in pkgs' meta.maintainers (or another such field),
+    each once (whatever its case), in order; [] when none has any (a
+    maintainer without a GitHub handle can't be searched for)."""
     found = {}
     for p in pkgs:
-        for m in p["meta"].get("maintainers") or []:
+        for m in p["meta"].get(field) or []:
             handle = m.get("github") if isinstance(m, dict) else None
             if isinstance(handle, str) and handle:
                 found.setdefault(handle.lower(), handle)
     return list(found.values())
+
+
+def non_team_maintainers(pkgs):
+    """The handles pkgs list directly (meta.nonTeamMaintainers: not added as
+    their teams' members), or None when an index entry doesn't say (older
+    nixpkgs)."""
+    if any("nonTeamMaintainers" not in p["meta"] for p in pkgs):
+        return None
+    return maintainers(pkgs, "nonTeamMaintainers")
 
 
 def teams(pkgs):

@@ -429,6 +429,22 @@ export function nixkeeperEntry(pkg) {
 // it; or for "@handle", nixpkgs lists that maintainer for it (the whole
 // GitHub handle, in any case), and "@none", no maintainer with a handle.
 // Rows from before maintainers were synced have none to match.
+// The maintainer a search names (@handle, lowercase), or null: none, only
+// "@" so far, or @none (packages without one).
+export function searchHandle(query) {
+  const q = query.trim().toLowerCase();
+  if (!q.startsWith('@') || q.length < 2 || q === '@none') return null;
+  return q.slice(1);
+}
+
+// Whether handle maintains pkg directly: listed in the package's own
+// maintainers, not only as a member of one of its teams (nixpkgs adds those
+// to meta.maintainers; nonTeamMaintainers, when the sync found fewer, are
+// the direct ones).
+export function maintainsDirectly(pkg, handle) {
+  return (pkg.nonTeamMaintainers || pkg.maintainers || []).some((m) => m.toLowerCase() === handle);
+}
+
 export function matchesSearch(pkg, query) {
   const q = query.trim().toLowerCase();
   if (!q) return true;

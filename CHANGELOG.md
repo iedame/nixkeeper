@@ -11,6 +11,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- On a maintainer's page, **Not via a team** (`?q=@handle&refine=direct`):
+  only the packages that list them themselves, leaving out those they
+  maintain only as a member of the package's team (nixpkgs adds a team's
+  members to its packages' `meta.maintainers`; @l0b0 on 2026-10-08: 204
+  packages, 23 direct, 181 through the Geospatial and Gaming teams). From
+  nixpkgs' `meta.nonTeamMaintainers` (`nonTeamMaintainers` in the data).
 - Packages nixpkgs itself marks insecure (`meta.knownVulnerabilities`,
   read from the package index the sync already downloads: 109 on
   2026-10-08, 59 of them not flagged by Repology) count as vulnerable: an

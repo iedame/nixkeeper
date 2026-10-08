@@ -232,7 +232,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `project`, `dataFile` | its Repology project, and the key its entries are kept under (a file-name-safe form of the project's name: its file in `data/` in the first format) |
 | `platforms` | `{ "linux": bool, "darwin": bool }` from `meta.platforms` less `meta.badPlatforms`; `null` when nixpkgs doesn't restrict them. From 0.14.0, `systems` too when those don't already say which of the systems nixpkgs builds it's on (`x86_64-linux`, `aarch64-linux`, `aarch64-darwin`): `{ "linux": true, "darwin": false, "systems": ["x86_64-linux"] }`, Linux on x86_64 only. Without `systems`, all of each family's |
 | `homepage` | `meta.homepage` |
-| `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it |
+| `maintainers` | the GitHub handles in `meta.maintainers`, of all its attributes; `[]` when nixpkgs lists none (with a handle), missing when nixpkgs doesn't have it. nixpkgs includes its teams' members there |
+| `nonTeamMaintainers` | with teams: the handles nixpkgs lists directly (`meta.nonTeamMaintainers`, not added as a team's members), when they're fewer than `maintainers`; missing when they're the same |
 | `markedBroken` | `true` when nixpkgs marks one of its attributes broken (`meta.broken` in the package index, evaluated for x86_64-linux), even with no Hydra job to say so (a broken package often has none) |
 | `teams` | the nixpkgs teams in `meta.teams` (`maintainers/team-list.nix`), of all its attributes, by their short name (`Gaming`, `Qt-KDE`); from 0.14.0, also the team a list named after it adds (`teamsByList`); missing when it has none |
 | `teamsByList` | of `teams`, those only a list named after the team adds (the `gaming` list: `Gaming`), not `meta.teams`; missing when none |

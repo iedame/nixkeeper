@@ -15,6 +15,7 @@ import {
   html,
   isVulnerable,
   maintainerMatches,
+  maintainsDirectly,
   matchesSearch,
   midway,
   NAME_DOTS,
@@ -33,6 +34,7 @@ import {
   raw,
   githubRepo as repoFrom,
   safeUrl,
+  searchHandle,
   shardOf,
   shortAge,
   targetVersion,
@@ -279,6 +281,19 @@ const REFINES = {
     title: 'Leave out outdated packages whose update is merged, waiting for nixos-unstable',
     test: (p) => !waitingForChannel(p),
   },
+  // On a maintainer's page only: what they maintain themselves, not just as
+  // a member of the package's team (nixpkgs adds teams' members to
+  // meta.maintainers).
+  direct: {
+    label: 'Not via a team',
+    title:
+      "Only packages that list this maintainer themselves: leave out those they maintain only as a member of the package's team (meta.teams)",
+    test: (p) => {
+      const handle = shownHandle();
+      return !handle || maintainsDirectly(p, handle);
+    },
+    shown: () => Boolean(shownHandle()),
+  },
   // Where a person is needed: nixpkgs-update won't open the PR.
   nobot: {
     label: "Bot won't update it",
@@ -300,13 +315,18 @@ const refined = (p, kind = activeFilter) =>
   [...refines].every((key) => REFINES[key].test(p)) &&
   olderThan(p, ageFilter, kind, Date.now(), platformFilter);
 
+// The maintainer whose page this is (@handle in the search), or null.
+const shownHandle = () => searchHandle(document.getElementById('search').value);
+
 function refineHtml() {
   return html`<div class="refine" role="group" aria-label="Narrow the list">${Object.entries(
     REFINES,
-  ).map(
-    ([key, r]) =>
-      html`<button type="button" class="refine-btn" data-refine="${key}" aria-pressed="${refines.has(key)}" title="${r.title}">${r.label}</button>`,
-  )}<label class="refine-age" title="How long it's been failing or outdated (the kind picked above, if any); or failing builds that never succeeded on Hydra, which have no date">Older than <select data-age><option value="">any age</option>${Object.entries(
+  )
+    .filter(([, r]) => !r.shown || r.shown())
+    .map(
+      ([key, r]) =>
+        html`<button type="button" class="refine-btn" data-refine="${key}" aria-pressed="${refines.has(key)}" title="${r.title}">${r.label}</button>`,
+    )}<label class="refine-age" title="How long it's been failing or outdated (the kind picked above, if any); or failing builds that never succeeded on Hydra, which have no date">Older than <select data-age><option value="">any age</option>${Object.entries(
     AGES,
   ).map(
     ([key, label]) =>

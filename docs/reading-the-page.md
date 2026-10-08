@@ -24,7 +24,10 @@ master yet** (leaving out outdated packages whose update is merged and
 waits for nixos-unstable), **bot won't update it** (outdated packages
 nixpkgs-update won't update by itself, so it takes someone: it can't,
 skips them on purpose, or has never tried them and they aren't in its
-queue; none with an update PR open or merged), **older than** a month, 6 months, a year, 2 or 3 years:
+queue; none with an update PR open or merged), on a maintainer's page
+**not via a team** (only the packages that list them themselves, leaving
+out those they maintain only as a member of the package's team: nixpkgs
+adds a team's members to each of its packages' maintainers), **older than** a month, 6 months, a year, 2 or 3 years:
 how long it's been failing or outdated (the counts' kind, when one is
 picked: failing for over 6 months, say), or **never built** (a failing
 build that never succeeded on Hydra, which has no date; with **on**, only
@@ -34,7 +37,8 @@ Linux aarch64 or Darwin (macOS, as nixpkgs calls it): the packages
 available there, and only their builds there (build failures on
 aarch64-linux, say; as clicking a row's platform tag does). Each count then
 counts what's left. In the address:
-`?refine=unmaintained,notbroken,notonmaster,nobot`, `?age=1m`, `6m`,
+`?refine=unmaintained,notbroken,notonmaster,nobot,direct` (`direct`: not
+via a team), `?age=1m`, `6m`,
 `1y`, `2y`, `3y` or `never`, and `?platform=linux`, `x86_64-linux`, `aarch64-linux` or `darwin`
 (`macos` still works), so "failing for
 6 months, with no maintainer" is a link. A build failure's date is

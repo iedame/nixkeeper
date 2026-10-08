@@ -27,6 +27,7 @@ import {
   html,
   isVulnerable,
   maintainerMatches,
+  maintainsDirectly,
   matchesSearch,
   midway,
   nameMatches,
@@ -41,6 +42,7 @@ import {
   problemSince,
   raw,
   safeUrl,
+  searchHandle,
   shardOf,
   shortAge,
   targetVersion,
@@ -909,5 +911,21 @@ describe('isVulnerable and cvePieces', () => {
       { text: ': SQL injection, fixed in 9.1.0' },
     ]);
     assert.deepEqual(cvePieces('Uses Electron 39, EOL'), [{ text: 'Uses Electron 39, EOL' }]);
+  });
+});
+
+describe('searchHandle and maintainsDirectly', () => {
+  test('the maintainer a search names', () => {
+    assert.equal(searchHandle(' @L0b0 '), 'l0b0');
+    assert.equal(searchHandle('@'), null);
+    assert.equal(searchHandle('@none'), null);
+    assert.equal(searchHandle('gdal'), null);
+  });
+  test('listed directly, not only as a team member', () => {
+    const gdal = { maintainers: ['tviti', 'l0b0'], nonTeamMaintainers: ['tviti'] };
+    assert.equal(maintainsDirectly(gdal, 'tviti'), true);
+    assert.equal(maintainsDirectly(gdal, 'l0b0'), false);
+    // No nonTeamMaintainers: every maintainer is a direct one.
+    assert.equal(maintainsDirectly({ maintainers: ['L0b0'] }, 'l0b0'), true);
   });
 });
