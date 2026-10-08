@@ -131,6 +131,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- `start-runs` also starts nixkeeper-vulnerabilities' digest every hour
+  (its own schedule ran once in its first 7 hours). Its token needs that
+  repository too.
 - A maintainer's page is at `?maintainer=l0b0` (the search still shows
   `@l0b0`); links from before, `?q=@l0b0`, open it and become that. The
   page's own links and subscriber issues use the new address. With a `-`,
