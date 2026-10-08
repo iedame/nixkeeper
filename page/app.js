@@ -2178,10 +2178,11 @@ function vulnBadge(pkg) {
 }
 
 // What each verdict on a CVE or advisory says (nixkeeper-vulnerabilities,
-// sources/vulnerabilities_digest.py); the first four count.
+// sources/vulnerabilities_digest.py); those in VULN_COUNTED count.
 const VERDICTS = {
-  affected: 'affected on master',
-  byVersion: 'affected, by its version',
+  affected: "affected: nixpkgs' version is in the CVE's range",
+  byVersion: "affected: nixpkgs' version is in the CVE's range", // data from before
+  tracker: "affected, says the tracker (the CVE's versions can't be read)",
   wontFix: "won't fix",
   osv: 'OSV advisory',
   unconfirmed: "unconfirmed: the CVE's versions can't be read",

@@ -301,6 +301,14 @@ VULNERABILITIES_DIGEST_URL = os.environ.get(
 )
 # Used while the tracker was read this recently (its workflow runs hourly).
 VULNERABILITIES_DIGEST_MAX_AGE_HOURS = 72
+# The package index of the newest NixOS release's channel ({release}: 26.05,
+# from the tracker's newest release branch): its versions say whether a CVE
+# fixed on unstable is still to backport (sources/vulnerabilities_digest.py).
+# NIXKEEPER_STABLE_INDEX="" goes by the tracker's status for releases instead.
+STABLE_INDEX_URL = os.environ.get(
+    "NIXKEEPER_STABLE_INDEX",
+    "https://channels.nixos.org/nixos-{release}/packages.json.br",
+)
 # Platforms nixpkgs builds; x86_64-darwin is no longer one of them.
 HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 # After this many lookups in a row fail, Hydra is likely down: the rest of the

@@ -184,11 +184,12 @@ def sources(attrs, revision):
     return {a: v for a, v in zip(attrs, values, strict=True) if v}
 
 
-def load_index():
-    """attribute -> package (pname, version, meta) for all of nixos-unstable."""
+def load_index(url=None):
+    """attribute -> package (pname, version, meta) for all of nixos-unstable
+    (or the channel whose index url is)."""
     print("Downloading nixpkgs package index...", file=sys.stderr)
     req = urllib.request.Request(
-        config.NIXPKGS_INDEX_URL, headers={"User-Agent": config.user_agent()}
+        url or config.NIXPKGS_INDEX_URL, headers={"User-Agent": config.user_agent()}
     )
     with urllib.request.urlopen(req, timeout=120) as resp:
         # Includes nested sets (haskellPackages.foo), but not aliases such as

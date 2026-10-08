@@ -7,12 +7,13 @@ Each row gets "vulnerabilities": its CVEs (the tracker's) and advisories
 
 - the tracker's issue says "not affected" or "not for us": "dismissed";
   "won't fix": "wontFix" (counted);
-- else the tracker's status for the package on nixpkgs master (or
-  nixos-unstable): "affected" (counted), "unaffected": "fixed";
-- else (the tracker's "unknown": the CVE record's ranges didn't decide)
-  nixVersion against those ranges, as nixkeeper orders versions:
-  "byVersion" (counted) in an affected range, "fixed" outside them all,
-  "unconfirmed" when a range can't be read;
+- else nixVersion against the CVE record's affected ranges, as nixkeeper
+  orders versions: "affected" (counted) in one, "fixed" outside them all.
+  The tracker's own status is that same check, but on the version a
+  branch had when it last evaluated it, often long ago (2026-10-08: 487
+  of its 873 "affected on master" already fixed in nixpkgs): it's used
+  only when a range can't be read, "tracker" (counted) when it said
+  affected, "fixed" unaffected, "unconfirmed" otherwise;
 - OSV's advisories, "osv" (counted), but not for a CVE the tracker has.
 
 A row is vulnerable (changes.is_vulnerable) when one is counted, nixpkgs
@@ -31,7 +32,7 @@ from datetime import datetime, timedelta
 from .. import config
 from ..changes import COUNTED_VULNERABILITIES
 from ..versions import version_key
-from . import about, http
+from . import about, http, nixpkgs
 
 FORMAT = 1
 # Verdicts that make a row vulnerable: changes.COUNTED_VULNERABILITIES.
@@ -108,7 +109,30 @@ def load(now):
     )
     digest = {"tracker": found.get("tracker") or {}, "osv": found.get("osv") or {}}
     digest["newestRelease"] = newest_release(digest)
+    digest["stable"] = stable_versions(digest["newestRelease"])
     return digest
+
+
+def stable_versions(newest):
+    """{attribute: version} of the newest release's channel (its package
+    index), or {} when it can't be read (the tracker's status for it is used
+    then)."""
+    if not newest or not config.STABLE_INDEX_URL:
+        return {}
+    release = newest.removeprefix("release-")
+    url = config.STABLE_INDEX_URL.format(release=release)
+    try:
+        index = nixpkgs.load_index(url)
+    except (urllib.error.URLError, OSError, ValueError) as e:
+        print(
+            f"::warning::nixos-{release}'s package index couldn't be read ({e}): "
+            "the tracker's status says what's to backport",
+            file=sys.stderr,
+        )
+        return {}
+    versions = {a: p["version"] for a, p in index.items() if p.get("version")}
+    print(f"  nixos-{release}: {len(versions):,} versions", file=sys.stderr)
+    return versions
 
 
 def newest_release(digest):
@@ -203,26 +227,39 @@ def tracker_status(row, packages):
     return found
 
 
-def releases(suggestion, attr):
+def releases(suggestion, attr, newest=None, version=None):
     """{release branch: status} of a suggestion's package, master left out
-    (what the verdict's from): where a fix may still need backporting."""
+    (what the verdict's from): where a fix may still need backporting. The
+    tracker's status for each, but the newest release's by its current
+    version against the CVE's ranges, when known and they can be read."""
     branches = (suggestion.get("packages", {}).get(attr) or {}).get("branches") or {}
-    return {b: v.get("status") for b, v in sorted(branches.items()) if b != "master"}
+    found = {b: v.get("status") for b, v in sorted(branches.items()) if b != "master"}
+    if newest and version:
+        own = by_version(version, suggestion.get("affected"))
+        if own:
+            found[newest] = "affected" if own == "affected" else "unaffected"
+    return found
 
 
 def verdict(row, suggestion, status, issue):
-    """The verdict on one of the tracker's CVEs for a row."""
+    """The verdict on one of the tracker's CVEs for a row: its issue's
+    verdict when people gave one, else nixVersion against the CVE's ranges,
+    else (ranges it can't read) the tracker's last status."""
     issue_status = (issue or {}).get("status")
     if issue_status in ("notAffected", "notForUs"):
         return "dismissed"
     if issue_status == "wontFix":
         return "wontFix"
-    if status == "affected":
-        return "affected"
-    if status == "unaffected":
-        return "fixed"
     found = by_version(row.get("nixVersion"), suggestion.get("affected"))
-    return {"affected": "byVersion", "fixed": "fixed"}.get(found, "unconfirmed")
+    if found:
+        return found  # "affected" or "fixed"
+    return {"affected": "tracker", "unaffected": "fixed"}.get(status, "unconfirmed")
+
+
+def stable_version(attr, attrs, stable):
+    """The newest release's version of a row's package: attr's, else any of
+    its attributes'; None when not known."""
+    return stable.get(attr) or next((stable[a] for a in attrs if a in stable), None)
 
 
 def counted_first(entry):
@@ -240,6 +277,8 @@ def for_row(row, digest):
     counted ones first, worst severity first; [] when the digest has none."""
     tracker, osv = digest["tracker"], digest["osv"]
     suggestions, issues = tracker.get("suggestions") or {}, tracker.get("issues") or {}
+    newest, stable = digest.get("newestRelease"), digest.get("stable") or {}
+    attrs = row.get("attrs") or [row["name"]]
     found, cves = {}, set()
     for key, (status, attr) in tracker_status(
         row, tracker.get("packages") or {}
@@ -258,7 +297,11 @@ def for_row(row, digest):
             **({"github": issue["github"]} if (issue or {}).get("github") else {}),
             **{k: s[k] for k in ("severity", "score") if s.get(k) is not None},
             **({"summary": s["title"]} if s.get("title") else {}),
-            **({"releases": r} if (r := releases(s, attr)) else {}),
+            **(
+                {"releases": r}
+                if (r := releases(s, attr, newest, stable_version(attr, attrs, stable)))
+                else {}
+            ),
         }
         # Several suggestions for one CVE (several packages): the worst.
         known = found.get(cve)

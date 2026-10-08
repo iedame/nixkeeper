@@ -128,7 +128,7 @@ class Verdicts(unittest.TestCase):
     def test_each_verdict(self):
         found = self.found(nixVersion="1.0")
         self.assertEqual(found["CVE-2026-1"]["verdict"], "affected")
-        self.assertEqual(found["CVE-2026-2"]["verdict"], "byVersion")  # 1.0 < 1.5
+        self.assertEqual(found["CVE-2026-2"]["verdict"], "affected")  # 1.0 < 1.5
         self.assertEqual(found["CVE-2026-3"]["verdict"], "fixed")  # not < 0.5
         self.assertEqual(found["CVE-2026-4"]["verdict"], "unconfirmed")
         self.assertEqual(found["CVE-2026-5"]["verdict"], "dismissed")  # not for us
@@ -156,6 +156,49 @@ class Verdicts(unittest.TestCase):
         )
         self.assertTrue(found)
         self.assertEqual(vd.for_row({"name": "other", "nixVersion": "1.0"}, DIGEST), [])
+
+
+class OwnCheck(unittest.TestCase):
+    """The tracker's status is the range check on an old version: nixkeeper
+    checks nixpkgs' current version itself."""
+
+    def test_a_stale_affected_is_fixed_by_the_version(self):
+        # The tracker said affected (when nixpkgs had 1.0); nixpkgs has 3.0.
+        found = {
+            v["id"]: v
+            for v in vd.for_row({"name": "aspell", "nixVersion": "3.0"}, DIGEST)
+        }
+        self.assertEqual(found["CVE-2026-1"]["verdict"], "fixed")  # < 2.0
+
+    def test_the_trackers_status_when_ranges_cant_be_read(self):
+        s = suggestion("CVE-2026-7", "aspell", "affected", [["affected", "x.1"]])
+        self.assertEqual(
+            vd.verdict({"nixVersion": "1.0"}, s, "affected", None), "tracker"
+        )
+        self.assertEqual(
+            vd.verdict({"nixVersion": "1.0"}, s, "unaffected", None), "fixed"
+        )
+        self.assertEqual(
+            vd.verdict({"nixVersion": "1.0"}, s, "unknown", None), "unconfirmed"
+        )
+
+    def test_the_newest_release_by_its_version(self):
+        # The tracker's 26.05 status is "affected" (an old evaluation); the
+        # channel has 2.5 now, past "< 2.0": not to backport.
+        digest = {
+            **DIGEST,
+            "newestRelease": "release-26.05",
+            "stable": {"aspell": "2.5"},
+        }
+        rows = [{"name": "aspell", "nixVersion": "3.0"}]
+        vd.add(rows, digest)
+        cve = next(v for v in rows[0]["vulnerabilities"] if v["id"] == "CVE-2026-1")
+        self.assertEqual(cve["releases"]["release-26.05"], "unaffected")
+        self.assertNotIn("CVE-2026-1", rows[0].get("backport", []))
+        # 26.05 still at 1.5: fixed on unstable, to backport.
+        digest["stable"] = {"aspell": "1.5"}
+        vd.add(rows, digest)
+        self.assertIn("CVE-2026-1", rows[0]["backport"])
 
 
 class Vulnerable(unittest.TestCase):
