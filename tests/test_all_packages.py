@@ -1061,3 +1061,19 @@ class Blockers(unittest.TestCase):
             datastore.summary_entry(rows[0])["builds"][0],
             {"status": "dependency", "system": "x86_64-linux", "blockedBy": [ldap]},
         )
+        # A failed build: why, for the list's filter; its lines, the panel's.
+        failed = row(
+            "aerogramme",
+            builds=[
+                {
+                    "status": "failed",
+                    "system": "x86_64-linux",
+                    "failedBecause": "compile",
+                    "failedExcerpt": "error: could not compile `rustix`",
+                }
+            ],
+        )
+        self.assertEqual(
+            datastore.summary_entry(failed)["builds"][0],
+            {"status": "failed", "system": "x86_64-linux", "failedBecause": "compile"},
+        )

@@ -184,6 +184,8 @@ def summary_entry(row):
         entry["builds"] = [
             {"status": b["status"], "system": b["system"]}
             | ({"blockedBy": b["blockedBy"]} if b.get("blockedBy") else {})
+            # Why it failed (the list's filter); its lines, the panel's only.
+            | ({"failedBecause": b["failedBecause"]} if b.get("failedBecause") else {})
             for b in row["builds"]
         ]
     if row.get("update"):  # null (never tried) and missing (not in nixpkgs) kept

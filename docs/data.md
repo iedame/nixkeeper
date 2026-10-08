@@ -326,6 +326,7 @@ branch it targets), and `from` / `to` (the versions in its title,
 | `attr`, `system` | the job |
 | `status` | `ok`, `failed`, `dependency` (a dependency failed), `unfinished` (timed out, aborted, ...), `notBuilt` (Hydra has no build), `broken` (nixpkgs marks it broken there), or `unknown` (Hydra couldn't be reached and there's no earlier result) |
 | `blockedBy` | for a `dependency` build, which dependency failed, when nixkeeper-hydra's digest has read its page: `[{ "name", "row"? }]`, the row of that package (`row`: `true`; by its name here), or the name Hydra gave it when no job builds it (`source`, a download) |
+| `failedBecause`, `failedExcerpt` | for a `failed` build, why, when nixkeeper-hydra's digest has read its log on Hydra: `compile`, `tests`, `link`, `header`, `cmake4`, `cmake`, `boost`, `pythonImport`, `pythonDeps`, `pythonBuild`, `pythonMetadata`, `haskellDeps`, `npm`, `lisp`, `home`, `download`, `hash`, `patch`, `substitute`, `missingFile`, `symlinks`, `patchelf`, `autotools`, `disk` (Hydra's side), `other`, `noLog`; and up to three lines of the log that say so (the full row only; list entries have `failedBecause`) |
 | `build` | the latest build's id: `https://hydra.nixos.org/build/<id>` |
 | `name`, `version` | what that build built (`wesnoth-devel-1.19.28`), and its version |
 | `lastSuccess` | when it last built successfully, when the latest build didn't; `null` if it never did |

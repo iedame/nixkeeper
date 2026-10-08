@@ -47,6 +47,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- **Why builds failed**, from their logs on Hydra (nixkeeper-hydra reads
+  each failed build's log once and classifies it, with rules from
+  nixpkgs-failure-dashboard's): a **Build failed because** filter
+  (`?buildFailed=cmake4`) beside the update failures' (now **Update failed
+  because**), the reason on the list's build button ("failed: CMake 4")
+  when a package's failed builds share one, and in the builds panel each
+  build's reason with the log's lines that say so. Builds whose logs
+  nixkeeper-hydra hasn't read yet say "not read yet" (its first pass over
+  ~3,000 failed jobs takes a few hours). `failedBecause` and
+  `failedExcerpt` on builds.
+
 - The nixkeeper logo goes back to the overview from anywhere on the page,
   with every filter, search, sort, page and open package dropped (a page
   load). Only the parameters saying where the data lives (`?data=`,

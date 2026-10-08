@@ -645,6 +645,14 @@ export function failedBecause(pkg) {
   return pkg.update?.failedBecause || 'other';
 }
 
+// Why a package's failed builds failed (on platform, when given), each
+// once: nixkeeper-hydra's reasons, from their logs ("unread" while a log
+// isn't read yet). ?buildFailed= narrows a list to one. Empty when no build
+// failed.
+export function buildFailedBecause(pkg, platform = null) {
+  return [...new Set(buildsWith(pkg, 'failed', platform).map((b) => b.failedBecause || 'unread'))];
+}
+
 // "Older than" (?age=): how many days each choice means. ?age=never is
 // the builds that never succeeded on Hydra instead (neverBuiltOn): no date.
 export const AGE_DAYS = { '1m': 30, '6m': 182, '1y': 365, '2y': 730, '3y': 1095 };
