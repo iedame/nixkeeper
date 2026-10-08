@@ -39,6 +39,7 @@ import {
   onMaster,
   onPlatform,
   pageLinks,
+  parseTeams,
   problemSince,
   raw,
   safeUrl,
@@ -46,6 +47,8 @@ import {
   shardOf,
   shortAge,
   targetVersion,
+  teamsKeep,
+  teamsParam,
   themeFor,
   timeAgo,
   trendChange,
@@ -927,5 +930,38 @@ describe('searchHandle and maintainsDirectly', () => {
     assert.equal(maintainsDirectly(gdal, 'l0b0'), false);
     // No nonTeamMaintainers: every maintainer is a direct one.
     assert.equal(maintainsDirectly({ maintainers: ['L0b0'] }, 'l0b0'), true);
+  });
+});
+
+describe('?team=: one team, teams left out, none', () => {
+  test('read and written back', () => {
+    const t = parseTeams('Gaming, -Geospatial,-Steam,none,-Geospatial');
+    assert.deepEqual(t, { include: 'Gaming', leftOut: ['Geospatial', 'Steam'], none: true });
+    assert.equal(teamsParam(t), 'Gaming,-Geospatial,-Steam,none');
+    assert.deepEqual(parseTeams(null), { include: null, leftOut: [], none: false });
+    assert.equal(teamsParam(parseTeams('')), '');
+    assert.deepEqual(parseTeams('-').leftOut, []); // a lone "-" names nothing
+  });
+  const gdal = {
+    teams: ['Geospatial'],
+    maintainers: ['tviti', 'l0b0'],
+    nonTeamMaintainers: ['tviti'],
+  };
+  const game = { teams: ['Gaming'], maintainers: ['l0b0'] };
+  const own = { maintainers: ['l0b0'] };
+  const keep = (value, handle = null) =>
+    [gdal, game, own].filter((p) => teamsKeep(p, parseTeams(value), handle)).length;
+  test('a team left out, any case', () => {
+    assert.equal(keep('-geospatial'), 2);
+    assert.equal(keep('-Geospatial,-Gaming'), 1);
+  });
+  test("none: a maintainer's own packages, or packages without a team", () => {
+    assert.equal(keep('none', 'l0b0'), 2); // game (direct) and own
+    assert.equal(keep('none', 'tviti'), 1); // gdal
+    assert.equal(keep('none'), 1); // own: no team
+  });
+  test('one team, as before', () => {
+    assert.equal(keep('Gaming'), 1);
+    assert.equal(keep(''), 3);
   });
 });

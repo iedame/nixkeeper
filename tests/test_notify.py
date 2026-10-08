@@ -396,7 +396,7 @@ class Subscribers(unittest.TestCase):
         )
         self.assertEqual(
             notify.subscriber_page("https://nixkeeper.com", self.ME),
-            "https://nixkeeper.com/?q=%40iedame",
+            "https://nixkeeper.com/?maintainer=iedame",
         )
 
     def fake_github(self, open_issues):
