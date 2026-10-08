@@ -11,6 +11,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A CVE nixpkgs fixes with a patch named after it (`CVE-2026-56391.patch`,
+  a `fetchpatch` of upstream's fix), without a new version, isn't counted:
+  the daily sync evaluates the `patches` of the packages with a counted CVE
+  (about 20 seconds), and of those to backport on nixos-26.05, where a
+  patch means it was backported already (2026-10-08: 28 packages patched
+  on unstable, coreutils, cpio, gzip...; 10 already patched in 26.05,
+  pretix's 6 CVEs among them). Their verdict is `patched`, folded with the
+  others not counted. A fix whose patch doesn't name the CVE still isn't
+  seen.
+
 - A CVE's verdict is nixkeeper's own check of nixpkgs' **current** version
   against the CVE's affected ranges: the NixOS security tracker's status is
   that same check, but on the version a branch had when it last evaluated

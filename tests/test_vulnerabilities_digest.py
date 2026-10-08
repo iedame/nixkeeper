@@ -201,6 +201,62 @@ class OwnCheck(unittest.TestCase):
         self.assertIn("CVE-2026-1", rows[0]["backport"])
 
 
+class Patched(unittest.TestCase):
+    """A CVE nixpkgs fixes with a patch named after it, without a new
+    version: not counted on unstable; not to backport when the release's
+    channel has the patch too."""
+
+    def add(self, rows, unstable=(), stable=(), stable_version="1.5"):
+        def patches(attrs, revision):
+            names = {"unstable": unstable, "stable": stable}[revision]
+            return {a: list(names) for a in attrs}
+
+        digest = {
+            **DIGEST,
+            "newestRelease": "release-26.05",
+            "stable": {"aspell": stable_version},
+            "stableRevision": "stable",
+        }
+        with mock.patch.object(vd.nixpkgs, "patches", side_effect=patches):
+            vd.add(rows, digest, "unstable")
+        return {v["id"]: v for v in rows[0]["vulnerabilities"]}
+
+    def test_patched_on_unstable(self):
+        rows = [{"name": "aspell", "nixVersion": "1.0"}]
+        found = self.add(
+            rows, unstable=["CVE-2026-1.patch", "https://x/fix-cve-2026-2"]
+        )
+        self.assertEqual(found["CVE-2026-1"]["verdict"], "patched")
+        self.assertEqual(found["CVE-2026-2"]["verdict"], "patched")  # any case
+        self.assertTrue(is_vulnerable(rows[0]))  # GHSA-b (OSV) still counts
+
+    def test_an_osv_advisory_by_its_cve(self):
+        rows = [{"name": "aspell", "nixVersion": "1.0"}]
+        found = self.add(rows, unstable=["CVE-2026-9.patch"])
+        self.assertEqual(found["GHSA-b"]["verdict"], "patched")
+
+    def test_patched_in_the_release_is_no_backport(self):
+        # 3.0: CVE-2026-1 (< 2.0) fixed on unstable; 26.05 at 1.5, in range.
+        rows = [{"name": "aspell", "nixVersion": "3.0"}]
+        self.add(rows)
+        self.assertIn("CVE-2026-1", rows[0]["backport"])
+        rows = [{"name": "aspell", "nixVersion": "3.0"}]
+        found = self.add(rows, stable=["CVE-2026-1.patch"])
+        self.assertNotIn("CVE-2026-1", rows[0].get("backport", []))
+        self.assertEqual(found["CVE-2026-1"]["releases"]["release-26.05"], "patched")
+
+    def test_patched_on_unstable_still_to_backport(self):
+        # Fixed on unstable by a patch only, 26.05 not patched: backport.
+        rows = [{"name": "aspell", "nixVersion": "1.0"}]
+        self.add(rows, unstable=["CVE-2026-1.patch"], stable_version="1.0")
+        self.assertIn("CVE-2026-1", rows[0]["backport"])
+
+    def test_no_revision_no_check(self):
+        rows = [{"name": "aspell", "nixVersion": "1.0"}]
+        vd.add(rows, DIGEST)  # no revision: nothing evaluated
+        self.assertNotIn("patched", {v["verdict"] for v in rows[0]["vulnerabilities"]})
+
+
 class Vulnerable(unittest.TestCase):
     def test_any_source(self):
         rows = [{"name": "aspell", "nixVersion": "1.0"}, {"name": "other"}]
@@ -280,6 +336,7 @@ class Load(unittest.TestCase):
         body = gzip.compress(json.dumps({"format": 1, **DIGEST}).encode())
         with (
             mock.patch.object(config, "VULNERABILITIES_DIGEST_URL", "https://digest/"),
+            mock.patch.object(config, "STABLE_INDEX_URL", ""),  # no 26.05 index
             mock.patch.object(http, "get", side_effect=get),
             mock.patch.object(http, "get_bytes", return_value=body),
             mock.patch("sys.stderr", io.StringIO()),

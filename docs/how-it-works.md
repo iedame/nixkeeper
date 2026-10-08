@@ -75,9 +75,11 @@ the release branches) and of OSV's advisories for language packages: a
 CVE counts when nixpkgs' current version is in its affected range (the
 check the tracker makes, but on today's version: the tracker's own status
 is from when it last evaluated the package, often before a fix; it's used
-only for ranges nixkeeper can't read); a fix on unstable is to backport
+only for ranges nixkeeper can't read), unless nixpkgs carries a patch
+named after it (its `patches`, evaluated for those packages: many CVEs are
+fixed that way, without a new version); a fix on unstable is to backport
 when the newest release's channel (nixos-26.05, its package index) is
-still in the range; besides those, nixpkgs' own insecure mark and
+still in the range and has no such patch; besides those, nixpkgs' own insecure mark and
 Repology's flag still count. The
 digest is used once it has read the tracker through, while under 3 days
 old. GitHub's open PRs and issues aren't searched package by

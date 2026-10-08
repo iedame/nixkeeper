@@ -184,6 +184,46 @@ def sources(attrs, revision):
     return {a: v for a, v in zip(attrs, values, strict=True) if v}
 
 
+# Each attribute's patches, as text a CVE id can be found in: a patch
+# file's name, a fetched patch's name and URLs; null for an attribute that
+# doesn't evaluate. nixpkgs names a CVE's fix after it more often than not
+# (CVE-2026-56391.patch, a fetchpatch of upstream's commit).
+PATCHES_EXPR = """pkgs: map (attr:
+  let
+    lib = pkgs.lib;
+    pkg = lib.attrByPath (lib.splitString "." attr) { } pkgs;
+    listed = builtins.tryEval (pkg.patches or [ ]);
+    patches =
+      if listed.success && builtins.isList listed.value then listed.value else [ ];
+    urls = p:
+      let u = builtins.tryEval (p.urls or (lib.optional (p ? url) p.url));
+      in if u.success && builtins.isList u.value
+        then lib.filter builtins.isString u.value else [ ];
+    names = p:
+      let
+        r = builtins.tryEval (
+          if builtins.isPath p || builtins.isString p
+          then [ (baseNameOf (toString p)) ]
+          else if builtins.isAttrs p
+          then lib.optional (p ? name && builtins.isString p.name) p.name ++ urls p
+          else [ ]
+        );
+      in if r.success then r.value else [ ];
+    found = lib.concatMap names patches;
+    r = builtins.tryEval (builtins.deepSeq found found);
+  in if r.success then r.value else null) {attrs}"""
+
+
+def patches(attrs, revision):
+    """{attr: [patch names and URLs]} at revision (x86_64-linux), for the
+    attrs that have any. Raises EvalError if nixpkgs doesn't evaluate."""
+    attrs = sorted(attrs)
+    if not attrs:
+        return {}
+    values = evaluate(revision, "x86_64-linux", PATCHES_EXPR, attrs)
+    return {a: v for a, v in zip(attrs, values, strict=True) if v}
+
+
 def load_index(url=None):
     """attribute -> package (pname, version, meta) for all of nixos-unstable
     (or the channel whose index url is)."""

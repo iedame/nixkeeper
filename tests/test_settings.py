@@ -11,6 +11,7 @@ import threading
 import unittest
 from unittest import mock
 
+import tests
 from nixkeeper import config, datastore, history, lock, notify
 from nixkeeper.sources import github
 from nixkeeper.sources import nixpkgs as nixpkgs_source
@@ -82,6 +83,8 @@ class Defaults(unittest.TestCase):
     def defaults(self, env):
         with mock.patch.dict(os.environ, env, clear=True):
             importlib.reload(config)
+        # Reloaded, config has the real addresses again: offline after.
+        self.addCleanup(tests.offline)
         self.addCleanup(importlib.reload, config)
         return config.DEFAULTS
 

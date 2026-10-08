@@ -309,6 +309,9 @@ STABLE_INDEX_URL = os.environ.get(
     "NIXKEEPER_STABLE_INDEX",
     "https://channels.nixos.org/nixos-{release}/packages.json.br",
 )
+# That channel's commit: its patches say whether a CVE is fixed there without
+# a version bump.
+STABLE_REVISION_URL = "https://channels.nixos.org/nixos-{release}/git-revision"
 # Platforms nixpkgs builds; x86_64-darwin is no longer one of them.
 HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 # After this many lookups in a row fail, Hydra is likely down: the rest of the

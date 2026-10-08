@@ -256,7 +256,7 @@ def main():
     # Since when builds and update attempts have been failing (carried over).
     history.add_failing_since(index_rows, previous, now)
     # The CVEs and advisories of each package, with their verdicts.
-    vulnerabilities_digest.add(index_rows, vulnerabilities_digest.load(now))
+    vulnerabilities_digest.add(index_rows, vulnerabilities_digest.load(now), revision)
     # version: the nixkeeper that made this data, for the page's footer.
     index = {"checkedAt": now, "packages": index_rows, "version": version()}
     if everything:
