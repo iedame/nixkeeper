@@ -1,6 +1,12 @@
 import unittest
 
-from nixkeeper.rows import add_source_links, build_rows, search_term, source_url
+from nixkeeper.rows import (
+    add_source_links,
+    build_rows,
+    channel_versions,
+    search_term,
+    source_url,
+)
 from nixkeeper.sources import nixpkgs as nixpkgs_source
 from tests.helpers import NIXPKGS, nix, other, pkg, project
 
@@ -456,3 +462,59 @@ class NewestVersion(unittest.TestCase):
 
     def test_none_known(self):
         self.assertIsNone(self.ref([other("a", "0.9", "outdated")]))
+
+
+class ChannelVersions(unittest.TestCase):
+    """nixVersion from the channel's index, when Repology hasn't caught up."""
+
+    def row(self, status, channel, ref="2.0", attrs=("p",), index=None):
+        entries = [nix("p", "1.0", status)]
+        if ref:
+            entries.append(other("debian", ref, "newest"))
+        (row,) = build_rows({"p": project("p", list(attrs), entries, "p")}, {})
+        index = index or {a: pkg(a, version=channel) for a in attrs}
+        changed = channel_versions([row], index)
+        return row, changed
+
+    def test_caught_up(self):
+        """microsoft-edge, 2026-10-08: the channel had .62, Repology .53."""
+        row, changed = self.row("outdated", "2.0")
+        self.assertEqual(changed, ["p"])
+        self.assertEqual(
+            (row["nixVersion"], row["nixStatus"], row["repologyVersion"]),
+            ("2.0", "newest", "1.0"),
+        )
+
+    def test_still_behind(self):
+        row, _ = self.row("outdated", "1.5")
+        self.assertEqual((row["nixVersion"], row["nixStatus"]), ("1.5", "outdated"))
+
+    def test_newest_stays_newest(self):
+        row, _ = self.row("newest", "1.1", ref=None)
+        self.assertEqual((row["nixVersion"], row["nixStatus"]), ("1.1", "newest"))
+
+    def test_outdated_against_nothing_named(self):
+        row, _ = self.row("outdated", "1.1", ref=None)
+        self.assertEqual((row["nixVersion"], row["nixStatus"]), ("1.1", "outdated"))
+
+    def test_not_older(self):
+        row, changed = self.row("outdated", "0.9")
+        self.assertEqual((changed, row["nixVersion"]), ([], "1.0"))
+        self.assertNotIn("repologyVersion", row)
+
+    def test_letters_only_are_repology_rules(self):
+        """thunderbird-esr-bin: 153.3.1esr, which Repology has as 153.3.1."""
+        row, changed = self.row("outdated", "1.0esr")
+        self.assertEqual((changed, row["nixVersion"]), ([], "1.0"))
+
+    def test_attributes_disagreeing(self):
+        index = {"p": pkg("p", version="2.0"), "q": pkg("q", version="1.0")}
+        _, changed = self.row("outdated", None, attrs=("p", "q"), index=index)
+        self.assertEqual(changed, [])
+
+    def test_statuses_left_alone(self):
+        """A kept older version, or one Repology distrusts."""
+        for status in ("legacy", "untrusted", "noscheme", "ignored"):
+            with self.subTest(status):
+                _, changed = self.row(status, "2.0")
+                self.assertEqual(changed, [])

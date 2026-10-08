@@ -4,7 +4,7 @@ import re
 
 from . import config
 from .sources.nixpkgs import platforms
-from .versions import version_key
+from .versions import is_newer, version_key
 
 
 def search_term(attr):
@@ -223,6 +223,46 @@ def teams(pkgs):
             if isinstance(name, str) and name and name not in found:
                 found.append(name)
     return found
+
+
+# Repology's statuses a version from the channel can replace: the ones
+# comparing it with the newest elsewhere (not a kept older version, nor one
+# Repology distrusts or can't order).
+CHANNEL_STATUSES = {"newest", "outdated", "unique", "devel"}
+LETTERS_ONLY = re.compile(r"[-_.+~]?[A-Za-z]+")
+
+
+def channel_versions(rows, nixpkgs):
+    """Make nixVersion the channel's, from the package index the sync reads,
+    when that's newer than Repology's: Repology reads nixos-unstable some
+    hours after it moves, and nixkeeper-versions' digest some hours after
+    that (microsoft-edge 154.0.4258.62, 2026-10-08). nixStatus is then
+    worked out again against refVersion, and repologyVersion keeps what
+    Repology had. Only when the row's attributes agree on one version, and
+    not when the channel's only adds letters to Repology's: Repology's rules
+    drop those (thunderbird-esr-bin 153.3.1esr, which it has as 153.3.1).
+    Returns the names of the rows changed."""
+    changed = []
+    for row in rows:
+        if row.get("nixStatus") not in CHANNEL_STATUSES or not row.get("nixVersion"):
+            continue
+        versions = {nixpkgs[a].get("version") for a in row["attrs"] if a in nixpkgs}
+        if len(versions) != 1:
+            continue
+        ours = versions.pop()
+        theirs = row["nixVersion"]
+        if not is_newer(ours, theirs) or LETTERS_ONLY.fullmatch(
+            ours.removeprefix(theirs)
+        ):
+            continue
+        row["repologyVersion"] = theirs
+        row["nixVersion"] = ours
+        # Outdated against nothing Repology names (beads): left as it says.
+        ref = row.get("refVersion")
+        if row["nixStatus"] == "outdated" and ref and not is_newer(ref, ours):
+            row["nixStatus"] = "newest"
+        changed.append(row["name"])
+    return changed
 
 
 def build_rows(projects, nixpkgs):

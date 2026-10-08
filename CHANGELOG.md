@@ -11,6 +11,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A package's nixpkgs version is the nixos-unstable channel's own when
+  Repology hasn't caught up with it yet: Repology reads the channel some
+  hours after it moves (and nixkeeper-versions' digest reads Repology once
+  a day), so a package updated in the channel still read as outdated until
+  then (microsoft-edge 154.0.4258.62, 2026-10-08). The sync compares the
+  channel's package index, which it reads anyway, with Repology's version,
+  and works out again whether it's outdated (2026-10-08: 392 packages
+  behind on Repology, 148 of them no longer outdated). `repologyVersion`
+  keeps what Repology had.
+
 - A CVE nixpkgs fixes with a patch named after it (`CVE-2026-56391.patch`,
   a `fetchpatch` of upstream's fix), without a new version, isn't counted:
   the daily sync evaluates the `patches` of the packages with a counted CVE
