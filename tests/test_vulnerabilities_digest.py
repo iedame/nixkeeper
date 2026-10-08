@@ -359,6 +359,8 @@ class Load(unittest.TestCase):
         self.assertIn("aspell", digest["tracker"]["packages"])
         self.assertTrue(noted["tracker"]["used"])
         self.assertTrue(noted["osv"]["used"])
+        # The release fixes are to be backported to, for the overview's note.
+        self.assertEqual(noted["tracker"]["release"], "26.05")
 
     def test_not_until_read_through_nor_when_old(self):
         for tracker in (

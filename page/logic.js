@@ -785,6 +785,22 @@ export function onHost(url, host) {
 // make it build a URL out of anything else.
 const GITHUB_OWNER = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/;
 const GITHUB_NAME = /^(?!\.\.?$)[A-Za-z0-9._-]{1,100}$/;
+// The address of the overview with no filters, from the page at pathname
+// and search: the view's parameters dropped, only those saying where the
+// data lives kept (?data=, ?owner=&repo=), so a copy pointed at other data
+// stays on it.
+export const HOME_PARAMS = ['data', 'owner', 'repo'];
+export function homeHref(pathname, search) {
+  const params = new URLSearchParams(search);
+  const kept = new URLSearchParams();
+  for (const key of HOME_PARAMS) {
+    const value = params.get(key);
+    if (value) kept.set(key, value);
+  }
+  const query = kept.toString();
+  return pathname + (query ? `?${query}` : '');
+}
+
 export function githubRepo(params, { hostname, pathname }) {
   const asked = params.get('owner') && params.get('repo');
   const owner = asked

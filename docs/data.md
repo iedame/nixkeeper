@@ -77,7 +77,8 @@ haskell-updates jobset (`at`), which evaluation (`eval`) and how many jobs
 (`jobs`; not used, rows have no `branch`); `tracker` and `osv`, when
 nixkeeper-vulnerabilities read the NixOS security tracker and OSV (`at`),
 and how many CVEs (`suggestions`) or advisories (`advisories`) on how
-many packages (`packages`); `updates`, when nixkeeper-updates made its digest (`at`) and how
+many packages (`packages`), and for `tracker` the newest release fixes
+are to be backported to (`release`, `26.05`); `updates`, when nixkeeper-updates made its digest (`at`) and how
 many attempts it hasn't read yet (`pending`); `queue`, when the bot's queue
 was made (`at`) and how many days it takes to go round (`cycleDays`);
 `nixpkgs`, the channel's commit (`revision`); `github`, whether the open PRs
@@ -178,8 +179,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   import (generate-r-packages.R)", "short": "CRAN import", "link": ... },
   ... }` (`SET_PROFILES` in `config.py`);
 - `views/`, each `{ "packages": [ ... ] }` of summary entries, sorted by
-  name: `attention.json` (failing, outdated or flagged vulnerable, not in a
-  set updated in bulk), `broken.json` (marked broken, not in such a set),
+  name: `attention.json` (failing, outdated, flagged vulnerable or with a
+  fix to backport, not in a set updated in bulk), `broken.json` (marked broken, not in such a set),
   `backport.json` (a CVE to backport: `backport`, not in such a set),
   `blocked.json` (a build not tried because a dependency failed, in such
   sets too),

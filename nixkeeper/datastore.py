@@ -460,8 +460,9 @@ def views(rows, out):
     """With every package: the views the page starts from instead of a
     summary of every row (each {"packages": [summary entries]}, sorted by
     name), added to out, and what the manifest says of them:
-      views/attention.json: failing, outdated or flagged vulnerable (not
-        in a set updated in bulk: those count on their set's line)
+      views/attention.json: failing, outdated, flagged vulnerable or with a
+        fix to backport (not in a set updated in bulk: those count on their
+        set's line)
       views/broken.json: marked broken in nixpkgs (not in such a set)
       views/backport.json: a CVE fixed on nixpkgs master, still affected on
         the newest release branch (backport; not in such a set)
@@ -622,7 +623,9 @@ def views(rows, out):
         if row.get("markedBroken") or broken_builds(row):
             counts["broken"] += 1
             put("views/broken.json", row)
-        if letter[0] in "fmo" or letter.endswith("v"):
+        # A fix to backport is the maintainer's to do too, even with
+        # nixos-unstable fine (its list tile: Fixes to backport).
+        if letter[0] in "fmo" or letter.endswith("v") or row.get("backport"):
             put("views/attention.json", row)
     for path, members in found.items():
         out[path] = {"packages": [summary_entry(row) for row in members]}

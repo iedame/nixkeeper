@@ -13,6 +13,7 @@ import {
   hasFailure as failureOn,
   faviconKey,
   fromMaster,
+  homeHref,
   html,
   isVulnerable,
   maintainerMatches,
@@ -108,6 +109,9 @@ function addListsLink() {
   document.getElementById('about')?.prepend(a);
 }
 addListsLink();
+// The lockup goes back to the overview, with no filters (a page load: every
+// filter, search and open panel starts over).
+document.getElementById('homeLink').href = homeHref(location.pathname, location.search);
 
 let dataBase = null; // set by loadIndex
 const dataUrl = (path) => new URL(path, dataBase).href;
@@ -267,6 +271,15 @@ const FILTERS = {
     // Repology's flag, or nixpkgs marking it insecure.
     test: isVulnerable,
   },
+  // A CVE fixed on unstable, the newest release still affected
+  // (nixkeeper-vulnerabilities): not in Vulnerable's count, unstable having
+  // the fix.
+  backport: {
+    label: 'fixes to backport',
+    param: 'backport',
+    color: 'var(--danger)',
+    test: (p) => (p.backport || []).length > 0,
+  },
   // A build Hydra didn't try, as a dependency failed (nixkeeper-hydra says
   // which): not failing itself, so in no other count.
   blocked: {
@@ -409,6 +422,7 @@ const TILES = {
   builds: 'Build failures',
   updates: 'Update failures',
   vuln: 'Vulnerable',
+  backport: 'Fixes to backport',
   broken: 'Marked broken',
   blocked: 'Blocked',
 };
@@ -1247,8 +1261,9 @@ function renderStats() {
   const buttons = Object.entries(community ? {} : FILTERS).map(([key, f]) => {
     if (['broken', 'builds', 'updates'].includes(key)) return ''; // with every package only
     const count = base.filter((p) => f.test(p) && refined(p, key)).length;
-    // "vulnerable" and "blocked" only show up when there's some.
-    if (['vuln', 'blocked'].includes(key) && !count && activeFilter !== key) return '';
+    // "vulnerable", "fixes to backport" and "blocked" only show up when
+    // there's some.
+    if (['vuln', 'backport', 'blocked'].includes(key) && !count && activeFilter !== key) return '';
     const pressed = activeFilter === key;
     return html`<button class="stat-btn" data-filter="${key}" aria-pressed="${pressed}"
       ${!count && key !== 'all' && !pressed ? raw('disabled') : ''}>
@@ -1598,16 +1613,6 @@ const CARDS = [
     color: 'var(--danger)',
   },
   { key: 'broken', label: 'Marked broken', view: 'broken', filter: null, color: 'var(--caution)' },
-  // A CVE fixed on master, still affected on the newest release branch
-  // (nixkeeper-vulnerabilities): not on data from before it (no count).
-  {
-    key: 'backport',
-    label: 'Fixes to backport',
-    view: 'backport',
-    filter: null,
-    color: 'var(--caution)',
-    optional: true,
-  },
 ];
 // The overview's lists of the newest and longest-standing (the manifest's
 // highlights), and which of the two each shows.
@@ -1711,6 +1716,19 @@ function marksHtml(points) {
 // failures keep turning up that were there all along: the Failing card
 // says so, as its rise isn't packages breaking.
 const BACKFILL_PENDING = 1000;
+// Under Vulnerable: the CVEs fixed on unstable (a new version, or a patch
+// named after the CVE) that the newest release is still affected by (their
+// tile in Vulnerable's list: Fixes to backport). Not part of Vulnerable's
+// count: unstable has the fix. Not on data from before nixkeeper-vulnerabilities
+// (no count).
+function backportCardNote() {
+  const n = manifest.counts?.backport;
+  if (n == null) return '';
+  const release = manifest.sources?.tracker?.release;
+  const to = release ? `to ${release}` : 'to the newest release';
+  return html`<span class="card-sub" title="Fixed on nixpkgs unstable (a new version, or a patch named after the CVE), while the newest release is still affected: fixes to backport there, a tile in this card's list. Not counted above: unstable has the fix.">${n ? `${fmt(n)} fixed, to backport ${to}` : `none to backport ${to}`}</span>`;
+}
+
 function backfillNote() {
   const updates = manifest.sources?.updates;
   if (!updates?.used || !(updates.pending > BACKFILL_PENDING)) return '';
@@ -1777,9 +1795,11 @@ function overviewHtml() {
           ? html`<span class="card-sub" title="Every Hydra job that didn't build, on every platform, in all of nixpkgs: as zh.fail counts them, with a dependency's failure counted for each package it stops, and timeouts. A package counts here only when its own build failed.">${fmt(c.failingBuilds)} failing builds on Hydra</span>${platformSplit(c.buildFailuresOn)}`
           : card.key === 'updateFailures'
             ? backfillNote()
-            : card.key === 'outdated'
-              ? html`<span class="card-sub" title="Each package counted once, its other attributes left out, and the sets updated in bulk (Haskell, R and the others) left out: they count on their own lines below. With nixkeeper's own update checks, which can overrule a newer version listed elsewhere (a development series, a version upstream withdrew). Counts of every attribute in nixpkgs come out higher.">Unique, outside sets updated in bulk</span>`
-              : ''
+            : card.key === 'vulnerable'
+              ? backportCardNote()
+              : card.key === 'outdated'
+                ? html`<span class="card-sub" title="Each package counted once, its other attributes left out, and the sets updated in bulk (Haskell, R and the others) left out: they count on their own lines below. With nixkeeper's own update checks, which can overrule a newer version listed elsewhere (a development series, a version upstream withdrew). Counts of every attribute in nixpkgs come out higher.">Unique, outside sets updated in bulk</span>`
+                : ''
       }
       ${drawn ? sparkline(mine, card.key, card.color) : ''}
     </a>`;
@@ -1963,7 +1983,9 @@ function showView({ set = null, pkg = null, view = null, filter = null }) {
   platformFilter = null;
   document.getElementById('search').value = '';
   update();
-  document.getElementById('scope')?.scrollIntoView({ block: 'nearest' });
+  // From the page's top, as a new page would: scrolling the view's header
+  // into view left it under the sticky top bar, its tiles hidden.
+  window.scrollTo({ top: 0 });
 }
 
 // With every package, under a plain search: the packages beyond the view
