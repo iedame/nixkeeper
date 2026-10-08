@@ -9,6 +9,21 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Changed
+
+- A CVE's verdict is nixkeeper's own check of nixpkgs' **current** version
+  against the CVE's affected ranges: the NixOS security tracker's status is
+  that same check, but on the version a branch had when it last evaluated
+  the package, often before a fix (2026-10-08: 487 of its 873 "affected on
+  master" already fixed in nixpkgs, adguardhome 0.107.79 against
+  `<0.107.77`). Its status is used only for ranges nixkeeper can't read
+  (`tracker`). Fixes to backport likewise go by the version nixos-26.05
+  has now (its channel's package index, read by the daily sync), not the
+  tracker's 26.05 status (flatpak: 1.18.4 now, the tracker's 1.16.6). On
+  2026-10-08's data: vulnerable 848 → about 682; fixes to backport from
+  51 (19 of which already fixed in 26.05) to over 135 (most of the new
+  ones hidden before behind a stale "affected on master").
+
 ### Added
 
 - **Failed because** (`?because=patch`), narrowing any list to the update

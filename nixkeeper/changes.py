@@ -99,7 +99,9 @@ def build_label(row, build):
 
 # The verdicts of a row's "vulnerabilities" that make it vulnerable
 # (sources/vulnerabilities_digest.py's COUNTED).
-COUNTED_VULNERABILITIES = ("affected", "byVersion", "wontFix", "osv")
+# ("byVersion": what "affected" was called before nixkeeper checked every
+# version itself, 2026-10-08.)
+COUNTED_VULNERABILITIES = ("affected", "byVersion", "tracker", "wontFix", "osv")
 
 
 def counted_vulnerabilities(row):

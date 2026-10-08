@@ -72,9 +72,13 @@ than 12 hours old. What's vulnerable comes from
 a digest of the NixOS security tracker (the CVEs it matched to nixpkgs
 packages, triaged by the security team, with their status on master and
 the release branches) and of OSV's advisories for language packages: a
-CVE counts when the tracker says the package is affected, or, when it
-can't say, nixpkgs' version is in the CVE's affected range; besides
-those, nixpkgs' own insecure mark and Repology's flag still count. The
+CVE counts when nixpkgs' current version is in its affected range (the
+check the tracker makes, but on today's version: the tracker's own status
+is from when it last evaluated the package, often before a fix; it's used
+only for ranges nixkeeper can't read); a fix on unstable is to backport
+when the newest release's channel (nixos-26.05, its package index) is
+still in the range; besides those, nixpkgs' own insecure mark and
+Repology's flag still count. The
 digest is used once it has read the tracker through, while under 3 days
 old. GitHub's open PRs and issues aren't searched package by
 package: each sync lists all of nixpkgs' open ones (about 120 requests) and

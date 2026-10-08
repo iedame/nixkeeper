@@ -566,7 +566,7 @@ export const isVulnerable = (pkg) => {
 
 // The verdicts of a row's "vulnerabilities" that count (changes.py's
 // COUNTED_VULNERABILITIES), and severities worst first.
-export const VULN_COUNTED = ['affected', 'byVersion', 'wontFix', 'osv'];
+export const VULN_COUNTED = ['affected', 'byVersion', 'tracker', 'wontFix', 'osv'];
 const SEVERITIES = ['critical', 'high', 'medium', 'moderate', 'low'];
 
 // A package's vulnerability verdict as the list's entries have it ("vuln":

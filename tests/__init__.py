@@ -18,5 +18,7 @@ config.HYDRA_DIGEST_URL = ""
 config.VERSIONS_DIGEST_URL = ""
 # Nor a nixkeeper-updates digest: the bot's logs are read per package.
 config.UPDATES_DIGEST_URL = ""
-# Nor a nixkeeper-vulnerabilities digest: Repology's flag decides.
+# Nor a nixkeeper-vulnerabilities digest: Repology's flag decides; nor the
+# newest release's package index (tests give their own versions).
 config.VULNERABILITIES_DIGEST_URL = ""
+config.STABLE_INDEX_URL = ""
