@@ -102,6 +102,15 @@ def build_label(row, build):
 COUNTED_VULNERABILITIES = ("affected", "byVersion", "wontFix", "osv")
 
 
+def counted_vulnerabilities(row):
+    """The ids of a row's CVEs and advisories that count."""
+    return [
+        v["id"]
+        for v in row.get("vulnerabilities") or []
+        if v["verdict"] in COUNTED_VULNERABILITIES
+    ]
+
+
 def is_vulnerable(row):
     """Whether a row counts as vulnerable, by any of its sources: nixpkgs
     itself marks it insecure (markedInsecure); one of its CVEs or advisories
@@ -182,7 +191,11 @@ def diff(previous, rows):
         # A failure nixpkgs now marks broken isn't fixed, just acknowledged.
         elif was_failing and not now_failing:
             changes["fixed"].append(row)
-        if is_vulnerable(row) and not is_vulnerable(old):
+        # Newly vulnerable, or vulnerable to a CVE it wasn't before.
+        if is_vulnerable(row) and (
+            not is_vulnerable(old)
+            or set(counted_vulnerabilities(row)) - set(counted_vulnerabilities(old))
+        ):
             changes["vulnerable"].append(row)
         # Per source: Hydra failing too, a day after an update check, is news.
         now_stale, was_stale = stale_sources(row), stale_sources(old)

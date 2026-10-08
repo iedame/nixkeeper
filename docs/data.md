@@ -135,8 +135,10 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 
 - `counts` in `index.json`: `tracked`, `outdated`, `failed` (failing in
   any way), `buildFailures` (a build of its own failed), `updateFailures`
-  (nixpkgs-update's attempts failing), `vulnerable` (flagged by Repology,
-  or marked insecure by nixpkgs), `broken` (marked
+  (nixpkgs-update's attempts failing), `vulnerable` (by the NixOS security
+  tracker, OSV, Repology, or marked insecure by nixpkgs), `backport` (a CVE
+  fixed on nixpkgs master, still affected on the newest release branch),
+  `broken` (marked
   broken), `waiting` (outdated, the
   update merged on master) of the rows not in a set updated in bulk;
   `inSets`, how many are (`pending` before 0.14.0); and
@@ -178,6 +180,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 - `views/`, each `{ "packages": [ ... ] }` of summary entries, sorted by
   name: `attention.json` (failing, outdated or flagged vulnerable, not in a
   set updated in bulk), `broken.json` (marked broken, not in such a set),
+  `backport.json` (a CVE to backport: `backport`, not in such a set),
   `blocked.json` (a build not tried because a dependency failed, in such
   sets too),
   `maintainer/<handle>.json` (the handle in lowercase; `none.json`: no
@@ -263,6 +266,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `archived` | `true` for an R package on neither CRAN nor the Bioconductor release nixpkgs pins any more (archived by CRAN, or dropped by Bioconductor); its status stays Repology's. nixpkgs marks most of those broken already |
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
 | `vulnerabilities` | from nixkeeper-vulnerabilities, when it has any for one of its attributes (the full row only): its CVEs (the NixOS security tracker's) and OSV's advisories, `[{"id", "source": "tracker" \| "osv", "verdict", "issue"?, "github"?, "severity"?, "score"?, "summary"?, "releases"?, "cves"?, "ecosystem"?}]`, counted ones first, worst severity first. `verdict`: `affected` (the tracker's status on nixpkgs master), `byVersion` (the tracker can't say; `nixVersion` is in the CVE's affected range), `wontFix`, `osv` (an OSV advisory lists `nixVersion`; not for a CVE the tracker has) count; `fixed`, `unconfirmed` (the CVE's ranges can't be read), `dismissed` (the security team says not affected) don't. `issue`: the tracker's `NIXPKGS-…`, `github` its nixpkgs issue; `releases`: its status on the release branches (`{"release-26.05": "affected"}`: a fix to backport) |
+| `backport` | the ids of its CVEs fixed on nixpkgs master (`verdict` `fixed`) but still affected on the newest release branch the tracker evaluates (`release-26.05`): a fix to backport |
 | `vuln` | in the list's entries only, when the row has `vulnerabilities`: `{"n", "severity"?, "by"}`, how many of them count, the worst severity among those, and who says it's vulnerable (`tracker`, `osv`, `nixpkgs`, `repology`); `null` when none does. Missing: Repology's flag and nixpkgs' mark decide, as before |
 | `markedInsecure` | nixpkgs marks one of its attributes insecure: its reasons (`meta.knownVulnerabilities` in the package index, each once: `["CVE-2018-19655"]`, `["Uses Electron 39.8.10, which was EOL ..."]`); such a package won't build unless allowed (`permittedInsecurePackages`). Counts as vulnerable |
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |

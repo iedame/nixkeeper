@@ -76,6 +76,7 @@ export const VIEWS = {
   attention: 'views/attention.json',
   broken: 'views/broken.json',
   blocked: 'views/blocked.json',
+  backport: 'views/backport.json',
   maintainers: 'maintainers',
 };
 export function viewPath({

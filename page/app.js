@@ -1566,6 +1566,16 @@ const CARDS = [
     color: 'var(--danger)',
   },
   { key: 'broken', label: 'Marked broken', view: 'broken', filter: null, color: 'var(--caution)' },
+  // A CVE fixed on master, still affected on the newest release branch
+  // (nixkeeper-vulnerabilities): not on data from before it (no count).
+  {
+    key: 'backport',
+    label: 'Fixes to backport',
+    view: 'backport',
+    filter: null,
+    color: 'var(--caution)',
+    optional: true,
+  },
 ];
 // The overview's lists of the newest and longest-standing (the manifest's
 // highlights), and which of the two each shows.
@@ -1714,7 +1724,7 @@ function overviewHtml() {
   // longest-standing lists' count of them.
   const count = (key) =>
     key === 'buildFailures' && c[key] == null ? manifest.highlights?.failing?.count : c[key];
-  const cards = CARDS.map((card) => {
+  const cards = CARDS.filter((card) => !card.optional || count(card.key) != null).map((card) => {
     // The days that have this count (the split ones are newer than the rest).
     const mine = points.filter((p) => p[card.key] != null);
     const drawn = mine.length >= TREND_MIN_POINTS;
@@ -1861,7 +1871,9 @@ function listHeaderHtml() {
               ? 'Marked broken'
               : path === 'views/blocked.json'
                 ? 'Blocked by a dependency'
-                : 'Needs attention';
+                : path === 'views/backport.json'
+                  ? 'Fixes to backport'
+                  : 'Needs attention';
   return html`<h2 class="sr-only">${what}</h2>
     <div class="scope-view">
       <span class="scope-label">Showing</span>
@@ -2184,6 +2196,25 @@ function vulnSection(pkg) {
       ? html`<details class="vl-rest"><summary>${rest.length} not counted (fixed, unconfirmed or dismissed)</summary><ul class="vl-list">${rest.map(line)}</ul></details>`
       : ''
   }</section>`;
+}
+
+// CVEs fixed on master but still affected on the newest release branch
+// ("backport", from the sync): a fix to backport.
+function backportNote(pkg) {
+  if (!pkg.backport?.length) return '';
+  const entry = (id) => (pkg.vulnerabilities || []).find((v) => v.id === id) || {};
+  const releases = [
+    ...new Set(
+      pkg.backport.flatMap((id) =>
+        Object.entries(entry(id).releases || {})
+          .filter(([, status]) => status === 'affected')
+          .map(([branch]) => branch.replace(/^release-/, '')),
+      ),
+    ),
+  ];
+  return html`<div class="master-note">A fix to backport: ${pkg.backport.map(
+    (id, i) => html`${i ? ', ' : ''}<span class="mono">${id}</span>`,
+  )} ${pkg.backport.length === 1 ? 'is' : 'are'} fixed on nixpkgs master, still affected on ${releases.join(', ') || 'the newest release'}.</div>`;
 }
 
 // nixpkgs marks it insecure (meta.knownVulnerabilities): its reasons, with
@@ -3014,7 +3045,7 @@ function fillDetail(pkg, el, entries) {
   ].filter(Boolean);
   // Notes that call for something stay in view; the rest are context, with
   // the explanation behind "Why?".
-  const urgent = html`${unloaded}${archived}${checkNote}${insecureNote(pkg)}${
+  const urgent = html`${unloaded}${archived}${checkNote}${insecureNote(pkg)}${backportNote(pkg)}${
     pkg.nixVulnerable
       ? html`<div class="vuln-note">⚠ Repology flags nixpkgs' version <span class="mono">${pkg.nixVersion}</span> as vulnerable.${
           pkg.project

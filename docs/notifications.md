@@ -2,9 +2,11 @@
 
 Any nixpkgs maintainer, or team, can get a GitHub issue of their own from
 the community dashboard: rewritten by every daily sync with what needs
-attention in their packages (failing, outdated, flagged vulnerable, marked
+attention in their packages (failing, outdated, vulnerable, marked
 broken), and a comment when something newly does, by the hourly checks too
-(a browser's new release, say). Comments are what GitHub notifies you about.
+(a browser's new release, say, or a new CVE: up to three are named, with
+their severity and the NixOS security tracker's issue, linked on the
+tracker). Comments are what GitHub notifies you about.
 Pull requests are named by number (`` `#562674` ``), not linked: a link
 would add a "mentioned this pull request" line on the nixpkgs PR each time
 the issue is rewritten.

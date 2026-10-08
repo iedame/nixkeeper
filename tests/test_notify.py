@@ -85,11 +85,39 @@ class Text(unittest.TestCase):
         }
         self.assertEqual(
             notify.describe(row, NOW),
-            "`python313Packages.requests` — flagged vulnerable ([known CVEs]"
+            "`python313Packages.requests` — flagged vulnerable by Repology "
+            "([known CVEs]"
             "(https://repology.org/project/python%3Arequests/cves))",
         )
         body = notify.status_body([row], diff({"packages": []}, [row]), NOW)
         self.assertIn("### Vulnerable (1)\n- `python313Packages.requests`", body)
+
+    def test_vulnerable_names_its_cves(self):
+        def cve(i, verdict="affected", **more):
+            return {
+                "id": f"CVE-2026-{i}",
+                "source": "tracker",
+                "verdict": verdict,
+                **more,
+            }
+
+        row = {
+            "name": "aspell",
+            "nixStatus": "newest",
+            "vulnerabilities": [
+                cve(1, severity="high", issue="NIXPKGS-2026-1"),
+                {"id": "GHSA-x", "source": "osv", "verdict": "osv"},
+                cve(2, "byVersion"),
+                cve(3),
+                cve(4, "fixed"),  # not counted: not named
+            ],
+        }
+        self.assertEqual(
+            notify.describe(row, NOW),
+            "`aspell` — vulnerable: `CVE-2026-1` (high, [NIXPKGS-2026-1]"
+            "(https://tracker.security.nixos.org/issues/NIXPKGS-2026-1)), "
+            "`GHSA-x` (OSV), `CVE-2026-2`, and 1 more",
+        )
 
     def test_marked_insecure_says_so(self):
         row = {

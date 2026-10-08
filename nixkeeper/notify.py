@@ -16,6 +16,7 @@ from datetime import datetime
 
 from . import config
 from .changes import (
+    COUNTED_VULNERABILITIES,
     NOTIFY,
     STALE_LABELS,
     broken_builds,
@@ -58,6 +59,26 @@ def pr_number(pr):
     return f"`#{pr['number']}`"
 
 
+# A package's CVEs named in a status issue, at most (the rest counted).
+VULNERABILITIES_SHOWN = 3
+TRACKER_ISSUE_URL = "https://tracker.security.nixos.org/issues/"
+
+
+def vulnerability(v):
+    """One counted CVE or advisory as a status issue names it: its id in
+    code, its severity, and the security tracker's issue as a link (the
+    tracker's page, never the nixpkgs issue: that link would add a
+    "mentioned" line to it each time the issue is rewritten)."""
+    said = [v["severity"]] if v.get("severity") else []
+    if v.get("issue"):
+        said.append(
+            f"[{v['issue']}]({TRACKER_ISSUE_URL}{urllib.parse.quote(v['issue'])})"
+        )
+    elif v["source"] == "osv":
+        said.append("OSV")
+    return f"`{v['id']}`" + (f" ({', '.join(said)})" if said else "")
+
+
 def describe(row, now):
     """One package, as a bullet's text."""
     text = f"`{row['name']}`"
@@ -77,10 +98,18 @@ def describe(row, now):
             text += f" · {state} {pr_number(pr)} open"
     if failures(row):
         text += " — " + ", ".join(failures(row))
+    if counted := [
+        v
+        for v in row.get("vulnerabilities") or []
+        if v["verdict"] in COUNTED_VULNERABILITIES
+    ]:
+        shown = ", ".join(vulnerability(v) for v in counted[:VULNERABILITIES_SHOWN])
+        more = len(counted) - VULNERABILITIES_SHOWN
+        text += f" — vulnerable: {shown}" + (f", and {more} more" if more > 0 else "")
     if row.get("markedInsecure"):
         text += " — marked insecure in nixpkgs"
     if row.get("nixVulnerable"):
-        text += " — flagged vulnerable"
+        text += " — flagged vulnerable by Repology"
         if row.get("project"):
             text += f" ([known CVEs]({cves_url(row['project'])}))"
     logs = [
