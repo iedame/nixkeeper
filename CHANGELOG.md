@@ -104,6 +104,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A failing build's last success, for every package: nixkeeper-hydra now
+  asks Hydra about the jobs it didn't know (4,805 on 2026-10-07, most of
+  them failing since before it started), so "last built ..." shows beyond
+  the lists' packages. A job Hydra says never succeeded comes as
+  `lastSuccessAt` "never" in its digest, which the sync reads as such
+  instead of asking Hydra again every day.
+
 - A list loads in steps, the browser free in between: filtering and
   sorting; then the counts, tiles and the first 50 rows, drawn together so
   nothing above the list moves; then the page's other 150 rows. The same

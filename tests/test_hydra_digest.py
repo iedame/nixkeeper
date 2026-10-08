@@ -113,6 +113,15 @@ class Answer(unittest.TestCase):
         # Another build since: Hydra is asked again.
         self.assertIsNone(hydra_digest.answer(row("x", "failed", "11"), False, before))
 
+    def test_never_succeeded_isnt_asked(self):
+        # nixkeeper-hydra asked Hydra already: lastSuccessAt "never".
+        result = hydra_digest.answer(
+            row("x", "failed", "10", last=("", "never", "")), False, None
+        )
+        self.assertIsNone(result["lastSuccess"])  # never, as Hydra said
+        self.assertNotIn("lastSuccessBuild", result)
+        self.assertEqual(result["status"], "failed")
+
     def test_queued_is_asked(self):
         self.assertIsNone(hydra_digest.answer(row("x", "queued", "10"), False, None))
 
