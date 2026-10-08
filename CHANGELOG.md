@@ -9,7 +9,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
-## [0.14.0] - 2026-10-08
+## [0.14.1] - 2026-10-08
+
+The release 0.14.0 was meant to be: its tag went on the wrong commit (see
+below). Nothing differs from what 0.14.0 was to have, apart from the
+version.
 
 nixkeeper relies less on Repology: R, Haskell (Stackage LTS and
 haskell-updates), Emacs and Typst packages are compared with their own
@@ -299,6 +303,13 @@ system; the package panels are redesigned, and lists load faster.
   too long"), as did nixkeeper-versions' evaluation of every package. The
   evaluation is `--impure` to read it; what it evaluates is still the
   channel's revision.
+
+## [0.14.0] - 2026-10-08 [YANKED]
+
+Not released: the `v0.14.0` tag was pushed on the commit before the
+release's (its `flake.lock` update, where nixkeeper still says 0.13.0), and
+version tags can't be moved here, so the release checks stopped and
+published nothing. Use 0.14.1, the same changes.
 
 ## [0.13.0] - 2026-10-07
 
@@ -1407,7 +1418,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.14.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.14.1...HEAD
+[0.14.1]: https://github.com/iedame/nixkeeper/compare/v0.13.0...v0.14.1
 [0.14.0]: https://github.com/iedame/nixkeeper/compare/v0.13.0...v0.14.0
 [0.13.0]: https://github.com/iedame/nixkeeper/compare/v0.12.0...v0.13.0
 [0.12.0]: https://github.com/iedame/nixkeeper/compare/v0.11.0...v0.12.0
