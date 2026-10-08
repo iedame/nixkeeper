@@ -89,12 +89,17 @@ def load(now):
         )
         return None
     tracker, osv = meta.get("tracker") or {}, meta.get("osv") or {}
+    digest = {"tracker": found.get("tracker") or {}, "osv": found.get("osv") or {}}
+    digest["newestRelease"] = newest_release(digest)
+    # The release fixes are to be backported to ("26.05"), for the page.
+    release = (digest["newestRelease"] or "").removeprefix("release-") or None
     about.note(
         "tracker",
         True,
         at=tracker.get("readAt"),
         suggestions=tracker.get("suggestions"),
         packages=tracker.get("packages"),
+        release=release,
     )
     if osv:
         about.note(
@@ -109,8 +114,6 @@ def load(now):
         f"suggestions, {osv.get('advisories', 0):,} OSV advisories, {why}",
         file=sys.stderr,
     )
-    digest = {"tracker": found.get("tracker") or {}, "osv": found.get("osv") or {}}
-    digest["newestRelease"] = newest_release(digest)
     digest["stable"] = stable_versions(digest["newestRelease"])
     digest["stableRevision"] = stable_revision(digest["newestRelease"])
     return digest

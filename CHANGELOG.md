@@ -47,6 +47,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- The nixkeeper logo goes back to the overview from anywhere on the page,
+  with every filter, search, sort, page and open package dropped (a page
+  load). Only the parameters saying where the data lives (`?data=`,
+  `?owner=&repo=`) are kept, so a copy pointed at other data stays on it.
+
 - **Failed because** (`?because=patch`), narrowing any list to the update
   failures of one reason, as nixpkgs-update's log says (build,
   updateScript, source, dependency, patch, unavailable, tests, hash,
@@ -64,10 +69,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 - **Fixes to backport**: packages with a CVE that's fixed on nixpkgs master
   but still affected on the newest release branch the NixOS security
-  tracker evaluates (26.05), as their own list (`?view=backport`) and card
-  on the overview (69 on 2026-10-08, 28 of them fine on nixos-unstable, so
-  in no other list); the details say which CVE and branch. `backport` on
-  rows, `counts.backport`, `views/backport.json`.
+  tracker evaluates (26.05): they need attention (in that list even when
+  nixos-unstable is fine), with a **Fixes to backport** tile next to
+  Vulnerable (`?filter=backport`, on maintainer and team pages too), and
+  their own list (`?view=backport`). On the overview, a note under
+  Vulnerable ("189 fixed, to backport to 26.05"): not part of its count,
+  as unstable has the fix. The details say which CVE and branch.
+  `backport` on rows, `counts.backport`, `views/backport.json`, and
+  `sources.tracker.release`.
 - Status issues name a package's CVEs: up to three, each with its severity
   and the security tracker's issue (linked on the tracker, never the
   nixpkgs issue: no "mentioned" lines there), and comment when a package

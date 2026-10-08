@@ -426,6 +426,22 @@ class Data(unittest.TestCase):
             datastore.entries(rows[0], self.out), [nix("a", "1", "newest")]
         )
 
+    def test_a_fix_to_backport_needs_attention(self):
+        """Up to date and not vulnerable on unstable, but a CVE fixed there is
+        still to backport: in the attention list (its tile), and its own."""
+        rows = [
+            row("f", backport=["CVE-2026-1"], maintainers=["iedame"]),
+            row("g", maintainers=["iedame"]),
+        ]
+        datastore.write(
+            {"checkedAt": NOW, "allPackages": True, "packages": rows}, {}, self.out
+        )
+        names = lambda path: [p["name"] for p in self.read(path)["packages"]]  # noqa: E731
+        self.assertEqual(names("views/attention.json"), ["f"])
+        self.assertEqual(names("views/backport.json"), ["f"])
+        counts = self.read("index.json")["counts"]
+        self.assertEqual((counts["backport"], counts["vulnerable"]), (1, 0))
+
     def test_set_bar_each_package_at_its_worst(self):
         def r(name, **more):
             return row(f"rPackages.{name}", set="rPackages", **more)

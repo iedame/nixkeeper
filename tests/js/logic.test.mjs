@@ -25,6 +25,7 @@ import {
   fromMaster,
   githubRepo,
   hasFailure,
+  homeHref,
   html,
   isVulnerable,
   maintainerMatches,
@@ -548,6 +549,26 @@ describe('links and markup from data', () => {
   test('html joins arrays, and leaves out null and undefined only', () => {
     assert.equal(String(html`${['<a>', html`<b>`]}`), '&lt;a&gt;<b>');
     assert.equal(String(html`${null}${undefined}|${0}|${false}`), '|0|false');
+  });
+});
+
+describe('the way home (the lockup)', () => {
+  test('drops every filter, the search, the page and the open package', () => {
+    assert.equal(
+      homeHref('/', '?filter=outdated&q=@iedame&team=-Gaming&sort=az&page=3&per=200&pkg=wesnoth'),
+      '/',
+    );
+    assert.equal(homeHref('/', ''), '/');
+  });
+  test('keeps where the data lives', () => {
+    assert.equal(
+      homeHref('/nixkeeper/', '?owner=someone&repo=their-keeper&view=attention&q=x'),
+      '/nixkeeper/?owner=someone&repo=their-keeper',
+    );
+    assert.equal(homeHref('/', '?data=%2Ftest%2F&filter=failed'), '/?data=%2Ftest%2F');
+  });
+  test('stays on the page it was opened at', () => {
+    assert.equal(homeHref('/nixkeeper/index.html', '?view=backport'), '/nixkeeper/index.html');
   });
 });
 

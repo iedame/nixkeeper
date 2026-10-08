@@ -111,17 +111,19 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   haskell-updates, waiting for its merge), and how much of it is marked
   broken or failing (a bar).
 
-At the top, "needs attention" (failing, outdated or flagged vulnerable,
-worst first) opens that list from anywhere; "Your packages" (your GitHub
+At the top, "needs attention" (failing, outdated, flagged vulnerable or
+with a fix to backport, worst first) opens that list from anywhere; "Your packages" (your GitHub
 handle) and "Your team" open yours, once given (they're kept in your
 browser only, and ✎ changes them). A list says what it is under
 "Showing" (✕ goes back to the overview): what needs attention, marked
 broken, blocked by a dependency, fixes to backport (`?view=backport`: a
 CVE fixed on nixpkgs master but still affected on the newest release
-branch, its own card on the overview; the details say which), a maintainer's packages (`?maintainer=handle`, `none` for those with
+branch; on the overview, a note under Vulnerable, as unstable has the
+fix; the details say which), a maintainer's packages (`?maintainer=handle`, `none` for those with
 none), a team's (`?team=`), a set's (`?set=`), one package alone
 (`?pkg=firefox`), or one of the instance's lists (`?list=`, by address
-only). Its tiles (outdated, failing, vulnerable, marked broken, blocked) count it and
+only). Its tiles (outdated, failing, vulnerable, fixes to backport
+(`?filter=backport`), marked broken, blocked) count it and
 filter it, as the counts at the top do on other pages; the search and order
 work within it too, and a search also lists the packages beyond it whose
 names match, closest first. "not on Repology" is a package Repology doesn't
