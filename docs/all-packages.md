@@ -90,7 +90,8 @@ write**: it can start and cancel runs, nothing else.
 ### Whose runs
 
 By default it starts iedame's: the community instance's hourly updates and
-daily sync, and the three digests. Elsewhere, two variables say which:
+daily sync, and the four digests (nixkeeper-hydra, -updates, -versions
+and -vulnerabilities). Elsewhere, two variables say which:
 
 - `NIXKEEPER_START_REPO`: your nixkeeper repository (`you/nixkeeper`),
   whose hourly updates and daily sync it starts; empty for none.
