@@ -11,6 +11,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- **Fixes to backport**: packages with a CVE that's fixed on nixpkgs master
+  but still affected on the newest release branch the NixOS security
+  tracker evaluates (26.05), as their own list (`?view=backport`) and card
+  on the overview (69 on 2026-10-08, 28 of them fine on nixos-unstable, so
+  in no other list); the details say which CVE and branch. `backport` on
+  rows, `counts.backport`, `views/backport.json`.
+- Status issues name a package's CVEs: up to three, each with its severity
+  and the security tracker's issue (linked on the tracker, never the
+  nixpkgs issue: no "mentioned" lines there), and comment when a package
+  is vulnerable to a CVE it wasn't before, not only when it first becomes
+  vulnerable. Repology's flag is said as Repology's.
+
 - What's vulnerable comes from the NixOS security tracker and OSV too, read
   from nixkeeper-vulnerabilities' digest by the daily sync (once it has
   read the tracker through, while under 3 days old): the CVEs the tracker

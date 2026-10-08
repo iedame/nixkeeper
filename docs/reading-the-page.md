@@ -108,7 +108,9 @@ worst first) opens that list from anywhere; "Your packages" (your GitHub
 handle) and "Your team" open yours, once given (they're kept in your
 browser only, and ✎ changes them). A list says what it is under
 "Showing" (✕ goes back to the overview): what needs attention, marked
-broken, blocked by a dependency, a maintainer's packages (`?maintainer=handle`, `none` for those with
+broken, blocked by a dependency, fixes to backport (`?view=backport`: a
+CVE fixed on nixpkgs master but still affected on the newest release
+branch, its own card on the overview; the details say which), a maintainer's packages (`?maintainer=handle`, `none` for those with
 none), a team's (`?team=`), a set's (`?set=`), one package alone
 (`?pkg=firefox`), or one of the instance's lists (`?list=`, by address
 only). Its tiles (outdated, failing, vulnerable, marked broken, blocked) count it and

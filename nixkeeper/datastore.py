@@ -463,6 +463,8 @@ def views(rows, out):
       views/attention.json: failing, outdated or flagged vulnerable (not
         in a set updated in bulk: those count on their set's line)
       views/broken.json: marked broken in nixpkgs (not in such a set)
+      views/backport.json: a CVE fixed on nixpkgs master, still affected on
+        the newest release branch (backport; not in such a set)
       views/blocked.json: a build of it not tried, as a dependency failed
         (in such sets too, as the overview's blockers count them)
       views/maintainer/<handle>.json: a maintainer's (lowercase handle),
@@ -490,6 +492,7 @@ def views(rows, out):
             "outdated",
             "failed",
             "vulnerable",
+            "backport",
             "updateFailures",
             "buildFailures",
             "waiting",
@@ -589,6 +592,9 @@ def views(rows, out):
         counts["waiting"] += letter.startswith("m")
         counts["outdated"] += is_outdated(row)
         counts["vulnerable"] += letter.endswith("v")
+        if row.get("backport"):
+            counts["backport"] += 1
+            put("views/backport.json", row)
         counts["updateFailures"] += bool(row.get("updateFailure"))
         counts["buildFailures"] += bool(failed_builds(row))
         # The same by where they fail: each Hydra system, and Linux and
@@ -649,6 +655,7 @@ def views(rows, out):
             "attention": len(found.get("views/attention.json", [])),
             "broken": len(found.get("views/broken.json", [])),
             "blocked": len(found.get("views/blocked.json", [])),
+            "backport": len(found.get("views/backport.json", [])),
             # (In the file, by name with capitals first, as its keys sort: the
             # page sorts them its way.)
             "teams": dict(sorted(teams.items())),

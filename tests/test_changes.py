@@ -113,6 +113,14 @@ class Diff(unittest.TestCase):
         was = row("x", nixVulnerable=True)
         c = self.changes([was], [{**was, "markedInsecure": ["CVE-2020-25031"]}])
         self.assertEqual(c["vulnerable"], [])
+        # Already vulnerable, but to a CVE it wasn't: news too.
+        cve1 = {"id": "CVE-2026-1", "source": "tracker", "verdict": "affected"}
+        cve2 = {**cve1, "id": "CVE-2026-2"}
+        before = row("x", vulnerabilities=[cve1])
+        c = self.changes([before], [row("x", vulnerabilities=[cve1, cve2])])
+        self.assertEqual([r["name"] for r in c["vulnerable"]], ["x"])
+        c = self.changes([before], [row("x", vulnerabilities=[cve1])])
+        self.assertEqual(c["vulnerable"], [])
 
     def test_not_refreshed_notifies_once(self):
         self.assertTrue(

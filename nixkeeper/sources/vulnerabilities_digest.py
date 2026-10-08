@@ -106,7 +106,24 @@ def load(now):
         f"suggestions, {osv.get('advisories', 0):,} OSV advisories, {why}",
         file=sys.stderr,
     )
-    return {"tracker": found.get("tracker") or {}, "osv": found.get("osv") or {}}
+    digest = {"tracker": found.get("tracker") or {}, "osv": found.get("osv") or {}}
+    digest["newestRelease"] = newest_release(digest)
+    return digest
+
+
+def newest_release(digest):
+    """The newest release branch the tracker evaluates ("release-26.05"),
+    by its version, or None: where a fix on master still needs backporting."""
+    names = {
+        branch
+        for s in (digest["tracker"].get("suggestions") or {}).values()
+        for p in (s.get("packages") or {}).values()
+        for branch in (p.get("branches") or {})
+        if branch.startswith("release-")
+    }
+    return max(
+        names, key=lambda b: version_key(b.removeprefix("release-")), default=None
+    )
 
 
 def matches(version, expression):
@@ -267,16 +284,34 @@ def for_row(row, digest):
     )
 
 
+def to_backport(found, newest):
+    """The CVEs of found (a row's "vulnerabilities") fixed on master but
+    still affected on newest, the newest release branch."""
+    return [
+        v["id"]
+        for v in found
+        if newest
+        and v["verdict"] == "fixed"
+        and (v.get("releases") or {}).get(newest) == "affected"
+    ]
+
+
 def add(rows, digest):
     """Give each row its "vulnerabilities" (only when the digest has any for
-    it), when there's a digest. Returns how many rows got some."""
+    it), and "backport": those fixed on master, still affected on the
+    newest release branch, when there's a digest. Returns how many rows got
+    some."""
     if digest is None:
         return 0
+    newest = digest.get("newestRelease") or newest_release(digest)
     n = 0
     for row in rows:
         row.pop("vulnerabilities", None)
+        row.pop("backport", None)
         if found := for_row(row, digest):
             row["vulnerabilities"] = found
+            if ids := to_backport(found, newest):
+                row["backport"] = ids
             n += 1
     return n
 

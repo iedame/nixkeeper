@@ -369,6 +369,7 @@ class Data(unittest.TestCase):
                 "outdated": 1,
                 "failed": 1,
                 "vulnerable": 1,
+                "backport": 0,
                 "updateFailures": 1,
                 "buildFailures": 0,
                 "waiting": 0,
@@ -382,6 +383,7 @@ class Data(unittest.TestCase):
                 "attention": 3,
                 "broken": 0,
                 "blocked": 0,
+                "backport": 0,
                 "teams": {"Gaming": 1},
                 "lists": {"gaming-team": 1},
                 "sets": {

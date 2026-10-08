@@ -189,6 +189,45 @@ class Vulnerable(unittest.TestCase):
         self.assertTrue(is_vulnerable(rows[0]))
 
 
+class Backport(unittest.TestCase):
+    def test_fixed_on_master_affected_on_the_newest_release(self):
+        self.assertEqual(vd.newest_release(DIGEST), "release-26.05")
+        # 9.0: CVE-2026-3 (< 0.5) fixed; its release-26.05 affected.
+        rows = [{"name": "aspell", "nixVersion": "9.0"}]
+        vd.add(rows, DIGEST)
+        self.assertIn("CVE-2026-3", rows[0]["backport"])
+        # Not when the newest release isn't affected.
+        found = [
+            {
+                "id": "CVE-1",
+                "verdict": "fixed",
+                "releases": {"release-25.11": "affected"},
+            }
+        ]
+        self.assertEqual(vd.to_backport(found, "release-26.05"), [])
+        self.assertEqual(vd.to_backport(found, None), [])
+
+    def test_the_newest_by_version(self):
+        digest = {
+            "tracker": {
+                "suggestions": {
+                    "1": {
+                        "packages": {
+                            "a": {
+                                "branches": {
+                                    "release-9.11": {},
+                                    "release-10.05": {},
+                                    "master": {},
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        self.assertEqual(vd.newest_release(digest), "release-10.05")
+
+
 class Load(unittest.TestCase):
     def load(self, meta):
         def get(url, *args, **kwargs):
