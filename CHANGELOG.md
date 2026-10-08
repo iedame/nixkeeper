@@ -11,6 +11,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Packages per page: 50, 100, 200 (still the default), 500 or 1,000, picked under
+  the list ("Per page") or in the address (`?per=500`, kept when moving
+  between views, so a team's or maintainer's link can carry it); the
+  maintainers' list too. Only those sizes: a huge one would draw every
+  package at once.
+
 - Status issues for any maintainer or team: a file in `notifications/`
   (`maintainers/iedame.nix`: `{ maintainer = "iedame"; }`;
   `teams/gaming.nix`: `{ team = "Gaming"; mention = [ ... ]; }`) opens
