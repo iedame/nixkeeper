@@ -446,6 +446,38 @@ export function maintainsDirectly(pkg, handle) {
   return (pkg.nonTeamMaintainers || pkg.maintainers || []).some((m) => m.toLowerCase() === handle);
 }
 
+// ?maintainer=, comma-separated: one maintainer whose page it is (l0b0),
+// and maintainers whose packages are left out (-iedame), any list; an @ in
+// front of a handle is fine.
+export function parseMaintainers(value) {
+  const tokens = (value || '')
+    .split(',')
+    .map((t) => t.trim())
+    .filter(Boolean);
+  const bare = (t) => t.replace(/^@/, '');
+  return {
+    handle: bare(tokens.find((t) => !t.startsWith('-')) || '') || null,
+    leftOut: [
+      ...new Set(
+        tokens
+          .filter((t) => t.startsWith('-'))
+          .map((t) => bare(t.slice(1)).toLowerCase())
+          .filter(Boolean),
+      ),
+    ],
+  };
+}
+
+// parseMaintainers' answer as ?maintainer='s value ('' for none of it).
+export function maintainersParam({ handle = null, leftOut = [] }) {
+  return [handle, ...leftOut.map((h) => `-${h}`)].filter(Boolean).join(',');
+}
+
+// Whether a list keeps pkg: none of the maintainers left out (lowercase
+// handles) maintains it, directly or through a team.
+export const maintainersKeep = (pkg, leftOut) =>
+  !leftOut.length || !(pkg.maintainers || []).some((m) => leftOut.includes(m.toLowerCase()));
+
 // Which teams' packages a list keeps (?team=, comma-separated): one team
 // (Gaming: its packages; its own page unless a maintainer's is shown),
 // teams left out (-Geospatial), and none: not through a team (on a

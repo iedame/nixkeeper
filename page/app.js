@@ -15,6 +15,8 @@ import {
   html,
   isVulnerable,
   maintainerMatches,
+  maintainersKeep,
+  maintainersParam,
   matchesSearch,
   midway,
   NAME_DOTS,
@@ -29,6 +31,7 @@ import {
   onMaster,
   onPlatform,
   pageLinks,
+  parseMaintainers,
   parseTeams,
   attentionRank as rankOn,
   raw,
@@ -164,9 +167,13 @@ let teamFilter = null;
 // through a team: logic.js parseTeams).
 let teamsLeftOut = [];
 let noTeam = false;
+// ?maintainer='s handles left out (-iedame), lowercase.
+let maintainersLeftOut = [];
 const isTeam = (name) => name.toLowerCase() === teamFilter.toLowerCase();
-const inTeam = (pkg) =>
-  teamsKeep(pkg, { include: teamFilter, leftOut: teamsLeftOut, none: noTeam }, shownHandle());
+// What the address keeps by people: its teams, and maintainers left out.
+const inPeople = (pkg) =>
+  teamsKeep(pkg, { include: teamFilter, leftOut: teamsLeftOut, none: noTeam }, shownHandle()) &&
+  maintainersKeep(pkg, maintainersLeftOut);
 // The team's name as nixpkgs writes it ("Qt-KDE"), or as the address has it.
 const teamName = () => packages.flatMap((p) => p.teams || []).find(isTeam) || teamFilter;
 // Every list some package is on: "maintained" first, as the sync sorts them.
@@ -312,10 +319,14 @@ const refined = (p, kind = activeFilter) =>
 // The maintainer whose page this is (@handle in the search), or null.
 const shownHandle = () => searchHandle(document.getElementById('search').value);
 
-// ?team='s teams left out, and none (packages without a team) where no
-// maintainer's page has its button: each a chip to undo it.
+// ?team='s teams left out, ?maintainer='s maintainers left out, and none
+// (packages without a team) where no maintainer's page has its button:
+// each a chip to undo it.
 const teamOutChips = () =>
-  html`${teamsLeftOut.map(
+  html`${maintainersLeftOut.map(
+    (h) =>
+      html`<button type="button" class="plat-filter" data-maintainer-out="${h}" title="Show @${h}'s packages again">not @${h} ✕</button>`,
+  )}${teamsLeftOut.map(
     (t) =>
       html`<button type="button" class="plat-filter" data-team-out="${t}" title="Show the ${t} team's packages again">not ${t} ✕</button>`,
   )}${
@@ -623,8 +634,12 @@ function readViewFromUrl() {
     ) || 'all';
   // A maintainer's page: ?maintainer=handle (the search shows @handle);
   // ?q=@handle, as it was first written, opens it too and becomes that.
-  const maintainer = (params.get('maintainer') || '').replace(/^@/, '');
-  document.getElementById('search').value = maintainer ? `@${maintainer}` : params.get('q') || '';
+  // -handle in it: their packages left out, on any list.
+  const maintainers = parseMaintainers(params.get('maintainer'));
+  maintainersLeftOut = maintainers.leftOut;
+  document.getElementById('search').value = maintainers.handle
+    ? `@${maintainers.handle}`
+    : params.get('q') || '';
   sortAZ = params.get('sort') === 'az';
   platformFilter =
     Object.keys(PLATFORMS).find((k) =>
@@ -658,7 +673,7 @@ function viewQuery(page = pageNum) {
   set('filter', FILTERS[activeFilter].param);
   // @handle in the search: ?maintainer=handle; anything else: ?q=.
   const handle = q.startsWith('@') && q.length > 1 ? q.slice(1) : '';
-  set('maintainer', handle);
+  set('maintainer', maintainersParam({ handle, leftOut: maintainersLeftOut }));
   set('q', handle ? '' : q);
   set('sort', sortAZ ? 'az' : '');
   set('platform', platformFilter && PLATFORMS[platformFilter].param);
@@ -1164,7 +1179,7 @@ function setFavicon(base) {
 function renderStats() {
   // Counts follow the platform and list filters, so "outdated" means
   // outdated on Darwin, or on the gaming-team list, while that's selected.
-  const base = packages.filter((p) => inPlatform(p) && inList(p) && inTeam(p));
+  const base = packages.filter((p) => inPlatform(p) && inList(p) && inPeople(p));
   setFavicon(base);
   renderLists();
   // With every package, the counts are the list's tiles (renderScope), and
@@ -1302,7 +1317,7 @@ function renderLists() {
     el.innerHTML = '';
     return;
   }
-  const base = packages.filter((p) => inPlatform(p) && inTeam(p) && refined(p, 'all'));
+  const base = packages.filter((p) => inPlatform(p) && inPeople(p) && refined(p, 'all'));
   const listCount = (name) =>
     community
       ? manifest.views.lists[name] || 0
@@ -1799,7 +1814,7 @@ function listHeaderHtml() {
   const path = shownView || '';
   // The tiles count the view shown, with the platform, list and team
   // filters, as the count chips do (renderStats).
-  const base = packages.filter((p) => inPlatform(p) && inList(p) && inTeam(p) && inSet(p));
+  const base = packages.filter((p) => inPlatform(p) && inList(p) && inPeople(p) && inSet(p));
   const shownCount = base.filter((p) => refined(p)).length;
   const tiles = Object.entries(TILES).map(([key, label]) => {
     const count = base.filter((p) => FILTERS[key].test(p) && refined(p, key)).length;
@@ -1873,6 +1888,7 @@ function showView({ set = null, pkg = null, view = null, filter = null }) {
   teamFilter = null;
   teamsLeftOut = [];
   noTeam = false;
+  maintainersLeftOut = [];
   listFilter = null;
   activeFilter = filter || 'all';
   refines = new Set();
@@ -3032,7 +3048,7 @@ function currentFiltered() {
     (p) =>
       inPlatform(p) &&
       inList(p) &&
-      inTeam(p) &&
+      inPeople(p) &&
       inSet(p) &&
       refined(p) &&
       FILTERS[activeFilter].test(p) &&
@@ -3080,7 +3096,10 @@ document.getElementById('stats').addEventListener('click', (e) => {
 // maintainer page's "Not via a team".
 document.addEventListener('click', (e) => {
   const out = e.target.closest('button[data-team-out]');
+  const person = e.target.closest('button[data-maintainer-out]');
   if (out) teamsLeftOut = teamsLeftOut.filter((t) => t !== out.dataset.teamOut);
+  else if (person)
+    maintainersLeftOut = maintainersLeftOut.filter((h) => h !== person.dataset.maintainerOut);
   else if (e.target.closest('button[data-team-none]')) noTeam = false;
   else if (e.target.closest('button[data-no-team]')) noTeam = !noTeam;
   else return;

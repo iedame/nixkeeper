@@ -133,7 +133,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 - A maintainer's page is at `?maintainer=l0b0` (the search still shows
   `@l0b0`); links from before, `?q=@l0b0`, open it and become that. The
-  page's own links and subscriber issues use the new address.
+  page's own links and subscriber issues use the new address. With a `-`,
+  it leaves a maintainer's packages out of any list instead
+  (`?team=Gaming&maintainer=-iedame`, `?maintainer=l0b0,-iedame`; directly
+  or through a team), each a "not @iedame" chip to undo it.
 - Since when a package's builds have been failing (`failingSince`) is
   Hydra's last success of its failed builds, read each sync, no longer the
   day nixkeeper first saw them fail when that wasn't known yet (most
