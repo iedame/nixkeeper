@@ -56,15 +56,19 @@ def publish(previous, packages, now, data_files=None):
         {**previous, "packages": packages}, {**entries, **(data_files or {})}
     )
     print("Changes written.", file=sys.stderr)
-    if previous.get("allPackages"):  # what changed for the lists' own only
-        notify.notify(
-            {
-                **previous,
-                "packages": [r for r in previous["packages"] if r.get("lists")],
-            },
-            [r for r in packages if r.get("lists")],
-            now,
-        )
-    else:
-        notify.notify(previous, packages, now)
+    # The instance's own issue: what changed for the lists' packages (with
+    # every package, the lists' own only); the subscribers' (notifications/):
+    # theirs among every row, and only theirs that newly need attention (the
+    # daily sync rewrites them all).
+    lists_only = previous.get("allPackages")
+    notify.notify(
+        {**previous, "packages": [r for r in previous["packages"] if r.get("lists")]}
+        if lists_only
+        else previous,
+        [r for r in packages if r.get("lists")] if lists_only else packages,
+        now,
+        everyone=packages,
+        everyone_before=previous,
+        news_only=True,
+    )
     return True

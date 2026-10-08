@@ -118,6 +118,12 @@ class FrequentCheck(unittest.TestCase):
         )  # not bbedit's
         notified.assert_called_once()
         self.assertEqual(notified.call_args.args[0], before)  # compared with before
+        # The subscribers' issues: theirs among every row, only those with news.
+        self.assertEqual(
+            [r["name"] for r in notified.call_args.kwargs["everyone"]],
+            ["google-chrome", "bbedit"],
+        )
+        self.assertTrue(notified.call_args.kwargs["news_only"])
         self.assertTrue(datastore.entries(chrome, "data"))  # refreshed, in its shard
 
     def test_other_rows_keep_their_entries_read_once(self):

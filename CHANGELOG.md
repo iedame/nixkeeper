@@ -223,6 +223,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- A turned-off status issue (`statusIssue = false;`) came back: the hourly
+  checks notify too, and didn't read the lists' setting. They do now (and
+  the next run closes it again). They also wrote the subscribers' issues
+  from the lists' packages alone, which would have emptied those of anyone
+  not on the lists; now they use every row, and touch only the issues of
+  those whose packages newly need attention (the daily sync rewrites them
+  all).
+- Status issues no longer link nixpkgs pull requests: each link added a
+  "mentioned this pull request" line on the PR every time the issue was
+  rewritten. They're named by number, in code (`` `#562674` ``), which
+  neither links nor points at this repository's issue of that number.
+
 - The status issues of their own (`notifications/`) weren't opened: the
   folder's place was worked out when nixkeeper loaded, before `--lists`
   (which the workflows' sync passes) set where the lists are, so the sync

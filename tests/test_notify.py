@@ -137,9 +137,10 @@ class Text(unittest.TestCase):
             "refVersion": "2",
             "openPR": {"number": 7, "url": f"{url}7", "draft": False},
         }
-        self.assertTrue(
-            notify.describe(outdated, NOW).endswith(f" · PR [#7]({url}7) open")
-        )
+        # Numbers in code, never links: a link puts "mentioned this pull
+        # request" on the nixpkgs PR each time the issue is rewritten.
+        self.assertTrue(notify.describe(outdated, NOW).endswith(" · PR `#7` open"))
+        self.assertNotIn(url, notify.describe(outdated, NOW))
         waiting = {
             **outdated,
             "master": "2",
@@ -147,7 +148,7 @@ class Text(unittest.TestCase):
         }
         self.assertTrue(
             notify.describe(waiting, NOW).endswith(
-                f" · on master (2), waiting for nixos-unstable ([#6]({url}6))"
+                " · on master (2), waiting for nixos-unstable (`#6`)"
             )
         )
 
@@ -493,3 +494,75 @@ class NotificationsFolder(unittest.TestCase):
             self.assertEqual(notify.config.notifications_path(), "/repo/notifications")
         with mock.patch.object(notify.config, "NOTIFICATIONS", "/elsewhere"):
             self.assertEqual(notify.config.notifications_path(), "/elsewhere")
+
+
+class Hourly(unittest.TestCase):
+    """The hourly checks notify too (partial.publish), with less to go on."""
+
+    def setUp(self):
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch.object(notify.time, "sleep"),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def test_reads_the_lists_it_isnt_given(self):
+        # Without them, statusIssue = false wasn't seen: the hourly checks
+        # opened the turned-off status issue again.
+        sender = mock.Mock()
+        with (
+            mock.patch.dict(notify.SENDERS, {"github-issue": sender}),
+            mock.patch.dict(os.environ, {"NIXKEEPER_NOTIFY": "github-issue"}),
+            mock.patch.object(notify.config, "NOTIFY", None),
+            mock.patch.object(
+                notify, "read_lists", return_value={"statusIssue": False}
+            ),
+            mock.patch.object(notify, "read_subscribers", return_value={}),
+        ):
+            notify.notify(BEFORE, ROWS, NOW)
+        self.assertEqual(sender.call_args.kwargs["lists"], {"statusIssue": False})
+
+    def test_only_subscribers_with_news(self):
+        me = {"maintainer": "iedame"}
+        quiet = {"maintainer": "quiet"}
+        rows = [
+            {
+                "name": "unciv",
+                "nixStatus": "outdated",
+                "nixVersion": "1",
+                "refVersion": "2",
+                "maintainers": ["iedame"],
+            },
+            {
+                "name": "calm",
+                "nixStatus": "newest",
+                "nixVersion": "1",
+                "maintainers": ["quiet"],
+            },
+        ]
+        before = {"packages": [{**r, "nixStatus": "newest"} for r in rows]}
+        calls = []
+
+        def api(method, path, token, body=None):
+            calls.append((method, path))
+            if method == "GET":
+                return [{"number": 9, "title": "nixkeeper status: @gone"}]
+            return {"number": 40} if path.endswith("/issues") else None
+
+        with mock.patch.object(github, "api", side_effect=api):
+            notify.subscriber_issues(
+                "o/r",
+                "t",
+                {"maintainers/iedame": me, "maintainers/quiet": quiet},
+                before,
+                rows,
+                NOW,
+                news_only=True,
+            )
+        writes = [c for c in calls if c[0] != "GET" and "/labels" not in c[1]]
+        # iedame's opened with its comment; quiet's untouched; @gone not closed.
+        self.assertEqual(
+            writes,
+            [("POST", "/repos/o/r/issues"), ("POST", "/repos/o/r/issues/40/comments")],
+        )
