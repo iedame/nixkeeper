@@ -223,6 +223,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- The status issues of their own (`notifications/`) weren't opened: the
+  folder's place was worked out when nixkeeper loaded, before `--lists`
+  (which the workflows' sync passes) set where the lists are, so the sync
+  looked beside the default lists instead and found none. It's worked out
+  when used now, and the log says where it looked when there's none.
+
 - The overview's newest and longest-standing failures and outdated
   packages agree with the cards above them: their count is the card's, and
   they list only what counts now. The hourly checks recount, but only the

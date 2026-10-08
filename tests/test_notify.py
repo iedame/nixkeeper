@@ -480,3 +480,16 @@ class Subscribers(unittest.TestCase):
             ),
         ):
             self.assertEqual(notify.read_subscribers("x"), {})  # the sync goes on
+
+
+class NotificationsFolder(unittest.TestCase):
+    def test_beside_the_lists_in_use(self):
+        # --lists sets config.LISTS after nixkeeper is loaded (the workflows'
+        # sync passes it): notifications/ must follow it, not the default.
+        with (
+            mock.patch.object(notify.config, "NOTIFICATIONS", None),
+            mock.patch.object(notify.config, "LISTS", "/repo/package-lists"),
+        ):
+            self.assertEqual(notify.config.notifications_path(), "/repo/notifications")
+        with mock.patch.object(notify.config, "NOTIFICATIONS", "/elsewhere"):
+            self.assertEqual(notify.config.notifications_path(), "/elsewhere")
