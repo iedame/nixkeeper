@@ -345,20 +345,31 @@ def add_counts(rows, previous=None, now=None):
         print(f"::warning::{warning}", file=sys.stderr)
 
 
-def add_update_prs(rows, open_prs=True):
+def add_update_prs(rows, open_prs=True, merged_since=None):
     """The update PRs of rows (outdated ones, typically): "masterPR", the one
     merged into master that the channel doesn't have yet, and with open_prs,
     "openPR" as in add_counts (skip it when add_counts just ran). A search
-    that fails leaves that field as it was."""
+    that fails leaves that field as it was. merged_since: when the channel's
+    commit was made (ISO); only PRs merged since then can be what the
+    channel lacks (a PR merged before is in it, whatever its version says:
+    xmage's 1.4.60 sorts above nixpkgs' later 1.4.60-dev_2026-06-28
+    snapshot). Without it, masterPR is left as it was."""
     tok = token()
     if not tok:
         print("No GITHUB_TOKEN or gh login: skipping update PRs.", file=sys.stderr)
         return
+    if not merged_since:
+        print(
+            "The channel's commit date isn't known: merged PRs not searched.",
+            file=sys.stderr,
+        )
     searches = []
     for row in rows:
         if open_prs:
             searches.append((row, "openPR", query(row, "pr state:open"), PR_CANDIDATES))
-        searches.append((row, "masterPR", query(row, "pr is:merged"), PR_CANDIDATES))
+        if merged_since:
+            merged = query(row, f"pr is:merged merged:>={merged_since}")
+            searches.append((row, "masterPR", merged, PR_CANDIDATES))
 
     def handle(row, what, count, nodes):
         if count is None:

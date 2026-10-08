@@ -33,6 +33,9 @@ def row(name, status="outdated", **extra):
     }
 
 
+SINCE = "2026-10-07T12:00:00Z"
+
+
 class PRCheck(unittest.TestCase):
     def setUp(self):
         self.dir = tempfile.TemporaryDirectory()
@@ -80,8 +83,16 @@ class PRCheck(unittest.TestCase):
             mock.patch.object(github, "token", return_value="t"),
             mock.patch.object(github, "search_batch", side_effect=search_batch),
             mock.patch.object(notify, "notify") as notified,
+            mock.patch.object(prcheck.nixpkgs, "channel_revision", return_value="abc"),
+            mock.patch.object(
+                prcheck.github_bulk, "merged_since", return_value=SINCE
+            ) as since,
         ):
             prcheck.main()
+        since.assert_called_once_with("abc")
+        self.assertTrue(
+            all(f"merged:>={SINCE}" in q for q in searched if "is:merged" in q)
+        )
         return self.written(), notified, searched
 
     def test_open_and_merged_update_prs(self):
@@ -94,7 +105,7 @@ class PRCheck(unittest.TestCase):
             {
                 "in:title wesnoth-devel": [],
                 "state:open in:title unciv": [pr(7, "unciv: 4.22.1 -> 4.22.5")],
-                "is:merged in:title unciv": [],
+                f"merged:>={SINCE} in:title unciv": [],
             }
         )
         wesnoth, unciv, _ = index["packages"]
@@ -167,6 +178,8 @@ class PRCheck(unittest.TestCase):
                 github, "search_batch", side_effect=lambda t, s: [(None, [])] * len(s)
             ),
             mock.patch.object(notify, "notify"),
+            mock.patch.object(prcheck.nixpkgs, "channel_revision", return_value="abc"),
+            mock.patch.object(prcheck.github_bulk, "merged_since", return_value=SINCE),
         ):
             prcheck.main()
         self.assertEqual(self.written()["packages"][0]["openPR"], existing)
@@ -179,9 +192,9 @@ class PRCheck(unittest.TestCase):
         index, _, _ = self.run_check(
             {
                 "state:open in:title wesnoth-data": [],
-                "is:merged in:title wesnoth-data": [],
+                f"merged:>={SINCE} in:title wesnoth-data": [],
                 "state:open in:title wesnoth": [pr(9, "wesnoth: 1.19.24 -> 1.19.28")],
-                "is:merged in:title wesnoth": [],
+                f"merged:>={SINCE} in:title wesnoth": [],
             }
         )
         wesnoth, data = index["packages"]

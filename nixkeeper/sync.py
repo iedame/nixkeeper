@@ -246,7 +246,9 @@ def main():
     # Update PRs merged into master, not in the channel yet: likewise.
     if not github_bulk.add_master_prs(outdated, revision, now):
         github.add_update_prs(
-            [row for row in outdated if row["name"] not in in_bulk], open_prs=False
+            [row for row in outdated if row["name"] not in in_bulk],
+            open_prs=False,
+            merged_since=github_bulk.merged_since(revision),
         )
     follows.apply_prs(index_rows, following)  # theirs are the same PRs
     nixpkgs_update.recheck_superseded(outdated)
