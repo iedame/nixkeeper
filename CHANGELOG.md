@@ -11,6 +11,21 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- **Failed because** (`?because=patch`), narrowing any list to the update
+  failures of one reason, as nixpkgs-update's log says (build,
+  updateScript, source, dependency, patch, unavailable, tests, hash,
+  request, "build, no log", other), each with how many there are in the
+  list, the commonest first: on 2026-10-08, of 5,784 update failures,
+  1,976 build, 880 updateScript, 789 source, 638 dependency, 506 patch.
+- A new reason, **bot**: the bot's own machine failed ("the build users
+  group 'nixbld' has no members", its nix daemon unreachable), not the
+  package: 1,306 of 2026-10-08's "build" failures, all from four hours on
+  2026-09-28 (an outage, fixed the same day, which the bot's next round
+  clears). Still update failures, so a new outage stands out: within 3
+  days, the details link nixpkgs-update's issues to tell its maintainers;
+  older, they say it was a past problem of the bot's. Worked out from the excerpts already read (nothing
+  read again), and by the log rules from now on.
+
 - **Fixes to backport**: packages with a CVE that's fixed on nixpkgs master
   but still affected on the newest release branch the NixOS security
   tracker evaluates (26.05), as their own list (`?view=backport`) and card

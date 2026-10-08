@@ -37,7 +37,15 @@ waits for nixos-unstable), **bot won't update it** (outdated packages
 nixpkgs-update won't update by itself, so it takes someone: it can't,
 skips them on purpose, or has never tried them and they aren't in its
 queue; none with an update PR open or merged), on a maintainer's page
-**not via a team** (`?team=none`, above), **older than** a month, 6 months, a year, 2 or 3 years:
+**not via a team** (`?team=none`, above), **failed because**
+(update failures for one reason, as nixpkgs-update's log says: build,
+updateScript, source, dependency, patch, unavailable, tests, hash,
+request, "build, no log", bot (the bot's own machine failed, not the
+package: when that was in the last 3 days, its details link
+nixpkgs-update's issues, to tell them; older, it was a past outage the
+bot's next round clears), or
+other when none was recognised; each with how
+many there are in the list; `?because=patch`), **older than** a month, 6 months, a year, 2 or 3 years:
 how long it's been failing or outdated (the counts' kind, when one is
 picked: failing for over 6 months, say), or **never built** (a failing
 build that never succeeded on Hydra, which has no date; with **on**, only

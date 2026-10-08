@@ -637,6 +637,14 @@ export function faviconKey(packages, platform = null) {
   return ['r', 'f', 'v'].filter((s) => signals[s]).join('') || 'ok';
 }
 
+// Why a package's latest update attempt failed (its "update.failedBecause",
+// read from the bot's log): "other" when none was recognised; null when its
+// attempt didn't fail. ?because= narrows a list to one.
+export function failedBecause(pkg) {
+  if (!pkg.updateFailure) return null;
+  return pkg.update?.failedBecause || 'other';
+}
+
 // "Older than" (?age=): how many days each choice means. ?age=never is
 // the builds that never succeeded on Hydra instead (neverBuiltOn): no date.
 export const AGE_DAYS = { '1m': 30, '6m': 182, '1y': 365, '2y': 730, '3y': 1095 };

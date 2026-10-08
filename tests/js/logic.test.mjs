@@ -20,6 +20,7 @@ import {
   daysText,
   daysUntil,
   escapeHtml,
+  failedBecause,
   faviconKey,
   fromMaster,
   githubRepo,
@@ -1033,5 +1034,17 @@ describe("nixkeeper-vulnerabilities' verdict", () => {
       'nixpkgs (marked insecure)',
       'Repology',
     ]);
+  });
+});
+
+describe('failedBecause', () => {
+  test("the reason the bot's last attempt failed, other when unknown", () => {
+    assert.equal(
+      failedBecause({ updateFailure: true, update: { failedBecause: 'patch' } }),
+      'patch',
+    );
+    assert.equal(failedBecause({ updateFailure: true, update: { outcome: 'failed' } }), 'other');
+    // Not failing: no reason, whatever an older attempt said.
+    assert.equal(failedBecause({ update: { failedBecause: 'patch' } }), null);
   });
 });
