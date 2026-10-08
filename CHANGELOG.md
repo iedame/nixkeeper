@@ -276,6 +276,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- The hourly PR check found "merged into master" update PRs that the
+  channel already has: it searched merged PRs without the daily sync's
+  bound, so an old one whose version sorts above nixpkgs' (xmage's 1.4.60,
+  above its later 1.4.60-dev_2026-06-28 snapshot) made the bot's failed
+  attempt look superseded, until the next daily sync said otherwise, and
+  the package was "newly failed" in its status issues every day. Merged PRs
+  are now searched from the channel's commit only, as the daily sync lists
+  them; when that date can't be known, the row keeps what it had.
 - A turned-off status issue (`statusIssue = false;`) came back: the hourly
   checks notify too, and didn't read the lists' setting. They do now (and
   the next run closes it again). They also wrote the subscribers' issues

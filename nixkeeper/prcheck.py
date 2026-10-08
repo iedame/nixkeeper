@@ -10,7 +10,7 @@ from datetime import UTC, datetime
 
 from . import follows, partial
 from .changes import is_outdated
-from .sources import github, nixpkgs_update
+from .sources import github, github_bulk, nixpkgs, nixpkgs_update
 
 
 def main():
@@ -27,7 +27,9 @@ def main():
         print("Nothing outdated: no update PRs to look for.", file=sys.stderr)
         return
     print(f"PR check: {', '.join(row['name'] for row in outdated)}", file=sys.stderr)
-    github.add_update_prs(outdated)
+    # Merged PRs since the channel's commit only: those it doesn't have yet.
+    since = github_bulk.merged_since(nixpkgs.channel_revision())
+    github.add_update_prs(outdated, merged_since=since)
     # Packages that follow another (follows.py): the same PRs, as its own.
     follows.apply_prs(packages, follows.recorded(packages))
     # A merged PR can supersede a failed bot attempt before Hydra builds it.

@@ -2,6 +2,7 @@ import io
 import unittest
 from unittest import mock
 
+from nixkeeper import config
 from nixkeeper.sources import github, github_bulk
 
 
@@ -235,3 +236,32 @@ class MasterPRs(unittest.TestCase):
         ):
             self.assertFalse(github_bulk.add_master_prs(rows, "rev", self.NOW))
         self.assertEqual(rows[0]["masterPR"], {"number": 1})
+
+
+class MergedSince(unittest.TestCase):
+    """The channel's commit date, bounding the per-package merged PR
+    searches (github.add_update_prs)."""
+
+    def test_the_channels_commit_date(self):
+        with (
+            mock.patch.object(github_bulk.github, "token", return_value="t"),
+            mock.patch.object(
+                github_bulk, "channel_date", return_value="2026-10-07T12:00:00Z"
+            ) as asked,
+        ):
+            self.assertEqual(github_bulk.merged_since("abc"), "2026-10-07T12:00:00Z")
+        asked.assert_called_once_with("t", "abc")
+
+    def test_none_when_it_cant_be_known(self):
+        with mock.patch.object(github_bulk.github, "token", return_value=None):
+            self.assertIsNone(github_bulk.merged_since("abc"))  # no token
+        with mock.patch.object(github_bulk.github, "token", return_value="t"):
+            # The revision couldn't be fetched: the branch's name instead.
+            self.assertIsNone(github_bulk.merged_since(config.NIXPKGS_BRANCH))
+            with (
+                mock.patch.object(
+                    github_bulk, "channel_date", side_effect=OSError("down")
+                ),
+                mock.patch("sys.stderr", io.StringIO()),
+            ):
+                self.assertIsNone(github_bulk.merged_since("abc"))

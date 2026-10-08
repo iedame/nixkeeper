@@ -213,6 +213,20 @@ def channel_date(token, revision):
     return ((data.get("repository") or {}).get("object") or {}).get("committedDate")
 
 
+def merged_since(revision):
+    """When the channel's commit (revision) was made, for the per-package
+    searches of merged PRs (github.add_update_prs); None when there's no
+    token, the revision isn't known, or GitHub can't say."""
+    tok = github.token()
+    if not tok or not revision or revision == config.NIXPKGS_BRANCH:
+        return None
+    try:
+        return channel_date(tok, revision)
+    except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+        print(f"::warning::The channel's commit date: {e}", file=sys.stderr)
+        return None
+
+
 def list_merged(token, since, now):
     """PRs merged into master from since to now (ISO times), as GraphQL
     nodes; raises if a request fails, or a window has more than search's

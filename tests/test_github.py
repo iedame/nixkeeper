@@ -7,6 +7,9 @@ from nixkeeper import config, schedule
 from nixkeeper.sources import github
 from tests.helpers import http_error, response
 
+# When the channel's commit was made, for merged PR searches.
+SINCE = "2026-10-07T12:00:00Z"
+
 
 class GitHubCounts(unittest.TestCase):
     def setUp(self):
@@ -192,14 +195,22 @@ class UpdatePRs(unittest.TestCase):
             mock.patch.object(github, "token", return_value="t"),
             mock.patch.object(github, "search_batch", side_effect=search_batch),
         ):
-            github.add_update_prs([row])
+            github.add_update_prs([row], merged_since=SINCE)
             self.assertEqual(
                 (row["openPR"]["number"], row["masterPR"]["number"]), (7, 6)
             )
+            # Merged since the channel's commit only: older ones are in it.
+            self.assertIn(f"is:merged merged:>={SINCE}", searched[1])
             searched.clear()
-            github.add_update_prs([row], open_prs=False)  # after add_counts
-        self.assertEqual(len(searched), 1)
-        self.assertIn("is:merged", searched[0])
+            github.add_update_prs([row], open_prs=False, merged_since=SINCE)
+            self.assertEqual(len(searched), 1)
+            self.assertIn("is:merged", searched[0])
+            # The channel's date unknown: merged PRs not searched, the row's
+            # masterPR as it was (not one from before the channel).
+            searched.clear()
+            github.add_update_prs([row])
+        self.assertEqual([q for q in searched if "is:merged" in q], [])
+        self.assertEqual(row["masterPR"]["number"], 6)
 
     def test_search_batch_returns_pull_requests(self):
         resp = response(
