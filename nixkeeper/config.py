@@ -290,6 +290,17 @@ UPDATES_DIGEST_MAX_AGE_HOURS = 12
 # The bot's queue (the digest's queue.json.gz) older than this isn't used:
 # its days to come would be off.
 UPDATES_QUEUE_MAX_AGE_HOURS = 24
+# nixkeeper-vulnerabilities' digest (sources/vulnerabilities_digest.py):
+# the NixOS security tracker's CVEs for nixpkgs packages and OSV's
+# advisories, with which packages they concern. NIXKEEPER_VULNERABILITIES_
+# DIGEST="" turns it off (Repology's flag and nixpkgs' insecure mark then
+# decide alone, as they do whenever the digest isn't current).
+VULNERABILITIES_DIGEST_URL = os.environ.get(
+    "NIXKEEPER_VULNERABILITIES_DIGEST",
+    "https://raw.githubusercontent.com/iedame/nixkeeper-vulnerabilities/data/data/",
+)
+# Used while the tracker was read this recently (its workflow runs hourly).
+VULNERABILITIES_DIGEST_MAX_AGE_HOURS = 72
 # Platforms nixpkgs builds; x86_64-darwin is no longer one of them.
 HYDRA_SYSTEMS = ["x86_64-linux", "aarch64-linux", "aarch64-darwin"]
 # After this many lookups in a row fail, Hydra is likely down: the rest of the

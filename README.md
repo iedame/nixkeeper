@@ -98,9 +98,11 @@ of the data comes from three digests, each refreshed on its own schedule:
 [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra) (Hydra's
 builds, and which dependency stopped one),
 [nixkeeper-versions](https://github.com/iedame/nixkeeper-versions)
-(Repology's versions) and
+(Repology's versions),
 [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates)
-(nixpkgs-update's attempts). "checked … ago", at the top of the page, says
+(nixpkgs-update's attempts) and
+[nixkeeper-vulnerabilities](https://github.com/iedame/nixkeeper-vulnerabilities)
+(the NixOS security tracker's CVEs and OSV's advisories). "checked … ago", at the top of the page, says
 how fresh each one is.
 
 **Something wrong?** A version, build or update result that looks off:

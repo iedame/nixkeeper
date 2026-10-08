@@ -47,6 +47,7 @@ import {
   raw,
   safeUrl,
   searchHandle,
+  severityRank,
   shardOf,
   shortAge,
   targetVersion,
@@ -59,6 +60,8 @@ import {
   versionDiff,
   viewPath,
   viewSlug,
+  vulnSources,
+  vulnSummary,
   waitingForChannel,
   weekChange,
   withRunStamps,
@@ -985,5 +988,50 @@ describe('?maintainer=: one page, maintainers left out', () => {
     assert.equal(maintainersKeep(freedink, ['someone']), true);
     assert.equal(maintainersKeep({}, ['iedame']), true);
     assert.equal(maintainersKeep(freedink, []), true);
+  });
+});
+
+describe("nixkeeper-vulnerabilities' verdict", () => {
+  test("the sync's, when there is one", () => {
+    // null: the digest had entries, none counted, nor Repology nor nixpkgs.
+    assert.equal(isVulnerable({ vuln: null, nixVulnerable: false }), false);
+    assert.equal(isVulnerable({ vuln: { n: 1, by: ['tracker'] } }), true);
+    // No "vuln" (data from before, or nothing on it): as before.
+    assert.equal(isVulnerable({ nixVulnerable: true }), true);
+  });
+  test("from a full row's vulnerabilities, as the sync's summary", () => {
+    const row = {
+      nixVulnerable: true,
+      vulnerabilities: [
+        { verdict: 'fixed', source: 'tracker', severity: 'critical' },
+        { verdict: 'osv', source: 'osv', severity: 'moderate' },
+        { verdict: 'affected', source: 'tracker', severity: 'high' },
+      ],
+    };
+    assert.deepEqual(vulnSummary(row), {
+      n: 2,
+      severity: 'high',
+      by: ['osv', 'tracker', 'repology'],
+    });
+    assert.equal(isVulnerable(row), true);
+    const none = { vulnerabilities: [{ verdict: 'fixed', source: 'tracker' }] };
+    assert.equal(vulnSummary(none), null);
+    assert.equal(isVulnerable(none), false);
+  });
+  test('worst severity first, unknown last', () => {
+    const order = [{}, { vuln: { severity: 'low' } }, { vuln: { severity: 'critical' } }].map((p) =>
+      severityRank(p),
+    );
+    assert.deepEqual(order, [5, 4, 0]);
+  });
+  test('who says so', () => {
+    assert.deepEqual(vulnSources({ vuln: { by: ['tracker', 'repology'] } }), [
+      'the NixOS security tracker',
+      'Repology',
+    ]);
+    assert.deepEqual(vulnSources({ nixVulnerable: true, markedInsecure: ['x'] }), [
+      'nixpkgs (marked insecure)',
+      'Repology',
+    ]);
   });
 });

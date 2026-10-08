@@ -38,6 +38,7 @@ import {
   githubRepo as repoFrom,
   safeUrl,
   searchHandle,
+  severityRank,
   shardOf,
   shortAge,
   targetVersion,
@@ -48,9 +49,12 @@ import {
   trendChange,
   updateTitle,
   VIEWS,
+  VULN_COUNTED,
   versionDiff,
   viewPath,
   viewSlug,
+  vulnSources,
+  vulnSummary,
   waitingForChannel,
   withRunStamps,
   withSlash,
@@ -530,7 +534,7 @@ function versionCell(pkg, st) {
   const failing = stale
     ? html`<span class="badge neutral" title="${staleText(stale, "nixkeeper's update check failing")}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
     : '';
-  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.archived ? html`<span class="badge warn" title="${archivedText(pkg)}">archived</span>` : ''}${pkg.feed?.heldBack && st === 'ok' ? html`<span class="badge neutral" title="nixpkgs pins it to ${pkg.feed.name}: Hackage has ${pkg.feed.heldBack}, which Stackage holds back until its next series">Stackage LTS</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.markedInsecure?.length ? html`<span class="badge vuln" title="nixpkgs marks it insecure: ${pkg.markedInsecure.join(' · ')}">insecure</span>` : pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : pkg.lookupFailed ? html`<span class="badge neutral" title="${LOOKUP_FAILED}">not looked up</span>` : ''}`;
+  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.archived ? html`<span class="badge warn" title="${archivedText(pkg)}">archived</span>` : ''}${pkg.feed?.heldBack && st === 'ok' ? html`<span class="badge neutral" title="nixpkgs pins it to ${pkg.feed.name}: Hackage has ${pkg.feed.heldBack}, which Stackage holds back until its next series">Stackage LTS</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${vulnBadge(pkg)}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : pkg.lookupFailed ? html`<span class="badge neutral" title="${LOOKUP_FAILED}">not looked up</span>` : ''}`;
   if (st !== 'warn')
     return html`<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
@@ -794,6 +798,7 @@ const DIGESTS = {
   hydra: 'https://github.com/iedame/nixkeeper-hydra',
   versions: 'https://github.com/iedame/nixkeeper-versions',
   updates: 'https://github.com/iedame/nixkeeper-updates',
+  vulnerabilities: 'https://github.com/iedame/nixkeeper-vulnerabilities',
 };
 const hydraEval = (s) =>
   html`evaluation <a class="files-link" href="https://hydra.nixos.org/eval/${s.eval}" target="_blank" rel="noopener">${s.eval}</a>, read ${timeAgo(s.at)}`;
@@ -879,6 +884,23 @@ const SOURCES = [
     digest: 'updates',
     label: 'Queue',
     says: (s) => `from ${timeAgo(s.at)}, going round every ${s.cycleDays} days`,
+  },
+  {
+    key: 'tracker',
+    digest: 'vulnerabilities',
+    label: 'NixOS security tracker',
+    from: 'https://tracker.security.nixos.org',
+    says: (s) =>
+      `read ${timeAgo(s.at)}: ${s.suggestions?.toLocaleString()} CVEs, on ${s.packages?.toLocaleString()} packages`,
+    instead: "Repology's flag used",
+  },
+  {
+    key: 'osv',
+    digest: 'vulnerabilities',
+    label: 'OSV',
+    from: 'https://osv.dev',
+    says: (s) =>
+      `read ${timeAgo(s.at)}: ${s.advisories?.toLocaleString()} advisories, on ${s.packages?.toLocaleString()} packages`,
   },
 ];
 
@@ -2095,6 +2117,75 @@ document.getElementById('content').addEventListener('keydown', (e) => {
 const notRefreshed = (pkg, source) => pkg.notRefreshed?.[source] || null;
 const staleText = (info, what) =>
   `${what} since ${longDate(info.since)} (${daysText(info.since)}): ${info.reason}`;
+// The vulnerable badge: "insecure" when nixpkgs' mark is all there is, else
+// "vulnerable", coloured by the worst severity known, who says so on hover.
+function vulnBadge(pkg) {
+  if (!isVulnerable(pkg)) return '';
+  const sources = vulnSources(pkg);
+  const insecureOnly = sources.length === 1 && pkg.markedInsecure?.length;
+  const found = vulnSummary(pkg);
+  const severity = found?.severity;
+  const n = found?.n;
+  const title = insecureOnly
+    ? `nixpkgs marks it insecure: ${pkg.markedInsecure.join(' · ')}`
+    : `Vulnerable, says ${sources.join(', ')}${n ? `: ${n} ${n === 1 ? 'CVE or advisory' : 'CVEs or advisories'}` : ''}${severity ? ` (worst: ${severity})` : ''}`;
+  return html`<span class="badge vuln${severity ? ` sev-${severity}` : ''}" title="${title}">${insecureOnly ? 'insecure' : 'vulnerable'}</span>`;
+}
+
+// What each verdict on a CVE or advisory says (nixkeeper-vulnerabilities,
+// sources/vulnerabilities_digest.py); the first four count.
+const VERDICTS = {
+  affected: 'affected on master',
+  byVersion: 'affected, by its version',
+  wontFix: "won't fix",
+  osv: 'OSV advisory',
+  unconfirmed: "unconfirmed: the CVE's versions can't be read",
+  fixed: 'fixed',
+  dismissed: 'dismissed by the security team',
+};
+
+// The panel's CVEs and advisories (the row's "vulnerabilities"), counted
+// ones first, worst first; the others folded: each with its severity, the
+// verdict, the tracker's issue and its GitHub issue, and the release
+// branches still affected (a fix to backport).
+function vulnSection(pkg) {
+  const all = pkg.vulnerabilities || [];
+  if (!all.length) return '';
+  const link = (id) =>
+    id.startsWith('CVE-')
+      ? `https://nvd.nist.gov/vuln/detail/${encodeURIComponent(id)}`
+      : `https://osv.dev/vulnerability/${encodeURIComponent(id)}`;
+  const stillAffected = (v) =>
+    Object.entries(v.releases || {})
+      .filter(([, status]) => status === 'affected')
+      .map(([branch]) => branch.replace(/^release-/, ''));
+  const line = (v) => {
+    const releases = stillAffected(v);
+    return html`<li class="vl"><a class="files-link mono" href="${link(v.id)}" target="_blank" rel="noopener">${v.id}</a>${
+      v.severity ? html` <span class="sev sev-${v.severity}">${v.severity}</span>` : ''
+    } <span class="vl-verdict">${VERDICTS[v.verdict] || v.verdict}</span>${
+      v.issue
+        ? html` · <a class="files-link mono" href="https://tracker.security.nixos.org/issues/${encodeURIComponent(v.issue)}" target="_blank" rel="noopener">${v.issue}</a>`
+        : ''
+    }${v.github && safeUrl(v.github) ? html` (<a class="files-link" href="${safeUrl(v.github)}" target="_blank" rel="noopener">its nixpkgs issue</a>)` : ''}${
+      releases.length
+        ? html` · <span class="vl-backport">still affected on ${releases.join(', ')}</span>`
+        : ''
+    }${v.summary ? html`<div class="vl-summary">${v.summary}</div>` : ''}</li>`;
+  };
+  const counted = all.filter((v) => VULN_COUNTED.includes(v.verdict));
+  const rest = all.filter((v) => !VULN_COUNTED.includes(v.verdict));
+  return html`<section class="pd-sec"><h4 class="other-label">Vulnerabilities</h4>${
+    counted.length
+      ? html`<ul class="vl-list">${counted.map(line)}</ul>`
+      : html`<p class="pd-text">None counted.</p>`
+  }${
+    rest.length
+      ? html`<details class="vl-rest"><summary>${rest.length} not counted (fixed, unconfirmed or dismissed)</summary><ul class="vl-list">${rest.map(line)}</ul></details>`
+      : ''
+  }</section>`;
+}
+
 // nixpkgs marks it insecure (meta.knownVulnerabilities): its reasons, with
 // their CVE ids linked to NVD.
 function insecureNote(pkg) {
@@ -2977,6 +3068,7 @@ function fillDetail(pkg, el, entries) {
       ${source ? html`<span class="pd-source ${source[0]}" title="${source[3]}">${icon(source[1])}${source[2]}</span>` : ''}
     </div>
     ${String(urgent).trim() ? html`<div class="pd-notes">${urgent}</div>` : ''}
+    ${vulnSection(pkg)}
     <div class="pd-why-body"${open ? '' : raw(' hidden')}>
       <p class="pd-text">${nixLine}</p>
       ${String(context).trim() ? html`<div class="pd-notes">${context}</div>` : ''}
@@ -3055,6 +3147,12 @@ function currentFiltered() {
       matchesSearch(p, q),
   );
   if (sortAZ) return list;
+  // The vulnerable ones: worst severity first (in the order they had).
+  if (activeFilter === 'vuln') {
+    const ranked = list.map((p) => ({ p, rank: severityRank(p) }));
+    ranked.sort((a, b) => a.rank - b.rank);
+    return ranked.map((k) => k.p);
+  }
   // Worst first, then longest first. Each package's rank and date worked
   // out once, not at every comparison: sorting every package compares
   // about 170,000 pairs, and on a mid-range phone working them out each

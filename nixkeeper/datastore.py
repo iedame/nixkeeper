@@ -33,6 +33,7 @@ from .changes import (
     on_branch,
     waiting_for_channel,
 )
+from .sources import vulnerabilities_digest
 from .sources.nixpkgs import available_on
 
 FORMAT = 2
@@ -42,6 +43,7 @@ SHARD_ROWS = 500
 PANEL_ONLY = (
     "dataFile",
     "feed",
+    "vulnerabilities",
     "homepage",
     "repoCount",
     "repologyCheckedAt",
@@ -174,6 +176,10 @@ def summary_entry(row):
     search and sorting need. Builds are reduced to their status and
     platform, the update attempt to its outcome (and why it failed)."""
     entry = {k: v for k, v in row.items() if k not in PANEL_ONLY}
+    if "vulnerabilities" in row:
+        # The verdict, worked out once (null: none counted, Repology's
+        # flag not used either).
+        entry["vuln"] = vulnerabilities_digest.summary(row)
     if "builds" in row:
         entry["builds"] = [
             {"status": b["status"], "system": b["system"]}
