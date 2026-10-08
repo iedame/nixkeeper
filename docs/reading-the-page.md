@@ -24,7 +24,10 @@ only what isn't through a team: on a maintainer's page, the packages that
 list them themselves (its **Not via a team** button), leaving out those
 they maintain only as a member of the package's team (nixpkgs adds a
 team's members to each of its packages' maintainers); elsewhere, packages
-without a team.
+without a team. `?maintainer=` takes a `-` the same way: `-iedame` leaves
+out the packages iedame maintains (directly or through a team), on any
+list (`?team=Gaming&maintainer=-iedame`, or beside a maintainer's own page:
+`?maintainer=l0b0,-iedame`), each a "not @iedame" chip to undo it.
 
 Any list can be narrowed further, together with everything else (under the
 counts; with every package, under a list's tiles): **without maintainer**,

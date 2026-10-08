@@ -27,6 +27,8 @@ import {
   html,
   isVulnerable,
   maintainerMatches,
+  maintainersKeep,
+  maintainersParam,
   maintainsDirectly,
   matchesSearch,
   midway,
@@ -39,6 +41,7 @@ import {
   onMaster,
   onPlatform,
   pageLinks,
+  parseMaintainers,
   parseTeams,
   problemSince,
   raw,
@@ -963,5 +966,24 @@ describe('?team=: one team, teams left out, none', () => {
   test('one team, as before', () => {
     assert.equal(keep('Gaming'), 1);
     assert.equal(keep(''), 3);
+  });
+});
+
+describe('?maintainer=: one page, maintainers left out', () => {
+  test('read and written back', () => {
+    const m = parseMaintainers('l0b0,-iedame, -@Someone,-iedame');
+    assert.deepEqual(m, { handle: 'l0b0', leftOut: ['iedame', 'someone'] });
+    assert.equal(maintainersParam(m), 'l0b0,-iedame,-someone');
+    assert.deepEqual(parseMaintainers('-iedame'), { handle: null, leftOut: ['iedame'] });
+    assert.deepEqual(parseMaintainers('@l0b0'), { handle: 'l0b0', leftOut: [] });
+    assert.equal(maintainersParam(parseMaintainers(null)), '');
+  });
+  test('their packages left out, directly or through a team', () => {
+    const freedink = { maintainers: ['iedame', 'l0b0'], nonTeamMaintainers: ['iedame'] };
+    assert.equal(maintainersKeep(freedink, ['iedame']), false);
+    assert.equal(maintainersKeep(freedink, ['l0b0']), false); // via Gaming: still theirs
+    assert.equal(maintainersKeep(freedink, ['someone']), true);
+    assert.equal(maintainersKeep({}, ['iedame']), true);
+    assert.equal(maintainersKeep(freedink, []), true);
   });
 });
