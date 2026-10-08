@@ -11,6 +11,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- **Failed because** (`?because=patch`), narrowing any list to the update
+  failures of one reason, as nixpkgs-update's log says (build,
+  updateScript, source, dependency, patch, unavailable, tests, hash,
+  request, "build, no log", other), each with how many there are in the
+  list, the commonest first: on 2026-10-08, of 5,784 update failures,
+  1,976 build, 880 updateScript, 789 source, 638 dependency, 506 patch.
+
 - **Fixes to backport**: packages with a CVE that's fixed on nixpkgs master
   but still affected on the newest release branch the NixOS security
   tracker evaluates (26.05), as their own list (`?view=backport`) and card

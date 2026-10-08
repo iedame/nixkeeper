@@ -9,6 +9,7 @@ import {
   dayPosition,
   daysText,
   daysUntil,
+  failedBecause,
   hasFailure as failureOn,
   faviconKey,
   fromMaster,
@@ -141,6 +142,8 @@ let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
 // comma-separated, and ?age=, an AGES key).
 let refines = new Set();
 let ageFilter = null;
+// ?because=: update failures for one reason (a FAILED_BECAUSE key, or other).
+let becauseFilter = null;
 let sortAZ = false; // default order puts what needs attention first
 // The table shows pageSize rows at a time: drawing stays fast whatever the
 // data's size, and the page keeps working with Ctrl+F and screen readers
@@ -318,6 +321,7 @@ const AGES = {
 // kind: whose age counts (a FILTERS key): the list's, or a count's own.
 const refined = (p, kind = activeFilter) =>
   [...refines].every((key) => REFINES[key].test(p)) &&
+  (!becauseFilter || failedBecause(p) === becauseFilter) &&
   olderThan(p, ageFilter, kind, Date.now(), platformFilter);
 
 // The maintainer whose page this is (@handle in the search), or null.
@@ -339,6 +343,29 @@ const teamOutChips = () =>
       : ''
   }`;
 
+// "Failed because" (?because=): the reasons update attempts failed, each
+// with how many of the list's packages it is (as the tiles count: the
+// other filters but this one), the commonest first; those with none left
+// out, but the one picked.
+function becausePick() {
+  const base = packages.filter(
+    (p) => inPlatform(p) && inList(p) && inPeople(p) && inSet(p) && failedBecause(p),
+  );
+  const counts = {};
+  for (const p of base) {
+    const why = failedBecause(p);
+    counts[why] = (counts[why] || 0) + 1;
+  }
+  const label = (key) => (key === 'noLog' ? 'build, no log' : FAILED_BECAUSE[key]?.short || key);
+  const keys = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
+  if (becauseFilter && !keys.includes(becauseFilter)) keys.push(becauseFilter);
+  if (!keys.length) return '';
+  return html`<label class="refine-age" title="Update failures for one reason, as nixpkgs-update's log says (its last attempt). The counts are of this list, with its other filters">Failed because <select data-because><option value="">any reason</option>${keys.map(
+    (key) =>
+      html`<option value="${key}"${becauseFilter === key ? raw(' selected') : ''}>${label(key)} (${fmt(counts[key] || 0)})</option>`,
+  )}</select></label>`;
+}
+
 function refineHtml() {
   return html`<div class="refine" role="group" aria-label="Narrow the list">${Object.entries(
     REFINES,
@@ -355,7 +382,7 @@ function refineHtml() {
   ).map(
     ([key, label]) =>
       html`<option value="${key}"${ageFilter === key ? raw(' selected') : ''}>${label}</option>`,
-  )}</select></label><label class="refine-age" title="Only packages available on it, and of their builds the ones there (build failures on Darwin, say). Darwin is macOS, as nixpkgs calls it.">On <select data-platform-pick><option value="">any platform</option>${Object.entries(
+  )}</select></label>${becausePick()}<label class="refine-age" title="Only packages available on it, and of their builds the ones there (build failures on Darwin, say). Darwin is macOS, as nixpkgs calls it.">On <select data-platform-pick><option value="">any platform</option>${Object.entries(
     PLATFORMS,
   ).map(
     ([key, p]) =>
@@ -663,6 +690,10 @@ function readViewFromUrl() {
   if (refineKeys.includes('direct')) noTeam = true;
   refines = new Set(refineKeys.filter((key) => REFINES[key]));
   ageFilter = AGES[params.get('age')] ? params.get('age') : null;
+  // Any reason the data may have (checked by the list, not here).
+  becauseFilter = /^[A-Za-z]{1,30}$/.test(params.get('because') || '')
+    ? params.get('because')
+    : null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   const per = Number(params.get('per'));
   pageSize = PAGE_SIZES.includes(per) ? per : DEFAULT_PAGE_SIZE;
@@ -688,6 +719,7 @@ function viewQuery(page = pageNum) {
   set('view', viewParam);
   set('refine', [...refines].join(','));
   set('age', ageFilter);
+  set('because', becauseFilter);
   set('page', page > 1 ? page : '');
   set('per', pageSize !== DEFAULT_PAGE_SIZE ? pageSize : '');
   // "@" and "," are fine in a query: ?q=@ and ?refine=a,b read better in
@@ -1452,7 +1484,7 @@ async function render(list, { keepPage = false, run = updateRun } = {}) {
     return;
   }
   if (!list.length) {
-    const narrowed = refines.size || ageFilter;
+    const narrowed = refines.size || ageFilter || becauseFilter;
     const handle = document.getElementById('search').value.trim();
     if (community && /^@\S/.test(handle) && !narrowed && activeFilter === 'all') {
       // No such maintainer (yet: still typing): the ones whose handle matches.
@@ -1927,6 +1959,7 @@ function showView({ set = null, pkg = null, view = null, filter = null }) {
   activeFilter = filter || 'all';
   refines = new Set();
   ageFilter = null;
+  becauseFilter = null;
   platformFilter = null;
   document.getElementById('search').value = '';
   update();
@@ -3245,6 +3278,7 @@ document.addEventListener('click', (e) => {
 });
 document.addEventListener('change', (e) => {
   if (e.target.matches('select[data-age]')) ageFilter = e.target.value || null;
+  else if (e.target.matches('select[data-because]')) becauseFilter = e.target.value || null;
   else if (e.target.matches('select[data-platform-pick]')) platformFilter = e.target.value || null;
   else if (e.target.matches('select[data-per]')) {
     // The page holding the first row shown before, at the new size.
