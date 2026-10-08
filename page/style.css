@@ -1561,11 +1561,15 @@ button.plat[aria-pressed="true"] {
   color: var(--merged);
 }
 /* How long it's been outdated, after the package's name. */
+/* In the name's text, after its last word (or on a line of its own, under
+   the name, when it doesn't fit): beside a wrapped name, it would sit
+   apart at the right. */
 .pkg-name .age {
   color: var(--warn);
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
+  margin-left: 2px;
 }
 /* Waiting for the channel: the merged violet, like its dot. */
 .pkg-name .age.merged {

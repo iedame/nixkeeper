@@ -24,18 +24,22 @@ master yet** (leaving out outdated packages whose update is merged and
 waits for nixos-unstable), **bot won't update it** (outdated packages
 nixpkgs-update won't update by itself, so it takes someone: it can't,
 skips them on purpose, or has never tried them and they aren't in its
-queue; none with an update PR open or merged), **older than** a month, 6 months or a year:
+queue; none with an update PR open or merged), **older than** a month, 6 months, a year, 2 or 3 years:
 how long it's been failing or outdated (the counts' kind, when one is
-picked: failing for over 6 months, say), and **on** Linux, Linux x86_64,
+picked: failing for over 6 months, say), or **never built** (a failing
+build that never succeeded on Hydra, which has no date; with **on**, only
+there: when it's all that fails, the list shows "n/a" instead of how
+long, and the build column "never: darwin", say), and **on** Linux, Linux x86_64,
 Linux aarch64 or Darwin (macOS, as nixpkgs calls it): the packages
 available there, and only their builds there (build failures on
 aarch64-linux, say; as clicking a row's platform tag does). Each count then
 counts what's left. In the address:
-`?refine=unmaintained,notbroken,notonmaster,nobot`, `?age=1m`, `6m` or
-`1y`, and `?platform=linux`, `x86_64-linux`, `aarch64-linux` or `darwin`
+`?refine=unmaintained,notbroken,notonmaster,nobot`, `?age=1m`, `6m`,
+`1y`, `2y`, `3y` or `never`, and `?platform=linux`, `x86_64-linux`, `aarch64-linux` or `darwin`
 (`macos` still works), so "failing for
-6 months, with no maintainer" is a link. The dates only go back to when nixkeeper started following a package,
-so "older than" finds more as time goes on.
+6 months, with no maintainer" is a link. A build failure's date is
+Hydra's last success; the others only go back to when nixkeeper started
+following a package, so "older than" finds more of them as time goes on.
 
 On a page tracking [every package](all-packages.md) (a community
 instance), the page starts from an **overview** of nixpkgs, with no list:

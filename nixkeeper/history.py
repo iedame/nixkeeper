@@ -98,19 +98,29 @@ def add_outdated_since(rows, previous, now):
 
 def add_failing_since(rows, previous, now):
     """Mark since when each row's builds have been failing ("failingSince")
-    and its update attempts ("updateFailingSince"), carried from run to run
-    as outdatedSince is: kept while it lasts, dropped once it's fixed. New
-    to a failure, a row starts from what's known: its failed builds' last
-    success (the failing began after it), else now; the failed attempt's
-    day, else now."""
+    and its update attempts ("updateFailingSince"); dropped once fixed.
+    Builds: their last success, as Hydra says it each run (the failing
+    began after it; the earliest of the failed builds' that have one);
+    none when Hydra says none of them ever succeeded; while it isn't known
+    yet, carried from run to run as outdatedSince is (else now). And
+    "neverBuiltOn": the systems whose failed build never succeeded. Update
+    attempts: carried the same way, first seen the failed attempt's day,
+    else now."""
     before = {row["name"]: row for row in previous["packages"]}
     for row in rows:
         old = before.get(row["name"], {})
         failed = [b for b in row.get("builds") or [] if b["status"] == "failed"]
         row.pop("failingSince", None)
+        row.pop("neverBuiltOn", None)
         if failed:
             last = [b["lastSuccess"] for b in failed if b.get("lastSuccess")]
-            row["failingSince"] = old.get("failingSince") or min(last, default=now)
+            never = [b for b in failed if "lastSuccess" in b and not b["lastSuccess"]]
+            if never:
+                row["neverBuiltOn"] = sorted({b["system"] for b in never})
+            if last:
+                row["failingSince"] = min(last)
+            elif len(never) < len(failed):  # not known yet
+                row["failingSince"] = old.get("failingSince") or now
         row.pop("updateFailingSince", None)
         if row.get("updateFailure"):
             day = (row.get("update") or {}).get("date")
@@ -141,8 +151,8 @@ def fixes(rows, previous, now):
             continue
         builds = row.get("builds") or []
         if (
-            old.get("failingSince")
-            and not row.get("failingSince")
+            (old.get("failingSince") or old.get("neverBuiltOn"))
+            and not (row.get("failingSince") or row.get("neverBuiltOn"))
             and not any(b["status"] == "failed" for b in builds)
             and any(b["status"] == "ok" for b in builds)
         ):

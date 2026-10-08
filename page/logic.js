@@ -482,8 +482,10 @@ export function faviconKey(packages, platform = null) {
   return ['r', 'f', 'v'].filter((s) => signals[s]).join('') || 'ok';
 }
 
-// "Older than" (?age=): how many days each choice means.
-export const AGE_DAYS = { '1m': 30, '6m': 182, '1y': 365 };
+// "Older than" (?age=): how many days each choice means. ?age=never is
+// the builds that never succeeded on Hydra instead (neverBuiltOn): no date.
+export const AGE_DAYS = { '1m': 30, '6m': 182, '1y': 365, '2y': 730, '3y': 1095 };
+export const NEVER_BUILT = 'never';
 
 // Since when a row has had the problem kind names (the list's filter):
 // failing (its builds or update attempts, the earlier; or builds or updates
@@ -504,9 +506,18 @@ export function problemSince(pkg, kind) {
   return dates.filter(Boolean).sort()[0] || null;
 }
 
+// The systems where a row's failing builds never succeeded on Hydra
+// (neverBuiltOn), only those on platform when one is picked.
+export const neverBuiltOn = (pkg, platform = null) =>
+  (pkg.neverBuiltOn || []).filter((system) => !platform || onSystem(system, platform));
+
 // Whether a row has had that problem for longer than age (an AGE_DAYS key;
-// any other: no limit, so every row is).
-export function olderThan(pkg, age, kind, now = Date.now()) {
+// NEVER_BUILT: a failing build of it never succeeded, on platform if one is
+// picked, for any kind of problem but outdated and update failures; any
+// other: no limit, so every row is).
+export function olderThan(pkg, age, kind, now = Date.now(), platform = null) {
+  if (age === NEVER_BUILT)
+    return neverBuiltOn(pkg, platform).length > 0 && kind !== 'warn' && kind !== 'updates';
   if (!AGE_DAYS[age]) return true;
   const since = problemSince(pkg, kind);
   return Boolean(since) && now - new Date(since).getTime() > AGE_DAYS[age] * DAY;
