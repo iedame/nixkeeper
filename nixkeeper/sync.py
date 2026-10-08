@@ -155,6 +155,12 @@ def main():
         wanted, previous, nixpkgs=nixpkgs, now=now, digest=digest, bulk=set(bulk)
     )
     index_rows = rows.build_rows(projects, nixpkgs)
+    # The channel's own versions, where Repology hasn't caught up with it yet.
+    if ahead := rows.channel_versions(index_rows, nixpkgs):
+        print(
+            f"nixos-unstable ahead of Repology: {len(ahead):,} packages",
+            file=sys.stderr,
+        )
     # Typst, Emacs, Stackage-pinned Haskell and R packages: compared with
     # their own sources instead (Typst Universe, the Emacs archives, Stackage
     # LTS, CRAN and Bioconductor; sources/feeds.py).

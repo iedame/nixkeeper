@@ -62,7 +62,11 @@ week). Repology is still asked about a package that isn't in the digest (new
 in nixpkgs) or has another version there than the channel's (changed since),
 and about every package, as above, when the digest is more than 36 hours old
 or can't be read; an old digest still answers for the packages Repology
-can't (when it's down, its digest's run couldn't read it either). nixpkgs-update's attempts likewise come from
+can't (when it's down, its digest's run couldn't read it either). Repology
+itself reads nixos-unstable some hours after it moves, so where the channel
+already has a newer version than Repology's, the version shown is the
+channel's, and whether it's outdated is worked out again against the newest
+version Repology shows elsewhere. nixpkgs-update's attempts likewise come from
 [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates), a digest
 of the bot's latest attempt at every package, its log read with nixkeeper's
 own rules, made every 3 hours from the bot's state; a package's logs are
