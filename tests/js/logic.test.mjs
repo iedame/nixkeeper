@@ -15,6 +15,7 @@ import {
   compareVersions,
   computeStatus,
   crc32,
+  cvePieces,
   dayPosition,
   daysText,
   daysUntil,
@@ -24,6 +25,7 @@ import {
   githubRepo,
   hasFailure,
   html,
+  isVulnerable,
   maintainerMatches,
   matchesSearch,
   midway,
@@ -434,6 +436,9 @@ describe('faviconKey', () => {
       'rfv',
     );
     assert.equal(faviconKey([outdated({ nixVulnerable: true })]), 'rv');
+  });
+  test('marked insecure by nixpkgs lights the vulnerable one too', () => {
+    assert.equal(faviconKey([pkg({ markedInsecure: ['CVE-2020-25031'] })]), 'v');
   });
   test("an update already on master isn't a new release to act on", () => {
     assert.equal(faviconKey([outdated({ master: '1.1' })]), 'ok');
@@ -887,5 +892,22 @@ describe('trendChange and dayPosition', () => {
     assert.equal(dayPosition(points, '2026-10-05'), 100);
     assert.equal(dayPosition(points, '2026-09-28'), null);
     assert.equal(dayPosition([day('2026-10-01', 0)], '2026-10-01'), null);
+  });
+});
+
+describe('isVulnerable and cvePieces', () => {
+  test("Repology's flag or nixpkgs' mark", () => {
+    assert.equal(isVulnerable({ nixVulnerable: true }), true);
+    assert.equal(isVulnerable({ markedInsecure: ['EOL'] }), true);
+    assert.equal(isVulnerable({ markedInsecure: [] }), false);
+    assert.equal(isVulnerable({}), false);
+  });
+  test('the CVE ids in a reason, apart to link', () => {
+    assert.deepEqual(cvePieces('CVE-2018-19655'), [{ cve: 'CVE-2018-19655' }]);
+    assert.deepEqual(cvePieces('CVE-2026-34400: SQL injection, fixed in 9.1.0'), [
+      { cve: 'CVE-2026-34400' },
+      { text: ': SQL injection, fixed in 9.1.0' },
+    ]);
+    assert.deepEqual(cvePieces('Uses Electron 39, EOL'), [{ text: 'Uses Electron 39, EOL' }]);
   });
 });

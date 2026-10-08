@@ -89,9 +89,19 @@ class Text(unittest.TestCase):
             "(https://repology.org/project/python%3Arequests/cves))",
         )
         body = notify.status_body([row], diff({"packages": []}, [row]), NOW)
-        self.assertIn(
-            "### Flagged vulnerable (1)\n- `python313Packages.requests`", body
+        self.assertIn("### Vulnerable (1)\n- `python313Packages.requests`", body)
+
+    def test_marked_insecure_says_so(self):
+        row = {
+            "name": "dcraw",
+            "nixStatus": "newest",
+            "markedInsecure": ["CVE-2018-19655"],
+        }
+        self.assertEqual(
+            notify.describe(row, NOW), "`dcraw` — marked insecure in nixpkgs"
         )
+        body = notify.status_body([row], diff({"packages": []}, [row]), NOW)
+        self.assertIn("### Vulnerable (1)\n- `dcraw`", body)
 
     def test_not_refreshed_says_what_and_why(self):
         row = {

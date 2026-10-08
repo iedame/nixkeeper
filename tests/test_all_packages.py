@@ -304,6 +304,8 @@ class Data(unittest.TestCase):
         self.assertEqual(datastore.status(row("a", updateFailure=True)), "f")
         self.assertEqual(datastore.status(row("a", nixStatus="unlisted")), "n")
         self.assertEqual(datastore.status(row("a", nixVulnerable=True)), "uv")
+        insecure = row("a", markedInsecure=["CVE-2020-25031"])
+        self.assertEqual(datastore.status(insecure), "uv")  # nixpkgs' own say
         waiting = row("a", nixStatus="outdated", refVersion="2", master="2")
         self.assertEqual(datastore.status(waiting), "m")
 

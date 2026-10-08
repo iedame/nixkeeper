@@ -1747,6 +1747,11 @@ a.badge:hover {
   padding: 6px 10px;
   margin-bottom: 10px;
 }
+/* nixpkgs' reasons for marking a package insecure. */
+.vuln-reasons {
+  margin: 4px 0 0;
+  padding-left: 18px;
+}
 .stale-tag {
   font-size: 10.5px;
   color: var(--ink-soft);

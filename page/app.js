@@ -5,6 +5,7 @@ import {
   comparedRepos,
   compareVersions,
   computeStatus,
+  cvePieces,
   dayPosition,
   daysText,
   daysUntil,
@@ -12,6 +13,7 @@ import {
   faviconKey,
   fromMaster,
   html,
+  isVulnerable,
   maintainerMatches,
   matchesSearch,
   midway,
@@ -239,7 +241,8 @@ const FILTERS = {
     label: 'flagged vulnerable',
     param: 'vulnerable',
     color: 'var(--danger)',
-    test: (p) => p.nixVulnerable,
+    // Repology's flag, or nixpkgs marking it insecure.
+    test: isVulnerable,
   },
   // A build Hydra didn't try, as a dependency failed (nixkeeper-hydra says
   // which): not failing itself, so in no other count.
@@ -487,7 +490,7 @@ function versionCell(pkg, st) {
   const failing = stale
     ? html`<span class="badge neutral" title="${staleText(stale, "nixkeeper's update check failing")}. ${communityCheck(pkg) ? "It's a community rule: report it to nixkeeper, or give the package a rule of your own." : 'Fix it in package-lists/update-checks.nix.'}">check failing</span>`
     : '';
-  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.archived ? html`<span class="badge warn" title="${archivedText(pkg)}">archived</span>` : ''}${pkg.feed?.heldBack && st === 'ok' ? html`<span class="badge neutral" title="nixpkgs pins it to ${pkg.feed.name}: Hackage has ${pkg.feed.heldBack}, which Stackage holds back until its next series">Stackage LTS</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : pkg.lookupFailed ? html`<span class="badge neutral" title="${LOOKUP_FAILED}">not looked up</span>` : ''}`;
+  const about = html`${pkg.set ? bulkBadge(pkg.set) : ''}${olderVersionKept(pkg) ? html`<span class="badge neutral" title="${keptText(pkg)}">older version</span>` : pkg.unversioned && st === 'neutral' ? html`<span class="badge neutral" title="${UNVERSIONED_TITLE}">not versioned</span>` : st === 'neutral' ? html`<span class="badge neutral">${statusLabel(pkg.nixStatus)}</span>` : ''}${pkg.archived ? html`<span class="badge warn" title="${archivedText(pkg)}">archived</span>` : ''}${pkg.feed?.heldBack && st === 'ok' ? html`<span class="badge neutral" title="nixpkgs pins it to ${pkg.feed.name}: Hackage has ${pkg.feed.heldBack}, which Stackage holds back until its next series">Stackage LTS</span>` : ''}${pkg.devel ? html`<span class="badge devel ${st}">devel</span>` : ''}${pkg.markedInsecure?.length ? html`<span class="badge vuln" title="nixpkgs marks it insecure: ${pkg.markedInsecure.join(' · ')}">insecure</span>` : pkg.nixVulnerable ? html`<span class="badge vuln">vulnerable</span>` : ''}${pkg.staleSince ? html`<span class="badge neutral" title="Repology lookup failed on the last run; this is data from ${new Date(pkg.staleSince).toLocaleString()}">not refreshed</span>` : pkg.lookupFailed ? html`<span class="badge neutral" title="${LOOKUP_FAILED}">not looked up</span>` : ''}`;
   if (st !== 'warn')
     return html`<div class="vcell"><span class="v-now"><span class="v">${now}</span></span><span class="v-tags top">${about}${failing}</span></div>`;
   const target = targetVersion(pkg);
@@ -2021,6 +2024,19 @@ document.getElementById('content').addEventListener('keydown', (e) => {
 const notRefreshed = (pkg, source) => pkg.notRefreshed?.[source] || null;
 const staleText = (info, what) =>
   `${what} since ${longDate(info.since)} (${daysText(info.since)}): ${info.reason}`;
+// nixpkgs marks it insecure (meta.knownVulnerabilities): its reasons, with
+// their CVE ids linked to NVD.
+function insecureNote(pkg) {
+  if (!pkg.markedInsecure?.length) return '';
+  const reason = (text) =>
+    cvePieces(text).map((p) =>
+      p.cve
+        ? html`<a class="files-link mono" href="https://nvd.nist.gov/vuln/detail/${p.cve}" target="_blank" rel="noopener">${p.cve}</a>`
+        : p.text,
+    );
+  return html`<div class="vuln-note">⚠ nixpkgs marks it insecure: it won't build unless allowed (<span class="mono">permittedInsecurePackages</span>).<ul class="vuln-reasons">${pkg.markedInsecure.map((r) => html`<li>${reason(r)}</li>`)}</ul></div>`;
+}
+
 // The same, as a line at the top of a panel.
 const staleNote = (info, what, after) =>
   info ? html`<div class="stale-note">⚠ ${staleText(info, what)}. ${after}</div>` : '';
@@ -2836,7 +2852,7 @@ function fillDetail(pkg, el, entries) {
   ].filter(Boolean);
   // Notes that call for something stay in view; the rest are context, with
   // the explanation behind "Why?".
-  const urgent = html`${unloaded}${archived}${checkNote}${
+  const urgent = html`${unloaded}${archived}${checkNote}${insecureNote(pkg)}${
     pkg.nixVulnerable
       ? html`<div class="vuln-note">⚠ Repology flags nixpkgs' version <span class="mono">${pkg.nixVersion}</span> as vulnerable.${
           pkg.project

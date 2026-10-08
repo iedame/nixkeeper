@@ -167,7 +167,22 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         # Hydra job at all (hydraPlatforms = [], as hackage2nix sets it).
         if any(p["meta"].get("broken") for p in pkgs):
             row["markedBroken"] = True
+        # meta.knownVulnerabilities: nixpkgs itself marks it insecure (it
+        # won't build without permittedInsecurePackages), with its reasons.
+        if found := insecure(pkgs):
+            row["markedInsecure"] = found
     return row
+
+
+def insecure(pkgs):
+    """The reasons in pkgs' meta.knownVulnerabilities, each once, in order;
+    [] when nixpkgs doesn't mark any of them insecure."""
+    found = []
+    for p in pkgs:
+        for reason in p["meta"].get("knownVulnerabilities") or []:
+            if isinstance(reason, str) and reason and reason not in found:
+                found.append(reason)
+    return found
 
 
 def maintainers(pkgs):

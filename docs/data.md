@@ -132,7 +132,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 
 - `counts` in `index.json`: `tracked`, `outdated`, `failed` (failing in
   any way), `buildFailures` (a build of its own failed), `updateFailures`
-  (nixpkgs-update's attempts failing), `vulnerable`, `broken` (marked
+  (nixpkgs-update's attempts failing), `vulnerable` (flagged by Repology,
+  or marked insecure by nixpkgs), `broken` (marked
   broken), `waiting` (outdated, the
   update merged on master) of the rows not in a set updated in bulk;
   `inSets`, how many are (`pending` before 0.14.0); and
@@ -215,7 +216,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 - `names.json`: `{ "names": [ [name, status], ... ] }` for every row, with
   its set as a third element when it's in a set updated in bulk. `status` is a letter as the
   page's dot: `f` failed, `m` outdated but merged on master, `o` outdated,
-  `u` up to date, `n` can't be compared; then `v` when flagged vulnerable.
+  `u` up to date, `n` can't be compared; then `v` when vulnerable (flagged
+  by Repology, or marked insecure by nixpkgs).
 
 ## A row
 
@@ -256,6 +258,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `feed` | when its versions are compared with its own source instead of Repology: `{ "name", "version", "released"?, "dated"?, "url" }`, its newest version there, the day it was published (when the source says), and `dated` when versions are a build's date and time (MELPA's `20251005.508`). `nixStatus` and `refVersion` are then from it. Typst packages, with Typst Universe: `outdated` or `newest` for a package's latest attribute (`typstPackages.cetz`), `legacy` for its other versions (`typstPackages.cetz_0_3_0`). Emacs packages, with the archive each comes from (`MELPA` for a MELPA version, else the first of `MELPA Stable`, `NonGNU ELPA` and `GNU ELPA` that has it, in nixpkgs' order); not the hand-written ones, the devel archives' versions or packages no archive has. Haskell packages nixpkgs pins to Stackage LTS, with that series' newest snapshot (`Stackage LTS 24`): also `snapshot` (`lts-24.62`), `followed` (the one nixpkgs follows, `lts-24.38`) and `heldBack` (Hackage's newer version, which Stackage holds back until its next series); the rest of `haskellPackages` keep Repology's verdict. R packages, with `CRAN` or the Bioconductor release nixpkgs pins (`Bioconductor 3.23`) |
 | `archived` | `true` for an R package on neither CRAN nor the Bioconductor release nixpkgs pins any more (archived by CRAN, or dropped by Bioconductor); its status stays Repology's. nixpkgs marks most of those broken already |
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
+| `markedInsecure` | nixpkgs marks one of its attributes insecure: its reasons (`meta.knownVulnerabilities` in the package index, each once: `["CVE-2018-19655"]`, `["Uses Electron 39.8.10, which was EOL ..."]`); such a package won't build unless allowed (`permittedInsecurePackages`). Counts as vulnerable |
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
 | `failingSince` | since when a build of it has been failing (its own build, not a dependency's): the failed builds' last success, the earliest (the failing began after it), as Hydra says it each sync; while that isn't known, kept from sync to sync (first seen, then); gone once it doesn't fail; none when every failed build never succeeded |
 | `neverBuiltOn` | the systems where Hydra says its failed build never succeeded (`["aarch64-darwin"]`) |

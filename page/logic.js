@@ -469,6 +469,26 @@ export function attentionRank(pkg, platform = null) {
   return 2;
 }
 
+// Whether a package counts as vulnerable: Repology flags nixpkgs' version
+// (nixVulnerable), or nixpkgs itself marks it insecure (markedInsecure, its
+// meta.knownVulnerabilities).
+export const isVulnerable = (pkg) => Boolean(pkg.nixVulnerable || pkg.markedInsecure?.length);
+
+// A reason nixpkgs gives for marking a package insecure, in pieces: plain
+// text, and the CVE ids in it (CVE-2020-25031), to link.
+const CVE_ID = /CVE-\d{4}-\d{4,}/g;
+export function cvePieces(text) {
+  const pieces = [];
+  let at = 0;
+  for (const m of text.matchAll(CVE_ID)) {
+    if (m.index > at) pieces.push({ text: text.slice(at, m.index) });
+    pieces.push({ cve: m[0] });
+    at = m.index + m[0].length;
+  }
+  if (at < text.length) pieces.push({ text: text.slice(at) });
+  return pieces;
+}
+
 // The tab's icon among packages: each signal turns its own chevron of the
 // mark (assets/brand/BRAND.md, "Status icon"): r, a new release nothing has
 // been done about yet (not already on master); f, a failure; v, a
@@ -477,7 +497,7 @@ export function faviconKey(packages, platform = null) {
   const signals = {
     r: packages.some((p) => computeStatus(p) === 'warn' && !waitingForChannel(p)),
     f: packages.some((p) => hasFailure(p, platform)),
-    v: packages.some((p) => p.nixVulnerable),
+    v: packages.some(isVulnerable),
   };
   return ['r', 'f', 'v'].filter((s) => signals[s]).join('') || 'ok';
 }

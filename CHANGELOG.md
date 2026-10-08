@@ -11,6 +11,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Packages nixpkgs itself marks insecure (`meta.knownVulnerabilities`,
+  read from the package index the sync already downloads: 109 on
+  2026-10-08, 59 of them not flagged by Repology) count as vulnerable: an
+  "insecure" badge, nixpkgs' reasons in the details (CVE ids linked to
+  NVD), the vulnerable filter and count, the tab's icon, and
+  notifications ("marked insecure in nixpkgs"). `markedInsecure` in the
+  data.
 - "Older than" 2 or 3 years, and **never built** (`?age=never`): the
   packages with a failing build that never succeeded on Hydra, where
   (`neverBuiltOn` in the data: its systems); with **On**, only those that
