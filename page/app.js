@@ -1,5 +1,6 @@
 import {
   botWontUpdate,
+  buildFailedBecause,
   buildsWith as buildsOn,
   communityCheck,
   comparedRepos,
@@ -149,6 +150,8 @@ let ageFilter = null;
 // ?updateFailed=: update failures for one reason (a FAILED_BECAUSE key, or
 // other).
 let becauseFilter = null;
+// ?buildFailed=: build failures for one reason (a BUILD_FAILED key).
+let buildFailedFilter = null;
 let sortAZ = false; // default order puts what needs attention first
 // The table shows pageSize rows at a time: drawing stays fast whatever the
 // data's size, and the page keeps working with Ctrl+F and screen readers
@@ -336,6 +339,7 @@ const AGES = {
 const refined = (p, kind = activeFilter) =>
   [...refines].every((key) => REFINES[key].test(p)) &&
   (!becauseFilter || failedBecause(p) === becauseFilter) &&
+  (!buildFailedFilter || buildFailedBecause(p, platformFilter).includes(buildFailedFilter)) &&
   olderThan(p, ageFilter, kind, Date.now(), platformFilter);
 
 // The maintainer whose page this is (@handle in the search), or null.
@@ -374,9 +378,30 @@ function becausePick() {
   const keys = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
   if (becauseFilter && !keys.includes(becauseFilter)) keys.push(becauseFilter);
   if (!keys.length) return '';
-  return html`<label class="refine-age" title="Update failures for one reason, as nixpkgs-update's log says (its last attempt). The counts are of this list, with its other filters">Failed because <select data-because><option value="">any reason</option>${keys.map(
+  return html`<label class="refine-age" title="Update failures for one reason, as nixpkgs-update's log says (its last attempt). The counts are of this list, with its other filters">Update failed because <select data-because><option value="">any reason</option>${keys.map(
     (key) =>
       html`<option value="${key}"${becauseFilter === key ? raw(' selected') : ''}>${label(key)} (${fmt(counts[key] || 0)})</option>`,
+  )}</select></label>`;
+}
+
+// "Build failed because" (?buildFailed=): the reasons builds failed on Hydra
+// (from their logs, nixkeeper-hydra), each with how many of the list's
+// packages have a failed build for it (on the platform picked), the
+// commonest first; as becausePick.
+function buildFailedPick() {
+  const base = packages.filter(
+    (p) => inPlatform(p) && inList(p) && inPeople(p) && inSet(p) && failedBuilds(p).length,
+  );
+  const counts = {};
+  for (const p of base)
+    for (const why of buildFailedBecause(p, platformFilter)) counts[why] = (counts[why] || 0) + 1;
+  // Not before nixkeeper-hydra read any: nothing to pick from.
+  if (!Object.keys(counts).some((k) => k !== 'unread') && !buildFailedFilter) return '';
+  const keys = Object.keys(counts).sort((a, b) => counts[b] - counts[a] || a.localeCompare(b));
+  if (buildFailedFilter && !keys.includes(buildFailedFilter)) keys.push(buildFailedFilter);
+  return html`<label class="refine-age" title="Build failures for one reason, as the build's log on Hydra says. The counts are of this list, with its other filters">Build failed because <select data-build-failed><option value="">any reason</option>${keys.map(
+    (key) =>
+      html`<option value="${key}"${buildFailedFilter === key ? raw(' selected') : ''}>${BUILD_FAILED[key]?.short || key} (${fmt(counts[key] || 0)})</option>`,
   )}</select></label>`;
 }
 
@@ -396,7 +421,7 @@ function refineHtml() {
   ).map(
     ([key, label]) =>
       html`<option value="${key}"${ageFilter === key ? raw(' selected') : ''}>${label}</option>`,
-  )}</select></label>${becausePick()}<label class="refine-age" title="Only packages available on it, and of their builds the ones there (build failures on Darwin, say). Darwin is macOS, as nixpkgs calls it.">On <select data-platform-pick><option value="">any platform</option>${Object.entries(
+  )}</select></label>${buildFailedPick()}${becausePick()}<label class="refine-age" title="Only packages available on it, and of their builds the ones there (build failures on Darwin, say). Darwin is macOS, as nixpkgs calls it.">On <select data-platform-pick><option value="">any platform</option>${Object.entries(
     PLATFORMS,
   ).map(
     ([key, p]) =>
@@ -709,6 +734,8 @@ function readViewFromUrl() {
   // is its name from before ?buildFailed= came (2026-10-08), still read.
   const updateFailed = params.get('updateFailed') ?? params.get('because') ?? '';
   becauseFilter = /^[A-Za-z]{1,30}$/.test(updateFailed) ? updateFailed : null;
+  const buildFailed = params.get('buildFailed') || '';
+  buildFailedFilter = /^[A-Za-z]{1,30}$/.test(buildFailed) ? buildFailed : null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   const per = Number(params.get('per'));
   pageSize = PAGE_SIZES.includes(per) ? per : DEFAULT_PAGE_SIZE;
@@ -734,6 +761,7 @@ function viewQuery(page = pageNum) {
   set('view', viewParam);
   set('refine', [...refines].join(','));
   set('age', ageFilter);
+  set('buildFailed', buildFailedFilter);
   set('updateFailed', becauseFilter);
   params.delete('because'); // the old name, written as the new one
   set('page', page > 1 ? page : '');
@@ -1501,7 +1529,7 @@ async function render(list, { keepPage = false, run = updateRun } = {}) {
     return;
   }
   if (!list.length) {
-    const narrowed = refines.size || ageFilter || becauseFilter;
+    const narrowed = refines.size || ageFilter || becauseFilter || buildFailedFilter;
     const handle = document.getElementById('search').value.trim();
     if (community && /^@\S/.test(handle) && !narrowed && activeFilter === 'all') {
       // No such maintainer (yet: still typing): the ones whose handle matches.
@@ -1982,6 +2010,7 @@ function showView({ set = null, pkg = null, view = null, filter = null }) {
   refines = new Set();
   ageFilter = null;
   becauseFilter = null;
+  buildFailedFilter = null;
   platformFilter = null;
   document.getElementById('search').value = '';
   update();
@@ -2321,7 +2350,13 @@ function buildCell(pkg) {
   // panel lists the others).
   const never = neverWhere(pkg);
   if (never) return button('missing', `never: ${never}`);
-  if (failedBuilds(pkg).length) return button('missing', 'failure reported');
+  if (failedBuilds(pkg).length) {
+    // One reason for all of them (their logs, nixkeeper-hydra): it, as the
+    // update column says its own.
+    const [why, ...more] = buildFailedBecause(pkg, platformFilter);
+    const known = !more.length && why !== 'unread' && BUILD_FAILED[why];
+    return button('missing', known ? `failed: ${known.short}` : 'failure reported');
+  }
   // Known failures: shown, but not counted as failed.
   // Hydra's builds say where; a broken package often has no Hydra job at
   // all, and then only meta.broken does (markedBroken).
@@ -2416,6 +2451,69 @@ const FAILED_BECAUSE = {
     text: "the bot's machine failed (its build users group, or its nix daemon), not the package",
     report: true,
   },
+};
+
+// Why a build failed on Hydra (nixkeeper-hydra's reasons, from its log): a
+// word for the filter, a sentence for the panel.
+const BUILD_FAILED = {
+  compile: { short: 'compile error', text: 'the compiler stopped at an error in the source' },
+  tests: { short: 'tests', text: 'it built, but its tests failed' },
+  link: {
+    short: 'link error',
+    text: "linking failed: a symbol or library the linker couldn't find",
+  },
+  header: { short: 'missing header', text: "a header the compiler couldn't find" },
+  cmake4: {
+    short: 'CMake 4',
+    text: 'CMake 4 refuses projects asking for CMake older than 3.5 (cmake_minimum_required)',
+  },
+  cmake: { short: 'CMake', text: 'CMake failed to configure it' },
+  boost: { short: 'Boost 1.89', text: "CMake couldn't use Boost 1.89" },
+  pythonImport: { short: 'Python import', text: "a Python module it imports isn't there" },
+  pythonDeps: {
+    short: 'Python dependencies',
+    text: "a Python dependency is missing, or its version isn't one the package accepts",
+  },
+  pythonBuild: { short: 'Python build', text: 'the Python build backend or setup failed' },
+  pythonMetadata: {
+    short: 'Python metadata',
+    text: "the package's metadata doesn't match nixpkgs' (its version or name)",
+  },
+  haskellDeps: {
+    short: 'Haskell dependencies',
+    text: 'a Haskell dependency is missing, or the wrong version',
+  },
+  npm: { short: 'npm', text: "npm couldn't install its dependencies" },
+  lisp: { short: 'Lisp', text: 'the Lisp build (SBCL) failed' },
+  home: {
+    short: 'writes to $HOME',
+    text: "it writes to the home directory, which builds don't have",
+  },
+  download: { short: 'download', text: "a source couldn't be downloaded from any mirror" },
+  hash: {
+    short: 'hash',
+    text: "a download's hash isn't the one nixpkgs expects: the source changed",
+  },
+  patch: { short: 'patch', text: "one of nixpkgs' patches no longer applies" },
+  substitute: {
+    short: 'substitute',
+    text: 'a text substitution in nixpkgs no longer finds what it replaces',
+  },
+  missingFile: { short: 'missing file', text: 'a file the build expects is missing' },
+  symlinks: { short: 'broken symlinks', text: 'it installs symlinks that point nowhere' },
+  patchelf: {
+    short: 'missing libraries',
+    text: "autoPatchelf couldn't find libraries the binaries need",
+  },
+  autotools: { short: 'autotools', text: 'aclocal failed: an autotools dependency is missing' },
+  disk: {
+    short: 'out of disk',
+    text: "Hydra's builder ran out of disk space: not the package",
+    infra: true,
+  },
+  other: { short: 'other', text: 'none of the known reasons' },
+  noLog: { short: 'no log', text: 'Hydra has no log of it' },
+  unread: { short: 'not read yet', text: "nixkeeper-hydra hasn't read its log yet" },
 };
 
 // How recent a "bot" failure is worth reporting (its panel's note).
@@ -2663,10 +2761,15 @@ function buildLine(pkg, b) {
         ? html`last built${lastGood} ${longDate(b.lastSuccess)} <span class="pd-ago">(${shortAge(b.lastSuccess)} ago)</span>`
         : 'never built successfully'
       : '';
+  // Why it failed, from its log (nixkeeper-hydra), and the lines that say so.
+  const why = b.status === 'failed' && BUILD_FAILED[b.failedBecause];
+  const because = why
+    ? html`<span class="br-why" title="${why.text}">${why.short}</span>${at || since ? ' · ' : ''}`
+    : '';
   const what =
     b.status === 'dependency' && b.blockedBy?.length
       ? html`${blockedByHtml(b.blockedBy)}${since ? html` · ${since}` : ''}`
-      : html`${at}${at && since ? ' · ' : ''}${since}`;
+      : html`${because}${at}${at && since ? ' · ' : ''}${since}`;
   const act = (href, name, label, title) =>
     html`<a class="pd-link" href="${href}" target="_blank" rel="noopener"${title ? html` title="${title}"` : ''}>${icon(name)}${label}</a>`;
   const acts = [
@@ -2692,6 +2795,7 @@ function buildLine(pkg, b) {
     <span class="br-st ${s.dot}" title="${s.text}">${s.short}</span>
     <span class="br-what">${what}</span>
     <span class="br-acts">${acts}</span>
+    ${why && b.failedExcerpt ? html`<pre class="br-log" title="From the build's log on Hydra">${b.failedExcerpt}</pre>` : ''}
   </div>`;
 }
 
@@ -3324,6 +3428,8 @@ document.addEventListener('click', (e) => {
 document.addEventListener('change', (e) => {
   if (e.target.matches('select[data-age]')) ageFilter = e.target.value || null;
   else if (e.target.matches('select[data-because]')) becauseFilter = e.target.value || null;
+  else if (e.target.matches('select[data-build-failed]'))
+    buildFailedFilter = e.target.value || null;
   else if (e.target.matches('select[data-platform-pick]')) platformFilter = e.target.value || null;
   else if (e.target.matches('select[data-per]')) {
     // The page holding the first row shown before, at the new size.

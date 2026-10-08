@@ -108,19 +108,31 @@ def blocked_by(row):
     return {}
 
 
+def failed_because(row):
+    """Why a failed build failed, for a digest row whose log the digest has
+    read (nixkeeper-hydra's reasons, from 2026-10-08): {"failedBecause":
+    "cmake4", "failedExcerpt": the lines that say so}, else {}."""
+    if row["status"] == "failed" and row.get("failedBecause"):
+        found = {"failedBecause": row["failedBecause"]}
+        if row.get("failedExcerpt"):
+            found["failedExcerpt"] = row["failedExcerpt"]
+        return found
+    return {}
+
+
 def with_blockers(results, digest):
-    """results (Hydra's answers by job) with the digest's blockedBy added to
-    each dependency-failed one of the same build: Hydra doesn't say which
-    dependency failed, and a job the digest can't answer whole (its last
-    success unknown) is asked there."""
+    """results (Hydra's answers by job) with what the digest knows that
+    Hydra's answer doesn't say, for the same build: which dependency failed
+    (blockedBy), and why a failed build failed (failed_because). A job the
+    digest can't answer whole (its last success unknown) is asked there."""
     for job, result in results.items():
         row = (digest or {}).get(job)
-        if (
-            row
-            and result.get("status") == "dependency"
-            and str(result.get("build")) == row["build"]
-        ):
+        if not row or str(result.get("build")) != row["build"]:
+            continue
+        if result.get("status") == "dependency":
             result.update(blocked_by(row))
+        elif result.get("status") == "failed":
+            result.update(failed_because(row))
     return results
 
 
@@ -141,6 +153,7 @@ def answer(row, broken, before):
     if row["name"]:
         result["name"] = row["name"]
     result.update(blocked_by(row))
+    result.update(failed_because(row))
     if broken or row["status"] != "ok":
         if row["status"] == "ok":  # broken, but built: that's its last success
             last = {
@@ -224,6 +237,7 @@ def bulk_answers(digest, wanted, broken, before):
             if row["name"]:
                 result["name"] = row["name"]
             result.update(blocked_by(row))
+            result.update(failed_because(row))
         if result is None:
             result = (
                 {k: v for k, v in old.items() if k != "checkedAt"}

@@ -9,6 +9,7 @@ import {
   aheadOnMaster,
   attentionRank,
   botWontUpdate,
+  buildFailedBecause,
   buildsWith,
   communityCheck,
   comparedRepos,
@@ -1055,6 +1056,30 @@ describe("nixkeeper-vulnerabilities' verdict", () => {
       'nixpkgs (marked insecure)',
       'Repology',
     ]);
+  });
+});
+
+describe('buildFailedBecause', () => {
+  const pkg = {
+    builds: [
+      { status: 'failed', system: 'x86_64-linux', failedBecause: 'cmake4' },
+      { status: 'failed', system: 'aarch64-linux', failedBecause: 'cmake4' },
+      { status: 'failed', system: 'aarch64-darwin' },
+      { status: 'ok', system: 'x86_64-linux', failedBecause: 'tests' },
+    ],
+  };
+  test("each failed build's reason once, unread while its log isn't read", () => {
+    assert.deepEqual(buildFailedBecause(pkg), ['cmake4', 'unread']);
+  });
+  test('on the platform picked', () => {
+    assert.deepEqual(buildFailedBecause(pkg, 'linux'), ['cmake4']);
+    assert.deepEqual(buildFailedBecause(pkg, 'darwin'), ['unread']);
+  });
+  test('none without a failed build', () => {
+    assert.deepEqual(
+      buildFailedBecause({ builds: [{ status: 'ok', system: 'x86_64-linux' }] }),
+      [],
+    );
   });
 });
 

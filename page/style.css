@@ -2081,6 +2081,23 @@ tbody tr.row.open td {
   color: var(--ink-soft);
   background: var(--stale-soft);
 }
+/* Why a build failed (from its log), and the lines that say so, under the
+   row across its columns. */
+.br-why {
+  font-weight: 500;
+}
+.br-log {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 6px 10px;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.45;
+  white-space: pre;
+  color: var(--ink-soft);
+  background: color-mix(in srgb, var(--ink) 5%, var(--surface));
+  border-radius: 6px;
+}
 .br-what {
   color: var(--ink-soft);
   min-width: 0;

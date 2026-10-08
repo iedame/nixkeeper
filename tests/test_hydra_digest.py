@@ -75,6 +75,41 @@ class Answer(unittest.TestCase):
             hydra_digest.answer(row("x", "dependency", "10", last=last), False, None),
         )
 
+    def test_why_it_failed(self):
+        """nixkeeper-hydra's reason and lines for a failed build, from its
+        log: in the digest's answer, every package's bulk one, and Hydra's
+        own for the same build."""
+        failed = {
+            **row(
+                "aerogramme",
+                "failed",
+                "10",
+                last=("9", "2026-09-01T00:00:00+00:00", "a"),
+            ),
+            "failedBecause": "compile",
+            "failedExcerpt": "error: could not compile `rustix`",
+        }
+        result = hydra_digest.answer(failed, False, None)
+        self.assertEqual(
+            (result["failedBecause"], result["failedExcerpt"]),
+            ("compile", "error: could not compile `rustix`"),
+        )
+        # Not read yet: nothing said.
+        unread = {**failed, "failedBecause": "", "failedExcerpt": ""}
+        self.assertNotIn("failedBecause", hydra_digest.answer(unread, False, None))
+        job = ("aerogramme", "x86_64-linux")
+        hydra_says = {"attr": "aerogramme", "status": "failed", "build": 10}
+        self.assertEqual(
+            hydra_digest.with_blockers({job: dict(hydra_says)}, {job: failed})[job][
+                "failedBecause"
+            ],
+            "compile",
+        )
+        newer = {job: {**hydra_says, "build": 11}}
+        self.assertNotIn(
+            "failedBecause", hydra_digest.with_blockers(newer, {job: failed})[job]
+        )
+
     def test_which_dependency_failed_without_a_last_success(self):
         # Never built: Hydra is asked (answer None), but every package's
         # bulk answer keeps which dependency failed, and so do Hydra's

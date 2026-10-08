@@ -37,7 +37,14 @@ waits for nixos-unstable), **bot won't update it** (outdated packages
 nixpkgs-update won't update by itself, so it takes someone: it can't,
 skips them on purpose, or has never tried them and they aren't in its
 queue; none with an update PR open or merged), on a maintainer's page
-**not via a team** (`?team=none`, above), **failed because**
+**not via a team** (`?team=none`, above), **build failed because**
+(build failures for one reason, as the build's log on Hydra says, read by
+nixkeeper-hydra: compile error, tests, link error, missing header, CMake 4
+(it refuses projects asking for CMake older than 3.5), CMake, Python
+import, dependencies, build or metadata, writes to `$HOME`, hash, patch,
+download, out of disk (Hydra's side), other, and more; "not read yet"
+while nixkeeper-hydra catches up; with how many there are in the list, on
+the platform picked; `?buildFailed=cmake4`), **update failed because**
 (update failures for one reason, as nixpkgs-update's log says: build,
 updateScript, source, dependency, patch, unavailable, tests, hash,
 request, "build, no log", bot (the bot's own machine failed, not the
@@ -216,7 +223,7 @@ built, and its log, Hydra job, build or source to open:
 
 | Shows | Means |
 |---|---|
-| failure reported (pink) | its latest build failed on a platform: the panel links the log and says when it last built, and at which version |
+| failed: … (pink) | its latest build failed on a platform, and why, from its log on Hydra (`compile error`, `tests`, `CMake 4`, `patch`...: as **build failed because** above), when every failed build says the same; `failure reported` when they differ or their logs aren't read yet. The panel says each build's reason with the log's lines that say so, links the log, and says when it last built, and at which version |
 | marked broken (gold) | nixpkgs marks it broken on a platform (known, so not counted as failed) |
 | blocked (gold) | it didn't build because a dependency failed: not its own failure, so not counted as failed (the "blocked" count and tile, `?filter=blocked`, list them); the panel says which dependency (its package, to open), once nixkeeper-hydra has read the build |
 | not built by Hydra | unfree, or kept off Hydra by nixpkgs |
