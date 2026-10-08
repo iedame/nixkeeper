@@ -607,7 +607,7 @@ class FailingSince(unittest.TestCase):
                     self.build("failed", "2026-09-01T00:00:00+00:00"),
                 ],
             },
-            {"name": "b", "builds": [self.build("failed")]},  # never built
+            {"name": "b", "builds": [self.build("failed")]},  # not known yet
             {"name": "c", "updateFailure": True, "update": {"date": "2026-10-02"}},
             {"name": "d", "builds": [self.build("dependency")]},  # not its own
         ]
@@ -616,6 +616,50 @@ class FailingSince(unittest.TestCase):
         self.assertEqual(rows[1]["failingSince"], NOW)
         self.assertEqual(rows[2]["updateFailingSince"], "2026-10-02T00:00:00+00:00")
         self.assertNotIn("failingSince", rows[3])
+
+    def test_hydras_last_success_over_what_was_carried(self):
+        # Dated when nixkeeper first saw it fail (the last success not known
+        # then): Hydra's date replaces it, earlier or later.
+        previous = {"packages": [{"name": "a", "failingSince": NOW}]}
+        rows = [
+            {"name": "a", "builds": [self.build("failed", "2023-05-01T00:00:00+00:00")]}
+        ]
+        history.add_failing_since(rows, previous, NOW)
+        self.assertEqual(rows[0]["failingSince"], "2023-05-01T00:00:00+00:00")
+
+    def test_never_built_where_and_no_date(self):
+        def never(system):  # Hydra: this job never succeeded
+            return {**self.build("failed"), "system": system, "lastSuccess": None}
+
+        previous = {"packages": [{"name": "a", "failingSince": NOW}]}
+        rows = [
+            {"name": "a", "builds": [never("aarch64-darwin"), never("x86_64-linux")]}
+        ]
+        history.add_failing_since(rows, previous, NOW)
+        self.assertEqual(rows[0]["neverBuiltOn"], ["aarch64-darwin", "x86_64-linux"])
+        self.assertNotIn("failingSince", rows[0])  # none of them has a date
+        # Never on Darwin, failing on Linux since a success: dated by it.
+        dated = {**self.build("failed", "2024-01-01T00:00:00+00:00")}
+        rows = [{"name": "a", "builds": [never("aarch64-darwin"), dated]}]
+        history.add_failing_since(rows, previous, NOW)
+        self.assertEqual(rows[0]["failingSince"], "2024-01-01T00:00:00+00:00")
+        self.assertEqual(rows[0]["neverBuiltOn"], ["aarch64-darwin"])
+        # Never on Darwin, Linux's not known yet: carried for Linux's.
+        rows = [
+            {"name": "a", "builds": [never("aarch64-darwin"), self.build("failed")]}
+        ]
+        history.add_failing_since(rows, previous, NOW)
+        self.assertEqual(rows[0]["failingSince"], NOW)
+        # Fixed: gone.
+        fixed = [
+            {
+                "name": "a",
+                "builds": [self.build("ok")],
+                "neverBuiltOn": ["x86_64-linux"],
+            }
+        ]
+        history.add_failing_since(fixed, previous, NOW)
+        self.assertNotIn("neverBuiltOn", fixed[0])
 
     def test_carried_over_then_dropped(self):
         previous = {
@@ -680,6 +724,8 @@ class Highlights(unittest.TestCase):
             row("caught-up", nixStatus="newest", outdatedSince=since),
             row("failing", builds=failed, failingSince=since),
             row("built", builds=[], failingSince=since),
+            # Never built: counted, no date to list.
+            row("never", builds=failed, neverBuiltOn=["x86_64-linux"]),
             row("bot-fails", updateFailure=True, updateFailingSince=since),
             row("bot-fixed", updateFailure=False, updateFailingSince=since),
             # Newly outdated, its date not set yet: counted, not listed.
@@ -724,6 +770,11 @@ class Fixed(unittest.TestCase):
         )
         # No build says so (Hydra not read, or queued): not a fix.
         self.assertEqual(self.fixes(before, [row("a", builds=[])]), [])
+        # Never built before, built now: fixed too.
+        never = [row("a", neverBuiltOn=["x86_64-linux"], builds=[self.FAILED])]
+        self.assertEqual(
+            self.fixes(never, [row("a", builds=[self.OK])]), [("a", "build")]
+        )
 
     def test_updated_only_with_a_new_version(self):
         before = [row("a", nixStatus="outdated", nixVersion="1")]

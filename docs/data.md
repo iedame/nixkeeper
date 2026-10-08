@@ -147,7 +147,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   and `updateFailures`), and the 8 most recent and 8 longest-standing of
   those that have their date, each `[name, since, status]` (from
   `failingSince`, `outdatedSince`, `updateFailingSince`, which the daily
-  sync sets: one counted since the last has none yet; `status` as in
+  sync sets: one counted since the last has none yet, and one whose
+  failed builds never succeeded has none; `status` as in
   `names.json`);
 - `blockers` in `index.json`: the failing dependencies that stop others'
   builds, of every row (in sets too, as zh.fail counts them): how many
@@ -256,7 +257,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `archived` | `true` for an R package on neither CRAN nor the Bioconductor release nixpkgs pins any more (archived by CRAN, or dropped by Bioconductor); its status stays Repology's. nixpkgs marks most of those broken already |
 | `nixVulnerable` | Repology flags `nixVersion` as vulnerable (its CVEs: `https://repology.org/project/<project>/cves`) |
 | `outdatedSince` | when nixkeeper first saw it outdated; gone once it's caught up |
-| `failingSince` | since when a build of it has been failing (its own build, not a dependency's): kept from sync to sync while it fails, gone once it doesn't; first seen, it's the failed builds' last success (the failing began after it), or then |
+| `failingSince` | since when a build of it has been failing (its own build, not a dependency's): the failed builds' last success, the earliest (the failing began after it), as Hydra says it each sync; while that isn't known, kept from sync to sync (first seen, then); gone once it doesn't fail; none when every failed build never succeeded |
+| `neverBuiltOn` | the systems where Hydra says its failed build never succeeded (`["aarch64-darwin"]`) |
 | `updateFailingSince` | since when its nixpkgs-update attempts have been failing, the same way; first seen, the failed attempt's day |
 | `staleSince` | Repology couldn't be reached for it: the version data is from this time |
 | `repologyCheckedAt` | when its Repology data was read: the day nixkeeper-versions' digest read it (daily for outdated projects, weekly for the rest), or when Repology was asked directly (daily while it's outdated, flagged vulnerable, changed in nixpkgs or new, otherwise every 3 days) |

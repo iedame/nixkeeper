@@ -1,5 +1,4 @@
 import {
-  AGE_DAYS,
   botWontUpdate,
   buildsWith as buildsOn,
   communityCheck,
@@ -17,7 +16,9 @@ import {
   matchesSearch,
   midway,
   NAME_DOTS,
+  NEVER_BUILT,
   nameMatches,
+  neverBuiltOn,
   nixkeeperEntry,
   olderThan,
   olderVersionKept,
@@ -124,7 +125,7 @@ let packages = [];
 let checkedAt = null;
 let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
 // Narrowing any list further, with everything else (?refine=, REFINES keys
-// comma-separated, and ?age=, an AGE_DAYS key).
+// comma-separated, and ?age=, an AGES key).
 let refines = new Set();
 let ageFilter = null;
 let sortAZ = false; // default order puts what needs attention first
@@ -283,10 +284,18 @@ const REFINES = {
     test: (p) => botWontUpdate(p, Boolean(sources?.queue?.used)),
   },
 };
-const AGES = { '1m': 'a month', '6m': '6 months', '1y': 'a year' };
+const AGES = {
+  '1m': 'a month',
+  '6m': '6 months',
+  '1y': 'a year',
+  '2y': '2 years',
+  '3y': '3 years',
+  [NEVER_BUILT]: 'never built',
+};
 // kind: whose age counts (a FILTERS key): the list's, or a count's own.
 const refined = (p, kind = activeFilter) =>
-  [...refines].every((key) => REFINES[key].test(p)) && olderThan(p, ageFilter, kind);
+  [...refines].every((key) => REFINES[key].test(p)) &&
+  olderThan(p, ageFilter, kind, Date.now(), platformFilter);
 
 function refineHtml() {
   return html`<div class="refine" role="group" aria-label="Narrow the list">${Object.entries(
@@ -294,7 +303,7 @@ function refineHtml() {
   ).map(
     ([key, r]) =>
       html`<button type="button" class="refine-btn" data-refine="${key}" aria-pressed="${refines.has(key)}" title="${r.title}">${r.label}</button>`,
-  )}<label class="refine-age" title="How long it's been failing or outdated (the kind picked above, if any)">Older than <select data-age><option value="">any age</option>${Object.entries(
+  )}<label class="refine-age" title="How long it's been failing or outdated (the kind picked above, if any); or failing builds that never succeeded on Hydra, which have no date">Older than <select data-age><option value="">any age</option>${Object.entries(
     AGES,
   ).map(
     ([key, label]) =>
@@ -519,11 +528,28 @@ function versionCell(pkg, st) {
 const failingSince = (pkg) =>
   [pkg.failingSince, pkg.updateFailingSince].filter(Boolean).sort()[0] || null;
 
+// Where a row's failing builds (on the platform picked, if any) never
+// succeeded on Hydra: linux (both its systems), x86_64-linux or
+// aarch64-linux, darwin; "" when nowhere.
+function neverWhere(pkg) {
+  if (!failedBuilds(pkg).length) return '';
+  const systems = neverBuiltOn(pkg, platformFilter);
+  const linux = systems.filter((s) => s.endsWith('-linux'));
+  const names = linux.length === LINUX_SYSTEMS.length ? ['linux'] : linux;
+  if (systems.some((s) => s.endsWith('-darwin'))) names.push('darwin');
+  return names.join(', ');
+}
+
 function ageTag(pkg, st) {
-  // Failing first: how long it's been broken, in the failure's colour.
+  // Failing first: how long it's been broken, in the failure's colour. A
+  // failing build that never succeeded has no date: "n/a" when nothing
+  // else is dated (the build column says where).
+  const never = neverWhere(pkg);
   const failing = hasFailure(pkg) && failingSince(pkg);
   if (failing)
-    return html`<span class="age failing" title="Failing since ${longDate(failing)}">${shortAge(failing)}</span>`;
+    return html`<span class="age failing" title="Failing since ${longDate(failing)}${never ? `; never built on ${never}` : ''}">${shortAge(failing)}</span>`;
+  if (never)
+    return html`<span class="age failing" title="No date: never built on ${never}">n/a</span>`;
   if (st !== 'warn' || !pkg.outdatedSince) return '';
   return html`<span class="age${waitingForChannel(pkg) ? ' merged' : ''}" title="Outdated since ${longDate(pkg.outdatedSince)}">${shortAge(pkg.outdatedSince)}</span>`;
 }
@@ -576,7 +602,7 @@ function readViewFromUrl() {
   pkgParam = params.get('pkg') || null;
   viewParam = params.get('view') || null;
   refines = new Set((params.get('refine') || '').split(',').filter((key) => REFINES[key]));
-  ageFilter = AGE_DAYS[params.get('age')] ? params.get('age') : null;
+  ageFilter = AGES[params.get('age')] ? params.get('age') : null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   const per = Number(params.get('per'));
   pageSize = PAGE_SIZES.includes(per) ? per : DEFAULT_PAGE_SIZE;
@@ -1256,7 +1282,7 @@ const CHEVRON = raw(
 function rowHtml(pkg, i) {
   const st = computeStatus(pkg);
   return html`<tr class="row" tabindex="0" data-i="${i}">
-      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" role="img" aria-label="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${breakableName(pkg.name)}</span>${ageTag(pkg, st)}</span>${platformTags(pkg)}</div></td>
+      <td class="c-name"><div class="pkg-name"><span class="who"><span class="status-dot ${waitingForChannel(pkg) ? 'merged' : st}" role="img" aria-label="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}" title="${waitingForChannel(pkg) ? DOT_TITLE.merged : DOT_TITLE[st]}"></span><span class="n">${breakableName(pkg.name)} ${ageTag(pkg, st)}</span></span>${platformTags(pkg)}</div></td>
       <td class="c-ver ver mono">${versionCell(pkg, st)}</td>
       <td class="c-gh${pkg.openPRs || pkg.openIssues ? '' : ' quiet'}">${githubLinks(pkg)}</td>
       <td class="c-build">${buildCell(pkg)}</td>
@@ -2023,6 +2049,10 @@ function buildCell(pkg) {
   if (!pkg.builds) return html`<span class="failure-na" title="Not in nixpkgs">—</span>`;
   const button = (dot, text, quiet = false) =>
     failureButton('build', dot, text, 'Show Hydra builds', notRefreshed(pkg, 'builds'), quiet);
+  // A failed build that never succeeded on Hydra: where, instead (the
+  // panel lists the others).
+  const never = neverWhere(pkg);
+  if (never) return button('missing', `never: ${never}`);
   if (failedBuilds(pkg).length) return button('missing', 'failure reported');
   // Known failures: shown, but not counted as failed.
   // Hydra's builds say where; a broken package often has no Hydra job at

@@ -11,6 +11,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- "Older than" 2 or 3 years, and **never built** (`?age=never`): the
+  packages with a failing build that never succeeded on Hydra, where
+  (`neverBuiltOn` in the data: its systems); with **On**, only those that
+  never built there. Such a build has no date: when it's all that fails,
+  the list shows "n/a" where it shows how long a package has failed, and
+  the overview's longest-standing build failures leave it out. The build
+  column says where instead of "failure reported" ("never: darwin",
+  "never: aarch64-linux") whenever a failed build never succeeded, the
+  package's other failures in its panel.
 - Packages per page: 50, 100, 200 (still the default), 500 or 1,000, picked under
   the list ("Per page") or in the address (`?per=500`, kept when moving
   between views, so a team's or maintainer's link can carry it); the
@@ -104,6 +113,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- Since when a package's builds have been failing (`failingSince`) is
+  Hydra's last success of its failed builds, read each sync, no longer the
+  day nixkeeper first saw them fail when that wasn't known yet (most
+  packages' 2026-10-05, the day nixkeeper started tracking every package);
+  carried from sync to sync only while Hydra's answer isn't known. The
+  overview's longest-standing build failures and the list's order go by
+  how long they really have failed.
 - A failing build's last success, for every package: nixkeeper-hydra now
   asks Hydra about the jobs it didn't know (4,805 on 2026-10-07, most of
   them failing since before it started), so "last built ..." shows beyond

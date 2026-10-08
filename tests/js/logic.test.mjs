@@ -826,6 +826,21 @@ describe('problemSince and olderThan', () => {
     assert.equal(olderThan(pkg, '1y', 'warn', now), true); // since June 2025
     assert.equal(olderThan({ failingSince: '2026-09-20T00:00:00Z' }, '1m', 'failed', now), false);
   });
+  test('2 and 3 years; never built (where), which has no date', () => {
+    const old = { failingSince: '2023-12-01T00:00:00Z' };
+    assert.equal(olderThan(old, '2y', 'builds', now), true);
+    assert.equal(olderThan(old, '3y', 'builds', now), false);
+    const never = { neverBuiltOn: ['aarch64-darwin'] };
+    assert.equal(olderThan(never, 'never', 'builds', now), true);
+    assert.equal(olderThan(never, 'never', 'all', now), true);
+    assert.equal(olderThan(never, 'never', 'warn', now), false); // not a build's
+    assert.equal(olderThan(never, '3y', 'builds', now), false); // no date
+    assert.equal(olderThan(old, 'never', 'builds', now), false); // built once
+    // With a platform picked, only where it never built.
+    assert.equal(olderThan(never, 'never', 'builds', now, 'darwin'), true);
+    assert.equal(olderThan(never, 'never', 'builds', now, 'linux'), false);
+    assert.equal(olderThan(never, 'never', 'builds', now, 'aarch64-linux'), false);
+  });
   test('no problem: never older; no age picked: every row', () => {
     assert.equal(olderThan({}, '1m', 'all', now), false);
     assert.equal(olderThan({}, null, 'all', now), true);
