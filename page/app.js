@@ -128,10 +128,14 @@ let activeFilter = 'all'; // 'all' | 'warn' | 'failed' | 'vuln'
 let refines = new Set();
 let ageFilter = null;
 let sortAZ = false; // default order puts what needs attention first
-// The table shows PAGE_SIZE rows at a time: drawing stays fast whatever the
+// The table shows pageSize rows at a time: drawing stays fast whatever the
 // data's size, and the page keeps working with Ctrl+F and screen readers
-// (no virtual scrolling). ?page= in the address, past the first.
-const PAGE_SIZE = 200;
+// (no virtual scrolling). ?page= in the address, past the first; ?per= for
+// another of PAGE_SIZES (only those: a huge one would draw every package at
+// once), also picked under the table.
+const PAGE_SIZES = [50, 100, 200, 500, 1000];
+const DEFAULT_PAGE_SIZE = 200;
+let pageSize = DEFAULT_PAGE_SIZE;
 // Of those, drawn first, with the counts and tiles: more than a screen's
 // worth; the rest follow a moment later (update).
 const FIRST_ROWS = 50;
@@ -574,6 +578,8 @@ function readViewFromUrl() {
   refines = new Set((params.get('refine') || '').split(',').filter((key) => REFINES[key]));
   ageFilter = AGE_DAYS[params.get('age')] ? params.get('age') : null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
+  const per = Number(params.get('per'));
+  pageSize = PAGE_SIZES.includes(per) ? per : DEFAULT_PAGE_SIZE;
   document.getElementById('sortBtn').setAttribute('aria-pressed', sortAZ);
 }
 
@@ -594,6 +600,7 @@ function viewQuery(page = pageNum) {
   set('refine', [...refines].join(','));
   set('age', ageFilter);
   set('page', page > 1 ? page : '');
+  set('per', pageSize !== DEFAULT_PAGE_SIZE ? pageSize : '');
   // "@" and "," are fine in a query: ?q=@handle and ?refine=a,b read
   // better in a shared link.
   const query = params.toString().replaceAll('%40', '@').replaceAll('%2C', ',');
@@ -1261,9 +1268,17 @@ function rowHtml(pkg, i) {
 // The pages of the list, when there's more than one: "1–200 of 241" and
 // links to the others (real links, so one can open in a new tab).
 function pagerHtml(total, pages) {
-  if (pages < 2) return '';
-  const first = (pageNum - 1) * PAGE_SIZE + 1;
-  const last = Math.min(pageNum * PAGE_SIZE, total);
+  // The page size can be picked whenever a smaller one would split the list
+  // (and so be put back after picking a bigger one).
+  const sizes =
+    total > PAGE_SIZES[0]
+      ? html`<label class="page-size">Per page <select data-per aria-label="Packages per page">${PAGE_SIZES.map(
+          (n) => html`<option value="${n}"${n === pageSize ? raw(' selected') : ''}>${n}</option>`,
+        )}</select></label>`
+      : '';
+  if (pages < 2) return sizes ? html`<nav class="pager" aria-label="Pages">${sizes}</nav>` : '';
+  const first = (pageNum - 1) * pageSize + 1;
+  const last = Math.min(pageNum * pageSize, total);
   const link = (p, text, label) =>
     p === pageNum
       ? html`<span class="page-btn" aria-current="page">${text}</span>`
@@ -1273,6 +1288,7 @@ function pagerHtml(total, pages) {
     ${pageNum > 1 ? link(pageNum - 1, '‹', 'Previous page') : ''}
     ${pageLinks(pageNum, pages).map((p) => (p === null ? html`<span class="page-gap" aria-hidden="true">…</span>` : link(p, String(p), `Page ${p}`)))}
     ${pageNum < pages ? link(pageNum + 1, '›', 'Next page') : ''}
+    ${sizes}
   </nav>`;
 }
 
@@ -1318,10 +1334,10 @@ async function render(list, { keepPage = false, run = updateRun } = {}) {
     writeViewToUrl();
     return;
   }
-  const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  const pages = Math.max(1, Math.ceil(list.length / pageSize));
   pageNum = keepPage ? Math.min(pageNum, pages) : 1;
   writeViewToUrl();
-  shown = list.slice((pageNum - 1) * PAGE_SIZE, pageNum * PAGE_SIZE);
+  shown = list.slice((pageNum - 1) * pageSize, pageNum * pageSize);
   if (community && shownView === 'overview') {
     // The overview lists nothing: its header has the ways in (renderScope),
     // and a search finds packages in all of nixpkgs.
@@ -1823,9 +1839,9 @@ function maintainersHtml() {
   const query = document.getElementById('search').value.trim();
   const list = query ? maintainerMatches(maintainersList, query, Infinity).found : maintainersList;
   if (!list.length) return html`<div class="empty">No maintainer matches “${query}”.</div>`;
-  const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
+  const pages = Math.max(1, Math.ceil(list.length / pageSize));
   pageNum = Math.min(pageNum, pages);
-  const page = list.slice((pageNum - 1) * PAGE_SIZE, pageNum * PAGE_SIZE);
+  const page = list.slice((pageNum - 1) * pageSize, pageNum * pageSize);
   return html`<ul class="maint-list maint-page">${page.map(maintainerItem)}</ul>${pagerHtml(list.length, pages)}`;
 }
 
@@ -2971,7 +2987,14 @@ document.addEventListener('click', (e) => {
 document.addEventListener('change', (e) => {
   if (e.target.matches('select[data-age]')) ageFilter = e.target.value || null;
   else if (e.target.matches('select[data-platform-pick]')) platformFilter = e.target.value || null;
-  else return;
+  else if (e.target.matches('select[data-per]')) {
+    // The page holding the first row shown before, at the new size.
+    const first = (pageNum - 1) * pageSize;
+    pageSize = Number(e.target.value);
+    pageNum = Math.floor(first / pageSize) + 1;
+    update({ keepPage: true });
+    return;
+  } else return;
   update();
 });
 

@@ -104,7 +104,10 @@ one yet).
 
 The list shows 200 packages at a time, most in need of attention first;
 the page links under it go through the rest (the page is in the address
-too, `?page=2`). Changing a filter, the search or the order goes back to the
+too, `?page=2`). "Per page" beside them shows 50, 100, 200, 500 or 1,000 at a time
+instead (`?per=500` in the address, kept when moving between views; the
+maintainers' list too), staying on the page that holds the first package you
+were looking at. Changing a filter, the search or the order goes back to the
 first page. The browser's find (Ctrl+F) only sees the page shown: the search
 box looks through every package.
 
