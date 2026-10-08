@@ -639,7 +639,7 @@ export function faviconKey(packages, platform = null) {
 
 // Why a package's latest update attempt failed (its "update.failedBecause",
 // read from the bot's log): "other" when none was recognised; null when its
-// attempt didn't fail. ?because= narrows a list to one.
+// attempt didn't fail. ?updateFailed= narrows a list to one.
 export function failedBecause(pkg) {
   if (!pkg.updateFailure) return null;
   return pkg.update?.failedBecause || 'other';
