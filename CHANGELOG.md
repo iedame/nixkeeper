@@ -11,6 +11,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- Teams in the address beyond one team's packages: `?team=-Geospatial`
+  leaves a team's packages out of any list (several:
+  `team=-Geospatial,-Gaming`; each a "not Geospatial" chip to undo it), and
+  `?team=none` keeps what isn't through a team. On a maintainer's page
+  that's its new **Not via a team** button: only the packages that list
+  them themselves, leaving out those they maintain only as a member of
+  the package's team (nixpkgs adds a team's members to its packages'
+  `meta.maintainers`; @l0b0 on 2026-10-08: 204 packages, 23 direct, 181
+  through the Geospatial and Gaming teams), from nixpkgs'
+  `meta.nonTeamMaintainers` (`nonTeamMaintainers` in the data);
+  elsewhere, packages without a team.
 - Packages nixpkgs itself marks insecure (`meta.knownVulnerabilities`,
   read from the package index the sync already downloads: 109 on
   2026-10-08, 59 of them not flagged by Repology) count as vulnerable: an
@@ -120,6 +131,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A maintainer's page is at `?maintainer=l0b0` (the search still shows
+  `@l0b0`); links from before, `?q=@l0b0`, open it and become that. The
+  page's own links and subscriber issues use the new address.
 - Since when a package's builds have been failing (`failingSince`) is
   Hydra's last success of its failed builds, read each sync, no longer the
   day nixkeeper first saw them fail when that wasn't known yet (most

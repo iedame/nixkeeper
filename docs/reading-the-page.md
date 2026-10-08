@@ -12,10 +12,19 @@ stay in the address, so a view can be shared. The search box matches names;
 `@handle` instead lists a maintainer's packages (their whole GitHub handle,
 as nixpkgs lists it in `meta.maintainers`), and `@none` the packages with no
 maintainer. The details panel lists each package's maintainers: clicking one
-searches for theirs, so `?q=@yourhandle` is a link to your own. Its teams
+searches for theirs, and the address becomes `?maintainer=yourhandle`, a
+link to your own (`?q=@yourhandle`, as it was first written, still opens
+it and becomes that). Its teams
 (nixpkgs' `meta.teams`), when it has any, are listed too: clicking one shows
 only that team's packages, as `?team=` does in the address
-(`?team=gaming`, in any case).
+(`?team=gaming`, in any case). With a `-`, `?team=` leaves a team's
+packages out instead, on any list (`?maintainer=l0b0&team=-Geospatial`; several:
+`team=-Geospatial,-Gaming`, each a chip to undo it); `?team=none` keeps
+only what isn't through a team: on a maintainer's page, the packages that
+list them themselves (its **Not via a team** button), leaving out those
+they maintain only as a member of the package's team (nixpkgs adds a
+team's members to each of its packages' maintainers); elsewhere, packages
+without a team.
 
 Any list can be narrowed further, together with everything else (under the
 counts; with every package, under a list's tiles): **without maintainer**,
@@ -24,7 +33,8 @@ master yet** (leaving out outdated packages whose update is merged and
 waits for nixos-unstable), **bot won't update it** (outdated packages
 nixpkgs-update won't update by itself, so it takes someone: it can't,
 skips them on purpose, or has never tried them and they aren't in its
-queue; none with an update PR open or merged), **older than** a month, 6 months, a year, 2 or 3 years:
+queue; none with an update PR open or merged), on a maintainer's page
+**not via a team** (`?team=none`, above), **older than** a month, 6 months, a year, 2 or 3 years:
 how long it's been failing or outdated (the counts' kind, when one is
 picked: failing for over 6 months, say), or **never built** (a failing
 build that never succeeded on Hydra, which has no date; with **on**, only
@@ -95,7 +105,7 @@ worst first) opens that list from anywhere; "Your packages" (your GitHub
 handle) and "Your team" open yours, once given (they're kept in your
 browser only, and ✎ changes them). A list says what it is under
 "Showing" (✕ goes back to the overview): what needs attention, marked
-broken, blocked by a dependency, a maintainer's packages (`?q=@handle`, `@none` for those with
+broken, blocked by a dependency, a maintainer's packages (`?maintainer=handle`, `none` for those with
 none), a team's (`?team=`), a set's (`?set=`), one package alone
 (`?pkg=firefox`), or one of the instance's lists (`?list=`, by address
 only). Its tiles (outdated, failing, vulnerable, marked broken, blocked) count it and

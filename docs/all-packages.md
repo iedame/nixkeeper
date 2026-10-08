@@ -2,7 +2,7 @@
 
 nixkeeper normally tracks the packages your lists name. It can also track
 **every package in nixpkgs**, for a community instance anyone can look up
-their packages on (`?q=@handle`, `?team=`): about 150,000 attributes, in
+their packages on (`?maintainer=handle`, `?team=`): about 150,000 attributes, in
 about 120,000 rows (the attributes of one Repology project share a row,
 like python313Packages.requests and python314Packages.requests).
 
@@ -66,7 +66,7 @@ outdated, failing, vulnerable and broken counts with their trends (from
 `history.json`, a point a daily sync), a search (and every maintainer, by
 handle), the newest and longest-standing failures, what was fixed in the
 last week, and the sets updated in bulk. Each opens a list: what needs
-attention, a maintainer's packages (`?q=@handle`), a team's, a
+attention, a maintainer's packages (`?maintainer=handle`), a team's, a
 set's, or one package (`?pkg=`); visitors can keep their own handle and
 team, in their browser. See [reading the page](reading-the-page.md).
 

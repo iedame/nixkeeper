@@ -275,11 +275,13 @@ def is_subscribed(sub, row):
 
 
 def subscriber_page(base, sub):
-    """The page showing sub's packages: ?q=@handle, or ?team=."""
+    """The page showing sub's packages: ?maintainer=, or ?team=."""
     if not base:
         return None
     query = (
-        {"q": f"@{sub['maintainer']}"} if "maintainer" in sub else {"team": sub["team"]}
+        {"maintainer": sub["maintainer"]}
+        if "maintainer" in sub
+        else {"team": sub["team"]}
     )
     return f"{base.rstrip('/')}/?{urllib.parse.urlencode(query)}"
 

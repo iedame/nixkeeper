@@ -80,7 +80,7 @@ the most other builds; and what was fixed in the last week.
 </p>
 
 **Finding yours.** Search for `@` and your GitHub handle, or link straight
-to it: `https://nixkeeper.com/?q=@yourhandle`. A team's
+to it: `https://nixkeeper.com/?maintainer=yourhandle`. A team's
 packages are under "Browse a team" (`?team=gnome`), one package under
 `?pkg=firefox`, and "needs attention" lists everything failing, outdated or
 vulnerable. Every filter stays in the address, so a list ("my packages

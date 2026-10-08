@@ -66,7 +66,8 @@ export const viewSlug = (name) =>
 // The view to load, as a path under data/ ("views/attention.json"),
 // "pkg:<name>" for one package (?pkg=), or "overview" for none (the start
 // page: all of nixpkgs in numbers, and the ways in): one package, else a
-// maintainer's (?q=@handle; @none those without), a team's, a list's, a
+// maintainer's (?maintainer=handle, @handle in the search; none: those
+// without), a team's, a list's, a
 // generated set's, a list by name (?view=attention, ?view=broken,
 // ?view=blocked), else the overview.
 // ?view=maintainers: every maintainer (maintainers.json), not a list of
@@ -429,6 +430,57 @@ export function nixkeeperEntry(pkg) {
 // it; or for "@handle", nixpkgs lists that maintainer for it (the whole
 // GitHub handle, in any case), and "@none", no maintainer with a handle.
 // Rows from before maintainers were synced have none to match.
+// The maintainer a search names (@handle, lowercase), or null: none, only
+// "@" so far, or @none (packages without one).
+export function searchHandle(query) {
+  const q = query.trim().toLowerCase();
+  if (!q.startsWith('@') || q.length < 2 || q === '@none') return null;
+  return q.slice(1);
+}
+
+// Whether handle maintains pkg directly: listed in the package's own
+// maintainers, not only as a member of one of its teams (nixpkgs adds those
+// to meta.maintainers; nonTeamMaintainers, when the sync found fewer, are
+// the direct ones).
+export function maintainsDirectly(pkg, handle) {
+  return (pkg.nonTeamMaintainers || pkg.maintainers || []).some((m) => m.toLowerCase() === handle);
+}
+
+// Which teams' packages a list keeps (?team=, comma-separated): one team
+// (Gaming: its packages; its own page unless a maintainer's is shown),
+// teams left out (-Geospatial), and none: not through a team (on a
+// maintainer's page, the packages they maintain themselves; elsewhere,
+// packages without a team).
+export function parseTeams(value) {
+  const tokens = (value || '')
+    .split(',')
+    .map((t) => t.trim())
+    .filter(Boolean);
+  const none = (t) => t.toLowerCase() === 'none';
+  return {
+    include: tokens.find((t) => !t.startsWith('-') && !none(t)) || null,
+    leftOut: [
+      ...new Set(tokens.filter((t) => t.length > 1 && t.startsWith('-')).map((t) => t.slice(1))),
+    ],
+    none: tokens.some(none),
+  };
+}
+
+// parseTeams' answer as ?team='s value ('' for none of it).
+export function teamsParam({ include = null, leftOut = [], none = false }) {
+  return [include, ...leftOut.map((t) => `-${t}`), none ? 'none' : null].filter(Boolean).join(',');
+}
+
+// Whether a list keeps pkg, by its teams (parseTeams' answer); handle: the
+// maintainer whose page it is, if any (for none).
+export function teamsKeep(pkg, { include = null, leftOut = [], none = false }, handle = null) {
+  const teams = (pkg.teams || []).map((t) => t.toLowerCase());
+  if (include && !teams.includes(include.toLowerCase())) return false;
+  if (leftOut.some((t) => teams.includes(t.toLowerCase()))) return false;
+  if (none) return handle ? maintainsDirectly(pkg, handle) : teams.length === 0;
+  return true;
+}
+
 export function matchesSearch(pkg, query) {
   const q = query.trim().toLowerCase();
   if (!q) return true;

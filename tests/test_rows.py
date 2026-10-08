@@ -274,6 +274,32 @@ class Rows(unittest.TestCase):
         self.assertTrue(a["markedBroken"])
         self.assertNotIn("markedBroken", b)
 
+    def test_direct_maintainers_beside_teams(self):
+        def person(handle):
+            return {"github": handle, "githubId": 1}
+
+        nixpkgs = {"gdal": pkg("gdal"), "plain": pkg("plain"), "old": pkg("old")}
+        geo = {"shortName": "Geospatial"}
+        nixpkgs["gdal"]["meta"].update(
+            teams=[geo],
+            maintainers=[person("tviti"), person("l0b0"), person("sikmir")],
+            nonTeamMaintainers=[person("tviti")],
+        )
+        nixpkgs["plain"]["meta"].update(
+            teams=[geo],
+            maintainers=[person("l0b0")],
+            nonTeamMaintainers=[person("l0b0")],  # the same: not repeated
+        )
+        nixpkgs["old"]["meta"].update(teams=[geo], maintainers=[person("x")])
+        entries = [nix(n, "1", "newest") for n in ("gdal", "old", "plain")]
+        gdal, old, plain = build_rows(
+            {e["srcname"]: project(e["srcname"], [e["srcname"]], [e]) for e in entries},
+            nixpkgs,
+        )
+        self.assertEqual(gdal["nonTeamMaintainers"], ["tviti"])
+        self.assertNotIn("nonTeamMaintainers", plain)
+        self.assertNotIn("nonTeamMaintainers", old)  # the index doesn't say
+
     def test_marked_insecure_from_the_index(self):
         nixpkgs = {"a": pkg("a"), "a-bin": pkg("a"), "b": pkg("b")}
         nixpkgs["a"]["meta"]["knownVulnerabilities"] = ["CVE-2020-25031"]

@@ -29,13 +29,17 @@ import {
   onMaster,
   onPlatform,
   pageLinks,
+  parseTeams,
   attentionRank as rankOn,
   raw,
   githubRepo as repoFrom,
   safeUrl,
+  searchHandle,
   shardOf,
   shortAge,
   targetVersion,
+  teamsKeep,
+  teamsParam,
   themeFor,
   timeAgo,
   trendChange,
@@ -156,8 +160,13 @@ const inList = (pkg) => !listFilter || (pkg.lists || []).includes(listFilter);
 // null, or a nixpkgs team (meta.teams, by its short name; any case):
 // ?team=gaming is a page of the team's packages here.
 let teamFilter = null;
+// ?team= besides one team: teams left out (-Geospatial), and none (not
+// through a team: logic.js parseTeams).
+let teamsLeftOut = [];
+let noTeam = false;
 const isTeam = (name) => name.toLowerCase() === teamFilter.toLowerCase();
-const inTeam = (pkg) => !teamFilter || (pkg.teams || []).some(isTeam);
+const inTeam = (pkg) =>
+  teamsKeep(pkg, { include: teamFilter, leftOut: teamsLeftOut, none: noTeam }, shownHandle());
 // The team's name as nixpkgs writes it ("Qt-KDE"), or as the address has it.
 const teamName = () => packages.flatMap((p) => p.teams || []).find(isTeam) || teamFilter;
 // Every list some package is on: "maintained" first, as the sync sorts them.
@@ -300,13 +309,33 @@ const refined = (p, kind = activeFilter) =>
   [...refines].every((key) => REFINES[key].test(p)) &&
   olderThan(p, ageFilter, kind, Date.now(), platformFilter);
 
+// The maintainer whose page this is (@handle in the search), or null.
+const shownHandle = () => searchHandle(document.getElementById('search').value);
+
+// ?team='s teams left out, and none (packages without a team) where no
+// maintainer's page has its button: each a chip to undo it.
+const teamOutChips = () =>
+  html`${teamsLeftOut.map(
+    (t) =>
+      html`<button type="button" class="plat-filter" data-team-out="${t}" title="Show the ${t} team's packages again">not ${t} ✕</button>`,
+  )}${
+    noTeam && !shownHandle()
+      ? html`<button type="button" class="plat-filter" data-team-none title="Show packages with a team again">no team ✕</button>`
+      : ''
+  }`;
+
 function refineHtml() {
   return html`<div class="refine" role="group" aria-label="Narrow the list">${Object.entries(
     REFINES,
   ).map(
     ([key, r]) =>
       html`<button type="button" class="refine-btn" data-refine="${key}" aria-pressed="${refines.has(key)}" title="${r.title}">${r.label}</button>`,
-  )}<label class="refine-age" title="How long it's been failing or outdated (the kind picked above, if any); or failing builds that never succeeded on Hydra, which have no date">Older than <select data-age><option value="">any age</option>${Object.entries(
+  )}${
+    // On a maintainer's page: ?team=none.
+    shownHandle()
+      ? html`<button type="button" class="refine-btn" data-no-team aria-pressed="${noTeam}" title="Only packages that list this maintainer themselves: leave out those they maintain only as a member of the package's team (meta.teams)">Not via a team</button>`
+      : ''
+  }<label class="refine-age" title="How long it's been failing or outdated (the kind picked above, if any); or failing builds that never succeeded on Hydra, which have no date">Older than <select data-age><option value="">any age</option>${Object.entries(
     AGES,
   ).map(
     ([key, label]) =>
@@ -592,7 +621,10 @@ function readViewFromUrl() {
     Object.keys(FILTERS).find(
       (k) => FILTERS[k].param && FILTERS[k].param === params.get('filter'),
     ) || 'all';
-  document.getElementById('search').value = params.get('q') || '';
+  // A maintainer's page: ?maintainer=handle (the search shows @handle);
+  // ?q=@handle, as it was first written, opens it too and becomes that.
+  const maintainer = (params.get('maintainer') || '').replace(/^@/, '');
+  document.getElementById('search').value = maintainer ? `@${maintainer}` : params.get('q') || '';
   sortAZ = params.get('sort') === 'az';
   platformFilter =
     Object.keys(PLATFORMS).find((k) =>
@@ -600,11 +632,17 @@ function readViewFromUrl() {
     ) || null;
   // Any name: which lists exist is only known once the data has loaded.
   listFilter = params.get('list') || null;
-  teamFilter = params.get('team') || null;
+  const teams = parseTeams(params.get('team'));
+  teamFilter = teams.include;
+  teamsLeftOut = teams.leftOut;
+  noTeam = teams.none;
   setFilter = params.get('set') || null;
   pkgParam = params.get('pkg') || null;
   viewParam = params.get('view') || null;
-  refines = new Set((params.get('refine') || '').split(',').filter((key) => REFINES[key]));
+  const refineKeys = (params.get('refine') || '').split(',');
+  // refine=direct: ?team=none, as it was first called.
+  if (refineKeys.includes('direct')) noTeam = true;
+  refines = new Set(refineKeys.filter((key) => REFINES[key]));
   ageFilter = AGES[params.get('age')] ? params.get('age') : null;
   pageNum = Math.max(1, Number.parseInt(params.get('page'), 10) || 1);
   const per = Number(params.get('per'));
@@ -618,11 +656,14 @@ function viewQuery(page = pageNum) {
   const q = document.getElementById('search').value.trim();
   const set = (k, v) => (v ? params.set(k, v) : params.delete(k));
   set('filter', FILTERS[activeFilter].param);
-  set('q', q);
+  // @handle in the search: ?maintainer=handle; anything else: ?q=.
+  const handle = q.startsWith('@') && q.length > 1 ? q.slice(1) : '';
+  set('maintainer', handle);
+  set('q', handle ? '' : q);
   set('sort', sortAZ ? 'az' : '');
   set('platform', platformFilter && PLATFORMS[platformFilter].param);
   set('list', listFilter);
-  set('team', teamFilter);
+  set('team', teamsParam({ include: teamFilter, leftOut: teamsLeftOut, none: noTeam }));
   set('set', setFilter);
   set('pkg', pkgParam);
   set('view', viewParam);
@@ -630,8 +671,8 @@ function viewQuery(page = pageNum) {
   set('age', ageFilter);
   set('page', page > 1 ? page : '');
   set('per', pageSize !== DEFAULT_PAGE_SIZE ? pageSize : '');
-  // "@" and "," are fine in a query: ?q=@handle and ?refine=a,b read
-  // better in a shared link.
+  // "@" and "," are fine in a query: ?q=@ and ?refine=a,b read better in
+  // a shared link.
   const query = params.toString().replaceAll('%40', '@').replaceAll('%2C', ',');
   return location.pathname + (query ? `?${query}` : '');
 }
@@ -1155,7 +1196,7 @@ function renderStats() {
       ? html`<button class="plat-filter" data-clear="team" title="Show every team's packages">team: ${teamName()} ✕</button>`
       : '';
   document.getElementById('stats').innerHTML =
-    html`${attentionChip}${buttons}${platformChip}${teamChip}`;
+    html`${attentionChip}${buttons}${platformChip}${teamChip}${community ? '' : teamOutChips()}`;
   // Without every package, the list's narrowing under the counts; with
   // every package, it's in the list's header, under the tiles.
   const refine = document.getElementById('refine');
@@ -1789,7 +1830,7 @@ function listHeaderHtml() {
       <span class="scope-label">Showing</span>
       <span class="view-chip">${what} · ${fmt(shownCount)}<a class="view-x" href="${scopeHref({})}" data-scope-home aria-label="Back to the overview" title="Back to the overview">✕</a></span>
       ${path.startsWith('views/set/') ? html`<span class="scope-hint">${bulkText(setFilter)}${profileOf(setFilter) ? html` (<a class="files-link" href="${safeUrl(profileOf(setFilter).link)}" target="_blank" rel="noopener">in nixpkgs ↗</a>)` : ''}</span>` : ''}
-      ${teamPicker('Any team')}
+      ${teamPicker('Any team')}${teamOutChips()}
     </div>
     ${
       // One package: its row says it all, the tiles would only count to 1.
@@ -1801,7 +1842,19 @@ function listHeaderHtml() {
 // attention): the others' parameters cleared, the data's own kept.
 function scopeHref({ set = null, pkg = null, view = null, filter = null }) {
   const params = new URLSearchParams(location.search);
-  for (const k of ['filter', 'q', 'sort', 'platform', 'list', 'team', 'set', 'pkg', 'page', 'view'])
+  for (const k of [
+    'filter',
+    'q',
+    'maintainer',
+    'sort',
+    'platform',
+    'list',
+    'team',
+    'set',
+    'pkg',
+    'page',
+    'view',
+  ])
     params.delete(k);
   if (set) params.set('set', set);
   if (pkg) params.set('pkg', pkg);
@@ -1818,6 +1871,8 @@ function showView({ set = null, pkg = null, view = null, filter = null }) {
   pkgParam = pkg;
   viewParam = view;
   teamFilter = null;
+  teamsLeftOut = [];
+  noTeam = false;
   listFilter = null;
   activeFilter = filter || 'all';
   refines = new Set();
@@ -1857,8 +1912,8 @@ function maintainerItem([handle, count, outdated, failing]) {
 }
 function maintainerHref(handle) {
   const params = new URLSearchParams(new URL(scopeHref({}), location.href).search);
-  params.set('q', `@${handle}`);
-  return `${location.pathname}?${params.toString().replaceAll('%40', '@')}`;
+  params.set('maintainer', handle);
+  return `${location.pathname}?${params.toString()}`;
 }
 
 // ?view=maintainers: every maintainer, by handle, a page at a time; the
@@ -3002,7 +3057,7 @@ function currentFiltered() {
 }
 
 document.getElementById('stats').addEventListener('click', (e) => {
-  const clear = e.target.closest('.plat-filter');
+  const clear = e.target.closest('.plat-filter[data-clear]');
   if (clear) {
     if (clear.dataset.clear === 'team') teamFilter = null;
     else platformFilter = null;
@@ -3021,6 +3076,16 @@ document.getElementById('stats').addEventListener('click', (e) => {
   update();
 });
 
+// ?team='s left-out teams and none: their chips (teamOutChips) and the
+// maintainer page's "Not via a team".
+document.addEventListener('click', (e) => {
+  const out = e.target.closest('button[data-team-out]');
+  if (out) teamsLeftOut = teamsLeftOut.filter((t) => t !== out.dataset.teamOut);
+  else if (e.target.closest('button[data-team-none]')) noTeam = false;
+  else if (e.target.closest('button[data-no-team]')) noTeam = !noTeam;
+  else return;
+  update();
+});
 // Narrowing the list (refineHtml), wherever it's drawn.
 document.addEventListener('click', (e) => {
   const btn = e.target.closest('button[data-refine]');
