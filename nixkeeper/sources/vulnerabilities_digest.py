@@ -14,7 +14,9 @@ Each row gets "vulnerabilities": its CVEs (the tracker's) and advisories
   of its 873 "affected on master" already fixed in nixpkgs): it's used
   only when a range can't be read, "tracker" (counted) when it said
   affected, "fixed" unaffected, "unconfirmed" otherwise;
-- OSV's advisories, "osv" (counted), but not for a CVE the tracker has.
+- OSV's advisories, "osv" (counted), but not for a CVE the tracker has;
+- and a counted one nixpkgs patches (a patch named after the CVE, on the
+  channel's commit): "patched", not counted (2026-10-08: 28 packages).
 
 A row is vulnerable (changes.is_vulnerable) when one is counted, nixpkgs
 marks it insecure, or Repology flags it: the tracker's entries cover some
@@ -110,7 +112,19 @@ def load(now):
     digest = {"tracker": found.get("tracker") or {}, "osv": found.get("osv") or {}}
     digest["newestRelease"] = newest_release(digest)
     digest["stable"] = stable_versions(digest["newestRelease"])
+    digest["stableRevision"] = stable_revision(digest["newestRelease"])
     return digest
+
+
+def stable_revision(newest):
+    """The newest release's channel commit, or None when it can't be read."""
+    if not newest or not config.STABLE_INDEX_URL:
+        return None
+    url = config.STABLE_REVISION_URL.format(release=newest.removeprefix("release-"))
+    try:
+        return (http.get(url) or "").strip() or None
+    except (urllib.error.URLError, OSError, ValueError):
+        return None
 
 
 def stable_versions(newest):
@@ -328,22 +342,62 @@ def for_row(row, digest):
 
 
 def to_backport(found, newest):
-    """The CVEs of found (a row's "vulnerabilities") fixed on master but
-    still affected on newest, the newest release branch."""
+    """The CVEs of found (a row's "vulnerabilities") fixed on master (by
+    version, or by a patch) but still affected on newest, the newest
+    release branch."""
     return [
         v["id"]
         for v in found
         if newest
-        and v["verdict"] == "fixed"
+        and v["verdict"] in ("fixed", "patched")
         and (v.get("releases") or {}).get(newest) == "affected"
     ]
 
 
-def add(rows, digest):
+CVE_ID = re.compile(r"CVE-\d{4}-\d+", re.IGNORECASE)
+
+
+def cve_ids(entry):
+    """The CVE ids a patch fixing entry would be named after: its own (a
+    tracker entry's), or its aliases (an OSV advisory's)."""
+    return [
+        i.upper()
+        for i in [entry["id"], *(entry.get("cves") or [])]
+        if CVE_ID.fullmatch(i)
+    ]
+
+
+def patched(rows, revision, wanted):
+    """{row name: {CVE ids in its patches}} at revision, for the rows
+    wanted(row) picks: nixpkgs' patches named after a CVE (a file
+    CVE-2026-1234.patch, a fetchpatch's name or URL). {} when nixpkgs can't
+    be evaluated there (each CVE then stands as it is)."""
+    picked = [row for row in rows if wanted(row)]
+    if not picked or not revision or revision == config.NIXPKGS_BRANCH:
+        return {}
+    attrs = {a for row in picked for a in row.get("attrs") or [row["name"]]}
+    try:
+        found = nixpkgs.patches(attrs, revision)
+    except nixpkgs.EvalError as e:
+        print(f"::warning::Patches at {revision[:12]}: not read ({e})", file=sys.stderr)
+        return {}
+    out = {}
+    for row in picked:
+        text = " ".join(
+            t for a in row.get("attrs") or [row["name"]] for t in found.get(a) or []
+        )
+        if ids := {i.upper() for i in CVE_ID.findall(text)}:
+            out[row["name"]] = ids
+    return out
+
+
+def add(rows, digest, revision=None):
     """Give each row its "vulnerabilities" (only when the digest has any for
     it), and "backport": those fixed on master, still affected on the
-    newest release branch, when there's a digest. Returns how many rows got
-    some."""
+    newest release branch, when there's a digest. A counted CVE nixpkgs
+    patches at revision (the channel's commit) is "patched", not counted;
+    one to backport that the newest release's channel patches isn't one.
+    Returns how many rows got some."""
     if digest is None:
         return 0
     newest = digest.get("newestRelease") or newest_release(digest)
@@ -353,9 +407,38 @@ def add(rows, digest):
         row.pop("backport", None)
         if found := for_row(row, digest):
             row["vulnerabilities"] = found
-            if ids := to_backport(found, newest):
-                row["backport"] = ids
             n += 1
+
+    def counted(row):
+        return any(v["verdict"] in COUNTED for v in row.get("vulnerabilities") or [])
+
+    on_unstable = patched(rows, revision, counted)
+    for row in rows:
+        for v in row.get("vulnerabilities") or []:
+            if v["verdict"] in COUNTED and set(cve_ids(v)) & on_unstable.get(
+                row["name"], set()
+            ):
+                v["verdict"] = "patched"
+        if "vulnerabilities" in row:
+            row["vulnerabilities"].sort(
+                key=lambda e: (counted_first(e), severity_rank(e), e["id"])
+            )
+            if ids := to_backport(row["vulnerabilities"], newest):
+                row["backport"] = ids
+    on_stable = patched(
+        rows, digest.get("stableRevision"), lambda row: row.get("backport")
+    )
+    for row in rows:
+        if not row.get("backport"):
+            continue
+        done = on_stable.get(row["name"], set())
+        for v in row["vulnerabilities"]:
+            if v["id"] in row["backport"] and set(cve_ids(v)) & done:
+                v.setdefault("releases", {})[newest] = "patched"
+        if not (still := [i for i in row["backport"] if i.upper() not in done]):
+            del row["backport"]
+        else:
+            row["backport"] = still
     return n
 
 

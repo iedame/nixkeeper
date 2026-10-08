@@ -2187,6 +2187,7 @@ const VERDICTS = {
   osv: 'OSV advisory',
   unconfirmed: "unconfirmed: the CVE's versions can't be read",
   fixed: 'fixed',
+  patched: 'fixed by a patch in nixpkgs, named after it',
   dismissed: 'dismissed by the security team',
 };
 
