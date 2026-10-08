@@ -88,13 +88,13 @@ tests, both modules evaluated, the NixOS module booted in a VM), but to move
 only from release to release, name a version tag:
 
 ```nix
-inputs.nixkeeper.url = "github:iedame/nixkeeper/v0.13.0";
+inputs.nixkeeper.url = "github:iedame/nixkeeper/v0.14.0";
 ```
 
 `nix flake update` then leaves it alone; you upgrade by changing the tag,
 after reading that release's notes in [CHANGELOG.md](../CHANGELOG.md). Version
 tags never move, so a tag always means the same code. The same works for
-`nix profile install github:iedame/nixkeeper/v0.13.0`.
+`nix profile install github:iedame/nixkeeper/v0.14.0`.
 
 With `inputs.nixkeeper.inputs.nixpkgs.follows = "nixpkgs";` (one nixpkgs in
 your lock), nixkeeper builds against your nixpkgs rather than the one its CI
