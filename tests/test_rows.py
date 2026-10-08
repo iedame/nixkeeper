@@ -274,6 +274,26 @@ class Rows(unittest.TestCase):
         self.assertTrue(a["markedBroken"])
         self.assertNotIn("markedBroken", b)
 
+    def test_marked_insecure_from_the_index(self):
+        nixpkgs = {"a": pkg("a"), "a-bin": pkg("a"), "b": pkg("b")}
+        nixpkgs["a"]["meta"]["knownVulnerabilities"] = ["CVE-2020-25031"]
+        nixpkgs["a-bin"]["meta"]["knownVulnerabilities"] = [
+            "CVE-2020-25031",  # once
+            "Uses Electron 37, EOL",
+        ]
+        entries = [nix("a", "1", "newest"), nix("b", "1", "newest")]
+        a, b = build_rows(
+            {
+                "a": project("a", ["a", "a-bin"], entries[:1]),
+                "b": project("b", ["b"], entries[1:]),
+            },
+            nixpkgs,
+        )
+        self.assertEqual(
+            a["markedInsecure"], ["CVE-2020-25031", "Uses Electron 37, EOL"]
+        )
+        self.assertNotIn("markedInsecure", b)
+
     def test_teams_of_all_attributes_once(self):
         nixpkgs = {
             "steam": pkg("steam"),

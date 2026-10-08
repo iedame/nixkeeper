@@ -177,6 +177,7 @@ about it (`devel`, `vulnerable`, ...); beside the newest, the update's
 | `PR #123` (green) | an open update PR in nixpkgs; grey while it's a draft |
 | `on master` (violet) | the update is merged into master; links to its PR |
 | `devel` | a development release, compared against other devel versions |
+| `insecure` | nixpkgs itself marks it insecure (`meta.knownVulnerabilities`): it won't build unless allowed; the details give nixpkgs' reasons, their CVEs linked |
 | `vulnerable` | Repology flags this version; the details link its known CVEs |
 | `untrusted`, `rolling`, ... | Repology's status for a version it can't compare |
 | `not refreshed` | Repology couldn't be reached on the last sync: older data |

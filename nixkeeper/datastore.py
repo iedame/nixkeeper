@@ -29,6 +29,7 @@ from .changes import (
     failed_builds,
     failures,
     is_outdated,
+    is_vulnerable,
     on_branch,
     waiting_for_channel,
 )
@@ -428,8 +429,8 @@ def status(row):
     """A row's status as the page's dot shows it (computeStatus and
     hasFailure in page/logic.js), in a letter: f failed, m outdated but
     waiting for the channel, o outdated, u up to date, n not comparable
-    (Repology can't say, or doesn't know the package); then v when flagged
-    vulnerable."""
+    (Repology can't say, or doesn't know the package); then v when
+    vulnerable (flagged by Repology, or marked insecure by nixpkgs)."""
     if failures(row):
         letter = "f"
     elif waiting_for_channel(row):
@@ -440,7 +441,7 @@ def status(row):
         letter = "u"
     else:
         letter = "n"
-    return letter + ("v" if row.get("nixVulnerable") else "")
+    return letter + ("v" if is_vulnerable(row) else "")
 
 
 def slug(name):

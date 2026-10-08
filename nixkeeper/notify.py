@@ -24,6 +24,7 @@ from .changes import (
     failed_builds,
     failures,
     is_outdated,
+    is_vulnerable,
     on_master,
     should_notify,
     stale_sources,
@@ -76,6 +77,8 @@ def describe(row, now):
             text += f" · {state} {pr_number(pr)} open"
     if failures(row):
         text += " — " + ", ".join(failures(row))
+    if row.get("markedInsecure"):
+        text += " — marked insecure in nixpkgs"
     if row.get("nixVulnerable"):
         text += " — flagged vulnerable"
         if row.get("project"):
@@ -110,7 +113,7 @@ def bullets(rows, now):
 CHANGE_LABELS = {
     "outdated": "Newly outdated",
     "failed": "Newly failed",
-    "vulnerable": "Newly flagged vulnerable",
+    "vulnerable": "Newly vulnerable",
     "notRefreshed": "Not refreshed",
     "refreshed": "Refreshed again",
     "caughtUp": "Caught up",
@@ -145,7 +148,7 @@ def status_body(rows, changes, now, page_url=None):
                 key=lambda r: r.get("outdatedSince") or "~",
             ),
         ),
-        ("Flagged vulnerable", [r for r in rows if r.get("nixVulnerable")]),
+        ("Vulnerable", [r for r in rows if is_vulnerable(r)]),
         ("Marked broken in nixpkgs", [r for r in rows if broken_builds(r)]),
         ("Not refreshed", [r for r in rows if stale_sources(r)]),
     ]

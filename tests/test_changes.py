@@ -107,6 +107,12 @@ class Diff(unittest.TestCase):
     def test_newly_vulnerable(self):
         c = self.changes([row("x")], [row("x", nixVulnerable=True)])
         self.assertEqual([r["name"] for r in c["vulnerable"]], ["x"])
+        # nixpkgs marking it insecure is news too; already vulnerable isn't.
+        c = self.changes([row("x")], [row("x", markedInsecure=["CVE-2020-25031"])])
+        self.assertEqual([r["name"] for r in c["vulnerable"]], ["x"])
+        was = row("x", nixVulnerable=True)
+        c = self.changes([was], [{**was, "markedInsecure": ["CVE-2020-25031"]}])
+        self.assertEqual(c["vulnerable"], [])
 
     def test_not_refreshed_notifies_once(self):
         self.assertTrue(

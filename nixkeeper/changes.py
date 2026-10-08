@@ -97,6 +97,12 @@ def build_label(row, build):
     return f"{build['attr']} on {build['system']}"
 
 
+def is_vulnerable(row):
+    """Whether a row counts as vulnerable: Repology flags nixpkgs' version
+    (nixVulnerable), or nixpkgs itself marks it insecure (markedInsecure)."""
+    return bool(row.get("nixVulnerable") or row.get("markedInsecure"))
+
+
 def failures(row):
     """Why a row counts as failed (the page's red "failed" filter), if it does."""
     reasons = []
@@ -160,7 +166,7 @@ def diff(previous, rows):
         # A failure nixpkgs now marks broken isn't fixed, just acknowledged.
         elif was_failing and not now_failing:
             changes["fixed"].append(row)
-        if row.get("nixVulnerable") and not old.get("nixVulnerable"):
+        if is_vulnerable(row) and not is_vulnerable(old):
             changes["vulnerable"].append(row)
         # Per source: Hydra failing too, a day after an update check, is news.
         now_stale, was_stale = stale_sources(row), stale_sources(old)
