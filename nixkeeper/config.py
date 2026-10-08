@@ -53,10 +53,21 @@ DEFAULTS = {
 OUT_DIR = os.environ.get("NIXKEEPER_DATA_DIR") or DEFAULTS["OUT_DIR"]
 LISTS = os.environ.get("NIXKEEPER_LISTS") or DEFAULTS["LISTS"]
 # NIXKEEPER_NOTIFICATIONS: who gets a status issue of their own
-# (notifications/, notify.py), beside the package lists by default.
-NOTIFICATIONS = os.environ.get("NIXKEEPER_NOTIFICATIONS") or os.path.join(
-    os.path.dirname(os.path.abspath(LISTS)), "notifications"
-)
+# (notifications/, notify.py); unset, beside the package lists in use
+# (notifications_path).
+NOTIFICATIONS = os.environ.get("NIXKEEPER_NOTIFICATIONS")
+
+
+def notifications_path():
+    """Where notifications/ is: NIXKEEPER_NOTIFICATIONS, else beside the
+    package lists. Worked out when asked, not at import: --lists sets LISTS
+    after this module loads (the workflows' sync passes it), and a path
+    fixed at import pointed at the default lists' folder instead."""
+    return NOTIFICATIONS or os.path.join(
+        os.path.dirname(os.path.abspath(LISTS)), "notifications"
+    )
+
+
 NOTIFY = None  # set by the command; otherwise NIXKEEPER_NOTIFY, read when used
 NIX_REPO = "nix_unstable"
 ALL_PACKAGES = None  # set by the command; otherwise NIXKEEPER_ALL_PACKAGES

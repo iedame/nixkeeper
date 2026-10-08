@@ -188,12 +188,16 @@ FOLDERS = {"maintainers": "maintainer", "teams": "team"}
 def read_subscribers(path=None):
     """Who gets a status issue of their own: {"maintainers/iedame":
     {"maintainer": handle}, "teams/gaming": {"team": name, "mention":
-    [handles]}}, from notifications/ (config.NOTIFICATIONS;
+    [handles]}}, from notifications/ (config.notifications_path();
     nix/notifications.nix checks the format). {} without the folder. One
     that doesn't make sense (or isn't in its kind's folder) is left out,
     said so."""
-    path = path or config.NOTIFICATIONS
+    path = path or config.notifications_path()
     if not os.path.exists(path):
+        print(
+            f"No notifications/ at {path}: no status issues of their own.",
+            file=sys.stderr,
+        )
         return {}
     try:
         read = nixpkgs_source.read_lists(path)
