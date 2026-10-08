@@ -46,8 +46,16 @@ def refresh_repology(row, previous, now):
     )
     if fresh is None:
         return None
+    # The version the daily sync took from the channel's index, where Repology
+    # hadn't caught up (rows.channel_versions): this run doesn't read the
+    # index, so it's held against Repology's fresh one the same way (the
+    # channel only moves on between daily syncs as far as this run knows).
+    channel = row.get("nixVersion")
     for key in ("nixVersion", "nixStatus", "nixVulnerable", "refVersion", "repoCount"):
         row[key] = fresh[key]
+    row.pop("repologyVersion", None)
+    if channel:
+        rows.channel_versions([row], {a: {"version": channel} for a in row["attrs"]})
     # Repology's verdict is this fresh one now, for the check to decide
     # against (upstream.apply); without a refresh, the one it kept stays.
     row.pop("repologySaid", None)

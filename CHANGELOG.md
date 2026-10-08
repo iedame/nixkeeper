@@ -19,7 +19,8 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   channel's package index, which it reads anyway, with Repology's version,
   and works out again whether it's outdated (2026-10-08: 392 packages
   behind on Repology, 148 of them no longer outdated). `repologyVersion`
-  keeps what Repology had.
+  keeps what Repology had. The hourly frequent check, which doesn't read
+  the index, keeps the version the daily sync took from it.
 
 - A CVE nixpkgs fixes with a patch named after it (`CVE-2026-56391.patch`,
   a `fetchpatch` of upstream's fix), without a new version, isn't counted:
