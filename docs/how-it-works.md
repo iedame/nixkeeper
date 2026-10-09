@@ -23,8 +23,13 @@ page that shows it.
   needs attention.
 - **The hourly checks** ("Data: hourly updates") refresh a few rows of the
   last published data: the update checks marked `frequent` (browsers, for
-  their security fixes) and outdated packages' update PRs. They commit only
-  when something changed. GitHub runs scheduled workflows on a best-effort
+  their security fixes) and outdated packages' update PRs: every outdated
+  package's from nixkeeper-prs' digest (one download, made hourly), and the
+  lists' maintainers' packages (the "maintained" list) searched for
+  directly too, for the freshest "on master"; the other lists and teams
+  only through the digest, so they can grow without the searches growing
+  (without a usable digest, searched per package as before). They commit
+  only when something changed. GitHub runs scheduled workflows on a best-effort
   basis, so "hourly" can stretch to a few hours when Actions is busy; the
   sync still covers everything. Asking per package doesn't grow with the
   syncs: what's quiet is asked every 3 days, what has something going on
