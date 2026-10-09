@@ -190,9 +190,15 @@ class Facts(unittest.TestCase):
         foo = {"name": "python313Packages.foo", "attrs": ["python313Packages.foo"]}
         prs_digest.add_facts([wine, foo], digest)
         self.assertEqual(wine["openPR"]["facts"]["mergeBot"], "ready")
+        self.assertNotIn("fixesBuild", wine["openPR"]["facts"])
         self.assertEqual([p["number"] for p in wine["fixPRs"]], [3])
         self.assertEqual([i["number"] for i in wine["issueChecks"]], [7])
         self.assertEqual([i["number"] for i in foo["issueChecks"]], [9])
+        # The update PR touching the failing build: said once, as the update PR.
+        wine["openPR"] = {"number": 3, "to": "10.16"}
+        prs_digest.add_facts([wine], digest)
+        self.assertEqual(wine["openPR"]["facts"], {"fixesBuild": True})
+        self.assertNotIn("fixPRs", wine)
         # Without the digest's facts: the last sync's are dropped.
         prs_digest.add_facts([wine], {})
         self.assertNotIn("fixPRs", wine)

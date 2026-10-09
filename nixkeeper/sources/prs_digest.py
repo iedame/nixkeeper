@@ -116,9 +116,10 @@ def facts(prs, groups, issues):
 
 def add_facts(rows, digest):
     """Give each row the digest's findings for its own package (facts'): its
-    update PR's ("openPR"'s "facts"), the open PRs touching it while its
-    build fails on Hydra ("fixPRs"), and its checked issues
-    ("issueChecks"), at most SHOWN of each. Replaces the last sync's."""
+    update PR's ("openPR"'s "facts", with "fixesBuild" when it touches the
+    package while its build fails on Hydra), the other open PRs that do
+    ("fixPRs"), and its checked issues ("issueChecks"), at most SHOWN of
+    each. Replaces the last sync's."""
     found = (digest or {}).get("facts")
     for row in rows:
         row.pop("fixPRs", None)
@@ -127,10 +128,18 @@ def add_facts(rows, digest):
             continue
         pr = row.get("openPR")
         if pr and (theirs := found["prs"].get(pr["number"])):
-            pr["facts"] = theirs
+            pr["facts"] = dict(theirs)
         keys = {package_key(a) for a in [row["name"], *(row.get("attrs") or [])]}
+        # The update PR is said once: as the update PR, which touches the
+        # failing build too, not again among the fixes.
+        if pr and any(
+            fix["number"] == pr["number"]
+            for key in keys
+            for fix in found["fixes"].get(key, [])
+        ):
+            pr.setdefault("facts", {})["fixesBuild"] = True
         for field, source in (("fixPRs", "fixes"), ("issueChecks", "issues")):
-            items, seen = [], set()
+            items, seen = [], {pr["number"]} if pr and field == "fixPRs" else set()
             for key in sorted(keys):
                 for item in found[source].get(key, []):
                     if item["number"] not in seen:
