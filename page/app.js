@@ -139,6 +139,10 @@ let trendEvents = []; // and what marks them (staging-next merges, nixkeeper upd
 let historyLoading = false;
 let setFilter = null;
 const inSet = (pkg) => !setFilter || pkg.set === setFilter;
+// ?cause=: a group of failed builds sharing an error (views/cause/<key>.json,
+// nixkeeper's causes.py), and what its view file says of it.
+let causeFilter = null;
+let causeShown = null;
 const shardCache = new Map(); // n -> Promise of Map(name -> full row)
 let packages = [];
 let checkedAt = null;
@@ -723,6 +727,7 @@ function readViewFromUrl() {
   teamsLeftOut = teams.leftOut;
   noTeam = teams.none;
   setFilter = params.get('set') || null;
+  causeFilter = /^[0-9a-f]{10}$/.test(params.get('cause') || '') ? params.get('cause') : null;
   pkgParam = params.get('pkg') || null;
   viewParam = params.get('view') || null;
   const refineKeys = (params.get('refine') || '').split(',');
@@ -757,6 +762,7 @@ function viewQuery(page = pageNum) {
   set('list', listFilter);
   set('team', teamsParam({ include: teamFilter, leftOut: teamsLeftOut, none: noTeam }));
   set('set', setFilter);
+  set('cause', causeFilter);
   set('pkg', pkgParam);
   set('view', viewParam);
   set('refine', [...refines].join(','));
@@ -1116,12 +1122,14 @@ async function ensureView() {
         list: listFilter,
         set: setFilter,
         view: viewParam,
+        cause: causeFilter,
       });
   // Something else shown instead (a package, a maintainer...): ?set= and
   // ?view= no longer apply, and nothing on the page would take them off
   // again (a set's filter would hide every row: the other views leave out
   // what's pending).
   if (setFilter && path !== `views/set/${setFilter}.json`) setFilter = null;
+  if (causeFilter && path !== `views/cause/${causeFilter}.json`) causeFilter = null;
   if (viewParam && path !== VIEWS[viewParam]) viewParam = null;
   if (path === shownView) return;
   wantedView = path;
@@ -1138,7 +1146,9 @@ async function ensureView() {
   } else {
     const res = await fetch(dataUrl(path), { cache: 'no-store' });
     if (!res.ok && res.status !== 404) throw new Error(res.status);
-    found = res.ok ? (await res.json()).packages : [];
+    const data = res.ok ? await res.json() : { packages: [] };
+    found = data.packages;
+    causeShown = path.startsWith('views/cause/') ? data : null;
   }
   if (wantedView !== path) return; // another view was asked for meanwhile
   packages = found.map((p) => withRunStamps(p, checkedAt));
@@ -1609,7 +1619,7 @@ function renderScope() {
   }
   // Drawn again only when it changes (its history arrives, a team is
   // picked), not while someone types in its search box.
-  const drawn = `${trendPoints?.length ?? -1}:${trendEvents.length}:${teamFilter || ''}:${Object.values(highlightShown)}`;
+  const drawn = `${trendPoints?.length ?? -1}:${trendEvents.length}:${teamFilter || ''}:${Object.values(highlightShown)}:${allCauses ? 'all' : ''}`;
   if (el.dataset.drawn !== drawn) {
     el.dataset.drawn = drawn;
     el.innerHTML = overviewHtml();
@@ -1709,6 +1719,79 @@ function highlightsHtml() {
 // manifest's blockers, from nixkeeper-hydra's blockedBy): fix one, and
 // they all build again. Of all of nixpkgs, as zh.fail counts them; not
 // with data from before, or before the digest has read any.
+// Why things fail, across packages (the manifest's causes, nixkeeper's
+// causes.py): failed builds grouped by the same error (a friendly title
+// where the pattern is known, else the error line), each opening its
+// packages; and the update bot's failures by cause, each opening the list
+// of them (?updateFailed=). Not with data from before.
+// The update bot's own problems, not the package's (FAILED_BECAUSE: bot,
+// request), with how the card says them; and how many of the package's
+// causes it shows as bars.
+const BOT_OWN = new Map([
+  ['bot', "the bot's own outage"],
+  ['request', 'its request failed'],
+]);
+const BOT_SHOWN = 8;
+const botCause = (key) => (key === 'noLog' ? 'build, no log' : FAILED_BECAUSE[key]?.short || key);
+
+// Every group of failed builds sharing an error (views/causes.json), once
+// "Show all" asked for them: the card then lists them all.
+let allCauses = null;
+
+function causesHtml() {
+  const c = manifest.causes;
+  if (!c?.builds?.length && !Object.keys(c?.bot || {}).length) return '';
+  const groups = c.builds.length
+    ? html`<section class="hl-card" style="--hl:var(--danger)" aria-label="Same error, many packages">
+    <div class="hl-head">
+      <h3 class="hl-title" title="Failed builds grouped by the line of their log that says why (paths, numbers and names left out): one cause, one fix pattern"><span class="hl-label">Same error, many packages</span><span class="hl-n">${fmt(c.packages)}</span></h3>
+      <span class="hl-unit">in ${fmt(c.groups)} groups</span>
+    </div>
+    <ol class="hl-list">${(allCauses || c.builds).map(
+      (g) =>
+        html`<li><a class="hl-row" href="${scopeHref({ cause: g.key })}" data-scope-cause="${g.key}" title="${g.line}"><span class="status-dot missing" aria-hidden="true"></span><span class="hl-name${g.title ? '' : ' mono'}">${g.title || g.signature}</span>${g.about ? html`<span class="fixed-by">${g.about}</span>` : ''}<span class="hl-age">${fmt(g.count)}</span></a></li>`,
+    )}</ol>
+    ${
+      c.groups > c.builds.length
+        ? html`<button type="button" class="hl-all cause-more" aria-expanded="${!!allCauses}">${allCauses ? 'Show the biggest only' : html`Show all ${fmt(c.groups)} groups`} <span aria-hidden="true">${allCauses ? '↑' : '↓'}</span></button>`
+        : ''
+    }
+  </section>`
+    : '';
+  const all = Object.entries(c.bot || {});
+  const total = all.reduce((n, [, v]) => n + v, 0);
+  // The bot's own problems (its outage, its request failing): not the
+  // package's, said apart however few; the package's causes as bars.
+  const own = all.filter(([key]) => BOT_OWN.has(key));
+  const bot = all.filter(([key]) => !BOT_OWN.has(key));
+  const most = Math.max(1, ...bot.map(([, v]) => v));
+  const failedHref = (key) =>
+    `${scopeHref({ view: 'attention', filter: 'updates' })}&updateFailed=${encodeURIComponent(key)}`;
+  const more = bot.slice(BOT_SHOWN);
+  const reasons = bot.length
+    ? html`<section class="hl-card" style="--hl:var(--warn-dot)" aria-label="Why the update bot fails">
+    <div class="hl-head">
+      <h3 class="hl-title" title="nixpkgs-update's last attempt at each package, by why it failed (its log)"><span class="hl-label">Why the update bot fails</span><span class="hl-n">${fmt(total)}</span></h3>
+      <span class="hl-unit">packages, by cause</span>
+    </div>
+    <ol class="hl-list cause-bars">${bot
+      .slice(0, BOT_SHOWN)
+      .map(
+        ([key, n]) =>
+          html`<li><a class="hl-row" href="${failedHref(key)}"><span class="hl-name">${botCause(key)}</span><span class="cause-bar" aria-hidden="true"><span style="width:${Math.round((100 * n) / most)}%"></span></span><span class="hl-age">${fmt(n)}</span></a></li>`,
+      )}</ol>
+    ${
+      own.length
+        ? html`<p class="cause-own" title="Failures that aren't the package's: the update bot's own outage, or its request to the builders failing">Not the package's: ${own.map(([key, n], i) => html`${i ? ' · ' : ''}<a class="files-link" href="${failedHref(key)}">${BOT_OWN.get(key)} ${fmt(n)}</a>`)}</p>`
+        : ''
+    }
+    ${more.length ? html`<a class="hl-all" href="${scopeHref({ view: 'attention', filter: 'updates' })}">and ${more.length} more ${more.length === 1 ? 'cause' : 'causes'} (${more.map(([key]) => botCause(key)).join(', ')}) <span aria-hidden="true">→</span></a>` : ''}
+  </section>`
+    : '';
+  return html`<h2 class="scope-label">Why things fail · fully checked</h2>
+    <div class="hl-cols">${groups}${reasons}</div>`;
+}
+
 function blockersHtml() {
   const b = manifest.blockers;
   if (!b?.count) return '';
@@ -1895,7 +1978,7 @@ function overviewHtml() {
       ${teamPicker('Browse a team…')}
     </div>
     <p class="find-more">or <a class="files-link" href="${scopeHref({ view: 'maintainers' })}" data-card-view="maintainers">browse every maintainer</a></p>
-    <div class="overview-more">${highlightsHtml()}${fixedHtml()}${setsHtml(sets)}</div>`;
+    <div class="overview-more">${highlightsHtml()}${causesHtml()}${fixedHtml()}${setsHtml(sets)}</div>`;
 }
 
 // The overview's recently fixed (the manifest's "fixed", from history.json):
@@ -2003,17 +2086,20 @@ function listHeaderHtml() {
           ? `${listFilter} list`
           : path.startsWith('views/set/')
             ? setFilter
-            : path === 'views/broken.json'
-              ? 'Marked broken'
-              : path === 'views/blocked.json'
-                ? 'Blocked by a dependency'
-                : path === 'views/backport.json'
-                  ? 'Fixes to backport'
-                  : 'Needs attention';
+            : path.startsWith('views/cause/')
+              ? causeShown?.title || 'Failing with the same error'
+              : path === 'views/broken.json'
+                ? 'Marked broken'
+                : path === 'views/blocked.json'
+                  ? 'Blocked by a dependency'
+                  : path === 'views/backport.json'
+                    ? 'Fixes to backport'
+                    : 'Needs attention';
   return html`<h2 class="sr-only">${what}</h2>
     <div class="scope-view">
       <span class="scope-label">Showing</span>
       <span class="view-chip">${what} · ${fmt(shownCount)}<a class="view-x" href="${scopeHref({})}" data-scope-home aria-label="Back to the overview" title="Back to the overview">✕</a></span>
+      ${path.startsWith('views/cause/') && causeShown ? html`<span class="scope-hint cause-line" title="The error line these builds share (paths, numbers and names vary)"><code>${causeShown.line}</code></span>` : ''}
       ${path.startsWith('views/set/') ? html`<span class="scope-hint">${bulkText(setFilter)}${profileOf(setFilter) ? html` (<a class="files-link" href="${safeUrl(profileOf(setFilter).link)}" target="_blank" rel="noopener">in nixpkgs ↗</a>)` : ''}</span>` : ''}
       ${teamPicker('Any team')}${teamOutChips()}
     </div>
@@ -2025,7 +2111,7 @@ function listHeaderHtml() {
 
 // The address of a view (scopeHref({ set }), { pkg }, {} for what needs
 // attention): the others' parameters cleared, the data's own kept.
-function scopeHref({ set = null, pkg = null, view = null, filter = null }) {
+function scopeHref({ set = null, pkg = null, view = null, filter = null, cause = null }) {
   const params = new URLSearchParams(location.search);
   for (const k of [
     'filter',
@@ -2036,12 +2122,16 @@ function scopeHref({ set = null, pkg = null, view = null, filter = null }) {
     'list',
     'team',
     'set',
+    'cause',
     'pkg',
     'page',
     'view',
+    'updateFailed',
+    'buildFailed',
   ])
     params.delete(k);
   if (set) params.set('set', set);
+  if (cause) params.set('cause', cause);
   if (pkg) params.set('pkg', pkg);
   if (view) params.set('view', view);
   if (filter && FILTERS[filter]?.param) params.set('filter', FILTERS[filter].param);
@@ -2051,8 +2141,9 @@ function scopeHref({ set = null, pkg = null, view = null, filter = null }) {
 
 // Show a view: set (a generated set), pkg (one package), neither: what needs
 // attention. The search, filters and page start over.
-function showView({ set = null, pkg = null, view = null, filter = null }) {
+function showView({ set = null, pkg = null, view = null, filter = null, cause = null }) {
   setFilter = set;
+  causeFilter = cause;
   pkgParam = pkg;
   viewParam = view;
   teamFilter = null;
@@ -3689,7 +3780,7 @@ document.getElementById('sortBtn').addEventListener('click', (e) => {
 // a modifier opens the link elsewhere, as links do.
 document.addEventListener('click', (e) => {
   const a = e.target.closest(
-    'a[data-scope-set], a[data-scope-pkg], a[data-scope-home], a[data-card-view]',
+    'a[data-scope-set], a[data-scope-pkg], a[data-scope-home], a[data-card-view], a[data-scope-cause]',
   );
   if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.altKey || e.button) return;
   e.preventDefault();
@@ -3698,6 +3789,7 @@ document.addEventListener('click', (e) => {
     pkg: a.dataset.scopePkg || null,
     view: a.dataset.cardView || null,
     filter: a.dataset.cardFilter || null,
+    cause: a.dataset.scopeCause || null,
   });
 });
 // A maintainer, from the maintainers page or a suggestion: their packages.
@@ -3780,9 +3872,29 @@ document.addEventListener('change', (e) => {
   // A team's packages, from all of nixpkgs (not within a set or a package).
   teamFilter = e.target.value || null;
   setFilter = null;
+  causeFilter = null;
   pkgParam = null;
   viewParam = null;
   update();
+});
+
+// The groups card shown in full (or back to the biggest): every group,
+// loaded once from views/causes.json, then the overview drawn again.
+document.addEventListener('click', async (e) => {
+  const button = e.target.closest('.cause-more');
+  if (!button) return;
+  if (allCauses) {
+    allCauses = null;
+  } else {
+    try {
+      const res = await fetch(dataUrl('views/causes.json'), { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status);
+      allCauses = (await res.json()).groups || [];
+    } catch {
+      return; // the biggest stay
+    }
+  }
+  if (shownView === 'overview') renderScope();
 });
 
 // "/" jumps to the filter, as on GitHub; Escape in it clears it.

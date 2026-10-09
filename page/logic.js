@@ -86,6 +86,7 @@ export function viewPath({
   list = null,
   set = null,
   view = null,
+  cause = null,
 } = {}) {
   if (pkg) return `pkg:${pkg}`;
   const q = query.trim().toLowerCase();
@@ -93,6 +94,7 @@ export function viewPath({
   if (team) return `views/team/${viewSlug(team)}.json`;
   if (list) return `views/list/${viewSlug(list)}.json`;
   if (set) return `views/set/${set}.json`;
+  if (cause) return `views/cause/${cause}.json`;
   return VIEWS[view] || 'overview';
 }
 
