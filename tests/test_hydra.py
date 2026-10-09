@@ -408,7 +408,7 @@ class Schedule(unittest.TestCase):
 
     def test_something_going_on_is_due_daily(self):
         now = self.not_its_day()
-        checked = (datetime.fromisoformat(now) - timedelta(hours=20)).isoformat()
+        checked = (datetime.fromisoformat(now) - timedelta(hours=22)).isoformat()
         quiet = {"checkedAt": checked}
         self.assertFalse(self.due(self.previous(quiet), now))
         for name, previous, broken in (
@@ -430,6 +430,14 @@ class Schedule(unittest.TestCase):
         ):
             with self.subTest(name):
                 self.assertTrue(self.due(previous, now, broken))
+
+    def test_going_on_but_asked_hours_ago_waits_a_day(self):
+        now = self.not_its_day()
+        hours_ago = (datetime.fromisoformat(now) - timedelta(hours=3)).isoformat()
+        failing = {"checkedAt": hours_ago, "status": "failed"}
+        self.assertFalse(self.due(self.previous(failing), now))
+        # What changed is asked at once.
+        self.assertTrue(self.due(self.previous({**failing, "version": "2.11"}), now))
 
     def test_a_third_of_the_quiet_ones_each_day(self):
         attrs = [f"pkg{i}" for i in range(3000)]

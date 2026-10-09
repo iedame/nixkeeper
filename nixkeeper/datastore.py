@@ -683,9 +683,13 @@ def _write_file(path, text):
     os.replace(path + ".tmp", path)
 
 
-def write(index, entries, out_dir=None, history=None, fixed=None, events=None):
+def write(
+    index, entries, out_dir=None, history=None, fixed=None, events=None, kept=None
+):
     """Write data/ for index and entries (files; history: the counts
-    history so far, read_history; fixed: the fixes to keep, with_fixed).
+    history so far, read_history; fixed: the fixes to keep, with_fixed;
+    kept: {file: data} the sync keeps for its next run, nixpkgs'
+    evaluations).
     Built from scratch in a temporary folder
     and only then swapped in for out_dir, so removed packages disappear and
     a failed run leaves the previous data intact."""
@@ -695,6 +699,9 @@ def write(index, entries, out_dir=None, history=None, fixed=None, events=None):
     os.makedirs(tmp_dir)
     for name, data in files(index, entries, history, fixed, events).items():
         _write_file(os.path.join(tmp_dir, name), dumps(data))
+    for name, data in (kept or {}).items():
+        if data is not None:
+            _write_file(os.path.join(tmp_dir, name), dumps(data))
     shutil.rmtree(out_dir, ignore_errors=True)
     os.rename(tmp_dir, out_dir)
 

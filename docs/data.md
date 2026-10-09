@@ -231,6 +231,12 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   page's dot: `f` failed, `m` outdated but merged on master, `o` outdated,
   `u` up to date, `n` can't be compared; then `v` when vulnerable (flagged
   by Repology, or marked insecure by nixpkgs).
+- `evaluations.json`: not for the page. nixpkgs' evaluations the sync
+  made (`meta.broken` per platform, the sources the update checks are
+  worked out from, patches named after a CVE), `{ "answers": {
+  "<commit> <system> <expression>": { attribute: answer } } }`, so the
+  next sync evaluates only what's new while the channel's commit hasn't
+  moved.
 
 ## A row
 

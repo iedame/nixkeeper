@@ -280,7 +280,8 @@ def run_searches(tok, searches, handle):
 def quiet(row, before):
     """Whether row's counts have nothing going on: none open at the last
     sync (no PRs, no issues) and the package isn't outdated. Those are
-    searched every QUIET_DAYS (schedule.due), not daily."""
+    searched every QUIET_DAYS (schedule.due), the rest daily
+    (schedule.daily)."""
     return (
         before is not None
         and before.get("openPRs") == 0
@@ -315,6 +316,23 @@ def add_counts(rows, previous=None, now=None):
             and not schedule.due(row["name"], old.get("countedAt"), now)
         ):
             row.update(openPRs=0, openIssues=0, countedAt=old["countedAt"])
+            continue
+        if (
+            now
+            and old
+            and old.get("openPRs") is not None
+            and old.get("countedAt")
+            and not schedule.daily(old["countedAt"], now)
+        ):
+            # Counted less than a day ago: kept (a sync every few hours
+            # searches daily, as a daily one does).
+            row.update(
+                openPRs=old["openPRs"],
+                openIssues=old.get("openIssues", 0),
+                countedAt=old["countedAt"],
+            )
+            if old.get("openPR"):
+                row["openPR"] = old["openPR"]
             continue
         searched.append(row)
         searches.append((row, "openPRs", query(row, "pr state:open"), PR_CANDIDATES))

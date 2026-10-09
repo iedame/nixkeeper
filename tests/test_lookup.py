@@ -7,7 +7,7 @@ import urllib.error
 from datetime import datetime, timedelta
 from unittest import mock
 
-from nixkeeper import schedule
+from nixkeeper import lookup, schedule
 from nixkeeper.history import load_previous_run
 from nixkeeper.lookup import collect_projects
 from nixkeeper.rows import build_rows
@@ -224,6 +224,30 @@ class CollectProjects(unittest.TestCase):
         )
         self.assertEqual(projects["a"]["entries"][0]["version"], "2")
         self.assertEqual(projects["a"]["staleSince"], "2026-09-30T00:00:00+00:00")
+
+
+class LookupDue(unittest.TestCase):
+    NOW = "2026-10-05T06:00:00+00:00"
+    NIXPKGS = {"unciv": {"version": "4.22.1"}}
+
+    def rows(self, hours, **row):
+        checked = datetime.fromisoformat(self.NOW) - timedelta(hours=hours)
+        return [
+            {
+                "attrs": ["unciv"],
+                "nixVersion": "4.22.1",
+                "nixStatus": "outdated",
+                "repologyCheckedAt": checked.isoformat(),
+                **row,
+            }
+        ]
+
+    def test_outdated_looked_up_daily_not_every_sync(self):
+        self.assertFalse(lookup.due("unciv", self.rows(3), self.NIXPKGS, self.NOW))
+        self.assertTrue(lookup.due("unciv", self.rows(22), self.NIXPKGS, self.NOW))
+        # nixpkgs moved since: at once.
+        moved = {"unciv": {"version": "4.22.5"}}
+        self.assertTrue(lookup.due("unciv", self.rows(3), moved, self.NOW))
 
 
 class QuietLookups(unittest.TestCase):

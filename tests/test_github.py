@@ -302,9 +302,22 @@ class QuietCounts(unittest.TestCase):
         self.assertEqual(self.count(rows, [before], now), ["hello"])
         self.assertEqual(rows[0]["countedAt"], now)
 
+    def test_something_going_on_counted_hours_ago_is_kept(self):
+        now = self.not_its_day()
+        before = {
+            **self.counted(prs=2),
+            "countedAt": (datetime.fromisoformat(now) - timedelta(hours=3)).isoformat(),
+            "openPR": {"number": 7},
+        }
+        rows = [self.row()]
+        self.assertEqual(self.count(rows, [before], now), [])
+        self.assertEqual(rows[0]["openPRs"], 2)
+        self.assertEqual(rows[0]["openPR"], {"number": 7})
+        self.assertEqual(rows[0]["countedAt"], before["countedAt"])
+
     def test_something_going_on_is_searched_daily(self):
         now = self.not_its_day()
-        recent = (datetime.fromisoformat(now) - timedelta(hours=20)).isoformat()
+        recent = (datetime.fromisoformat(now) - timedelta(hours=22)).isoformat()
         for name, row, before in (
             ("open PRs", self.row(), {**self.counted(prs=2), "countedAt": recent}),
             (

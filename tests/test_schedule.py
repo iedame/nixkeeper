@@ -38,3 +38,38 @@ class Schedule(unittest.TestCase):
             n for n in (f"pkg{i}" for i in range(100)) if schedule.slot(n, when)
         )
         self.assertTrue(schedule.due(on_slot, ago(hours=20), NOW))
+
+    def test_its_slot_day_once(self):
+        when = datetime.fromisoformat(NOW)
+        on_slot = next(
+            n for n in (f"pkg{i}" for i in range(100)) if schedule.slot(n, when)
+        )
+        earlier_today = (when - timedelta(hours=3)).isoformat()
+        self.assertFalse(schedule.due(on_slot, earlier_today, NOW))
+
+    def test_daily(self):
+        when = datetime.fromisoformat(NOW)
+        self.assertTrue(schedule.daily(None, NOW))
+        self.assertFalse(schedule.daily((when - timedelta(hours=3)).isoformat(), NOW))
+        self.assertFalse(schedule.daily((when - timedelta(hours=21)).isoformat(), NOW))
+        self.assertTrue(schedule.daily((when - timedelta(hours=22)).isoformat(), NOW))
+
+    def test_syncs_every_three_hours_ask_as_a_daily_one(self):
+        """Over 3 days of syncs every 3 hours: something quiet asked at most
+        once a day (its slot day once, or once QUIET_DAYS have passed), not at
+        every sync of it; something going on once a day."""
+        start = datetime.fromisoformat("2026-10-05T00:30:00+00:00")
+        quiet_asked, daily_asked = [], []
+        quiet_at = daily_at = (start - timedelta(days=1)).isoformat()
+        for k in range(24):
+            now = (start + timedelta(hours=3 * k)).isoformat()
+            if schedule.due("pkg7", quiet_at, now):
+                quiet_asked.append(now)
+                quiet_at = now
+            if schedule.daily(daily_at, now):
+                daily_asked.append(now)
+                daily_at = now
+        days = [a[:10] for a in quiet_asked]
+        self.assertTrue(1 <= len(quiet_asked) <= 2, quiet_asked)
+        self.assertEqual(len(days), len(set(days)))  # never twice in a day
+        self.assertEqual(len(daily_asked), 3)
