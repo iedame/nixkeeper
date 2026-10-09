@@ -1744,6 +1744,7 @@ function sparkline(points, key, color) {
       `${dayPosition(points, p.day).toFixed(1)},${(20 - (18 * (values[i] - lo)) / span).toFixed(1)}`,
   );
   const marks = shownEvents(points)
+    .filter((e) => MARKED.has(e.kind))
     .map(
       (e) =>
         `<line class="spark-mark ${e.kind}" x1="${e.x.toFixed(1)}" x2="${e.x.toFixed(1)}" y1="0" y2="22" vector-effect="non-scaling-stroke"/>`,
@@ -1754,14 +1755,18 @@ function sparkline(points, key, color) {
   );
 }
 
-// Under the cards: what the marks on the trends are, the days shown's.
+// Under the cards: what the marks on the trends are, the days shown's; then
+// nixkeeper's own updates, said but not marked (a change in how they count
+// has its own mark).
 function marksHtml(points) {
   const shown = shownEvents(points);
   if (!shown.length) return '';
-  return html`<p class="spark-legend">${shown.map(
+  const marked = shown.filter((e) => MARKED.has(e.kind));
+  const said = shown.filter((e) => !MARKED.has(e.kind));
+  return html`<p class="spark-legend">${marked.map(
     (e, i) =>
       html`${i ? ' · ' : ''}<span class="spark-key ${e.kind}" aria-hidden="true"></span>${e.kind === 'staging-next' ? html`<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${e.pr}" target="_blank" rel="noopener" title="${e.title}">${TREND_EVENTS[e.kind](e)} ↗</a>` : TREND_EVENTS[e.kind](e)} ${shortDay(e.day)}`,
-  )}</p>`;
+  )}${said.length ? html`${marked.length ? ' · ' : ''}${said.map((e) => `${TREND_EVENTS[e.kind](e)} ${shortDay(e.day)}`).join(', ')}` : ''}</p>`;
 }
 
 // While nixkeeper-updates' digest is still reading the bot's past attempts
@@ -1789,13 +1794,17 @@ function backfillNote() {
 }
 
 // What marks the trends, in words: a staging-next merge (mass rebuilds:
-// failing builds jump for days after), or nixkeeper updated (a change in
-// how it counts can step a count).
+// failing builds jump for days after), a change in how nixkeeper counts
+// (it can step a count overnight), or nixkeeper updated (said under the
+// cards, not marked: a release that changes counting has its own mark).
 const TREND_EVENTS = {
   'staging-next': (e) => `staging-next merged (#${e.pr})`,
   nixkeeper: (e) => `nixkeeper ${e.version}`,
   counting: (e) => `counted differently: ${e.text}`,
 };
+// The kinds drawn on the trends: grey for staging-next, amber for a counting
+// change (style.css).
+const MARKED = new Set(['staging-next', 'counting']);
 // The events on the days the trends show, with where they fall.
 function shownEvents(points) {
   return trendEvents
