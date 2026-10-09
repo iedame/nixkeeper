@@ -1755,18 +1755,29 @@ function sparkline(points, key, color) {
   );
 }
 
-// Under the cards: what the marks on the trends are, the days shown's; then
-// nixkeeper's own updates, said but not marked (a change in how they count
-// has its own mark).
+// Under the cards: what the marks on the trends are, one short entry per
+// kind with its days ("counting changed Oct 6, Oct 7"), each day saying in
+// full what happened when hovered (a staging-next one links its PR).
+// nixkeeper's own releases aren't marked nor listed: the footer says the
+// version, and a release that changes counting has its own mark.
+const MARK_LABELS = { counting: 'counting changed', 'staging-next': 'staging-next merged' };
 function marksHtml(points) {
-  const shown = shownEvents(points);
-  if (!shown.length) return '';
-  const marked = shown.filter((e) => MARKED.has(e.kind));
-  const said = shown.filter((e) => !MARKED.has(e.kind));
-  return html`<p class="spark-legend">${marked.map(
-    (e, i) =>
-      html`${i ? ' · ' : ''}<span class="spark-key ${e.kind}" aria-hidden="true"></span>${e.kind === 'staging-next' ? html`<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${e.pr}" target="_blank" rel="noopener" title="${e.title}">${TREND_EVENTS[e.kind](e)} ↗</a>` : TREND_EVENTS[e.kind](e)} ${shortDay(e.day)}`,
-  )}${said.length ? html`${marked.length ? ' · ' : ''}${said.map((e) => `${TREND_EVENTS[e.kind](e)} ${shortDay(e.day)}`).join(', ')}` : ''}</p>`;
+  const marked = shownEvents(points).filter((e) => MARKED.has(e.kind));
+  if (!marked.length) return '';
+  const kinds = [...new Set(marked.map((e) => e.kind))];
+  return html`<p class="spark-legend">${kinds.map((kind, i) => {
+    // One date per day: two changes the same day share it, both said.
+    const days = new Map();
+    for (const e of marked.filter((m) => m.kind === kind))
+      days.set(e.day, [...(days.get(e.day) || []), e]);
+    const dates = [...days].map(([day, es]) => {
+      const said = es.map((e) => TREND_EVENTS[kind](e)).join('; ');
+      return kind === 'staging-next'
+        ? html`<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${es[0].pr}" target="_blank" rel="noopener" title="${said}">${shortDay(day)}</a>`
+        : html`<span class="spark-day" title="${said}">${shortDay(day)}</span>`;
+    });
+    return html`${i ? ' · ' : ''}<span class="spark-key ${kind}" aria-hidden="true"></span>${MARK_LABELS[kind]} ${dates.flatMap((d, j) => (j ? [', ', d] : [d]))}`;
+  })}</p>`;
 }
 
 // While nixkeeper-updates' digest is still reading the bot's past attempts
@@ -1800,7 +1811,7 @@ function backfillNote() {
 const TREND_EVENTS = {
   'staging-next': (e) => `staging-next merged (#${e.pr})`,
   nixkeeper: (e) => `nixkeeper ${e.version}`,
-  counting: (e) => `counted differently: ${e.text}`,
+  counting: (e) => e.text,
 };
 // The kinds drawn on the trends: grey for staging-next, amber for a counting
 // change (style.css).

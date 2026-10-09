@@ -795,6 +795,12 @@ button.checked:focus-visible {
   font-size: 11.5px;
   color: var(--ink-faint);
 }
+/* A mark's day: its full description on hover. */
+.spark-day {
+  text-decoration: underline dotted;
+  text-underline-offset: 2px;
+  cursor: help;
+}
 .spark-key {
   display: inline-block;
   width: 0;
