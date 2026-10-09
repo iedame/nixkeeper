@@ -11,6 +11,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- `start-runs` also starts nixkeeper-prs' digest every hour (a digest of
+  nixpkgs' open pull requests, a proof of concept for now). Its token
+  needs that repository too.
+
 - A package's nixpkgs version is the nixos-unstable channel's own when
   Repology hasn't caught up with it yet: Repology reads the channel some
   hours after it moves (and nixkeeper-versions' digest reads Repology once

@@ -16,9 +16,10 @@
 # and the digests in NIXKEEPER_START_DIGESTS' repositories (default iedame;
 # empty for none: a fork reads iedame's digests, run by iedame):
 #
-#   every hour      nixkeeper-hydra's (stops early with no newer evaluation)
-#                   and nixkeeper-vulnerabilities' (a new repository's
+#   every hour      nixkeeper-hydra's (stops early with no newer evaluation),
+#                   nixkeeper-vulnerabilities' (a new repository's
 #                   schedule ran once in its first 7 hours, 2026-10-08)
+#                   and nixkeeper-prs' (its open PRs, and their diffs)
 #   every 3 hours   nixkeeper-updates'
 #   04 UTC          nixkeeper-versions', if its last run is over 12 hours old
 #
@@ -111,6 +112,7 @@ start() {
 if [ -n "$digests" ]; then
   start "$digests/nixkeeper-hydra" digest.yml
   start "$digests/nixkeeper-vulnerabilities" digest.yml
+  start "$digests/nixkeeper-prs" digest.yml
   if ((hour % 3 == 0)); then
     start "$digests/nixkeeper-updates" digest.yml
   fi
