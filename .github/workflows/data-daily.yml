@@ -1,25 +1,24 @@
-name: "Data: daily sync"
+name: "Data: sync"
 
 # Updates the package data the page shows (the data branch): everything, from
 # every source (nixkeeper/sync.py). Also posts to the status issue. The data
 # branch is main plus one commit with the data (scripts/data-branch.sh).
+# (The file keeps its old name, data-daily.yml: start-runs and badges use it.)
 
 on:
   schedule:
-    # Daily at 06:00 UTC, if the last sync is over 12 hours old: also
-    # started through the API at 06:15 from outside GitHub (its schedule
-    # skips runs when busy; scripts/start-runs.sh), and whichever runs second
-    # stops at once.
-    - cron: '0 6 * * *'
-    # A catch-up: syncs only when the last sync is over 20 hours old (both
-    # were skipped or badly delayed); otherwise it stops at once.
-    - cron: '0 14 * * *'
+    # Every 3 hours; each run syncs only when the last sync is due by the
+    # instance's interval (SYNC_HOURS below: every 3 hours on the community
+    # instance, daily elsewhere), else it stops at once. Also started
+    # through the API at :15 from outside GitHub (its schedule skips runs
+    # when busy; scripts/start-runs.sh): whichever runs second stops at once.
+    - cron: '0 */3 * * *'
   # Lets you trigger a run manually from the Actions tab (always syncs), or
-  # through the API with if_older.
+  # through the API with if_older ("auto": by the interval, as scheduled).
   workflow_dispatch:
     inputs:
       if_older:
-        description: "Only if the last sync is older than this many hours (empty: always)"
+        description: "Only if the last sync is older than this many hours (empty: always; auto: by the instance's interval)"
         type: string
         default: ""
 
@@ -57,10 +56,31 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@3138316df39ed29be04236d7ffc686fa525866aa # v23
 
       - name: Sync package data
-        run: nix run .#sync -- ${IF_OLDER:+--if-older "$IF_OLDER"}
+        run: |
+          # "auto": due once the last sync is the interval old, less an hour
+          # (a run started a little early still syncs): every 3 hours with
+          # every package (the community instance, whose digests refresh
+          # hourly), daily otherwise; NIXKEEPER_SYNC_HOURS overrides it.
+          if [ "$IF_OLDER" = auto ]; then
+            hours=$SYNC_HOURS
+            if [ -z "$hours" ]; then
+              case "${NIXKEEPER_ALL_PACKAGES,,}" in
+                1 | true | yes) hours=3 ;;
+                *) hours=24 ;;
+              esac
+            fi
+            case "$hours" in
+              '' | *[!0-9]*) echo "::error::NIXKEEPER_SYNC_HOURS isn't a number of hours: $hours"; exit 1 ;;
+            esac
+            IF_OLDER=$((hours > 1 ? hours - 1 : 0))
+          fi
+          nix run .#sync -- ${IF_OLDER:+--if-older "$IF_OLDER"}
         env:
           # (An input reaches the shell as a variable, never as code.)
-          IF_OLDER: ${{ github.event.schedule == '0 14 * * *' && '20' || github.event.schedule == '0 6 * * *' && '12' || inputs.if_older }}
+          IF_OLDER: ${{ github.event_name == 'schedule' && 'auto' || inputs.if_older }}
+          # How often to sync, in hours (a repository variable; unset: 3 with
+          # every package, else 24).
+          SYNC_HOURS: ${{ vars.NIXKEEPER_SYNC_HOURS }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR/issue counts and the status issue
           NIXKEEPER_NOTIFY: github-issue  # the status issues; local runs don't notify
           # Every nixpkgs package, not only the lists' (the community

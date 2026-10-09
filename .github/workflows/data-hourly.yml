@@ -1,7 +1,8 @@
 name: "Data: hourly updates (frequent packages, update PRs)"
 
-# Updates part of the package data hourly, on top of the daily sync
-# (data-daily.yml), against the last published data:
+# Updates part of the package data hourly, on top of the sync (data-daily.yml:
+# every 3 hours on the community instance, daily elsewhere), against the last
+# published data:
 #   frequent-check: the update checks marked `frequent = true` in
 #     package-lists/update-checks.nix (nixkeeper/frequent.py)
 #   pr-check: outdated packages' update PRs, open and merged into master
@@ -19,7 +20,7 @@ on:
     - cron: '23 * * * *'
   workflow_dispatch: {}
 
-# The daily sync pushes to the data branch too: never at the same time. (Only
+# The sync pushes to the data branch too: never at the same time. (Only
 # one run can wait per group; a second waiting run would cancel it, which is
 # why these checks share one workflow instead of two.)
 concurrency:
@@ -37,7 +38,7 @@ jobs:
   hourly-updates:
     runs-on: ubuntu-latest
     # Usually 2 minutes. A run that hangs would hold the data branch (and
-    # the daily sync waiting for it) up to GitHub's default of 6 hours.
+    # the sync waiting for it) up to GitHub's default of 6 hours.
     timeout-minutes: 20
     steps:
       - name: Checkout main
@@ -45,8 +46,8 @@ jobs:
         with:
           ref: main
 
-      # Same as the daily sync: main's current code, with the last published
-      # data (which the daily sync has to have made first).
+      # Same as the sync: main's current code, with the last published
+      # data (which the sync has to have made first).
       - name: Restore the last published data, on main
         id: restore
         run: bash scripts/data-branch.sh restore --required

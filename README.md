@@ -1,7 +1,7 @@
 # <picture><source media="(prefers-color-scheme: dark)" srcset="assets/brand/nixkeeper-lockup-dark.svg"><img src="assets/brand/nixkeeper-lockup.svg" alt="nixkeeper" height="80"></picture>
 
 [![CI: tests and lint](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml)
-[![Data: daily sync](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml/badge.svg)](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml)
+[![Data: sync](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml/badge.svg)](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml)
 [![Latest release](https://img.shields.io/github/v/release/iedame/nixkeeper)](https://github.com/iedame/nixkeeper/releases/latest)
 [![Dashboard](https://img.shields.io/badge/dashboard-live-8250df)](https://nixkeeper.com/)
 
@@ -54,7 +54,7 @@ For each package it tracks, nixkeeper shows on one static page (`page/`):
   PR one click away: open (green), or merged and on master (violet)
   while it waits for the channel
 
-A daily sync refreshes it all. Any maintainer or team can get a GitHub
+A sync refreshes it all, daily (every 3 hours on nixkeeper.com). Any maintainer or team can get a GitHub
 issue of their own, kept up to date and commenting when something newly
 needs attention: [get notified](docs/notifications.md).
 
@@ -118,7 +118,7 @@ everyone; [community rules](docs/community.md) cover the meantime.
 flowchart LR
   lists["package-lists/<br>what to track"] --> track
   index["nixpkgs channel<br>package index"] --> track
-  subgraph sync ["daily sync (GitHub Actions)"]
+  subgraph sync ["sync (GitHub Actions)"]
     track["which packages<br>to track"] --> ask["look each one up"]
   end
   sources["<b>Sources</b><br>Repology<br>release pages, tags, branches<br>Hydra, nixpkgs' meta.broken<br>nixpkgs-update logs<br>GitHub PRs, issues"] --> ask

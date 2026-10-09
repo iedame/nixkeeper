@@ -6,12 +6,14 @@
 # and NixOS timer in docs/all-packages.md); by the hour in UTC it starts:
 #
 #   every hour      the hourly updates of NIXKEEPER_START_REPO (default
-#                   iedame/nixkeeper), except at 06
-#   06 UTC          its daily sync instead, if the last sync is over 12 hours
-#                   old (it checks update PRs too). Not both at once: they
-#                   share the data branch's concurrency group, where only
-#                   one run can wait and a newer one cancels it, so fewer
-#                   runs queued at 06 means less chance of losing the daily
+#                   iedame/nixkeeper), except every 3 hours (00, 03, 06...)
+#   every 3 hours   its sync instead, when due by the instance's interval
+#                   (if_older "auto": every 3 hours on the community
+#                   instance, daily on a fork; it checks update PRs too).
+#                   Not both at once: they share the data branch's
+#                   concurrency group, where only one run can wait and a
+#                   newer one cancels it, so fewer runs queued means less
+#                   chance of losing the sync
 #
 # and the digests in NIXKEEPER_START_DIGESTS' repositories (default iedame;
 # empty for none: a fork reads iedame's digests, run by iedame):
@@ -121,8 +123,8 @@ if [ -n "$digests" ]; then
   fi
 fi
 if [ -n "$repo" ]; then
-  if ((hour == 6)); then
-    start "$repo" data-daily.yml '{"if_older":"12"}'
+  if ((hour % 3 == 0)); then
+    start "$repo" data-daily.yml '{"if_older":"auto"}'
   else
     start "$repo" data-hourly.yml
   fi

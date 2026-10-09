@@ -6,8 +6,11 @@ is what each does.
 There's no server: nixkeeper is a program that gathers data, and a static
 page that shows it.
 
-- **The daily sync** (`nix run .#sync`, run by the "Data: daily sync"
-  workflow at 06:00 UTC, with a catch-up at 14:00 should GitHub skip it)
+- **The sync** (`nix run .#sync`, run by the "Data: sync" workflow, which
+  starts every 3 hours and syncs when the last sync is due: every 3 hours on
+  the community instance, nixkeeper.com, whose digests refresh hourly;
+  daily on a fork, unless its `NIXKEEPER_SYNC_HOURS` variable says
+  otherwise)
   works out which packages to track from `package-lists/` and the
   nixos-unstable channel's package index, then asks each source about them:
   Repology for versions, nixkeeper's own update checks, Hydra for builds
@@ -23,7 +26,9 @@ page that shows it.
   their security fixes) and outdated packages' update PRs. They commit only
   when something changed. GitHub runs scheduled workflows on a best-effort
   basis, so "hourly" can stretch to a few hours when Actions is busy; the
-  daily sync still covers everything.
+  sync still covers everything. Asking per package doesn't grow with the
+  syncs: what's quiet is asked every 3 days, what has something going on
+  daily, whatever the interval.
 - **The page** (`page/`, published to GitHub Pages by a workflow) is plain
   HTML and JavaScript that reads the JSON in your browser.
 
