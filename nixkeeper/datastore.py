@@ -43,6 +43,8 @@ SHARD_ROWS = 500
 PANEL_ONLY = (
     "dataFile",
     "feed",
+    "fixPRs",
+    "issueChecks",
     "vulnerabilities",
     "homepage",
     "repoCount",
@@ -176,6 +178,9 @@ def summary_entry(row):
     search and sorting need. Builds are reduced to their status and
     platform, the update attempt to its outcome (and why it failed)."""
     entry = {k: v for k, v in row.items() if k not in PANEL_ONLY}
+    if (row.get("openPR") or {}).get("facts"):
+        # What nixkeeper-prs found of it: the panel's only.
+        entry["openPR"] = {k: v for k, v in row["openPR"].items() if k != "facts"}
     if "vulnerabilities" in row:
         # The verdict, worked out once (null: none counted, Repology's
         # flag not used either).

@@ -96,5 +96,108 @@ class Load(unittest.TestCase):
         self.assertIn("couldn't be read", about.taken()["prs"]["why"])
 
 
+class Facts(unittest.TestCase):
+    PRS = [
+        {
+            "n": 1,
+            "title": "wine: 10.15 -> 10.16",
+            "draft": False,
+            "mergeable": "MERGEABLE",
+            "mergeBot": {"ready": True, "maintainers": ["a"]},
+            "blocksBot": {"title": "wine: 10.15 -> 10.16", "by": "2026-10-12"},
+        },
+        {
+            "n": 2,
+            "title": "wine: 10.15 -> 10.16",
+            "draft": False,
+            "mergeable": "CONFLICTING",
+            "mergeBot": {"ready": True},
+            "state": "superseded",
+            "update": {"now": "10.17"},
+        },
+        {
+            "n": 3,
+            "title": "wine: fix the build",
+            "draft": False,
+            "hydraFailing": {"wine": {"x86_64-linux": "compile"}},
+        },
+        {"n": 4, "title": "wip", "draft": True, "hydraFailing": {"wine": {}}},
+    ]
+    GROUPS = [{"kind": "sameDiff", "key": "aa", "prs": [1, 2]}]
+    ISSUES = [
+        {
+            "n": 7,
+            "title": "Build failure: wine",
+            "hydra": {"package": "wine", "verdict": "builds"},
+        },
+        {
+            "n": 8,
+            "title": "Build failure: wine on musl",
+            "hydra": {"package": "wine", "verdict": "variant"},
+        },
+        {
+            "n": 9,
+            "title": "Update request: python3Packages.foo 1 → 2",
+            "update": {
+                "package": "python3Packages.foo",
+                "verdict": "done",
+                "now": "2.1",
+            },
+        },
+    ]
+
+    def test_by_number_and_package(self):
+        found = prs_digest.facts(self.PRS, self.GROUPS, self.ISSUES)
+        self.assertEqual(
+            found["prs"][1],
+            {"mergeBot": "ready", "blocksBot": "2026-10-12", "duplicates": [2]},
+        )
+        # Conflicting: eligible, not ready.
+        self.assertEqual(
+            found["prs"][2],
+            {
+                "mergeBot": "eligible",
+                "state": "superseded",
+                "now": "10.17",
+                "duplicates": [1],
+            },
+        )
+        self.assertNotIn(3, found["prs"])
+        # Drafts aren't fixes; a variant isn't worth showing.
+        self.assertEqual([p["number"] for p in found["fixes"]["wine"]], [3])
+        self.assertEqual([i["number"] for i in found["issues"]["wine"]], [7])
+        # By Python's versioned set, as rows are named.
+        self.assertEqual(
+            found["issues"]["python313packages.foo"][0],
+            {
+                "number": 9,
+                "title": "Update request: python3Packages.foo 1 → 2",
+                "url": "https://github.com/NixOS/nixpkgs/issues/9",
+                "kind": "update",
+                "verdict": "done",
+                "now": "2.1",
+            },
+        )
+
+    def test_add_facts(self):
+        digest = {"facts": prs_digest.facts(self.PRS, self.GROUPS, self.ISSUES)}
+        wine = {
+            "name": "wine",
+            "attrs": ["wine"],
+            "openPR": {"number": 1, "to": "10.16"},
+            "fixPRs": [{"number": 99}],  # the last sync's: replaced
+        }
+        foo = {"name": "python313Packages.foo", "attrs": ["python313Packages.foo"]}
+        prs_digest.add_facts([wine, foo], digest)
+        self.assertEqual(wine["openPR"]["facts"]["mergeBot"], "ready")
+        self.assertEqual([p["number"] for p in wine["fixPRs"]], [3])
+        self.assertEqual([i["number"] for i in wine["issueChecks"]], [7])
+        self.assertEqual([i["number"] for i in foo["issueChecks"]], [9])
+        # Without the digest's facts: the last sync's are dropped.
+        prs_digest.add_facts([wine], {})
+        self.assertNotIn("fixPRs", wine)
+        self.assertNotIn("issueChecks", wine)
+
+
 if __name__ == "__main__":
     unittest.main()

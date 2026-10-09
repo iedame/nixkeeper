@@ -1077,3 +1077,14 @@ class Blockers(unittest.TestCase):
             datastore.summary_entry(failed)["builds"][0],
             {"status": "failed", "system": "x86_64-linux", "failedBecause": "compile"},
         )
+        # nixkeeper-prs' findings: the panel's only.
+        found = {
+            **row("wine"),
+            "openPR": {"number": 1, "facts": {"mergeBot": "ready"}},
+            "fixPRs": [{"number": 3}],
+            "issueChecks": [{"number": 7}],
+        }
+        entry = datastore.summary_entry(found)
+        self.assertEqual(entry["openPR"], {"number": 1})
+        self.assertNotIn("fixPRs", entry)
+        self.assertNotIn("issueChecks", entry)
