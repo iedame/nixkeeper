@@ -81,6 +81,8 @@ many packages (`packages`), and for `tracker` the newest release fixes
 are to be backported to (`release`, `26.05`); `updates`, when nixkeeper-updates made its digest (`at`) and how
 many attempts it hasn't read yet (`pending`); `queue`, when the bot's queue
 was made (`at`) and how many days it takes to go round (`cycleDays`);
+`releases`, when nixkeeper-versions read GitHub releases (`at`) and for
+how many packages (`packages`);
 `nixpkgs`, the channel's commit (`revision`); `prs`, when nixkeeper-prs
 made its digest (`at`) and what the sync took from it: how many open PRs
 (`prs`) and issues (`issues`), and PRs merged since the channel's commit
@@ -303,6 +305,8 @@ behind the newest devel version elsewhere (`refVersion`).
 | `checkedAt` | when it was last checked (left out: at `checkedAt`) |
 | `community` | `true` when the check is a [community rule](community.md) |
 | `inferred` | `true` when the check was worked out from nixpkgs' source (the GitHub tags it fetches from), for a package without a rule |
+| `digest` | `"releases"` when the worked-out check's result came from nixkeeper-versions' digest of GitHub releases (its `checkedAt`: the day the digest read the repository) |
+| `tagged` | a newer tag matching the scheme than the release `version` is (pushed, not released yet: a release is preferred when the project makes them) |
 | `rule` | a short fingerprint of the rule that found it: an edited rule runs again at once |
 | `page` | page checks: the page's `etag` and `lastModified`, as its server gave them, and the `pattern` it was read with; next time the server is asked to send the page only if it changed, and if it didn't, `version` still holds |
 

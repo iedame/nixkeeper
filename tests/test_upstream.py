@@ -122,6 +122,17 @@ class Decides(unittest.TestCase):
                 self.assertEqual(r["refVersion"], "154.0.8037.97")
                 self.assertNotIn("repologySaid", r)
 
+    def test_worked_out_adds_nothing_to_a_kept_version(self):
+        # fuse 2.9.9 kept beside fuse 3: its repository's newest isn't for it.
+        r = row(status="legacy", ref="3.18.3")
+        upstream.apply(r, {"version": "3.18.3", "inferred": True})
+        self.assertFalse(r["upstream"]["newer"])
+        self.assertEqual((r["nixStatus"], r["refVersion"]), ("legacy", "3.18.3"))
+        # A devel variant fallen behind still counts.
+        r = {**row(status="legacy", ref="3.18.3"), "devel": True}
+        upstream.apply(r, {"version": "3.18.3", "inferred": True})
+        self.assertTrue(r["upstream"]["newer"])
+
 
 class AddChecks(unittest.TestCase):
     def setUp(self):

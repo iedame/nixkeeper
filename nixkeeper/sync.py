@@ -37,6 +37,7 @@ from .sources import (
     hydra_digest,
     nixpkgs_update,
     prs_digest,
+    releases_digest,
     stackage_digest,
     typst_digest,
     updates_digest,
@@ -201,7 +202,20 @@ def main():
     # Checks worked out from nixpkgs' sources, for packages without a rule
     # (inferred.py): run with the rest, then compared with Repology (logged),
     # before master or follows change the rows.
-    worked = inferred.work_out(lists, on_lists, checks, revision)
+    # GitHub releases from nixkeeper-versions' digest (releases_digest): the
+    # worked-out check of every package it knows, read in bulk; the sync
+    # works out its own only for the lists' packages it doesn't answer.
+    answered = (
+        releases_digest.apply(index_rows, releases_digest.load(now), checks, now)
+        if inferred.enabled(lists)
+        else set()
+    )
+    worked = inferred.work_out(
+        lists,
+        [row for row in on_lists if row["name"] not in answered],
+        checks,
+        revision,
+    )
     to_run = worked.to_run(checks) if worked else {}
     failed = upstream.add_checks(
         index_rows, {**to_run, **checks}, previous, now, from_community, set(to_run)

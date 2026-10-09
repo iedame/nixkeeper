@@ -96,6 +96,18 @@ def apply(row, found, decides=True):
     newer = found.get("newer")
     if newer is None:
         newer = is_newer(found["version"], row.get("nixVersion"))
+    if (
+        newer
+        and found.get("inferred")
+        and row.get("nixStatus") == config.KEPT
+        and not row.get("devel")
+    ):
+        # An older version nixpkgs keeps on purpose beside a newer one
+        # (fuse 2.9.9, patchelf 0.15.2, ocamlformat_0_26_0, llvmPackages_18):
+        # a worked-out check can't tell its series, so its repository's
+        # newest release isn't one to update it to. A devel variant that's
+        # fallen behind still counts (changes.behind_as_devel).
+        newer = False
     found = {**found, "newer": newer}
     row["upstream"] = found
     # Repology's verdict from before a check decided: a row checked again
