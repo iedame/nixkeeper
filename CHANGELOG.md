@@ -33,8 +33,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   would try), or duplicated by another; open PRs touching it while its
   build fails on Hydra; and its issues with something to do, a build
   failure that builds on Hydra now or an update request nixpkgs has met
-  (candidates to close), or one still failing. The hourly PR check keeps
-  an update PR's facts while it finds the same PR.
+  (candidates to close), or one still failing; and its other open PRs, a
+  removal first. A package an open PR removes from nixpkgs says **being
+  removed** in the list (43 on 2026-10-09). The hourly PR check keeps an
+  update PR's facts while it finds the same PR.
 
 ### Changed
 

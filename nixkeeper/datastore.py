@@ -45,6 +45,7 @@ PANEL_ONLY = (
     "feed",
     "fixPRs",
     "issueChecks",
+    "otherPRs",
     "vulnerabilities",
     "homepage",
     "repoCount",

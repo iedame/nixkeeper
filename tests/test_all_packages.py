@@ -1083,8 +1083,13 @@ class Blockers(unittest.TestCase):
             "openPR": {"number": 1, "facts": {"mergeBot": "ready"}},
             "fixPRs": [{"number": 3}],
             "issueChecks": [{"number": 7}],
+            "otherPRs": [{"number": 5}],
+            "dropPR": {"number": 5, "title": "wine: drop"},
         }
         entry = datastore.summary_entry(found)
         self.assertEqual(entry["openPR"], {"number": 1})
         self.assertNotIn("fixPRs", entry)
         self.assertNotIn("issueChecks", entry)
+        self.assertNotIn("otherPRs", entry)
+        # Being removed: the list's badge.
+        self.assertEqual(entry["dropPR"], {"number": 5, "title": "wine: drop"})
