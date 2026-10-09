@@ -9,6 +9,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Changed
+
+- nixpkgs' open PRs and issues, and the PRs merged into master since the
+  channel's commit, come from nixkeeper-prs' digest (made hourly) instead
+  of the sync listing them itself: no GitHub token is needed for a
+  package's PR and issue counts, its open update PR and its update merged
+  into master. The sync lists them itself, as before, when the digest is
+  over 6 hours old or its merged PRs were listed since another channel
+  commit (`NIXKEEPER_PRS_DIGEST=""` turns it off). "checked … ago" shows it
+  under nixkeeper-prs.
+
 ## [0.15.0] - 2026-10-09
 
 Vulnerabilities come from the NixOS security tracker and OSV, through the

@@ -50,6 +50,7 @@ choose others; a flag wins over its variable:
 | | `NIXKEEPER_VERSIONS_DIGEST` | nixkeeper-versions' `data` branch | where the [digest of Repology's nixpkgs projects](how-it-works.md) is (its folder's address, ending in `/`); empty to look each package up on Repology |
 | | `NIXKEEPER_UPDATES_DIGEST` | nixkeeper-updates' `data` branch | where the [digest of nixpkgs-update's attempts](how-it-works.md) is (its folder's address, ending in `/`); empty to read each package's logs |
 | | `NIXKEEPER_VULNERABILITIES_DIGEST` | nixkeeper-vulnerabilities' `data` branch | where the [digest of the NixOS security tracker and OSV](how-it-works.md) is (its folder's address, ending in `/`); empty to go by Repology's flag and nixpkgs' insecure mark alone |
+| | `NIXKEEPER_PRS_DIGEST` | nixkeeper-prs' `data` branch | where the [digest of nixpkgs' PRs and issues](how-it-works.md) is (its folder's address, ending in `/`); empty to list them during the sync |
 | | `NIXKEEPER_HYDRA_DIGEST` | nixkeeper-hydra's `data` branch | where the [digest of Hydra's builds](how-it-works.md) is (its folder's address, ending in `/`); empty to ask Hydra about each job |
 | | `REPOLOGY_BASE_URL` | – | another Repology address to use instead of `repology.org` |
 

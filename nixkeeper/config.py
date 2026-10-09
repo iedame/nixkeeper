@@ -301,6 +301,18 @@ VULNERABILITIES_DIGEST_URL = os.environ.get(
 )
 # Used while the tracker was read this recently (its workflow runs hourly).
 VULNERABILITIES_DIGEST_MAX_AGE_HOURS = 72
+# nixkeeper-prs' digest of nixpkgs' PRs and issues (sources/prs_digest.py):
+# every open PR and issue, and the PRs merged into master since the
+# channel's commit, listed hourly, instead of the sync listing them itself.
+# NIXKEEPER_PRS_DIGEST="" turns it off (the sync then lists them, as it
+# does whenever the digest isn't current).
+PRS_DIGEST_URL = os.environ.get(
+    "NIXKEEPER_PRS_DIGEST",
+    "https://raw.githubusercontent.com/iedame/nixkeeper-prs/data/data/",
+)
+# Used while each list was made this recently (its workflow runs hourly and
+# takes about half an hour; the daily full sweep about an hour).
+PRS_DIGEST_MAX_AGE_HOURS = 6
 # The package index of the newest NixOS release's channel ({release}: 26.05,
 # from the tracker's newest release branch): its versions say whether a CVE
 # fixed on unstable is still to backport (sources/vulnerabilities_digest.py).

@@ -81,8 +81,12 @@ many packages (`packages`), and for `tracker` the newest release fixes
 are to be backported to (`release`, `26.05`); `updates`, when nixkeeper-updates made its digest (`at`) and how
 many attempts it hasn't read yet (`pending`); `queue`, when the bot's queue
 was made (`at`) and how many days it takes to go round (`cycleDays`);
-`nixpkgs`, the channel's commit (`revision`); `github`, whether the open PRs
-were listed in one go.
+`nixpkgs`, the channel's commit (`revision`); `prs`, when nixkeeper-prs
+made its digest (`at`) and what the sync took from it: how many open PRs
+(`prs`) and issues (`issues`), and PRs merged since the channel's commit
+(`merged`), with what it listed itself instead (`partly`: a list too old,
+or merged since another channel commit); `github`, whether the open PRs
+were listed in one go, when the sync listed them itself.
 A source that's turned off isn't there; data from before 0.12.0 has none.
 The page shows them under "checked … ago".
 

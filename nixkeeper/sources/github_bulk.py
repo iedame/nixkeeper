@@ -4,9 +4,10 @@ GraphQL requests (100 of each per request), and the PRs merged into master
 since the channel's commit in about 10 more, however many packages are
 tracked. Each package's open PR and issue counts, its open update PR and its
 update PR merged into master are then found in the lists locally:
-add_counts, add_master_prs. The daily sync falls back to the searches when
-a listing fails; the hourly update-PR check (prcheck.py), for a few
-packages, keeps them."""
+add_counts, add_master_prs. The lists come from nixkeeper-prs' digest when
+it's current (prs_digest), else from GitHub here. The daily sync falls back
+to the searches when a listing fails; the hourly update-PR check
+(prcheck.py), for a few packages, keeps them."""
 
 import re
 import sys
@@ -154,23 +155,29 @@ class Listing:
         return github.open_update_pr(row, self.by_package.get(row["searchTerm"], []))
 
 
-def add_counts(rows, now):
+def add_counts(rows, now, listed=None):
     """Every row's open PR and issue counts and open update PR ("openPRs",
-    "openIssues", "openPR"), from one listing of all open ones, dated now
-    ("countedAt"). Returns False, changing nothing, when there's no token or
-    the listing fails (the sync then searches per package)."""
-    tok = github.token()
-    if not tok:
-        return False
-    print("Listing nixpkgs' open PRs and issues...", file=sys.stderr)
-    try:
-        listing = Listing(*list_open(tok))
-    except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
-        print(
-            f"::warning::Listing open PRs/issues failed ({e}); searching per package",
-            file=sys.stderr,
-        )
-        return False
+    "openIssues", "openPR"), from one listing of all open ones (listed:
+    (PRs, issues) from the digest, else listed here), dated now
+    ("countedAt"). Returns False, changing nothing, when there's no listing
+    and no token, or the listing fails (the sync then searches per
+    package)."""
+    if listed is not None:
+        listing = Listing(*listed)
+    else:
+        tok = github.token()
+        if not tok:
+            return False
+        print("Listing nixpkgs' open PRs and issues...", file=sys.stderr)
+        try:
+            listing = Listing(*list_open(tok))
+        except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+            print(
+                f"::warning::Listing open PRs/issues failed ({e}); searching per "
+                "package",
+                file=sys.stderr,
+            )
+            return False
     for row in rows:
         prs, issues = listing.counts(row["searchTerm"])
         row.update(openPRs=prs, openIssues=issues, countedAt=now)
@@ -254,26 +261,32 @@ def list_merged(token, since, now):
     return found
 
 
-def add_master_prs(rows, revision, now):
+def add_master_prs(rows, revision, now, listed=None):
     """Each row's update PR merged into master since the channel's commit
     (revision), which the channel doesn't have yet ("masterPR"), from one
-    listing of the PRs merged since. Returns False, changing nothing, when
-    there's no token or the listing fails (the sync then searches per
-    package)."""
-    tok = github.token()
-    if not tok:
-        return False
-    try:
-        since = channel_date(tok, revision)
-        if not since:
-            raise ValueError(f"no commit date for the channel's revision {revision}")
-        merged = list_merged(tok, since, now)
-    except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
-        print(
-            f"::warning::Listing merged PRs failed ({e}); searching per package",
-            file=sys.stderr,
-        )
-        return False
+    listing of the PRs merged since (listed: the digest's, since that same
+    commit, else listed here). Returns False, changing nothing, when there's
+    no listing and no token, or the listing fails (the sync then searches
+    per package)."""
+    if listed is not None:
+        merged, since = listed, "the digest"
+    else:
+        tok = github.token()
+        if not tok:
+            return False
+        try:
+            since = channel_date(tok, revision)
+            if not since:
+                raise ValueError(
+                    f"no commit date for the channel's revision {revision}"
+                )
+            merged = list_merged(tok, since, now)
+        except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
+            print(
+                f"::warning::Listing merged PRs failed ({e}); searching per package",
+                file=sys.stderr,
+            )
+            return False
     by_package = {}
     for pr in merged:
         package = (pr.get("title") or "").split(":", 1)[0]

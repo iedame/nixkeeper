@@ -87,10 +87,14 @@ still in the range and has no such patch; besides those, nixpkgs' own insecure m
 Repology's flag still count. The
 digest is used once it has read the tracker through, while under 3 days
 old. GitHub's open PRs and issues aren't searched package by
-package: each sync lists all of nixpkgs' open ones (about 120 requests) and
-the PRs merged into master since the channel's commit (about 10), and finds
-each package's counts and update PRs in their titles, every package daily
-(searched per package only when a listing fails). nixkeeper doesn't ask
+package: they come from
+[nixkeeper-prs](https://github.com/iedame/nixkeeper-prs), a digest of
+every open PR and issue of nixpkgs and the PRs merged into master since the
+channel's commit, made hourly, and each package's counts and update PRs are
+found in their titles, every package daily. When the digest is over 6
+hours old, or its merged PRs were listed since another channel commit,
+the sync lists them itself (about 120 requests for the open ones, about
+10 for the merged), and searches per package only when that fails too. nixkeeper doesn't ask
 twice for what can't have changed: a package's Repology project is the one
 the last sync found, a package whose bot logs haven't changed since (the log
 site's index says when each last changed) isn't listed again, a release page
