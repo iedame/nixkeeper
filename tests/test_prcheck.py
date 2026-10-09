@@ -6,7 +6,7 @@ import unittest
 from unittest import mock
 
 from nixkeeper import config, datastore, notify, prcheck
-from nixkeeper.sources import github
+from nixkeeper.sources import github, prs_digest
 
 URL = "https://github.com/NixOS/nixpkgs/pull/"
 
@@ -219,3 +219,69 @@ class PRCheck(unittest.TestCase):
         wesnoth, data = index["packages"]
         self.assertEqual(data["openPR"], wesnoth["openPR"])
         self.assertEqual(data["openPR"]["number"], 9)
+
+    # With nixkeeper-prs' digest: every outdated package from its lists, the
+    # maintainers' packages searched for directly too.
+    def run_with(self, digest, answers):
+        with mock.patch.object(prs_digest, "load", return_value=digest):
+            return self.run_check(answers)
+
+    def test_the_maintainers_searched_the_others_not(self):
+        self.publish(
+            row("unciv", lists=["maintained"]),
+            row("wesnoth-devel", lists=["gaming"]),
+            row("xonotic"),  # not on a list: the rest of nixpkgs
+        )
+        digest = {
+            "open": (
+                [
+                    pr(7, "unciv: 1.19.24 -> 1.19.28"),
+                    pr(8, "wesnoth-devel: 1.19.24 -> 1.19.28"),
+                    pr(9, "xonotic: 1.19.24 -> 1.19.28"),
+                ],
+                [],
+            ),
+            "merged": [pr(10, "xonotic: 1.19.24 -> 1.19.27")],
+            "facts": prs_digest.facts(
+                [
+                    {
+                        "n": 8,
+                        "title": "wesnoth-devel: 1.19.24 -> 1.19.28",
+                        "mergeBot": {"ready": True},
+                        "mergeable": "MERGEABLE",
+                    }
+                ],
+                [],
+                [],
+            ),
+        }
+        index, _, searched = self.run_with(
+            digest,
+            {
+                "state:open in:title unciv": [pr(7, "unciv: 1.19.24 -> 1.19.28")],
+                f"merged:>={SINCE} in:title unciv": [],
+            },
+        )
+        unciv, wesnoth, xonotic = index["packages"]
+        # Only the maintainers' package searched for.
+        self.assertTrue(searched)
+        self.assertTrue(all("unciv" in q for q in searched))
+        self.assertEqual(unciv["openPR"]["number"], 7)
+        self.assertEqual(wesnoth["openPR"]["number"], 8)
+        self.assertEqual(wesnoth["openPR"]["facts"], {"mergeBot": "ready"})
+        self.assertEqual(xonotic["openPR"]["number"], 9)
+        self.assertEqual(xonotic["masterPR"]["number"], 10)
+
+    def test_a_stale_digest_searches_as_before(self):
+        self.publish(row("wesnoth-devel", lists=["gaming"]))
+        index, _, searched = self.run_with(
+            {"open": None, "merged": None},
+            {
+                "state:open in:title wesnoth-devel": [
+                    pr(8, "wesnoth-devel: 1.19.24 -> 1.19.28")
+                ],
+                "is:merged": [],
+            },
+        )
+        self.assertTrue(any("wesnoth-devel" in q for q in searched))
+        self.assertEqual(index["packages"][0]["openPR"]["number"], 8)

@@ -40,6 +40,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- The hourly PR check takes every outdated package's update PRs (open,
+  merged into master, and what nixkeeper-prs found of them) from
+  nixkeeper-prs' digest: with every package, all of nixpkgs' every hour
+  instead of the lists' only, with no search. The maintainers' own packages
+  (the "maintained" list) are still searched for directly, for the
+  freshest "on master" (the digest is up to an hour old); other lists' and
+  teams' aren't, so they can grow freely. Without a usable digest, as
+  before.
+
 - The sync workflow ("Data: sync", still `data-daily.yml`) starts every 3
   hours and syncs when the last sync is due: every 3 hours on the community
   instance (nixkeeper.com: builds, vulnerabilities, bot attempts, PRs and
