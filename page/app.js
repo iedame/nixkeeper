@@ -2947,6 +2947,12 @@ function githubSection(pkg) {
   const f = pr?.facts;
   if (f) {
     const said = [
+      f.fixesBuild &&
+        fact(
+          '',
+          'touches its failing build',
+          'It changes the package while its build fails on Hydra: maybe its fix',
+        ),
       f.mergeBot === 'ready' &&
         fact(
           'ok',
