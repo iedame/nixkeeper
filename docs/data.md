@@ -322,7 +322,21 @@ behind the newest devel version elsewhere (`refVersion`).
 
 `openPR` and `masterPR`: `number`, `title`, `url`, `draft`, `base` (the
 branch it targets), and `from` / `to` (the versions in its title,
-`name: from -> to`).
+`name: from -> to`). `openPR` also has `facts` (the full row only), what
+nixkeeper-prs found of it: `mergeBot` (`ready`: a maintainer can merge
+it with the merge bot, CI green and no conflict; `eligible`: once those
+are sorted), `state` (`overtaken`, `downgrade`, `snapshotToRelease`,
+`preRelease`) with nixpkgs' version `now`, `blocksBot` (the day
+nixpkgs-update is expected to try the update it blocks, or `true`), and
+`duplicates` (open PRs with the same diff or change, or for the same
+package and branch).
+
+From nixkeeper-prs too, the full row only, at most 5 of each:
+
+| Field | Meaning |
+|---|---|
+| `fixPRs` | open PRs (not drafts) touching the package while its build fails on Hydra, maybe its fix: `[{"number", "title", "url"}]` |
+| `issueChecks` | its open issues nixkeeper-prs checked, where there's something to do: `[{"number", "title", "url", "kind", "verdict", "condition"?, "now"?}]`; `kind` `build` (a build failure: `verdict` `builds`, on Hydra now, a candidate to close unless `condition`, the title adding one only a person can check; or `failing`, still), or `update` (an update request: `done`, nixpkgs has the version asked or newer, `now`; or `partly`, moved on but not that far) |
 
 ### Builds (Hydra)
 

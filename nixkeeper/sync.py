@@ -259,7 +259,8 @@ def main():
     # of sets updated in bulk: their sets are updated as a whole.
     digest = prs_digest.load(now, revision) or {}
     if digest.get("open") and github_bulk.add_counts(shown, now, digest["open"]):
-        pass  # noted by prs_digest
+        # What the digest found of each package's PRs and issues (its panel).
+        prs_digest.add_facts(shown, digest)
     elif github_bulk.add_counts(shown, now):
         about.note("github", True)  # listed during the sync
     else:

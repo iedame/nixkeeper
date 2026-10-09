@@ -27,6 +27,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   2.4.0 on GitHub, not released yet"). The sync still checks the lists'
   packages itself when the digest read them over a day ago.
 
+- **On GitHub**, in a package's panel: what nixkeeper-prs found of its
+  PRs and issues. Its update PR ready for the merge bot (or eligible),
+  overtaken or a downgrade, blocking the update bot (and when the bot
+  would try), or duplicated by another; open PRs touching it while its
+  build fails on Hydra; and its issues with something to do, a build
+  failure that builds on Hydra now or an update request nixpkgs has met
+  (candidates to close), or one still failing. The hourly PR check keeps
+  an update PR's facts while it finds the same PR.
+
 ### Changed
 
 - nixpkgs' open PRs and issues, and the PRs merged into master since the

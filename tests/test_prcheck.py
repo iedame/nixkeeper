@@ -114,6 +114,25 @@ class PRCheck(unittest.TestCase):
         self.assertFalse(any("backrest" in q for q in searched))
         notified.assert_called_once()
 
+    def test_the_digests_facts_kept_for_the_same_pr(self):
+        facts = {"mergeBot": "ready"}
+        self.publish(
+            {**row("unciv"), "openPR": {"number": 7, "to": "4.22.5", "facts": facts}},
+            {**row("wesnoth-devel"), "openPR": {"number": 8, "facts": facts}},
+        )
+        index, _, _ = self.run_check(
+            {
+                "state:open in:title unciv": [pr(7, "unciv: 4.22.1 -> 4.22.5")],
+                "state:open in:title wesnoth-devel": [
+                    pr(9, "wesnoth-devel: 1.19.24 -> 1.19.29")
+                ],
+                "is:merged": [],
+            }
+        )
+        unciv, wesnoth = index["packages"]
+        self.assertEqual(unciv["openPR"]["facts"], facts)
+        self.assertNotIn("facts", wesnoth["openPR"])  # another PR now
+
     def test_merged_into_master_is_on_master_before_hydra(self):
         self.publish(row("wesnoth-devel"))
         index, _, _ = self.run_check(

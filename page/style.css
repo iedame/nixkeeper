@@ -2177,6 +2177,33 @@ tbody tr.row.open td {
 .pd-sec .other-label {
   margin-top: 0;
 }
+/* What nixkeeper-prs found of a package's PRs and issues (githubSection). */
+.gh-checks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+.gh-fact {
+  display: inline-block;
+  font-size: 11px;
+  padding: 1px 7px;
+  border-radius: 20px;
+  background: var(--hairline);
+  color: var(--ink-soft);
+  margin-right: 4px;
+}
+.gh-fact.ok {
+  background: var(--ok-soft);
+  color: var(--ok-devel);
+}
+.gh-fact.warn {
+  background: var(--warn-soft);
+  color: var(--warn);
+}
 .pd-sec .repo-chips,
 .pd-sec .log-excerpt {
   margin-bottom: 0;

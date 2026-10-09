@@ -2925,6 +2925,74 @@ function githubLinks(pkg) {
   return html`<span class="gh-links">${link('pr', 'pulls', 'PRs', pkg.openPRs)}${link('issue', 'issues', 'issues', pkg.openIssues)}</span>`;
 }
 
+// What nixkeeper-prs found of a package's PRs and issues (the daily sync's
+// facts, nixkeeper/sources/prs_digest.py): its update PR's merge-bot
+// eligibility, state, bot blocking and duplicates; open PRs touching it
+// while its build fails on Hydra; and its issues checked against Hydra and
+// nixpkgs now. Nothing when there's none.
+const PR_STATES = {
+  superseded: (now) => `superseded: nixpkgs has ${now} already`,
+  overtaken: (now) => `overtaken: nixpkgs moved to ${now}, a rebase needed`,
+  downgrade: () => 'a downgrade',
+  snapshotToRelease: () => 'from a snapshot back to a release',
+  preRelease: () => 'to a pre-release, by its suffix',
+};
+function githubSection(pkg) {
+  const link = (item) =>
+    html`<a class="files-link" href="${safeUrl(item.url)}" target="_blank" rel="noopener">#${item.number} ↗</a>`;
+  const fact = (kind, text, title) =>
+    html`<span class="gh-fact ${kind}"${title ? html` title="${title}"` : ''}>${text}</span>`;
+  const lines = [];
+  const pr = pkg.openPR;
+  const f = pr?.facts;
+  if (f) {
+    const said = [
+      f.mergeBot === 'ready' &&
+        fact(
+          'ok',
+          'ready for the merge bot',
+          'CI green, no conflict: a maintainer of the package can merge it by commenting @NixOS/nixpkgs-merge-bot merge',
+        ),
+      f.mergeBot === 'eligible' &&
+        fact(
+          '',
+          'merge-bot eligible',
+          'The merge bot could merge it once CI is green and any conflict is sorted out',
+        ),
+      f.state && fact('warn', (PR_STATES[f.state] || (() => f.state))(f.now || '?')),
+      f.blocksBot &&
+        fact(
+          'warn',
+          `blocks the update bot${typeof f.blocksBot === 'string' ? ` (its next try ~${shortDay(f.blocksBot)})` : ''}`,
+          'It has the very title nixpkgs-update would use, so the bot skips this update while it is open',
+        ),
+      f.duplicates?.length &&
+        html`<span class="gh-fact">also open: ${f.duplicates.map((n, i) => html`${i ? ' ' : ''}<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${n}" target="_blank" rel="noopener">#${n}</a>`)}</span>`,
+    ].filter(Boolean);
+    if (said.length)
+      lines.push(html`<li>Update PR ${link(pr)} <span class="mono">${pr.to}</span>: ${said}</li>`);
+  }
+  for (const fix of pkg.fixPRs || [])
+    lines.push(
+      html`<li>${link(fix)} ${fix.title} ${fact('', 'touches it while its build fails on Hydra', 'Maybe its fix')}</li>`,
+    );
+  const ISSUE = {
+    builds: (c) =>
+      c.condition
+        ? fact('warn', 'builds on Hydra now, but the title adds a condition to check')
+        : fact('ok', 'builds on Hydra now: a candidate to close'),
+    failing: () => fact('', 'still failing on Hydra'),
+    done: (c) => fact('ok', `nixpkgs has ${c.now || 'it'}: a candidate to close`),
+    partly: (c) =>
+      fact('warn', `nixpkgs moved to ${c.now || 'a newer version'}, not to the one asked`),
+  };
+  for (const c of pkg.issueChecks || [])
+    lines.push(html`<li>${link(c)} ${c.title} ${(ISSUE[c.verdict] || (() => c.verdict))(c)}</li>`);
+  return lines.length
+    ? html`<section class="pd-sec"><h4 class="other-label">On GitHub</h4><ul class="gh-checks">${lines}</ul></section>`
+    : '';
+}
+
 // A package's name, able to wrap after each dot (python313Packages. /
 // requests) and at its hyphens, as a long one would otherwise widen the
 // table past the screen for every row.
@@ -3328,6 +3396,7 @@ function fillDetail(pkg, el, entries) {
     </div></section>`
         : ''
     }
+    ${githubSection(pkg)}
     ${people.length ? html`<div class="pd-people">${people}</div>` : ''}
     <div class="pd-links">${links}<button type="button" class="pd-why" aria-expanded="${open}">${icon('chevron-down')}Why?</button></div>
   </div>`;

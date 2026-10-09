@@ -29,7 +29,18 @@ def main():
     print(f"PR check: {', '.join(row['name'] for row in outdated)}", file=sys.stderr)
     # Merged PRs since the channel's commit only: those it doesn't have yet.
     since = github_bulk.merged_since(nixpkgs.channel_revision())
+    # What the daily sync took from nixkeeper-prs about each update PR:
+    # kept while the search finds the same one.
+    facts = {
+        row["name"]: row["openPR"]
+        for row in outdated
+        if (row.get("openPR") or {}).get("facts")
+    }
     github.add_update_prs(outdated, merged_since=since)
+    for row in outdated:
+        pr, before = row.get("openPR"), facts.get(row["name"])
+        if pr and before and pr["number"] == before["number"]:
+            pr["facts"] = before["facts"]
     # Packages that follow another (follows.py): the same PRs, as its own.
     follows.apply_prs(packages, follows.recorded(packages))
     # A merged PR can supersede a failed bot attempt before Hydra builds it.

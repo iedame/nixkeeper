@@ -11,7 +11,13 @@ filter the list, as do the list names beside them and a row's platform tags
 stay in the address, so a view can be shared. The search box matches names;
 `@handle` instead lists a maintainer's packages (their whole GitHub handle,
 as nixpkgs lists it in `meta.maintainers`), and `@none` the packages with no
-maintainer. The details panel lists each package's maintainers: clicking one
+maintainer. The details panel's **On GitHub** section says what
+nixkeeper-prs found of the package's PRs and issues: its update PR ready
+for the merge bot, superseded or overtaken, blocking the update bot or
+duplicated; open PRs touching it while its build fails on Hydra (maybe its
+fix); and its issues that look done (a build failure that builds on Hydra
+now, an update request nixpkgs has met) or still fail. The panel lists
+each package's maintainers: clicking one
 searches for theirs, and the address becomes `?maintainer=yourhandle`, a
 link to your own (`?q=@yourhandle`, as it was first written, still opens
 it and becomes that). Its teams
