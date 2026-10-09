@@ -2,11 +2,13 @@
 revision, where nixpkgs marks packages broken, and where their sources come
 from."""
 
+import hashlib
 import json
 import os
 import subprocess
 import sys
 import tempfile
+import threading
 import urllib.error
 import urllib.request
 
@@ -80,14 +82,79 @@ BROKEN_EXPR = """pkgs: map (attr:
   in if r.success then r.value else null) {attrs}"""
 
 
+# What evaluate answered, kept between syncs (data/evaluations.json) while
+# nixpkgs' commit hasn't moved: the channel moves once or twice a day, so a
+# sync every few hours would otherwise fetch and evaluate the same commit
+# again for the same answers. Only once the sync turns it on (keep_answers):
+# {"answers": {"<revision> <system> <expression's hash>": {attr: answer}},
+# "used": the keys asked this run}.
+EVALUATIONS = "evaluations.json"
+_kept = None
+_kept_lock = threading.Lock()
+
+
+def keep_answers(out_dir=None):
+    """From now on, keep evaluate's answers, starting from those the last
+    sync wrote (EVALUATIONS in out_dir). Returns how many it had."""
+    global _kept
+    found = {}
+    try:
+        with open(os.path.join(out_dir or config.OUT_DIR, EVALUATIONS)) as f:
+            found = json.load(f).get("answers") or {}
+    except (OSError, ValueError, AttributeError):
+        pass
+    _kept = {"answers": found, "used": set()}
+    return sum(len(v) for v in found.values())
+
+
+def kept_answers():
+    """The answers this run used, to write as EVALUATIONS (those of commits
+    no longer asked about are dropped), or None when they aren't kept."""
+    if _kept is None:
+        return None
+    with _kept_lock:
+        return {
+            "answers": {
+                key: _kept["answers"][key]
+                for key in sorted(_kept["used"])
+                if key in _kept["answers"]
+            }
+        }
+
+
+def stop_keeping():
+    """Stop keeping evaluate's answers (once the sync has written them)."""
+    global _kept
+    _kept = None
+
+
 def evaluate(revision, system, expr, attrs):
     """expr (a function of legacyPackages, with {attrs} where the list of
     attributes goes) evaluated at the channel's revision for system: its
-    JSON answer. The attributes are read from a file, not put on nix's
-    command line: Linux limits one argument to 128 KB, a few thousand
-    attribute names (reading a file outside the store takes --impure; what's
-    evaluated is still that revision). Raises with nix's last line of output
-    if that fails."""
+    JSON answer, one value per attribute. The attributes are read from a
+    file, not put on nix's command line: Linux limits one argument to 128
+    KB, a few thousand attribute names (reading a file outside the store
+    takes --impure; what's evaluated is still that revision). Raises with
+    nix's last line of output if that fails. While answers are kept
+    (keep_answers), only the attributes not answered at that revision yet
+    are evaluated (none, most syncs between channel moves); not for a
+    branch name, which moves."""
+    if _kept is None or revision == config.NIXPKGS_BRANCH:
+        return _evaluate(revision, system, expr, attrs)
+    key = f"{revision} {system} {hashlib.sha256(expr.encode()).hexdigest()[:12]}"
+    with _kept_lock:
+        _kept["used"].add(key)
+        known = _kept["answers"].setdefault(key, {})
+        missing = [a for a in dict.fromkeys(attrs) if a not in known]
+    if missing:
+        values = _evaluate(revision, system, expr, missing)
+        with _kept_lock:
+            known.update(zip(missing, values, strict=True))
+    return [known[a] for a in attrs]
+
+
+def _evaluate(revision, system, expr, attrs):
+    """evaluate's answer from nix itself."""
     with tempfile.TemporaryDirectory() as tmp:
         path = os.path.join(tmp, "attrs.json")
         with open(path, "w") as f:

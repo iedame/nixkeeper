@@ -157,20 +157,21 @@ def fingerprint(check):
 def due(name, check, row, before, now):
     """Whether an update check should run now. A frequent one always does
     (it's meant to be quick: browsers' security fixes). The rest run daily
-    while something's going on: never run, edited since, failed last time,
-    found a newer version, or nixpkgs' version changed since. Otherwise, with
-    nothing new found, every QUIET_DAYS (schedule.due). before: the row at
-    the last sync (None if new)."""
+    while something's going on: found a newer version (schedule.daily); at
+    once when never run, edited since, failed last time, or nixpkgs' version
+    changed since. Otherwise, with nothing new found, every QUIET_DAYS
+    (schedule.due). before: the row at the last sync (None if new)."""
     last = (before or {}).get("upstream") or {}
     if (
         check.get("frequent")
         or not last.get("checkedAt")
         or last.get("rule") != fingerprint(check)
         or "upstream" in ((before or {}).get("notRefreshed") or {})
-        or last.get("newer")
         or (before or {}).get("nixVersion") != row.get("nixVersion")
     ):
         return True
+    if last.get("newer"):
+        return schedule.daily(last["checkedAt"], now)
     return schedule.due(name, last["checkedAt"], now)
 
 

@@ -40,6 +40,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- What's asked daily, or every 3 days when quiet, counts time, not syncs:
+  a sync run several times a day asks Hydra, Repology and the update
+  checks no more often than a daily one (a quiet package once on its slot
+  day; one with something going on once every 22 hours), and what changed
+  (a version moved, a new package, an edited rule) at once. nixpkgs'
+  evaluations (`meta.broken`, the sources worked-out checks come from, CVE
+  patches) are kept between syncs while the channel's commit hasn't moved
+  (`data/evaluations.json`). Ready for syncing more often than daily.
+
 - nixpkgs' open PRs and issues, and the PRs merged into master since the
   channel's commit, come from nixkeeper-prs' digest (made hourly) instead
   of the sync listing them itself: no GitHub token is needed for a

@@ -139,6 +139,10 @@ def main():
     bulk_attrs = {a for attrs, _ in bulk.values() for a in attrs if a in nixpkgs}
     about.taken()  # a run's sources only (a test may have run one before)
     revision = nixpkgs_source.channel_revision()
+    # nixpkgs' evaluations (meta.broken, sources, patches): the last sync's
+    # answers reused while the channel's commit hasn't moved.
+    if kept := nixpkgs_source.keep_answers():
+        print(f"nixpkgs evaluations: {kept:,} answers kept", file=sys.stderr)
     if revision == config.NIXPKGS_BRANCH:  # not fetched: links use the branch
         about.note("nixpkgs", False, "the channel's revision couldn't be read")
     else:
@@ -315,7 +319,9 @@ def main():
         )
         if everything
         else None,
+        kept={nixpkgs_source.EVALUATIONS: nixpkgs_source.kept_answers()},
     )
+    nixpkgs_source.stop_keeping()
     # With every package, what changed for the lists' own packages only.
     notify.notify(
         {**previous, "packages": [r for r in previous["packages"] if r.get("lists")]}

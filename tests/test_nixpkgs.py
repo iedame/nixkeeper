@@ -1,7 +1,9 @@
 import io
 import json
+import os
 import re
 import subprocess
+import tempfile
 import unittest
 import urllib.error
 from unittest import mock
@@ -18,6 +20,56 @@ def listed(cmd):
     while the command runs: the file is gone afterwards)."""
     with open(json.loads(READ_FILE.search(cmd[-1]).group(1))) as f:
         return json.load(f)
+
+
+class KeptAnswers(unittest.TestCase):
+    """Evaluations kept between syncs while nixpkgs' commit hasn't moved."""
+
+    def setUp(self):
+        self.dir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.dir.cleanup)
+        self.addCleanup(nixpkgs.stop_keeping)
+        self.asked = []
+
+    def run_eval(self, cmd, **kwargs):
+        attrs = listed(cmd)
+        self.asked.append(attrs)
+        return subprocess.CompletedProcess(
+            cmd, 0, stdout=json.dumps([a == "broken-one" for a in attrs])
+        )
+
+    def test_the_same_commit_evaluated_once(self):
+        with mock.patch("subprocess.run", side_effect=self.run_eval):
+            self.assertEqual(nixpkgs.keep_answers(self.dir.name), 0)
+            first = nixpkgs.broken({"a", "broken-one"}, "abc123")
+            # Written for the next sync, which reads them back.
+            kept = nixpkgs.kept_answers()
+            with open(os.path.join(self.dir.name, nixpkgs.EVALUATIONS), "w") as f:
+                json.dump(kept, f)
+            self.assertEqual(nixpkgs.keep_answers(self.dir.name), 6)
+            self.asked.clear()
+            again = nixpkgs.broken({"a", "broken-one"}, "abc123")
+            self.assertEqual(again, first)
+            self.assertEqual(self.asked, [])  # nothing evaluated again
+            # A package new to the lists: only it, once per platform.
+            nixpkgs.broken({"a", "new"}, "abc123")
+            self.assertEqual(self.asked, [["new"]] * 3)
+            # The channel moved: evaluated again; the old commit's answers
+            # aren't written any more.
+            self.asked.clear()
+            nixpkgs.keep_answers(self.dir.name)
+            nixpkgs.broken({"a"}, "def456")
+            self.assertEqual(self.asked, [["a"]] * 3)
+            self.assertTrue(
+                all(k.startswith("def456 ") for k in nixpkgs.kept_answers()["answers"])
+            )
+
+    def test_not_kept_unless_the_sync_asks(self):
+        with mock.patch("subprocess.run", side_effect=self.run_eval):
+            nixpkgs.broken({"a"}, "abc123")
+            nixpkgs.broken({"a"}, "abc123")
+        self.assertEqual(len(self.asked), 6)
+        self.assertIsNone(nixpkgs.kept_answers())
 
 
 class Broken(unittest.TestCase):

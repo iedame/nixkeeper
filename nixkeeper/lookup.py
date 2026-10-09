@@ -9,11 +9,11 @@ from .sources import about, repology, versions_digest
 
 
 def due(pname, rows, nixpkgs, now):
-    """Whether pname should be looked up on Repology now. Daily while
-    something's going on (at the last sync, rows: its rows then): new, never
-    dated, its lookup failed, outdated, flagged vulnerable, or nixpkgs'
-    version in the channel isn't the one Repology had (it changed since, or
-    Repology lags). Otherwise every QUIET_DAYS (schedule.due): new releases
+    """Whether pname should be looked up on Repology now. At once when it's
+    new, never dated, its lookup failed, or nixpkgs' version in the channel
+    isn't the one Repology had (it changed since, or Repology lags); daily
+    (schedule.daily) while it's outdated or flagged vulnerable (at the last
+    sync, rows: its rows then). Otherwise every QUIET_DAYS (schedule.due): new releases
     still show within a few days, and most packages are updated by
     nixpkgs-update, which comes round every ten days or so."""
     if not rows:
@@ -25,12 +25,16 @@ def due(pname, rows, nixpkgs, now):
         if (
             not row.get("repologyCheckedAt")
             or row.get("staleSince")
-            or row.get("nixStatus") in ("outdated", "legacy")
-            or row.get("nixVulnerable")
             or (versions and row.get("nixVersion") not in versions)
         ):
             return True
-    return schedule.due(pname, min(r["repologyCheckedAt"] for r in rows), now)
+    checked = min(r["repologyCheckedAt"] for r in rows)
+    if any(
+        r.get("nixStatus") in ("outdated", "legacy") or r.get("nixVulnerable")
+        for r in rows
+    ):
+        return schedule.daily(checked, now)
+    return schedule.due(pname, checked, now)
 
 
 def collect_projects(

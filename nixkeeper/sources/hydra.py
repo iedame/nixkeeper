@@ -175,28 +175,30 @@ QUIET = {"ok", "notBuilt"}
 
 
 def due(job, nixpkgs, before, now, broken=None):
-    """Whether Hydra should be asked about job (attr, system) now. Every
-    sync, unless the job has nothing going on: built OK (or never built on
-    that platform), not newly marked broken, the package's version in the
-    channel the same as the one Hydra built, and at the last sync not
-    outdated, not ahead on master, with no update PR, and read fine. Those
-    are asked every QUIET_DAYS (schedule.due). before: the last run's
-    (builds by job, rows by attribute), from last_run."""
+    """Whether Hydra should be asked about job (attr, system) now. At once
+    when it's new, the package's version in the channel isn't the one Hydra
+    built, or it wasn't read fine last time. Daily (schedule.daily) while
+    something's going on: not built OK (nor never built on that platform),
+    marked broken, or at the last sync outdated, ahead on master, or with an
+    update PR. Otherwise every QUIET_DAYS (schedule.due). before: the last
+    run's (builds by job, rows by attribute), from last_run."""
     attr, system = job
     builds, rows = before
     old, row = builds.get(job), rows.get(attr)
     if old is None or row is None:
         return True  # new
     version = old.get("version")
+    if (version and version != nixpkgs[attr].get("version")) or "builds" in (
+        row.get("notRefreshed") or {}
+    ):
+        return True
     if (
         old.get("status") not in QUIET
         or system in (broken or {}).get(attr, [])
-        or (version and version != nixpkgs[attr].get("version"))
-        or "builds" in (row.get("notRefreshed") or {})
         or is_outdated(row)
         or any(row.get(k) for k in ("master", "openPR", "masterPR"))
     ):
-        return True
+        return schedule.daily(old.get("checkedAt"), now)
     return schedule.due(attr, old.get("checkedAt"), now)
 
 

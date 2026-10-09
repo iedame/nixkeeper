@@ -47,7 +47,11 @@ gets one request at a time. It's also asked less about what's quiet: a job
 that built fine, for a package that's up to date with nothing changed or
 pending, is asked every 3 days (a third of them each day) instead of daily,
 so a new build failure there can show up to 3 days late; anything failing,
-outdated, newly changed or with an update PR is asked daily. The builds
+outdated or with an update PR is asked daily, and what changed (a new
+version in nixpkgs, a new package) at once. "Daily" and "every 3 days"
+count time, not syncs: a sync run several times a day asks no more often.
+Likewise nixpkgs is evaluated (`meta.broken`, sources, patches) only for
+a commit, or packages, it hasn't evaluated yet. The builds
 panel says when they were last checked. The same goes for update checks that
 found nothing newer, unless they're marked `frequent`; and for Repology: a
 package that's up to date, not flagged vulnerable and unchanged in nixpkgs

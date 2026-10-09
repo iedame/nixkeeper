@@ -694,6 +694,19 @@ class QuietChecks(unittest.TestCase):
         self.assertEqual(r["upstream"], before["upstream"])
         self.assertNotIn("notRefreshed", r)
 
+    def test_a_newer_version_found_is_checked_daily(self):
+        now = self.not_its_day()
+        when = datetime.fromisoformat(now)
+        for hours, expected in ((3, False), (22, True)):
+            with self.subTest(hours=hours):
+                before = self.last(
+                    now,
+                    newer=True,
+                    checkedAt=(when - timedelta(hours=hours)).isoformat(),
+                )
+                _, asked = self.check(BBEDIT, before, now)
+                self.assertEqual(asked, expected)
+
     def test_frequent_always_runs(self):
         now = self.not_its_day()
         check = {**BBEDIT, "frequent": True}
