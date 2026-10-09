@@ -63,7 +63,7 @@ most of them broken already; R's card counts those it doesn't).
 
 It starts from an overview of all of nixpkgs: the fully checked packages'
 outdated, failing, vulnerable and broken counts with their trends (from
-`history.json`, a point a daily sync), a search (and every maintainer, by
+`history.json`, a point a day: the day's last sync's), a search (and every maintainer, by
 handle), the newest and longest-standing failures, what was fixed in the
 last week, and the sets updated in bulk. Each opens a list: what needs
 attention, a maintainer's packages (`?maintainer=handle`), a team's, a
@@ -76,7 +76,8 @@ GitHub runs scheduled workflows on a best-effort basis and skips runs when
 it's busy: some days the hourly digests ran a handful of times. Any machine
 that stays on can start them on time instead, through GitHub's API:
 `nix run .#start-runs`, hourly at :15 UTC, starts the hourly updates every
-hour (the daily sync instead at 06 UTC) and each digest's run when it's due
+hour (the sync instead every 3 hours, at 00, 03, 06... UTC, which syncs
+when it's due by the instance's interval) and each digest's run when it's due
 ([scripts/start-runs.sh](../scripts/start-runs.sh) lists when; `-- --dry-run`
 shows what it would start now, without starting anything). The workflows
 keep their own schedules as a fallback: a run started twice finds nothing
@@ -90,11 +91,11 @@ write**: it can start and cancel runs, nothing else.
 ### Whose runs
 
 By default it starts iedame's: the community instance's hourly updates and
-daily sync, and the digests (nixkeeper-hydra, -updates, -versions,
+sync, and the digests (nixkeeper-hydra, -updates, -versions,
 -vulnerabilities and -prs). Elsewhere, two variables say which:
 
 - `NIXKEEPER_START_REPO`: your nixkeeper repository (`you/nixkeeper`),
-  whose hourly updates and daily sync it starts; empty for none.
+  whose hourly updates and sync it starts; empty for none.
 - `NIXKEEPER_START_DIGESTS`: the owner of the digest repositories whose
   runs it starts; empty for none. A fork reads iedame's digests (unless
   you point `NIXKEEPER_*_DIGEST` at your own), which iedame keeps
@@ -102,8 +103,10 @@ daily sync, and the digests (nixkeeper-hydra, -updates, -versions,
 
 So for a fork, `NIXKEEPER_START_REPO=you/nixkeeper` and
 `NIXKEEPER_START_DIGESTS=` (empty), with a token for your nixkeeper
-repository only. Your fork's daily sync also catches up at 14:00 UTC on
-its own when the one at 06:00 was skipped, so this is optional for a fork.
+repository only. Your fork's sync workflow starts every 3 hours on its own
+too, and syncs once a day is due (or every `NIXKEEPER_SYNC_HOURS`, a
+repository variable), so a skipped run is caught up within 3 hours: this
+is optional for a fork.
 
 ### On macOS, with nix-darwin
 

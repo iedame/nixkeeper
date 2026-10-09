@@ -40,6 +40,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- The sync workflow ("Data: sync", still `data-daily.yml`) starts every 3
+  hours and syncs when the last sync is due: every 3 hours on the community
+  instance (nixkeeper.com: builds, vulnerabilities, bot attempts, PRs and
+  GitHub releases at most ~3 hours old instead of up to a day), daily on a
+  fork, or every `NIXKEEPER_SYNC_HOURS` (a repository variable). The 14:00
+  catch-up is gone: a skipped run is caught up within 3 hours. `start-runs`
+  starts it every 3 hours (if_older "auto"), the hourly updates the other
+  hours.
+
 - What's asked daily, or every 3 days when quiet, counts time, not syncs:
   a sync run several times a day asks Hydra, Repology and the update
   checks no more often than a daily one (a quiet package once on its slot
