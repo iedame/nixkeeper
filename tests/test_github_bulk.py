@@ -256,6 +256,20 @@ class MasterPRs(unittest.TestCase):
             self.assertTrue(github_bulk.add_master_prs(rows, "rev", self.NOW, merged))
         listed.assert_not_called()
         self.assertEqual(rows[0]["masterPR"]["number"], 4)
+        # Who opened and merged it, from the digest: kept for the fix's credit.
+        merged = [
+            {
+                **pr(4, "wesnoth-devel: 1.19.24 -> 1.19.29"),
+                "author": "r-ryantm",
+                "mergedBy": "alice",
+            }
+        ]
+        with mock.patch("sys.stderr", io.StringIO()):
+            github_bulk.add_master_prs(rows, "rev", self.NOW, merged)
+        self.assertEqual(
+            (rows[0]["masterPR"]["author"], rows[0]["masterPR"]["mergedBy"]),
+            ("r-ryantm", "alice"),
+        )
 
     def test_failure_changes_nothing(self):
         rows = [{"name": "x", "searchTerm": "x", "masterPR": {"number": 1}}]

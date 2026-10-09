@@ -822,6 +822,66 @@ class Fixed(unittest.TestCase):
             self.fixes(before, [row("a", update=newer, unread=["update"])]), []
         )
 
+    def test_credited_to_the_pr(self):
+        master_pr = {"number": 7, "author": "alice", "mergedBy": "bob", "to": "2"}
+        before = [row("a", nixStatus="outdated", nixVersion="1", masterPR=master_pr)]
+        [fix] = history.fixes([row("a", nixVersion="2")], {"packages": before}, NOW)
+        self.assertEqual(
+            {k: fix[k] for k in ("pr", "author", "mergedBy")},
+            {"pr": 7, "author": "alice", "mergedBy": "bob"},
+        )
+        self.assertNotIn("likely", fix)
+        # A build fix: likely, to the PR merged since it began failing.
+        build_pr = {"number": 8, "author": "carol", "mergedBy": "nixpkgs-ci"}
+        failing = [
+            row(
+                "b",
+                failingSince="2026-09-01",
+                builds=[self.FAILED],
+                buildFixPR=build_pr,
+            )
+        ]
+        [fix] = history.fixes([row("b", builds=[self.OK])], {"packages": failing}, NOW)
+        self.assertEqual((fix["pr"], fix["likely"]), (8, True))
+        # No PR seen: no credit, never a wrong one.
+        plain = [row("c", nixStatus="outdated", nixVersion="1")]
+        [fix] = history.fixes([row("c", nixVersion="2")], {"packages": plain}, NOW)
+        self.assertNotIn("pr", fix)
+        # The overview's summary carries it.
+        summary = datastore.fixed_summary(
+            [
+                {
+                    "at": NOW,
+                    "name": "a",
+                    "kind": "update",
+                    "from": "1",
+                    "to": "2",
+                    "pr": 7,
+                    "author": "alice",
+                    "mergedBy": "bob",
+                }
+            ],
+            NOW,
+        )
+        self.assertEqual(
+            summary["update"]["newest"][0][4],
+            {"pr": 7, "author": "alice", "mergedBy": "bob"},
+        )
+
+    def test_kept_on_the_package_a_month(self):
+        old = {"at": "2026-09-01T06:00:00+00:00", "kind": "build"}
+        week = {"at": "2026-09-30T06:00:00+00:00", "kind": "build", "pr": 3}
+        before = {"packages": [row("a", recentFixes=[week, old]), row("b")]}
+        today = {"at": NOW, "name": "a", "kind": "update", "from": "1", "to": "2"}
+        rows = [row("a"), row("b")]
+        history.add_recent_fixes(rows, before, [today], NOW)
+        # Newest first, the month-old one gone; without the name.
+        self.assertEqual(
+            rows[0]["recentFixes"],
+            [{"at": NOW, "kind": "update", "from": "1", "to": "2"}, week],
+        )
+        self.assertNotIn("recentFixes", rows[1])
+
     def test_not_new_removed_or_in_a_set(self):
         failing = row("a", failingSince="2026-09-01", builds=[self.FAILED])
         self.assertEqual(self.fixes([], [row("a", builds=[self.OK])]), [])  # new

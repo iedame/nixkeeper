@@ -43,6 +43,8 @@ SHARD_ROWS = 500
 PANEL_ONLY = (
     "dataFile",
     "feed",
+    "buildFixPR",
+    "recentFixes",
     "fixPRs",
     "issueChecks",
     "otherPRs",
@@ -346,7 +348,9 @@ def with_fixed(fixed, new, run):
 def fixed_summary(fixed, run):
     """The manifest's "fixed": per kind, how many in the last
     FIXED_RECENT_DAYS days and the HIGHLIGHTS newest, each [name, at, from,
-    to] (from and to for updates, else null)."""
+    to] (from and to for updates, else null), and a fifth, its credit
+    ({"pr", "author"?, "mergedBy"?, "likely"?}: history.credit), when it
+    has one."""
     cutoff = _day_before(run, FIXED_RECENT_DAYS)
     out = {}
     for kind in ("build", "update", "bot"):
@@ -356,6 +360,17 @@ def fixed_summary(fixed, run):
             "count": len(mine),
             "newest": [
                 [f["name"], f["at"], f.get("from"), f.get("to")]
+                + (
+                    [
+                        {
+                            k: f[k]
+                            for k in ("pr", "author", "mergedBy", "likely")
+                            if k in f
+                        }
+                    ]
+                    if f.get("pr")
+                    else []
+                )
                 for f in newest[:HIGHLIGHTS]
             ],
         }

@@ -276,5 +276,80 @@ class Facts(unittest.TestCase):
         self.assertNotIn("dropPR", wine)
 
 
+class BuildFixPRs(unittest.TestCase):
+    MERGED = [
+        {
+            "number": 1,
+            "title": "wine: fix the build",
+            "url": "u1",
+            "merged": "2026-10-09T10:00:00Z",
+            "author": "alice",
+            "mergedBy": "bob",
+        },
+        {
+            "number": 2,
+            "title": "treewide: tidy",
+            "url": "u2",
+            "merged": "2026-10-09T12:00:00Z",
+            "packages": ["wine"],
+            "author": "carol",
+            "mergedBy": "nixpkgs-ci",
+        },
+        {  # treewide, wine only in passing: not credited
+            "number": 4,
+            "title": "treewide: remove explicit strictDeps",
+            "url": "u4",
+            "merged": "2026-10-09T13:00:00Z",
+            "packages": ["wine", "a", "b", "c"],
+        },
+        {  # marks it broken: Hydra stops building it, nothing fixed
+            "number": 5,
+            "title": "treewide: mark as broken on aarch64-linux",
+            "url": "u5",
+            "merged": "2026-10-09T14:00:00Z",
+            "packages": ["wine"],
+        },
+        {  # merged before the build began failing: not its fix
+            "number": 3,
+            "title": "foo: 1 -> 2",
+            "url": "u3",
+            "merged": "2026-10-01T00:00:00Z",
+        },
+    ]
+
+    def row(self, name, failing=True, since="2026-10-08T00:00:00Z"):
+        return {
+            "name": name,
+            "attrs": [name],
+            "builds": [{"status": "failed" if failing else "ok", "system": "x"}],
+            "failingSince": since,
+        }
+
+    def test_the_newest_merged_since_it_began_failing(self):
+        rows = [self.row("wine"), self.row("foo"), self.row("bar", failing=False)]
+        prs_digest.build_fix_prs(rows, self.MERGED, {"packages": []})
+        wine, foo, bar = rows
+        self.assertEqual(
+            wine["buildFixPR"],
+            {
+                "number": 2,
+                "title": "treewide: tidy",
+                "url": "u2",
+                "author": "carol",
+                "mergedBy": "nixpkgs-ci",
+                "merged": "2026-10-09T12:00:00Z",
+            },
+        )
+        self.assertNotIn("buildFixPR", foo)
+        self.assertNotIn("buildFixPR", bar)
+
+    def test_kept_while_failing_once_off_the_list(self):
+        kept = {"number": 9, "title": "wine: fix", "url": "u9"}
+        previous = {"packages": [{"name": "wine", "buildFixPR": kept}]}
+        rows = [self.row("wine"), self.row("gone", failing=False)]
+        prs_digest.build_fix_prs(rows, [], previous)
+        self.assertEqual(rows[0]["buildFixPR"], kept)
+
+
 if __name__ == "__main__":
     unittest.main()

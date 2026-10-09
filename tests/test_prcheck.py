@@ -241,7 +241,14 @@ class PRCheck(unittest.TestCase):
                 ],
                 [],
             ),
-            "merged": [pr(10, "xonotic: 1.19.24 -> 1.19.27")],
+            "merged": [
+                pr(10, "xonotic: 1.19.24 -> 1.19.27"),
+                {
+                    **pr(11, "unciv: 1.19.24 -> 1.19.27"),
+                    "author": "r-ryantm",
+                    "mergedBy": "alice",
+                },
+            ],
             "facts": prs_digest.facts(
                 [
                     {
@@ -259,10 +266,16 @@ class PRCheck(unittest.TestCase):
             digest,
             {
                 "state:open in:title unciv": [pr(7, "unciv: 1.19.24 -> 1.19.28")],
-                f"merged:>={SINCE} in:title unciv": [],
+                f"merged:>={SINCE} in:title unciv": [
+                    pr(11, "unciv: 1.19.24 -> 1.19.27")
+                ],
             },
         )
         unciv, wesnoth, xonotic = index["packages"]
+        # Found by the search too: who merged it kept, from the digest.
+        self.assertEqual(
+            (unciv["masterPR"]["number"], unciv["masterPR"]["mergedBy"]), (11, "alice")
+        )
         # Only the maintainers' package searched for.
         self.assertTrue(searched)
         self.assertTrue(all("unciv" in q for q in searched))

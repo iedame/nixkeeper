@@ -11,6 +11,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- **Credit for fixes**: each update fixed is credited to its update PR, with
+  who opened it and who merged it (from nixkeeper-prs); a build fixed,
+  likely, to the PR merged since it began failing that touched it (not a
+  treewide change in passing, nor one marking packages broken). The
+  overview's "Recently fixed" shows who (hover for the PR, and who merged
+  it); a package's panel says its fixes of the last month ("Updated 1.9.0 →
+  1.10.0 on Oct 9, in #N, by @alice, merged by @bob"), who opened and
+  merged an update waiting on master for the channel, and, while its build
+  fails, a likely fix waiting for Hydra under On GitHub. Credit starts with
+  fixes from now on.
+
 - GitHub releases for every package fetched from GitHub, from
   nixkeeper-versions' digest: the update check nixkeeper works out from a
   package's source, until now for the lists' packages only, now for all of

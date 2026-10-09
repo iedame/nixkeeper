@@ -1886,6 +1886,17 @@ const FIXED = [
   { key: 'update', label: 'Updated' },
   { key: 'bot', label: 'Update failures cleared' },
 ];
+// Who a fix is credited to (history.credit in nixkeeper): its PR, who
+// opened it and who merged it; "likely" for a build fix (a PR merged since
+// the build began failing that touched it). The name shown: the author,
+// unless it's a bot (the update bot), then who merged it, unless that's a
+// bot too (the merge bot, asked by someone the data doesn't say yet): then
+// none, the PR still in the tooltip.
+const BOTS = new Set(['r-ryantm', 'nixpkgs-ci', 'nixpkgs-merge-bot', 'github-actions']);
+const creditName = (c) => [c.author, c.mergedBy].find((who) => who && !BOTS.has(who)) || '';
+const creditText = (c) =>
+  `${c.likely ? 'Likely fixed by' : 'By'} #${c.pr}${c.author ? `, opened by @${c.author}` : ''}${c.mergedBy ? `, merged by @${c.mergedBy}` : ''}`;
+
 function fixedHtml() {
   const fixed = manifest.fixed;
   if (!fixed) return '';
@@ -1898,8 +1909,8 @@ function fixedHtml() {
       ${
         f.newest.length
           ? html`<ol class="hl-list">${f.newest.map(
-              ([name, at, from, to]) =>
-                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"><span class="status-dot ok" aria-hidden="true"></span><span class="hl-name mono">${name}</span>${to ? html`<span class="fixed-to mono" title="${from} → ${to}">→ ${to}</span>` : ''}<span class="hl-age" title="${longDate(at)}">${shortAge(at)}</span></a></li>`,
+              ([name, at, from, to, credit]) =>
+                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"${credit ? html` title="${creditText(credit)}"` : ''}><span class="status-dot ok" aria-hidden="true"></span><span class="hl-name mono">${name}</span>${to ? html`<span class="fixed-to mono" title="${from} → ${to}">→ ${to}</span>` : ''}${credit && creditName(credit) ? html`<span class="fixed-by">@${creditName(credit)}</span>` : ''}<span class="hl-age" title="${longDate(at)}">${shortAge(at)}</span></a></li>`,
             )}</ol>`
           : html`<p class="hl-none">None this week yet.</p>`
       }
@@ -2925,6 +2936,13 @@ function githubLinks(pkg) {
   return html`<span class="gh-links">${link('pr', 'pulls', 'PRs', pkg.openPRs)}${link('issue', 'issues', 'issues', pkg.openIssues)}</span>`;
 }
 
+// ", by @author, merged by @merger", each a link (either may be missing).
+const whoDid = (author, mergedBy) => {
+  const at = (who) =>
+    html`<a class="files-link" href="https://github.com/${encodeURIComponent(who)}" target="_blank" rel="noopener">@${who}</a>`;
+  return html`${author ? html`, by ${at(author)}` : ''}${mergedBy ? html`, merged by ${at(mergedBy)}` : ''}`;
+};
+
 // What nixkeeper-prs found of a package's PRs and issues (the daily sync's
 // facts, nixkeeper/sources/prs_digest.py): its update PR's merge-bot
 // eligibility, state, bot blocking and duplicates; open PRs touching it
@@ -3001,6 +3019,13 @@ function githubSection(pkg) {
             ? fact('', 'merge-bot eligible')
             : ''
       }</li>`,
+    );
+  // A PR merged since its build began failing that touched it: likely the
+  // fix, once Hydra builds it (prs_digest.build_fix_prs).
+  const bf = pkg.buildFixPR;
+  if (bf)
+    lines.push(
+      html`<li>${link(bf)} ${bf.title} ${fact('ok', 'merged since its build began failing: likely its fix', "Hydra hasn't built it yet, or the failure was elsewhere")}${bf.author ? html` by <a class="files-link" href="https://github.com/${encodeURIComponent(bf.author)}" target="_blank" rel="noopener">@${bf.author}</a>` : ''}${bf.mergedBy ? html`, merged by <a class="files-link" href="https://github.com/${encodeURIComponent(bf.mergedBy)}" target="_blank" rel="noopener">@${bf.mergedBy}</a>` : ''}</li>`,
     );
   for (const fix of pkg.fixPRs || [])
     lines.push(
@@ -3259,7 +3284,7 @@ function fillDetail(pkg, el, entries) {
   // Where master is: the PR that brought it, and whether Hydra built it.
   const masterSaid = [
     pkg.masterPR &&
-      html`merged in <a class="files-link" href="${safeUrl(pkg.masterPR.url)}" target="_blank" rel="noopener">#${pkg.masterPR.number} ↗</a>`,
+      html`merged in <a class="files-link" href="${safeUrl(pkg.masterPR.url)}" target="_blank" rel="noopener">#${pkg.masterPR.number} ↗</a>${whoDid(pkg.masterPR.author, pkg.masterPR.mergedBy)}`,
     pkg.master ? 'built by Hydra' : 'not built by Hydra yet',
   ]
     .filter(Boolean)
@@ -3357,7 +3382,21 @@ function fillDetail(pkg, el, entries) {
         }</div>`
       : ''
   }`;
-  const context = html`${inBulk}${
+  // Its fixes of the last month (history.add_recent_fixes in nixkeeper),
+  // with who, when a PR is known.
+  const fixesSaid = (pkg.recentFixes || []).map((f) => {
+    const what =
+      f.kind === 'update'
+        ? html`Updated <span class="mono">${f.from || '?'}</span> → <span class="mono">${f.to || '?'}</span>`
+        : f.kind === 'build'
+          ? 'Build fixed'
+          : "The update bot's failures cleared";
+    const pr = f.pr
+      ? html`, ${f.likely ? 'likely by' : 'in'} <a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${f.pr}" target="_blank" rel="noopener">#${f.pr} ↗</a>${whoDid(f.author, f.mergedBy)}`
+      : '';
+    return html`<div class="master-note">✓ ${what} on ${longDate(f.at)}${pr}.</div>`;
+  });
+  const context = html`${fixesSaid}${inBulk}${
     onMaster(pkg)
       ? html`<div class="master-note">master already has <span class="mono">${onMaster(pkg)}</span> (${masterSaid})${
           waitingForChannel(pkg)

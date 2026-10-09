@@ -2200,6 +2200,17 @@ tbody tr.row.open td {
   background: var(--ok-soft);
   color: var(--ok-devel);
 }
+/* Who a recent fix is credited to (fixedHtml). */
+.fixed-by {
+  font-size: 11px;
+  color: var(--ink-soft);
+  margin-left: auto; /* to the right, the age after it: aligned row to row */
+  flex: none;
+  white-space: nowrap;
+}
+.fixed-by + .hl-age {
+  margin-left: 0;
+}
 .gh-fact.warn {
   background: var(--warn-soft);
   color: var(--warn);
