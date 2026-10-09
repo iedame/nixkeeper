@@ -11,6 +11,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- **Why things fail**, on the overview: failed builds grouped by the same
+  error (the line of their log that says why, paths, numbers and names
+  left out), so one cause breaking many packages shows as one line ("Broken
+  by the abseil-cpp update", "Python module missing: pkg_resources": 32,
+  "Implicit function declarations (C23 by default)": 42), friendly titles
+  where the pattern is known, else the error line; each opens its packages
+  (`?cause=`). Automatic: a new compiler or library breaking packages the
+  same way is a new group on the next sync. Beside it, why the update bot
+  fails, by cause, each opening its packages.
+
 - **Credit for fixes**: each update fixed is credited to its update PR, with
   who opened it and who merged it (from nixkeeper-prs); a build fixed,
   likely, to the PR merged since it began failing that touched it (not a

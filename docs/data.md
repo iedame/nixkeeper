@@ -169,6 +169,19 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   (`packages`, as many as `blocked.json` has, whether nixkeeper-hydra has
   read which dependency it was yet or not), and the 8 that stop the most
   (`top`), each `[name, row, packages, builds]`;
+- `causes` in `index.json`: why things fail, across the rows not in a set
+  (`causes.py`): `builds`, the 8 biggest groups of failed builds sharing an
+  error, each `{ "key", "count", "reason", "signature", "line", "title"?,
+  "about"? }` (`signature`: the error line with what differs between
+  packages taken out, how they're grouped; `line`: one package's own;
+  `reason`: the commonest nixkeeper-hydra reason in it; `title`, `about`: a
+  friendly title and what it concerns, where the pattern is known), groups
+  of 3 packages or more, the 40 biggest each in `views/cause/<key>.json`
+  (its packages, as the other views, and the same fields), and all of them
+  in `views/causes.json` (`{ "groups": [...] }`, the same fields: the card's
+  "Show all", loaded on asking); `groups` and
+  `packages`: how many in all; `bot`: the update bot's failures by cause
+  (`{ "updateScript": 939, ... }`, the commonest first);
 - `views` in `index.json`: how many rows `attention`, `broken` and `blocked` have, the `teams` and
   `lists` with their counts (`{ "Gaming": 12, ... }`), and the `sets`
   with how many packages each has, how many of them are outdated (from

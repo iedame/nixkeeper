@@ -117,6 +117,14 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   fails because one of its dependencies did, as zh.fail counts them in all
   of nixpkgs (fix that one, and they all build again), and "show all" for
   every package blocked (`?view=blocked`);
+- **why things fail**: failed builds grouped by the same error (the line
+  of their log that says why, with paths, numbers and names left out: one
+  cause, one fix pattern, like "Broken by the abseil-cpp update" or
+  "Python module missing: pkg_resources"), the biggest groups with a
+  title where the pattern is known, else the error line itself, each
+  opening its packages (`?cause=`, with the shared line at the top); and
+  why the update bot fails, by cause, each opening those packages
+  (`?updateFailed=`);
 - what was fixed in the last week: builds that work again, packages
   updated (from and to which version), and nixpkgs-update failures
   cleared, from the first daily sync with this on;

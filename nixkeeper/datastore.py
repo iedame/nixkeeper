@@ -23,7 +23,7 @@ import shutil
 import zlib
 from datetime import datetime, timedelta
 
-from . import config
+from . import causes, config
 from .changes import (
     broken_builds,
     failed_builds,
@@ -656,6 +656,20 @@ def views(rows, out):
     out["maintainers.json"] = {
         "maintainers": [maintainers[key] for key in sorted(maintainers)]
     }
+    # Why things fail, across packages (causes.py): failed builds grouped by
+    # the same error, each a view of its packages; the bot's failures by
+    # cause.
+    groups = causes.build_groups(rows)
+    for group in groups:
+        out[f"views/cause/{group['key']}.json"] = {
+            "packages": [summary_entry(row) for row in group["rows"]],
+            **{k: v for k, v in group.items() if k != "rows"},
+        }
+    # Every group, for the overview's card shown in full (loaded on asking).
+    if groups:
+        out["views/causes.json"] = {
+            "groups": [{k: v for k, v in g.items() if k != "rows"} for g in groups]
+        }
     top = sorted(blockers.items(), key=lambda kv: (-len(kv[1][1]), -kv[1][2], kv[0]))
     return {
         "counts": {**counts, "buildFailuresOn": dict(sorted(failing_on.items()))},
@@ -676,6 +690,19 @@ def views(rows, out):
                 [name, is_row, len(names), builds]
                 for name, (is_row, names, builds) in top[:HIGHLIGHTS]
             ],
+        },
+        # The overview's "Why things fail": the biggest groups of failed builds
+        # sharing an error (causes.SHOWN; each {"key", "count", "reason",
+        # "signature", "line", "title"?, "about"?}), how many groups and
+        # packages in all, and the bot's failures by cause.
+        "causes": {
+            "builds": [
+                {k: v for k, v in group.items() if k != "rows"}
+                for group in groups[: causes.SHOWN]
+            ],
+            "groups": len(groups),
+            "packages": len({row["name"] for g in groups for row in g["rows"]}),
+            "bot": causes.bot_causes(rows),
         },
         "views": {
             "attention": len(found.get("views/attention.json", [])),
