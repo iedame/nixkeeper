@@ -81,6 +81,8 @@ many packages (`packages`), and for `tracker` the newest release fixes
 are to be backported to (`release`, `26.05`); `updates`, when nixkeeper-updates made its digest (`at`) and how
 many attempts it hasn't read yet (`pending`); `queue`, when the bot's queue
 was made (`at`) and how many days it takes to go round (`cycleDays`);
+`releases`, when nixkeeper-versions read GitHub releases (`at`) and for
+how many packages (`packages`);
 `nixpkgs`, the channel's commit (`revision`); `prs`, when nixkeeper-prs
 made its digest (`at`) and what the sync took from it: how many open PRs
 (`prs`) and issues (`issues`), and PRs merged since the channel's commit
@@ -283,7 +285,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `repologyCheckedAt` | when its Repology data was read: the day nixkeeper-versions' digest read it (daily for outdated projects, weekly for the rest), or when Repology was asked directly (daily while it's outdated, flagged vulnerable, changed in nixpkgs or new, otherwise every 3 days) |
 | `upstream` | nixkeeper's own update check, when it has one (below): a rule of yours or the community's, or one worked out from nixpkgs |
 | `repologySaid` | a rule's update check (yours, the community's, or one it follows; not a worked-out one) disagreed with Repology on whether `nixVersion` is outdated, and decided: `nixStatus` is the check's (`outdated` or `newest`, then with no `refVersion`), `status` is what Repology said and `newest` the version it showed as newest elsewhere (when there was one) |
-| `upToDate` | an [up-to-date rule](community.md#up-to-date-rules-until-something-changes) applies: Repology gets `nixVersion` wrong, so `nixStatus` is `newest` and there's no `refVersion`. `status` is what Repology said, `newest` the version it showed as newest elsewhere (when there was one), `reason` the rule's, and `community` is `true` for a community rule |
+| `upToDate` | an [up-to-date rule](community.md#up-to-date-rules-until-something-changes) applies: Repology gets `nixVersion` wrong, so `nixStatus` is `newest` and there's no `refVersion`. `status` is what Repology said, `newest` the version it showed as newest elsewhere (when there was one), `reason` the rule's, `ruleNewest` the rule's own `newest` (a worked-out update check finding that version doesn't count either), and `community` is `true` for a community rule |
 
 A row counts as outdated when `nixStatus` is `outdated`, `upstream.newer`
 is `true` (a newer release, for a versioned attribute in its own series),
@@ -303,6 +305,8 @@ behind the newest devel version elsewhere (`refVersion`).
 | `checkedAt` | when it was last checked (left out: at `checkedAt`) |
 | `community` | `true` when the check is a [community rule](community.md) |
 | `inferred` | `true` when the check was worked out from nixpkgs' source (the GitHub tags it fetches from), for a package without a rule |
+| `digest` | `"releases"` when the worked-out check's result came from nixkeeper-versions' digest of GitHub releases (its `checkedAt`: the day the digest read the repository) |
+| `tagged` | a newer tag matching the scheme than the release `version` is (pushed, not released yet: a release is preferred when the project makes them) |
 | `rule` | a short fingerprint of the rule that found it: an edited rule runs again at once |
 | `page` | page checks: the page's `etag` and `lastModified`, as its server gave them, and the `pattern` it was read with; next time the server is asked to send the page only if it changed, and if it didn't, `version` still holds |
 

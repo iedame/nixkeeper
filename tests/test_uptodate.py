@@ -37,7 +37,12 @@ class Applies(unittest.TestCase):
         self.assertIsNone(row["refVersion"])
         self.assertEqual(
             row["upToDate"],
-            {"status": "untrusted", "newest": "1.1.1", "reason": "A snapshot."},
+            {
+                "status": "untrusted",
+                "newest": "1.1.1",
+                "ruleNewest": "1.1.1",
+                "reason": "A snapshot.",
+            },
         )
         self.assertEqual(notices, "")
 

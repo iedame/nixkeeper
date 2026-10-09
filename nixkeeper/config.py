@@ -245,6 +245,12 @@ COUNTING_CHANGES = [
         "text": "versions ordered as Repology orders them: a pre-release before "
         "its release",
     },
+    {
+        # Set to the merge's time when it's merged.
+        "merged": "2026-10-10T00:00:00+00:00",
+        "text": "GitHub releases checked for every package fetched from GitHub: "
+        "newer ones Repology hasn't seen count as outdated",
+    },
 ]
 KEPT = "legacy"
 

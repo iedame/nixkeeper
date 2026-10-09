@@ -15,7 +15,10 @@ new release, or nixpkgs moving on, ends it, and the sync (or, for the
 community's, community-check) says it can go. While it applies, the row has
 nixStatus "newest", no refVersion, and `upToDate` with what Repology said.
 Only Repology's verdict is overridden: nixkeeper's update checks and master
-still count, as they come after."""
+still count, as they come after, except a worked-out check (one nobody
+wrote) that finds the very version `newest` names: it isn't a real release
+there either. So a wrong worked-out result is silenced with a rule naming
+it, as a wrong Repology verdict is."""
 
 import sys
 
@@ -58,6 +61,10 @@ def apply(rows, rules, community=frozenset()):
         found = {"status": row.get("nixStatus"), "reason": rule.get("reason")}
         if row.get("refVersion"):
             found["newest"] = row["refVersion"]
+        if rule.get("newest"):
+            # The version the rule says isn't a real release: a worked-out
+            # update check finding it is silenced too (upstream.apply).
+            found["ruleNewest"] = rule["newest"]
         if name in community:
             found["community"] = True
         row["upToDate"] = found

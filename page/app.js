@@ -919,6 +919,13 @@ const SOURCES = [
     says: (s) => `read ${timeAgo(s.at)}`,
   },
   {
+    key: 'releases',
+    digest: 'versions',
+    label: 'GitHub releases',
+    says: (s) => `read ${timeAgo(s.at)}, ${s.packages?.toLocaleString()} packages`,
+    instead: 'checked for the lists only',
+  },
+  {
     key: 'typst',
     digest: 'versions',
     label: 'Typst Universe',
@@ -3299,7 +3306,11 @@ function fillDetail(pkg, el, entries) {
     ${String(urgent).trim() ? html`<div class="pd-notes">${urgent}</div>` : ''}
     ${vulnSection(pkg)}
     <div class="pd-why-body"${open ? '' : raw(' hidden')}>
-      <p class="pd-text">${nixLine}</p>
+      <p class="pd-text">${nixLine}${
+        up?.tagged
+          ? html` <span title="nixkeeper prefers a release, when the project makes them: a tag alone may not be published yet">Tagged <span class="mono">${up.tagged}</span> on GitHub, not released yet.</span>`
+          : ''
+      }</p>
       ${String(context).trim() ? html`<div class="pd-notes">${context}</div>` : ''}
     </div>
     ${

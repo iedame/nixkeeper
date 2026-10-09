@@ -152,7 +152,23 @@ what Repology said. A package without one of its own (or a community
 rule) gets one worked out from nixpkgs: fetched from a GitHub tag, it's
 checked against that repository's tags, in the scheme nixpkgs' tag shows
 (`v1.2.3`, ...), plain versions only, and is left to Repology when that
-check fails; `workedOutChecks = false;` turns these off. The daily sync's
+check fails; `workedOutChecks = false;` turns these off. These checks come
+from [nixkeeper-versions](https://github.com/iedame/nixkeeper-versions)'
+digest of GitHub releases, which works them out the same way for every
+package in nixpkgs and reads each repository at least weekly (daily when
+Repology calls the package outdated): its latest release when the project
+makes them, else its newest tag. A worked-out check only ever adds a newer
+version Repology hasn't seen; it never makes a package Repology calls
+outdated up to date (a project that moved leaves its old repository's tags
+behind), nor counts a newer release for a version nixpkgs keeps on
+purpose beside a newer one (Repology's "legacy": fuse 2, `llvmPackages_18`).
+An up-to-date rule naming the wrong version (`newest`) silences a
+worked-out check that finds it too, so one wrong result is fixed the same
+way as a wrong Repology verdict. Coq and Rocq libraries
+are left to Repology: they're released for each
+version of the prover, so their newest waits on nixpkgs' own. The sync
+works out its own for the lists' packages the digest read over a day ago,
+or since bumped. The daily sync's
 log compares them with Repology ("Worked-out update checks"). Ignore rules
 (`package-lists/ignored-updates.nix`) mark failed nixpkgs-update attempts
 that don't count, and up-to-date rules (`package-lists/up-to-date.nix`) mark
