@@ -9,6 +9,19 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.15.0] - 2026-10-09
+
+Vulnerabilities come from the NixOS security tracker and OSV, through the
+new nixkeeper-vulnerabilities digest, with nixkeeper's own check of
+nixpkgs' current version against each CVE (unstable and the newest
+release), patches named after a CVE counted as fixes, and **fixes to
+backport** as a list, a tile and a note under Vulnerable. Failures say
+why: **Build failed because** (from Hydra's logs, read by
+nixkeeper-hydra) beside **Update failed because** (`?updateFailed=`,
+with a `bot` reason for the update bot's own outages). A package's
+version is the channel's own when Repology hasn't caught up. The logo goes
+back to the overview.
+
 ### Changed
 
 - `start-runs` also starts nixkeeper-prs' digest every hour (a digest of
@@ -48,6 +61,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   2026-10-08's data: vulnerable 848 → about 682; fixes to backport from
   51 (19 of which already fixed in 26.05) to over 135 (most of the new
   ones hidden before behind a stale "affected on master").
+
+- Opening a list from the overview (a card, "needs attention", "Show
+  all") starts at the top of the page: its tiles were under the sticky top
+  bar. The overview's cards keep their big numbers on one line, whatever
+  they hold under them.
 
 ### Added
 
@@ -1528,7 +1546,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.14.1...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.15.0...HEAD
+[0.15.0]: https://github.com/iedame/nixkeeper/compare/v0.14.1...v0.15.0
 [0.14.1]: https://github.com/iedame/nixkeeper/compare/v0.13.0...v0.14.1
 [0.14.0]: https://github.com/iedame/nixkeeper/compare/v0.13.0...v0.14.0
 [0.13.0]: https://github.com/iedame/nixkeeper/compare/v0.12.0...v0.13.0
