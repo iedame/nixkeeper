@@ -96,6 +96,29 @@ class Load(unittest.TestCase):
         self.assertIn("couldn't be read", about.taken()["prs"]["why"])
 
 
+class Removal(unittest.TestCase):
+    def test_the_package_itself(self):
+        for title in (
+            "argo-expr: drop",
+            "git-instafix: remove package",
+            "sqlite-interactive: drop in favor of enabling readline by default",
+            "pokemmo-installer: drop, pokemmo: init at 32920",
+            "fmt_9: remove version",
+            "foo: drop (unmaintained upstream)",
+            "foo: remove as it's broken",
+        ):
+            self.assertTrue(prs_digest.REMOVAL.match(title), title)
+
+    def test_something_from_it(self):
+        for title in (
+            "signal-cli: drop unused libmatthew_java and dbus_java",
+            "python3Packages.axisregistry: remove meta.changelog",
+            "rustc: remove a step of the bootstrap process",
+            "mpv: drop dev output from mpv-unwrapped",
+        ):
+            self.assertFalse(prs_digest.REMOVAL.match(title), title)
+
+
 class Facts(unittest.TestCase):
     PRS = [
         {
@@ -122,6 +145,22 @@ class Facts(unittest.TestCase):
             "hydraFailing": {"wine": {"x86_64-linux": "compile"}},
         },
         {"n": 4, "title": "wip", "draft": True, "hydraFailing": {"wine": {}}},
+        {"n": 5, "title": "wine: drop", "draft": False, "buckets": ["drop"]},
+        {
+            "n": 6,
+            "title": "treewide: tidy",
+            "draft": False,
+            "packages": ["wine"],
+            "mergeBot": {"ready": True},
+        },
+        {"n": 10, "title": "wine: drop (draft)", "draft": True, "buckets": ["drop"]},
+        {
+            "n": 11,
+            "title": "fmt_11: remove version",
+            "draft": False,
+            "buckets": ["drop"],
+            "packages": ["fmt_11", "imhex"],
+        },
     ]
     GROUPS = [{"kind": "sameDiff", "key": "aa", "prs": [1, 2]}]
     ISSUES = [
@@ -194,6 +233,36 @@ class Facts(unittest.TestCase):
         self.assertEqual([p["number"] for p in wine["fixPRs"]], [3])
         self.assertEqual([i["number"] for i in wine["issueChecks"]], [7])
         self.assertEqual([i["number"] for i in foo["issueChecks"]], [9])
+        # Its other open PRs: a removal first, by title or by-name directory;
+        # not the update PR, the fixes, nor drafts.
+        self.assertEqual(
+            wine["otherPRs"],
+            [
+                {"number": 5, "title": "wine: drop", "kind": "drop"},
+                {"number": 6, "title": "treewide: tidy", "mergeBot": "ready"},
+                {
+                    "number": 2,
+                    "title": "wine: 10.15 -> 10.16",
+                    "mergeBot": "eligible",
+                },
+            ],
+        )
+        self.assertEqual(wine["dropPR"], {"number": 5, "title": "wine: drop"})
+        self.assertNotIn("otherPRs", foo)
+        # A removal touching another package: not that one's removal.
+        imhex = {"name": "imhex", "attrs": ["imhex"]}
+        fmt = {"name": "fmt_11", "attrs": ["fmt_11"]}
+        prs_digest.add_facts([imhex, fmt], digest)
+        self.assertEqual(
+            imhex["otherPRs"], [{"number": 11, "title": "fmt_11: remove version"}]
+        )
+        self.assertNotIn("dropPR", imhex)
+        self.assertEqual(fmt["dropPR"]["number"], 11)
+        # Another of its attributes removed: listed, but it isn't being removed.
+        sqlite = {"name": "sqlite", "attrs": ["sqlite", "fmt_11"]}
+        prs_digest.add_facts([sqlite], digest)
+        self.assertEqual(sqlite["otherPRs"][0]["kind"], "drop")
+        self.assertNotIn("dropPR", sqlite)
         # The update PR touching the failing build: said once, as the update PR.
         wine["openPR"] = {"number": 3, "to": "10.16"}
         prs_digest.add_facts([wine], digest)
@@ -203,6 +272,8 @@ class Facts(unittest.TestCase):
         prs_digest.add_facts([wine], {})
         self.assertNotIn("fixPRs", wine)
         self.assertNotIn("issueChecks", wine)
+        self.assertNotIn("otherPRs", wine)
+        self.assertNotIn("dropPR", wine)
 
 
 if __name__ == "__main__":

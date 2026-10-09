@@ -18,6 +18,7 @@ commit the sync reads (a newer channel would count PRs it has as not in
 it yet): else the sync lists them itself, as it did before the digest."""
 
 import json
+import re
 import sys
 import urllib.error
 from datetime import datetime, timedelta
@@ -34,6 +35,21 @@ SHOWN = 5
 # Issue checks worth showing: something to do (close it, or still failing).
 BUILD_SHOWN = {"builds", "failing"}
 UPDATE_SHOWN = {"done", "partly"}
+# The package a PR's title names, nixpkgs' convention ("foo: drop").
+TITLE_PACKAGE = re.compile(r"^([\w.+-]+):")
+# A PR's kind, as the digest reads its title (nixkeeper-prs' facts.py).
+KINDS = ("drop", "init", "update")
+# The digest calls any "foo: drop ..." or "foo: remove ..." a drop; most
+# remove something from the package ("drop unused libmatthew_java",
+# "remove meta.changelog": 85 of 125 on 2026-10-09). A removal of the
+# package itself says nothing more, or says so: "foo: drop", "foo: remove
+# package", "foo: drop in favor of bar", "foo: drop, bar: init at 1.0",
+# "fmt_9: remove version".
+REMOVAL = re.compile(
+    r"^[\w.+-]+: (?:drop|remove)(?:\s*$|\s*[,;(:]|\s+(?:the\s+)?package\b"
+    r"|\s+in\s+favou?r\b|\s+(?:as|since|because|due)\b|\s+version\b)",
+    re.IGNORECASE,
+)
 # Titles name Python packages by their alias; rows by the versioned set.
 PYTHON_ALIAS = ("python3packages.", "python313packages.")
 
@@ -71,19 +87,38 @@ def pr_facts(pr, duplicates):
 def facts(prs, groups, issues):
     """The digest's findings, by PR number and by package (package_key):
     {"prs": {number: pr_facts}, "fixes": {package: [PRs touching it while
-    its build fails on Hydra]}, "issues": {package: [checked issues]}}."""
+    its build fails on Hydra]}, "issues": {package: [checked issues]},
+    "open": {package: [its open PRs, not drafts: by the package its title
+    names or the pkgs/by-name directories it touches]}}."""
     duplicates = {}
     for group in groups:
         for n in group.get("prs") or []:
             others = [m for m in group["prs"] if m != n]
             duplicates.setdefault(n, [])
             duplicates[n] += [m for m in others if m not in duplicates[n]]
-    by_number, fixes = {}, {}
+    by_number, fixes, open_prs = {}, {}, {}
     for pr in prs:
         if found := pr_facts(pr, duplicates):
             by_number[pr["n"]] = found
         if pr.get("draft"):
             continue
+        item = {"number": pr["n"], "title": pr["title"]}
+        kind = next((k for k in KINDS if k in (pr.get("buckets") or [])), None)
+        if kind == "drop" and not REMOVAL.match(pr["title"]):
+            kind = None  # removes something from it, not the package
+        if kind:
+            item["kind"] = kind
+        if mb := found.get("mergeBot"):
+            item["mergeBot"] = mb
+        named = TITLE_PACKAGE.match(pr["title"])
+        title_key = package_key(named.group(1)) if named else None
+        keys = {package_key(p) for p in pr.get("packages") or []} | {title_key}
+        # Only the package its title names is removed: the others it touches
+        # move off it (fmt_11: remove version, imhex's package.nix to fmt).
+        touched = {k: v for k, v in item.items() if k != "kind"}
+        for key in keys - {None}:
+            mine = item if key == title_key or kind != "drop" else touched
+            open_prs.setdefault(key, []).append(mine)
         for package in pr.get("hydraFailing") or {}:
             fixes.setdefault(package_key(package), []).append(
                 {"number": pr["n"], "title": pr["title"], "url": PR_URL + str(pr["n"])}
@@ -111,19 +146,21 @@ def facts(prs, groups, issues):
                 **check,
             }
         )
-    return {"prs": by_number, "fixes": fixes, "issues": checked}
+    return {"prs": by_number, "fixes": fixes, "issues": checked, "open": open_prs}
 
 
 def add_facts(rows, digest):
     """Give each row the digest's findings for its own package (facts'): its
     update PR's ("openPR"'s "facts", with "fixesBuild" when it touches the
     package while its build fails on Hydra), the other open PRs that do
-    ("fixPRs"), and its checked issues ("issueChecks"), at most SHOWN of
-    each. Replaces the last sync's."""
+    ("fixPRs"), its other open PRs ("otherPRs", a removal first, then the
+    newest), and its checked issues ("issueChecks"), at most SHOWN of each;
+    and "dropPR" when an open PR removes it from nixpkgs (the list's
+    badge). Replaces the last sync's."""
     found = (digest or {}).get("facts")
     for row in rows:
-        row.pop("fixPRs", None)
-        row.pop("issueChecks", None)
+        for field in ("fixPRs", "issueChecks", "otherPRs", "dropPR"):
+            row.pop(field, None)
         if not found:
             continue
         pr = row.get("openPR")
@@ -147,6 +184,33 @@ def add_facts(rows, digest):
                         items.append(item)
             if items:
                 row[field] = items[:SHOWN]
+        # Its other open PRs: not the update PR nor the fixes (said above).
+        said = {pr["number"]} if pr else set()
+        said |= {fix["number"] for fix in row.get("fixPRs") or []}
+        others = {}
+        for key in keys:
+            for item in found.get("open", {}).get(key, []):
+                if item["number"] not in said:
+                    others[item["number"]] = item
+        ordered = sorted(
+            others.values(), key=lambda p: (p.get("kind") != "drop", -p["number"])
+        )
+        if ordered:
+            row["otherPRs"] = ordered[:SHOWN]
+        # Being removed: when the title names the row's own package (not one
+        # of its other attributes: "sqlite-interactive: drop" leaves sqlite).
+        mine = package_key(row["name"])
+        if drop := next(
+            (
+                p
+                for p in ordered
+                if p.get("kind") == "drop"
+                and (m := TITLE_PACKAGE.match(p["title"]))
+                and package_key(m.group(1)) == mine
+            ),
+            None,
+        ):
+            row["dropPR"] = {"number": drop["number"], "title": drop["title"]}
 
 
 def recent(at, now):

@@ -15,7 +15,8 @@ maintainer. The details panel's **On GitHub** section says what
 nixkeeper-prs found of the package's PRs and issues: its update PR ready
 for the merge bot, superseded or overtaken, blocking the update bot or
 duplicated; open PRs touching it while its build fails on Hydra (maybe its
-fix); and its issues that look done (a build failure that builds on Hydra
+fix); its other open PRs, a removal first ("removes it from nixpkgs": the
+list says **being removed** too); and its issues that look done (a build failure that builds on Hydra
 now, an update request nixpkgs has met) or still fail. The panel lists
 each package's maintainers: clicking one
 searches for theirs, and the address becomes `?maintainer=yourhandle`, a
