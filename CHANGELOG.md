@@ -97,6 +97,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   commit (`NIXKEEPER_PRS_DIGEST=""` turns it off). "checked … ago" shows it
   under nixkeeper-prs.
 
+### Fixed
+
+- A package nixpkgs has, whose Repology project lists other repositories
+  only, no longer shows as not packaged: Repology leaves out nixpkgs
+  packages whose version it can't read (keeperrl "alpha34", airstrike
+  "pre6a"), and a list's package looked up by name found the project of
+  that name without it. It shows nixpkgs' version, not compared ("not on
+  Repology"), as a package Repology doesn't know at all.
+
 ## [0.15.0] - 2026-10-09
 
 Vulnerabilities come from the NixOS security tracker and OSV, through the

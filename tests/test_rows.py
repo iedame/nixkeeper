@@ -169,6 +169,25 @@ class Rows(unittest.TestCase):
         self.assertNotIn("homepage", row)
         self.assertNotIn("maintainers", row)  # unknown, not none
 
+    def test_in_nixpkgs_but_repology_lists_other_repositories_only(self):
+        # keeperrl: Repology has a project of that name (other repositories'
+        # packages), but not nixpkgs' (its version "alpha34" it can't read).
+        nixpkgs = {
+            "keeperrl": {**pkg("keeperrl", ["x86_64-linux"]), "version": "alpha34"}
+        }
+        [row] = build_rows(
+            {
+                "keeperrl": project(
+                    "keeperrl",
+                    ["keeperrl"],
+                    [other("openbsd", "1.3", "newest")],
+                    "keeperrl",
+                )
+            },
+            nixpkgs,
+        )
+        self.assertEqual((row["nixStatus"], row["nixVersion"]), ("unlisted", "alpha34"))
+
     def test_platforms(self):
         def plat(attr):
             [row] = self.rows(project(attr, [attr], [nix(attr, "1", "newest")], attr))

@@ -148,9 +148,13 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
             )
             row["keptBeside"] = {"attr": top.get("srcname"), "version": top["version"]}
     pkgs = [nixpkgs[a] for a in attrs if a in nixpkgs]
-    if proj.get("unlisted") and pkgs and not nix:
-        # In nixpkgs, but not on Repology (read in bulk, with every package):
-        # nixpkgs' version, and nothing to compare it with.
+    if pkgs and not nix:
+        # In nixpkgs, but Repology doesn't list nixpkgs' package: not on
+        # Repology at all (read in bulk, with every package), or found by
+        # its name in a project of other repositories only (Repology leaves
+        # out nixpkgs packages whose version it can't read: keeperrl's
+        # "alpha34", airstrike's "pre6a"). nixpkgs' version, and nothing
+        # to compare it with; not "missing", which says nixpkgs hasn't it.
         row["nixVersion"] = pkgs[0].get("version")
         row["nixStatus"] = "unlisted"
     if pkgs:  # not in nixpkgs: nothing to say about platforms or homepage
