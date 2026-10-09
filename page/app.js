@@ -1758,7 +1758,8 @@ function causesHtml() {
     }
   </section>`
     : '';
-  const all = Object.entries(c.bot || {});
+  // The commonest first (the data's keys are written sorted by name).
+  const all = Object.entries(c.bot || {}).sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   const total = all.reduce((n, [, v]) => n + v, 0);
   // The bot's own problems (its outage, its request failing): not the
   // package's, said apart however few; the package's causes as bars.
