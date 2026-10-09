@@ -209,7 +209,13 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   isn't, and nixpkgs' version changed: `from` and `to`), `bot`
   (nixpkgs-update's attempts were failing; they aren't, and its attempt
   changed: a newer one, or superseded). A source that's late, or a change
-  in how nixkeeper counts, so doesn't look like fixes. `events`: what
+  in how nixkeeper counts, so doesn't look like fixes. Credit, when known
+  (since 2026-10-09): `pr`, `author` (who opened it) and `mergedBy` (GitHub
+  logins, from nixkeeper-prs): an update's (and a bot failure it ended) to
+  the update PR the last sync saw merged into master (`masterPR`); a
+  build's to the PR merged since it began failing that touched it
+  (`buildFixPR`), with `likely`. None when no PR was seen: never a wrong
+  one. `events`: what
   marks the trends, the last 365 days: `{ "day", "kind": "staging-next",
   "pr", "title" }` for each merge of staging-next into master (mass
   rebuilds: failing builds jump for days after; asked of GitHub's search
@@ -220,7 +226,8 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   sync ran with it (a change can step a count overnight);
 - `fixed` in `index.json`: of those, the last 7 days' (`days`): for
   `build`, `update` and `bot`, `{ "count", "newest" }`, the 8 newest each
-  `[name, at, from, to]`;
+  `[name, at, from, to]`, and a fifth, its credit (`{ "pr", "author"?,
+  "mergedBy"?, "likely"? }`), when it has one;
 - `maintainers.json`: `{ "maintainers": [ [handle, packages, outdated,
   failing], ... ] }`, every maintainer by handle (any case; as nixpkgs
   writes it first), with how many packages list them (in sets too)
@@ -328,7 +335,9 @@ behind the newest devel version elsewhere (`refVersion`).
 
 `openPR` and `masterPR`: `number`, `title`, `url`, `draft`, `base` (the
 branch it targets), and `from` / `to` (the versions in its title,
-`name: from -> to`). `openPR` also has `facts` (the full row only), what
+`name: from -> to`), and for `masterPR` from nixkeeper-prs, `author` and
+`mergedBy` (who opened and merged it: an update's fix is credited to
+them). `openPR` also has `facts` (the full row only), what
 nixkeeper-prs found of it: `fixesBuild` (it touches the package while its
 build fails on Hydra: then not in `fixPRs` too), `mergeBot` (`ready`: a maintainer can merge
 it with the merge bot, CI green and no conflict; `eligible`: once those
@@ -341,6 +350,17 @@ package and branch).
 `dropPR` (in the list too): an open PR removes the package from nixpkgs,
 its title naming the package itself: `{"number", "title"}` (the list's
 "being removed" badge).
+
+`recentFixes` (the full row only): its fixes of the last 30 days, newest
+first, at most 3, each as in `history.json`'s `fixed` (without the name):
+`{"at", "kind", "from"?, "to"?, "pr"?, "author"?, "mergedBy"?, "likely"?}`,
+for its panel.
+
+`buildFixPR` (the full row only): while its build fails, the PR merged into
+master since it began failing that touched it (by its title's package, or
+its `pkgs/by-name` directory, of a PR touching at most 3; not one marking
+packages broken): `{"number", "title", "url", "author"?, "mergedBy"?,
+"merged"?}`, likely the fix, kept while it still fails.
 
 From nixkeeper-prs too, the full row only, at most 5 of each:
 

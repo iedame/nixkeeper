@@ -156,6 +156,10 @@ def update_prs(nodes, term):
                     "base": node.get("baseRefName"),
                     "from": m.group(1),
                     "to": m.group(2),
+                    # Who opened and merged it, when the listing says
+                    # (nixkeeper-prs' merged PRs): an update's fix credits
+                    # them (history.fixes).
+                    **{k: node[k] for k in ("author", "mergedBy") if node.get(k)},
                 }
             )
     return prs

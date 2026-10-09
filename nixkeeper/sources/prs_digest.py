@@ -279,7 +279,19 @@ def load(now, revision):
             why.append("merged PRs too old")
         else:
             found["merged"] = [
-                node(p) for p in _list(base, "merged.json", "prs") if p.get("n")
+                {
+                    **node(p),
+                    # Who opened and merged it, and the pkgs/by-name
+                    # packages it touched (since 2026-10-09): what a fix is
+                    # credited to (history.fixes, build_fix_prs).
+                    **{
+                        k: p[k]
+                        for k in ("author", "mergedBy", "packages", "merged")
+                        if p.get(k)
+                    },
+                }
+                for p in _list(base, "merged.json", "prs")
+                if p.get("n")
             ]
     except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
         about.note("prs", False, f"couldn't be read ({e})")
@@ -315,3 +327,62 @@ def load(now, revision):
         file=sys.stderr,
     )
     return found
+
+
+# A merged PR touching more pkgs/by-name packages than this is treewide
+# ("treewide: remove explicit strictDeps"): a build fix is credited to it
+# only when its title names the package.
+FIX_MAX_TOUCHED = 3
+# Marking a package broken stops Hydra building it: not a fix to credit.
+MARKS_BROKEN = re.compile(r"\bmark\w*\b.*\bbroken\b", re.IGNORECASE)
+
+
+def build_fix_prs(rows, merged, previous):
+    """Give each row whose build is failing the PR merged into master since
+    it began failing (failingSince) that touched it ("buildFixPR": number,
+    title, url, author, mergedBy, merged): by the package its title names
+    or a pkgs/by-name directory of it (of a PR touching at most
+    FIX_MAX_TOUCHED packages: not a treewide change in passing); the newest
+    such. Likely its fix, once
+    Hydra builds it (history.fixes credits a build fix to it). merged: the
+    digest's merged PRs (those since the channel's commit); a row still
+    failing keeps the one the last sync found, which a channel move may
+    have taken off that list. previous: the last run's data."""
+    before = {row["name"]: row for row in previous.get("packages") or []}
+    touching = {}
+    for pr in merged or []:
+        if MARKS_BROKEN.search(pr.get("title") or ""):
+            continue
+        touched = pr.get("packages") or []
+        keys = (
+            {package_key(p) for p in touched}
+            if len(touched) <= FIX_MAX_TOUCHED
+            else set()
+        )
+        if named := TITLE_PACKAGE.match(pr.get("title") or ""):
+            keys.add(package_key(named.group(1)))
+        for key in keys:
+            touching.setdefault(key, []).append(pr)
+    for row in rows:
+        old = row.pop("buildFixPR", None)  # this run's data: worked out below
+        failing = any(b["status"] == "failed" for b in row.get("builds") or [])
+        if not failing:
+            continue
+        since = row.get("failingSince") or ""
+        keys = {package_key(a) for a in [row["name"], *(row.get("attrs") or [])]}
+        found = [
+            pr
+            for key in keys
+            for pr in touching.get(key, [])
+            if (pr.get("merged") or "") >= since
+        ]
+        if found:
+            pr = max(found, key=lambda p: p.get("merged") or "")
+            row["buildFixPR"] = {
+                "number": pr["number"],
+                "title": pr["title"],
+                "url": pr["url"],
+                **{k: pr[k] for k in ("author", "mergedBy", "merged") if pr.get(k)},
+            }
+        elif kept := (before.get(row["name"]) or {}).get("buildFixPR") or old:
+            row["buildFixPR"] = kept

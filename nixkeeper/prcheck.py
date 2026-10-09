@@ -78,9 +78,22 @@ def main():
         ]
         print(f"PR check: {', '.join(row['name'] for row in direct)}", file=sys.stderr)
     if direct:
+        # Who opened and merged each update PR, from the digest: the search
+        # doesn't say (a fix's credit, history.fixes).
+        who = {
+            row["name"]: row["masterPR"]
+            for row in direct
+            if (row.get("masterPR") or {}).get("mergedBy")
+        }
         # Merged PRs since the channel's commit only: those it doesn't have yet.
         since = github_bulk.merged_since(revision)
         github.add_update_prs(direct, merged_since=since)
+        for row in direct:
+            pr, theirs = row.get("masterPR"), who.get(row["name"])
+            if pr and theirs and pr["number"] == theirs["number"]:
+                pr.update(
+                    {k: theirs[k] for k in ("author", "mergedBy") if theirs.get(k)}
+                )
     if digest.get("facts"):
         prs_digest.add_facts(outdated, digest)
     else:

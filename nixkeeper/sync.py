@@ -284,8 +284,16 @@ def main():
     nixpkgs_update.recheck_superseded(outdated)
     # Since when builds and update attempts have been failing (carried over).
     history.add_failing_since(index_rows, previous, now)
+    # A PR merged since a build began failing that touched it: likely its
+    # fix (credited when Hydra builds it: history.fixes).
+    if digest.get("merged") is not None:
+        prs_digest.build_fix_prs(shown, digest["merged"], previous)
     # The CVEs and advisories of each package, with their verdicts.
     vulnerabilities_digest.add(index_rows, vulnerabilities_digest.load(now), revision)
+    # What this sync finds fixed since the last (with who, when a PR is
+    # known), kept on each package a month too, for its panel.
+    found_fixes = history.fixes(index_rows, previous, now)
+    history.add_recent_fixes(index_rows, previous, found_fixes, now)
     # version: the nixkeeper that made this data, for the page's footer.
     index = {"checkedAt": now, "packages": index_rows, "version": version()}
     if everything:
@@ -309,9 +317,7 @@ def main():
         history=datastore.with_split(datastore.read_history(), previous)
         if everything
         else None,
-        fixed=datastore.with_fixed(
-            datastore.read_fixed(), history.fixes(index_rows, previous, now), now
-        )
+        fixed=datastore.with_fixed(datastore.read_fixed(), found_fixes, now)
         if everything
         else None,
         events=datastore.with_events(

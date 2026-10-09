@@ -2,6 +2,8 @@
 when each package became outdated, and since when a source couldn't be
 refreshed."""
 
+from datetime import datetime, timedelta
+
 from . import config, datastore
 from .changes import is_outdated
 from .sources import repology
@@ -139,10 +141,26 @@ def add_failing_since(rows, previous, now):
 FIXES = ("build", "update", "bot")
 
 
+def credit(pr, likely=False):
+    """What a fix is credited to: its PR's number, who opened and merged it
+    ({"pr", "author"?, "mergedBy"?, "likely"?}), or {} without one."""
+    if not pr or not pr.get("number"):
+        return {}
+    found = {"pr": pr["number"]}
+    found.update({k: pr[k] for k in ("author", "mergedBy") if pr.get(k)})
+    if likely:
+        found["likely"] = True
+    return found
+
+
 def fixes(rows, previous, now):
-    """[{"at", "name", "kind", "from"?, "to"?}] for each fully checked row
-    fixed since previous (FIXES); not for new or removed packages, those of
-    sets updated in bulk, or ones whose data wasn't refreshed."""
+    """[{"at", "name", "kind", "from"?, "to"?, "pr"?, "author"?,
+    "mergedBy"?, "likely"?}] for each fully checked row fixed since
+    previous (FIXES); not for new or removed packages, those of sets updated
+    in bulk, or ones whose data wasn't refreshed. An update (or the bot's
+    failure it ended) is credited to the update PR merged into master the
+    last sync saw ("masterPR"); a build fix, likely, to the PR merged since
+    it began failing that touched it ("buildFixPR")."""
     before = {row["name"]: row for row in previous["packages"]}
     found = []
     for row in rows:
@@ -156,7 +174,14 @@ def fixes(rows, previous, now):
             and not any(b["status"] == "failed" for b in builds)
             and any(b["status"] == "ok" for b in builds)
         ):
-            found.append({"at": now, "name": row["name"], "kind": "build"})
+            found.append(
+                {
+                    "at": now,
+                    "name": row["name"],
+                    "kind": "build",
+                    **credit(old.get("buildFixPR"), likely=True),
+                }
+            )
         if (
             is_outdated(old)
             and not is_outdated(row)
@@ -171,6 +196,7 @@ def fixes(rows, previous, now):
                     "kind": "update",
                     "from": old.get("nixVersion"),
                     "to": row["nixVersion"],
+                    **credit(old.get("masterPR")),
                 }
             )
         update, was = row.get("update") or {}, old.get("update") or {}
@@ -181,5 +207,48 @@ def fixes(rows, previous, now):
             and update
             and (update.get("date") != was.get("date") or update.get("supersededOn"))
         ):
-            found.append({"at": now, "name": row["name"], "kind": "bot"})
+            found.append(
+                {
+                    "at": now,
+                    "name": row["name"],
+                    "kind": "bot",
+                    **credit(old.get("masterPR")),
+                }
+            )
     return found
+
+
+# A package's own fixes, for its panel: the last this many days, at most
+# RECENT_FIXES_KEPT of them.
+RECENT_FIXES_DAYS = 30
+RECENT_FIXES_KEPT = 3
+
+
+def add_recent_fixes(rows, previous, found, now):
+    """Give each row its fixes of the last RECENT_FIXES_DAYS days
+    ("recentFixes": fixes' entries without the name, newest first, at most
+    RECENT_FIXES_KEPT): this sync's (found: fixes') and those its row had
+    at the last."""
+    before = {row["name"]: row for row in previous.get("packages") or []}
+    new = {}
+    for fix in found:
+        new.setdefault(fix["name"], []).append(
+            {k: v for k, v in fix.items() if k != "name"}
+        )
+    cutoff = (
+        datetime.fromisoformat(now) - timedelta(days=RECENT_FIXES_DAYS)
+    ).isoformat()
+    for row in rows:
+        row.pop("recentFixes", None)
+        kept = [
+            f
+            for f in [
+                *new.get(row["name"], []),
+                *((before.get(row["name"]) or {}).get("recentFixes") or []),
+            ]
+            if f.get("at", "") > cutoff
+        ]
+        if kept:
+            row["recentFixes"] = sorted(kept, key=lambda f: f["at"], reverse=True)[
+                :RECENT_FIXES_KEPT
+            ]
