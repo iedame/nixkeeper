@@ -875,6 +875,7 @@ const DIGESTS = {
   versions: 'https://github.com/iedame/nixkeeper-versions',
   updates: 'https://github.com/iedame/nixkeeper-updates',
   vulnerabilities: 'https://github.com/iedame/nixkeeper-vulnerabilities',
+  prs: 'https://github.com/iedame/nixkeeper-prs',
 };
 const hydraEval = (s) =>
   html`evaluation <a class="files-link" href="https://hydra.nixos.org/eval/${s.eval}" target="_blank" rel="noopener">${s.eval}</a>, read ${timeAgo(s.at)}`;
@@ -977,6 +978,21 @@ const SOURCES = [
     from: 'https://osv.dev',
     says: (s) =>
       `read ${timeAgo(s.at)}: ${s.advisories?.toLocaleString()} advisories, on ${s.packages?.toLocaleString()} packages`,
+  },
+  {
+    key: 'prs',
+    digest: 'prs',
+    label: 'PRs and issues',
+    says: (s) =>
+      [
+        `made ${timeAgo(s.at)}`,
+        s.prs != null && `${s.prs.toLocaleString()} open PRs, ${s.issues?.toLocaleString()} issues`,
+        s.merged != null && `${s.merged.toLocaleString()} merged since the channel`,
+        s.partly && `${s.partly}: listed during the sync`,
+      ]
+        .filter(Boolean)
+        .join(' · '),
+    instead: 'listed during the sync',
   },
 ];
 

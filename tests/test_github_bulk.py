@@ -156,6 +156,18 @@ class AddCounts(unittest.TestCase):
         with mock.patch.object(github, "token", return_value=None):
             self.assertFalse(github_bulk.add_counts(rows, self.NOW))
 
+    def test_from_the_digests_lists_without_a_token(self):
+        rows = [{"name": "wine", "searchTerm": "wine", "nixVersion": "10.15"}]
+        with (
+            mock.patch.object(github, "token", return_value=None),
+            mock.patch.object(github_bulk, "list_open") as list_open,
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            self.assertTrue(github_bulk.add_counts(rows, self.NOW, (PRS, ISSUES)))
+        list_open.assert_not_called()
+        self.assertEqual((rows[0]["openPRs"], rows[0]["openIssues"]), (3, 1))
+        self.assertEqual(rows[0]["openPR"]["number"], 1)
+
 
 class MasterPRs(unittest.TestCase):
     NOW = "2026-10-05T06:00:00+00:00"
@@ -226,6 +238,24 @@ class MasterPRs(unittest.TestCase):
         listed.assert_called_once_with("t", "2026-10-03T17:36:20Z", self.NOW)
         self.assertEqual(rows[0]["masterPR"]["number"], 4)
         self.assertNotIn("masterPR", rows[1])  # found again, or not at all
+
+    def test_from_the_digests_list(self):
+        rows = [
+            {
+                "name": "wesnoth-devel",
+                "searchTerm": "wesnoth-devel",
+                "nixVersion": "1.19.24",
+            }
+        ]
+        merged = [pr(4, "wesnoth-devel: 1.19.24 -> 1.19.29")]
+        with (
+            mock.patch.object(github, "token", return_value=None),
+            mock.patch.object(github_bulk, "list_merged") as listed,
+            mock.patch("sys.stderr", io.StringIO()),
+        ):
+            self.assertTrue(github_bulk.add_master_prs(rows, "rev", self.NOW, merged))
+        listed.assert_not_called()
+        self.assertEqual(rows[0]["masterPR"]["number"], 4)
 
     def test_failure_changes_nothing(self):
         rows = [{"name": "x", "searchTerm": "x", "masterPR": {"number": 1}}]

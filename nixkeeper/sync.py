@@ -36,6 +36,7 @@ from .sources import (
     hydra,
     hydra_digest,
     nixpkgs_update,
+    prs_digest,
     stackage_digest,
     typst_digest,
     updates_digest,
@@ -239,10 +240,13 @@ def main():
     # When the bot will try each package again, and what it would update to.
     nixpkgs_update.add_queue(index_rows, nixpkgs, updates_digest.load_queue(now))
     # Open PR/issue counts and open update PRs: from one listing of all of
-    # nixpkgs' open ones (github_bulk), else searched per package (the
-    # lists' only). Not for the rows of sets updated in bulk: their sets are
-    # updated as a whole.
-    if github_bulk.add_counts(shown, now):
+    # nixpkgs' open ones (github_bulk: nixkeeper-prs' digest's, else listed
+    # here), else searched per package (the lists' only). Not for the rows
+    # of sets updated in bulk: their sets are updated as a whole.
+    digest = prs_digest.load(now, revision) or {}
+    if digest.get("open") and github_bulk.add_counts(shown, now, digest["open"]):
+        pass  # noted by prs_digest
+    elif github_bulk.add_counts(shown, now):
         about.note("github", True)  # listed during the sync
     else:
         about.note(
@@ -251,7 +255,7 @@ def main():
         github.add_counts(on_lists, previous, now)
     outdated = [row for row in shown if is_outdated(row)]
     # Update PRs merged into master, not in the channel yet: likewise.
-    if not github_bulk.add_master_prs(outdated, revision, now):
+    if not github_bulk.add_master_prs(outdated, revision, now, digest.get("merged")):
         github.add_update_prs(
             [row for row in outdated if row["name"] not in in_bulk],
             open_prs=False,

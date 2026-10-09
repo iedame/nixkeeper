@@ -27,6 +27,8 @@ def offline():
     # newest release's package index (tests give their own versions).
     config.VULNERABILITIES_DIGEST_URL = ""
     config.STABLE_INDEX_URL = ""
+    # Nor a nixkeeper-prs digest: the sync lists PRs and issues itself.
+    config.PRS_DIGEST_URL = ""
 
 
 offline()

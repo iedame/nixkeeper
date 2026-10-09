@@ -154,7 +154,8 @@ Hydra evaluations of master and haskell-updates; nixkeeper-versions:
 Repology and the other version sources, when each was read;
 nixkeeper-updates: nixpkgs-update's attempts, with how many are still to
 read, and its queue; nixkeeper-vulnerabilities: the NixOS security tracker
-and OSV). A source the sync
+and OSV; nixkeeper-prs: nixpkgs' open PRs and issues, and the PRs merged
+since the channel's commit). A source the sync
 didn't use (too old, or it couldn't be read) says so in yellow: its
 packages were then asked about one by one instead.
 
