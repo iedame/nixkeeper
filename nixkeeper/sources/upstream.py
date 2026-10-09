@@ -90,9 +90,11 @@ def apply(row, found, decides=True):
     verdict, whenever one of its own rules lags (google-chrome's "155 and up
     are betas", kept after 155 went stable). A worked-out check (inferred),
     or a rule's last result kept because it failed this time (decides
-    False), only adds a newer version Repology hasn't seen. Nor does a check
-    decide for an older version kept beside a newer one (config.KEPT): the
-    newest release isn't the one to compare it with."""
+    False), only adds a newer version Repology hasn't seen; a worked-out
+    one not even that for an older version kept beside a newer one, nor for
+    the version an up-to-date rule names. Nor does a check decide for a kept
+    version (config.KEPT): the newest release isn't the one to compare it
+    with."""
     newer = found.get("newer")
     if newer is None:
         newer = is_newer(found["version"], row.get("nixVersion"))
@@ -107,6 +109,17 @@ def apply(row, found, decides=True):
         # a worked-out check can't tell its series, so its repository's
         # newest release isn't one to update it to. A devel variant that's
         # fallen behind still counts (changes.behind_as_devel).
+        newer = False
+    if (
+        newer
+        and found.get("inferred")
+        and found["version"] == (row.get("upToDate") or {}).get("ruleNewest")
+    ):
+        # An up-to-date rule names this very version as not a real release
+        # (uptodate.py): a wrong worked-out result is silenced as a wrong
+        # Repology verdict is. Any other version still counts (twinejs: its
+        # rule is about Repology's 7.0.0, another project's; GitHub's 2.12.1
+        # is a real release).
         newer = False
     found = {**found, "newer": newer}
     row["upstream"] = found

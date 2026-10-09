@@ -162,7 +162,10 @@ version Repology hasn't seen; it never makes a package Repology calls
 outdated up to date (a project that moved leaves its old repository's tags
 behind), nor counts a newer release for a version nixpkgs keeps on
 purpose beside a newer one (Repology's "legacy": fuse 2, `llvmPackages_18`).
-Coq and Rocq libraries are left to Repology: they're released for each
+An up-to-date rule naming the wrong version (`newest`) silences a
+worked-out check that finds it too, so one wrong result is fixed the same
+way as a wrong Repology verdict. Coq and Rocq libraries
+are left to Repology: they're released for each
 version of the prover, so their newest waits on nixpkgs' own. The sync
 works out its own for the lists' packages the digest read over a day ago,
 or since bumped. The daily sync's

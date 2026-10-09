@@ -20,7 +20,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   nixkeeper.com), and never makes one Repology calls outdated up to date,
   nor counts a newer release for a version nixpkgs keeps on purpose beside
   a newer one (fuse 2, `llvmPackages_18`). Coq and Rocq libraries, released
-  for each version of the prover, stay with Repology. A
+  for each version of the prover, stay with Repology. An up-to-date rule
+  naming a version (`newest`) now also silences a worked-out check that
+  finds it, as it does Repology's. A
   release is preferred over a newer tag, which the panel mentions ("Tagged
   2.4.0 on GitHub, not released yet"). The sync still checks the lists'
   packages itself when the digest read them over a day ago.

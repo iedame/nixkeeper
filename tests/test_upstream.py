@@ -133,6 +133,20 @@ class Decides(unittest.TestCase):
         upstream.apply(r, {"version": "3.18.3", "inferred": True})
         self.assertTrue(r["upstream"]["newer"])
 
+    def test_an_up_to_date_rule_silences_the_version_it_names(self):
+        r = {**row(status="newest", ref=None), "upToDate": {"ruleNewest": "2.0.0"}}
+        upstream.apply(r, {"version": "2.0.0", "inferred": True})
+        self.assertFalse(r["upstream"]["newer"])
+        # A rule's own check still decides.
+        upstream.apply(r, {"version": "2.0.0"})
+        self.assertTrue(r["upstream"]["newer"])
+        # Another version still counts (twinejs: the rule is about
+        # Repology's 7.0.0, another project's; 2.12.1 is a real release).
+        r = {**row(nix="2.12.0", status="newest", ref=None)}
+        r["upToDate"] = {"newest": "7.0.0", "ruleNewest": "7.0.0"}
+        upstream.apply(r, {"version": "2.12.1", "inferred": True})
+        self.assertTrue(r["upstream"]["newer"])
+
 
 class AddChecks(unittest.TestCase):
     def setUp(self):
