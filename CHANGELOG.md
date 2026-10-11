@@ -9,6 +9,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Changed
+
+- The overview's **Recently fixed** lists the week's fixes that took
+  longest first, each saying how long it had been failing or outdated
+  ("after 5 m"; hover for the dates), instead of the newest: with a
+  hundred fixes a day those were always the last sync's, all "<1 d". A
+  package's panel says it too ("Build fixed on Oct 9 (after 5 m)"). For
+  fixes from now on (a build's from Hydra's last success; an outdated
+  package's from when nixkeeper first saw it so); the ones recorded before
+  come after, newest first, as they were.
+
 ## [0.16.0] - 2026-10-11
 
 nixpkgs' open PRs and issues come from the new nixkeeper-prs digest, and a

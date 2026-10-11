@@ -153,11 +153,20 @@ def credit(pr, likely=False):
     return found
 
 
+def lasted(old, field):
+    """{"since": ...} when old says since when it had the problem (field:
+    failingSince, outdatedSince, updateFailingSince), else {}."""
+    return {"since": old[field]} if old.get(field) else {}
+
+
 def fixes(rows, previous, now):
-    """[{"at", "name", "kind", "from"?, "to"?, "pr"?, "author"?,
+    """[{"at", "name", "kind", "since"?, "from"?, "to"?, "pr"?, "author"?,
     "mergedBy"?, "likely"?}] for each fully checked row fixed since
     previous (FIXES); not for new or removed packages, those of sets updated
-    in bulk, or ones whose data wasn't refreshed. An update (or the bot's
+    in bulk, or ones whose data wasn't refreshed. "since": since when it had
+    been failing or outdated, as the last sync had it (a build's from
+    Hydra's last success; outdated, from when nixkeeper first saw it so).
+    An update (or the bot's
     failure it ended) is credited to the update PR merged into master the
     last sync saw ("masterPR"); a build fix, likely, to the PR merged since
     it began failing that touched it ("buildFixPR")."""
@@ -179,6 +188,7 @@ def fixes(rows, previous, now):
                     "at": now,
                     "name": row["name"],
                     "kind": "build",
+                    **lasted(old, "failingSince"),
                     **credit(old.get("buildFixPR"), likely=True),
                 }
             )
@@ -196,6 +206,7 @@ def fixes(rows, previous, now):
                     "kind": "update",
                     "from": old.get("nixVersion"),
                     "to": row["nixVersion"],
+                    **lasted(old, "outdatedSince"),
                     **credit(old.get("masterPR")),
                 }
             )
@@ -212,6 +223,7 @@ def fixes(rows, previous, now):
                     "at": now,
                     "name": row["name"],
                     "kind": "bot",
+                    **lasted(old, "updateFailingSince"),
                     **credit(old.get("masterPR")),
                 }
             )

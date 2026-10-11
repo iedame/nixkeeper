@@ -127,7 +127,9 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   (`?updateFailed=`);
 - what was fixed in the last week: builds that work again, packages
   updated (from and to which version), and nixpkgs-update failures
-  cleared, from the first daily sync with this on;
+  cleared, each list the fixes that took longest first ("after 5 m": how
+  long it had been failing or outdated; a build's from Hydra's last
+  success, an outdated package's from when nixkeeper first saw it so);
 - the sets updated in bulk, each with its size, what updates it, how
   many are outdated (for Haskell, how many of those are already updated on
   haskell-updates, waiting for its merge), and how much of it is marked

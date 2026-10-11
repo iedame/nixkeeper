@@ -21,7 +21,7 @@ import os
 import re
 import shutil
 import zlib
-from datetime import datetime, timedelta
+from datetime import UTC, datetime, timedelta
 
 from . import causes, config
 from .changes import (
@@ -347,34 +347,53 @@ def with_fixed(fixed, new, run):
 
 def fixed_summary(fixed, run):
     """The manifest's "fixed": per kind, how many in the last
-    FIXED_RECENT_DAYS days and the HIGHLIGHTS newest, each [name, at, from,
-    to] (from and to for updates, else null), and a fifth, its credit
-    ({"pr", "author"?, "mergedBy"?, "likely"?}: history.credit), when it
-    has one."""
+    FIXED_RECENT_DAYS days and HIGHLIGHTS of them ("newest", as it was
+    named when they were): the ones that had lasted longest first (the
+    newest are all the last sync's, with a hundred fixes a day), then those
+    that don't say since when, the newest first. Each [name, at, from, to]
+    (from and to for updates, else null); a fifth, its credit ({"pr",
+    "author"?, "mergedBy"?, "likely"?}: history.credit) or null, and a
+    sixth, since when it had been failing or outdated, when it has them."""
     cutoff = _day_before(run, FIXED_RECENT_DAYS)
     out = {}
     for kind in ("build", "update", "bot"):
         mine = [f for f in fixed if f["kind"] == kind and f["at"][:10] > cutoff]
         newest = sorted(mine, key=lambda f: (f["at"], f["name"]), reverse=True)
+        shown = sorted(newest, key=_lasted, reverse=True)[:HIGHLIGHTS]
         out[kind] = {
             "count": len(mine),
-            "newest": [
-                [f["name"], f["at"], f.get("from"), f.get("to")]
-                + (
-                    [
-                        {
-                            k: f[k]
-                            for k in ("pr", "author", "mergedBy", "likely")
-                            if k in f
-                        }
-                    ]
-                    if f.get("pr")
-                    else []
-                )
-                for f in newest[:HIGHLIGHTS]
-            ],
+            "newest": [_fixed_entry(f) for f in shown],
         }
     return {"days": FIXED_RECENT_DAYS, **out}
+
+
+def _lasted(fix):
+    """How many seconds fix's problem had lasted when it was fixed; -1 when
+    it doesn't say since when."""
+    try:
+        since = datetime.fromisoformat(fix["since"])
+        if since.tzinfo is None:  # a plain day
+            since = since.replace(tzinfo=UTC)
+        return max(0, (datetime.fromisoformat(fix["at"]) - since).total_seconds())
+    except (KeyError, TypeError, ValueError):
+        return -1
+
+
+def _fixed_entry(fix):
+    """A fix as the manifest lists it (fixed_summary), without trailing
+    nulls."""
+    credit = {k: fix[k] for k in ("pr", "author", "mergedBy", "likely") if k in fix}
+    entry = [
+        fix["name"],
+        fix["at"],
+        fix.get("from"),
+        fix.get("to"),
+        credit if fix.get("pr") else None,
+        fix.get("since"),
+    ]
+    while len(entry) > 4 and entry[-1] is None:
+        entry.pop()
+    return entry
 
 
 def _day_before(run, days):

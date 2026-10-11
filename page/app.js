@@ -1985,6 +1985,8 @@ function overviewHtml() {
 // The overview's recently fixed (the manifest's "fixed", from history.json):
 // builds that work again, packages updated, nixpkgs-update failures
 // cleared, the last week's of each. Not with data from before it.
+// What a fix ended, for its age's hover ("failing since Jun 2").
+const FIXED_SINCE = { build: 'failing', update: 'outdated', bot: 'the update bot failing' };
 const FIXED = [
   { key: 'build', label: 'Builds fixed' },
   { key: 'update', label: 'Updated' },
@@ -2013,14 +2015,18 @@ function fixedHtml() {
       ${
         f.newest.length
           ? html`<ol class="hl-list">${f.newest.map(
-              ([name, at, from, to, credit]) =>
-                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"${credit ? html` title="${creditText(credit)}"` : ''}><span class="status-dot ok" aria-hidden="true"></span><span class="hl-name mono">${name}</span>${to ? html`<span class="fixed-to mono" title="${from} → ${to}">→ ${to}</span>` : ''}${credit && creditName(credit) ? html`<span class="fixed-by">@${creditName(credit)}</span>` : ''}<span class="hl-age" title="${longDate(at)}">${shortAge(at)}</span></a></li>`,
+              ([name, at, from, to, credit, since]) =>
+                html`<li><a class="hl-row" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}"${credit ? html` title="${creditText(credit)}"` : ''}><span class="status-dot ok" aria-hidden="true"></span><span class="hl-name mono">${name}</span>${to ? html`<span class="fixed-to mono" title="${from} → ${to}">→ ${to}</span>` : ''}${credit && creditName(credit) ? html`<span class="fixed-by">@${creditName(credit)}</span>` : ''}${
+                  since
+                    ? html`<span class="hl-age" title="Fixed ${longDate(at)}, ${FIXED_SINCE[key]} since ${longDate(since)}">after ${shortAge(since, new Date(at).getTime())}</span>`
+                    : html`<span class="hl-age" title="${longDate(at)}">${shortAge(at)}</span>`
+                }</a></li>`,
             )}</ol>`
           : html`<p class="hl-none">None this week yet.</p>`
       }
     </section>`;
   });
-  return html`<h2 class="scope-label">Recently fixed · last ${fixed.days} days · fully checked</h2>
+  return html`<h2 class="scope-label" title="The fixes that took longest first: how long each had been failing or outdated when it was fixed">Recently fixed · last ${fixed.days} days · longest-standing first · fully checked</h2>
     <div class="hl-cols">${cards}</div>`;
 }
 
@@ -3506,7 +3512,8 @@ function fillDetail(pkg, el, entries) {
     const pr = f.pr
       ? html`, ${f.likely ? 'likely by' : 'in'} <a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${f.pr}" target="_blank" rel="noopener">#${f.pr} ↗</a>${whoDid(f.author, f.mergedBy)}`
       : '';
-    return html`<div class="master-note">✓ ${what} on ${longDate(f.at)}${pr}.</div>`;
+    const after = f.since ? ` (after ${shortAge(f.since, new Date(f.at).getTime())})` : '';
+    return html`<div class="master-note">✓ ${what} on ${longDate(f.at)}${after}${pr}.</div>`;
   });
   const context = html`${fixesSaid}${inBulk}${
     onMaster(pkg)

@@ -901,6 +901,40 @@ class Fixed(unittest.TestCase):
         self.assertEqual(summary["days"], 7)
         self.assertEqual(summary["build"]["count"], 1)  # y, 5 days before
         self.assertEqual(summary["update"]["newest"], [["z", NOW, "1", "2"]])
+
+    def test_the_longest_standing_first(self):
+        before = [
+            row("a", failingSince="2026-06-01", builds=[self.FAILED]),
+            row("b", nixStatus="outdated", nixVersion="1", outdatedSince="2026-09-28"),
+        ]
+        found = history.fixes(
+            [row("a", builds=[self.OK]), row("b", nixVersion="2")],
+            {"packages": before},
+            NOW,
+        )
+        self.assertEqual(
+            {f["name"]: f["since"] for f in found},
+            {"a": "2026-06-01", "b": "2026-09-28"},
+        )
+
+        def fixed(name, **more):
+            return {"at": NOW, "name": name, "kind": "build", **more}
+
+        summary = datastore.fixed_summary(
+            [
+                fixed("days", since="2026-10-01T00:00:00+00:00"),
+                fixed("unknown"),
+                fixed("months", since="2026-06-01", pr=3),
+                fixed("weeks", since="2026-09-10"),
+            ],
+            NOW,
+        )
+        shown = summary["build"]["newest"]
+        self.assertEqual([e[0] for e in shown], ["months", "weeks", "days", "unknown"])
+        # Credit and since when, a null between only where needed.
+        self.assertEqual(shown[0][4:], [{"pr": 3}, "2026-06-01"])
+        self.assertEqual(shown[1][4:], [None, "2026-09-10"])
+        self.assertEqual(len(shown[3]), 4)
         self.assertEqual(summary["bot"], {"count": 0, "newest": []})
 
     def test_written_with_the_history(self):
