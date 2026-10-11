@@ -9,6 +9,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.16.0] - 2026-10-11
+
+nixpkgs' open PRs and issues come from the new nixkeeper-prs digest, and a
+package's panel says what it found **On GitHub**: an update PR ready for
+the merge bot or blocking the update bot, issues that look done, a package
+**being removed**. **GitHub releases** are read for every package, not
+only the lists'. The overview says **why things fail** (failed builds
+grouped by the same error, the update bot's failures by cause) and gives
+**credit for fixes** (who opened and merged each one). The community
+instance syncs **every 3 hours** instead of daily, asking its sources no
+more often than before.
+
 ### Added
 
 - **Why things fail**, on the overview: failed builds grouped by the same
@@ -78,6 +90,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   catch-up is gone: a skipped run is caught up within 3 hours. `start-runs`
   starts it every 3 hours (if_older "auto"), the hourly updates the other
   hours.
+
+- The marks on the overview's trends: a change in how nixkeeper counts is
+  amber, a staging-next merge grey, and nixkeeper's own releases aren't
+  drawn (the footer says the version; a release that changes counting has
+  its own mark). The legend under the cards is one short line, a label per
+  kind with its days ("counting changed Oct 6, Oct 7"); hover a day for
+  what happened (a staging-next day links its PR).
 
 - What's asked daily, or every 3 days when quiet, counts time, not syncs:
   a sync run several times a day asks Hydra, Repology and the update
@@ -1643,7 +1662,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.15.0...HEAD
+[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/iedame/nixkeeper/compare/v0.15.0...v0.16.0
 [0.15.0]: https://github.com/iedame/nixkeeper/compare/v0.14.1...v0.15.0
 [0.14.1]: https://github.com/iedame/nixkeeper/compare/v0.13.0...v0.14.1
 [0.14.0]: https://github.com/iedame/nixkeeper/compare/v0.13.0...v0.14.0
