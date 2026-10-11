@@ -29,9 +29,9 @@ from . import about, feeds, upstream
 
 FILE = "releases.json.gz"
 # A list's package is checked by the sync itself when the digest read its
-# repository longer ago than this (the digest reads each weekly, daily when
-# Repology calls it outdated): the lists' packages are checked at least
-# every QUIET_DAYS otherwise.
+# repository longer ago than this (the digest reads every one each run,
+# every 12 hours; one it couldn't reach waits for the next): the lists'
+# packages are checked at least every QUIET_DAYS otherwise.
 LISTS_MAX_DAYS = 1
 # Sets whose versions follow another package's, not their repository's
 # releases alone: Coq and Rocq libraries are released for each version of

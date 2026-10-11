@@ -20,6 +20,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   package's from when nixkeeper first saw it so); the ones recorded before
   come after, newest first, as they were.
 
+- `start-runs` starts nixkeeper-versions' digest every 12 hours (04 and 16
+  UTC, if its last run is over 10 hours old) instead of daily: Repology's
+  verdicts at most 12 hours old, and, the digest now reading every GitHub
+  repository each run instead of weekly, a new release shows within 12
+  hours (vacuum-tube 2.0.0 would have waited up to a week).
+
 ## [0.16.0] - 2026-10-11
 
 nixpkgs' open PRs and issues come from the new nixkeeper-prs digest, and a

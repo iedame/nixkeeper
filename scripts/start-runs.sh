@@ -23,7 +23,7 @@
 #                   schedule ran once in its first 7 hours, 2026-10-08)
 #                   and nixkeeper-prs' (its open PRs, and their diffs)
 #   every 3 hours   nixkeeper-updates'
-#   04 UTC          nixkeeper-versions', if its last run is over 12 hours old
+#   04 and 16 UTC   nixkeeper-versions', if its last run is over 10 hours old
 #
 # The workflows keep their own schedules as a fallback: a run started twice
 # (by both) either waits for the other and finds nothing new, or stops at
@@ -118,8 +118,8 @@ if [ -n "$digests" ]; then
   if ((hour % 3 == 0)); then
     start "$digests/nixkeeper-updates" digest.yml
   fi
-  if ((hour == 4)); then
-    start "$digests/nixkeeper-versions" digest.yml '{"if_older":"12"}'
+  if ((hour % 12 == 4)); then
+    start "$digests/nixkeeper-versions" digest.yml '{"if_older":"10"}'
   fi
 fi
 if [ -n "$repo" ]; then
