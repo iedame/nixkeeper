@@ -1815,6 +1815,10 @@ function blockersHtml() {
 
 // Days of history the cards draw, and how many points before they do.
 const TREND_DAYS = 30;
+// How many days the trends shown span, the first and the last included (9
+// while there are 9 days of history, then TREND_DAYS).
+const trendSpan = (points) =>
+  Math.round((Date.parse(points.at(-1).day) - Date.parse(points[0].day)) / 864e5) + 1;
 const TREND_MIN_POINTS = 2;
 
 // A card's trend: its count at each point, placed by date (dayPosition),
@@ -1970,7 +1974,7 @@ function overviewHtml() {
       <span><i class="swatch full"></i><b>${fmt(c.tracked)}</b> fully checked</span>
       <span title="Generated from CRAN, Hackage and the like and kept current in bulk by their own tooling, not one PR per package: each set counted on its own line below, not in the cards"><i class="swatch gen"></i><b>${fmt(inSets)}</b> in sets updated in bulk · counted per set</span>
     </div>
-    <h2 class="scope-label">Fully checked${trends ? (points.length < TREND_DAYS ? `, since ${shortDay(points[0].day)}` : `, last ${TREND_DAYS} days`) : ''} · each opens its list${trends ? '' : html` <span class="scope-hint">(trends from the second daily sync)</span>`}</h2>
+    <h2 class="scope-label">Fully checked${trends ? `, last ${trendSpan(points)} days` : ''} · each opens its list${trends ? '' : html` <span class="scope-hint">(trends from the second daily sync)</span>`}</h2>
     <div class="cards">${cards}</div>${trends ? marksHtml(points) : ''}
 
     <div class="find" role="search">

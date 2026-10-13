@@ -713,6 +713,23 @@ class Highlights(unittest.TestCase):
         self.assertEqual([n for n, _, _ in got["newest"]], ["a2", "b", "a"])
         self.assertEqual([n for n, _, _ in got["oldest"]], ["a", "a2", "b"])
 
+    def test_an_update_waiting_for_the_channel_left_out(self):
+        since = "2026-10-01T00:00:00+00:00"
+        rows = [
+            row("todo", nixStatus="outdated", refVersion="2", outdatedSince=since),
+            row(
+                "merged",
+                nixStatus="outdated",
+                refVersion="2",
+                outdatedSince=since,
+                master="2",
+            ),
+        ]
+        index = datastore.views(rows, {})
+        outdated = index["highlights"]["outdated"]
+        self.assertEqual([n for n, _, _ in outdated["newest"]], ["todo"])
+        self.assertEqual(outdated["count"], index["counts"]["outdated"])
+
     def test_in_the_manifest_fully_checked_only(self):
         rows = [
             row("old", nixStatus="outdated", outdatedSince="2026-01-01T00:00:00+00:00"),

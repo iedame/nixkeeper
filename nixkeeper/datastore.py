@@ -660,6 +660,10 @@ def views(rows, out):
             "updateFailing": bool(row.get("updateFailure")),
         }
         for kind, field in AGES.items():
+            # Not an update already merged, waiting for the channel: nothing
+            # to do about it (it stays in the card's count).
+            if kind == "outdated" and waiting_for_channel(row):
+                continue
             if row.get(field) and now_counts[kind]:
                 ages[kind].append((row[field], row["name"], letter))
         if row.get("markedBroken") or broken_builds(row):

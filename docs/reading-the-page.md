@@ -111,7 +111,8 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   box, the overview stays while you type: a click or Enter opens theirs); "browse every
   maintainer" (`?view=maintainers`) lists them all by handle, the search
   narrowing them;
-- the newest and longest-standing build failures, outdated packages and
+- the newest and longest-standing build failures, outdated packages (not
+  those whose update is merged and only waits for the channel) and
   update failures (a switch on each), and "show all" for the whole list;
   and the failing packages **blocking the most** others: a build that
   fails because one of its dependencies did, as zh.fail counts them in all

@@ -20,6 +20,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   package's from when nixkeeper first saw it so); the ones recorded before
   come after, newest first, as they were.
 
+- The overview's newest and longest-standing outdated packages leave out
+  those whose update is already merged and only waits for the channel:
+  nothing to do about them (they stay in the card's count, and in its
+  list). The cards' heading says how many days their trends span ("last 9
+  days") instead of "since Oct 5" until there were 30.
+
 - `start-runs` starts nixkeeper-versions' digest every 12 hours (04 and 16
   UTC, if its last run is over 10 hours old) instead of daily: Repology's
   verdicts at most 12 hours old, and, the digest now reading every GitHub
