@@ -1,6 +1,6 @@
 """Hydra's builds of a branch that updates a set before it reaches master,
-from nixkeeper-hydra's digest of it (https://github.com/iedame/nixkeeper-
-hydra: data/haskell-updates.json.gz): haskell-updates, where the Haskell
+from nixkeeper-hydra's digest of it (https://github.com/nixkeeper/
+digest-builds: data/haskell-updates.json.gz): haskell-updates, where the Haskell
 team updates haskellPackages (hackage2nix) and merges into master about
 every two weeks. A row with a job there gets what the branch has ("branch":
 its version, its build and how it went), so the page can say an update is

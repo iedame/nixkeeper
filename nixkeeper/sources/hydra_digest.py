@@ -1,5 +1,5 @@
 """nixkeeper-hydra's digest of Hydra's builds
-(https://github.com/iedame/nixkeeper-hydra): every job of Hydra's newest
+(https://github.com/nixkeeper/digest-builds): every job of Hydra's newest
 evaluation of nixpkgs master, with its newest finished build and, when that
 isn't a success, the last successful one, in one download. The daily sync
 takes the jobs it can answer from it instead of asking Hydra about each

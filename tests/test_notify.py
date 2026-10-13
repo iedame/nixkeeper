@@ -32,7 +32,7 @@ ROWS = [
 class Text(unittest.TestCase):
     def test_status_body(self):
         body = notify.status_body(
-            ROWS, diff(BEFORE, ROWS), NOW, "https://iedame.github.io/nixkeeper/"
+            ROWS, diff(BEFORE, ROWS), NOW, "https://nixkeeper.github.io/nixkeeper/"
         )
         self.assertIn("3 packages tracked", body)
         self.assertIn("### Failed (1)\n- `fzssh` — not in nixpkgs", body)
@@ -260,7 +260,7 @@ class Posting(unittest.TestCase):
 
     def test_local_runs_never_post(self):
         self.run_notify(
-            {"GITHUB_TOKEN": "t", "GITHUB_REPOSITORY": "iedame/nixkeeper"}
+            {"GITHUB_TOKEN": "t", "GITHUB_REPOSITORY": "nixkeeper/nixkeeper"}
         ).assert_not_called()
 
     def test_ci_posts_body_and_comment(self):
@@ -268,14 +268,14 @@ class Posting(unittest.TestCase):
             {
                 "NIXKEEPER_NOTIFY": "1",
                 "GITHUB_TOKEN": "t",
-                "GITHUB_REPOSITORY": "iedame/nixkeeper",
+                "GITHUB_REPOSITORY": "nixkeeper/nixkeeper",
             }
         )
         repo, token, title, body, comment = update.call_args.args
         self.assertEqual(
-            (repo, token, title), ("iedame/nixkeeper", "t", "nixkeeper status")
+            (repo, token, title), ("nixkeeper/nixkeeper", "t", "nixkeeper status")
         )
-        self.assertIn("https://iedame.github.io/nixkeeper/", body)
+        self.assertIn("https://nixkeeper.github.io/nixkeeper/", body)
         self.assertIn("Newly outdated", comment)
 
     def test_no_comment_when_nothing_new(self):

@@ -14,15 +14,15 @@ nixkeeper serve           # show the page on this computer (http://127.0.0.1:800
 nixkeeper page <dir>      # write the page and the data into a folder, to host anywhere
 ```
 
-Without installing it, `nix run github:iedame/nixkeeper -- <command>` runs
+Without installing it, `nix run github:nixkeeper/nixkeeper -- <command>` runs
 the same. To install it, from this repository's flake:
 
 ```bash
-nix profile install github:iedame/nixkeeper
+nix profile install github:nixkeeper/nixkeeper
 ```
 
 or in a NixOS or home-manager configuration, with the flake as an input
-(`inputs.nixkeeper.url = "github:iedame/nixkeeper";`), add
+(`inputs.nixkeeper.url = "github:nixkeeper/nixkeeper";`), add
 `inputs.nixkeeper.packages.${pkgs.stdenv.hostPlatform.system}.default` to
 your packages. It needs `nix` on the `PATH` (it evaluates your lists with
 it); `gh` is optional. The old names (`nixkeeper-sync`, ...) still work
@@ -55,7 +55,7 @@ choose others; a flag wins over its variable:
 | | `REPOLOGY_BASE_URL` | – | another Repology address to use instead of `repology.org` |
 
 nixkeeper introduces itself to every source it reads with a User-Agent
-like `nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper)`: the
+like `nixkeeper/0.9.0 (+https://github.com/nixkeeper/nixkeeper)`: the
 software, its version and where it lives, so the people running Repology,
 Hydra and the others know what's asking. On GitHub Actions it adds the
 repository running it (`; you/nixkeeper`), which is public anyway. On your
@@ -90,13 +90,13 @@ tests, both modules evaluated, the NixOS module booted in a VM), but to move
 only from release to release, name a version tag:
 
 ```nix
-inputs.nixkeeper.url = "github:iedame/nixkeeper/v0.16.0";
+inputs.nixkeeper.url = "github:nixkeeper/nixkeeper/v0.16.0";
 ```
 
 `nix flake update` then leaves it alone; you upgrade by changing the tag,
 after reading that release's notes in [CHANGELOG.md](../CHANGELOG.md). Version
 tags never move, so a tag always means the same code. The same works for
-`nix profile install github:iedame/nixkeeper/v0.16.0`.
+`nix profile install github:nixkeeper/nixkeeper/v0.16.0`.
 
 With `inputs.nixkeeper.inputs.nixpkgs.follows = "nixpkgs";` (one nixpkgs in
 your lock), nixkeeper builds against your nixpkgs rather than the one its CI

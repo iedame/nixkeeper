@@ -1,4 +1,4 @@
-"""nixkeeper-prs' digest (https://github.com/iedame/nixkeeper-prs): every
+"""nixkeeper-prs' digest (https://github.com/nixkeeper/digest-prs): every
 open PR and issue of nixpkgs, and the PRs merged into master since the
 nixos-unstable channel's commit, as its hourly workflow lists them. The
 daily sync counts each package's open PRs and issues, and finds its open

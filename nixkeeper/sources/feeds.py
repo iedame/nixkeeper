@@ -1,5 +1,5 @@
 """Sets' own sources of versions, which nixkeeper-versions reads daily
-beside its Repology digest (https://github.com/iedame/nixkeeper-versions),
+beside its Repology digest (https://github.com/nixkeeper/digest-versions),
 for the sets Repology mostly can't compare: Typst Universe
 (typst_digest.py), the Emacs package archives (emacs_digest.py). Each is
 one file next to the digest, loaded the same way (load), and compared with

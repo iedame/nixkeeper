@@ -6,7 +6,7 @@ and optionally the page on nginx.
 
 ```nix
 {
-  inputs.nixkeeper.url = "github:iedame/nixkeeper";
+  inputs.nixkeeper.url = "github:nixkeeper/nixkeeper";
 
   outputs = { nixpkgs, nixkeeper, ... }: {
     nixosConfigurations.server = nixpkgs.lib.nixosSystem {

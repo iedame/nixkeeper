@@ -6,7 +6,7 @@
 # and NixOS timer in docs/all-packages.md); by the hour in UTC it starts:
 #
 #   every hour      the hourly updates of NIXKEEPER_START_REPO (default
-#                   iedame/nixkeeper), except every 3 hours (00, 03, 06...)
+#                   nixkeeper/nixkeeper), except every 3 hours (00, 03, 06...)
 #   every 3 hours   its sync instead, when due by the instance's interval
 #                   (if_older "auto": every 3 hours on the community
 #                   instance, daily on a fork; it checks update PRs too).
@@ -15,8 +15,8 @@
 #                   newer one cancels it, so fewer runs queued means less
 #                   chance of losing the sync
 #
-# and the digests in NIXKEEPER_START_DIGESTS' repositories (default iedame;
-# empty for none: a fork reads iedame's digests, run by iedame):
+# and the digests in NIXKEEPER_START_DIGESTS' repositories (default nixkeeper;
+# empty for none: a fork reads nixkeeper's digests, run by nixkeeper):
 #
 #   every hour      nixkeeper-hydra's (stops early with no newer evaluation),
 #                   nixkeeper-vulnerabilities' (a new repository's
@@ -44,9 +44,9 @@
 
 set -euo pipefail
 
-repo=${NIXKEEPER_START_REPO-iedame/nixkeeper}
+repo=${NIXKEEPER_START_REPO-nixkeeper/nixkeeper}
 read -ra retry_waits <<<"${NIXKEEPER_START_RETRY_WAITS-60 180}"
-digests=${NIXKEEPER_START_DIGESTS-iedame}
+digests=${NIXKEEPER_START_DIGESTS-nixkeeper}
 dry_run=false
 case "${1:-}" in
 --dry-run) dry_run=true ;;
@@ -112,14 +112,14 @@ start() {
 }
 
 if [ -n "$digests" ]; then
-  start "$digests/nixkeeper-hydra" digest.yml
-  start "$digests/nixkeeper-vulnerabilities" digest.yml
-  start "$digests/nixkeeper-prs" digest.yml
+  start "$digests/digest-builds" digest.yml
+  start "$digests/digest-vulnerabilities" digest.yml
+  start "$digests/digest-prs" digest.yml
   if ((hour % 3 == 0)); then
-    start "$digests/nixkeeper-updates" digest.yml
+    start "$digests/digest-update-bot" digest.yml
   fi
   if ((hour % 12 == 4)); then
-    start "$digests/nixkeeper-versions" digest.yml '{"if_older":"10"}'
+    start "$digests/digest-versions" digest.yml '{"if_older":"10"}'
   fi
 fi
 if [ -n "$repo" ]; then

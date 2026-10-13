@@ -25,11 +25,11 @@ asked package by package:
 
 | Source | Packages not on the lists |
 |---|---|
-| Repology | from [nixkeeper-versions](https://github.com/iedame/nixkeeper-versions)' digest, as it has them; a package it doesn't have is "unlisted" (nixpkgs' version, nothing to compare it with) |
-| Hydra | from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra)'s digest; a queued job keeps its last result |
+| Repology | from [nixkeeper-versions](https://github.com/nixkeeper/digest-versions)' digest, as it has them; a package it doesn't have is "unlisted" (nixpkgs' version, nothing to compare it with) |
+| Hydra | from [nixkeeper-hydra](https://github.com/nixkeeper/digest-builds)'s digest; a queued job keeps its last result |
 | `meta.broken` | the package index's (x86_64-linux), not evaluated per platform |
 | Update checks | your own and the community's rules; none worked out from nixpkgs |
-| nixpkgs-update | from [nixkeeper-updates](https://github.com/iedame/nixkeeper-updates)' digest, its last read attempt; a package whose attempts it hasn't read yet says so (`unread`). Without the digest, not read (about 4,000 packages' logs change a day, more than a sync can read politely) |
+| nixpkgs-update | from [nixkeeper-updates](https://github.com/nixkeeper/digest-update-bot)' digest, its last read attempt; a package whose attempts it hasn't read yet says so (`unread`). Without the digest, not read (about 4,000 packages' logs change a day, more than a sync can read politely) |
 | GitHub | PR and issue counts and update PRs from the bulk listings only |
 
 Packages of **sets updated in bulk** (rPackages, haskellPackages,
@@ -90,16 +90,16 @@ write**: it can start and cancel runs, nothing else.
 
 ### Whose runs
 
-By default it starts iedame's: the community instance's hourly updates and
-sync, and the digests (nixkeeper-hydra, -updates, -versions,
--vulnerabilities and -prs). Elsewhere, two variables say which:
+By default it starts the community instance's: its hourly updates and
+sync, and the digests (in the `nixkeeper` organisation: digest-builds,
+-update-bot, -versions, -vulnerabilities and -prs). Elsewhere, two variables say which:
 
 - `NIXKEEPER_START_REPO`: your nixkeeper repository (`you/nixkeeper`),
   whose hourly updates and sync it starts; empty for none.
 - `NIXKEEPER_START_DIGESTS`: the owner of the digest repositories whose
-  runs it starts; empty for none. A fork reads iedame's digests (unless
-  you point `NIXKEEPER_*_DIGEST` at your own), which iedame keeps
-  running: leave them out.
+  runs it starts; empty for none. A fork reads the community instance's
+  digests (unless you point `NIXKEEPER_*_DIGEST` at your own), which it
+  keeps running: leave them out.
 
 So for a fork, `NIXKEEPER_START_REPO=you/nixkeeper` and
 `NIXKEEPER_START_DIGESTS=` (empty), with a token for your nixkeeper

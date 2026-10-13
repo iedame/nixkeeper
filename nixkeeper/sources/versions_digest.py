@@ -1,5 +1,5 @@
-"""nixkeeper-versions' digest of Repology (https://github.com/iedame/nixkeeper-
-versions): every nixpkgs project's packages in every repository, read in
+"""nixkeeper-versions' digest of Repology (https://github.com/nixkeeper/
+digest-versions): every nixpkgs project's packages in every repository, read in
 bulk the way nixpkgs-update reads Repology, refreshed daily for outdated
 projects and weekly for the rest. The daily sync takes tracked packages'
 projects from it instead of looking each up on Repology (lookup.py), and

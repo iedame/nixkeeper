@@ -6,7 +6,7 @@ The flake's darwin module runs the same jobs as launchd agents of your user
 
 ```nix
 {
-  inputs.nixkeeper.url = "github:iedame/nixkeeper";
+  inputs.nixkeeper.url = "github:nixkeeper/nixkeeper";
 
   outputs = { nix-darwin, nixkeeper, ... }: {
     darwinConfigurations.mac = nix-darwin.lib.darwinSystem {

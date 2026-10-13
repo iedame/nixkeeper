@@ -6,7 +6,7 @@ name: "Community: update checks still work"
 # format and limits are checked by CI (nix flake check) already; this is
 # whether they still do something.
 #
-#   weekly (and by hand), in iedame/nixkeeper only: every rule, kept in the
+#   weekly (and by hand), in nixkeeper/nixkeeper only: every rule, kept in the
 #     "Community rules status" issue: which update checks are broken and
 #     since when (with a comment when one breaks or works again), and which
 #     ignore and up-to-date rules can go. Neither fails the run.
@@ -30,7 +30,7 @@ jobs:
   report:
     # Only where the community file is maintained: a copy of the repository
     # for someone's own dashboard doesn't look after it.
-    if: github.event_name != 'pull_request' && github.repository == 'iedame/nixkeeper'
+    if: github.event_name != 'pull_request' && github.repository == 'nixkeeper/nixkeeper'
     runs-on: ubuntu-latest
     permissions:
       contents: read

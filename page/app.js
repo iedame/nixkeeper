@@ -97,7 +97,7 @@ async function findDataBase() {
 
 // The footer links to nixkeeper itself; a copy of it on GitHub Pages (its
 // own package lists) also links to those lists.
-const UPSTREAM = 'iedame/nixkeeper';
+const UPSTREAM = 'nixkeeper/nixkeeper';
 function addListsLink() {
   const repo = githubRepo(new URLSearchParams(location.search));
   if (!repo || repo === UPSTREAM) return;
@@ -877,11 +877,11 @@ function showSources(open) {
 // sync didn't use it (it then asked per package instead). Those read from
 // one of nixkeeper's digests are grouped under it (DIGESTS), in this order.
 const DIGESTS = {
-  hydra: 'https://github.com/iedame/nixkeeper-hydra',
-  versions: 'https://github.com/iedame/nixkeeper-versions',
-  updates: 'https://github.com/iedame/nixkeeper-updates',
-  vulnerabilities: 'https://github.com/iedame/nixkeeper-vulnerabilities',
-  prs: 'https://github.com/iedame/nixkeeper-prs',
+  hydra: 'https://github.com/nixkeeper/digest-builds',
+  versions: 'https://github.com/nixkeeper/digest-versions',
+  updates: 'https://github.com/nixkeeper/digest-update-bot',
+  vulnerabilities: 'https://github.com/nixkeeper/digest-vulnerabilities',
+  prs: 'https://github.com/nixkeeper/digest-prs',
 };
 const hydraEval = (s) =>
   html`evaluation <a class="files-link" href="https://hydra.nixos.org/eval/${s.eval}" target="_blank" rel="noopener">${s.eval}</a>, read ${timeAgo(s.at)}`;
@@ -1047,7 +1047,7 @@ function sourcesHtml() {
       ${own}
       ${digests}
     </ul>
-    <a class="files-link" href="https://github.com/iedame/nixkeeper/blob/main/docs/how-it-works.md" target="_blank" rel="noopener">How nixkeeper gathers it ↗</a>`;
+    <a class="files-link" href="https://github.com/nixkeeper/nixkeeper/blob/main/docs/how-it-works.md" target="_blank" rel="noopener">How nixkeeper gathers it ↗</a>`;
 }
 
 function showThemePanel(open) {

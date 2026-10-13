@@ -43,7 +43,7 @@ on. nixkeeper asks each source one thing at a time, with a pause between
 requests (update checks' pages: one a second per site, taking turns between
 sites), and when a source says to slow down (a `Retry-After`), it waits as
 long as asked, up to 5 minutes, before trying again. Hydra's builds come
-first from [nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra), a
+first from [nixkeeper-hydra](https://github.com/nixkeeper/digest-builds), a
 digest of every job in Hydra's newest evaluation of master that its own
 workflow keeps up to date hourly: one download answers most jobs, every day.
 The digest is used when it's from Hydra's newest evaluation, or was read in
@@ -69,7 +69,7 @@ is looked up every 3 days, so its new releases can show up to 3 days late
 (most packages are updated by nixpkgs-update, which comes round about every
 ten days anyway). Most packages don't need Repology asked at all, though:
 their projects come from
-[nixkeeper-versions](https://github.com/iedame/nixkeeper-versions), a digest
+[nixkeeper-versions](https://github.com/nixkeeper/digest-versions), a digest
 of every nixpkgs project that its own workflow reads in bulk daily, the way
 nixpkgs-update reads Repology (outdated projects every day, the rest every
 week). Repology is still asked about a package that isn't in the digest (new
@@ -81,12 +81,12 @@ itself reads nixos-unstable some hours after it moves, so where the channel
 already has a newer version than Repology's, the version shown is the
 channel's, and whether it's outdated is worked out again against the newest
 version Repology shows elsewhere. nixpkgs-update's attempts likewise come from
-[nixkeeper-updates](https://github.com/iedame/nixkeeper-updates), a digest
+[nixkeeper-updates](https://github.com/nixkeeper/digest-update-bot), a digest
 of the bot's latest attempt at every package, its log read with nixkeeper's
 own rules, made every 3 hours from the bot's state; a package's logs are
 still read when the digest hasn't read its latest attempt yet, or is more
 than 12 hours old. What's vulnerable comes from
-[nixkeeper-vulnerabilities](https://github.com/iedame/nixkeeper-vulnerabilities),
+[nixkeeper-vulnerabilities](https://github.com/nixkeeper/digest-vulnerabilities),
 a digest of the NixOS security tracker (the CVEs it matched to nixpkgs
 packages, triaged by the security team, with their status on master and
 the release branches) and of OSV's advisories for language packages: a
@@ -102,7 +102,7 @@ Repology's flag still count. The
 digest is used once it has read the tracker through, while under 3 days
 old. GitHub's open PRs and issues aren't searched package by
 package: they come from
-[nixkeeper-prs](https://github.com/iedame/nixkeeper-prs), a digest of
+[nixkeeper-prs](https://github.com/nixkeeper/digest-prs), a digest of
 every open PR and issue of nixpkgs and the PRs merged into master since the
 channel's commit, made hourly, and each package's counts and update PRs are
 found in their titles, every package daily. When the digest is over 6
@@ -167,7 +167,7 @@ rule) gets one worked out from nixpkgs: fetched from a GitHub tag, it's
 checked against that repository's tags, in the scheme nixpkgs' tag shows
 (`v1.2.3`, ...), plain versions only, and is left to Repology when that
 check fails; `workedOutChecks = false;` turns these off. These checks come
-from [nixkeeper-versions](https://github.com/iedame/nixkeeper-versions)'
+from [nixkeeper-versions](https://github.com/nixkeeper/digest-versions)'
 digest of GitHub releases, which works them out the same way for every
 package in nixpkgs and reads each repository at least weekly (daily when
 Repology calls the package outdated): its latest release when the project

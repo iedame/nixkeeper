@@ -11,6 +11,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- nixkeeper lives in the [nixkeeper organisation](https://github.com/nixkeeper)
+  on GitHub: `github.com/nixkeeper/nixkeeper`, and its digests beside it,
+  named by what they hold (`digest-builds`, was nixkeeper-hydra;
+  `digest-versions`; `digest-update-bot`, was nixkeeper-updates;
+  `digest-vulnerabilities`; `digest-prs`). The old addresses redirect
+  (`github:iedame/nixkeeper` still works, and earlier releases keep
+  reading the digests), but name the new one:
+  `inputs.nixkeeper.url = "github:nixkeeper/nixkeeper"`. `start-runs`
+  starts the organisation's runs by default, and needs a token that can
+  (a start through GitHub's API doesn't follow the redirect).
+
 - The overview's **Recently fixed** lists the week's fixes that took
   longest first, each saying how long it had been failing or outdated
   ("after 5 m"; hover for the dates), instead of the newest: with a
@@ -1685,21 +1696,21 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/iedame/nixkeeper/compare/v0.16.0...HEAD
-[0.16.0]: https://github.com/iedame/nixkeeper/compare/v0.15.0...v0.16.0
-[0.15.0]: https://github.com/iedame/nixkeeper/compare/v0.14.1...v0.15.0
-[0.14.1]: https://github.com/iedame/nixkeeper/compare/v0.13.0...v0.14.1
-[0.14.0]: https://github.com/iedame/nixkeeper/compare/v0.13.0...v0.14.0
-[0.13.0]: https://github.com/iedame/nixkeeper/compare/v0.12.0...v0.13.0
-[0.12.0]: https://github.com/iedame/nixkeeper/compare/v0.11.0...v0.12.0
-[0.11.0]: https://github.com/iedame/nixkeeper/compare/v0.10.0...v0.11.0
-[0.10.0]: https://github.com/iedame/nixkeeper/compare/v0.9.0...v0.10.0
-[0.9.0]: https://github.com/iedame/nixkeeper/compare/v0.8.0...v0.9.0
-[0.8.0]: https://github.com/iedame/nixkeeper/compare/v0.7.0...v0.8.0
-[0.7.0]: https://github.com/iedame/nixkeeper/compare/v0.6.0...v0.7.0
-[0.6.0]: https://github.com/iedame/nixkeeper/compare/v0.5.0...v0.6.0
-[0.5.0]: https://github.com/iedame/nixkeeper/compare/v0.4.0...v0.5.0
-[0.4.0]: https://github.com/iedame/nixkeeper/compare/v0.3.0...v0.4.0
-[0.3.0]: https://github.com/iedame/nixkeeper/compare/v0.2.0...v0.3.0
-[0.2.0]: https://github.com/iedame/nixkeeper/compare/v0.1.0...v0.2.0
-[0.1.0]: https://github.com/iedame/nixkeeper/releases/tag/v0.1.0
+[unreleased]: https://github.com/nixkeeper/nixkeeper/compare/v0.16.0...HEAD
+[0.16.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.15.0...v0.16.0
+[0.15.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.14.1...v0.15.0
+[0.14.1]: https://github.com/nixkeeper/nixkeeper/compare/v0.13.0...v0.14.1
+[0.14.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.13.0...v0.14.0
+[0.13.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.12.0...v0.13.0
+[0.12.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.11.0...v0.12.0
+[0.11.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.10.0...v0.11.0
+[0.10.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.9.0...v0.10.0
+[0.9.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.8.0...v0.9.0
+[0.8.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.7.0...v0.8.0
+[0.7.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.6.0...v0.7.0
+[0.6.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.5.0...v0.6.0
+[0.5.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.4.0...v0.5.0
+[0.4.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.3.0...v0.4.0
+[0.3.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.2.0...v0.3.0
+[0.2.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.1.0...v0.2.0
+[0.1.0]: https://github.com/nixkeeper/nixkeeper/releases/tag/v0.1.0

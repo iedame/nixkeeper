@@ -151,7 +151,7 @@ UPDATE_LOGS_BUDGET = 0
 # lists (the newest, one entry each): what its details show first. The rest
 # are on Repology, linked from there.
 REPOLOGY_ENTRIES_KEPT = 8
-UPSTREAM_URL = "https://github.com/iedame/nixkeeper"
+UPSTREAM_URL = "https://github.com/nixkeeper/nixkeeper"
 CONTACT_MAX = 100  # characters of NIXKEEPER_CONTACT kept in the User-Agent
 
 
@@ -162,7 +162,7 @@ def user_agent():
     chosen: the repository running it on GitHub Actions (public anyway), and
     NIXKEEPER_CONTACT. A personal machine adds nothing unless asked.
 
-      nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper; someone/nixkeeper)
+      nixkeeper/0.9.0 (+https://github.com/nixkeeper/nixkeeper; someone/nixkeeper)
     """
     from . import version  # here: nixkeeper/__init__.py imports nothing back
 
@@ -265,7 +265,7 @@ HYDRA_JOBSET = "unstable"
 # each job, as it is whenever the digest isn't current).
 HYDRA_DIGEST_URL = os.environ.get(
     "NIXKEEPER_HYDRA_DIGEST",
-    "https://raw.githubusercontent.com/iedame/nixkeeper-hydra/data/data/",
+    "https://raw.githubusercontent.com/nixkeeper/digest-builds/data/data/",
 )
 # A digest behind Hydra's newest evaluation is still used when it was read
 # this recently (its workflow runs hourly); older, it isn't.
@@ -276,7 +276,7 @@ HYDRA_DIGEST_MAX_AGE_HOURS = 12
 # each package, as it is whenever the digest isn't current).
 VERSIONS_DIGEST_URL = os.environ.get(
     "NIXKEEPER_VERSIONS_DIGEST",
-    "https://raw.githubusercontent.com/iedame/nixkeeper-versions/data/data/",
+    "https://raw.githubusercontent.com/nixkeeper/digest-versions/data/data/",
 )
 # The digest is used while its outdated projects were read this recently
 # (its workflow runs daily, at 04:07 UTC).
@@ -288,7 +288,7 @@ VERSIONS_DIGEST_MAX_AGE_HOURS = 36
 # digest isn't current).
 UPDATES_DIGEST_URL = os.environ.get(
     "NIXKEEPER_UPDATES_DIGEST",
-    "https://raw.githubusercontent.com/iedame/nixkeeper-updates/data/data/",
+    "https://raw.githubusercontent.com/nixkeeper/digest-update-bot/data/data/",
 )
 # The digest is used while it was made this recently (its workflow runs
 # every 3 hours).
@@ -303,7 +303,7 @@ UPDATES_QUEUE_MAX_AGE_HOURS = 24
 # decide alone, as they do whenever the digest isn't current).
 VULNERABILITIES_DIGEST_URL = os.environ.get(
     "NIXKEEPER_VULNERABILITIES_DIGEST",
-    "https://raw.githubusercontent.com/iedame/nixkeeper-vulnerabilities/data/data/",
+    "https://raw.githubusercontent.com/nixkeeper/digest-vulnerabilities/data/data/",
 )
 # Used while the tracker was read this recently (its workflow runs hourly).
 VULNERABILITIES_DIGEST_MAX_AGE_HOURS = 72
@@ -314,7 +314,7 @@ VULNERABILITIES_DIGEST_MAX_AGE_HOURS = 72
 # does whenever the digest isn't current).
 PRS_DIGEST_URL = os.environ.get(
     "NIXKEEPER_PRS_DIGEST",
-    "https://raw.githubusercontent.com/iedame/nixkeeper-prs/data/data/",
+    "https://raw.githubusercontent.com/nixkeeper/digest-prs/data/data/",
 )
 # Used while each list was made this recently (its workflow runs hourly and
 # takes about half an hour; the daily full sweep about an hour).

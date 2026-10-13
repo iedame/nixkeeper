@@ -205,7 +205,7 @@
           };
           fetch = sync; # old name, kept as an alias
           quick-check = frequent-check; # old name, kept as an alias
-          # `nix run github:iedame/nixkeeper -- <command>`: the command as
+          # `nix run github:nixkeeper/nixkeeper -- <command>`: the command as
           # installed, on your own folders.
           default = {
             type = "app";
@@ -269,7 +269,7 @@
                       lists.maintainers = [ "iedame" ];
                       githubTokenFile = "/run/secrets/github-token";
                       notify = "github-issue";
-                      githubRepo = "iedame/nixkeeper";
+                      githubRepo = "nixkeeper/nixkeeper";
                       nginx.virtualHost = "nixkeeper.example.org";
                     };
                   }
@@ -451,7 +451,7 @@
             in
             assert lib.assertMsg (found == expected) "package-lists checker found ${builtins.toJSON found}";
             # A set of packages says what's wrong (it passed this check before, and
-            # the sync found nothing: iedame/nixkeeper's cataclysmDDA).
+            # the sync found nothing: nixkeeper/nixkeeper's cataclysmDDA).
             assert lib.assertMsg (
               (lib.findFirst (p: p.entry == "cataclysmDDA") { } (
                 listsChecker.problems {

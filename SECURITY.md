@@ -7,7 +7,7 @@ Only the latest release and `main` get security fixes.
 ## Reporting a vulnerability
 
 Please report it privately, through
-[GitHub's private vulnerability reporting](https://github.com/iedame/nixkeeper/security/advisories/new)
+[GitHub's private vulnerability reporting](https://github.com/nixkeeper/nixkeeper/security/advisories/new)
 (the repository's Security tab → "Report a vulnerability"), not in a public
 issue.
 

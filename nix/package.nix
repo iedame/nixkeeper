@@ -81,8 +81,8 @@ python3Packages.buildPythonApplication (finalAttrs: {
       nixpkgs-update's failed attempts, open update PRs, and known
       vulnerabilities.
     '';
-    homepage = "https://github.com/iedame/nixkeeper";
-    changelog = "https://github.com/iedame/nixkeeper/blob/v${finalAttrs.version}/CHANGELOG.md";
+    homepage = "https://github.com/nixkeeper/nixkeeper";
+    changelog = "https://github.com/nixkeeper/nixkeeper/blob/v${finalAttrs.version}/CHANGELOG.md";
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ iedame ];
     mainProgram = "nixkeeper";

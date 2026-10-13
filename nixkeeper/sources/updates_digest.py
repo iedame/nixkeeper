@@ -1,5 +1,5 @@
-"""nixkeeper-updates' digest of nixpkgs-update (https://github.com/iedame/
-nixkeeper-updates): the bot's latest attempt at every package, its log read
+"""nixkeeper-updates' digest of nixpkgs-update (https://github.com/nixkeeper/
+digest-update-bot): the bot's latest attempt at every package, its log read
 with these same rules (nixpkgs_update.parse), refreshed every 3 hours. The
 daily sync takes attempts from it instead of reading each package's logs
 (nixpkgs_update.add_attempts), and still reads the logs of the lists'

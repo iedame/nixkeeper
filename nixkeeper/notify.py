@@ -327,7 +327,7 @@ def subscriber_body(sub, rows, changes, now, base):
         )
     )
     return (
-        f"{who}, as [nixkeeper]({base or 'https://github.com/iedame/nixkeeper'}) "
+        f"{who}, as [nixkeeper]({base or 'https://github.com/nixkeeper/nixkeeper'}) "
         "sees them.\n\n"
         + status_body(rows, changes, now, subscriber_page(base, sub))
         + "\n\n<sub>From notifications/ in this repository: removing the file "

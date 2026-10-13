@@ -157,7 +157,7 @@ it for everyone; a rule here covers the meantime.
    nixpkgs and Repology show (either would do nothing).
 
 Rather describe an update check than write it? Use the
-["Propose a community update check"](https://github.com/iedame/nixkeeper/issues/new?template=community-check.yml)
+["Propose a community update check"](https://github.com/nixkeeper/nixkeeper/issues/new?template=community-check.yml)
 issue form.
 
 ## Keeping them working

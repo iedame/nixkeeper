@@ -579,15 +579,18 @@ describe('where the data is', () => {
     return [u.searchParams, u];
   };
   test('a GitHub Pages project site names its repository', () => {
-    assert.equal(githubRepo(...at('https://iedame.github.io/nixkeeper/')), 'iedame/nixkeeper');
     assert.equal(
-      githubRepo(...at('https://iedame.github.io/nixkeeper/index.html')),
-      'iedame/nixkeeper',
+      githubRepo(...at('https://nixkeeper.github.io/nixkeeper/')),
+      'nixkeeper/nixkeeper',
+    );
+    assert.equal(
+      githubRepo(...at('https://nixkeeper.github.io/nixkeeper/index.html')),
+      'nixkeeper/nixkeeper',
     );
   });
   test('?owner=&repo= names another one', () => {
     assert.equal(
-      githubRepo(...at('https://iedame.github.io/nixkeeper/?owner=someone&repo=their-keeper')),
+      githubRepo(...at('https://nixkeeper.github.io/nixkeeper/?owner=someone&repo=their-keeper')),
       'someone/their-keeper',
     );
   });
@@ -603,20 +606,20 @@ describe('where the data is', () => {
     ]) {
       const q = new URLSearchParams({ owner, repo });
       assert.equal(
-        githubRepo(...at(`https://iedame.github.io/nixkeeper/?${q}`)),
+        githubRepo(...at(`https://nixkeeper.github.io/nixkeeper/?${q}`)),
         null,
         `${owner}/${repo}`,
       );
     }
-    assert.equal(githubRepo(...at('https://iedame.github.io/%3Cscript%3E/')), null);
+    assert.equal(githubRepo(...at('https://nixkeeper.github.io/%3Cscript%3E/')), null);
     assert.equal(
-      githubRepo(...at('https://iedame.github.io/nixkeeper/?owner=a-b&repo=c.d_e-f')),
+      githubRepo(...at('https://nixkeeper.github.io/nixkeeper/?owner=a-b&repo=c.d_e-f')),
       'a-b/c.d_e-f',
     );
   });
   test('anywhere else, no repository', () => {
     assert.equal(githubRepo(...at('http://127.0.0.1:8765/')), null);
-    assert.equal(githubRepo(...at('https://iedame.github.io/')), null);
+    assert.equal(githubRepo(...at('https://nixkeeper.github.io/')), null);
     assert.equal(githubRepo(...at('https://example.org/nixkeeper/')), null);
   });
   test('withSlash', () => {

@@ -201,11 +201,13 @@ class Notify(unittest.TestCase):
                 update = self.run_notify(
                     {
                         "NIXKEEPER_NOTIFY": method,
-                        "GITHUB_REPOSITORY": "iedame/nixkeeper",
+                        "GITHUB_REPOSITORY": "nixkeeper/nixkeeper",
                         "GITHUB_TOKEN": "t",
                     }
                 )
-                self.assertEqual(update.call_args.args[:2], ("iedame/nixkeeper", "t"))
+                self.assertEqual(
+                    update.call_args.args[:2], ("nixkeeper/nixkeeper", "t")
+                )
 
     def test_self_hosted_github_issue(self):
         """Outside GitHub Actions: the repository and page named explicitly."""
@@ -257,24 +259,25 @@ class UserAgent(unittest.TestCase):
 
     def test_the_software_and_its_version(self):
         self.assertEqual(
-            self.agent({}), "nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper)"
+            self.agent({}), "nixkeeper/0.9.0 (+https://github.com/nixkeeper/nixkeeper)"
         )
 
     def test_the_repository_running_it_on_github_actions(self):
         env = {"GITHUB_ACTIONS": "true", "GITHUB_REPOSITORY": "someone/nixkeeper"}
         self.assertEqual(
             self.agent(env),
-            "nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper; someone/nixkeeper)",
+            "nixkeeper/0.9.0 (+https://github.com/nixkeeper/nixkeeper; "
+            "someone/nixkeeper)",
         )
         # Not repeated for nixkeeper's own repository, nor outside Actions.
-        env["GITHUB_REPOSITORY"] = "iedame/nixkeeper"
+        env["GITHUB_REPOSITORY"] = "nixkeeper/nixkeeper"
         self.assertNotIn("; ", self.agent(env))
         self.assertNotIn("someone", self.agent({"GITHUB_REPOSITORY": "someone/x"}))
 
     def test_a_contact_when_chosen(self):
         self.assertEqual(
             self.agent({"NIXKEEPER_CONTACT": "me@example.org"}),
-            "nixkeeper/0.9.0 (+https://github.com/iedame/nixkeeper; me@example.org)",
+            "nixkeeper/0.9.0 (+https://github.com/nixkeeper/nixkeeper; me@example.org)",
         )
 
     def test_a_contact_cant_break_the_header(self):

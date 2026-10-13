@@ -1,5 +1,5 @@
-"""nixkeeper-vulnerabilities' digest (https://github.com/iedame/nixkeeper-
-vulnerabilities): what the NixOS security tracker and OSV say about nixpkgs
+"""nixkeeper-vulnerabilities' digest (https://github.com/nixkeeper/
+digest-vulnerabilities): what the NixOS security tracker and OSV say about nixpkgs
 packages, in one download, read by the daily sync.
 
 Each row gets "vulnerabilities": its CVEs (the tracker's) and advisories

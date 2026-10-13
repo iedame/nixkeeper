@@ -1,8 +1,8 @@
 # <picture><source media="(prefers-color-scheme: dark)" srcset="assets/brand/nixkeeper-lockup-dark.svg"><img src="assets/brand/nixkeeper-lockup.svg" alt="nixkeeper" height="80"></picture>
 
-[![CI: tests and lint](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/iedame/nixkeeper/actions/workflows/ci.yml)
-[![Data: sync](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml/badge.svg)](https://github.com/iedame/nixkeeper/actions/workflows/data-daily.yml)
-[![Latest release](https://img.shields.io/github/v/release/iedame/nixkeeper)](https://github.com/iedame/nixkeeper/releases/latest)
+[![CI: tests and lint](https://github.com/nixkeeper/nixkeeper/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/nixkeeper/nixkeeper/actions/workflows/ci.yml)
+[![Data: sync](https://github.com/nixkeeper/nixkeeper/actions/workflows/data-daily.yml/badge.svg)](https://github.com/nixkeeper/nixkeeper/actions/workflows/data-daily.yml)
+[![Latest release](https://img.shields.io/github/v/release/nixkeeper/nixkeeper)](https://github.com/nixkeeper/nixkeeper/releases/latest)
 [![Dashboard](https://img.shields.io/badge/dashboard-live-8250df)](https://nixkeeper.com/)
 
 Health dashboard for the nixpkgs packages you maintain: new releases, build
@@ -95,20 +95,20 @@ from Hackage, CRAN and the like, not one PR per package) have Repology's
 versions, Hydra's builds and the bot's attempts where it makes any, say
 what updates them, and are counted per set rather than in the cards. To read all of nixpkgs politely, the bulk
 of the data comes from five digests, each refreshed on its own schedule:
-[nixkeeper-hydra](https://github.com/iedame/nixkeeper-hydra) (Hydra's
+[nixkeeper-hydra](https://github.com/nixkeeper/digest-builds) (Hydra's
 builds, and which dependency stopped one),
-[nixkeeper-versions](https://github.com/iedame/nixkeeper-versions)
+[nixkeeper-versions](https://github.com/nixkeeper/digest-versions)
 (Repology's versions),
-[nixkeeper-updates](https://github.com/iedame/nixkeeper-updates)
+[nixkeeper-updates](https://github.com/nixkeeper/digest-update-bot)
 (nixpkgs-update's attempts) and
-[nixkeeper-vulnerabilities](https://github.com/iedame/nixkeeper-vulnerabilities)
+[nixkeeper-vulnerabilities](https://github.com/nixkeeper/digest-vulnerabilities)
 (the NixOS security tracker's CVEs and OSV's advisories) and
-[nixkeeper-prs](https://github.com/iedame/nixkeeper-prs) (nixpkgs' open PRs
+[nixkeeper-prs](https://github.com/nixkeeper/digest-prs) (nixpkgs' open PRs
 and issues). "checked … ago", at the top of the page, says
 how fresh each one is.
 
 **Something wrong?** A version, build or update result that looks off:
-[report it](https://github.com/iedame/nixkeeper/issues/new?template=something-looks-wrong.yml).
+[report it](https://github.com/nixkeeper/nixkeeper/issues/new?template=something-looks-wrong.yml).
 Where Repology has a version wrong, reporting it to Repology fixes it for
 everyone; [community rules](docs/community.md) cover the meantime.
 
@@ -142,15 +142,15 @@ GitHub Pages: GitHub Actions syncs it daily, with nothing to host. See
 **The command, on your computer.**
 
 ```bash
-nix run github:iedame/nixkeeper -- init --maintainer <your GitHub handle>
+nix run github:nixkeeper/nixkeeper -- init --maintainer <your GitHub handle>
 ```
 
 ```bash
-nix run github:iedame/nixkeeper -- sync
+nix run github:nixkeeper/nixkeeper -- sync
 ```
 
 ```bash
-nix run github:iedame/nixkeeper -- serve
+nix run github:nixkeeper/nixkeeper -- serve
 ```
 
 That starts your lists, syncs, and shows the page at http://127.0.0.1:8000/.
@@ -170,7 +170,7 @@ services.nixkeeper = {
 See [nixkeeper on NixOS](docs/nixos.md) or
 [nixkeeper on macOS](docs/darwin.md).
 
-**Tried it?** [Tell us how it went](https://github.com/iedame/nixkeeper/issues/53):
+**Tried it?** [Tell us how it went](https://github.com/nixkeeper/nixkeeper/issues/53):
 how you run it, what was confusing, what's missing.
 
 ## Documentation
