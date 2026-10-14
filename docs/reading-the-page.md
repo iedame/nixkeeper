@@ -100,7 +100,7 @@ A list says what it is under "Showing" (✕ goes back to the overview):
 | a maintainer's packages | `?maintainer=handle` (`none` for those with none) |
 | a team's | `?team=gaming` (any case) |
 | a set's | `?set=haskellPackages` |
-| one package alone | `?pkg=firefox` |
+| one package alone, its details open | `?pkg=firefox` |
 | marked broken, blocked by a dependency | |
 | fixes to backport: a CVE fixed on nixpkgs master but still affected on the newest release branch (on the overview, a note under Vulnerable, as unstable has the fix; the details say which) | `?view=backport` |
 | one of the instance's lists | `?list=` (by address only) |

@@ -133,6 +133,9 @@ let namesLoading = null;
 // ?pkg=: one package alone (with every package); ?set=: a generated set;
 // ?view=: a list by name (attention, broken).
 let pkgParam = null;
+// The ?pkg= its details were opened for, once: a link to a package opens
+// them, and closing them keeps them closed while it's shown.
+let pkgOpenedFor = null;
 let viewParam = null;
 let trendPoints = null; // history.json's points, once loaded (the overview's trends)
 let trendEvents = []; // and what marks them (staging-next merges, nixkeeper updates)
@@ -1578,6 +1581,13 @@ async function render(list, { keepPage = false, run = updateRun } = {}) {
     </tr></thead>
     <tbody id="rows">${shown.slice(0, FIRST_ROWS).map(rowHtml)}</tbody>
   </table></div>${pagerHtml(list.length, pages)}${moreMatchesHtml()}`;
+  // One package shown by its link (?pkg=): its details open at once, the
+  // reason the link was followed.
+  if (pkgParam && list.length === 1 && pkgOpenedFor !== pkgParam) {
+    pkgOpenedFor = pkgParam;
+    const tr = document.querySelector('#rows tr.row');
+    if (tr) toggle(tr, 'info');
+  }
   // The rest of the page's rows, below the screen, a moment later.
   if (shown.length <= FIRST_ROWS) return;
   await yieldToBrowser();

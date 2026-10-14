@@ -37,6 +37,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- A link to one package (`?pkg=firefox`, and the overview's package links)
+  opens its details: it showed the package alone with its panel closed, one
+  more tap, on a phone the whole screen's worth. Closed, they stay closed.
+
 - On phones and narrow windows, the ways to narrow a list (Without
   maintainer, Older than...) stay in the counts' sideways row: they wrapped
   into a column that left a tall empty band above the list.
