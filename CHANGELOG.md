@@ -11,6 +11,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- The repository's front door: questions, ideas and feedback go to
+  [Discussions](https://github.com/nixkeeper/nixkeeper/discussions) (the
+  issue forms and the README link there); "Something looks wrong" asks
+  where it was seen (nixkeeper.com, the demo, or a copy) and says how fresh
+  the data is; "Track a package" is gone (nixkeeper.com tracks every
+  package); "Get notified" is among the issue links. A code of conduct (the
+  NixOS community's), the digests in SECURITY.md's scope, and the README
+  says nixkeeper isn't affiliated with the NixOS Foundation.
+
 - `nix run .#screenshots` takes both sets in nixkeeper's repository: the
   overview's from the community instance's data and the list's from the
   demo's (demo.nixkeeper.com), with `--overview-data` and `--list-data` to

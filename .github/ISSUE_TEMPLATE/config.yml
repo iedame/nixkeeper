@@ -1,5 +1,11 @@
 blank_issues_enabled: true
 contact_links:
+  - name: Questions, ideas and feedback
+    url: https://github.com/nixkeeper/nixkeeper/discussions
+    about: How to use nixkeeper, what you'd like it to do, how you use it.
+  - name: Get notified about your packages
+    url: https://github.com/nixkeeper/nixkeeper/blob/main/docs/notifications.md
+    about: "A status issue of your own, for you or your team: you subscribe by pull request."
   - name: Report a security problem
     url: https://github.com/nixkeeper/nixkeeper/security/advisories/new
     about: Privately, as the security policy (SECURITY.md) asks; not in a public issue.

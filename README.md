@@ -195,8 +195,8 @@ services.nixkeeper = {
 See [nixkeeper on NixOS](docs/nixos.md) or
 [nixkeeper on macOS](docs/darwin.md).
 
-**Tried it?** [Tell us how it went](https://github.com/nixkeeper/nixkeeper/issues/53):
-how you run it, what was confusing, what's missing.
+**Tried it?** [Tell us how it went](https://github.com/nixkeeper/nixkeeper/discussions):
+how you run it, what was confusing, what's missing. Questions go there too.
 
 ## Documentation
 
@@ -215,11 +215,15 @@ how you run it, what was confusing, what's missing.
 How the code is laid out, the commands, and how changes and releases happen
 are in [CONTRIBUTING.md](CONTRIBUTING.md); what changed in each version, in
 [CHANGELOG.md](CHANGELOG.md). Security problems: [SECURITY.md](SECURITY.md).
+Everyone taking part follows the [code of conduct](CODE_OF_CONDUCT.md).
 
 ## License
 
 nixkeeper's code and its brand assets (`assets/brand/`) are released under
 the [MIT License](LICENSE).
+
+nixkeeper is an independent community project, not affiliated with or
+endorsed by the NixOS Foundation.
 
 The published data (the `data` branch) is collected from other projects and
 remains subject to their terms: [Repology](https://repology.org), nixpkgs'

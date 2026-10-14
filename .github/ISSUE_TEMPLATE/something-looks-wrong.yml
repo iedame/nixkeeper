@@ -6,7 +6,17 @@ body:
   - type: markdown
     attributes:
       value: |
-        Before reporting: [Reading the page](https://github.com/nixkeeper/nixkeeper/blob/main/docs/reading-the-page.md) explains every status and badge. A result can also be up to a day old: the data is refreshed daily (the time at the top right of the page says when).
+        Before reporting: [Reading the page](https://github.com/nixkeeper/nixkeeper/blob/main/docs/reading-the-page.md) explains every status and badge. A result can also be a few hours old: nixkeeper.com refreshes every 3 hours, a copy of it daily ("checked … ago", at the top of the page, says when each source was read). A package that's missing or in the wrong place belongs here too. Questions and ideas: [Discussions](https://github.com/nixkeeper/nixkeeper/discussions).
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where you saw it
+      options:
+        - nixkeeper.com
+        - demo.nixkeeper.com
+        - my own copy (a fork, or the nixkeeper command)
+    validations:
+      required: true
   - type: input
     id: package
     attributes:

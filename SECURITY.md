@@ -20,6 +20,10 @@ Say what's affected and how to reproduce it, if you can.
 - its GitHub Actions workflows: for example, anything that could misuse their
   token or write to the `data` branch unintentionally
 - the page (`page/`): for example, script injection through the data it shows
+- the digests beside it in the [nixkeeper organisation](https://github.com/nixkeeper)
+  (`digest-builds`, `digest-versions`, `digest-update-bot`,
+  `digest-vulnerabilities`, `digest-prs`): their code, workflows and
+  published data; report them here too
 
 ## What's not
 
@@ -31,7 +35,7 @@ Say what's affected and how to reproduce it, if you can.
 
 ## What to expect
 
-nixkeeper is a personal project, maintained on a best-effort basis. Expect an
+nixkeeper is a small volunteer project, maintained on a best-effort basis. Expect an
 acknowledgement within about a week, and a fix or an explanation after that.
 There's no bug bounty. Once fixed, the report is credited in the changelog,
 unless you'd rather not be named.
