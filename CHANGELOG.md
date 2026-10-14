@@ -18,7 +18,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   the data is; "Track a package" is gone (nixkeeper.com tracks every
   package); "Get notified" is among the issue links. A code of conduct (the
   NixOS community's), the digests in SECURITY.md's scope, and the README
-  says nixkeeper isn't affiliated with the NixOS Foundation.
+  says nixkeeper isn't affiliated with the NixOS Foundation. The pull
+  request template says what a subscription or a community rule needs (just
+  why), and asks for `nix flake check` and `docs/command.md` too.
 
 - `nix run .#screenshots` takes both sets in nixkeeper's repository: the
   overview's from the community instance's data and the list's from the
