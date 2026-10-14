@@ -9,6 +9,18 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Fixed
+
+- **Why things fail**: a kernel module failing with an implicit function
+  declaration or incompatible pointer types is under "Kernel driver vs. a
+  newer kernel's API" (the kernel dropped the function or changed the
+  callback), not "Implicit function declarations (C23 by default)" or
+  "Incompatible pointer types (newer compiler)": on 2026-10-14, 47 kernel
+  modules of those two groups' 61 packages. And the same error is one
+  group whether its log names the file with its directory or not
+  (`/build/source/src/foo.c:12:3` and `foo.c:12:3`): "use of undeclared
+  identifier" was split in three.
+
 ## [0.17.0] - 2026-10-14
 
 nixkeeper moves to the **nixkeeper organisation** on GitHub

@@ -45,13 +45,16 @@ GENERIC = re.compile(
 )
 NORMALIZE = (
     (re.compile(r"/nix/store/[a-z0-9]{32}-[^/\s:'\"]*"), "<store>"),
-    (re.compile(r"(?:/build|/tmp|/private/tmp)/[^\s:'\"]*"), "<path>"),
+    # A source file and line, wherever it is ("foo.c:12:3" and
+    # "/build/source/src/foo.c:12:3" are the same error): before paths.
     (
         re.compile(
-            r"\b[\w./+-]+\.(?:c|cc|cpp|cxx|h|hh|hpp|rs|go|py|java|ts|js|nix):\d+(?::\d+)?"
+            r"(?<![\w<>])/?[\w./+-]*\.(?:c|cc|cpp|cxx|h|hh|hpp|rs|go|py|java|ts|js|nix)"
+            r":\d+(?::\d+)?"
         ),
         "<file>",
     ),
+    (re.compile(r"(?:/build|/tmp|/private/tmp)/[^\s:'\"]*"), "<path>"),
     (re.compile(r"'[^']{0,80}'|‘[^’]{0,80}’|\"[^\"]{0,80}\"|`[^`]{0,80}`"), "'…'"),
     (re.compile(r"\d+"), "N"),
     (re.compile(r"\s+"), " "),
@@ -116,6 +119,14 @@ TITLES = (
     (r"is deprecated \[-Werror", "Deprecated declaration is an error", "compiler"),
 )
 TITLES = tuple((re.compile(p), title, about) for p, title, about in TITLES)
+# In a kernel module, these errors mean the kernel changed (a function it
+# dropped, a callback's new signature), not the compiler: the kernel's title.
+KERNEL_API = next(t[1:] for t in TITLES if t[2] == "kernel drivers")
+KERNEL_MEANS_API = {
+    "Implicit function declarations (C23 by default)",
+    "Incompatible pointer types (newer compiler)",
+}
+KERNEL_MODULE = re.compile(r"^(?:linuxKernel\.packages\.[\w]+|linuxPackages\w*)\.")
 
 
 def error_line(excerpt):
@@ -150,6 +161,12 @@ def title_of(line):
     return None, None
 
 
+def is_kernel_module(row):
+    """A package built against a kernel (linuxPackages.foo, one per
+    kernel)."""
+    return any(KERNEL_MODULE.match(a) for a in [row["name"], *(row.get("attrs") or [])])
+
+
 def key_of(sig):
     """A group's key, for its view and the page's address (?cause=)."""
     return hashlib.sha256(sig.encode()).hexdigest()[:10]
@@ -178,6 +195,8 @@ def build_groups(rows):
             # A known cause is one group whatever the line's wording; else
             # the line itself.
             title, about = title_of(line)
+            if title in KERNEL_MEANS_API and is_kernel_module(row):
+                title, about = KERNEL_API
             key = f"title:{title}" if title else sig
             if key in seen:
                 continue

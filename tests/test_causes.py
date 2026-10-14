@@ -41,6 +41,17 @@ class ErrorLine(unittest.TestCase):
         a = "/build/src/a.c:12:3: error: 'x' undeclared"
         b = "/build/other/b.c:99:1: error: 'y' undeclared"
         self.assertEqual(causes.signature(a), causes.signature(b))
+        # A file with or without its directory: the same error.
+        c = "c.c:5:2: error: 'z' undeclared"
+        self.assertEqual(causes.signature(a), causes.signature(c))
+        self.assertEqual(causes.signature(c), "<file>: error: '…' undeclared")
+        # In a store path too.
+        d = (
+            "/nix/store/"
+            + "a" * 32
+            + "-absl-dev/include/x/y.h:502:24: error: 'q' undeclared"
+        )
+        self.assertEqual(causes.signature(d), "<store>/<file>: error: '…' undeclared")
 
 
 class Groups(unittest.TestCase):
@@ -73,7 +84,33 @@ class Groups(unittest.TestCase):
         self.assertEqual(first["about"], "python")
         self.assertEqual(len(first["key"]), 10)
         self.assertNotIn("title", second)  # no known pattern: its line
-        self.assertEqual(second["signature"], "<path>:N:N: error: some odd thing '…'")
+        self.assertEqual(second["signature"], "<file>: error: some odd thing '…'")
+
+    def test_kernel_modules_under_the_kernels_title(self):
+        # The kernel dropped a function or changed a callback: not C23, nor
+        # the compiler, in a kernel module.
+        implicit = "x.c:3:1: error: implicit declaration of function 'wmi_has_guid'"
+        pointer = (
+            "y.c:9:2: error: initialization of 'int (*)(struct usb_hcd *)' "
+            "from incompatible pointer type"
+        )
+        rows = [
+            failing(f"linuxKernel.packages.linux_6_{i}.drv{i}", implicit)
+            for i in range(2)
+        ] + [
+            failing("linuxPackages.other", pointer),
+            failing("a", implicit),
+            failing("b", implicit),
+            failing("c", implicit),
+        ]
+        groups = {g["title"]: g["count"] for g in causes.build_groups(rows)}
+        self.assertEqual(
+            groups,
+            {
+                "Kernel driver vs. a newer kernel's API": 3,
+                "Implicit function declarations (C23 by default)": 3,
+            },
+        )
 
     def test_one_package_counted_once(self):
         row = failing("a", "ModuleNotFoundError: No module named 'six'")
