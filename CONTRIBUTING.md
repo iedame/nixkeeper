@@ -54,7 +54,8 @@ happen. For what nixkeeper does and how to set up your own, see the
 - `.github/workflows/`:
   - `ci.yml`, **CI: tests and lint**: checks nixkeeper's own code on every
     push and PR
-  - `data-daily.yml`, **Data: daily sync**: updates all package data
+  - `data-daily.yml`, **Data: sync** (the file keeps its old name): updates
+    all package data
   - `community-checks.yml`, **Community: update checks still work**: runs
     every community rule for real weekly, keeping the "Community rules
     status" issue up to date (`nixkeeper community-check

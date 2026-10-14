@@ -31,7 +31,7 @@ The workflows run in the repository's **Actions** tab:
 
 | Workflow | When | What to look for |
 |---|---|---|
-| Data: daily sync | daily, 06:00 UTC; again at 14:00 UTC, which only syncs if the last sync is over 20 hours old (GitHub skipped or delayed the morning one) and otherwise stops at once | a green run each day; it commits to the `data` branch when something changed |
+| Data: sync | starts every 3 hours; syncs when the last sync is due (once a day on a copy, every 3 hours on the community instance, or every `NIXKEEPER_SYNC_HOURS`), else stops at once. With `NIXKEEPER_STARTED_OUTSIDE` set, its schedule is only the fallback for [start-runs](all-packages.md) | a green run each time; one that syncs commits to the `data` branch when something changed |
 | Data: hourly updates | about hourly | GitHub runs scheduled workflows on a best-effort basis: gaps of a few hours are normal |
 | Pages: publish the page | when the page changes on `main`; with `CLOUDFLARE_SITE_URL` set, only by hand (skipped on pushes) | a green run after each page change, or a skipped one with your own site |
 | CI: tests and lint | every push and PR | green before merging |
