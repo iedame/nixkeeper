@@ -1,7 +1,7 @@
 # Get notified
 
 Any nixpkgs maintainer, or team, can get a GitHub issue of their own from
-the community dashboard: rewritten by every daily sync with what needs
+the community dashboard: rewritten by every sync (every 3 hours) with what needs
 attention in their packages (failing, outdated, vulnerable, marked
 broken), and a comment when something newly does, by the hourly checks too
 (a browser's new release, say, or a new CVE: up to three are named, with
@@ -21,7 +21,7 @@ by pull request, named after you:
 { maintainer = "<your GitHub handle>"; }
 ```
 
-The daily sync then opens **nixkeeper status: @\<your handle\>** in this
+The next sync then opens **nixkeeper status: @\<your handle\>** in this
 repository, with the packages listing you in `meta.maintainers` (any case,
 as the page's `@handle` search finds them), and mentions you in it: that
 subscribes you, so its comments reach you as GitHub notifications.

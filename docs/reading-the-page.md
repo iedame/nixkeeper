@@ -17,7 +17,10 @@ for the merge bot, superseded or overtaken, blocking the update bot or
 duplicated; open PRs touching it while its build fails on Hydra (maybe its
 fix); its other open PRs, a removal first ("removes it from nixpkgs": the
 list says **being removed** too); and its issues that look done (a build failure that builds on Hydra
-now, an update request nixpkgs has met) or still fail. The panel lists
+now, an update request nixpkgs has met) or still fail. Above it, the
+package's fixes of the last month: "Updated 1.9.0 → 1.10.0 on Oct 9 (after
+3 w), in #N, by @alice, merged by @bob", and, while its build fails, a PR
+merged since that likely fixes it, waiting for Hydra. The panel lists
 each package's maintainers: clicking one
 searches for theirs, and the address becomes `?maintainer=yourhandle`, a
 link to your own (`?q=@yourhandle`, as it was first written, still opens
@@ -96,10 +99,13 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   each with its trend
   (from the second daily sync on, the last 30 days at most) and its change
   over the last week (since the first sync until there's a week: hover it
-  for which). A dashed mark on the trends is a staging-next merge into
-  master (mass rebuilds: failing builds jump for days after; its PR is
-  linked under the cards), or, in the accent colour, nixkeeper updated or
-  counting differently (a change in how it counts can step a count). While
+  for which). A grey mark on the trends is a staging-next merge into
+  master (mass rebuilds: failing builds jump for days after), an amber one
+  a change in how nixkeeper counts (it can step a count overnight); the
+  line under the cards names each kind with its days ("counting changed
+  Oct 6, Oct 7"), and hovering a day says what happened (a staging-next
+  day links its PR). nixkeeper's own releases aren't marked: the footer
+  says the version, and one that changes counting has its own mark. While
   the digest of nixpkgs-update's attempts is still reading past ones, the
   Update failures card says how many are to go: update failures that were
   there all along keep turning up until then, so it rises without anything
@@ -130,7 +136,10 @@ instance), the page starts from an **overview** of nixpkgs, with no list:
   updated (from and to which version), and nixpkgs-update failures
   cleared, each list the fixes that took longest first ("after 5 m": how
   long it had been failing or outdated; a build's from Hydra's last
-  success, an outdated package's from when nixkeeper first saw it so);
+  success, an outdated package's from when nixkeeper first saw it so),
+  each with who fixed it: the author of its PR (hover for the PR and who
+  merged it; a build fix's PR is a likely one, merged since the build
+  began failing and touching the package; a bot's name isn't shown);
 - the sets updated in bulk, each with its size, what updates it, how
   many are outdated (for Haskell, how many of those are already updated on
   haskell-updates, waiting for its merge), and how much of it is marked
