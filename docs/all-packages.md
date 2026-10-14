@@ -84,6 +84,14 @@ keep their own schedules as a fallback: a run started twice finds nothing
 new, or stops at once. A start GitHub answers with a server error, or
 doesn't answer, is tried again after 1 minute and then 3.
 
+Then set the repository variable `NIXKEEPER_STARTED_OUTSIDE` to `true`
+(Settings → Secrets and variables → Actions → Variables): the sync's own
+schedule becomes only the fallback, syncing when the last sync is over the
+interval and half an hour old (a start was missed). Without it, GitHub's
+scheduled runs, which often come hours late, sync whenever the last sync is
+due, and the next start finds nothing to do: syncs at GitHub's times
+instead of yours.
+
 It needs a [fine-grained token](https://github.com/settings/personal-access-tokens/new)
 for the repositories it starts runs in, with only **Actions: read and
 write**: it can start and cancel runs, nothing else.

@@ -12,6 +12,10 @@ on:
     # instance, daily elsewhere), else it stops at once. Also started
     # through the API at :15 from outside GitHub (its schedule skips runs
     # when busy; scripts/start-runs.sh): whichever runs second stops at once.
+    # With NIXKEEPER_STARTED_OUTSIDE set (a repository variable), the
+    # schedule is only the fallback: GitHub's runs come hours late, and one
+    # syncing then made the outside start skip (2026-10-14: 08:18, then
+    # nothing till 12:15).
     - cron: '0 */3 * * *'
   # Lets you trigger a run manually from the Actions tab (always syncs), or
   # through the API with if_older ("auto": by the interval, as scheduled).
@@ -60,7 +64,10 @@ jobs:
           # "auto": due once the last sync is the interval old, less an hour
           # (a run started a little early still syncs): every 3 hours with
           # every package (the community instance, whose digests refresh
-          # hourly), daily otherwise; NIXKEEPER_SYNC_HOURS overrides it.
+          # hourly), daily otherwise; NIXKEEPER_SYNC_HOURS overrides it. A
+          # scheduled run where something outside starts the syncs
+          # (NIXKEEPER_STARTED_OUTSIDE): due only once the interval and half
+          # an hour have passed, a start missed.
           if [ "$IF_OLDER" = auto ]; then
             hours=$SYNC_HOURS
             if [ -z "$hours" ]; then
@@ -73,6 +80,11 @@ jobs:
               '' | *[!0-9]*) echo "::error::NIXKEEPER_SYNC_HOURS isn't a number of hours: $hours"; exit 1 ;;
             esac
             IF_OLDER=$((hours > 1 ? hours - 1 : 0))
+            if [ "$EVENT" = schedule ]; then
+              case "${STARTED_OUTSIDE,,}" in
+                1 | true | yes) IF_OLDER="$hours.5" ;;
+              esac
+            fi
           fi
           nix run .#sync -- ${IF_OLDER:+--if-older "$IF_OLDER"}
         env:
@@ -81,6 +93,10 @@ jobs:
           # How often to sync, in hours (a repository variable; unset: 3 with
           # every package, else 24).
           SYNC_HOURS: ${{ vars.NIXKEEPER_SYNC_HOURS }}
+          # Something outside GitHub starts the syncs on time (start-runs):
+          # the schedule is the fallback.
+          STARTED_OUTSIDE: ${{ vars.NIXKEEPER_STARTED_OUTSIDE }}
+          EVENT: ${{ github.event_name }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR/issue counts and the status issue
           NIXKEEPER_NOTIFY: github-issue  # the status issues; local runs don't notify
           # Every nixpkgs package, not only the lists' (the community

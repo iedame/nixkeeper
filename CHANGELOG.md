@@ -9,6 +9,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Changed
+
+- With the repository variable `NIXKEEPER_STARTED_OUTSIDE` set (the
+  community instance: start-runs starts its syncs), the sync's own schedule
+  is only the fallback: a scheduled run syncs when the last sync is over the
+  interval and half an hour old, so GitHub's late runs no longer take the
+  outside start's turn (2026-10-14: a sync at 08:18, the 09:15 start
+  skipped, the next at 12:15). Without it, as before.
+
 ### Fixed
 
 - **Why things fail**: a kernel module failing with an implicit function
