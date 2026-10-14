@@ -9,6 +9,19 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.18.0] - 2026-10-14
+
+Ready to be shown around. A live dashboard of lists,
+[demo.nixkeeper.com](https://demo.nixkeeper.com/), sits beside the
+community one to compare, and a copy of the repository no longer opens the
+community's subscribers' issues. **Questions and feedback** go to
+Discussions, under the NixOS community's code of conduct. The docs a
+newcomer reads are rewritten: the README, Reading the page (in sections),
+a dashboard of your own (tried on a fresh account), and new screenshots of
+both views. On phones, a list no longer starts with an empty band, and a
+link to a package opens its details. Why things fail files kernel modules
+under the kernel's change, not the compiler's.
+
 ### Changed
 
 - The repository's front door: questions, ideas and feedback go to
@@ -1762,7 +1775,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/nixkeeper/nixkeeper/compare/v0.17.0...HEAD
+[unreleased]: https://github.com/nixkeeper/nixkeeper/compare/v0.18.0...HEAD
+[0.18.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.17.0...v0.18.0
 [0.17.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.15.0...v0.16.0
 [0.15.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.14.1...v0.15.0
