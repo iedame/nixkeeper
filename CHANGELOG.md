@@ -9,6 +9,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.17.0] - 2026-10-14
+
+nixkeeper moves to the **nixkeeper organisation** on GitHub
+(`github:nixkeeper/nixkeeper`), its digests beside it and named by what
+they hold; the old addresses keep working. **Recently fixed** lists the
+week's longest-standing fixes, saying how long each had lasted, instead of
+the last sync's. New GitHub releases and Repology's verdicts are at most
+12 hours old instead of a day (up to a week for releases).
+
 ### Changed
 
 - nixkeeper lives in the [nixkeeper organisation](https://github.com/nixkeeper)
@@ -1696,7 +1705,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/nixkeeper/nixkeeper/compare/v0.16.0...HEAD
+[unreleased]: https://github.com/nixkeeper/nixkeeper/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.15.0...v0.16.0
 [0.15.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.14.1...v0.15.0
 [0.14.1]: https://github.com/nixkeeper/nixkeeper/compare/v0.13.0...v0.14.1
