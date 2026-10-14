@@ -44,6 +44,7 @@ choose others; a flag wins over its variable:
 | `--notify` | `NIXKEEPER_NOTIFY` | `none` | `github-issue` to keep the status issues up to date (the workflows set it) |
 | | `NIXKEEPER_GITHUB_REPO` | the workflow's repo | where the status issues live |
 | | `NIXKEEPER_NOTIFICATIONS` | `notifications/` beside the lists | who gets a status issue of their own ([notifications.md](notifications.md)) |
+| | `NIXKEEPER_SUBSCRIBERS` | on with every package, else off | whether those in `notifications/` get their issues (`true` or `false`) |
 | | `NIXKEEPER_PAGE_URL` | the GitHub Pages site | the page link in notifications |
 | | `NIXKEEPER_CONTACT` | – | how you can be reached (an email or a URL), added to the User-Agent nixkeeper sends to the sources; see below |
 | `--all-packages` (sync) | `NIXKEEPER_ALL_PACKAGES` | – | `1` to track every nixpkgs package, not only the lists' ([every package](all-packages.md)) |

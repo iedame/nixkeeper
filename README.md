@@ -73,7 +73,10 @@ nixpkgs-update attempts, vulnerable or marked broken, with their trends;
 the newest and longest-standing of each; the failing dependencies that stop
 the most other builds; why things fail (failed builds grouped by the same
 error, the update bot's failures by cause); and what was fixed in the last
-week, longest-standing first, with who opened and merged each fix.
+week, longest-standing first, with who opened and merged each fix. A
+dashboard of your own tracks only your lists, with no overview:
+[demo.nixkeeper.com](https://demo.nixkeeper.com/) is one, live (a maintainer's
+packages and the NixOS gaming team's), to compare.
 
 <p align="center">
   <picture>
@@ -155,10 +158,11 @@ page that shows it. [How it works](docs/how-it-works.md) explains each part;
 
 ## Get started
 
-**A dashboard of your own on GitHub.** Copy this repository, list your
+**A dashboard of your own on GitHub.** Fork this repository, list your
 GitHub handle and any other packages in `package-lists/`, and turn on
 GitHub Pages: GitHub Actions syncs it daily, with nothing to host. See
-[a dashboard of your own](docs/your-own-instance.md).
+[a dashboard of your own](docs/your-own-instance.md), and
+[demo.nixkeeper.com](https://demo.nixkeeper.com/) for one live.
 
 **The command, on your computer.**
 

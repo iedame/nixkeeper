@@ -488,7 +488,7 @@ def notify(
     try:
         if lists is None:
             lists = read_lists()
-        subscribers = read_subscribers()
+        subscribers = read_subscribers() if config.subscribers() else {}
         SENDERS[method](
             rows,
             diff(previous, rows),

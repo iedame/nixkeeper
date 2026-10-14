@@ -534,6 +534,39 @@ class NotificationsFolder(unittest.TestCase):
             self.assertEqual(notify.config.notifications_path(), "/elsewhere")
 
 
+class SubscribersWhere(unittest.TestCase):
+    """notifications/' issues: the community instance's, not a copy's."""
+
+    def setting(self, subscribers=None, all_packages=None):
+        env = {k: v for k, v in os.environ.items() if k != "NIXKEEPER_SUBSCRIBERS"}
+        if subscribers is not None:
+            env["NIXKEEPER_SUBSCRIBERS"] = subscribers
+        with (
+            mock.patch.dict(os.environ, env, clear=True),
+            mock.patch.object(notify.config, "ALL_PACKAGES", all_packages),
+        ):
+            return notify.config.subscribers()
+
+    def test_on_with_every_package_off_on_a_copy(self):
+        self.assertTrue(self.setting(all_packages=True))
+        self.assertFalse(self.setting(all_packages=False))
+        # A copy that wants them; the community instance turning them off.
+        self.assertTrue(self.setting("true", all_packages=False))
+        self.assertFalse(self.setting("false", all_packages=True))
+
+    def test_not_read_when_off(self):
+        sender = mock.Mock()
+        with (
+            mock.patch.object(notify.config, "NOTIFY", "github-issue"),
+            mock.patch.object(notify.config, "subscribers", return_value=False),
+            mock.patch.object(notify, "read_subscribers") as read,
+            mock.patch.dict(notify.SENDERS, {"github-issue": sender}),
+        ):
+            notify.notify({"packages": []}, [], NOW, lists={})
+        read.assert_not_called()
+        self.assertEqual(sender.call_args.kwargs["subscribers"], {})
+
+
 class Hourly(unittest.TestCase):
     """The hourly checks notify too (partial.publish), with less to go on."""
 

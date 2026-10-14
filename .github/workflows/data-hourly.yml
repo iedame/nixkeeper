@@ -60,6 +60,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # GitHub tag checks, status issue
           NIXKEEPER_NOTIFY: github-issue  # the status issue; local runs don't notify
+          # notifications/' issues: as the sync's (data-daily.yml).
+          NIXKEEPER_SUBSCRIBERS: ${{ vars.NIXKEEPER_SUBSCRIBERS || vars.NIXKEEPER_ALL_PACKAGES }}
 
       - name: Update PRs
         # Also when the frequent checks failed: they're independent.
@@ -68,6 +70,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # PR searches, status issue
           NIXKEEPER_NOTIFY: github-issue
+          NIXKEEPER_SUBSCRIBERS: ${{ vars.NIXKEEPER_SUBSCRIBERS || vars.NIXKEEPER_ALL_PACKAGES }}
 
       - name: Publish the data if it changed
         id: publish

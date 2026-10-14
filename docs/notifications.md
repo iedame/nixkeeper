@@ -71,8 +71,13 @@ issue works at once, too.
 The same folder works for any instance: the sync reads `notifications/`
 beside its package lists (`NIXKEEPER_NOTIFICATIONS` to put it elsewhere),
 when it notifies by issue (`NIXKEEPER_NOTIFY=github-issue`, which the
-workflows set). The instance's own status issue, for everything on its
-lists, is on unless the lists turn it off:
+workflows set). On a copy of this repository it's off: the folder it copied
+is the community instance's, and reading it would open those people's
+issues in your repository and mention them. To give your own maintainers
+and teams issues of their own, replace its files with yours and set the
+repository variable `NIXKEEPER_SUBSCRIBERS` to `true` (in the environment,
+for the command). The instance's own status issue, for everything on its
+lists, doesn't depend on this: it's on unless the lists turn it off:
 
 ```nix
 # package-lists/default.nix

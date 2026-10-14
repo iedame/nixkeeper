@@ -68,6 +68,19 @@ def notifications_path():
     )
 
 
+def subscribers():
+    """Whether notifications/' maintainers and teams get status issues of
+    their own: NIXKEEPER_SUBSCRIBERS (1, true, yes; or 0, false, no), else
+    on with every package (the community instance, whose folder they are)
+    and off elsewhere. A copy of this repository has the community's files,
+    and would otherwise open their issues and mention them; its own status
+    issue (the lists' statusIssue) doesn't depend on this."""
+    value = os.environ.get("NIXKEEPER_SUBSCRIBERS", "").strip().lower()
+    if value:
+        return value in ("1", "true", "yes")
+    return all_packages()
+
+
 NOTIFY = None  # set by the command; otherwise NIXKEEPER_NOTIFY, read when used
 NIX_REPO = "nix_unstable"
 ALL_PACKAGES = None  # set by the command; otherwise NIXKEEPER_ALL_PACKAGES

@@ -11,6 +11,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A copy of this repository no longer opens status issues for the
+  maintainers and teams in `notifications/`: those files are the community
+  instance's subscribers, and a copy's syncs opened their issues and
+  mentioned them. They're read with every package (the community instance)
+  or where `NIXKEEPER_SUBSCRIBERS` is `true` (a copy with subscribers of its
+  own). A copy's own status issue is as before. The guide to a dashboard of
+  your own loses its "delete these files" step, and links
+  [demo.nixkeeper.com](https://demo.nixkeeper.com/), a live dashboard of
+  lists, to compare with nixkeeper.com.
+
 - With the repository variable `NIXKEEPER_STARTED_OUTSIDE` set (the
   community instance: start-runs starts its syncs), the sync's own schedule
   is only the fallback: a scheduled run syncs when the last sync is over the

@@ -102,6 +102,10 @@ jobs:
           # Every nixpkgs package, not only the lists' (the community
           # instance): a repository variable, so forks don't inherit it.
           NIXKEEPER_ALL_PACKAGES: ${{ vars.NIXKEEPER_ALL_PACKAGES }}
+          # notifications/' maintainers and teams get issues of their own:
+          # on with every package (the community instance), off on a copy
+          # unless it sets NIXKEEPER_SUBSCRIBERS (nixkeeper/config.py).
+          NIXKEEPER_SUBSCRIBERS: ${{ vars.NIXKEEPER_SUBSCRIBERS || vars.NIXKEEPER_ALL_PACKAGES }}
           # The issues' links: the instance's own site, when it has one
           # (otherwise its GitHub Pages address).
           NIXKEEPER_PAGE_URL: ${{ vars.CLOUDFLARE_SITE_URL }}
