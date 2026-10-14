@@ -2596,6 +2596,16 @@ a.page-btn:focus-visible {
     white-space: nowrap;
     scroll-snap-align: start;
   }
+  /* The ways to narrow a list, in the same sideways row: wrapped, they made
+     a narrow column as tall as the screen's top half (2026-10-14). */
+  .refine {
+    flex-wrap: nowrap;
+  }
+  .refine-btn,
+  .refine-age {
+    flex: none;
+    white-space: nowrap;
+  }
   .lists-label {
     flex: none;
   }

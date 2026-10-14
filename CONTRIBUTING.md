@@ -160,30 +160,38 @@ public issue.
 ## Screenshots
 
 The screenshots in `assets/screenshots/` are of the page's current code (`page/`) with
-the published data, taken in a headless browser:
+live data, taken in a headless browser:
 
 ```bash
 nix run .#screenshots -- --browser google-chrome
 ```
 
-That writes ten, compressed, five in each of the page's palettes:
+In this repository that takes both sets: the overview's (`overview-*.png`)
+from the community instance, nixkeeper.com, and the list's from the demo,
+demo.nixkeeper.com (a fork tracking a maintainer's packages and the gaming
+team's). In a copy of the repository it takes the set its own data makes
+(its `data` branch on GitHub). Each set is ten files, compressed, five in each of the page's palettes:
 `desktop-{dark,light}.png` (1280px wide, at 2x, with a panel open),
 `mobile-{dark,light}.png` (390px, at 2x) and `social-preview.png` (a
 1280×640 card at 2x: the lockup, what nixkeeper watches, and the dark
 desktop shot; its layout is `scripts/social-preview.html`). Those are
 Classic; Catppuccin's (Latte when light, Mocha when dark) end in
-`-catppuccin`, e.g. `desktop-dark-catppuccin.png`. The social preview is
-then uploaded by hand: Settings → General → Social preview.
+`-catppuccin`, e.g. `desktop-dark-catppuccin.png`. The overview's are the
+same, starting with `overview-` (its desktop shot taller, 1280×1180, with
+no panel). The social preview is then uploaded by hand: Settings → General
+→ Social preview.
 
 | Option | What it sets |
 |---|---|
 | `--browser <name or path>` | required: a Chromium-based browser, either a nixpkgs package (`google-chrome`, `chromium`, `ungoogled-chromium`, `brave`, `microsoft-edge`, `vivaldi`), fetched only when used, or the path to one's executable (e.g. `/Applications/Chromium.app/Contents/MacOS/Chromium`). Not every package exists on every system: `chromium` and `ungoogled-chromium` are Linux-only. Firefox can't be used: its headless screenshots come before the page has loaded its data. |
-| `--open <row>:<panel>` | the panel open in the desktop shots. The row: a package's name as the page shows it, or a position in the page's order (`1` is the first row; past the last, the last). The panel: `info` (its details), `build`, `update`, or `auto` (update if it has something to show, else build likewise, else info). `none` for no panel. Default: `10:auto`, far enough down that the table shows above the panel, whatever is tracked |
-| `--data <url>` | the data: the folder with `index.json`. Default: this repository's `data` branch on GitHub |
+| `--open <row>:<panel>` | the panel open in the list's desktop shots. The row: a package's name as the page shows it, or a position in the page's order (`1` is the first row; past the last, the last). The panel: `info` (its details), `build`, `update`, or `auto` (update if it has something to show, else build likewise, else info). `none` for no panel. Default: `4:auto`: a few rows of the table above the panel, the whole panel in the shot |
+| `--data <url or folder>` | that data alone: the folder with `index.json`, a URL or a local folder. A list-based instance's makes the list's set, every package's the overview's |
+| `--overview-data`, `--list-data <url or folder, or none>` | each set's data; `none` leaves that set's files as they are. Defaults, in this repository: the community instance's `data` branch (`https://raw.githubusercontent.com/nixkeeper/nixkeeper/data/data/`), and the data demo.nixkeeper.com's page names; in a copy, its own `data` branch. Your own list's shots beside the community overview, say: `--list-data https://raw.githubusercontent.com/<you>/<repo>/data/data/` |
 | `--port <port>` | the port of the local server that shows the page to the browser. Default: 8799 |
 
-`--open`, `--data` and `--port` can also be set in the environment (`OPEN`,
-`DATA`, `PORT`); the argument wins. `--help` lists them all. The script
+`--open`, `--data`, `--overview-data`, `--list-data` and `--port` can also
+be set in the environment (`OPEN`, `DATA`, `OVERVIEW_DATA`, `LIST_DATA`,
+`PORT`); the argument wins. `--help` lists them all. The script
 checks the data and the panel before starting, and uses a throwaway browser
 profile.
 

@@ -11,6 +11,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- `nix run .#screenshots` takes both sets in nixkeeper's repository: the
+  overview's from the community instance's data and the list's from the
+  demo's (demo.nixkeeper.com), with `--overview-data` and `--list-data` to
+  point either elsewhere (or `none`); a copy still takes its own data's
+  set, and `--data` one data alone, as before. The list's panel opens on the
+  4th row by default (was the 10th, below the shot since the rows grew).
+
 - A copy of this repository no longer opens status issues for the
   maintainers and teams in `notifications/`: those files are the community
   instance's subscribers, and a copy's syncs opened their issues and
@@ -29,6 +36,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   skipped, the next at 12:15). Without it, as before.
 
 ### Fixed
+
+- On phones and narrow windows, the ways to narrow a list (Without
+  maintainer, Older than...) stay in the counts' sideways row: they wrapped
+  into a column that left a tall empty band above the list.
 
 - **Why things fail**: a kernel module failing with an implicit function
   declaration or incompatible pointer types is under "Kernel driver vs. a
