@@ -178,6 +178,11 @@ merged since that likely fixes it, waiting for Hydra.
   update request nixpkgs has met; "check the condition" when the title
   names something Hydra doesn't build) or still fail.
 
+These are worked out automatically, from titles, Hydra's builds and the
+merge bot's rules: hints for a person to check before acting (closing an
+issue, merging a PR), not decisions. nixkeeper itself never comments on,
+closes or merges anything in nixpkgs.
+
 ### Maintainers and teams
 
 The panel lists the package's maintainers: clicking one searches for

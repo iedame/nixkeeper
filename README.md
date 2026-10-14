@@ -217,6 +217,13 @@ are in [CONTRIBUTING.md](CONTRIBUTING.md); what changed in each version, in
 [CHANGELOG.md](CHANGELOG.md). Security problems: [SECURITY.md](SECURITY.md).
 Everyone taking part follows the [code of conduct](CODE_OF_CONDUCT.md).
 
+**AI & automation disclosure.** nixkeeper's code and documentation are
+written with the assistance of an AI (Claude, by Anthropic), with a person
+in the loop: its maintainer decides what to build, and reviews and tests
+every change before it's merged. The page's suggestions (an issue that looks
+done, an update PR ready for the merge bot) are worked out by automation
+from public data: hints for a person to check, not decisions.
+
 ## License
 
 nixkeeper's code and its brand assets (`assets/brand/`) are released under
