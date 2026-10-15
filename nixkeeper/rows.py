@@ -156,6 +156,9 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
             row["nixStatus"] = "outdated" if behind else "newest"
             newer = []
         if newer:
+            # Beside its newer release rather than a beta, when nixpkgs has
+            # both (firefox-esr beside firefox 158.0, not firefox-devedition).
+            newer = [e for e in newer if not is_pre_release(e["version"])] or newer
             best = max(version_key(e["version"]) for e in newer)
             # Of those with that version, the plainest name (tracy, not tracy_0_14).
             top = min(
@@ -262,7 +265,8 @@ def channel_versions(rows, nixpkgs):
     Repology had. Only when the row's attributes agree on one version, and
     not when the channel's only adds letters to Repology's: Repology's rules
     drop those (thunderbird-esr-bin 153.3.1esr, which it has as 153.3.1).
-    Returns the names of the rows changed."""
+    Repology's vulnerable flag, for its version, goes with it. Returns the
+    names of the rows changed."""
     changed = []
     for row in rows:
         if row.get("nixStatus") not in CHANNEL_STATUSES or not row.get("nixVersion"):
@@ -278,6 +282,10 @@ def channel_versions(rows, nixpkgs):
             continue
         row["repologyVersion"] = theirs
         row["nixVersion"] = ours
+        # Repology's flag is for its version, not the channel's newer one
+        # (firefox-esr 153.4.0's, shown as 153.5.0esr's); the security
+        # tracker's and OSV's verdicts, checked against ours, stay.
+        row.pop("nixVulnerable", None)
         # Outdated against nothing Repology names (beads): left as it says.
         ref = row.get("refVersion")
         if row["nixStatus"] == "outdated" and ref and not is_newer(ref, ours):

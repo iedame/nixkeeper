@@ -54,6 +54,25 @@ class Rows(unittest.TestCase):
             )
         }
         firefox = rows["firefox"]
+        # And firefox-esr, kept beside the release, not the beta.
+        esr_entries = [
+            nix("firefox-esr", "153.4.0", "legacy"),
+            nix("firefox", "158.0", "newest"),
+            nix("firefox-devedition", "159.0b1", "devel"),
+            other("arch", "158.0", "newest"),
+        ]
+        esr = {
+            r["name"]: r
+            for r in self.rows(
+                project(
+                    "firefox",
+                    ["firefox-esr", "firefox", "firefox-devedition"],
+                    esr_entries,
+                    "firefox",
+                )
+            )
+        }["firefox-esr"]
+        self.assertEqual(esr["keptBeside"], {"attr": "firefox", "version": "158.0"})
         self.assertEqual(
             (firefox["nixStatus"], firefox["refVersion"], firefox["devel"]),
             ("outdated", "158.0", False),
@@ -592,6 +611,7 @@ class ChannelVersions(unittest.TestCase):
         153.4.0. Its status stays: still kept beside the newer line."""
         row, changed = self.row("legacy", "1.1esr")
         self.assertEqual(changed, ["p"])
+        self.assertNotIn("nixVulnerable", row)  # Repology's, for 1.0
         self.assertEqual(
             (row["nixVersion"], row["nixStatus"], row["repologyVersion"]),
             ("1.1esr", "legacy", "1.0"),

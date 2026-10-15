@@ -35,6 +35,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   packages on 2026-10-15 (firefox, hbase, premake). Marked on the trends as
   a counting change, with the coq fix.
 
+- A package shown at the channel's version, newer than Repology's, no
+  longer carries Repology's vulnerable flag, which was for Repology's
+  version (firefox-esr 153.5.0esr was flagged for 153.4.0's CVEs); the
+  NixOS security tracker's and OSV's verdicts are checked against the
+  version shown. A kept series names the release it's kept beside rather
+  than a beta (firefox-esr beside firefox, not firefox-devedition).
+
 - A kept older series (firefox-esr beside Firefox, a kernel module for an
   older kernel) shows the channel's version when Repology is behind, as
   other packages do: firefox-esr showed Repology's 153.4.0 while
