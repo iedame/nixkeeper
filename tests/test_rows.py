@@ -1,5 +1,6 @@
 import unittest
 
+from nixkeeper import rows as rows_module
 from nixkeeper.rows import (
     add_source_links,
     build_rows,
@@ -33,6 +34,24 @@ class Rows(unittest.TestCase):
         self.assertEqual(
             (devel["name"], devel["nixVersion"], devel["devel"]),
             ("wesnoth-devel", "1.19.24", True),
+        )
+
+    def test_kept_series_only_none_devel(self):
+        # coq's project once its current version moved to rocq: every
+        # series nixpkgs keeps is legacy. The newest is the stable one, not
+        # the shortest name (coq_8_7), so none is a devel variant behind.
+        entries = [
+            nix("coq_8_7", "8.7.2", "legacy"),
+            nix("coq_8_10", "8.10.2", "legacy"),
+            nix("coq_8_20", "8.20.1", "legacy"),
+            other("arch", "9.3.0", "newest"),
+        ]
+        found = self.rows(
+            project("coq", ["coq_8_7", "coq_8_10", "coq_8_20"], entries, "coq")
+        )
+        self.assertEqual(
+            {r["name"]: r["devel"] for r in found},
+            {"coq_8_7": False, "coq_8_10": False, "coq_8_20": False},
         )
 
     def test_repo_count_counts_repositories(self):
@@ -537,3 +556,50 @@ class ChannelVersions(unittest.TestCase):
             with self.subTest(status):
                 _, changed = self.row(status, "2.0")
                 self.assertEqual(changed, [])
+
+
+class Families(unittest.TestCase):
+    def test_one_file_one_version_one_homepage(self):
+        src = "https://github.com/NixOS/nixpkgs/blob/abc/pkgs/x/indi-3rdparty.nix#L{}"
+        rows = [
+            {
+                "name": f"indi-3rdparty.indi-{n}",
+                "source": src.format(i),
+                "nixVersion": "2.2.4",
+                "homepage": "https://indilib.org",
+            }
+            for i, n in enumerate(("a", "b", "c"))
+        ] + [
+            # The same file, another module's version and homepage (perl).
+            {
+                "name": "perlA",
+                "source": src.format(9),
+                "nixVersion": "0.09",
+                "homepage": "https://metacpan.org/a",
+            },
+            {
+                "name": "perlB",
+                "source": src.format(10),
+                "nixVersion": "0.09",
+                "homepage": "https://metacpan.org/b",
+            },
+            # A set updated in bulk: never.
+            {
+                "name": "rPackages.a",
+                "set": "rPackages",
+                "source": src.format(1),
+                "nixVersion": "2.2.4",
+                "homepage": "https://indilib.org",
+            },
+        ]
+        rows_module.add_families(rows)
+        keys = [r.get("family") for r in rows]
+        self.assertTrue(keys[0] and keys[0] == keys[1] == keys[2])
+        self.assertEqual(keys[3:], [None, None, None])
+
+    def test_label(self):
+        self.assertEqual(
+            rows_module.family_label(["indi-3rdparty.indi-a", "indi-3rdparty.indi-b"]),
+            "indi-3rdparty.indi-*",
+        )
+        self.assertIsNone(rows_module.family_label(["aroccStdenv", "zigStdenv"]))

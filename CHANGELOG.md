@@ -16,6 +16,24 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   digests are and how to read them (the page itself is drawn by JavaScript),
   and that its suggestions are hints for a person to check.
 
+### Changed
+
+- The overview's lists (the newest and longest-standing, what was fixed)
+  show packages one update moves together as one line, with how many: the
+  same package file in nixpkgs, version and homepage (the rows'
+  `family`), like the 187 `python313Packages.huaweicloudsdk*` packages or a
+  kernel module once per kernel, which filled a list of 8 by themselves.
+  The line opens a search for them. Fixes are grouped from the sync after
+  the one that marks the families. The cards still count packages.
+
+### Fixed
+
+- A Repology project of kept series only (coq's, since its current
+  version moved to rocq) takes its newest series as the stable one, not the
+  shortest name: every newer series (`coq_8_8` to `coq_8_20`) had become a
+  devel variant behind the newest and counted as outdated, filling the
+  overview's newest outdated.
+
 ## [0.18.0] - 2026-10-14
 
 Ready to be shown around. A live dashboard of lists,

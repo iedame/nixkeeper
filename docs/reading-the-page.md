@@ -55,6 +55,10 @@ list. From the top:
 - **The newest and longest-standing** build failures, outdated packages
   (not those whose update is merged and only waits for the channel) and
   update failures (a switch on each), and "show all" for the whole list.
+  Packages one update moves together (one package file in nixpkgs, one
+  version: `python313Packages.huaweicloudsdk*`, 187 of them, or a kernel
+  module once per kernel) are one line, with how many, opening a search
+  for them; the same in "what was fixed".
   Beside them, the failing packages **blocking the most** others: a build
   that fails because one of its dependencies did, as zh.fail counts them in
   all of nixpkgs (fix that one, and they all build again), and "show all"

@@ -1,5 +1,7 @@
 """Turning Repology projects into the page's rows."""
 
+import hashlib
+import os
 import re
 
 from . import config
@@ -67,8 +69,11 @@ def project_rows(proj, nixpkgs):
             )
         ]
 
-    # Stable first: the variant Repology calls newest, else the shortest attr
-    # (wesnoth before wesnoth-devel). The rest are devel variants, compared
+    # Stable first: the variant Repology calls newest, else the shortest
+    # attr (wesnoth before wesnoth-devel); in a project of kept series only
+    # (coq's, once its current one moved to rocq), the newest version
+    # (coq_8_20, not coq_8_7: else every newer series was a devel variant,
+    # behind). The rest are devel variants, compared
     # against devel versions, when they're newer than it or named so
     # (wesnoth-devel, _1password-gui-beta); otherwise older versions kept
     # beside it (gnumake42, php82Extensions.zip).
@@ -80,6 +85,9 @@ def project_rows(proj, nixpkgs):
             min(e["srcname"] for e in g),
         ),
     )
+    if all(e.get("status") == config.KEPT for g in ordered for e in g):
+        top = max(ordered, key=lambda g: version_key(g[0].get("version") or ""))
+        ordered = [top, *(g for g in ordered if g is not top)]
     stable = version_key(ordered[0][0].get("version") or "")
     rows = []
     for i, group in enumerate(ordered):
@@ -282,6 +290,42 @@ def build_rows(projects, nixpkgs):
                 row["repologyCheckedAt"] = proj["checkedAt"]
             rows.append(row)
     return sorted(rows, key=lambda p: p["name"].lower())
+
+
+def add_families(rows):
+    """Mark rows one update moves together ("family": a short key shared by
+    two or more): the same package file in nixpkgs, the same version and the
+    same homepage, so one PR updates them all (the 187 huaweicloudsdk*
+    Python packages, indi-3rdparty's drivers, a kernel module once per
+    kernel). Not rows of a set updated in bulk, nor ones without a source.
+    The overview's lists show a family as one entry (datastore.highlights,
+    fixed_summary)."""
+    members = {}
+    for row in rows:
+        row.pop("family", None)
+        if row.get("set") or not row.get("source"):
+            continue
+        path = row["source"].split("#", 1)[0].rsplit("/blob/", 1)[-1].split("/", 1)[-1]
+        key = "|".join([path, row.get("nixVersion") or "", row.get("homepage") or ""])
+        members.setdefault(key, []).append(row)
+    for key, found in members.items():
+        if len(found) > 1:
+            short = hashlib.sha256(key.encode()).hexdigest()[:8]
+            for row in found:
+                row["family"] = short
+
+
+def family_label(names):
+    """What a family's members are called together: the one name they all
+    end in, for one package in several sets (a kernel module once per
+    kernel: "mbp2018-bridge-drv"); else their names' common start and a "*"
+    ("python313Packages.huaweicloudsdk*", "indi-3rdparty.indi-*",
+    "freebsd.*"); None when they share fewer than 4 characters."""
+    ends = {name.rsplit(".", 1)[-1] for name in names}
+    if len(ends) == 1:
+        return ends.pop()
+    start = os.path.commonprefix(list(names))
+    return start + "*" if len(start) >= 4 else None
 
 
 def source_url(position, revision):

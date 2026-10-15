@@ -153,6 +153,12 @@ def credit(pr, likely=False):
     return found
 
 
+def family(old):
+    """{"family": ...} when old moves with others (rows.add_families): the
+    overview lists their fixes as one."""
+    return {"family": old["family"]} if old.get("family") else {}
+
+
 def lasted(old, field):
     """{"since": ...} when old says since when it had the problem (field:
     failingSince, outdatedSince, updateFailingSince), else {}."""
@@ -188,6 +194,7 @@ def fixes(rows, previous, now):
                     "at": now,
                     "name": row["name"],
                     "kind": "build",
+                    **family(old),
                     **lasted(old, "failingSince"),
                     **credit(old.get("buildFixPR"), likely=True),
                 }
@@ -206,6 +213,7 @@ def fixes(rows, previous, now):
                     "kind": "update",
                     "from": old.get("nixVersion"),
                     "to": row["nixVersion"],
+                    **family(old),
                     **lasted(old, "outdatedSince"),
                     **credit(old.get("masterPR")),
                 }
@@ -223,6 +231,7 @@ def fixes(rows, previous, now):
                     "at": now,
                     "name": row["name"],
                     "kind": "bot",
+                    **family(old),
                     **lasted(old, "updateFailingSince"),
                     **credit(old.get("masterPR")),
                 }

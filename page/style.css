@@ -2239,6 +2239,16 @@ button.cause-more {
   white-space: normal;
   word-break: break-word;
 }
+/* How many packages a family's line stands for (familyName). */
+.hl-family {
+  flex: none;
+  font-size: 11px;
+  color: var(--ink-soft);
+  border: 1px solid var(--hairline-strong);
+  border-radius: 999px;
+  padding: 0 6px;
+  margin-left: 6px;
+}
 /* Who a recent fix is credited to (fixedHtml). */
 .fixed-by {
   font-size: 11px;

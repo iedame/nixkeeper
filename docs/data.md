@@ -158,7 +158,10 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   `updateFailing`, of the rows not in such a set, `{ "count", "newest", "oldest" }`:
   how many there are (the same as `counts`' `buildFailures`, `outdated`
   and `updateFailures`), and the 8 most recent and 8 longest-standing of
-  those that have their date, each `[name, since, status]` (from
+  those that have their date, each `[name, since, status]`, with a fourth
+  when it stands for its `family` (`{ "more", "label"? }`: how many others
+  of it are left out of the list, and what they're called together,
+  `"python313Packages.huaweicloudsdk*"`) (from
   `failingSince`, `outdatedSince`, `updateFailingSince`, which the daily
   sync sets: one counted since the last has none yet, and one whose
   failed builds never succeeded has none; `status` as in
@@ -238,9 +241,12 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   nixkeeper counts (`COUNTING_CHANGES` in `config.py`), on the first day the
   sync ran with it (a change can step a count overnight);
 - `fixed` in `index.json`: of those, the last 7 days' (`days`): for
-  `build`, `update` and `bot`, `{ "count", "newest" }`, the 8 newest each
-  `[name, at, from, to]`, and a fifth, its credit (`{ "pr", "author"?,
-  "mergedBy"?, "likely"? }`), when it has one;
+  `build`, `update` and `bot`, `{ "count", "newest" }`, 8 each, the
+  longest-standing first (`since`), each `[name, at, from, to]`, a fifth,
+  its credit (`{ "pr", "author"?, "mergedBy"?, "likely"? }`), a sixth,
+  `since`, and a seventh when it stands for its family's fixes
+  (`{ "more", "label"? }`, as in `highlights`), each `null` when absent
+  before one that isn't;
 - `maintainers.json`: `{ "maintainers": [ [handle, packages, outdated,
   failing], ... ] }`, every maintainer by handle (any case; as nixpkgs
   writes it first), with how many packages list them (in sets too)
@@ -282,6 +288,7 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
 | `unversioned` | with every package: `true` for a row of `darwin` or `freebsd`, not versioned software: its builds are what's checked |
 | `unread` | with every package: the sources this sync didn't read for the row and kept as they were (`["update"]`: its nixpkgs-update attempt, which nixkeeper-updates' digest hasn't read yet) |
 | `source` | where nixpkgs defines it, on GitHub at the channel's commit and line |
+| `family` | when one update moves it with other rows (the same package file in nixpkgs, the same version and homepage: the 187 `huaweicloudsdk*` Python packages, a kernel module once per kernel): a short key they share. The overview's lists show a family as one entry |
 | `unfree` | `true` when every attribute is unfree (Hydra doesn't build those) |
 
 ### Versions (Repology, and nixkeeper's own checks)

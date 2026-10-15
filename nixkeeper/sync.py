@@ -294,6 +294,10 @@ def main():
     # known), kept on each package a month too, for its panel.
     found_fixes = history.fixes(index_rows, previous, now)
     history.add_recent_fixes(index_rows, previous, found_fixes, now)
+    # Packages one update moves together (one package file, version and
+    # homepage): one entry in the overview's lists, and their fixes, next
+    # sync, one too.
+    rows.add_families(index_rows)
     # version: the nixkeeper that made this data, for the page's footer.
     index = {"checkedAt": now, "packages": index_rows, "version": version()}
     if everything:

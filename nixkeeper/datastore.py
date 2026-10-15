@@ -24,6 +24,7 @@ import zlib
 from datetime import UTC, datetime, timedelta
 
 from . import causes, config
+from . import rows as rows_module
 from .changes import (
     broken_builds,
     failed_builds,
@@ -358,11 +359,18 @@ def fixed_summary(fixed, run):
     out = {}
     for kind in ("build", "update", "bot"):
         mine = [f for f in fixed if f["kind"] == kind and f["at"][:10] > cutoff]
-        newest = sorted(mine, key=lambda f: (f["at"], f["name"]), reverse=True)
-        shown = sorted(newest, key=_lasted, reverse=True)[:HIGHLIGHTS]
+        # Newest first, ties by name (a family's first by name stands for it).
+        newest = sorted(
+            sorted(mine, key=lambda f: f["name"]), key=lambda f: f["at"], reverse=True
+        )
+        shown = grouped(
+            sorted(newest, key=_lasted, reverse=True),
+            lambda f: f.get("family"),
+            lambda f: f["name"],
+        )[:HIGHLIGHTS]
         out[kind] = {
             "count": len(mine),
-            "newest": [_fixed_entry(f) for f in shown],
+            "newest": [_fixed_entry(f, members) for f, members in shown],
         }
     return {"days": FIXED_RECENT_DAYS, **out}
 
@@ -379,9 +387,10 @@ def _lasted(fix):
         return -1
 
 
-def _fixed_entry(fix):
+def _fixed_entry(fix, members=None):
     """A fix as the manifest lists it (fixed_summary), without trailing
-    nulls."""
+    nulls; a seventh, its family's (family_entry), when its family's other
+    members were fixed with it."""
     credit = {k: fix[k] for k in ("pr", "author", "mergedBy", "likely") if k in fix}
     entry = [
         fix["name"],
@@ -390,6 +399,7 @@ def _fixed_entry(fix):
         fix.get("to"),
         credit if fix.get("pr") else None,
         fix.get("since"),
+        family_entry(members) if members else None,
     ]
     while len(entry) > 4 and entry[-1] is None:
         entry.pop()
@@ -455,16 +465,51 @@ HIGHLIGHT_COUNTS = {
 HIGHLIGHTS = 8
 
 
+def grouped(items, family, name):
+    """items (already in their order) with each family's members after its
+    first left out: [(item, members' names)], the names only for a family's
+    first (rows.add_families). One update that moves 187 packages is one
+    entry, not the whole list."""
+    names = {}
+    for item in items:
+        if family(item):
+            names.setdefault(family(item), []).append(name(item))
+    out, seen = [], set()
+    for item in items:
+        key = family(item)
+        if key in seen:
+            continue
+        if key:
+            seen.add(key)
+        out.append((item, names[key] if key and len(names[key]) > 1 else None))
+    return out
+
+
+def family_entry(members):
+    """What a list entry says of its family: {"more": the others' count,
+    "label": what they're called together, when they share a start}."""
+    found = {"more": len(members) - 1}
+    if label := rows_module.family_label(members):
+        found["label"] = label
+    return found
+
+
 def highlights(found):
-    """{"count", "newest", "oldest"} of (since, name, status) found: how
-    many there are, and the HIGHLIGHTS most recent and longest-standing, each
-    [name, since, status] (ties by name)."""
+    """{"count", "newest", "oldest"} of (since, name, status, family) found:
+    how many there are, and the HIGHLIGHTS most recent and longest-standing,
+    each [name, since, status] (ties by name), and a fourth when its family
+    moves with it ({"more", "label"?}: family_entry), the family's other
+    members left out of the list."""
 
     def since(f):
         return datetime.fromisoformat(f[0]).timestamp()
 
     def pick(chosen):
-        return [[name, at, letter] for at, name, letter in chosen[:HIGHLIGHTS]]
+        picked = grouped(chosen, lambda f: f[3], lambda f: f[1])[:HIGHLIGHTS]
+        return [
+            [name, at, letter, *([family_entry(members)] if members else [])]
+            for (at, name, letter, _), members in picked
+        ]
 
     return {
         "count": len(found),
@@ -665,7 +710,7 @@ def views(rows, out):
             if kind == "outdated" and waiting_for_channel(row):
                 continue
             if row.get(field) and now_counts[kind]:
-                ages[kind].append((row[field], row["name"], letter))
+                ages[kind].append((row[field], row["name"], letter, row.get("family")))
         if row.get("markedBroken") or broken_builds(row):
             counts["broken"] += 1
             put("views/broken.json", row)

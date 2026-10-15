@@ -704,14 +704,29 @@ class FailingSince(unittest.TestCase):
 class Highlights(unittest.TestCase):
     def test_newest_and_oldest(self):
         found = [
-            ("2026-10-01T00:00:00+00:00", "b", "f"),
-            ("2026-09-01T00:00:00+00:00", "a", "f"),
-            ("2026-10-01T00:00:00+00:00", "a2", "f"),
+            ("2026-10-01T00:00:00+00:00", "b", "f", None),
+            ("2026-09-01T00:00:00+00:00", "a", "f", None),
+            ("2026-10-01T00:00:00+00:00", "a2", "f", None),
         ]
         got = datastore.highlights(found)
         self.assertEqual(got["count"], 3)
-        self.assertEqual([n for n, _, _ in got["newest"]], ["a2", "b", "a"])
-        self.assertEqual([n for n, _, _ in got["oldest"]], ["a", "a2", "b"])
+        self.assertEqual([e[0] for e in got["newest"]], ["a2", "b", "a"])
+        self.assertEqual([e[0] for e in got["oldest"]], ["a", "a2", "b"])
+
+    def test_a_family_is_one_entry(self):
+        day = "2026-10-01T00:00:00+00:00"
+        found = [(day, f"python313Packages.sdk{i}", "o", "fam1") for i in range(5)]
+        found += [("2026-09-01T00:00:00+00:00", "lone", "o", None)]
+        found += [(day, name, "o", "fam2") for name in ("x-one", "y-two")]
+        got = datastore.highlights(found)
+        self.assertEqual(got["count"], 8)  # the card counts packages
+        newest = got["newest"]
+        self.assertEqual(
+            [e[0] for e in newest], ["python313Packages.sdk0", "x-one", "lone"]
+        )
+        self.assertEqual(newest[0][3], {"more": 4, "label": "python313Packages.sdk*"})
+        self.assertEqual(newest[1][3], {"more": 1})  # nothing shared to name them
+        self.assertEqual(len(newest[2]), 3)
 
     def test_an_update_waiting_for_the_channel_left_out(self):
         since = "2026-10-01T00:00:00+00:00"
@@ -884,6 +899,24 @@ class Fixed(unittest.TestCase):
             summary["update"]["newest"][0][4],
             {"pr": 7, "author": "alice", "mergedBy": "bob"},
         )
+
+    def test_a_familys_fixes_are_one_entry(self):
+        before = [
+            row(
+                f"m-{i}",
+                updateFailure=True,
+                update={"date": "2026-09-20"},
+                family="f1",
+                updateFailingSince="2026-09-20T00:00:00+00:00",
+            )
+            for i in range(3)
+        ]
+        now = [row(f"m-{i}", update={"date": "2026-10-04"}) for i in range(3)]
+        found = history.fixes(now, {"packages": before}, NOW)
+        self.assertEqual({f["family"] for f in found}, {"f1"})
+        [entry] = datastore.fixed_summary(found, NOW)["bot"]["newest"]
+        self.assertEqual(entry[0], "m-0")
+        self.assertEqual(entry[6], {"more": 2})  # "m-" is too short to name
 
     def test_kept_on_the_package_a_month(self):
         old = {"at": "2026-09-01T06:00:00+00:00", "kind": "build"}
