@@ -18,6 +18,25 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- In the table, an update's badge (its PR, "on master", or the branch that
+  has it) that's the version's only badge sits between the two versions,
+  level with the row's PR and issue counts, rather than beside the newest
+  version below them. With other badges, and on phones and tablets (the
+  counts on a line of their own), where it was.
+
+- On phones and tablets, a package's PR and issue counts are on a line of
+  their own in every card, not beside the build when it happened to fit
+  (cards looked uneven), and a badge that's a link (an update PR) is a pill
+  like the others: its tap area made 32px tall had made it an oval with
+  its text at the top. The tap area is still that size.
+
+- A phone no longer shows a team's, a maintainer's or a package's page
+  zoomed out: the team's or maintainer's box was as wide as its row of
+  filters (about 1,400px, which now swipes sideways on its own), and a
+  package's panel as wide as its longest source label (which now ends in
+  "…", in full on hover). A version too long for its card breaks rather
+  than push the card's badges past its edge.
+
 - A staging-next merge's mark on the trends is solid, a counting change's
   still dashed: at a sparkline's size their grey and amber were hard to
   tell apart. The key under the cards matches.

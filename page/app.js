@@ -629,6 +629,10 @@ function versionCell(pkg, st) {
   const steps = mid
     ? html`${step('v-mid', pkg.nixVersion, mid, ' merged')}${step('v-next', mid, target, '')}`
     : step('v-next', pkg.nixVersion, target, merged ? ' merged' : '');
+  // The update's badge alone (no other badge, master not partway): between
+  // the two versions, level with the row's GitHub counts.
+  const update = mid ? openPrBadge(pkg) : prBadge(pkg);
+  const solo = !mid && String(update) && !String(about) && !String(failing);
   const said = mid
     ? `${now}, on master ${mid}, newest ${target || 'unknown'}`
     : `${now}, newest ${target || 'unknown'}`;
@@ -638,7 +642,7 @@ function versionCell(pkg, st) {
     ${steps}
     </button>
     <span class="v-tags top">${about}</span>${mid ? html`<span class="v-tags mid">${masterBadge(pkg)}</span>` : ''}
-    <span class="v-tags bottom">${mid ? openPrBadge(pkg) : prBadge(pkg)}${failing}</span>
+    <span class="v-tags bottom${solo ? ' solo' : ''}">${update}${failing}</span>
   </div>`;
 }
 
@@ -3585,7 +3589,7 @@ function fillDetail(pkg, el, entries) {
     <div class="pd-head">
       <span class="pd-verdict ${verdict[0]}">${verdict[1]}</span>
       <dl class="pd-facts">${facts.map(([k, v]) => html`<div><dt>${k}</dt><dd>${v}</dd></div>`)}</dl>
-      ${source ? html`<span class="pd-source ${source[0]}" title="${source[3]}">${icon(source[1])}${source[2]}</span>` : ''}
+      ${source ? html`<span class="pd-source ${source[0]}" title="${source[3]}">${icon(source[1])}<span class="pd-source-text">${source[2]}</span></span>` : ''}
     </div>
     ${String(urgent).trim() ? html`<div class="pd-notes">${urgent}</div>` : ''}
     ${vulnSection(pkg)}

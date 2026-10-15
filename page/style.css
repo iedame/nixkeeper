@@ -647,6 +647,9 @@ button.checked:focus-visible {
   padding: 14px 16px;
   margin: 0 0 14px;
   display: grid;
+  /* As wide as the page, not its widest content: the filters' row, which
+     swipes sideways on a phone, had made it (and the page) 1,400px wide. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 10px;
 }
 .scope[hidden] {
@@ -1553,6 +1556,11 @@ button.plat[aria-pressed="true"] {
 .v-tags {
   grid-column: 2;
 }
+/* The update's badge alone: across both lines, so centred between them,
+   level with the row's PR and issue counts. */
+.v-tags.bottom.solo {
+  grid-row: 1 / span 2;
+}
 .vcell.three .vcopy {
   grid-row: 1 / span 3;
 }
@@ -1931,6 +1939,10 @@ tbody tr.row.open td {
    sections apart (compared against, people, links). */
 .pd {
   display: grid;
+  /* As wide as the panel, not its widest content: a long source label
+     ("Heroic-Games-Launcher/HeroicGamesLauncher releases") made it wider
+     than a phone's screen, where it's meant to end in "…". */
+  grid-template-columns: minmax(0, 1fr);
   gap: 14px;
   padding-top: 6px;
 }
@@ -2011,6 +2023,13 @@ tbody tr.row.open td {
   border-radius: 999px;
   white-space: nowrap;
   max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* The label's text in its own box: an inline-flex box doesn't end clipped
+   text in "…" itself. */
+.pd-source-text {
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -2614,6 +2633,18 @@ a.page-btn:focus-visible {
   .refine {
     flex-wrap: nowrap;
   }
+  /* In a team's or a maintainer's box (.scope) rather than the filter bar:
+     that row swipes on its own, faded at its edge like the bar. Unscrolled,
+     it made the page 1,400px wide, and a phone zoomed out to show it. */
+  .scope .refine {
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-right: 28px; /* the last one clears the fade */
+    mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent);
+  }
+  .scope .refine::-webkit-scrollbar {
+    display: none;
+  }
   .refine-btn,
   .refine-age {
     flex: none;
@@ -2709,8 +2740,28 @@ a.page-btn:focus-visible {
   tbody tr.row td.c-update {
     margin-left: 12px;
   }
+  /* The counts on a line of their own in every card, not beside the build
+     when it happens to fit there. */
   tbody tr.row td.c-gh {
+    flex-basis: 100%;
     margin-left: 18px;
+  }
+  /* So nothing to be level with: the update's badge stays beside the
+     newest version. */
+  .v-tags.bottom.solo {
+    grid-row: 2;
+  }
+  /* A version too long for the card (dxx-rebirth's 0.60.0-beta2-unstable-
+     2025-05-24) breaks rather than push its badges past the card's edge;
+     the rest are laid out as on wider screens. */
+  .vcell {
+    grid-template-columns: minmax(0, max-content) 1fr;
+  }
+  .v-now,
+  .v-mid,
+  .v-next {
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
   tbody tr.row td.quiet,
   tbody tr.row td:has(> .failure-na),
@@ -2791,9 +2842,18 @@ a.page-btn:focus-visible {
   .hl-all,
   .queued-tag,
   .refine-btn,
-  .refine-age select,
-  a.badge {
+  .refine-age select {
     min-height: 32px;
+  }
+  /* A badge that's a link: its tap area 32px tall, the pill as it looks
+     elsewhere (made taller, it was an oval with its text at the top). */
+  a.badge {
+    position: relative;
+  }
+  a.badge::after {
+    content: "";
+    position: absolute;
+    inset: -7px -3px;
   }
   .files-link {
     padding-block: 4px;
