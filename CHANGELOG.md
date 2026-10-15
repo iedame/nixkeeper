@@ -41,6 +41,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   once merged, shows as on master. It never counted as outdated before. 3
   packages on 2026-10-15 (firefox, hbase, premake). Marked on the trends as
   a counting change, with the coq fix.
+  A version named a release (godot's 4.7.2-stable, whisparr's
+  3.6.2-release.1727) isn't taken for a beta: the 2026-10-15 13:14 sync
+  showed 40 kept godot series (godot3, godot_4_3 to godot_4_6 and their
+  templates and mono builds) and 2 others as outdated against 4.7.2; they
+  are kept again.
 
 - A package shown at the channel's version, newer than Repology's, no
   longer carries Repology's vulnerable flag, which was for Repology's

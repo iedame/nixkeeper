@@ -91,6 +91,22 @@ class Rows(unittest.TestCase):
             )
         }
         self.assertEqual(rows["gnumake42"]["nixStatus"], "legacy")
+        # Beside a release named "-stable" (godot_4_5 beside godot
+        # 4.7.2-stable, 2026-10-15): a release, not a beta; still kept.
+        godot = [
+            nix("godot_4_5", "4.5.1-stable", "legacy"),
+            nix("godot", "4.7.2-stable", "outdated"),
+            other("arch", "4.7.2", "newest"),
+        ]
+        rows = {
+            r["name"]: r
+            for r in self.rows(project("godot", ["godot_4_5", "godot"], godot, "godot"))
+        }
+        self.assertEqual(rows["godot_4_5"]["nixStatus"], "legacy")
+        self.assertEqual(
+            rows["godot_4_5"]["keptBeside"],
+            {"attr": "godot", "version": "4.7.2-stable"},
+        )
 
     def test_an_older_series_compared_within_it(self):
         # python313 beside python315, 2026-10-15: behind in 3.13, not 3.15.

@@ -133,3 +133,12 @@ class PreRelease(unittest.TestCase):
             self.assertTrue(is_pre_release(v), v)
         for v in ("158.0", "153.5.0esr", "1.0a", "1.2-unstable-2025-05-01", "", None):
             self.assertFalse(is_pre_release(v), v)
+        # Releases named so (godot), though Repology ranks the word lower.
+        for v in (
+            "4.7.2-stable",
+            "4.3-stable",
+            "2.0-final",
+            "1.0.0.RELEASE",
+            "3.2-lts",
+        ):
+            self.assertFalse(is_pre_release(v), v)
