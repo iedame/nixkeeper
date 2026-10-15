@@ -152,6 +152,34 @@ def plain_version(version):
     return VERSION_PART.findall(BUILD.sub("", without_release_words(version)))
 
 
+# What a distribution's snapshot adds to the release it follows: a date,
+# maybe with a word and a commit (0.3.0.20240120, 1.2.0+20251126,
+# 1.04-20190106, 2.1-git20240301.abc1234).
+SNAPSHOT_ADDED = re.compile(
+    r"[-_.+~]?(?:git|svn|hg|snapshot|p|r)?[-_.+~]?"
+    r"20[0-9]{2}(?:0[1-9]|1[0-2])(?:[0-2][0-9]|3[01])(?:[-_.+]?[0-9a-f]{4,12})?",
+    re.IGNORECASE,
+)
+
+
+def snapshot_only(version, newest, others):
+    """Whether newest is only a distribution's snapshot of version: version
+    with a date added, in one distribution and no upstream index (mintotp's
+    0.3.0.20240120, SlackBuilds' only). Not when PyPI or the like has it
+    (iso4217's 1.16.20260101 is a release), nor when several distributions
+    do (fcitx5-pinyin-zhwiki's 0.3.0.20260416: the dictionary's date)."""
+    if not version or not newest.startswith(version):
+        return False
+    if not SNAPSHOT_ADDED.fullmatch(newest[len(version) :]):
+        return False
+    repos = {e.get("repo", "") for e in others if e.get("version") == newest}
+    return (
+        bool(repos)
+        and not repos & config.UPSTREAM_INDEXES
+        and len({r.split("_")[0] for r in repos}) == 1
+    )
+
+
 def series_ref(name, version, entries, others, kept=False):
     """The newest release in version's own series, when nixpkgs has a newer
     series of the same project (another attribute: python315 beside
@@ -302,6 +330,16 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         # lower (godot 4.7.2-stable against 4.7.2): the newest. Not when
         # ahead of it, which Repology's rules have reasons for (xcircuit
         # 3.10.42 against 3.9.73).
+        row["nixStatus"] = "newest"
+    if (
+        nix
+        and nix.get("status") == "outdated"
+        and row["refVersion"]
+        and snapshot_only(nix.get("version"), row["refVersion"], others)
+    ):
+        # Outdated only by one distribution's snapshot of this very release
+        # (python3Packages.mintotp 0.3.0, SlackBuilds' 0.3.0.20240120): the
+        # newest.
         row["nixStatus"] = "newest"
     if nix and nix.get("status") == config.KEPT:
         # An older version kept beside a newer one: which, for the page.

@@ -46,6 +46,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- A package Repology calls outdated only because one distribution packages
+  a snapshot of the same release, its version with a date added, is the
+  newest: python3Packages.mintotp 0.3.0, against SlackBuilds' git snapshot
+  0.3.0.20240120 (also langid, hg-git and rcshist: 4 packages on
+  2026-10-15). Not when an upstream index has the version (iso4217's
+  1.16.20260101 is a release on PyPI), nor when two distributions or more
+  do (fcitx5-pinyin-zhwiki's 0.3.0.20260416). Marked on the trends as a
+  counting change.
+
 - An older series nixpkgs keeps beside a newer one (python313 beside
   python315), and behind in its own series, is compared within it:
   python313 3.13.15 suggests 3.13.16, not Python's newest, 3.15.0; the same

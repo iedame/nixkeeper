@@ -125,6 +125,40 @@ class Rows(unittest.TestCase):
         (row,) = self.rows(project("godot", ["godot"], entries, "godot"))
         self.assertEqual(row["nixStatus"], "outdated")
 
+    def test_outdated_only_by_a_distributions_snapshot(self):
+        """python3Packages.mintotp 0.3.0, 2026-10-15: SlackBuilds' git
+        snapshot 0.3.0.20240120 was the only newer version."""
+
+        def status(nix_version, newest, *repos):
+            entries = [
+                nix("p", nix_version, "outdated"),
+                *(other(r, newest, "newest") for r in repos),
+            ]
+            (row,) = self.rows(project("p", ["p"], entries, "p"))
+            return row["nixStatus"]
+
+        cases = {
+            # One distribution's snapshot: the newest.
+            ("0.3.0", "0.3.0.20240120", ("slackbuilds",)): "newest",
+            ("1.2.0", "1.2.0+20251126", ("void_x86_64",)): "newest",
+            ("1.04", "1.04-20190106", ("gnuguix",)): "newest",
+            ("2.1", "2.1-git20240301.abc1234", ("aur",)): "newest",
+            # One distribution under several names is still one.
+            ("0.3.0", "0.3.0.20240120", ("debian_13", "debian_unstable")): "newest",
+            # On an upstream index: a release (iso4217).
+            ("1.16", "1.16.20260101", ("pypi",)): "outdated",
+            ("5.6.3.6", "5.6.3.6.20240818", ("pypi", "macports")): "outdated",
+            # In several distributions (fcitx5-pinyin-zhwiki).
+            ("0.3.0", "0.3.0.20260416", ("arch", "debian_13")): "outdated",
+            # Not only a date added: a newer release.
+            ("0.3.0", "0.3.1", ("slackbuilds",)): "outdated",
+            ("0.3.0", "0.3.0.1", ("slackbuilds",)): "outdated",
+            ("0.3.0", "0.4.0.20240120", ("slackbuilds",)): "outdated",
+        }
+        for (version, newest, repos), expected in cases.items():
+            with self.subTest(newest=newest, repos=repos):
+                self.assertEqual(status(version, newest, *repos), expected)
+
     def test_an_older_series_compared_within_it(self):
         # python313 beside python315, 2026-10-15: behind in 3.13, not 3.15.
         entries = [
