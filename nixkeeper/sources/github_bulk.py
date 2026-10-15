@@ -151,8 +151,12 @@ class Listing:
     def open_update_pr(self, row):
         """The open update PR for row, as github.open_update_pr finds it among
         a search's results, here among all open PRs whose title starts with
-        its name."""
-        return github.open_update_pr(row, self.by_package.get(row["searchTerm"], []))
+        one of its names."""
+        return github.open_update_pr(row, self.titled(row))
+
+    def titled(self, row):
+        """The open PRs whose titles start with one of row's names."""
+        return [pr for n in github.pr_names(row) for pr in self.by_package.get(n, [])]
 
 
 def add_counts(rows, now, listed=None):
@@ -293,7 +297,8 @@ def add_master_prs(rows, revision, now, listed=None):
         by_package.setdefault(package, []).append(pr)
     for row in rows:
         row.pop("masterPR", None)
-        if pr := github.merged_update_pr(row, by_package.get(row["searchTerm"], [])):
+        titled = [pr for n in github.pr_names(row) for pr in by_package.get(n, [])]
+        if pr := github.merged_update_pr(row, titled):
             row["masterPR"] = pr
     print(
         f"  {len(merged):,} PRs merged into master since the channel's commit "

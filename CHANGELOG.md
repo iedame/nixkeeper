@@ -50,6 +50,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- A package's open update PR is found when its title names another of the
+  package's attributes, all at its one version: heroic's update is titled
+  "heroic-unwrapped: 2.22.3 -> 2.22.4", and showed only under "On GitHub",
+  not as the update PR. The same for firefoxpwa, rust-bindgen, dart
+  (dart-bin), quarto (quartoMinimal) and others (25 on 2026-10-15), and
+  for update PRs merged into master.
+
 - A package Repology calls outdated only because one distribution packages
   a snapshot of the same release, its version with a date added, is the
   newest: python3Packages.mintotp 0.3.0, against SlackBuilds' git snapshot

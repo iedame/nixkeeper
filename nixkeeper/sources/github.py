@@ -139,11 +139,21 @@ def search_counts(token, queries):
     return [count for count, _ in search_batch(token, [(q, 0) for q in queries])]
 
 
-def update_prs(nodes, term):
-    """The pull requests that update the package named term, by nixpkgs'
-    title convention "wesnoth-devel: 1.19.24 -> 1.19.28" (exactly that
-    attribute: not wesnoth-devel-extra, which search would also find)."""
-    title = re.compile(rf"^{re.escape(term)}: (\S+) -> (\S+)")
+def pr_names(row):
+    """The names a row's update PR can be titled with: its search term and
+    each of its attributes, all at its one version (heroic's update is
+    titled "heroic-unwrapped: 2.22.3 -> 2.22.4")."""
+    return list(dict.fromkeys([row["searchTerm"], *(row.get("attrs") or [])]))
+
+
+def update_prs(nodes, names):
+    """The pull requests that update a package named one of names (a name
+    alone, or several), by nixpkgs' title convention "wesnoth-devel: 1.19.24
+    -> 1.19.28" (exactly that attribute: not wesnoth-devel-extra, which
+    search would also find)."""
+    names = [names] if isinstance(names, str) else names
+    alternatives = "|".join(re.escape(n) for n in names)
+    title = re.compile(rf"^(?:{alternatives}): (\S+) -> (\S+)")
     prs = []
     for node in nodes:
         if m := title.match(node.get("title") or ""):
@@ -170,7 +180,7 @@ def open_update_pr(row, nodes):
     the one aiming highest, a ready one before a draft."""
     prs = [
         pr
-        for pr in update_prs(nodes, row["searchTerm"])
+        for pr in update_prs(nodes, pr_names(row))
         if not row.get("nixVersion") or is_newer(pr["to"], row["nixVersion"])
     ]
     return max(prs, key=lambda p: (version_key(p["to"]), not p["draft"]), default=None)
@@ -182,7 +192,7 @@ def merged_update_pr(row, nodes):
     merged into staging reach master weeks later, through staging-next."""
     prs = [
         pr
-        for pr in update_prs(nodes, row["searchTerm"])
+        for pr in update_prs(nodes, pr_names(row))
         if pr["base"] == "master"
         and (not row.get("nixVersion") or is_newer(pr["to"], row["nixVersion"]))
     ]

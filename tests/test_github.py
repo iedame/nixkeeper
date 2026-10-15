@@ -131,6 +131,23 @@ class UpdatePRs(unittest.TestCase):
             [p["number"] for p in github.update_prs(nodes, "wesnoth-devel")], [1]
         )
 
+    def test_titled_with_another_of_its_attributes(self):
+        """heroic, 2026-10-15: its update was titled "heroic-unwrapped: ...",
+        an attribute of the same row, at the same version."""
+        row = {
+            "searchTerm": "heroic",
+            "attrs": ["heroic", "heroic-unwrapped"],
+            "nixVersion": "2.22.3",
+        }
+        nodes = [
+            pr(1, "heroic-unwrapped: 2.22.3 -> 2.22.4"),
+            pr(2, "heroic-extra: 1.0 -> 1.1"),  # not one of its attributes
+        ]
+        self.assertEqual(github.open_update_pr(row, nodes)["number"], 1)
+        self.assertEqual(github.merged_update_pr(row, nodes)["number"], 1)
+        # A row without attributes: its search term alone, as before.
+        self.assertIsNone(github.open_update_pr({**row, "attrs": []}, nodes))
+
     def test_open_update_pr_aims_highest_ready_first(self):
         nodes = [
             pr(1, "wesnoth-devel: 1.19.24 -> 1.19.26"),

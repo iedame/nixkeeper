@@ -88,6 +88,17 @@ class Listing(unittest.TestCase):
             )
         )
 
+    def test_open_update_pr_titled_with_another_attribute(self):
+        # heroic: "heroic-unwrapped: 2.22.3 -> 2.22.4", one of its attributes.
+        listing = github_bulk.Listing([pr(9, "heroic-unwrapped: 2.22.3 -> 2.22.4")], [])
+        row = {
+            "name": "heroic",
+            "searchTerm": "heroic",
+            "attrs": ["heroic", "heroic-unwrapped"],
+            "nixVersion": "2.22.3",
+        }
+        self.assertEqual(listing.open_update_pr(row)["number"], 9)
+
 
 class ListOpen(unittest.TestCase):
     def page(self, nodes, more, cursor):
