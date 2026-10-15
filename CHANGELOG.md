@@ -28,6 +28,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- A release Repology calls legacy only because nixpkgs also packages its
+  beta (firefox 157.0.1 beside firefox-devedition 158.0b1) is the main
+  line: outdated when a newer release is out (Firefox 158.0), so its update,
+  once merged, shows as on master. It never counted as outdated before. 3
+  packages on 2026-10-15 (firefox, hbase, premake). Marked on the trends as
+  a counting change, with the coq fix.
+
 - A kept older series (firefox-esr beside Firefox, a kernel module for an
   older kernel) shows the channel's version when Repology is behind, as
   other packages do: firefox-esr showed Repology's 153.4.0 while

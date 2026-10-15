@@ -264,6 +264,12 @@ COUNTING_CHANGES = [
         "text": "GitHub releases checked for every package fetched from GitHub: "
         "newer ones Repology hasn't seen count as outdated",
     },
+    {
+        # The first of the two merged (#242, coq); the second the same day.
+        "merged": "2026-10-15T11:55:00+00:00",
+        "text": "kept series: coq's aren't devel variants, and a release kept "
+        "only beside its own beta (firefox) counts as the main line",
+    },
 ]
 KEPT = "legacy"
 

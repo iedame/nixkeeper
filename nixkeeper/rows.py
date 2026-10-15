@@ -6,7 +6,7 @@ import re
 
 from . import config
 from .sources.nixpkgs import platforms
-from .versions import is_newer, version_key
+from .versions import is_newer, is_pre_release, version_key
 
 
 def search_term(attr):
@@ -147,6 +147,14 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
             and e.get("version")
             and version_key(e["version"]) > version_key(nix.get("version") or "")
         ]
+        if newer and not devel and all(is_pre_release(e["version"]) for e in newer):
+            # Newer only as a beta nixpkgs also has (firefox beside
+            # firefox-devedition 158.0b1): Repology calls it legacy, but it's
+            # the main line, compared with the newest release like any.
+            ref = row["refVersion"]
+            behind = ref and is_newer(ref, nix.get("version") or "")
+            row["nixStatus"] = "outdated" if behind else "newest"
+            newer = []
         if newer:
             best = max(version_key(e["version"]) for e in newer)
             # Of those with that version, the plainest name (tracy, not tracy_0_14).

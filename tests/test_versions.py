@@ -4,7 +4,7 @@ import os
 import re
 import unittest
 
-from nixkeeper.versions import is_newer, version_key
+from nixkeeper.versions import is_newer, is_pre_release, version_key
 
 # Repology's version comparison test suite
 # (https://github.com/repology/version-comparison-test-suite, CC0), as of
@@ -125,3 +125,11 @@ class Ordering(unittest.TestCase):
         self.assertFalse(is_newer("", "0-unstable-2022-07-13"))
         self.assertFalse(is_newer(None, "0-unstable-2022-07-13"))
         self.assertEqual(version_key(""), version_key("0"))
+
+
+class PreRelease(unittest.TestCase):
+    def test_as_repology_orders_them(self):
+        for v in ("158.0b1", "5.0.0-beta8", "1.7.0-rc0", "6.0a2", "3.0.0-alpha"):
+            self.assertTrue(is_pre_release(v), v)
+        for v in ("158.0", "153.5.0esr", "1.0a", "1.2-unstable-2025-05-01", "", None):
+            self.assertFalse(is_pre_release(v), v)
