@@ -104,6 +104,48 @@ def project_rows(proj, nixpkgs):
     return rows
 
 
+VERSION_PART = re.compile(r"[A-Za-z]+|[0-9]+")
+# Statuses a version counts by in its series: not one Repology distrusts,
+# can't order, or a rolling one (3.13.9999).
+SERIES_STATUSES = {"newest", "outdated", "legacy", "unique"}
+
+
+def series_ref(version, entries, others):
+    """The newest release in version's own series, when nixpkgs has a newer
+    series of the same project (another attribute: python315 beside
+    python313) and it's newer than version; else None. The series: the
+    versions sharing version's parts up to the first where it differs from
+    the next newer series in nixpkgs (3.13 for 3.13.15 beside 3.15.0).
+    Pre-releases left out."""
+    newer = [
+        e["version"]
+        for e in entries
+        if e.get("repo") == config.NIX_REPO
+        and e.get("version")
+        and not is_pre_release(e["version"])
+        and is_newer(e["version"], version)
+    ]
+    if not newer:
+        return None
+    mine = VERSION_PART.findall(version)
+    sibling = VERSION_PART.findall(min(newer, key=version_key))
+    at = next(
+        (i for i, (a, b) in enumerate(zip(mine, sibling, strict=False)) if a != b), None
+    )
+    if at is None:
+        return None
+    found = [
+        e["version"]
+        for e in others
+        if e.get("status") in SERIES_STATUSES
+        and e.get("version")
+        and not is_pre_release(e["version"])
+        and VERSION_PART.findall(e["version"])[: at + 1] == mine[: at + 1]
+    ]
+    best = max(found, key=version_key, default=None)
+    return best if best and is_newer(best, version) else None
+
+
 def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
     def newest(status):
         """The highest version among the other repositories with status."""
@@ -138,6 +180,16 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         # classifies as devel (lincity).
         "devel": devel or (nix or {}).get("status") == "devel",
     }
+    # An older series nixpkgs keeps beside a newer one, behind in its own
+    # series: compared within it (python313 3.13.15 → 3.13.16, not Python's
+    # newest, 3.15.0, which python315 has).
+    if (
+        nix
+        and not row["devel"]
+        and nix.get("status") == "outdated"
+        and (ref := series_ref(nix.get("version") or "", proj["entries"], others))
+    ):
+        row["refVersion"] = ref
     if nix and nix.get("status") == config.KEPT:
         # An older version kept beside a newer one: which, for the page.
         newer = [

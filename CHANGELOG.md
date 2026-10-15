@@ -28,6 +28,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- An older series nixpkgs keeps beside a newer one (python313 beside
+  python315), and behind in its own series, is compared within it:
+  python313 3.13.15 suggests 3.13.16, not Python's newest, 3.15.0; the same
+  for python3 and python314 (3.14.8), mariadb's series, ffmpeg_8, lua5_4,
+  gtkmm3 and others (33 on 2026-10-15). Still outdated; only the version it
+  points to changes.
+
 - A release Repology calls legacy only because nixpkgs also packages its
   beta (firefox 157.0.1 beside firefox-devedition 158.0b1) is the main
   line: outdated when a newer release is out (Firefox 158.0), so its update,

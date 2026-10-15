@@ -92,6 +92,35 @@ class Rows(unittest.TestCase):
         }
         self.assertEqual(rows["gnumake42"]["nixStatus"], "legacy")
 
+    def test_an_older_series_compared_within_it(self):
+        # python313 beside python315, 2026-10-15: behind in 3.13, not 3.15.
+        entries = [
+            nix("python313", "3.13.15", "outdated"),
+            nix("python315", "3.15.0", "newest"),
+            other("arch", "3.15.0", "newest"),
+            other("debian", "3.13.16", "legacy"),
+            other("fedora", "3.13.9999", "rolling"),
+            other("aur", "3.13.17rc1", "outdated"),
+        ]
+        rows = {
+            r["name"]: r
+            for r in self.rows(
+                project("python", ["python313", "python315"], entries, "python")
+            )
+        }
+        self.assertEqual(rows["python313"]["refVersion"], "3.13.16")
+        self.assertEqual(rows["python313"]["nixStatus"], "outdated")
+        self.assertEqual(rows["python315"]["refVersion"], "3.15.0")
+        # Nothing newer known in its series: Repology's verdict as it is.
+        entries[3] = other("debian", "3.13.15", "legacy")
+        rows = {
+            r["name"]: r
+            for r in self.rows(
+                project("python", ["python313", "python315"], entries, "python")
+            )
+        }
+        self.assertEqual(rows["python313"]["refVersion"], "3.15.0")
+
     def test_kept_series_only_none_devel(self):
         # coq's project once its current version moved to rocq: every
         # series nixpkgs keeps is legacy. The newest is the stable one, not
