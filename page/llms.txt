@@ -1,0 +1,45 @@
+# nixkeeper
+
+> A health dashboard for every package in nixpkgs (about 126,000): whether a newer version is out upstream, whether it builds on Hydra (nixpkgs master), how the update bot's (nixpkgs-update, r-ryantm) last attempt went, which CVEs affect it, and what's open about it on GitHub. Refreshed every 3 hours. The page is rendered by JavaScript from public JSON files: to read it, fetch the JSON described below rather than the HTML.
+
+nixkeeper is an independent community project (MIT), not affiliated with the NixOS Foundation. Its suggestions ("an issue that looks done", "an update PR ready for the merge bot", "likely fixed by") are automated hints for a person to check, not decisions; nixkeeper never comments on, closes or merges anything in nixpkgs. Each answer should say when its data was read: `checkedAt` in `index.json`, times in UTC.
+
+## Pages for people
+
+The page keeps every view in its address, so these are links to share:
+
+- [One package](https://nixkeeper.com/?pkg=firefox): `?pkg=<attribute>`, its details open
+- [A maintainer's packages](https://nixkeeper.com/?maintainer=handle): `?maintainer=<GitHub handle>`; `none` for packages without one
+- [A team's packages](https://nixkeeper.com/?team=gaming): `?team=<team shortName>`, any case
+- [What needs attention](https://nixkeeper.com/?view=attention): failing, outdated, vulnerable or with a fix to backport, worst first
+- Narrowing any list: `?buildFailed=<reason>`, `?updateFailed=<reason>`, `?age=1m|6m|1y|2y|3y|never`, `?platform=linux|x86_64-linux|aarch64-linux|darwin`, `?refine=unmaintained,notbroken,notonmaster,nobot`
+- [Reading the page](https://github.com/nixkeeper/nixkeeper/blob/main/docs/reading-the-page.md): what every dot, badge, panel and filter means
+
+## Data for programs
+
+All under `https://nixkeeper.com/data/`, JSON, public, no key. Fields are documented in [The data](https://github.com/nixkeeper/nixkeeper/blob/main/docs/data.md).
+
+- [index.json](https://nixkeeper.com/data/index.json): counts, when each source was read (`sources`, `checkedAt`), the newest and longest-standing problems, why builds and the update bot fail, what was fixed, `shardCount`
+- `rows/<n>.json`: every package's full row (versions, Hydra builds with failure reasons, the bot's attempt, PRs, issues, CVEs, maintainers, teams); a package is in shard `crc32(name) % shardCount` (CRC-32 of the attribute name, UTF-8)
+- [names.json](https://nixkeeper.com/data/names.json): every package's name and status letter, to find one
+- [maintainers.json](https://nixkeeper.com/data/maintainers.json): every maintainer with their counts
+- `views/attention.json`, `views/maintainer/<handle>.json` (lowercase), `views/team/<slug>.json`, `views/set/<name>.json`, `views/blocked.json`, `views/backport.json`, `views/cause/<key>.json`: lists of summary entries, as the page shows them
+- [history.json](https://nixkeeper.com/data/history.json): daily counts for the trends, and recent fixes
+
+## Digests
+
+The sources nixkeeper joins, each refreshed on its own, each README describing its format; their data is on each repository's `data` branch (`https://raw.githubusercontent.com/nixkeeper/<repo>/data/data/`):
+
+- [digest-builds](https://github.com/nixkeeper/digest-builds): Hydra's latest evaluation of nixpkgs master, why each failure failed, which dependency blocked a build (hourly)
+- [digest-versions](https://github.com/nixkeeper/digest-versions): Repology's versions, GitHub releases, Typst, Emacs, Stackage, CRAN and Bioconductor indexes (every 12 hours)
+- [digest-update-bot](https://github.com/nixkeeper/digest-update-bot): nixpkgs-update's attempts and queue (every 3 hours)
+- [digest-vulnerabilities](https://github.com/nixkeeper/digest-vulnerabilities): the NixOS security tracker's CVEs and OSV's advisories (hourly)
+- [digest-prs](https://github.com/nixkeeper/digest-prs): nixpkgs' open PRs and issues, with checks against Hydra, nixpkgs and the bot's queue (hourly)
+
+## Optional
+
+- [Source code](https://github.com/nixkeeper/nixkeeper): the sync, the page, a NixOS and nix-darwin module, a command to run your own
+- [A dashboard of your own](https://github.com/nixkeeper/nixkeeper/blob/main/docs/your-own-instance.md), and [a live one](https://demo.nixkeeper.com/) tracking only its lists
+- [Get notified](https://github.com/nixkeeper/nixkeeper/blob/main/docs/notifications.md): a GitHub status issue per maintainer or team
+- [Report something wrong](https://github.com/nixkeeper/nixkeeper/issues/new?template=something-looks-wrong.yml), or ask in [Discussions](https://github.com/nixkeeper/nixkeeper/discussions)
+- The data is collected from Repology, Hydra, nixpkgs-update's logs, the NixOS security tracker, OSV and GitHub, and remains subject to their terms.

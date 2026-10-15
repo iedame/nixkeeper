@@ -9,6 +9,13 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- `llms.txt` beside the page (nixkeeper.com/llms.txt): for AI assistants
+  and tools, what nixkeeper is, the page's addresses, where the data and the
+  digests are and how to read them (the page itself is drawn by JavaScript),
+  and that its suggestions are hints for a person to check.
+
 ## [0.18.0] - 2026-10-14
 
 Ready to be shown around. A live dashboard of lists,
