@@ -18,6 +18,20 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- An older series nixpkgs keeps beside a newer one is outdated when a newer
+  release is out in its own series, as the page always said ("not outdated
+  while nothing newer is out in its own series"): glibmm_2_4 2.66.8 with
+  2.66.10 out, tcl 8.6.16 (8.6.18), electron_40, thunderbird-153, go 1.26,
+  django 5.2 (40 packages on 2026-10-15). It's still named beside the newer
+  one, and kept again once the channel has its series' newest. Counted only
+  on good evidence: two distributions or more besides nixpkgs (debian_13
+  and debian_unstable are one), the newest of them but not a packaging's
+  added part (ruby 3.4.11, not Chocolatey's 3.4.11.1), in the version's
+  shape, no pre-release, packaging revision or added part, not
+  for an attribute naming its whole version (sbcl_2_4_6), and for a series
+  not named by its attribute, of three parts or more, its major.minor
+  (linux 6.18, not 6.19). Marked on the trends as a counting change.
+
 - The overview's lists (the newest and longest-standing, what was fixed)
   show packages one update moves together as one line, with how many: the
   same package file in nixpkgs, version and homepage (the rows'
@@ -34,6 +48,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   for python3 and python314 (3.14.8), mariadb's series, ffmpeg_8, lua5_4,
   gtkmm3 and others (33 on 2026-10-15). Still outdated; only the version it
   points to changes.
+  The same evidence rules as for a kept series, except one distribution is
+  enough: libsigcxx_2_0 2.12.1 suggests 2.12.2, not 2.99.13 (sigc++ 3's
+  previews), vlc-bin 3.0.24, not 3.0.23_2.
 
 - A release Repology calls legacy only because nixpkgs also packages its
   beta (firefox 157.0.1 beside firefox-devedition 158.0b1) is the main

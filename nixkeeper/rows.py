@@ -8,6 +8,7 @@ from . import config
 from .sources.nixpkgs import platforms
 from .versions import (
     RELEASE_WORDS,
+    UNSTABLE,
     is_newer,
     is_pre_release,
     version_key,
@@ -111,18 +112,61 @@ def project_rows(proj, nixpkgs):
 
 
 VERSION_PART = re.compile(r"[A-Za-z]+|[0-9]+")
+WORD = re.compile(r"[A-Za-z]+")
+# Build metadata, not a newer release (jdk 21.0.12+8.2 beside 21.0.12.1+1).
+BUILD = re.compile(r"\+.*")
 # Statuses a version counts by in its series: not one Repology distrusts,
 # can't order, or a rolling one (3.13.9999).
 SERIES_STATUSES = {"newest", "outdated", "legacy", "unique"}
+# Distributions that must have a version in a kept series for it to count,
+# as it makes the package outdated (repositories named alike are one:
+# debian_13 and debian_unstable): one alone is often its own packaging (eigen2 2.0.55,
+# firebird 4.0.7.3271 in EPEL).
+SERIES_REPOS = 2
+# In a series named by its first part alone, the next part more than doubled
+# and this: another numbering (zulu17 17.68.203 for 17.0.19) or the next
+# major's previews (gimp2 2.99.10 for 2.10.38), not 535.309 for 535.288.
+SERIES_JUMP = 5
 
 
-def series_ref(version, entries, others):
+def named_parts(name, parts):
+    """How many of a version's numeric parts the attribute's trailing digits
+    spell (python313: 2, glew_1_10: 2, icu60: 1, sbcl_2_4_6: 3), else 0."""
+    m = re.search(r"[0-9][0-9_]*$", name.rsplit(".", 1)[-1])
+    if not m:
+        return 0
+    digits = m.group().replace("_", "")
+    spelled = ""
+    for i, part in enumerate(p for p in parts if p.isdigit()):
+        spelled += part
+        if spelled == digits:
+            return i + 1
+        if not digits.startswith(spelled):
+            return 0
+    return 0
+
+
+def plain_version(version):
+    """version without release words or build metadata (4.5.1-stable: 4.5.1,
+    21.0.12.1+1: 21.0.12.1), as parts."""
+    return VERSION_PART.findall(BUILD.sub("", without_release_words(version)))
+
+
+def series_ref(name, version, entries, others, kept=False):
     """The newest release in version's own series, when nixpkgs has a newer
     series of the same project (another attribute: python315 beside
     python313) and it's newer than version; else None. The series: the
     versions sharing version's parts up to the first where it differs from
-    the next newer series in nixpkgs (3.13 for 3.13.15 beside 3.15.0).
-    Pre-releases left out."""
+    the next newer series in nixpkgs (3.13 for 3.13.15 beside 3.15.0), or as
+    many as the attribute names (electron_40: 40); for a kept one (kept),
+    of three parts or more and not named, at least two (tcl 8.6.16 beside
+    9.0: 8.6, not 8.7). Not for a snapshot, nor an attribute naming the
+    whole version (sbcl_2_4_6). Counted: releases besides nixpkgs' (for a
+    kept one, in two distributions or more), in version's shape, not
+    pre-releases, nor ones adding words, a part (14.24.4 for 14.24, but
+    26.08.1 for 26.08) or a revision (1.91.0-1)."""
+    if not version or UNSTABLE.search(version):
+        return None
     newer = [
         e["version"]
         for e in entries
@@ -133,23 +177,73 @@ def series_ref(version, entries, others):
     ]
     if not newer:
         return None
-    mine = VERSION_PART.findall(version)
+    mine = plain_version(version)
     sibling = VERSION_PART.findall(min(newer, key=version_key))
     at = next(
         (i for i, (a, b) in enumerate(zip(mine, sibling, strict=False)) if a != b), None
     )
     if at is None:
         return None
+    numbers = sum(p.isdigit() for p in mine)
+    named = named_parts(name, mine)
+    if named and named >= numbers:
+        return None
+    width = max(at + 1, named)
+    if kept and not named and numbers >= 3:
+        width = max(width, 2)
+    words = {p.lower() for p in mine if not p.isdigit()}
+    families = {}
+    for e in others:
+        v = e.get("version")
+        if (
+            e.get("status") not in SERIES_STATUSES
+            or not v
+            or e.get("repo", "").startswith("nix_")
+            or is_pre_release(v)
+            or "~" in v  # Debian's pre-releases (21.0.13~8ea)
+        ):
+            continue
+        theirs = plain_version(v)
+        if (
+            theirs[:width] != mine[:width]
+            # The same shape: numbers where version has numbers.
+            or any(
+                a.isdigit() != b.isdigit() for a, b in zip(theirs, mine, strict=False)
+            )
+            or {p.lower() for p in theirs if not p.isdigit()} - words
+            or (
+                width == 1
+                and numbers >= 3
+                and len(theirs) > 1
+                and theirs[1].isdigit()
+                and int(theirs[1]) > 2 * int(mine[1]) + SERIES_JUMP
+            )
+        ):
+            continue
+        ours, release = BUILD.sub("", version), BUILD.sub("", v)
+        added = release[len(ours) : len(ours) + 1]
+        if release.startswith(ours) and added and added in "-_" + "." * (numbers >= 3):
+            continue
+        # A distribution: debian_13 and debian_unstable, manjaro_stable and
+        # manjaro_testing are one.
+        families.setdefault(v, set()).add(e.get("repo", "").split("_")[0])
+    found = {
+        v: f for v, f in families.items() if len(f) >= (SERIES_REPOS if kept else 1)
+    }
+    # One that adds a part to another found in as many distributions or more
+    # is its packaging (Chocolatey's ruby 3.4.11.1 beside 3.4.11).
     found = [
-        e["version"]
-        for e in others
-        if e.get("status") in SERIES_STATUSES
-        and e.get("version")
-        and not is_pre_release(e["version"])
-        and VERSION_PART.findall(e["version"])[: at + 1] == mine[: at + 1]
+        v
+        for v, f in found.items()
+        if not any(
+            v.startswith(o) and v[len(o) : len(o) + 1] == "." and len(g) >= len(f)
+            for o, g in found.items()
+            if o != v
+        )
     ]
     best = max(found, key=version_key, default=None)
-    return best if best and is_newer(best, version) else None
+    plain = BUILD.sub("", without_release_words(version))
+    return best if best and is_newer(BUILD.sub("", best), plain) else None
 
 
 def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
@@ -193,7 +287,7 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         nix
         and not row["devel"]
         and nix.get("status") == "outdated"
-        and (ref := series_ref(nix.get("version") or "", proj["entries"], others))
+        and (ref := series_ref(name, nix.get("version"), proj["entries"], others))
     ):
         row["refVersion"] = ref
     if (
@@ -237,6 +331,15 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
                 key=lambda e: (len(e.get("srcname") or ""), e.get("srcname") or ""),
             )
             row["keptBeside"] = {"attr": top.get("srcname"), "version": top["version"]}
+            # Kept, but behind in its own series (glibmm_2_4 2.66.8, 2.66.10
+            # out): outdated against that, still kept beside the newer one.
+            if not devel and (
+                ref := series_ref(
+                    name, nix.get("version"), proj["entries"], others, kept=True
+                )
+            ):
+                row["nixStatus"] = "outdated"
+                row["refVersion"] = ref
     pkgs = [nixpkgs[a] for a in attrs if a in nixpkgs]
     if pkgs and not nix:
         # In nixpkgs, but Repology doesn't list nixpkgs' package: not on
@@ -367,7 +470,8 @@ def channel_versions(rows, nixpkgs):
         # Outdated against nothing Repology names (beads): left as it says.
         ref = row.get("refVersion")
         if row["nixStatus"] == "outdated" and ref and not is_newer(ref, ours):
-            row["nixStatus"] = "newest"
+            # A kept series caught up in its own series: kept again.
+            row["nixStatus"] = config.KEPT if row.get("keptBeside") else "newest"
         changed.append(row["name"])
     return changed
 

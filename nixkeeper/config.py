@@ -270,6 +270,12 @@ COUNTING_CHANGES = [
         "text": "kept series: coq's aren't devel variants, and a release kept "
         "only beside its own beta (firefox) counts as the main line",
     },
+    {
+        # Set to the merge's time when it's merged.
+        "merged": "2026-10-15T15:00:00+00:00",
+        "text": "kept series behind in their own series count as outdated "
+        "(glibmm_2_4 2.66.8, 2.66.10 out)",
+    },
 ]
 KEPT = "legacy"
 

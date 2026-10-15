@@ -154,6 +154,100 @@ class Rows(unittest.TestCase):
         }
         self.assertEqual(rows["python313"]["refVersion"], "3.15.0")
 
+    def kept(self, name, version, newer, *others):
+        """name's row, kept at version beside newer, with others' entries."""
+        entries = [
+            nix(name, version, "legacy"),
+            nix("main", newer, "newest"),
+            other("arch", newer, "newest"),
+            *others,
+        ]
+        rows = self.rows(project("p", [name, "main"], entries, "p"))
+        return next(r for r in rows if r["name"] == name)
+
+    def test_a_kept_series_behind_in_it(self):
+        # glibmm_2_4 2.66.8 beside glibmm 2.88.0, 2026-10-15: 2.66.10 out.
+        row = self.kept(
+            "glibmm_2_4",
+            "2.66.8",
+            "2.88.0",
+            other("debian_13", "2.66.10", "legacy"),
+            other("alpine_edge", "2.66.10", "legacy"),
+        )
+        self.assertEqual(
+            (row["nixStatus"], row["refVersion"], row["keptBeside"]["version"]),
+            ("outdated", "2.66.10", "2.88.0"),
+        )
+        # Once the channel has it: kept again.
+        channel_versions([row], {"glibmm_2_4": pkg("glibmm_2_4", version="2.66.10")})
+        self.assertEqual(row["nixStatus"], "legacy")
+
+    def test_a_kept_series_not_by_its_packaging(self):
+        # ruby 3.4.9, 2026-10-15: 3.4.11 in five distributions, Chocolatey's
+        # and Liguros' 3.4.11.1 in two.
+        row = self.kept(
+            "ruby_3_4",
+            "3.4.9",
+            "4.0.7",
+            *(other(r, "3.4.11", "legacy") for r in ("homebrew", "macports", "void")),
+            *(other(r, "3.4.11.1", "legacy") for r in ("chocolatey", "liguros")),
+        )
+        self.assertEqual((row["nixStatus"], row["refVersion"]), ("outdated", "3.4.11"))
+        # But a newer one, or one in more distributions, is taken.
+        row = self.kept(
+            "ruby_3_4",
+            "3.4.9",
+            "4.0.7",
+            *(other(r, "3.4.11", "legacy") for r in ("homebrew", "macports")),
+            *(other(r, "3.4.12", "legacy") for r in ("arch", "fedora")),
+        )
+        self.assertEqual(row["refVersion"], "3.4.12")
+
+    def test_a_kept_series_needs_good_evidence(self):
+        cases = {
+            # One distribution only (debian_13 and debian_unstable are one).
+            "one": (
+                "glibmm_2_4",
+                "2.66.8",
+                "2.88.0",
+                "2.66.10",
+                ["debian_13", "debian_unstable"],
+            ),
+            # Only adding a part (deepin's 2.69.1) or a revision (1.91.0-1).
+            "part": ("autoconf269", "2.69.5", "2.72", "2.69.5.1", ["deepin", "fedora"]),
+            "revision": ("boost", "1.91.0", "1.92.0", "1.91.0-1", ["xrepo", "fedora"]),
+            # The attribute names the whole version.
+            "pinned": ("sbcl_2_4_6", "2.4.6", "2.6.0", "2.4.11", ["alpine", "fedora"]),
+            # Another numbering, and the next major's previews.
+            "numbering": (
+                "zulu17",
+                "17.0.19",
+                "21.0.11",
+                "17.68.203",
+                ["macports", "aur"],
+            ),
+            "previews": ("gimp2", "2.10.38", "3.2.0", "2.99.10", ["mageia", "fedora"]),
+            # Not in version's shape (jdk8 8u504-b01, 8.452.09 elsewhere).
+            "shape": ("jdk8", "8u504-b01", "21.0.11", "8.452.09", ["pisi", "fedora"]),
+            # A series named by its major, of three parts: major.minor (linux
+            # 6.18 beside 7.2; 6.19 is another series).
+            "wide": ("linux", "6.18.56", "7.2.10", "6.19.14", ["alpine", "fedora"]),
+            # A snapshot.
+            "snapshot": (
+                "fm",
+                "0-unstable-2024-01-03",
+                "1.0",
+                "0.99",
+                ["aur", "fedora"],
+            ),
+        }
+        for case, (name, version, newer, found, repos) in cases.items():
+            with self.subTest(case):
+                row = self.kept(
+                    name, version, newer, *(other(r, found, "legacy") for r in repos)
+                )
+                self.assertEqual(row["nixStatus"], "legacy")
+
     def test_kept_series_only_none_devel(self):
         # coq's project once its current version moved to rocq: every
         # series nixpkgs keeps is legacy. The newest is the stable one, not
