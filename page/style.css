@@ -775,14 +775,16 @@ button.checked:focus-visible {
 .card .spark {
   margin-top: auto;
 }
-/* The trends' marks: a staging-next merge (grey), a change in how nixkeeper
-   counts (amber: a step in a count that isn't the packages changing). */
+/* The trends' marks: a staging-next merge (grey, solid: the mass rebuilds
+   it lands), a change in how nixkeeper counts (amber, dashed: a step in a
+   count that isn't the packages changing). Told apart by more than colour. */
 .spark-mark {
   stroke-width: 1;
   stroke-dasharray: 2 2;
 }
 .spark-mark.staging-next {
   stroke: var(--ink-faint);
+  stroke-dasharray: none;
 }
 .spark-mark.counting {
   stroke: var(--caution);
@@ -806,9 +808,10 @@ button.checked:focus-visible {
   width: 0;
   height: 10px;
   margin: 0 5px -1px 0;
-  border-left: 1px dashed var(--ink-faint);
+  border-left: 1px solid var(--ink-faint);
 }
 .spark-key.counting {
+  border-left-style: dashed;
   border-left-color: var(--caution);
 }
 /* The overview's section and card titles are headings (to move between

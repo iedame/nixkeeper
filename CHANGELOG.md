@@ -18,6 +18,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Changed
 
+- A staging-next merge's mark on the trends is solid, a counting change's
+  still dashed: at a sparkline's size their grey and amber were hard to
+  tell apart. The key under the cards matches.
+
 - An older series nixpkgs keeps beside a newer one is outdated when a newer
   release is out in its own series, as the page always said ("not outdated
   while nothing newer is out in its own series"): glibmm_2_4 2.66.8 with

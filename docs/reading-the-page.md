@@ -38,10 +38,10 @@ list. From the top:
 
   Each has its **trend** (from the second sync on, the last 30 days at
   most) and its change over the last week (since the first sync until
-  there's a week: hover it for which). A grey mark on the trends is a
-  staging-next merge into master (mass rebuilds: failing builds jump for
-  days after), an amber one a change in how nixkeeper counts (it can step a
-  count overnight). The line under the cards names each kind with its days
+  there's a week: hover it for which). A solid grey mark on the trends is
+  a staging-next merge into master (mass rebuilds: failing builds jump for
+  days after), a dashed amber one a change in how nixkeeper counts (it can
+  step a count overnight). The line under the cards names each kind with its days
   ("counting changed Oct 6, Oct 7"), and hovering a day says what happened
   (a staging-next day links its PR). nixkeeper's own releases aren't
   marked: the footer says the version, and one that changes counting has
