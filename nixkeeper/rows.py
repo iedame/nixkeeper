@@ -238,9 +238,10 @@ def teams(pkgs):
 
 
 # Repology's statuses a version from the channel can replace: the ones
-# comparing it with the newest elsewhere (not a kept older version, nor one
-# Repology distrusts or can't order).
-CHANNEL_STATUSES = {"newest", "outdated", "unique", "devel"}
+# comparing it with the newest elsewhere, and a kept older series (its
+# status stays: firefox-esr 153.5.0esr in the channel, Repology's 153.4.0 a
+# day behind); not one Repology distrusts or can't order.
+CHANNEL_STATUSES = {"newest", "outdated", "unique", "devel", config.KEPT}
 LETTERS_ONLY = re.compile(r"[-_.+~]?[A-Za-z]+")
 
 

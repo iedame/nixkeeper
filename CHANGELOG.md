@@ -28,6 +28,12 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- A kept older series (firefox-esr beside Firefox, a kernel module for an
+  older kernel) shows the channel's version when Repology is behind, as
+  other packages do: firefox-esr showed Repology's 153.4.0 while
+  nixos-unstable had 153.5.0esr, and its vulnerable flag with it (108
+  such on 2026-10-15). Its status stays a kept series.
+
 - A Repology project of kept series only (coq's, since its current
   version moved to rocq) takes its newest series as the stable one, not the
   shortest name: every newer series (`coq_8_8` to `coq_8_20`) had become a

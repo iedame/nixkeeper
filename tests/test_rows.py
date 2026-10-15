@@ -550,9 +550,19 @@ class ChannelVersions(unittest.TestCase):
         _, changed = self.row("outdated", None, attrs=("p", "q"), index=index)
         self.assertEqual(changed, [])
 
+    def test_a_kept_series_too(self):
+        """firefox-esr, 2026-10-15: the channel had 153.5.0esr, Repology
+        153.4.0. Its status stays: still kept beside the newer line."""
+        row, changed = self.row("legacy", "1.1esr")
+        self.assertEqual(changed, ["p"])
+        self.assertEqual(
+            (row["nixVersion"], row["nixStatus"], row["repologyVersion"]),
+            ("1.1esr", "legacy", "1.0"),
+        )
+
     def test_statuses_left_alone(self):
-        """A kept older version, or one Repology distrusts."""
-        for status in ("legacy", "untrusted", "noscheme", "ignored"):
+        """Versions Repology distrusts or can't order."""
+        for status in ("untrusted", "noscheme", "ignored"):
             with self.subTest(status):
                 _, changed = self.row(status, "2.0")
                 self.assertEqual(changed, [])
