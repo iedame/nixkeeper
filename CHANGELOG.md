@@ -47,6 +47,16 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   templates and mono builds) and 2 others as outdated against 4.7.2; they
   are kept again.
 
+- godot 4.7.2-stable is no longer outdated against 4.7.2: Repology ranks a
+  word naming the release ("stable") lower, so it called nixpkgs' godot
+  (and godot_4, godot_4_7) outdated since nixkeeper began. Only when that
+  word is the whole difference.
+
+- A kept series names the release it's kept beside at the channel's
+  version, as that release's own row shows it, not Repology's older one
+  (firefox-esr beside firefox 158.0, not 157.0.1; kernel modules beside the
+  newest kernel's: 206 on 2026-10-15). Nothing counts differently.
+
 - A package shown at the channel's version, newer than Repology's, no
   longer carries Repology's vulnerable flag, which was for Repology's
   version (firefox-esr 153.5.0esr was flagged for 153.4.0's CVEs); the

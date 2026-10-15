@@ -98,8 +98,14 @@ def is_pre_release(version):
     named so (4.7.2-stable)."""
     if not version or UNSTABLE.search(version):
         return False
-    version = RELEASE_WORDS.sub(" ", version)
-    return any(rank == PRE_RELEASE for rank, _, _ in components(version))
+    return any(
+        rank == PRE_RELEASE for rank, _, _ in components(without_release_words(version))
+    )
+
+
+def without_release_words(version):
+    """version without the words naming it a release (4.7.2-stable: 4.7.2)."""
+    return RELEASE_WORDS.sub(" ", version or "")
 
 
 @functools.total_ordering

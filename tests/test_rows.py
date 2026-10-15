@@ -108,6 +108,23 @@ class Rows(unittest.TestCase):
             {"attr": "godot", "version": "4.7.2-stable"},
         )
 
+    def test_outdated_only_by_a_release_word(self):
+        """godot, 2026-10-15: 4.7.2-stable, which Repology ranks below 4.7.2."""
+        entries = [
+            nix("godot", "4.7.2-stable", "outdated"),
+            other("arch", "4.7.2", "newest"),
+        ]
+        (row,) = self.rows(project("godot", ["godot"], entries, "godot"))
+        self.assertEqual(row["nixStatus"], "newest")
+        # Behind by more than the word: still outdated.
+        entries[0] = nix("godot", "4.7.1-stable", "outdated")
+        (row,) = self.rows(project("godot", ["godot"], entries, "godot"))
+        self.assertEqual((row["nixStatus"], row["refVersion"]), ("outdated", "4.7.2"))
+        # Nor ahead: Repology's rules have their reasons (xcircuit).
+        entries[0] = nix("godot", "4.8-stable", "outdated")
+        (row,) = self.rows(project("godot", ["godot"], entries, "godot"))
+        self.assertEqual(row["nixStatus"], "outdated")
+
     def test_an_older_series_compared_within_it(self):
         # python313 beside python315, 2026-10-15: behind in 3.13, not 3.15.
         entries = [
@@ -661,6 +678,26 @@ class ChannelVersions(unittest.TestCase):
             (row["nixVersion"], row["nixStatus"], row["repologyVersion"]),
             ("1.1esr", "legacy", "1.0"),
         )
+
+    def test_kept_beside_the_channels_version(self):
+        """firefox-esr, 2026-10-15: kept beside firefox, 158.0 in the channel,
+        157.0.1 still on Repology."""
+        entries = [
+            nix("firefox-esr", "153.5.0esr", "legacy"),
+            nix("firefox", "157.0.1", "legacy"),
+            other("arch", "158.0", "newest"),
+        ]
+        rows = build_rows(
+            {"f": project("firefox", ["firefox-esr", "firefox"], entries, "firefox")},
+            {},
+        )
+        esr = next(r for r in rows if r["name"] == "firefox-esr")
+        index = {"firefox": pkg("firefox", version="158.0")}
+        channel_versions(rows, index)
+        self.assertEqual(esr["keptBeside"], {"attr": "firefox", "version": "158.0"})
+        # Not an older one (the channel behind Repology).
+        channel_versions(rows, {"firefox": pkg("firefox", version="157.0")})
+        self.assertEqual(esr["keptBeside"]["version"], "158.0")
 
     def test_statuses_left_alone(self):
         """Versions Repology distrusts or can't order."""

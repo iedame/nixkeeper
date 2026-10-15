@@ -6,7 +6,13 @@ import re
 
 from . import config
 from .sources.nixpkgs import platforms
-from .versions import is_newer, is_pre_release, version_key
+from .versions import (
+    RELEASE_WORDS,
+    is_newer,
+    is_pre_release,
+    version_key,
+    without_release_words,
+)
 
 
 def search_term(attr):
@@ -190,6 +196,19 @@ def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
         and (ref := series_ref(nix.get("version") or "", proj["entries"], others))
     ):
         row["refVersion"] = ref
+    if (
+        nix
+        and nix.get("status") == "outdated"
+        and row["refVersion"]
+        and RELEASE_WORDS.search(nix.get("version") or "")
+        and version_key(without_release_words(nix.get("version")))
+        == version_key(row["refVersion"])
+    ):
+        # Outdated only by a word naming the release, which Repology ranks
+        # lower (godot 4.7.2-stable against 4.7.2): the newest. Not when
+        # ahead of it, which Repology's rules have reasons for (xcircuit
+        # 3.10.42 against 3.9.73).
+        row["nixStatus"] = "newest"
     if nix and nix.get("status") == config.KEPT:
         # An older version kept beside a newer one: which, for the page.
         newer = [
@@ -317,10 +336,17 @@ def channel_versions(rows, nixpkgs):
     Repology had. Only when the row's attributes agree on one version, and
     not when the channel's only adds letters to Repology's: Repology's rules
     drop those (thunderbird-esr-bin 153.3.1esr, which it has as 153.3.1).
-    Repology's vulnerable flag, for its version, goes with it. Returns the
-    names of the rows changed."""
+    Repology's vulnerable flag, for its version, goes with it. A kept
+    series' keptBeside takes the channel's version too. Returns the names of
+    the rows changed."""
     changed = []
     for row in rows:
+        # The release a kept series is named beside, at the channel's version
+        # too (firefox-esr beside firefox 158.0, Repology still at 157.0.1).
+        beside = row.get("keptBeside") or {}
+        channel = (nixpkgs.get(beside.get("attr")) or {}).get("version")
+        if channel and is_newer(channel, beside.get("version")):
+            beside["version"] = channel
         if row.get("nixStatus") not in CHANNEL_STATUSES or not row.get("nixVersion"):
             continue
         versions = {nixpkgs[a].get("version") for a in row["attrs"] if a in nixpkgs}
