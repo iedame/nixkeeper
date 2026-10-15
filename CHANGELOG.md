@@ -31,6 +31,10 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   for an attribute naming its whole version (sbcl_2_4_6), and for a series
   not named by its attribute, of three parts or more, its major.minor
   (linux 6.18, not 6.19). Marked on the trends as a counting change.
+  nixkeeper's own release checks, which can't tell a series, leave such a
+  series' target alone as they do a kept one's: electron_42 42.11.10
+  suggests 42.11.14, not Electron's newest, 44.7.2 (and electron 43,
+  libtorrent-rasterbar-1_2_x, cython, django 5.2 on the first sync).
 
 - The overview's lists (the newest and longest-standing, what was fixed)
   show packages one update moves together as one line, with how many: the

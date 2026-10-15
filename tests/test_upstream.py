@@ -128,6 +128,17 @@ class Decides(unittest.TestCase):
         upstream.apply(r, {"version": "3.18.3", "inferred": True})
         self.assertFalse(r["upstream"]["newer"])
         self.assertEqual((r["nixStatus"], r["refVersion"]), ("legacy", "3.18.3"))
+        # Nor to one outdated in its own series (electron_42, 2026-10-15):
+        # its target stays the series' newest, not the repository's.
+        r = {
+            **row(
+                name="electron_42", nix="42.11.10", status="outdated", ref="42.11.14"
+            ),
+            "keptBeside": {"attr": "electron_44", "version": "44.5.1"},
+        }
+        upstream.apply(r, {"version": "44.7.2", "inferred": True})
+        self.assertFalse(r["upstream"]["newer"])
+        self.assertEqual((r["nixStatus"], r["refVersion"]), ("outdated", "42.11.14"))
         # A devel variant fallen behind still counts.
         r = {**row(status="legacy", ref="3.18.3"), "devel": True}
         upstream.apply(r, {"version": "3.18.3", "inferred": True})

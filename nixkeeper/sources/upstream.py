@@ -93,21 +93,19 @@ def apply(row, found, decides=True):
     False), only adds a newer version Repology hasn't seen; a worked-out
     one not even that for an older version kept beside a newer one, nor for
     the version an up-to-date rule names. Nor does a check decide for a kept
-    version (config.KEPT): the newest release isn't the one to compare it
+    version (config.KEPT, or one outdated in its own series, still kept
+    beside a newer one): the newest release isn't the one to compare it
     with."""
+    kept = row.get("nixStatus") == config.KEPT or bool(row.get("keptBeside"))
     newer = found.get("newer")
     if newer is None:
         newer = is_newer(found["version"], row.get("nixVersion"))
-    if (
-        newer
-        and found.get("inferred")
-        and row.get("nixStatus") == config.KEPT
-        and not row.get("devel")
-    ):
+    if newer and found.get("inferred") and kept and not row.get("devel"):
         # An older version nixpkgs keeps on purpose beside a newer one
-        # (fuse 2.9.9, patchelf 0.15.2, ocamlformat_0_26_0, llvmPackages_18):
-        # a worked-out check can't tell its series, so its repository's
-        # newest release isn't one to update it to. A devel variant that's
+        # (fuse 2.9.9, patchelf 0.15.2, ocamlformat_0_26_0, llvmPackages_18),
+        # or one behind in its own series (electron_42 42.11.10, 42.11.14
+        # out): a worked-out check can't tell its series, so its repository's
+        # newest release (44.7.2) isn't one to update it to. A devel variant that's
         # fallen behind still counts (changes.behind_as_devel).
         newer = False
     if (
@@ -136,7 +134,7 @@ def apply(row, found, decides=True):
         decides
         and not found.get("inferred")
         and row.get("nixVersion")
-        and row.get("nixStatus") != config.KEPT
+        and not kept
         and newer != (row.get("nixStatus") in config.OUTDATED_STATUSES)
     ):
         row["repologySaid"] = said
