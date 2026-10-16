@@ -351,6 +351,7 @@ behind the newest devel version elsewhere (`refVersion`).
 | `openPR` | an open update PR in nixpkgs (below) |
 | `masterPR` | an update PR merged into master that the channel doesn't have yet |
 | `stagingPR` | an update PR merged into staging or staging-next that master doesn't have yet (from nixkeeper-prs only) |
+| `stagingNextBreaks` | builds on master but fails its own build on staging-next at the same version, in Hydra's newest evaluation of it (nixkeeper-hydra's `staging-next.json.gz`): `eval`, `evaluatedAt`, `builds` (`attr`, `system`, `build`: each failing job there), and `cycle` (`n`, `cut`: the open staging-next PR into master). A forecast: no count includes it |
 | `openPRs`, `openIssues` | how many open nixpkgs PRs and issues have `searchTerm` in their title |
 | `countedAt` | when those were last counted (left out: at `checkedAt`): daily, from a listing of all of nixpkgs' open PRs and issues (searched per package instead when that fails: then every 3 days for a package with none open and not outdated) |
 

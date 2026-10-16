@@ -326,6 +326,14 @@ const REFINES = {
     title: 'Leave out outdated packages whose update is merged, waiting for nixos-unstable',
     test: (p) => !waitingForChannel(p),
   },
+  // A forecast (branches.apply_staging_next_breaks): builds on master,
+  // fails its own build on staging-next at the same version.
+  stagingnext: {
+    label: 'Breaks on staging-next',
+    title:
+      'Only packages that build on master but fail their own build on staging-next, at the same version: unless fixed, they fail on master when staging-next is merged into it',
+    test: (p) => Boolean(p.stagingNextBreaks),
+  },
   // Where a person is needed: nixpkgs-update won't open the PR.
   nobot: {
     label: "Bot won't update it",
@@ -565,6 +573,25 @@ function stagingBuilds(pr) {
   if (waiting.length)
     return html` In ${evalLink}, ${it} isn't built yet on ${waiting.map((b) => b.system).join(', ')}.`;
   return html` In ${evalLink}, ${it} builds${builds.length > 1 ? ' on every platform' : ''}.`;
+}
+
+// What staging-next breaks: this package, building on master, fails its own
+// build there (each platform's build linked), as of Hydra's newest
+// evaluation of it.
+function stagingNextBreaksNote(pkg) {
+  const b = pkg.stagingNextBreaks;
+  if (!b) return '';
+  const when = b.evaluatedAt ? ` of ${shortDay(b.evaluatedAt.slice(0, 10))}` : '';
+  const evalLink = html`<a class="files-link" href="https://hydra.nixos.org/eval/${b.eval}" target="_blank" rel="noopener">Hydra's evaluation${when} ↗</a>`;
+  const systems = [...new Set(b.builds.map((x) => x.system))];
+  const builds = b.builds.map(
+    (x, i) =>
+      html`${i ? ', ' : ''}<a class="files-link" href="${safeUrl(hydraBuildUrl(x.build))}" target="_blank" rel="noopener">${b.builds.length > systems.length ? `${x.attr} on ` : ''}${x.system} ↗</a>`,
+  );
+  const merge = b.cycle
+    ? html` (<a class="files-link" href="https://github.com/NixOS/nixpkgs/pull/${b.cycle.n}" target="_blank" rel="noopener">#${b.cycle.n} ↗</a>)`
+    : '';
+  return html`<div class="master-note">⚠ Breaks on <span class="mono">staging-next</span>: in ${evalLink}, it fails to build there (${builds}), at the same version master builds fine. Unless fixed, it fails on master when staging-next is merged into it${merge}; a fix may already be on staging.</div>`;
 }
 
 function stagingNote(pkg) {
@@ -3614,7 +3641,7 @@ function fillDetail(pkg, el, entries) {
             : ', not in nixos-unstable yet.'
         }</div>`
       : ''
-  }${waitingForChannel(pkg) ? '' : stagingNote(pkg)}${branchNote(pkg)}`;
+  }${waitingForChannel(pkg) ? '' : stagingNote(pkg)}${stagingNextBreaksNote(pkg)}${branchNote(pkg)}`;
   const people = [
     Array.isArray(pkg.maintainers) &&
       html`<section class="pd-sec"><h4 class="other-label">Maintainers</h4><div class="pd-pills">${

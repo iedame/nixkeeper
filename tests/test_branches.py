@@ -219,3 +219,69 @@ class StagingNext(unittest.TestCase):
     def test_too_old_unused(self):
         old = {**self.DIGEST, "fetchedAt": "2026-10-13T00:00:00+00:00"}
         self.assertIsNone(self.load(old))
+
+
+class StagingNextBreaks(unittest.TestCase):
+    """What staging-next breaks: packages that build on master, failing
+    their own build there at the same version."""
+
+    INFO = {"eval": 1830302, "evaluatedAt": "2026-10-16T01:08:22Z"}
+
+    def master(self, attr, system, status, name):
+        return {"attr": attr, "system": system, "status": status, "name": name}
+
+    def job(self, status, name, build="9"):
+        return {"name": name, "status": status, "build": build}
+
+    def test_only_its_own_failure_at_masters_version(self):
+        jobs = {
+            ("afew", "x86_64-linux"): self.job("failed", "afew-4.0.2", "1"),
+            ("afew", "aarch64-darwin"): self.job("failed", "afew-4.0.2", "2"),
+            # A dependency's failure: not this package's.
+            ("dep", "x86_64-linux"): self.job("dependency", "dep-1.0"),
+            # Another version there: an update in progress (Part A's).
+            ("upd", "x86_64-linux"): self.job("failed", "upd-2.0"),
+            # Failing on master too: not staging-next's doing.
+            ("old", "x86_64-linux"): self.job("failed", "old-1.0"),
+        }
+        rows = [
+            {
+                "name": "afew",
+                "builds": [
+                    self.master("afew", "x86_64-linux", "ok", "afew-4.0.2"),
+                    self.master("afew", "aarch64-darwin", "ok", "afew-4.0.2"),
+                    self.master("afew", "aarch64-linux", "ok", "afew-4.0.2"),
+                ],
+            },
+            {
+                "name": "dep",
+                "builds": [self.master("dep", "x86_64-linux", "ok", "dep-1.0")],
+            },
+            {
+                "name": "upd",
+                "builds": [self.master("upd", "x86_64-linux", "ok", "upd-1.0")],
+            },
+            {
+                "name": "old",
+                "builds": [self.master("old", "x86_64-linux", "failed", "old-1.0")],
+            },
+        ]
+        cycle = {"n": 571813, "cut": "2026-10-08T00:00:00Z", "open": True}
+        branches.apply_staging_next_breaks(rows, (jobs, self.INFO), cycle)
+        afew = rows[0]["stagingNextBreaks"]
+        self.assertEqual(
+            [(b["system"], b["build"]) for b in afew["builds"]],
+            [("aarch64-darwin", "2"), ("x86_64-linux", "1")],
+        )
+        self.assertEqual(
+            (afew["eval"], afew["cycle"]),
+            (1830302, {"n": 571813, "cut": "2026-10-08T00:00:00Z"}),
+        )
+        self.assertEqual(
+            [r["name"] for r in rows if "stagingNextBreaks" in r], ["afew"]
+        )
+
+    def test_without_the_file_none(self):
+        row = {"name": "afew", "builds": [], "stagingNextBreaks": {"eval": 1}}
+        branches.apply_staging_next_breaks([row], None)
+        self.assertNotIn("stagingNextBreaks", row)

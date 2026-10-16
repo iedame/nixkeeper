@@ -186,6 +186,41 @@ def apply_staging_next(rows, found):
         pr["builds"] = sorted(builds.values(), key=lambda b: b["system"])
 
 
+def apply_staging_next_breaks(rows, found, cycle=None):
+    """Give each row staging-next breaks ("stagingNextBreaks"): a job of it
+    that fails its own build in staging-next's newest evaluation (not a
+    dependency's failure) at the very version master builds fine (not an
+    update of it in progress there). Unless fixed, master fails the same
+    when staging-next is merged into it. {"eval", "evaluatedAt", "builds":
+    [{"attr", "system", "build"}]}, and "cycle", the open staging-next PR
+    ({"n", "cut"}) when known. found: load_staging_next's (none: rows keep
+    none). A forecast: it changes no count."""
+    for row in rows:
+        row.pop("stagingNextBreaks", None)
+    if not found:
+        return
+    jobs, info = found
+    for row in rows:
+        broken = []
+        for b in row.get("builds") or []:
+            job = jobs.get((b.get("attr"), b.get("system")))
+            if (
+                job
+                and job["status"] == "failed"
+                and b.get("status") == "ok"
+                and b.get("name") == job["name"]
+            ):
+                broken.append(
+                    {"attr": b["attr"], "system": b["system"], "build": job["build"]}
+                )
+        if broken:
+            row["stagingNextBreaks"] = {
+                **info,
+                "builds": sorted(broken, key=lambda b: (b["system"], b["attr"])),
+                **({"cycle": {"n": cycle["n"], "cut": cycle["cut"]}} if cycle else {}),
+            }
+
+
 def version(name):
     """The version at the end of what a job builds (NAME_VERSION), or None."""
     m = NAME_VERSION.search(name or "")

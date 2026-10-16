@@ -11,6 +11,17 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- What staging-next will break: a package that builds on master but fails
+  its own build on staging-next, at the same version, in Hydra's newest
+  evaluation of it, says so in its details (each failing build linked,
+  the evaluation's day, the staging-next PR it arrives with), and the
+  "Breaks on staging-next" filter (`?refine=stagingnext`) finds them in a
+  maintainer's or a team's list: 314 packages on 2026-10-16, most of them
+  Python. Unless fixed, they fail on master when staging-next is merged.
+  A forecast: no count includes it, and a fix may already be on staging.
+  Not a dependency's failure (that's the dependency's to fix), nor an
+  update in progress there.
+
 - An update on staging-next says how it builds there, from Hydra's newest
   evaluation of staging-next (about daily, its day said): on every
   platform, failing where (each build linked), not built yet, or not in
