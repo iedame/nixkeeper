@@ -9,6 +9,19 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+## [0.19.0] - 2026-10-16
+
+Mass rebuilds become visible on their way to master. An update merged into
+**staging or staging-next** says where it is (bash, coreutils, curl and
+about 100 others had shown nothing for weeks), and on staging-next whether
+it builds there. A package that builds on master but fails on staging-next
+is flagged in its details, with a filter to find them: **what breaks when
+staging-next is merged**, before it does. Kept older series (python313,
+firefox-esr, glibmm_2_4) are compared within their own series, and count as
+outdated when a newer release of that series is out. Update PRs are found
+however their titles are written. On phones, pages no longer open zoomed
+out, and the cards line up.
+
 ### Added
 
 - What staging-next will break: a package that builds on master but fails
@@ -1951,7 +1964,8 @@ to its restructuring into a Python package.
   packages removed from the lists don't leave files behind.
 - The sync script is a Python package (`nixkeeper/`) with tests in `tests/`.
 
-[unreleased]: https://github.com/nixkeeper/nixkeeper/compare/v0.18.0...HEAD
+[unreleased]: https://github.com/nixkeeper/nixkeeper/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.18.0...v0.19.0
 [0.18.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.17.0...v0.18.0
 [0.17.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.16.0...v0.17.0
 [0.16.0]: https://github.com/nixkeeper/nixkeeper/compare/v0.15.0...v0.16.0
