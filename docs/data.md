@@ -360,7 +360,11 @@ branch it targets), and `from` / `to` (the versions in its title,
 `mergedBy` (who opened and merged it: an update's fix is credited to
 them). `stagingPR` has `on` too (`staging` or `staging-next`: where it is),
 `merged` (when), and on staging-next, `cycle` (`n`, `cut`: the open
-staging-next PR into master it arrives with, cut from staging that day).
+staging-next PR into master it arrives with, cut from staging that day),
+and how it builds there, from Hydra's newest evaluation of staging-next
+(nixkeeper-hydra's `staging-next.json.gz`): `eval` (`eval`, `evaluatedAt`),
+`inEval` (false: merged since that evaluation), and `builds` (`system`,
+`status`, `build`: each platform's job at the PR's version).
 `openPR` also has `facts` (the full row only), what
 nixkeeper-prs found of it: `fixesBuild` (it touches the package while its
 build fails on Hydra: then not in `fixPRs` too), `mergeBot` (`ready`: a maintainer can merge

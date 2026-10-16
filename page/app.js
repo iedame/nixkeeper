@@ -537,10 +537,36 @@ function stagingBadge(pkg) {
   );
 }
 
+// How an update on staging-next builds there, from Hydra's newest
+// evaluation of it (branches.apply_staging_next): built everywhere, failing
+// where (each failure's build linked), not built yet, or not in that
+// evaluation yet. Said with the evaluation's day: it's a day or two old.
+const STAGING_BUILD = {
+  failed: 'fails to build',
+  dependency: 'fails: a dependency fails',
+};
+function stagingBuilds(pr) {
+  if (!pr.eval) return '';
+  const when = pr.eval.evaluatedAt ? ` of ${shortDay(pr.eval.evaluatedAt.slice(0, 10))}` : '';
+  const evalLink = html`<a class="files-link" href="https://hydra.nixos.org/eval/${pr.eval.eval}" target="_blank" rel="noopener">Hydra's evaluation${when} ↗</a>`;
+  if (!pr.inEval) return html` It isn't in ${evalLink} yet.`;
+  const builds = pr.builds || [];
+  const failing = builds.filter((b) => STAGING_BUILD[b.status]);
+  if (failing.length)
+    return html` In ${evalLink}, it ${failing.map(
+      (b, i) =>
+        html`${i ? (i === failing.length - 1 ? ' and ' : ', ') : ''}${STAGING_BUILD[b.status]} on ${b.system} (<a class="files-link" href="${safeUrl(hydraBuildUrl(b.build))}" target="_blank" rel="noopener">build ↗</a>)`,
+    )}.`;
+  const waiting = builds.filter((b) => b.status !== 'ok');
+  if (waiting.length)
+    return html` In ${evalLink}, it isn't built yet on ${waiting.map((b) => b.system).join(', ')}.`;
+  return html` In ${evalLink}, it builds${builds.length > 1 ? ' on every platform' : ''}.`;
+}
+
 function stagingNote(pkg) {
   const pr = pkg.stagingPR;
   if (!pr) return '';
-  return html`<div class="master-note"><span class="mono">${pr.on}</span> already has <span class="mono">${pr.to}</span> (merged in <a class="files-link" href="${safeUrl(pr.url)}" target="_blank" rel="noopener">#${pr.number} ↗</a>${pr.merged ? ` on ${longDate(pr.merged)}` : ''}): it ${stagingWait(pr)}.</div>`;
+  return html`<div class="master-note"><span class="mono">${pr.on}</span> already has <span class="mono">${pr.to}</span> (merged in <a class="files-link" href="${safeUrl(pr.url)}" target="_blank" rel="noopener">#${pr.number} ↗</a>${pr.merged ? ` on ${longDate(pr.merged)}` : ''}): it ${stagingWait(pr)}.${stagingBuilds(pr)}</div>`;
 }
 
 function masterBadge(pkg) {

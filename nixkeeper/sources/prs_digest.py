@@ -351,8 +351,10 @@ def add_staging_prs(rows, staging):
     Its "on" says where it is; on staging-next, "cycle" the open staging-next
     PR it reaches master with ({"n", "cut"}). staging: load's, or None
     (then rows keep none: there's no other way to know)."""
-    for row in rows:
-        row.pop("stagingPR", None)
+    # What the sync found of each on staging-next's builds (branches.
+    # apply_staging_next): kept while it's the same PR, as the hourly check
+    # doesn't read them.
+    before = {row["name"]: row.pop("stagingPR") for row in rows if row.get("stagingPR")}
     if not staging:
         return
     by_package = {}
@@ -383,6 +385,9 @@ def add_staging_prs(rows, staging):
         )
         if best["on"] == "staging-next" and cycle:
             best["cycle"] = {"n": cycle["n"], "cut": cycle["cut"]}
+        old = before.get(row["name"]) or {}
+        if old.get("number") == best["number"] and old.get("on") == best["on"]:
+            best.update({k: old[k] for k in ("builds", "eval", "inEval") if k in old})
         row["stagingPR"] = best
 
 

@@ -283,6 +283,8 @@ def main():
     # Update PRs merged into staging or staging-next: on their way to master,
     # the digest's only (it knows where each is).
     prs_digest.add_staging_prs(outdated, digest.get("staging"))
+    # And how those on staging-next build there (Hydra's evaluation of it).
+    branches.apply_staging_next(outdated, branches.load_staging_next(now))
     follows.apply_prs(index_rows, following)  # theirs are the same PRs
     nixpkgs_update.recheck_superseded(outdated)
     # Since when builds and update attempts have been failing (carried over).

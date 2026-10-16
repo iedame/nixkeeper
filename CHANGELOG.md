@@ -11,6 +11,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- An update on staging-next says how it builds there, from Hydra's newest
+  evaluation of staging-next (about daily, its day said): on every
+  platform, failing where (each build linked), not built yet, or not in
+  that evaluation yet. From nixkeeper-hydra's new `staging-next.json.gz`
+  (the jobs that differ from master); 54 of the 64 updates there built
+  everywhere in the 2026-10-14 evaluation, systemd 262, openssh 10.6p1
+  and vim each failing on a platform.
+
 - An update merged into staging or staging-next, the branches mass rebuilds
   go through, shows where it is: `on staging` or `on staging-next` instead
   of nothing for the two or three weeks it takes to reach master, and in

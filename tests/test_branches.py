@@ -127,3 +127,75 @@ class OnBranch(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class StagingNext(unittest.TestCase):
+    """staging-next's builds, for the updates on their way there."""
+
+    DIGEST = {
+        "format": 1,
+        "jobset": "nixpkgs/staging-next",
+        "eval": 1830302,
+        "evaluatedAt": "2026-10-16T01:08:22Z",
+        "fetchedAt": "2026-10-16T02:15:00+00:00",
+        "columns": ["attr", "system", "build", "status", "name"],
+        "jobs": [
+            ["coreutils", "aarch64-darwin", "3", "ok", "coreutils-9.12"],
+            ["coreutils", "x86_64-linux", "1", "ok", "coreutils-9.12"],
+            ["imagemagick", "x86_64-linux", "4", "ok", "imagemagick-7.1.2-33"],
+            ["openssh", "aarch64-darwin", "6", "failed", "openssh-10.6p1"],
+            ["openssh", "x86_64-linux", "5", "ok", "openssh-10.6p1"],
+        ],
+    }
+    NOW = "2026-10-16T03:00:00+00:00"
+
+    def setUp(self):
+        about.taken()
+        for patcher in (
+            mock.patch("sys.stderr", io.StringIO()),
+            mock.patch.object(config, "HYDRA_DIGEST_URL", "https://example.org/data/"),
+        ):
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def load(self, body):
+        data = gzip.compress(json.dumps(body).encode())
+        with mock.patch.object(branches.http, "get_bytes", return_value=data):
+            return branches.load_staging_next(self.NOW)
+
+    def row(self, name, to):
+        return {
+            "name": name,
+            "attrs": [name],
+            "stagingPR": {"number": 1, "to": to, "on": "staging-next"},
+        }
+
+    def test_how_the_updates_build_there(self):
+        found = self.load(self.DIGEST)
+        rows = [
+            self.row("coreutils", "9.12"),
+            self.row("openssh", "10.6p1"),
+            self.row("imagemagick", "7.1.2-34"),  # merged after the evaluation
+            {
+                "name": "curl",
+                "attrs": ["curl"],
+                "stagingPR": {"number": 2, "to": "8.23.0", "on": "staging"},
+            },  # not there yet
+        ]
+        branches.apply_staging_next(rows, found)
+        coreutils, openssh, imagemagick, curl = (r["stagingPR"] for r in rows)
+        self.assertEqual(
+            [(b["system"], b["status"]) for b in coreutils["builds"]],
+            [("aarch64-darwin", "ok"), ("x86_64-linux", "ok")],
+        )
+        self.assertEqual(
+            coreutils["eval"], {"eval": 1830302, "evaluatedAt": "2026-10-16T01:08:22Z"}
+        )
+        self.assertEqual([b["status"] for b in openssh["builds"]], ["failed", "ok"])
+        self.assertEqual((imagemagick["inEval"], imagemagick["builds"]), (False, []))
+        self.assertNotIn("builds", curl)
+        self.assertEqual(about.taken()["branch:staging-next"]["eval"], 1830302)
+
+    def test_too_old_unused(self):
+        old = {**self.DIGEST, "fetchedAt": "2026-10-13T00:00:00+00:00"}
+        self.assertIsNone(self.load(old))

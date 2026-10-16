@@ -439,6 +439,25 @@ class StagingPRs(unittest.TestCase):
         self.assertIsNone(self.add(self.row(master="1.12.1"), pr))
         self.assertIsNone(self.add(self.row(nixVersion="1.12.1"), pr))
 
+    def test_its_staging_next_builds_kept_hourly(self):
+        # The sync's reading of staging-next's builds, for the same PR: kept
+        # (the hourly check doesn't read them).
+        builds = [{"system": "x86_64-linux", "status": "ok", "build": "1"}]
+        row = self.row(
+            stagingPR={
+                "number": 1,
+                "on": "staging-next",
+                "builds": builds,
+                "inEval": True,
+            }
+        )
+        found = self.add(row, self.pr(1, "meson: 1.12.0 -> 1.12.1", "staging-next"))
+        self.assertEqual((found["builds"], found["inEval"]), (builds, True))
+        # Another PR: not carried over.
+        row = self.row(stagingPR={"number": 9, "on": "staging-next", "builds": builds})
+        found = self.add(row, self.pr(1, "meson: 1.12.0 -> 1.12.1", "staging-next"))
+        self.assertNotIn("builds", found)
+
     def test_without_the_list_none(self):
         row = self.row(stagingPR={"number": 1})
         prs_digest.add_staging_prs([row], None)
