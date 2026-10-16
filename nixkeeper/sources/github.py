@@ -146,6 +146,9 @@ def pr_names(row):
     return list(dict.fromkeys([row["searchTerm"], *(row.get("attrs") or [])]))
 
 
+TITLE_PUNCTUATION = ",;:."
+
+
 def update_prs(nodes, names):
     """The pull requests that update a package named one of names (a name
     alone, or several), by nixpkgs' title convention "wesnoth-devel: 1.19.24
@@ -164,8 +167,10 @@ def update_prs(nodes, names):
                     "url": node["url"],
                     "draft": bool(node.get("isDraft")),
                     "base": node.get("baseRefName"),
-                    "from": m.group(1),
-                    "to": m.group(2),
+                    # Without the punctuation of a title that goes on
+                    # ("fribidi: 1.0.16 -> 1.0.17, ...", "-> 3.13.16; ...").
+                    "from": m.group(1).rstrip(TITLE_PUNCTUATION),
+                    "to": m.group(2).rstrip(TITLE_PUNCTUATION),
                     # Who opened and merged it, when the listing says
                     # (nixkeeper-prs' merged PRs): an update's fix credits
                     # them (history.fixes).

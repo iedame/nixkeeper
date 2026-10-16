@@ -85,6 +85,11 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- An update PR whose title goes on after the version ("fribidi: 1.0.16 ->
+  1.0.17, also fix cross", "python313: ... -> 3.13.16; ...") gives that
+  version without the comma or semicolon: 103 PR badges and notes said
+  "9.3.0," or "1.3.2;" (shipwright, vtk, barman, ...) on 2026-10-16.
+
 - A package's open update PR is found when its title names another of the
   package's attributes, all at its one version: heroic's update is titled
   "heroic-unwrapped: 2.22.3 -> 2.22.4", and showed only under "On GitHub",
