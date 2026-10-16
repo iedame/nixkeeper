@@ -149,17 +149,41 @@ def pr_names(row):
 TITLE_PUNCTUATION = ",;:."
 
 
+# One update in a title: "names: from -> to". A title can have several,
+# separated by ";" ("minimage: init at 0.1.4; d-seams: 2.10.0 -> 2.11.0"),
+# and an update several names, separated by "," ("chromium,chromedriver:
+# 155.0.8059.79 -> 155.0.8059.84").
+TITLE_UPDATE = re.compile(r"^\s*([\w.+-]+(?:\s*,\s*[\w.+-]+)*): (\S+) -> (\S+)")
+
+
+def title_updates(title):
+    """[(names, from, to)] of each update a PR's title makes, in its order."""
+    found = []
+    for part in (title or "").split(";"):
+        if m := TITLE_UPDATE.match(part):
+            names = [n.strip() for n in m.group(1).split(",")]
+            found.append((names, m.group(2), m.group(3)))
+    return found
+
+
+def title_packages(title):
+    """The names a PR's title is about, to find it by: each update's, and
+    what comes before its first ":" (an update or not)."""
+    names = {n for found, _, _ in title_updates(title) for n in found}
+    return names | {(title or "").split(":", 1)[0]}
+
+
 def update_prs(nodes, names):
     """The pull requests that update a package named one of names (a name
     alone, or several), by nixpkgs' title convention "wesnoth-devel: 1.19.24
     -> 1.19.28" (exactly that attribute: not wesnoth-devel-extra, which
-    search would also find)."""
-    names = [names] if isinstance(names, str) else names
-    alternatives = "|".join(re.escape(n) for n in names)
-    title = re.compile(rf"^(?:{alternatives}): (\S+) -> (\S+)")
+    search would also find), wherever in the title (title_updates)."""
+    names = {names} if isinstance(names, str) else set(names)
     prs = []
     for node in nodes:
-        if m := title.match(node.get("title") or ""):
+        mine = [u for u in title_updates(node.get("title")) if names & set(u[0])]
+        if mine:
+            _, before, after = mine[0]
             prs.append(
                 {
                     "number": node["number"],
@@ -169,8 +193,8 @@ def update_prs(nodes, names):
                     "base": node.get("baseRefName"),
                     # Without the punctuation of a title that goes on
                     # ("fribidi: 1.0.16 -> 1.0.17, ...", "-> 3.13.16; ...").
-                    "from": m.group(1).rstrip(TITLE_PUNCTUATION),
-                    "to": m.group(2).rstrip(TITLE_PUNCTUATION),
+                    "from": before.rstrip(TITLE_PUNCTUATION),
+                    "to": after.rstrip(TITLE_PUNCTUATION),
                     # Who opened and merged it, when the listing says
                     # (nixkeeper-prs' merged PRs): an update's fix credits
                     # them (history.fixes).

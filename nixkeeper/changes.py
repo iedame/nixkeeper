@@ -47,6 +47,29 @@ def count_master(row):
         row["refFromMaster"] = True
 
 
+PR_FIELDS = ("masterPR", "stagingPR", "openPR")
+
+
+def count_prs(row):
+    """When Repology calls a row outdated but names no newer version (its
+    "-unclassified" projects: chatgpt 26.1007.21434, every repository also
+    "outdated"), the newest an update PR of it brings, merged or open: a
+    release someone has packaged. refFromPR says so, for the page; a row
+    given one before (the hourly check) starts again without it."""
+    if row.pop("refFromPR", None):
+        row["refVersion"] = None
+    if row.get("nixStatus") != "outdated" or row.get("refVersion"):
+        return
+    versions = [
+        pr["to"]
+        for pr in (row.get(k) for k in PR_FIELDS)
+        if pr and pr.get("to") and is_newer(pr["to"], row.get("nixVersion") or "")
+    ]
+    if versions:
+        row["refVersion"] = max(versions, key=version_key)
+        row["refFromPR"] = True
+
+
 def on_master(row):
     """The version master has, when it's ahead of the channel: what Hydra
     built there ("master"), or what an update PR merged into master brings

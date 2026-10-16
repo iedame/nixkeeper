@@ -25,7 +25,7 @@ from . import (
     uptodate,
     version,
 )
-from .changes import count_master, is_outdated
+from .changes import count_master, count_prs, is_outdated
 from .sources import (
     about,
     branches,
@@ -285,6 +285,9 @@ def main():
     prs_digest.add_staging_prs(outdated, digest.get("staging"))
     # And how those on staging-next build there (Hydra's evaluation of it).
     branches.apply_staging_next(outdated, branches.load_staging_next(now))
+    # Outdated with no newer version named: the newest its update PRs bring.
+    for row in outdated:
+        count_prs(row)
     follows.apply_prs(index_rows, following)  # theirs are the same PRs
     nixpkgs_update.recheck_superseded(outdated)
     # Since when builds and update attempts have been failing (carried over).

@@ -3463,7 +3463,9 @@ function fillDetail(pkg, el, entries) {
                   : st === 'warn' && fromMaster(pkg)
                     ? ` — the newest Repology and the update checks know of, but master already has a newer one${since.replace(' — ', '; ')}:`
                     : st === 'warn'
-                      ? html`, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion || '?'}</span>${since}`
+                      ? pkg.refFromPR
+                        ? html`; Repology names no newer version, but an update PR brings <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion}</span>${since}`
+                        : html`, the newest seen elsewhere is <span class="mono" style="font-weight:600;color:var(--warn)">${pkg.refVersion || '?'}</span>${since}`
                       : olderVersionKept(pkg)
                         ? html` — an older version nixpkgs keeps on purpose${pkg.keptBeside ? html`, beside <b class="mono">${pkg.keptBeside.attr}</b> <span class="mono">${pkg.keptBeside.version}</span>` : ', beside a newer one'}: not outdated while nothing newer is out in its own series.`
                         : st === 'neutral'

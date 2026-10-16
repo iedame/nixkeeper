@@ -88,6 +88,20 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Fixed
 
+- An update PR is found wherever its title makes the update: after
+  another change ("minimage: init at 0.1.4; d-seams: 2.10.0 -> 2.11.0"),
+  or for one of several names ("chromium,chromedriver: ... -> ...", "goose-
+  cli, goose-desktop: ..."): 15 more packages with their update PR on
+  2026-10-16 (d-seams, gnome-graphs, bcftools and htslib, torch, ...).
+
+- A package Repology calls outdated without naming a newer version (in
+  its "-unclassified" projects, every repository outdated) no longer shows
+  "newer version unknown" when an update PR of it, merged or open, brings
+  one: that version (chatgpt 26.1013.31256, swift 6.4.0: 8 packages on
+  2026-10-16), the details saying it's the PR's. The other 150 stay
+  unknown: the newer versions other repositories have there are mostly
+  other software of the same name.
+
 - An update PR whose title goes on after the version ("fribidi: 1.0.16 ->
   1.0.17, also fix cross", "python313: ... -> 3.13.16; ...") gives that
   version without the comma or semicolon: 103 PR badges and notes said

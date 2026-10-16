@@ -143,6 +143,34 @@ class UpdatePRs(unittest.TestCase):
             [("1.0.16", "1.0.17"), ("1.0.16", "1.0.18"), ("1.0.16", "1.0.19")],
         )
 
+    def test_an_update_anywhere_in_the_title(self):
+        nodes = [
+            # Second of two changes (d-seams, 2026-10-16).
+            pr(
+                1,
+                "minimage: init at 0.1.4; d-seams: 2.10.0 -> 2.11.0, enable on darwin",
+            ),
+            # Several names for one update.
+            pr(2, "chromium,chromedriver: 155.0.8059.79 -> 155.0.8059.84"),
+            pr(3, "goose-cli, goose-desktop: 1.49.0 -> 1.54.0"),
+            # Not an update of these: an init, another package.
+            pr(4, "d-seams-extra: init at 1.0"),
+        ]
+
+        def found(name):
+            return [
+                (p["number"], p["from"], p["to"])
+                for p in github.update_prs(nodes, name)
+            ]
+
+        self.assertEqual(found("d-seams"), [(1, "2.10.0", "2.11.0")])
+        self.assertEqual(found("chromedriver"), [(2, "155.0.8059.79", "155.0.8059.84")])
+        self.assertEqual(found("goose-desktop"), [(3, "1.49.0", "1.54.0")])
+        self.assertEqual(found("minimage"), [])  # its part is an init
+        self.assertEqual(
+            github.title_packages(nodes[0]["title"]), {"minimage", "d-seams"}
+        )
+
     def test_titled_with_another_of_its_attributes(self):
         """heroic, 2026-10-15: its update was titled "heroic-unwrapped: ...",
         an attribute of the same row, at the same version."""

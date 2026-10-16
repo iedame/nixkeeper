@@ -359,10 +359,17 @@ def add_staging_prs(rows, staging):
         return
     by_package = {}
     for pr in staging["prs"]:
-        by_package.setdefault((pr.get("title") or "").split(":", 1)[0], []).append(pr)
+        for package in github.title_packages(pr.get("title")):
+            by_package.setdefault(package, []).append(pr)
     cycle = (staging.get("stagingNext") or {}).get("open")
     for row in rows:
-        titled = [pr for n in github.pr_names(row) for pr in by_package.get(n, [])]
+        titled = list(
+            {
+                pr["number"]: pr
+                for n in github.pr_names(row)
+                for pr in by_package.get(n, [])
+            }.values()
+        )
         if not titled:
             continue
         where = {pr["number"]: pr for pr in titled}

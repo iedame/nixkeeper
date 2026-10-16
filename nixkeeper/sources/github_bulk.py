@@ -120,8 +120,8 @@ class Listing:
         self.issue_words = self._index(issues)
         self.by_package = {}
         for pr in prs:
-            package = (pr.get("title") or "").split(":", 1)[0]
-            self.by_package.setdefault(package, []).append(pr)
+            for package in github.title_packages(pr.get("title")):
+                self.by_package.setdefault(package, []).append(pr)
 
     @staticmethod
     def _index(nodes):
@@ -156,7 +156,11 @@ class Listing:
 
     def titled(self, row):
         """The open PRs whose titles start with one of row's names."""
-        return [pr for n in github.pr_names(row) for pr in self.by_package.get(n, [])]
+        found = {}
+        for n in github.pr_names(row):
+            for pr in self.by_package.get(n, []):
+                found.setdefault(pr["number"], pr)  # once, under any name
+        return list(found.values())
 
 
 def add_counts(rows, now, listed=None):
@@ -293,11 +297,17 @@ def add_master_prs(rows, revision, now, listed=None):
             return False
     by_package = {}
     for pr in merged:
-        package = (pr.get("title") or "").split(":", 1)[0]
-        by_package.setdefault(package, []).append(pr)
+        for package in github.title_packages(pr.get("title")):
+            by_package.setdefault(package, []).append(pr)
     for row in rows:
         row.pop("masterPR", None)
-        titled = [pr for n in github.pr_names(row) for pr in by_package.get(n, [])]
+        titled = list(
+            {
+                pr["number"]: pr
+                for n in github.pr_names(row)
+                for pr in by_package.get(n, [])
+            }.values()
+        )
         if pr := github.merged_update_pr(row, titled):
             row["masterPR"] = pr
     print(

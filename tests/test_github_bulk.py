@@ -88,6 +88,14 @@ class Listing(unittest.TestCase):
             )
         )
 
+    def test_open_update_pr_after_another_change(self):
+        # d-seams: listed under every name its title updates, not only the first.
+        listing = github_bulk.Listing(
+            [pr(10, "minimage: init at 0.1.4; d-seams: 2.10.0 -> 2.11.0")], []
+        )
+        row = {"name": "d-seams", "searchTerm": "d-seams", "nixVersion": "2.10.0"}
+        self.assertEqual(listing.open_update_pr(row)["number"], 10)
+
     def test_open_update_pr_titled_with_another_attribute(self):
         # heroic: "heroic-unwrapped: 2.22.3 -> 2.22.4", one of its attributes.
         listing = github_bulk.Listing([pr(9, "heroic-unwrapped: 2.22.3 -> 2.22.4")], [])
