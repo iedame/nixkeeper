@@ -142,6 +142,8 @@ class StagingNext(unittest.TestCase):
         "jobs": [
             ["coreutils", "aarch64-darwin", "3", "ok", "coreutils-9.12"],
             ["coreutils", "x86_64-linux", "1", "ok", "coreutils-9.12"],
+            ["harfbuzz", "x86_64-linux", "7", "ok", "harfbuzz-14.5.1"],
+            ["hatchling", "x86_64-linux", "8", "ok", "hatchling-1.31.0"],
             ["imagemagick", "x86_64-linux", "4", "ok", "imagemagick-7.1.2-33"],
             ["openssh", "aarch64-darwin", "6", "failed", "openssh-10.6p1"],
             ["openssh", "x86_64-linux", "5", "ok", "openssh-10.6p1"],
@@ -195,6 +197,24 @@ class StagingNext(unittest.TestCase):
         self.assertEqual((imagemagick["inEval"], imagemagick["builds"]), (False, []))
         self.assertNotIn("builds", curl)
         self.assertEqual(about.taken()["branch:staging-next"]["eval"], 1830302)
+
+    def test_newer_than_the_pr_there(self):
+        # harfbuzz, 2026-10-16: the PR to 14.5.0; staging-next has 14.5.1.
+        found = self.load(self.DIGEST)
+        rows = [self.row("harfbuzz", "14.5.0"), self.row("hatchling", "1.32.0")]
+        branches.apply_staging_next(rows, found)
+        harfbuzz, hatchling = (r["stagingPR"] for r in rows)
+        self.assertEqual(
+            (
+                harfbuzz["inEval"],
+                harfbuzz["evalVersion"],
+                harfbuzz["builds"][0]["build"],
+            ),
+            (True, "14.5.1", "7"),
+        )
+        # Older there (1.31.0): not in it yet.
+        self.assertEqual((hatchling["inEval"], hatchling["builds"]), (False, []))
+        self.assertNotIn("evalVersion", hatchling)
 
     def test_too_old_unused(self):
         old = {**self.DIGEST, "fetchedAt": "2026-10-13T00:00:00+00:00"}

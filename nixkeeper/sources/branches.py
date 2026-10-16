@@ -13,11 +13,13 @@ platform, as of Hydra's newest evaluation of it."""
 
 import gzip
 import json
+import re
 import sys
 import urllib.error
 from datetime import datetime, timedelta
 
 from .. import config
+from ..versions import is_newer, version_key
 from . import about, http
 
 FORMAT = 1
@@ -87,6 +89,10 @@ def load(branch, now):
 # master only (digest-builds' branches.py), read for the updates on their
 # way there (prs_digest.add_staging_prs) on every platform Hydra builds.
 STAGING_NEXT = "staging-next"
+# The version at the end of what a job builds: from the first part starting
+# with a digit (imagemagick-7.1.2-34, python3.13-uharfbuzz-0.56.2,
+# getconf-glibc-2.44-57).
+NAME_VERSION = re.compile(r"-(\d[^-]*(?:-[^-]*)*)$")
 
 
 def load_staging_next(now):
@@ -138,8 +144,10 @@ def apply_staging_next(rows, found):
     """Give each row's update on staging-next (its stagingPR "on"
     staging-next) how it builds there, from found (load_staging_next's):
     "builds", [{"system", "status", "build"}] of its attributes' jobs at
-    the PR's version, or none when the evaluation hasn't that version yet
-    (merged since: "inEval" false); and "eval", which evaluation and when."""
+    the PR's version, or at a newer one when staging-next has moved past it
+    ("evalVersion": that version, harfbuzz 14.5.1 for a PR to 14.5.0), or
+    none when the evaluation has neither (merged since: "inEval" false);
+    and "eval", which evaluation and when."""
     if not found:
         return
     jobs, info = found
@@ -154,6 +162,17 @@ def apply_staging_next(rows, found):
         # At the PR's version: what it builds, name-version (imagemagick-
         # 7.1.2-34, python3.13-hatchling-1.32.0).
         at = [j for j in theirs if j["name"].endswith(f"-{pr['to']}")]
+        pr.pop("evalVersion", None)
+        if not at:
+            # Past it: the newest version staging-next builds, if newer.
+            newer = {
+                v: [j for j in theirs if version(j["name"]) == v]
+                for j in theirs
+                if (v := version(j["name"])) and is_newer(v, pr["to"])
+            }
+            if newer:
+                best = max(newer, key=version_key)
+                at, pr["evalVersion"] = newer[best], best
         pr["eval"] = info
         pr["inEval"] = bool(at)
         # Each platform once: its first attribute's job (heroic's, not
@@ -165,6 +184,12 @@ def apply_staging_next(rows, found):
                 {"system": j["system"], "status": j["status"], "build": j["build"]},
             )
         pr["builds"] = sorted(builds.values(), key=lambda b: b["system"])
+
+
+def version(name):
+    """The version at the end of what a job builds (NAME_VERSION), or None."""
+    m = NAME_VERSION.search(name or "")
+    return m.group(1) if m else None
 
 
 def apply(rows, branch, jobs):

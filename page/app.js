@@ -551,16 +551,20 @@ function stagingBuilds(pr) {
   const evalLink = html`<a class="files-link" href="https://hydra.nixos.org/eval/${pr.eval.eval}" target="_blank" rel="noopener">Hydra's evaluation${when} ↗</a>`;
   if (!pr.inEval) return html` It isn't in ${evalLink} yet.`;
   const builds = pr.builds || [];
+  // staging-next past this PR's version: what it builds is that one.
+  const it = pr.evalVersion
+    ? html`staging-next has a newer version, <span class="mono">${pr.evalVersion}</span>, which`
+    : 'it';
   const failing = builds.filter((b) => STAGING_BUILD[b.status]);
   if (failing.length)
-    return html` In ${evalLink}, it ${failing.map(
+    return html` In ${evalLink}, ${it} ${failing.map(
       (b, i) =>
         html`${i ? (i === failing.length - 1 ? ' and ' : ', ') : ''}${STAGING_BUILD[b.status]} on ${b.system} (<a class="files-link" href="${safeUrl(hydraBuildUrl(b.build))}" target="_blank" rel="noopener">build ↗</a>)`,
     )}.`;
   const waiting = builds.filter((b) => b.status !== 'ok');
   if (waiting.length)
-    return html` In ${evalLink}, it isn't built yet on ${waiting.map((b) => b.system).join(', ')}.`;
-  return html` In ${evalLink}, it builds${builds.length > 1 ? ' on every platform' : ''}.`;
+    return html` In ${evalLink}, ${it} isn't built yet on ${waiting.map((b) => b.system).join(', ')}.`;
+  return html` In ${evalLink}, ${it} builds${builds.length > 1 ? ' on every platform' : ''}.`;
 }
 
 function stagingNote(pkg) {

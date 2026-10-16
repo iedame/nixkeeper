@@ -18,6 +18,9 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   (the jobs that differ from master); 54 of the 64 updates there built
   everywhere in the 2026-10-14 evaluation, systemd 262, openssh 10.6p1
   and vim each failing on a platform.
+  When staging-next has already moved past the PR's version, it says so
+  and how that newer one builds (harfbuzz: a PR to 14.5.0, staging-next
+  at 14.5.1), rather than "isn't in the evaluation yet".
 
 - An update merged into staging or staging-next, the branches mass rebuilds
   go through, shows where it is: `on staging` or `on staging-next` instead
