@@ -131,6 +131,18 @@ class UpdatePRs(unittest.TestCase):
             [p["number"] for p in github.update_prs(nodes, "wesnoth-devel")], [1]
         )
 
+    def test_versions_without_the_titles_punctuation(self):
+        # "fribidi: 1.0.16 -> 1.0.17, and more", "python313: ... -> 3.13.16;".
+        nodes = [
+            pr(1, "fribidi: 1.0.16 -> 1.0.17, also fix cross"),
+            pr(2, "fribidi: 1.0.16, -> 1.0.18; drop patch"),
+            pr(3, "fribidi: 1.0.16 -> 1.0.19:"),
+        ]
+        self.assertEqual(
+            [(p["from"], p["to"]) for p in github.update_prs(nodes, "fribidi")],
+            [("1.0.16", "1.0.17"), ("1.0.16", "1.0.18"), ("1.0.16", "1.0.19")],
+        )
+
     def test_titled_with_another_of_its_attributes(self):
         """heroic, 2026-10-15: its update was titled "heroic-unwrapped: ...",
         an attribute of the same row, at the same version."""
