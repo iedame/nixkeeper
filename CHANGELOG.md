@@ -9,6 +9,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ## [Unreleased]
 
+### Added
+
+- The README and `llms.txt` point to
+  [nixkeeper-mcp](https://github.com/nixkeeper/nixkeeper-mcp), an MCP server
+  that lets an AI assistant answer questions about nixpkgs packages from
+  nixkeeper's data: one package's state, what needs attention for a
+  maintainer or a team, build failures, PRs, issues, update attempts, CVEs.
+
 ## [0.19.0] - 2026-10-16
 
 Mass rebuilds become visible on their way to master. An update merged into

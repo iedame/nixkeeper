@@ -208,6 +208,7 @@ how you run it, what was confusing, what's missing. Questions go there too.
 - [nixkeeper on NixOS](docs/nixos.md) and [on macOS](docs/darwin.md): the modules
 - [Community rules](docs/community.md): shared update checks and ignore rules, opt-in
 - [The data](docs/data.md): every field in the JSON, for building on it
+- [nixkeeper-mcp](https://github.com/nixkeeper/nixkeeper-mcp): ask an AI assistant about nixpkgs packages from this data (an MCP server), and [llms.txt](https://nixkeeper.com/llms.txt) for other tools
 - [Troubleshooting](docs/troubleshooting.md): checking that it all runs
 
 ## Contributing

@@ -38,6 +38,7 @@ The sources nixkeeper joins, each refreshed on its own, each README describing i
 
 ## Optional
 
+- [nixkeeper-mcp](https://github.com/nixkeeper/nixkeeper-mcp): an MCP server answering these questions from the same data, with tools for one package, what needs attention, build failures, PRs, issues, update attempts and CVEs (`nix run github:nixkeeper/nixkeeper-mcp`; read-only, no key)
 - [Source code](https://github.com/nixkeeper/nixkeeper): the sync, the page, a NixOS and nix-darwin module, a command to run your own
 - [A dashboard of your own](https://github.com/nixkeeper/nixkeeper/blob/main/docs/your-own-instance.md), and [a live one](https://demo.nixkeeper.com/) tracking only its lists
 - [Get notified](https://github.com/nixkeeper/nixkeeper/blob/main/docs/notifications.md): a GitHub status issue per maintainer or team
