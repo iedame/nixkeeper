@@ -159,6 +159,52 @@ class Rows(unittest.TestCase):
             with self.subTest(newest=newest, repos=repos):
                 self.assertEqual(status(version, newest, *repos), expected)
 
+    def test_newest_not_a_packaging_of_it(self):
+        """curl, 2026-10-16: Baulk's 8.23.0.1 is its packaging of 8.23.0,
+        which 29 distributions have."""
+
+        def ref(nix_version, *entries):
+            rows = self.rows(
+                project(
+                    "curl",
+                    ["curl"],
+                    [nix("curl", nix_version, "outdated"), *entries],
+                    "curl",
+                )
+            )
+            return rows[0]["refVersion"]
+
+        newest = [other(r, "8.23.0", "newest") for r in ("arch", "debian_14", "fedora")]
+        self.assertEqual(
+            ref("8.22.0", *newest, other("baulk", "8.23.0.1", "newest")), "8.23.0"
+        )
+        # rakudo's "_01", the same.
+        self.assertEqual(
+            ref("8.22.0", *newest, other("aur", "8.23.0_01", "newest")), "8.23.0"
+        )
+        # In as many distributions as the shorter one: a release, not a packaging.
+        self.assertEqual(
+            ref(
+                "8.22.0",
+                other("arch", "8.23.0", "newest"),
+                other("baulk", "8.23.0.1", "newest"),
+            ),
+            "8.23.0",
+        )
+        self.assertEqual(
+            ref(
+                "8.22.0",
+                other("arch", "8.23.0", "newest"),
+                *(other(r, "8.23.0.1", "newest") for r in ("baulk", "fedora")),
+            ),
+            "8.23.0.1",
+        )
+        # nixpkgs at 8.23.0 and Repology saying behind: the added part may be a
+        # real release, first in one distribution. Kept.
+        self.assertEqual(
+            ref("8.23.0", *newest, other("baulk", "8.23.0.1", "newest")), "8.23.0.1"
+        )
+
     def test_an_older_series_compared_within_it(self):
         # python313 beside python315, 2026-10-15: behind in 3.13, not 3.15.
         entries = [

@@ -17,6 +17,15 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
   nixkeeper's data: one package's state, what needs attention for a
   maintainer or a team, build failures, PRs, issues, update attempts, CVEs.
 
+### Fixed
+
+- An outdated package's newest version isn't one distribution's packaging
+  of it, a part added to a release more distributions have: curl 8.23.0,
+  not Baulk's 8.23.0.1; rakudo 2026.09, not AUR's 2026.09_01; yacreader
+  10.4.0, not a build number (9 packages on 2026-10-16). Not when that
+  would leave nothing newer than nixpkgs' version: then the added part may
+  be a real release, seen first in one distribution.
+
 ## [0.19.0] - 2026-10-16
 
 Mass rebuilds become visible on their way to master. An update merged into

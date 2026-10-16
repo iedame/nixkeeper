@@ -180,6 +180,25 @@ def snapshot_only(version, newest, others):
     )
 
 
+def not_packaging(families):
+    """The versions of families ({version: the distributions that have
+    it}) that aren't only a packaging of another: one adding a part to
+    another in as many distributions or more (Chocolatey's ruby 3.4.11.1
+    beside 3.4.11, Baulk's curl 8.23.0.1 beside 8.23.0, AUR's rakudo
+    2026.09_01 beside 2026.09)."""
+    return [
+        v
+        for v, f in families.items()
+        if not any(
+            v.startswith(o)
+            and v[len(o) : len(o) + 1] in (".", "_", "-")
+            and len(g) >= len(f)
+            for o, g in families.items()
+            if o != v
+        )
+    ]
+
+
 def series_ref(name, version, entries, others, kept=False):
     """The newest release in version's own series, when nixpkgs has a newer
     series of the same project (another attribute: python315 beside
@@ -258,31 +277,30 @@ def series_ref(name, version, entries, others, kept=False):
     found = {
         v: f for v, f in families.items() if len(f) >= (SERIES_REPOS if kept else 1)
     }
-    # One that adds a part to another found in as many distributions or more
-    # is its packaging (Chocolatey's ruby 3.4.11.1 beside 3.4.11).
-    found = [
-        v
-        for v, f in found.items()
-        if not any(
-            v.startswith(o) and v[len(o) : len(o) + 1] == "." and len(g) >= len(f)
-            for o, g in found.items()
-            if o != v
-        )
-    ]
-    best = max(found, key=version_key, default=None)
+    best = max(not_packaging(found), key=version_key, default=None)
     plain = BUILD.sub("", without_release_words(version))
     return best if best and is_newer(BUILD.sub("", best), plain) else None
 
 
 def make_row(proj, name, attrs, nix, others, nixpkgs, devel):
     def newest(status):
-        """The highest version among the other repositories with status."""
-        versions = [
-            e["version"]
-            for e in others
-            if e.get("status") == status and e.get("version")
-        ]
-        return max(versions, key=version_key, default=None)
+        """The highest version among the other repositories with status;
+        for an outdated package, the one to update to: not a packaging of
+        another (not_packaging: curl 8.23.0, not Baulk's 8.23.0.1)."""
+        families = {}
+        for e in others:
+            if e.get("status") == status and e.get("version"):
+                families.setdefault(e["version"], set()).add(
+                    e.get("repo", "").split("_")[0]
+                )
+        highest = max(families, key=version_key, default=None)
+        if (nix or {}).get("status") != "outdated":
+            return highest
+        best = max(not_packaging(families), key=version_key, default=None)
+        # Unless that leaves nothing newer than nixpkgs' own: then the added
+        # part may be a real release, seen first in one distribution.
+        mine = nix.get("version") or ""
+        return best if is_newer(best or "", mine) else highest
 
     row = {
         "name": name,
