@@ -280,6 +280,9 @@ def main():
             open_prs=False,
             merged_since=github_bulk.merged_since(revision),
         )
+    # Update PRs merged into staging or staging-next: on their way to master,
+    # the digest's only (it knows where each is).
+    prs_digest.add_staging_prs(outdated, digest.get("staging"))
     follows.apply_prs(index_rows, following)  # theirs are the same PRs
     nixpkgs_update.recheck_superseded(outdated)
     # Since when builds and update attempts have been failing (carried over).

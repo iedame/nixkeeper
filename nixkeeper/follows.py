@@ -15,7 +15,7 @@ the hourly checks follow along without reading the lists."""
 
 from .sources import upstream
 
-PR_FIELDS = ("openPR", "masterPR")
+PR_FIELDS = ("openPR", "masterPR", "stagingPR")
 
 
 def of(checks):

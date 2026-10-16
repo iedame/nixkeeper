@@ -468,10 +468,12 @@ const badge = (cls, text, title, pr) =>
     ? html` <a class="badge ${cls}" href="${safeUrl(pr.url)}" target="_blank" rel="noopener" title="${title}">${text}</a>`
     : html` <span class="badge ${cls}" title="${title}">${text}</span>`;
 
-// The update's badge: on master when that's all it waits for, else its PR,
-// else the branch that has it (haskell-updates), waiting for its merge.
+// The update's badge: on master when that's all it waits for, else merged
+// into staging or staging-next on its way there, else its PR, else the
+// branch that has it (haskell-updates), waiting for its merge.
 function prBadge(pkg) {
   if (waitingForChannel(pkg)) return masterBadge(pkg);
+  if (pkg.stagingPR) return stagingBadge(pkg);
   if (pkg.openPR) return openPrBadge(pkg);
   return onBranch(pkg) ? branchBadge(pkg) : '';
 }
@@ -514,6 +516,31 @@ function branchNote(pkg) {
           ? ': it breaks when the branch merges into master, unless fixed first.'
           : '.';
   return html`<div class="master-note"><span class="mono">${b.name}</span> has <span class="mono">${b.version}</span>, which ${BRANCH_BUILD[b.status] || b.status} there (<a class="files-link" href="${safeUrl(hydraBuildUrl(b.build))}" target="_blank" rel="noopener">build ↗</a>)${after}</div>`;
+}
+
+// Where an update merged into staging or staging-next is, and what it waits
+// for: staging-next's merge into master (about every two to three weeks),
+// or before that, the next staging-next.
+function stagingWait(pr) {
+  return pr.on === 'staging-next'
+    ? `reaches master when staging-next is merged into it${pr.cycle ? ` (#${pr.cycle.n}, open since ${shortDay(pr.cycle.cut.slice(0, 10))})` : ''}`
+    : 'goes to staging-next when the next one is cut from staging, then to master with it';
+}
+
+function stagingBadge(pkg) {
+  const pr = pkg.stagingPR;
+  return badge(
+    'onmaster',
+    `on ${pr.on}`,
+    `${pr.on} has ${pr.to}: merged in #${pr.number} (${pr.title}); it ${stagingWait(pr)}. A mass rebuild's way: weeks, not days`,
+    pr,
+  );
+}
+
+function stagingNote(pkg) {
+  const pr = pkg.stagingPR;
+  if (!pr) return '';
+  return html`<div class="master-note"><span class="mono">${pr.on}</span> already has <span class="mono">${pr.to}</span> (merged in <a class="files-link" href="${safeUrl(pr.url)}" target="_blank" rel="noopener">#${pr.number} ↗</a>${pr.merged ? ` on ${longDate(pr.merged)}` : ''}): it ${stagingWait(pr)}.</div>`;
 }
 
 function masterBadge(pkg) {
@@ -562,7 +589,7 @@ const BOT_ICON = raw(
 function queuedTag(pkg) {
   const st = computeStatus(pkg);
   const to = queuedTo(pkg);
-  if (pkg.openPR || waitingForChannel(pkg)) return '';
+  if (pkg.openPR || pkg.stagingPR || waitingForChannel(pkg)) return '';
   const target = st === 'warn' ? targetVersion(pkg) : null;
   let match = false;
   let title;
@@ -3555,7 +3582,7 @@ function fillDetail(pkg, el, entries) {
             : ', not in nixos-unstable yet.'
         }</div>`
       : ''
-  }${branchNote(pkg)}`;
+  }${waitingForChannel(pkg) ? '' : stagingNote(pkg)}${branchNote(pkg)}`;
   const people = [
     Array.isArray(pkg.maintainers) &&
       html`<section class="pd-sec"><h4 class="other-label">Maintainers</h4><div class="pd-pills">${

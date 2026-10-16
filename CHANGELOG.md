@@ -11,6 +11,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- An update merged into staging or staging-next, the branches mass rebuilds
+  go through, shows where it is: `on staging` or `on staging-next` instead
+  of nothing for the two or three weeks it takes to reach master, and in
+  the details, since when and with which staging-next it arrives (bash,
+  coreutils, curl, cmake, expat and about 100 others on 2026-10-16). From
+  nixkeeper-prs' new staging list (`stagingPR`); still outdated until
+  master has it, and the update bot's icon isn't shown for it.
+
 - `llms.txt` beside the page (nixkeeper.com/llms.txt): for AI assistants
   and tools, what nixkeeper is, the page's addresses, where the data and the
   digests are and how to read them (the page itself is drawn by JavaScript),

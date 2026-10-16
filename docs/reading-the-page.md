@@ -278,12 +278,15 @@ packages come longest first, as outdated ones do.
 
 At the right of the versions: beside nixpkgs' version, the badges
 about it (`devel`, `vulnerable`, ...); beside the newest, the update's
-(`PR #123`, `on master`, `check failing`):
+(`PR #123`, `on staging`, `on master`, `check failing`). When it's the
+version's only badge, it sits between the two versions, level with the
+PR and issue counts:
 
 | Badge | Means |
 |---|---|
 | `PR #123` (green) | an open update PR in nixpkgs; grey while it's a draft |
 | `on master` (violet) | the update is merged into master; links to its PR |
+| `on staging`, `on staging-next` (violet) | the update is merged into staging or staging-next, the branches mass rebuilds go through (libraries, compilers, curl, coreutils): it reaches master when staging-next is merged into it, about every two to three weeks; staging's goes to the next staging-next first. Links to its PR; the details say since when, and which staging-next. Still outdated until then |
 | `devel` | a development release, compared against other devel versions |
 | `insecure` | nixpkgs itself marks it insecure (`meta.knownVulnerabilities`): it won't build unless allowed; the details give nixpkgs' reasons, their CVEs linked |
 | `vulnerable` | vulnerable, says one or more of: the NixOS security tracker (a CVE affecting the package), OSV (an advisory listing its version), Repology; hovering says who, and how many CVEs. Red for critical or high severity, orange for medium, grey for low; the vulnerable list goes worst first. The details list each CVE: its severity, the verdict, the tracker's issue and its nixpkgs issue, and the release branches still affected (a fix to backport); the ones not counted (fixed, unconfirmed, dismissed) folded below |

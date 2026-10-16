@@ -22,6 +22,22 @@ FILES = {
         "format": 1,
         "prs": [{"n": 4, "title": "x: 1 -> 2", "draft": False, "base": "master"}],
     },
+    "staging.json": {
+        "format": 1,
+        "stagingNext": {
+            "open": {"n": 571813, "cut": "2026-10-08T00:00:00Z", "open": True},
+            "lastMerged": {"n": 566094, "cut": "2026-09-23T00:00:00Z"},
+        },
+        "prs": [
+            {
+                "n": 9,
+                "title": "meson: 1.12.0 -> 1.12.1",
+                "base": "staging",
+                "merged": "2026-10-01T00:00:00Z",
+                "on": "staging-next",
+            }
+        ],
+    },
 }
 
 
@@ -85,7 +101,7 @@ class Load(unittest.TestCase):
 
     def test_too_old_or_off(self):
         found = self.load(meta(at="2026-10-09T01:00:00+00:00"))
-        self.assertEqual(found, {"open": None, "merged": None})
+        self.assertEqual(found, {"open": None, "merged": None, "staging": None})
         self.assertFalse(about.taken()["prs"]["used"])
         with mock.patch.object(config, "PRS_DIGEST_URL", ""):
             self.assertIsNone(prs_digest.load(NOW, "abc"))
@@ -94,6 +110,19 @@ class Load(unittest.TestCase):
     def test_unreadable(self):
         self.assertIsNone(self.load({"format": 2}))
         self.assertIn("couldn't be read", about.taken()["prs"]["why"])
+
+    def test_staging(self):
+        info = {**meta(), "staging": {"count": 1, "at": "2026-10-09T10:00:00+00:00"}}
+        staging = self.load(info)["staging"]
+        self.assertEqual(
+            [(p["number"], p["on"]) for p in staging["prs"]], [(9, "staging-next")]
+        )
+        self.assertEqual(staging["stagingNext"]["open"]["n"], 571813)
+        self.assertEqual(about.taken()["prs"]["staging"], 1)
+        # Too old, or from a digest without it: none.
+        old = {**meta(), "staging": {"count": 1, "at": "2026-10-09T01:00:00+00:00"}}
+        self.assertIsNone(self.load(old)["staging"])
+        self.assertIsNone(self.load(meta())["staging"])
 
 
 class Removal(unittest.TestCase):
@@ -353,3 +382,64 @@ class BuildFixPRs(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class StagingPRs(unittest.TestCase):
+    def pr(self, n, title, on):
+        return {
+            "number": n,
+            "title": title,
+            "url": f"https://github.com/NixOS/nixpkgs/pull/{n}",
+            "isDraft": False,
+            "baseRefName": "staging",
+            "on": on,
+            "merged": "2026-10-01T00:00:00Z",
+        }
+
+    STAGING = {
+        "stagingNext": {"open": {"n": 571813, "cut": "2026-10-08T00:00:00Z"}},
+    }
+
+    def row(self, **extra):
+        return {
+            "name": "meson",
+            "searchTerm": "meson",
+            "attrs": ["meson"],
+            "nixVersion": "1.12.0",
+            **extra,
+        }
+
+    def add(self, row, *prs):
+        prs_digest.add_staging_prs([row], {**self.STAGING, "prs": list(prs)})
+        return row.get("stagingPR")
+
+    def test_on_its_way(self):
+        found = self.add(
+            self.row(),
+            self.pr(1, "meson: 1.12.0 -> 1.12.1", "staging-next"),
+            self.pr(2, "meson: fix cross builds", "staging"),  # not an update
+            self.pr(3, "mesonlsp: 1.0 -> 1.1", "staging"),  # another package
+        )
+        self.assertEqual(
+            (found["number"], found["to"], found["on"], found["cycle"]["n"]),
+            (1, "1.12.1", "staging-next", 571813),
+        )
+
+    def test_the_highest_then_the_furthest(self):
+        found = self.add(
+            self.row(),
+            self.pr(1, "meson: 1.12.0 -> 1.12.1", "staging-next"),
+            self.pr(2, "meson: 1.12.1 -> 1.12.2", "staging"),
+        )
+        self.assertEqual((found["number"], found["on"]), (2, "staging"))
+        self.assertNotIn("cycle", found)  # staging's: no staging-next yet
+
+    def test_not_when_master_or_the_channel_has_it(self):
+        pr = self.pr(1, "meson: 1.12.0 -> 1.12.1", "staging-next")
+        self.assertIsNone(self.add(self.row(master="1.12.1"), pr))
+        self.assertIsNone(self.add(self.row(nixVersion="1.12.1"), pr))
+
+    def test_without_the_list_none(self):
+        row = self.row(stagingPR={"number": 1})
+        prs_digest.add_staging_prs([row], None)
+        self.assertNotIn("stagingPR", row)

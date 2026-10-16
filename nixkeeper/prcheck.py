@@ -94,6 +94,10 @@ def main():
                 pr.update(
                     {k: theirs[k] for k in ("author", "mergedBy") if theirs.get(k)}
                 )
+    # On staging or staging-next: when the digest's list is current (else the
+    # sync's are kept).
+    if digest.get("staging") is not None:
+        prs_digest.add_staging_prs(outdated, digest["staging"])
     if digest.get("facts"):
         prs_digest.add_facts(outdated, digest)
     else:

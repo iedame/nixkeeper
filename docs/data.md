@@ -350,6 +350,7 @@ behind the newest devel version elsewhere (`refVersion`).
 | `master` | the version Hydra built from master, when it's newer than the channel's. That makes the row outdated, waiting for the channel |
 | `openPR` | an open update PR in nixpkgs (below) |
 | `masterPR` | an update PR merged into master that the channel doesn't have yet |
+| `stagingPR` | an update PR merged into staging or staging-next that master doesn't have yet (from nixkeeper-prs only) |
 | `openPRs`, `openIssues` | how many open nixpkgs PRs and issues have `searchTerm` in their title |
 | `countedAt` | when those were last counted (left out: at `checkedAt`): daily, from a listing of all of nixpkgs' open PRs and issues (searched per package instead when that fails: then every 3 days for a package with none open and not outdated) |
 
@@ -357,7 +358,10 @@ behind the newest devel version elsewhere (`refVersion`).
 branch it targets), and `from` / `to` (the versions in its title,
 `name: from -> to`), and for `masterPR` from nixkeeper-prs, `author` and
 `mergedBy` (who opened and merged it: an update's fix is credited to
-them). `openPR` also has `facts` (the full row only), what
+them). `stagingPR` has `on` too (`staging` or `staging-next`: where it is),
+`merged` (when), and on staging-next, `cycle` (`n`, `cut`: the open
+staging-next PR into master it arrives with, cut from staging that day).
+`openPR` also has `facts` (the full row only), what
 nixkeeper-prs found of it: `fixesBuild` (it touches the package while its
 build fails on Hydra: then not in `fixPRs` too), `mergeBot` (`ready`: a maintainer can merge
 it with the merge bot, CI green and no conflict; `eligible`: once those

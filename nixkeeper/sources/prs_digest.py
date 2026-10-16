@@ -24,7 +24,8 @@ import urllib.error
 from datetime import datetime, timedelta
 
 from .. import config
-from . import about, http
+from ..versions import is_newer, version_key
+from . import about, github, http
 
 FORMAT = 1
 PR_URL = "https://github.com/NixOS/nixpkgs/pull/"
@@ -260,7 +261,8 @@ def load(now, revision):
             raise ValueError(f"no digest in a format this nixkeeper reads ({base})")
         issues_meta = meta.get("issues") or {}
         merged_meta = meta.get("merged") or {}
-        found = {"open": None, "merged": None}
+        staging_meta = meta.get("staging") or {}
+        found = {"open": None, "merged": None, "staging": None}
         why = []
         if recent(meta.get("generatedAt"), now) and recent(issues_meta.get("at"), now):
             data = _read(base, "prs.json")
@@ -293,6 +295,18 @@ def load(now, revision):
                 for p in _list(base, "merged.json", "prs")
                 if p.get("n")
             ]
+        # Merged into staging or staging-next, not on master yet (since
+        # 2026-10-16): where each is, and the staging-next cycle.
+        if recent(staging_meta.get("at"), now):
+            data = _read(base, "staging.json")
+            found["staging"] = {
+                "prs": [
+                    {**node(p), "on": p["on"], "merged": p.get("merged")}
+                    for p in data.get("prs") or []
+                    if p.get("n") and p.get("on")
+                ],
+                "stagingNext": data.get("stagingNext") or {},
+            }
     except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
         about.note("prs", False, f"couldn't be read ({e})")
         print(
@@ -309,6 +323,7 @@ def load(now, revision):
         prs=len(found["open"][0]) if found["open"] else None,
         issues=len(found["open"][1]) if found["open"] else None,
         merged=len(found["merged"]) if found["merged"] is not None else None,
+        staging=len(found["staging"]["prs"]) if found["staging"] else None,
         partly="; ".join(why) if used and why else None,
     )
     print(
@@ -327,6 +342,48 @@ def load(now, revision):
         file=sys.stderr,
     )
     return found
+
+
+def add_staging_prs(rows, staging):
+    """Each row's update PR merged into staging or staging-next that master
+    doesn't have yet ("stagingPR"): the one aiming highest, staging-next's
+    before staging's, to a version newer than nixpkgs' and than master's.
+    Its "on" says where it is; on staging-next, "cycle" the open staging-next
+    PR it reaches master with ({"n", "cut"}). staging: load's, or None
+    (then rows keep none: there's no other way to know)."""
+    for row in rows:
+        row.pop("stagingPR", None)
+    if not staging:
+        return
+    by_package = {}
+    for pr in staging["prs"]:
+        by_package.setdefault((pr.get("title") or "").split(":", 1)[0], []).append(pr)
+    cycle = (staging.get("stagingNext") or {}).get("open")
+    for row in rows:
+        titled = [pr for n in github.pr_names(row) for pr in by_package.get(n, [])]
+        if not titled:
+            continue
+        where = {pr["number"]: pr for pr in titled}
+        found = [
+            {
+                **pr,
+                "on": where[pr["number"]]["on"],
+                "merged": where[pr["number"]]["merged"],
+            }
+            for pr in github.update_prs(
+                [{**p, "isDraft": False} for p in titled], github.pr_names(row)
+            )
+            if is_newer(pr["to"], row.get("nixVersion") or "")
+            and (not row.get("master") or is_newer(pr["to"], row["master"]))
+        ]
+        if not found:
+            continue
+        best = max(
+            found, key=lambda p: (version_key(p["to"]), p["on"] == "staging-next")
+        )
+        if best["on"] == "staging-next" and cycle:
+            best["cycle"] = {"n": cycle["n"], "cut": cycle["cut"]}
+        row["stagingPR"] = best
 
 
 # A merged PR touching more pkgs/by-name packages than this is treewide
