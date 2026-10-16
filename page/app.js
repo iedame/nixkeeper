@@ -594,6 +594,32 @@ function stagingNextBreaksNote(pkg) {
   return html`<div class="master-note">⚠ Breaks on <span class="mono">staging-next</span>: in ${evalLink}, it fails to build there (${builds}), at the same version master builds fine. Unless fixed, it fails on master when staging-next is merged into it${merge}; a fix may already be on staging.</div>`;
 }
 
+// On staging-next, this package stops others (a failing dependency there),
+// or is stopped there by one, as of Hydra's newest evaluation of it.
+function stagingNextBlockedNote(pkg) {
+  const notes = [];
+  const evalOf = (x) =>
+    html`<a class="files-link" href="https://hydra.nixos.org/eval/${x.eval}" target="_blank" rel="noopener">Hydra's evaluation${x.evaluatedAt ? ` of ${shortDay(x.evaluatedAt.slice(0, 10))}` : ''} ↗</a>`;
+  const blocks = pkg.stagingNextBlocks;
+  if (blocks)
+    notes.push(
+      html`<div class="master-note">⚠ On <span class="mono">staging-next</span>, its failure stops ${fmt(blocks.packages)} other ${blocks.packages === 1 ? "package's" : "packages'"} builds (${fmt(blocks.builds)} ${blocks.builds === 1 ? 'build' : 'builds'}, in ${evalOf(blocks)}) that build on master: fixing it there unblocks them before staging-next is merged.</div>`,
+    );
+  const blocked = pkg.stagingNextBlockedBy;
+  if (blocked) {
+    const by = [...new Map(blocked.builds.flatMap((b) => b.by).map((x) => [x.name, x])).values()];
+    const names = by.map(
+      (x, i) =>
+        html`${i ? ', ' : ''}${x.row ? html`<a class="files-link mono" href="${scopeHref({ pkg: x.name })}" data-scope-pkg="${x.name}">${x.name}</a>` : html`<span class="mono">${x.name}</span>`}`,
+    );
+    const systems = [...new Set(blocked.builds.map((b) => b.system))].join(', ');
+    notes.push(
+      html`<div class="master-note">On <span class="mono">staging-next</span>, its build (${systems}) is stopped by ${names}, failing there, in ${evalOf(blocked)}; it builds on master. Unless that's fixed, it's stopped on master too when staging-next is merged.</div>`,
+    );
+  }
+  return notes;
+}
+
 function stagingNote(pkg) {
   const pr = pkg.stagingPR;
   if (!pr) return '';
@@ -1921,8 +1947,26 @@ function blockersHtml() {
             : raw('<span class="hl-row">')
         }<span class="status-dot missing" aria-hidden="true"></span><span class="hl-name mono">${name}</span><span class="hl-age" title="Stops ${fmt(packages)} ${packages === 1 ? 'package' : 'packages'} (${fmt(builds)} ${builds === 1 ? 'build' : 'builds'})">stops ${fmt(packages)}</span>${raw(isRow ? '</a>' : '</span>')}</li>`,
     )}</ol>
+    ${stagingNextBlockersHtml(b.stagingNext)}
     <a class="hl-all" href="${scopeHref({ view: 'blocked' })}" data-card-view="blocked">Show all ${fmt(b.packages)} <span aria-hidden="true">→</span></a>
   </section>`;
+}
+
+// The same on staging-next, before its merge into master (the manifest's
+// blockers.stagingNext, branches.apply_staging_next_blocked): the failing
+// dependencies there stopping the most packages that build on master.
+function stagingNextBlockersHtml(sn) {
+  if (!sn?.top?.length) return '';
+  const when = sn.evaluatedAt
+    ? ` (Hydra's evaluation of ${shortDay(sn.evaluatedAt.slice(0, 10))})`
+    : '';
+  const shown = sn.top
+    .slice(0, 3)
+    .map(
+      ([name, isRow, packages], i) =>
+        html`${i ? ' · ' : ''}${isRow ? html`<a class="files-link mono" href="${scopeHref({ pkg: name })}" data-scope-pkg="${name}">${name}</a>` : html`<span class="mono">${name}</span>`} stops ${fmt(packages)}`,
+    );
+  return html`<p class="hl-sub" title="Failing dependencies on staging-next stop ${fmt(sn.packages)} packages that build on master${when}: unless fixed there, they're stopped on master too when staging-next is merged">On staging-next, ${fmt(sn.packages)} stopped: ${shown}</p>`;
 }
 
 // Days of history the cards draw, and how many points before they do.
@@ -3641,7 +3685,7 @@ function fillDetail(pkg, el, entries) {
             : ', not in nixos-unstable yet.'
         }</div>`
       : ''
-  }${waitingForChannel(pkg) ? '' : stagingNote(pkg)}${stagingNextBreaksNote(pkg)}${branchNote(pkg)}`;
+  }${waitingForChannel(pkg) ? '' : stagingNote(pkg)}${stagingNextBreaksNote(pkg)}${stagingNextBlockedNote(pkg)}${branchNote(pkg)}`;
   const people = [
     Array.isArray(pkg.maintainers) &&
       html`<section class="pd-sec"><h4 class="other-label">Maintainers</h4><div class="pd-pills">${

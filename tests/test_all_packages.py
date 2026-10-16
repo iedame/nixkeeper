@@ -1155,6 +1155,37 @@ class Blockers(unittest.TestCase):
         rows_module.name_blockers(rows)  # a second time: unchanged
         self.assertEqual(rows[1]["builds"][0]["blockedBy"][1], {"name": "source"})
 
+    def test_staging_next_counted_apart(self):
+        # Stopped on staging-next only (branches.apply_staging_next_blocked):
+        # their own count, not master's.
+        def sn(*by):
+            return {
+                "eval": 1830302,
+                "evaluatedAt": "2026-10-16T01:08:22Z",
+                "builds": [{"system": "x86_64-linux", "build": "1", "by": list(by)}],
+            }
+
+        clang = {"name": "clang-rocm", "row": True}
+        rows = [
+            row("blender", stagingNextBlockedBy=sn(clang)),
+            row("hipblas", stagingNextBlockedBy=sn(clang)),
+            row("aft", stagingNextBlockedBy=sn({"name": "Grpc.Tools-2.55.1"})),
+        ]
+        found = datastore.views(rows, {})["blockers"]
+        self.assertEqual(found["count"], 0)  # master's: none
+        self.assertEqual(
+            found["stagingNext"],
+            {
+                "eval": 1830302,
+                "evaluatedAt": "2026-10-16T01:08:22Z",
+                "count": 2,
+                "packages": 3,
+                "top": [["clang-rocm", True, 2, 2], ["Grpc.Tools-2.55.1", False, 1, 1]],
+            },
+        )
+        # None stopped there: no stagingNext at all.
+        self.assertNotIn("stagingNext", datastore.views([row("x")], {})["blockers"])
+
     def test_counted_and_kept_in_the_list(self):
         ldap = {"name": "python-ldap", "row": True}
 

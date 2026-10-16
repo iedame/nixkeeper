@@ -171,7 +171,9 @@ lists, nixpkgs' own and those of the 8 newest other repositories). Instead:
   there are (`count`), how many packages have a build they stopped
   (`packages`, as many as `blocked.json` has, whether nixkeeper-hydra has
   read which dependency it was yet or not), and the 8 that stop the most
-  (`top`), each `[name, row, packages, builds]`;
+  (`top`), each `[name, row, packages, builds]`; and `stagingNext`, the
+  same on staging-next for packages that build on master (`eval`,
+  `evaluatedAt`, `count`, `packages`, `top`), when any are stopped there;
 - `causes` in `index.json`: why things fail, across the rows not in a set
   (`causes.py`): `builds`, the 8 biggest groups of failed builds sharing an
   error, each `{ "key", "count", "reason", "signature", "line", "title"?,
@@ -351,6 +353,8 @@ behind the newest devel version elsewhere (`refVersion`).
 | `openPR` | an open update PR in nixpkgs (below) |
 | `masterPR` | an update PR merged into master that the channel doesn't have yet |
 | `stagingPR` | an update PR merged into staging or staging-next that master doesn't have yet (from nixkeeper-prs only) |
+| `stagingNextBlockedBy` | builds on master, but on staging-next a dependency failing there stops it, at the same version: `eval`, `evaluatedAt`, `builds` (`system`, `build`, `by`: each dependency, `name` and `row` when it's a row) |
+| `stagingNextBlocks` | its failure on staging-next stops others that build on master: `eval`, `evaluatedAt`, `packages`, `builds` |
 | `stagingNextBreaks` | builds on master but fails its own build on staging-next at the same version, in Hydra's newest evaluation of it (nixkeeper-hydra's `staging-next.json.gz`): `eval`, `evaluatedAt`, `builds` (`attr`, `system`, `build`: each failing job there), and `cycle` (`n`, `cut`: the open staging-next PR into master). A forecast: no count includes it |
 | `openPRs`, `openIssues` | how many open nixpkgs PRs and issues have `searchTerm` in their title |
 | `countedAt` | when those were last counted (left out: at `checkedAt`): daily, from a listing of all of nixpkgs' open PRs and issues (searched per package instead when that fails: then every 3 days for a package with none open and not outdated) |

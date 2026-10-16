@@ -11,6 +11,14 @@ The version lives in `pyproject.toml`; `flake.nix` reads it from there.
 
 ### Added
 
+- What blocks staging-next: a dependency failing there that stops packages
+  building on master says how many in its details ("its failure stops N
+  other packages' builds on staging-next"), a package it stops says which
+  dependency, and the overview's "Blocking the most" has the top ones on
+  staging-next under it (clang-22.0.0-rocm stopped about 750 builds on
+  2026-10-16). From nixkeeper-hydra's `staging-next.json.gz`, which now
+  names each such build's blocker. A forecast: no count includes it.
+
 - The README and `llms.txt` point to
   [nixkeeper-mcp](https://github.com/nixkeeper/nixkeeper-mcp), an MCP server
   that lets an AI assistant answer questions about nixpkgs packages from

@@ -598,8 +598,21 @@ def views(rows, out):
     # Which dependencies stop the most packages' builds (of every row, those
     # in sets too, as zh.fail counts them): {name: [row?, {packages}, builds]}.
     blockers = {}
+    # The same on staging-next (branches.apply_staging_next_blocked): what
+    # its failing dependencies stop, of packages that build on master.
+    staging_blockers, staging_blocked, staging_info = {}, 0, {}
     for row in rows:
         letter = status(row)
+        if sn := row.get("stagingNextBlockedBy"):
+            staging_blocked += 1
+            staging_info = {k: sn[k] for k in ("eval", "evaluatedAt") if k in sn}
+            for b in sn["builds"]:
+                for blocker in b["by"]:
+                    stops = staging_blockers.setdefault(
+                        blocker["name"], [bool(blocker.get("row")), set(), 0]
+                    )
+                    stops[1].add(row["name"])
+                    stops[2] += 1
         for b in row.get("builds") or []:
             if b["status"] != "dependency":
                 continue
@@ -739,6 +752,9 @@ def views(rows, out):
             "groups": [{k: v for k, v in g.items() if k != "rows"} for g in groups]
         }
     top = sorted(blockers.items(), key=lambda kv: (-len(kv[1][1]), -kv[1][2], kv[0]))
+    staging_top = sorted(
+        staging_blockers.items(), key=lambda kv: (-len(kv[1][1]), -kv[1][2], kv[0])
+    )
     return {
         "counts": {**counts, "buildFailuresOn": dict(sorted(failing_on.items()))},
         # Their counts are the cards' (one counted with no date yet, until the
@@ -758,6 +774,26 @@ def views(rows, out):
                 [name, is_row, len(names), builds]
                 for name, (is_row, names, builds) in top[:HIGHLIGHTS]
             ],
+            # And on staging-next, before its merge into master: how many
+            # packages its failing dependencies stop there, the ones
+            # stopping the most, and which evaluation.
+            **(
+                {
+                    "stagingNext": {
+                        **staging_info,
+                        "count": len(staging_blockers),
+                        "packages": staging_blocked,
+                        "top": [
+                            [name, is_row, len(names), builds]
+                            for name, (is_row, names, builds) in staging_top[
+                                :HIGHLIGHTS
+                            ]
+                        ],
+                    }
+                }
+                if staging_blockers
+                else {}
+            ),
         },
         # The overview's "Why things fail": the biggest groups of failed builds
         # sharing an error (causes.SHOWN; each {"key", "count", "reason",

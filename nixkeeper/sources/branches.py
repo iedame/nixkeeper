@@ -124,6 +124,9 @@ def load_staging_next(now):
                 "name": job["name"],
                 "status": job["status"],
                 "build": job["build"],
+                # The dependencies stopping it there, by attribute (or a
+                # store name no job builds), when the digest has read them.
+                "blockedBy": (job.get("blockedBy") or "").split(),
             }
         info = {"eval": found["eval"], "evaluatedAt": found.get("evaluatedAt")}
     except (urllib.error.URLError, OSError, ValueError, KeyError) as e:
@@ -218,6 +221,57 @@ def apply_staging_next_breaks(rows, found, cycle=None):
                 **info,
                 "builds": sorted(broken, key=lambda b: (b["system"], b["attr"])),
                 **({"cycle": {"n": cycle["n"], "cut": cycle["cut"]}} if cycle else {}),
+            }
+
+
+def apply_staging_next_blocked(rows, found):
+    """What staging-next's failing dependencies stop: each row with a job
+    that builds on master but is stopped there by a dependency, at the same
+    version, gets "stagingNextBlockedBy" ({"eval", "evaluatedAt", "builds":
+    [{"system", "build", "by": [{"name", "row"?}]}]}: each dependency the
+    row named after it when there is one, as rows.name_blockers names
+    master's); and each row that stops others there, "stagingNextBlocks"
+    ({"eval", "evaluatedAt", "packages", "builds"}): fix it on staging-next,
+    and they build again. Of every row (those in sets too, as master's
+    blockers count). found: load_staging_next's (none: rows keep none). A
+    forecast: it changes no count."""
+    for row in rows:
+        row.pop("stagingNextBlockedBy", None)
+        row.pop("stagingNextBlocks", None)
+    if not found:
+        return
+    jobs, info = found
+    by_attr = {a: row for row in rows for a in row.get("attrs") or []}
+    stops = {}  # blocker's name: [its row or None, {rows stopped}, builds]
+    for row in rows:
+        blocked = []
+        for b in row.get("builds") or []:
+            job = jobs.get((b.get("attr"), b.get("system")))
+            if not (
+                job
+                and job["status"] == "dependency"
+                and job["blockedBy"]
+                and b.get("status") == "ok"
+                and b.get("name") == job["name"]
+            ):
+                continue
+            by = []
+            for attr in job["blockedBy"]:
+                blocker = by_attr.get(attr)
+                name = blocker["name"] if blocker else attr
+                by.append({"name": name, "row": True} if blocker else {"name": name})
+                stop = stops.setdefault(name, [blocker, set(), 0])
+                stop[1].add(row["name"])
+                stop[2] += 1
+            blocked.append({"system": b["system"], "build": job["build"], "by": by})
+        if blocked:
+            row["stagingNextBlockedBy"] = {**info, "builds": blocked}
+    for blocker, names, builds in stops.values():
+        if blocker is not None:
+            blocker["stagingNextBlocks"] = {
+                **info,
+                "packages": len(names),
+                "builds": builds,
             }
 
 

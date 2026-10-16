@@ -290,6 +290,8 @@ def main():
     # there themselves (a forecast, for their panel and a filter).
     cycle = ((digest.get("staging") or {}).get("stagingNext") or {}).get("open")
     branches.apply_staging_next_breaks(shown, staging_next, cycle)
+    # And who stops whom there: a dependency failing on staging-next.
+    branches.apply_staging_next_blocked(index_rows, staging_next)
     # Outdated with no newer version named: the newest its update PRs bring.
     for row in outdated:
         count_prs(row)

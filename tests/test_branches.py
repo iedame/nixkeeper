@@ -285,3 +285,87 @@ class StagingNextBreaks(unittest.TestCase):
         row = {"name": "afew", "builds": [], "stagingNextBreaks": {"eval": 1}}
         branches.apply_staging_next_breaks([row], None)
         self.assertNotIn("stagingNextBreaks", row)
+
+
+class StagingNextBlocked(unittest.TestCase):
+    """Who stops whom on staging-next: its failing dependencies."""
+
+    INFO = {"eval": 1830302, "evaluatedAt": "2026-10-16T01:08:22Z"}
+
+    def build(self, attr, status, name, system="x86_64-linux"):
+        return {"attr": attr, "system": system, "status": status, "name": name}
+
+    def job(self, status, name, blocked_by=(), build="9"):
+        return {
+            "name": name,
+            "status": status,
+            "build": build,
+            "blockedBy": list(blocked_by),
+        }
+
+    def test_who_stops_whom(self):
+        jobs = {
+            ("blender", "x86_64-linux"): self.job(
+                "dependency", "blender-5.0.1", ["rocmPackages.clang"], "11"
+            ),
+            ("hipblas", "x86_64-linux"): self.job(
+                "dependency", "hipblas-7.0", ["rocmPackages.clang"], "12"
+            ),
+            # Its blocker no row: named as it is.
+            ("azure-functions-core-tools", "x86_64-linux"): self.job(
+                "dependency", "aft-4.0", ["Grpc.Tools-2.55.1"], "13"
+            ),
+            # Stopped on master too: not staging-next's doing.
+            ("krita", "x86_64-linux"): self.job(
+                "dependency", "krita-6.0", ["qt"], "14"
+            ),
+        }
+        rows = [
+            {
+                "name": "blender",
+                "attrs": ["blender"],
+                "builds": [self.build("blender", "ok", "blender-5.0.1")],
+            },
+            {
+                "name": "hipblas",
+                "attrs": ["hipblas"],
+                "builds": [self.build("hipblas", "ok", "hipblas-7.0")],
+            },
+            {
+                "name": "azure-functions-core-tools",
+                "attrs": ["azure-functions-core-tools"],
+                "builds": [self.build("azure-functions-core-tools", "ok", "aft-4.0")],
+            },
+            {
+                "name": "krita",
+                "attrs": ["krita"],
+                "builds": [self.build("krita", "dependency", "krita-6.0")],
+            },
+            {"name": "clang-rocm", "attrs": ["rocmPackages.clang"], "builds": []},
+        ]
+        branches.apply_staging_next_blocked(rows, (jobs, self.INFO))
+        by = {r["name"]: r for r in rows}
+        self.assertEqual(
+            by["blender"]["stagingNextBlockedBy"]["builds"],
+            [
+                {
+                    "system": "x86_64-linux",
+                    "build": "11",
+                    "by": [{"name": "clang-rocm", "row": True}],
+                }
+            ],
+        )
+        self.assertEqual(
+            by["azure-functions-core-tools"]["stagingNextBlockedBy"]["builds"][0]["by"],
+            [{"name": "Grpc.Tools-2.55.1"}],
+        )
+        self.assertNotIn("stagingNextBlockedBy", by["krita"])
+        self.assertEqual(
+            by["clang-rocm"]["stagingNextBlocks"],
+            {**self.INFO, "packages": 2, "builds": 2},
+        )
+        # Without the file: none.
+        branches.apply_staging_next_blocked(rows, None)
+        self.assertFalse(
+            any("stagingNextBlocks" in r or "stagingNextBlockedBy" in r for r in rows)
+        )
